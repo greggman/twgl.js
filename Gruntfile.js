@@ -36,16 +36,26 @@ var license = [
 module.exports = function(grunt) {
 
   var srcFiles = [
-    'src/primitives.js',
-    //'src/webgl-2d-math.js',
-    //'src/webgl-3d-math.js',
     'src/webgl-utils.js',
-  ]
+  ];
+
+  var thirdPartyFiles = [
+  ];
+
+  var extraFiles = [
+    'src/v3.js',
+    'src/m4.js',
+    'src/primitives.js',
+  ];
+
+  var docsFiles = srcFiles.concat('docs.md');
+  var libFiles = srcFiles.concat(thirdPartyFiles);
+  var fullLibFiles = srcFiles.concat(thirdPartyFiles, extraFiles);
 
   grunt.initConfig({
     jsdoc: {
       docs: {
-        src: srcFiles.concat('docs.md'),
+        src: docsFiles,
         options: {
           destination: 'docs',
           configure: 'jsdoc.conf.json',
@@ -62,7 +72,7 @@ module.exports = function(grunt) {
           compress: true,
         },
         files: {
-          'build/twgl.min.js': srcFiles,
+          'build/twgl.min.js': libFiles,
         },
       },
       max: {
@@ -73,7 +83,29 @@ module.exports = function(grunt) {
           compress: false,
         },
         files: {
-          'build/twgl.js': srcFiles,
+          'build/twgl.js': libFiles,
+        },
+      },
+      fullMin: {
+        options: {
+          mangle: false,
+          screwIE8: true,
+          banner: license,
+          compress: false,
+        },
+        files: {
+          'build/twgl-full.min.js': fullLibFiles,
+        },
+      },
+      fullMax: {
+        options: {
+          mangle: false,
+          screwIE8: true,
+          banner: license,
+          compress: false,
+        },
+        files: {
+          'build/twgl-full.js': fullLibFiles,
         },
       },
     },

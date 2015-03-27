@@ -82,16 +82,6 @@
   };
 
   /**
-   * Check if the page is embedded.
-   * @param {Window?) w window to check
-   * @return {boolean} True of we are in an iframe
-   */
-  function isInIFrame(w) {
-    w = w || topWindow;
-    return w != w.top;
-  };
-
-  /**
    * Converts a WebGL enum to a string
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
    * @param {number} value The enum value.
@@ -107,38 +97,6 @@
   };
 
   /**
-   * Creates the HTLM for a failure message
-   * @param {string} canvasContainerId id of container of th
-   *        canvas.
-   * @return {string} The html.
-   */
-  function makeFailHTML(msg) {
-    return '' +
-      '<table style="background-color: #8CE; width: 100%; height: 100%;"><tr>' +
-      '<td align="center">' +
-      '<div style="display: table-cell; vertical-align: middle;">' +
-      '<div style="">' + msg + '</div>' +
-      '</div>' +
-      '</td></tr></table>';
-  };
-
-  /**
-   * Mesasge for getting a webgl browser
-   * @type {string}
-   */
-  var GET_A_WEBGL_BROWSER = '' +
-    'This page requires a browser that supports WebGL.<br/>' +
-    '<a href="http://get.webgl.org">Click here to upgrade your browser.</a>';
-
-  /**
-   * Mesasge for need better hardware
-   * @type {string}
-   */
-  var OTHER_PROBLEM = '' +
-    "It doesn't appear your computer can support WebGL.<br/>" +
-    '<a href="http://get.webgl.org/troubleshooting/">Click here for more information.</a>';
-
-  /**
    * Creates a webgl context. If creation fails it will
    * change the contents of the container of the <canvas>
    * tag to an error message with the correct links for WebGL.
@@ -150,22 +108,7 @@
    * @memberOf module:webgl-utils
    */
   function setupWebGL(canvas, opt_attribs) {
-    function showLink(str) {
-      var container = canvas.parentNode;
-      if (container) {
-        container.innerHTML = makeFailHTML(str);
-      }
-    };
-
-    if (!topWindow.WebGLRenderingContext) {
-      showLink(GET_A_WEBGL_BROWSER);
-      return null;
-    }
-
     var context = create3DContext(canvas, opt_attribs);
-    if (!context) {
-      showLink(OTHER_PROBLEM);
-    }
     return context;
   };
 
@@ -190,47 +133,14 @@
     return context;
   }
 
-  function updateCSSIfInIFrame() {
-    if (isInIFrame()) {
-      document.body.className = "iframe";
-    }
-  };
-
-  /**
-   * @typedef {Object} GetWebGLContextOptions
-   * @property {boolean?} dontResize by default `getWebGLContext` will resize the canvas to match the size it's displayed.
-   * @property {boolean?} noTitle by default inserts a copy of the `<title>` content into the page
-   * @memberOf module:webgl-utils
-   */
-
   /**
    * Gets a WebGL context.
    * makes its backing store the size it is displayed.
    * @param {HTMLCanvasElement} canvas a canvas element.
    * @param {WebGLContextCreationAttirbutes?} opt_attribs optional webgl context creation attributes
-   * @param {module:webgl-utils.GetWebGLContextOptions?} opt_options options
    * @memberOf module:webgl-utils
    */
-  function getWebGLContext(canvas, opt_attribs, opt_options) {
-    var options = opt_options || {}
-
-    if (isInIFrame()) {
-      updateCSSIfInIFrame();
-
-      // make the canvas backing store the size it's displayed.
-      if (!options.dontResize && options.resize !== false) {
-        var width = canvas.clientWidth;
-        var height = canvas.clientHeight;
-        canvas.width = width;
-        canvas.height = height;
-      }
-    } else if (!options.noTitle && options.title !== false) {
-      var title = document.title;
-      var h1 = document.createElement("h1");
-      h1.innerText = title;
-      document.body.insertBefore(h1, document.body.children[0]);
-    }
-
+  function getWebGLContext(canvas, opt_attribs) {
     var gl = setupWebGL(canvas, opt_attribs);
     return gl;
   };
@@ -602,7 +512,7 @@
    * This will automatically bind the textures AND set the
    * uniforms.
    *
-   *     setUniforms(programInfo.uniformSetters, uniforms);
+   *     setUniforms(programInfo, uniforms);
    *
    * For the example above it is equivalent to
    *
@@ -640,8 +550,8 @@
    *       ],
    *     };
    *
-   *     setUniforms(programInfo.uniformSetters, uniforms);
-   *     setUniforms(programInfo.uniformSetters, moreUniforms);
+   *     setUniforms(programInfo, uniforms);
+   *     setUniforms(programInfo, moreUniforms);
    *
    * @param {Object.<string, fucntion>} setters the setters returned from
    *        `createUniformSetters`.
@@ -650,6 +560,7 @@
    * @memberOf module:webgl-utils
    */
   function setUniforms(setters, values) {
+    setters = setters.uniformSetters || setters;
     Object.keys(values).forEach(function(name) {
       var setter = setters[name];
       if (setter) {
@@ -775,7 +686,7 @@
    * This will automatically bind the buffers AND set the
    * attributes.
    *
-   *     setBuffersAndAttributes(programInfo.attribSetters, bufferInfo);
+   *     setBuffersAndAttributes(gl, programInfo, bufferInfo);
    *
    * For the example above it is equivilent to
    *
@@ -791,8 +702,8 @@
    * @param {module:webgl-utils.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
    * @memberOf module:webgl-utils
    */
-  function setBuffersAndAttributes(gl, setters, buffers) {
-    setAttributes(setters, buffers.attribs);
+  function setBuffersAndAttributes(gl, programInfo, buffers) {
+    setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
     if (buffers.indices) {
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     }
@@ -1359,38 +1270,16 @@
       // Setup all the needed attributes.
       if (bufferInfo != lastUsedBufferInfo) {
         lastUsedBufferInfo = bufferInfo;
-        setBuffersAndAttributes(gl, programInfo.attribSetters, bufferInfo);
+        setBuffersAndAttributes(gl, programInfo, bufferInfo);
       }
 
       // Set the uniforms.
-      setUniforms(programInfo.uniformSetters, object.uniforms);
+      setUniforms(programInfo, object.uniforms);
 
       // Draw
       drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
     });
   }
-
-  // Replace requestAnimationFrame.
-  if (topWindow.requestAnimationFrame) {
-    topWindow.requestAnimationFrame = (function(oldRAF) {
-
-      return function(callback, element) {
-        var handler = function() {
-          if (isOnScreen(element)) {
-            oldRAF(callback, element);
-          } else {
-            oldRAF(handler, element);
-          }
-        };
-        handler();
-      };
-
-    }(topWindow.requestAnimationFrame));
-  }
-
-  // All browsers that support WebGL support requestAnimationFrame
-  topWindow.requestAnimFrame = topWindow.requestAnimationFrame;       // just to stay backward compatible.
-  topWindow.cancelRequestAnimFrame = topWindow.cancelAnimationFrame;  // just to stay backward compatible.
 
   return {
     createAugmentedTypedArray: createAugmentedTypedArray,
@@ -1406,7 +1295,6 @@
     drawBufferInfo: drawBufferInfo,
     drawObjectList: drawObjectList,
     getWebGLContext: getWebGLContext,
-    updateCSSIfInIFrame: updateCSSIfInIFrame,
     getExtensionWithKnownPrefixes: getExtensionWithKnownPrefixes,
     resizeCanvasToDisplaySize: resizeCanvasToDisplaySize,
     setAttributes: setAttributes,

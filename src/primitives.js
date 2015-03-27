@@ -37,18 +37,18 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(['./webgl-utils', './webgl-3d-math'], factory);
+    define(['./webgl-utils', './m4'], factory);
   } else {
     // Browser globals
     root.twgl = root.twgl || {};
     root.twgl.primitives = factory.call(root);
   }
-}(this, function (webglUtils, math3d) {
+}(this, function (webglUtils, m4) {
 
   "use strict";
 
-  webglUtils = webglUtils || this;
-  math3d = math3d || this;
+  webglUtils = webglUtils || this.twgl;
+  m4 = m4 || this;
 
   /**
    * Creates XZ plane vertices.
@@ -73,7 +73,7 @@
     depth = depth || 1;
     subdivisionsWidth = subdivisionsWidth || 1;
     subdivisionsDepth = subdivisionsDepth || 1;
-    matrix = matrix || math3d.makeIdentity();
+    matrix = matrix || m4.identity();
 
     var numVertices = (subdivisionsWidth + 1) * (subdivisionsDepth + 1);
     var positions = webglUtils.createAugmentedTypedArray(3, numVertices);
@@ -912,7 +912,7 @@
   };
 
   function transformNormal(mi, v, dst) {
-    var dst = dst || new Float32Array(3);
+    var dst = dst || v3.create();
     var v0 = v[0];
     var v1 = v[1];
     var v2 = v[2];
@@ -932,7 +932,7 @@
    * @memberOf module:primitives
    */
   function reorientDirections(array, matrix) {
-    applyFuncToV3Array(array, matrix, math3d.transformDirection);
+    applyFuncToV3Array(array, matrix, m4.transformDirection);
     return array;
   };
 
@@ -945,7 +945,7 @@
    * @memberOf module:primitives
    */
   function reorientNormals(array, matrix) {
-    applyFuncToV3Array(array, makeInverse(matrix), transformNormal);
+    applyFuncToV3Array(array, m4.inverse(matrix), transformNormal);
     return array;
   };
 
@@ -958,7 +958,7 @@
    * @memberOf module:primitives
    */
   function reorientPositions(array, matrix) {
-    applyFuncToV3Array(array, matrix, math3d.transformPoint);
+    applyFuncToV3Array(array, matrix, m4.transformPoint);
     return array;
   };
 
