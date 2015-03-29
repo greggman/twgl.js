@@ -46,7 +46,7 @@
 
   var topWindow = this;
 
-  /** @module webgl-utils */
+  /** @module twgl */
 
   /**
    * Wrapped logging function.
@@ -105,7 +105,7 @@
    * @param {WebGLContextCreationAttirbutes} opt_attribs Any
    *     creation attributes you want to pass in.
    * @return {WebGLRenderingContext} The created context.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function setupWebGL(canvas, opt_attribs) {
     var context = create3DContext(canvas, opt_attribs);
@@ -138,7 +138,7 @@
    * makes its backing store the size it is displayed.
    * @param {HTMLCanvasElement} canvas a canvas element.
    * @param {WebGLContextCreationAttirbutes?} opt_attribs optional webgl context creation attributes
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function getWebGLContext(canvas, opt_attribs) {
     var gl = setupWebGL(canvas, opt_attribs);
@@ -149,7 +149,7 @@
    * Error Callback
    * @callback ErrorCallback
    * @param {string} msg error message.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
 
 
@@ -158,7 +158,7 @@
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
    * @param {string} shaderSource The shader source.
    * @param {number} shaderType The type of shader.
-   * @param {module:webgl-utils.ErrorCallback} opt_errorCallback callback for errors.
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
    * @return {WebGLShader} The created shader.
    */
   function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
@@ -191,9 +191,9 @@
    * @param {WebGLShader[]} shaders The shaders to attach
    * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:webgl-utils.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createProgram(
       gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
@@ -231,7 +231,7 @@
    * @param {string} scriptId The id of the script tag.
    * @param {number} opt_shaderType The type of shader. If not passed in it will
    *     be derived from the type of the script tag.
-   * @param {module:webgl-utils.ErrorCallback} opt_errorCallback callback for errors.
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
    * @return {WebGLShader} The created shader.
    */
   function createShaderFromScript(
@@ -275,10 +275,10 @@
    *        vertex shader, the second the fragment shader.
    * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:webgl-utils.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram} The created program.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createProgramFromScripts(
       gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
@@ -300,10 +300,10 @@
    *        the second the fragment shader.
    * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:webgl-utils.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram} The created program.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createProgramFromSources(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
@@ -320,7 +320,7 @@
    * @property {WebGLProgram} program A shader program
    * @property {Object<string, function>} uniformSetters: object of setters as returned from createUniformSetters,
    * @property {Object<string, function>} attribSetters: object of setters as returned from createAttribSetters,
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
 
   /**
@@ -341,10 +341,10 @@
    *        the second the fragment shader.
    * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:webgl-utils.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
-   * @return {module:webgl-utils.ProgramInfo} The created program.
-   * @memberOf module:webgl-utils
+   * @return {module:twgl.ProgramInfo} The created program.
+   * @memberOf module:twgl
    */
   function createProgramInfo(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
@@ -381,11 +381,11 @@
    * Creates setter functions for all uniforms of a shader
    * program.
    *
-   * @see {@link module:webgl-utils.setUniforms}
+   * @see {@link module:twgl.setUniforms}
    *
    * @param {WebGLProgram} program the program to create setters for.
    * @returns {Object.<string, function>} an object with a setter by name for each uniform
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createUniformSetters(gl, program) {
     var textureUnit = 0;
@@ -557,7 +557,7 @@
    *        `createUniformSetters`.
    * @param {Object.<string, value>} an object with values for the
    *        uniforms.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function setUniforms(setters, values) {
     setters = setters.uniformSetters || setters;
@@ -571,12 +571,12 @@
 
   /**
    * Creates setter functions for all attributes of a shader
-   * program. You can pass this to {@link module:webgl-utils.setBuffersAndAttributes} to set all your buffers and attributes.
+   * program. You can pass this to {@link module:twgl.setBuffersAndAttributes} to set all your buffers and attributes.
    *
-   * @see {@link module:webgl-utils.setAttributes} for example
+   * @see {@link module:twgl.setAttributes} for example
    * @param {WebGLProgram} program the program to create setters for.
    * @return {Object.<string, function>} an object with a setter for each attribute by name.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createAttributeSetters(gl, program) {
     var attribSetters = {
@@ -605,7 +605,7 @@
   };
 
   /**
-   * Sets attributes and binds buffers (deprecated... use {@link module:webgl-utils.setBuffersAndAttributes})
+   * Sets attributes and binds buffers (deprecated... use {@link module:twgl.setBuffersAndAttributes})
    *
    * Example:
    *
@@ -653,9 +653,9 @@
    *     };
    *
    * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
-   * @param {Object.<string, module:webgl-utils.AttribInfo>} buffers AttribInfos mapped by attribute name.
-   * @memberOf module:webgl-utils
-   * @deprecated use {@link module:webgl-utils.setBuffersAndAttributes}
+   * @param {Object.<string, module:twgl.AttribInfo>} buffers AttribInfos mapped by attribute name.
+   * @memberOf module:twgl
+   * @deprecated use {@link module:twgl.setBuffersAndAttributes}
    */
   function setAttributes(setters, buffers) {
     Object.keys(buffers).forEach(function(name) {
@@ -699,8 +699,8 @@
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
    * @param {Object.<string, function>} setters Attribute setters as returned from `createAttributeSetters`
-   * @param {module:webgl-utils.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
-   * @memberOf module:webgl-utils
+   * @param {module:twgl.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
+   * @memberOf module:twgl
    */
   function setBuffersAndAttributes(gl, programInfo, buffers) {
     setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
@@ -724,7 +724,7 @@
    * @param {string} name Name of extension to look for
    * @return {WebGLExtension} The extension or undefined if not
    *     found.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function getExtensionWithKnownPrefixes(gl, name) {
     for (var ii = 0; ii < browserPrefixes.length; ++ii) {
@@ -741,7 +741,7 @@
    * Resize a canvas to match the size its displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
    * @param {boolean} true if the canvas was resized.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function resizeCanvasToDisplaySize(canvas) {
     var width = canvas.clientWidth;
@@ -864,7 +864,7 @@
    * @param {number} numElements number of elements. The total size of the array will be `numComponents * numElements`.
    * @param {constructor} opt_type A constructor for the type. Default = `Float32Array`.
    * @return {ArrayBuffer} A typed array.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createAugmentedTypedArray(numComponents, numElements, opt_type) {
     var type = opt_type || Float32Array;
@@ -952,7 +952,11 @@
         type = Uint16Array;
       }
     }
-    var typedArray = createAugmentedTypedArray(array.numComponents, array.data.length / array.numComponents | 0, type);
+    var numElements = array.data.length / array.numComponents;
+    if (numElements % 1) {
+      console.warn("numComponents = ", array.numComponents, "doesn't match length = ", array.length, "of data given");
+    }
+    var typedArray = createAugmentedTypedArray(array.numComponents, numElements, type);
     typedArray.push(array.data);
     return typedArray;
   };
@@ -966,7 +970,7 @@
    * @property {number?} offset offset into buffer in bytes. Default = 0
    * @property {number?} stride the stride in bytes per element. Default = 0
    * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
 
 
@@ -996,8 +1000,8 @@
    * @param {Object.<string, array|typedarray>} arrays The arrays
    * @param {Object.<string, string>?} opt_mapping mapping from attribute name to array name.
    *     if not specified defaults to "a_name" -> "name".
-   * @return {Object.<string, module:webgl-utils.AttribInfo>} the attribs
-   * @memberOf module:webgl-utils
+   * @return {Object.<string, module:twgl.AttribInfo>} the attribs
+   * @memberOf module:twgl
    */
   function createAttribsFromArrays(gl, arrays, opt_mapping) {
     var mapping = opt_mapping || createMapping(arrays);
@@ -1032,16 +1036,16 @@
    * @typedef {Object} BufferInfo
    * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
    * @property {WebGLBuffer?} indices The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
-   * @property {Object.<string, module:webgl-utils.AttribInfo>} attribs The attribs approriate to call `setAttributes`
-   * @memberOf module:webgl-utils
+   * @property {Object.<string, module:twgl.AttribInfo>} attribs The attribs approriate to call `setAttributes`
+   * @memberOf module:twgl
    */
 
 
   /**
    * Creates a BufferInfo from an object of arrays.
    *
-   * This can be passed to {@link module:webgl-utils.setBuffersAndAttributes} and to
-   * {@link module:webgl-utils:drawBufferInfo}.
+   * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
+   * {@link module:twgl:drawBufferInfo}.
    *
    * Given an object like
    *
@@ -1155,8 +1159,8 @@
    *
    *        bufferInfo = createBufferInfoFromArrays(gl, arrays, mapping);
    *
-   * @return {module:webgl-utils.BufferInfo} A BufferInfo
-   * @memberOf module:webgl-utils
+   * @return {module:twgl.BufferInfo} A BufferInfo
+   * @memberOf module:twgl
    */
   function createBufferInfoFromArrays(gl, arrays, opt_mapping) {
     var bufferInfo = {
@@ -1196,7 +1200,7 @@
    * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
    * @param {Object<string, array|typedarray>} arrays
    * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function createBuffersFromArrays(gl, arrays) {
     var buffers = { };
@@ -1225,10 +1229,10 @@
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
-   * @param {module:webgl-utils.BufferInfo} bufferInfo as returned from createBufferInfoFromArrays
+   * @param {module:twgl.BufferInfo} bufferInfo as returned from createBufferInfoFromArrays
    * @param {number?} count An optional count. Defaults to bufferInfo.numElements
    * @param {number?} offset An optional offset. Defaults to 0.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
     var indices = bufferInfo.indices;
@@ -1243,16 +1247,16 @@
 
   /**
    * @typedef {Object} DrawObject
-   * @property {module:webgl-utils.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
-   * @property {module:webgl-utils.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
+   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
+   * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
    * @property {Object<string, ?>} uniforms The values for the uniforms
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
 
   /**
    * Draws a list of objects
    * @param {DrawObject[]} objectsToDraw an array of objects to draw.
-   * @memberOf module:webgl-utils
+   * @memberOf module:twgl
    */
   function drawObjectList(objectsToDraw) {
     var lastUsedProgramInfo = null;

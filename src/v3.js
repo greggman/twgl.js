@@ -41,11 +41,14 @@
 }(this, function () {
   "use strict";
 
+  /** @module twgl/v3 */
+
   var VecType = Float32Array;
 
   /**
    * Creates a vec3
    * @return {Vec3} the created vector
+   * @memberOf module:twgl/v3
    */
   function create() {
     return new VecType(3);
@@ -56,6 +59,7 @@
    * @param {Vec3} a Operand vector.
    * @param {Vec3} b Operand vector.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @memberOf module:twgl/v3
    */
   function add(a, b, dst) {
     dst = dst || new VecType(3);
@@ -72,6 +76,7 @@
    * @param {Vec3} a Operand vector.
    * @param {Vec3} b Operand vector.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @memberOf module:twgl/v3
    */
   function subtract(a, b, dst) {
     dst = dst || new VecType(3);
@@ -91,6 +96,7 @@
    * @param {Vec3} b Operand vector.
    * @param {number} t Interpolation coefficient.
   * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @memberOf module:twgl/v3
    */
   function lerp(a, b, t, dst) {
     dst = dst || new VecType(3);
@@ -108,6 +114,7 @@
    * @param {number} k The scalar.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} dst.
+   * @memberOf module:twgl/v3
    */
   function mulScalar(v, k, dst) {
     dst = dst || new VecType(3);
@@ -125,6 +132,7 @@
    * @param {number} k The scalar.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} dst.
+   * @memberOf module:twgl/v3
    */
   function divScalar(v, k, dst) {
     dst = dst || new VecType(3);
@@ -143,6 +151,7 @@
    * @param {Vec3} b Operand vector.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} The vector a cross b.
+   * @memberOf module:twgl/v3
    */
   function cross(a, b, dst) {
     dst = dst || new VecType(3);
@@ -160,6 +169,7 @@
    * @param {Vec3} a Operand vector.
    * @param {Vec3} b Operand vector.
    * @return {number} dot product
+   * @memberOf module:twgl/v3
    */
   function dot(a, b) {
     return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
@@ -169,6 +179,7 @@
    * Computes the length of vector
    * @param {Vec3} v vector.
    * @return {number} length of vector.
+   * @memberOf module:twgl/v3
    */
   function length(v) {
     return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
@@ -178,6 +189,7 @@
    * Computes the square of the length of vector
    * @param {Vec3} v vector.
    * @return {number} square of the length of vector.
+   * @memberOf module:twgl/v3
    */
   function lengthSq(a) {
     return a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
@@ -188,6 +200,7 @@
    * @param {Vec3} a The vector.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} The normalized vector.
+   * @memberOf module:twgl/v3
    */
   function normalize(a, dst) {
     dst = dst || new VecType(3);
@@ -212,6 +225,7 @@
    * @param {Vec3} v The vector.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} -v.
+   * @memberOf module:twgl/v3
    */
   function negate(v, dst) {
     dst = dst || new VecType(3);
@@ -228,6 +242,7 @@
    * @param {Vec3} v The vector.
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} A copy of v.
+   * @memberOf module:twgl/v3
    */
   function copy(v, dst) {
     dst = dst || new VecType(3);
@@ -247,6 +262,7 @@
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} The vector of products of entries of a and
    *     b.
+   * @memberOf module:twgl/v3
    */
   function multiply(a, b, dst) {
     dst = dst || new VecType(3);
@@ -266,6 +282,7 @@
    * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @return {Vec3} The vector of quotients of entries of a and
    *     b.
+   * @memberOf module:twgl/v3
    */
   function divide(a, b, dst) {
     dst = dst || new VecType(3);

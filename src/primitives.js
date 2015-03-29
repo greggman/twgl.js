@@ -32,12 +32,12 @@
 /**
  * Various functions to make simple primitives
  *
- * @module primitives
+ * @module twgl/primitives
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(['./webgl-utils', './m4'], factory);
+    define(['./twgl', './m4'], factory);
   } else {
     // Browser globals
     root.twgl = root.twgl || {};
@@ -61,7 +61,7 @@
    * @param {Matrix4?} matrix A matrix by which to multiply all the vertices.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function createPlaneVertices(
       width,
@@ -139,7 +139,7 @@
    *     wrapping the sphere. Default = 2 * Math.PI.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function createSphereVertices(
       radius,
@@ -236,7 +236,7 @@
    * @param {number} size Width, height and depth of the cube.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function createCubeVertices(size) {
     var k = size / 2;
@@ -322,7 +322,7 @@
    *        true.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function createTruncatedConeVertices(
       bottomRadius,
@@ -440,7 +440,7 @@
    *
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function create3DFVertices() {
 
@@ -818,7 +818,7 @@
    * Given indexed vertices creates a new set of vertices unindexed by expanding the indexed vertices.
    * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex
    * @return {Object.<string, TypedArray>} The deindexed vertices
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function deindexVertices(vertices) {
     var indices = vertices.indices;
@@ -848,7 +848,7 @@
    * flattens the normals of deindexed vertices in place.
    * @param {Object.<string, TypedArray>} vertices The deindexed vertices who's normals to flatten
    * @return {Object.<string, TypedArray>} The flattened vertices (same as was passed in)
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function flattenNormals(vertices) {
     if (vertices.indices) {
@@ -929,7 +929,7 @@
    * @param {number[]|TypedArray} array The array. Assumes value floats per element.
    * @param {Matrix} matrix A matrix to multiply by.
    * @return {number[]|TypedArray} the same array that was passed in
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function reorientDirections(array, matrix) {
     applyFuncToV3Array(array, matrix, m4.transformDirection);
@@ -942,7 +942,7 @@
    * @param {number[]|TypedArray} array The array. Assumes value floats per element.
    * @param {Matrix} matrix A matrix to multiply by.
    * @return {number[]|TypedArray} the same array that was passed in
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function reorientNormals(array, matrix) {
     applyFuncToV3Array(array, m4.inverse(matrix), transformNormal);
@@ -955,7 +955,7 @@
    * @param {number[]|TypedArray} array The array. Assumes value floats per element.
    * @param {Matrix} matrix A matrix to multiply by.
    * @return {number[]|TypedArray} the same array that was passed in
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function reorientPositions(array, matrix) {
     applyFuncToV3Array(array, matrix, m4.transformPoint);
@@ -970,7 +970,7 @@
    * @param {Object.<string, (number[]|TypedArray)>} arrays The vertices to reorient
    * @param {Matrix} matrix matrix to reorient by.
    * @return {Object.<string, (number[]|TypedArray)>} same arrays that were passed in.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function reorientVertices(arrays, matrix) {
     Object.keys(arrays).forEach(function(name) {
@@ -1001,14 +1001,14 @@
    * @param {number} ndx index of triangle/quad if unindexed or index of vertex if indexed
    * @param {number} channel 0 = red, 1 = green, 2 = blue, 3 = alpha
    * @return {number} a number from 0 to 255
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
 
   /**
    * @typedef {Object} RandomVerticesOptions
    * @property {number?} vertsPerColor Defaults to 3 for non-indexed vertices
-   * @property {module:primitives.RandomColorFunc?} rand A function to generate random numbers
-   * @memberOf module:primitives
+   * @property {module:twgl/primitives.RandomColorFunc?} rand A function to generate random numbers
+   * @memberOf module:twgl/primitives
    */
 
   /**
@@ -1017,9 +1017,9 @@
    * just make random colors. Otherwise assumes they are triangless
    * and makes one random color for every 3 vertices.
    * @param {Object.<string, augmentedTypedArray>} vertices Vertices as returned from one of the createXXXVertices functions.
-   * @param {module:primitives.RandomVerticesOptions?} options options.
+   * @param {module:twgl/primitives.RandomVerticesOptions?} options options.
    * @return {Object.<string, augmentedTypedArray>} same vertices as passed in with `color` added.
-   * @memberOf module:primitives
+   * @memberOf module:twgl/primitives
    */
   function makeRandomVertexColors(vertices, options) {
     options = options || {};

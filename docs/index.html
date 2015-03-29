@@ -1,69 +1,103 @@
 <!DOCTYPE html>
-<!-- this file is auto-generated from README.md. Do not edited directly -->
-<!--
-/*
-* Copyright 2015, Gregg Tavares.
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are
-* met:
-*
-*     * Redistributions of source code must retain the above copyright
-* notice, this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above
-* copyright notice, this list of conditions and the following disclaimer
-* in the documentation and/or other materials provided with the
-* distribution.
-*     * Neither the name of Gregg Tavares. nor the names of his
-* contributors may be used to endorse or promote products derived from
-* this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
--->
-<html>
+
+<html lang="en">
 <head>
-<meta charset="utf-8">
+	<meta charset="utf-8">
+	<title>TWGL Index</title>
 
-<meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="TWGL.js" />
-<meta property="og:type" content="library" />
-<meta property="og:image" content="http://twgljs.org/resources/images/twgljs.png" />
-<meta property="og:description" content="TWGL.js, a tiny WebGL helper library" />
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-<title>TWGL.js</title>
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
 
-<link rel="stylesheet" href="/resources/css/base.css" type="text/css" />
 </head>
+
 <body>
-<div id="canvas">
-</div>
-<div id="content">
-  <h1 id="twgl-a-tiny-webgl-helper-library-div-id-pronouce-rhymes-with-wiggle-div-">TWGL: A Tiny WebGL helper Library<div id="pronouce">[rhymes with wiggle]</div></h1>
-<p>This library&#39;s sole purpose is to make using the WebGL API less verbose.</p>
-<h2 id="tl-dr">TL;DR</h2>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">TWGL</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="module-twgl.html">twgl</a>
+						</li>
+						
+						<li>
+							<a href="m4.html">twgl/m4</a>
+						</li>
+						
+						<li>
+							<a href="primitives.html">twgl/primitives</a>
+						</li>
+						
+						<li>
+							<a href="v3.html">twgl/v3</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+		<div class="span8">
+			
+				<div id="main">
+					
+
+
+	
+	<span class="page-title">Index</span>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>TWGL: A Tiny WebGL helper Library<div id="pronouce">[rhymes with wiggle]</div></h1>
+<p>This library's sole purpose is to make using the WebGL API less verbose.</p>
+<h2>TL;DR</h2>
 <p>If you want to get shit done use <a href="http://threejs.org">three.js</a>. If you want
 to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
-<h2 id="why-what-how-">Why? What? How?</h2>
+<h2>Why? What? How?</h2>
 <p>WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.</p>
 <p>Compare the code for a point lit cube.</p>
-<h3 id="compiling-a-shader-and-looking-up-locations">Compiling a Shader and looking up locations</h3>
+<h3>Compiling a Shader and looking up locations</h3>
 <p>TWGL</p>
-<pre><code>var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
-</code></pre><p>WebGL</p>
-<pre><code>// Note: I&#39;m conceding that you&#39;ll likely already have the 30 lines of
+<pre><code>var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);</code></pre>
+<p>WebGL</p>
+<pre><code>// Note: I'm conceding that you'll likely already have the 30 lines of
 // code for compiling GLSL
 var program = twgl.createProgramFromScripts(gl, [&quot;vs&quot;, &quot;fs&quot;]);
 
@@ -81,8 +115,8 @@ var u_viewInverseLoc = gl.getUniformLocation(program, &quot;u_viewInverse&quot;)
 
 var positionLoc = gl.getAttribLocation(program, &quot;a_position&quot;);
 var normalLoc = gl.getAttribLocation(program, &quot;a_normal&quot;);
-var texcoordLoc = gl.getAttribLocation(program, &quot;a_texcoord&quot;);
-</code></pre><h3 id="creating-buffers-for-a-cube">Creating Buffers for a Cube</h3>
+var texcoordLoc = gl.getAttribLocation(program, &quot;a_texcoord&quot;);</code></pre>
+<h3>Creating Buffers for a Cube</h3>
 <p>TWGL</p>
 <pre><code>var arrays = {
   position: [1,1,-1,1,1,1,1,-1,1,1,-1,-1,-1,1,1,-1,1,-1,-1,-1,-1,-1,-1,1,-1,1,1,1,1,1,1,1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,1,-1,1,-1,1,1,-1,1,-1,-1,-1,-1,-1],
@@ -90,8 +124,8 @@ var texcoordLoc = gl.getAttribLocation(program, &quot;a_texcoord&quot;);
   texcoord: [1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1],
   indices:  [0,1,2,0,2,3,4,5,6,4,6,7,8,9,10,8,10,11,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23],
 };
-var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
-</code></pre><p>WebGL</p>
+var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
+<p>WebGL</p>
 <pre><code>var positions = [1,1,-1,1,1,1,1,-1,1,1,-1,-1,-1,1,1,-1,1,-1,-1,-1,-1,-1,-1,1,-1,1,1,1,1,1,1,1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,1,-1,1,-1,1,1,-1,1,-1,-1,-1,-1,-1];
 var normals   = [1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1];
 var texcoords = [1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1];
@@ -108,11 +142,11 @@ gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
 var indicesBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-</code></pre><h3 id="setting-attributes-and-indices-for-a-cube">Setting Attributes and Indices for a Cube</h3>
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);</code></pre>
+<h3>Setting Attributes and Indices for a Cube</h3>
 <p>TWGL</p>
-<pre><code>twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-</code></pre><p>WebGL</p>
+<pre><code>twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);</code></pre>
+<p>WebGL</p>
 <pre><code>gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(positionLoc);
@@ -122,8 +156,8 @@ gl.enableVertexAttribArray(normalLoc);
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(texcoordLoc);
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
-</code></pre><h3 id="setting-uniforms-for-a-lit-cube">Setting Uniforms for a Lit Cube</h3>
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);</code></pre>
+<h3>Setting Uniforms for a Lit Cube</h3>
 <p>TWGL</p>
 <pre><code>// At Init time
 var uniforms = {
@@ -142,8 +176,8 @@ uniforms.u_world = world;
 uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
 uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
 
-twgl.setUniforms(programInfo, uniforms);
-</code></pre><p>WebGL</p>
+twgl.setUniforms(programInfo, uniforms);</code></pre>
+<p>WebGL</p>
 <pre><code>// At Init time
 var u_lightWorldPos = [1, 8, -10];
 var u_lightColor = [1, 0.8, 0.8, 1];
@@ -164,10 +198,10 @@ gl.uniform1i(u_diffuseLoc, u_diffuse);
 gl.uniformMatrix4fv(u_viewInverseLoc, false, camera);
 gl.uniformMatrix4fv(u_worldLoc, false, world);
 gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
-gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));
-</code></pre><h3 id="compare">Compare</h3>
+gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));</code></pre>
+<h3>Compare</h3>
 <p><a href="http://twgljs.org/examples/twgl-cube.html">TWGL example</a> vs <a href="http://twgljs.org/examples/webgl-cube.html">WebGL example</a></p>
-<h2 id="other-features">Other Features</h2>
+<h2>Other Features</h2>
 <ul>
 <li><p>Includes some optional 3d math functions (full version)</p>
 <p>You are welcome to use any math library as long as it stores matrices as flat Float32Array
@@ -177,10 +211,10 @@ or JavaScript arrays.</p>
 <p>planes, cubes, spheres, ... Just to help get started</p>
 </li>
 </ul>
-<h2 id="docs">Docs</h2>
+<h2>Docs</h2>
 <p><a href="http://twigjs.org">Docs are here</a>.</p>
-<h2 id="rational-and-other-chit-chat">Rational and other chit-chat</h2>
-<p>TWGL&#39;s is an attempt to make WebGL simpler by providing a few tiny helper functions
+<h2>Rational and other chit-chat</h2>
+<p>TWGL's is an attempt to make WebGL simpler by providing a few tiny helper functions
 that make it much less verbose and remove the tedium. TWGL is <strong>NOT</strong> trying to help
 with the complexity of managing shaders and writing GLSL. Nor is it a 3D library like
 <a href="http://threejs.org">three.js</a>.</p>
@@ -197,18 +231,18 @@ gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(normalLoc);
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
-gl.enableVertexAttribArray(texcoordLoc);
-</code></pre><p><code>setAttributes</code> is just the simplest code to do that for you.</p>
+gl.enableVertexAttribArray(texcoordLoc);</code></pre>
+<p><code>setAttributes</code> is just the simplest code to do that for you.</p>
 <pre><code>// make attributes for TWGL manually
 var attribs = {
   a_position: { buffer: positionBuffer, size: 3 },
   a_normal:   { buffer: normalBuffer, size: 3 },
   a_texcoord: { buffer: texcoord: size: 2, },
 };
-setAttributes(attribSetters, attribs);
-</code></pre><p>The point of the example above is TWGL is a <strong>thin</strong> wrapper. All it&#39;s doing is trying
+setAttributes(attribSetters, attribs);</code></pre>
+<p>The point of the example above is TWGL is a <strong>thin</strong> wrapper. All it's doing is trying
 to make common WebGL operations easier and less verbose.</p>
-<h2 id="future">Future</h2>
+<h2>Future</h2>
 <ul>
 <li>What needs to change for WebGL 2.0?</li>
 <li>Consider adding texture related stuff<ul>
@@ -217,106 +251,110 @@ to make common WebGL operations easier and less verbose.</p>
 </ul>
 </li>
 <li>Consider adding framebuffer related stuff</li>
-</ul>
+</ul></article>
+    </section>
 
-</div>
-<style>
-#forkongithub a {
-    background: #000;
-    color: #fff;
-    text-decoration: none;
-    font-family: arial,sans-serif;
-    text-align: center;
-    font-weight: bold;
-    padding: 5px 40px;
-    font-size: 12px;
-    line-height: 24px;
-    position: relative;
-    transition: 0.5s;
-    display: block;
-}
-#forkongithub a:hover {
-    background: #c11;
-    color: #fff;
-}
-#forkongithub a::before,#forkongithub a::after {
-    content: "";
-    width: 100%;
-    display: block;
-    position: absolute;
-    top: 1px;
-    left: 0;
-    height: 1px;
-    background: #fff;
-}
-#forkongithub a::after {
-    bottom: 1px;
-    top: auto;
-}
 
-@media screen and (min-width: 400px){
-    #forkongithub{
-        position: fixed;
-        display: block;
-        top: 0;
-        right: 0;
-        width: 200px;
-        overflow: hidden;
-        height: 200px;
-        z-index: 9999;
-    }
-    #forkongithub a{
-        width: 200px;
-        position: absolute;
-        top: 40px;
-        right: -40px;
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
-    }
-}
 
-</style>
-<div id="forkongithub"><a href="https://github.com/greggman/twgl.js">Fork me on GitHub</a></div>
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		copyright Gregg Tavares
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Mar 29th 2015 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
 </body>
-<script id="vs" type="notjs">
-attribute vec4 a_position;
-
-uniform mat4 u_matrix;
-
-void main(void) {
-  gl_Position = u_matrix * a_position;
-}
-</script>
-<script id="fs" type="notjs">
-precision mediump float;
-
-uniform vec4 u_color;
-
-void main(void)
-{
-    gl_FragColor = u_color;
-}
-</script>
-<script src="/dist/twgl-full.min.js"></script>
-<script src="/3rdparty/prettify.js"></script>
-<script src="/3rdparty/chroma.min.js"></script>
-<script src="/resources/js/background.js"></script>
-<script src="/resources/js/index.js"></script>
-<script src="//cdn.webglstats.com/stat.js" defer="defer" async="async"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-61260681-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 </html>
-
-

@@ -42,6 +42,8 @@
 }(this, function (v3) {
   "use strict";
 
+  /** @module twgl/m4 */
+
   var v3 = v3 || this.twgl.v3;
   if (!v3) {
     throw "need v3.js";
@@ -58,6 +60,7 @@
    * @param {Mat4} m The matrix.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} -m.
+   * @memberOf module:twgl/m4
    */
   function negate(m, dst) {
     dst = dst || new MatType(16);
@@ -87,6 +90,7 @@
    * @param {Mat4} m The matrix.
    * @param {Mat4?} dst The matrix.
    * @return {Mat4} A copy of m.
+   * @memberOf module:twgl/m4
    */
   function copy(m, dst) {
     dst = dst || new MatType(16);
@@ -116,6 +120,7 @@
    *
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} An n-by-n identity matrix.
+   * @memberOf module:twgl/m4
    */
   function identity(dst) {
     dst = dst || new MatType(16);
@@ -145,6 +150,7 @@
    * @param {Mat4} m The matrix.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The transpose of m.
+   * @memberOf module:twgl/m4
    */
    function transpose(m, dst) {
     dst = dst || new MatType(16)
@@ -219,6 +225,7 @@
    * @param {Mat4} m The matrix.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The inverse of m.
+   * @memberOf module:twgl/m4
    */
   function inverse(m, dst) {
     dst = dst || new MatType(16)
@@ -314,6 +321,7 @@
    * @param {Mat4} b The matrix on the right.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The matrix product of a and b.
+   * @memberOf module:twgl/m4
    */
   function multiply(a, b, dst) {
     dst = dst || new MatType(16);
@@ -377,6 +385,7 @@
    * @param {Mat4} a The matrix.
    * @param {(Vector3|Vector4)} v The vector.
    * @return {Mat4} a once modified.
+   * @memberOf module:twgl/m4
    */
   function setTranslation(a, dst) {
     dst = dst || identity();
@@ -393,6 +402,7 @@
    * @param {Mat4} m The matrix.
    * @return {Vector3?} dst vector..
    * @return {Vector3} The translation component of m.
+   * @memberOf module:twgl/m4
    */
   function getTranslation(m, dst) {
     dst = dst || v3.create();
@@ -408,6 +418,7 @@
    * @param {number} axis The axis 0 = x, 1 = y, 2 = z;
    * @return {Vector3?} dst vector.
    * @return {Vector3} The axis component of m.
+   * @memberOf module:twgl/m4
    */
   function getAxis(m, axis, dst) {
     dst = dst || v3.create();
@@ -437,6 +448,7 @@
    *     of the far clipping plane.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The perspective matrix.
+   * @memberOf module:twgl/m4
    */
   function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
     dst = dst || new MatType(16);
@@ -481,6 +493,7 @@
    *     of the far clipping plane.
    * @param {Mat4?} dst Output matrix.
    * @return {Mat4} The perspective matrix.
+   * @memberOf module:twgl/m4
    */
   function ortho(left, right, bottom, top, near, far, dst) {
     dst = dst || new MatType(16);
@@ -525,6 +538,7 @@
    * @param {number} far The negative z coordinate of the far plane of the box.
    * @param {Mat4?} dst Output matrix.
    * @return {Mat4} The perspective projection matrix.
+   * @memberOf module:twgl/m4
    */
   function frustum(left, right, bottom, top, near, far, dst) {
     dst = dst || new MatType(16);
@@ -565,6 +579,7 @@
    * @param {Vector3} up A vector pointing up.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The look-at matrix.
+   * @memberOf module:twgl/m4
    */
   function lookAt(eye, target, up, dst) {
     dst = dst || new MatType(16);
@@ -604,6 +619,7 @@
    *     which to translate.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The translation matrix.
+   * @memberOf module:twgl/m4
    */
   function translation(v, dst) {
     dst = dst || new MatType(16);
@@ -634,6 +650,7 @@
    *     which to translate.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} m once modified.
+   * @memberOf module:twgl/m4
    */
   function translate(m, v, dst) {
     dst = dst || new MatType(16);
@@ -686,6 +703,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The rotation matrix.
+   * @memberOf module:twgl/m4
    */
   function rotationX(angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -720,6 +738,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} m once modified.
+   * @memberOf module:twgl/m4
    */
   function rotateX(m, angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -763,6 +782,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The rotation matrix.
+   * @memberOf module:twgl/m4
    */
   function rotationY(angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -797,6 +817,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} m once modified.
+   * @memberOf module:twgl/m4
    */
   function rotateY(m, angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -840,6 +861,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The rotation matrix.
+   * @memberOf module:twgl/m4
    */
   function rotationZ(angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -874,6 +896,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} m once modified.
+   * @memberOf module:twgl/m4
    */
   function rotateZ(m, angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -921,6 +944,7 @@
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} A matrix which rotates angle radians
    *     around the axis.
+   * @memberOf module:twgl/m4
    */
   function axisRotation(axis, angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -968,6 +992,7 @@
    * @param {number} angleInRadians The angle by which to rotate (in radians).
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} m once modified.
+   * @memberOf module:twgl/m4
    */
   function axisRotate(m, axis, angleInRadians, dst) {
     dst = dst || new MatType(16);
@@ -1044,6 +1069,7 @@
    *     three entries specifying the factor by which to scale in each dimension.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} The scaling matrix.
+   * @memberOf module:twgl/m4
    */
   function scaling(v, dst) {
     dst = dst || new MatType(16);
@@ -1077,8 +1103,9 @@
    *     factor by which to scale in each dimension.
    * @param {Mat4?} dst matrix to hold result. If none new one is created..
    * @return {Mat4} m once modified.
+   * @memberOf module:twgl/m4
    */
-  function scale(m, v) {
+  function scale(m, v, dst) {
     dst = dst || new MatType(16);
 
     var v0 = v[0];
@@ -1116,7 +1143,7 @@
    * @param {Vec3} v The point.
    * @param {Vec3} dst optional vec3 to store result
    * @return {Vec3} dst or new vec3 if not provided
-   * @memberOf module:webgl-3d-math
+   * @memberOf module:twgl/m4
    */
   function transformPoint(m, v, dst) {
     dst = dst || v3.create();
@@ -1143,7 +1170,7 @@
    * @param {Vec3} v The direction.
    * @param {Vec3} dst optional Vec3 to store result
    * @return {Vec3} dst or new Vec3 if not provided
-   * @memberOf module:webgl-3d-math
+   * @memberOf module:twgl/m4
    */
   function transformDirection(m, v, dst) {
     dst = dst || v3.create();
@@ -1172,7 +1199,7 @@
    * @param {Vector3} v The normal.
    * @param {Vector3?} dst The direction.
    * @return {Vector3} The transformed direction.
-   * @memberOf module:webgl-3d-math
+   * @memberOf module:twgl/m4
    */
   function transformNormal(m, v, dst) {
     dst = dst || v3.create();

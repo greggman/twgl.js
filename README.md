@@ -1,4 +1,4 @@
-TWGL (rhymes with wiggle) A Tiny WebGL helper Library
+TWGL: A Tiny WebGL helper Library<div id="pronouce">[rhymes with wiggle]</div>
 =====================================================
 
 This library's sole purpose is to make using the WebGL API less verbose.
@@ -6,7 +6,7 @@ This library's sole purpose is to make using the WebGL API less verbose.
 ## TL;DR
 
 If you want to get shit done use [three.js](http://threejs.org). If you want
-to do stuff low-level with WebGL consider using TWGL.
+to do stuff low-level with WebGL consider using [TWGL](http://github.com/greggman/twgl.js/).
 
 ## Why? What? How?
 
@@ -121,17 +121,31 @@ TWGL
 
 WebGL
 
-    gl.uniform3fv(u_lightWorldPosLoc, [1, 8, -10]);
-    gl.uniform4fv(u_lightColorLoc, [1, 0.8, 0.8, 1]);
-    gl.uniform4fv(u_ambientLoc, [0, 0, 0, 1]);
-    gl.uniform4fv(u_specularLoc, [1, 1, 1, 1]);
-    gl.uniform1f(u_shininessLoc, 50);
-    gl.uniform1f(u_specularFactorLoc, 1);
-    gl.uniform1i(u_diffuseLoc, 0);
+    // At Init time
+    var u_lightWorldPos = [1, 8, -10];
+    var u_lightColor = [1, 0.8, 0.8, 1];
+    var u_ambient = [0, 0, 0, 1];
+    var u_specular = [1, 1, 1, 1];
+    var u_shininess = 50;
+    var u_specularFactor = 1;
+    var u_diffuse = 0;
+
+    // At render time
+    gl.uniform3fv(u_lightWorldPosLoc, u_lightWorldPos);
+    gl.uniform4fv(u_lightColorLoc, u_lightColor);
+    gl.uniform4fv(u_ambientLoc, u_ambient);
+    gl.uniform4fv(u_specularLoc, u_specular);
+    gl.uniform1f(u_shininessLoc, u_shininess);
+    gl.uniform1f(u_specularFactorLoc, u_specularFactor);
+    gl.uniform1i(u_diffuseLoc, u_diffuse);
     gl.uniformMatrix4fv(u_viewInverseLoc, false, camera);
     gl.uniformMatrix4fv(u_worldLoc, false, world);
     gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
     gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));
+
+### Compare
+
+[TWGL example](http://twgljs.org/examples/twgl-cube.html) vs [WebGL example](http://twgljs.org/examples/webgl-cube.html)
 
 ## Other Features
 
@@ -146,7 +160,7 @@ WebGL
 
 ## Docs
 
-[Docs are here](http://twigjs.org).
+[Docs are here](http://twgljs.org/docs/).
 
 ## Rational and other chit-chat
 
@@ -156,10 +170,10 @@ with the complexity of managing shaders and writing GLSL. Nor is it a 3D library
 [three.js](http://threejs.org).
 
 TWGL can be considered a spiritual successor to [TDL](http://github.com/greggman/tdl). Where
-as TDL created several objects that wrapped WebGL, TWGL tries not to wrap anything. In fact
+as TDL created several *classes* that wrapped WebGL, TWGL tries not to wrap anything. In fact
 you can manually create nearly all TWGL data structures.
 
-For example the function `setAttributes` takes a attribSetters and an object of attributes.
+For example the function `setAttributes` takes an object of attributes.
 In WebGL you might write code like this
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -174,16 +188,13 @@ In WebGL you might write code like this
 
 `setAttributes` is just the simplest code to do that for you.
 
-   // make attributes for TWGL manually
-   var attribs = {
-     a_position: { buffer: positionBuffer, size: 3 },
-     a_normal:   { buffer: normalBuffer, size: 3 },
-     a_texcoord: { buffer: texcoord: size: 2, },
-   };
-   setAttributes(attribSetters, attribs);
-
-The `attribSetters` are created either by calling `twgl.createProgramInfo` or at a lower-level
-by calling `createAttributeSetters(gl, program)`.
+    // make attributes for TWGL manually
+    var attribs = {
+      a_position: { buffer: positionBuffer, size: 3 },
+      a_normal:   { buffer: normalBuffer, size: 3 },
+      a_texcoord: { buffer: texcoord: size: 2, },
+    };
+    setAttributes(attribSetters, attribs);
 
 The point of the example above is TWGL is a **thin** wrapper. All it's doing is trying
 to make common WebGL operations easier and less verbose.
@@ -195,4 +206,5 @@ to make common WebGL operations easier and less verbose.
     *   loading a list of textures from URLs
     *   setting filtering for NPOT
 *   Consider adding framebuffer related stuff
-    *
+
+

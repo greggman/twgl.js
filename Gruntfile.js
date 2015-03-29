@@ -33,10 +33,73 @@ var license = [
 ' */                                                                        ',
 ].map(function(s) { return s.trim(); }).join("\n");
 
+var replaceHandlers = {};
+function registerReplaceHandler(keyword, handler) {
+  replaceHandlers[keyword] = handler;
+}
+
+/**
+ * Replace %(id)s in strings with values in objects(s)
+ *
+ * Given a string like `"Hello %(name)s from %(user.country)s"`
+ * and an object like `{name:"Joe",user:{country:"USA"}}` would
+ * return `"Hello Joe from USA"`.
+ *
+ * @param {string} str string to do replacements in
+ * @param {Object|Object[]} params one or more objects.
+ * @returns {string} string with replaced parts
+ */
+var replaceParams = (function() {
+  var replaceParamsRE = /%\(([^\)]+)\)s/g;
+
+  return function(str, params) {
+    if (!params.length) {
+      params = [params];
+    }
+
+    return str.replace(replaceParamsRE, function(match, key) {
+      var colonNdx = key.indexOf(":");
+      if (colonNdx >= 0) {
+        try {
+          var args = hanson.parse("{" + key + "}");
+          var handlerName = Object.keys(args)[0];
+          var handler = replaceHandlers[handlerName];
+          if (handler) {
+            return handler(args[handlerName]);
+          }
+          console.error("unknown substition handler: " + handlerName);
+        } catch (e) {
+          console.error(e);
+          console.error("bad substitution: %(" + key + ")s");
+        }
+      } else {
+        // handle normal substitutions.
+        var keys = key.split('.');
+        for (var ii = 0; ii < params.length; ++ii) {
+          var obj = params[ii];
+          for (var jj = 0; jj < keys.length; ++jj) {
+            var key = keys[jj];
+            obj = obj[key];
+            if (obj === undefined) {
+              break;
+            }
+          }
+          if (obj !== undefined) {
+            return obj;
+          }
+        }
+      }
+      console.error("unknown key: " + key);
+      return "%(" + key + ")s";
+    });
+  };
+}());
+
+
 module.exports = function(grunt) {
 
   var srcFiles = [
-    'src/webgl-utils.js',
+    'src/twgl.js',
   ];
 
   var thirdPartyFiles = [
@@ -48,7 +111,7 @@ module.exports = function(grunt) {
     'src/primitives.js',
   ];
 
-  var docsFiles = srcFiles.concat('docs.md');
+  var docsFiles = srcFiles.concat(extraFiles, 'README.md');
   var libFiles = srcFiles.concat(thirdPartyFiles);
   var fullLibFiles = srcFiles.concat(thirdPartyFiles, extraFiles);
 
@@ -72,7 +135,7 @@ module.exports = function(grunt) {
           compress: true,
         },
         files: {
-          'build/twgl.min.js': libFiles,
+          'dist/twgl.min.js': libFiles,
         },
       },
       max: {
@@ -83,7 +146,7 @@ module.exports = function(grunt) {
           compress: false,
         },
         files: {
-          'build/twgl.js': libFiles,
+          'dist/twgl.js': libFiles,
         },
       },
       fullMin: {
@@ -94,7 +157,7 @@ module.exports = function(grunt) {
           compress: false,
         },
         files: {
-          'build/twgl-full.min.js': fullLibFiles,
+          'dist/twgl-full.min.js': fullLibFiles,
         },
       },
       fullMax: {
@@ -105,13 +168,13 @@ module.exports = function(grunt) {
           compress: false,
         },
         files: {
-          'build/twgl-full.js': fullLibFiles,
+          'dist/twgl-full.js': fullLibFiles,
         },
       },
     },
     clean: [
       'docs',
-      'build',
+      'dist',
     ],
   });
 
@@ -119,6 +182,21 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', ['clean', 'uglify', 'jsdoc']);
+  grunt.registerTask('makeindex', function() {
+    var marked  = require('marked');
+    var fs      = require('fs');
+    marked.setOptions({ rawHtml: true });
+    var html = marked(fs.readFileSync('README.md', {encoding: 'utf8'}));
+    var template = fs.readFileSync('templates/index.template', {encoding: 'utf8'});
+    var content = replaceParams(template, {
+      content: html,
+      license: license,
+      srcFileName: 'README.md',
+      title: 'TWGL.js',
+    });
+    fs.writeFileSync('index.html', content);
+  });
+
+  grunt.registerTask('default', ['clean', 'uglify', 'makeindex', 'jsdoc']);
 };
 
