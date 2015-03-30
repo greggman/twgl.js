@@ -755,66 +755,6 @@
     return false;
   };
 
-  /**
-   * Get's the iframe in the parent document
-   * that is displaying the specified window .
-   * @param {Window} window window to check.
-   * @return {HTMLIFrameElement?) the iframe element if window is in an iframe
-   */
-  function getIFrameForWindow(window) {
-    if (!isInIFrame(window)) {
-      return;
-    }
-    var iframes = window.parent.document.getElementsByTagName("iframe");
-    for (var ii = 0; ii < iframes.length; ++ii) {
-      var iframe = iframes[ii];
-      if (iframe.contentDocument === window.document) {
-        return iframe;
-      }
-    }
-  }
-
-  /**
-   * Returns true if window is on screen. The main window is
-   * always on screen windows in iframes might not be.
-   * @param {Window} window the window to check.
-   * @return {boolean} true if window is on screen.
-   */
-  function isFrameVisible(window) {
-    try {
-      var iframe = getIFrameForWindow(window);
-      if (!iframe) {
-        return true;
-      }
-
-      var bounds = iframe.getBoundingClientRect();
-      var isVisible = bounds.top < window.parent.innerHeight && bounds.bottom >= 0 &&
-                      bounds.left < window.parent.innerWidth && bounds.right >= 0;
-
-      return isVisible && isFrameVisible(window.parent);
-    } catch (e) {
-      return true;  // We got a security error?
-    }
-  };
-
-  /**
-   * Returns true if element is on screen.
-   * @param {HTMLElement} element the element to check.
-   * @return {boolean} true if element is on screen.
-   */
-  function isOnScreen(element) {
-    var isVisible = true;
-
-    if (element) {
-      var bounds = element.getBoundingClientRect();
-      isVisible = bounds.top < topWindow.innerHeight && bounds.bottom >= 0;
-    }
-
-    return isVisible && isFrameVisible(topWindow);
-  };
-
-
-
   // Add `push` to a typed array. It just keeps a 'cursor'
   // and allows use to `push` values into the array so we
   // don't have to manually compute offsets
