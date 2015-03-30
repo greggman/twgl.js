@@ -29,6 +29,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+"use strict";
+
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -40,11 +42,10 @@
     root.twgl.m4 = lib;
   }
 }(this, function (v3) {
-  "use strict";
 
   /** @module twgl/m4 */
 
-  var v3 = v3 || this.twgl.v3;
+  v3 = v3 || this.twgl.v3;
   if (!v3) {
     throw "need v3.js";
   }
@@ -83,7 +84,7 @@
     dst[15] = -m[15];
 
     return dst;
-  };
+  }
 
   /**
    * Copies a matrix.
@@ -113,7 +114,7 @@
     dst[15] = m[15];
 
     return dst;
-  };
+  }
 
   /**
    * Creates an n-by-n identity matrix.
@@ -143,7 +144,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Takes the transpose of a matrix.
@@ -153,7 +154,7 @@
    * @memberOf module:twgl/m4
    */
    function transpose(m, dst) {
-    dst = dst || new MatType(16)
+    dst = dst || new MatType(16);
     if (dst === m) {
       var t;
 
@@ -218,7 +219,7 @@
     dst[15] = m33;
 
     return dst;
-  };
+  }
 
   /**
    * Computes the inverse of a 4-by-4 matrix.
@@ -228,7 +229,7 @@
    * @memberOf module:twgl/m4
    */
   function inverse(m, dst) {
-    dst = dst || new MatType(16)
+    dst = dst || new MatType(16);
 
     var m00 = m[0 * 4 + 0];
     var m01 = m[0 * 4 + 1];
@@ -312,7 +313,7 @@
             (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
 
     return dst;
-  };
+  }
 
   /**
    * Multiplies two 4-by-4 matrices; assumes that the given matrices are 4-by-4;
@@ -377,7 +378,7 @@
     dst[15] = a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33;
 
     return dst;
-  };
+  }
 
   /**
    * Sets the translation component of a 4-by-4 matrix to the given
@@ -394,7 +395,7 @@
     dst[14] = v[2];
     dst[15] = 1;
     return dst;
-  };
+  }
 
   /**
    * Returns the translation component of a 4-by-4 matrix as a vector with 3
@@ -410,7 +411,7 @@
     dst[1] = m[13];
     dst[2] = m[14];
     return dst;
-  };
+  }
 
   /**
    * Returns the axis of a 4x4 matrix as a vector with 3 entries
@@ -477,7 +478,7 @@
     dst[15] = 0;
 
     return dst;
-  };
+  }
 
   /**
    * Computes a 4-by-4 othogonal transformation matrix given the left, right,
@@ -565,7 +566,7 @@
     dst[15] = 0;
 
     return dst;
-  };
+  }
 
   /**
    * Computes a 4-by-4 look-at transformation.
@@ -611,7 +612,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Creates a 4-by-4 matrix which translates by the given vector v.
@@ -641,7 +642,7 @@
     dst[14] = v[2];
     dst[15] = 1;
     return dst;
-  };
+  }
 
   /**
    * Modifies the given 4-by-4 matrix by translation by the given vector v.
@@ -696,7 +697,7 @@
     dst[15] = m03 * v0 + m13 * v1 + m23 * v2 + m33;
 
     return dst;
-  };
+  }
 
   /**
    * Creates a 4-by-4 matrix which rotates around the x-axis by the given angle.
@@ -729,7 +730,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given
@@ -775,7 +776,7 @@
     }
 
     return dst;
-  };
+  }
 
   /**
    * Creates a 4-by-4 matrix which rotates around the y-axis by the given angle.
@@ -808,7 +809,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given
@@ -822,14 +823,14 @@
   function rotateY(m, angleInRadians, dst) {
     dst = dst || new MatType(16);
 
-    var m00 = m[0*4+0];
-    var m01 = m[0*4+1];
-    var m02 = m[0*4+2];
-    var m03 = m[0*4+3];
-    var m20 = m[2*4+0];
-    var m21 = m[2*4+1];
-    var m22 = m[2*4+2];
-    var m23 = m[2*4+3];
+    var m00 = m[0 * 4 + 0];
+    var m01 = m[0 * 4 + 1];
+    var m02 = m[0 * 4 + 2];
+    var m03 = m[0 * 4 + 3];
+    var m20 = m[2 * 4 + 0];
+    var m21 = m[2 * 4 + 1];
+    var m22 = m[2 * 4 + 2];
+    var m23 = m[2 * 4 + 3];
     var c = Math.cos(angleInRadians);
     var s = Math.sin(angleInRadians);
 
@@ -854,7 +855,7 @@
     }
 
     return dst;
-  };
+  }
 
   /**
    * Creates a 4-by-4 matrix which rotates around the z-axis by the given angle.
@@ -887,7 +888,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given
@@ -901,14 +902,14 @@
   function rotateZ(m, angleInRadians, dst) {
     dst = dst || new MatType(16);
 
-    var m00 = m[0*4+0];
-    var m01 = m[0*4+1];
-    var m02 = m[0*4+2];
-    var m03 = m[0*4+3];
-    var m10 = m[1*4+0];
-    var m11 = m[1*4+1];
-    var m12 = m[1*4+2];
-    var m13 = m[1*4+3];
+    var m00 = m[0 * 4 + 0];
+    var m01 = m[0 * 4 + 1];
+    var m02 = m[0 * 4 + 2];
+    var m03 = m[0 * 4 + 3];
+    var m10 = m[1 * 4 + 0];
+    var m11 = m[1 * 4 + 1];
+    var m12 = m[1 * 4 + 2];
+    var m13 = m[1 * 4 + 3];
     var c = Math.cos(angleInRadians);
     var s = Math.sin(angleInRadians);
 
@@ -933,7 +934,7 @@
     }
 
     return dst;
-  };
+  }
 
   /**
    * Creates a 4-by-4 matrix which rotates around the given axis by the given
@@ -981,7 +982,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Modifies the given 4-by-4 matrix by rotation around the given axis by the
@@ -1033,10 +1034,6 @@
     var m21 = m[9];
     var m22 = m[10];
     var m23 = m[11];
-    var m30 = m[12];
-    var m31 = m[13];
-    var m32 = m[14];
-    var m33 = m[15];
 
     dst[ 0] = r00 * m00 + r01 * m10 + r02 * m20;
     dst[ 1] = r00 * m01 + r01 * m11 + r02 * m21;
@@ -1059,7 +1056,7 @@
     }
 
     return dst;
-  };
+  }
 
   /**
    * Creates a 4-by-4 matrix which scales in each dimension by an amount given by
@@ -1092,7 +1089,7 @@
     dst[15] = 1;
 
     return dst;
-  };
+  }
 
   /**
    * Modifies the given 4-by-4 matrix, scaling in each dimension by an amount
@@ -1112,18 +1109,18 @@
     var v1 = v[1];
     var v2 = v[2];
 
-    dst[0] = v0 * m[0*4+0];
-    dst[1] = v0 * m[0*4+1];
-    dst[2] = v0 * m[0*4+2];
-    dst[3] = v0 * m[0*4+3];
-    dst[4] = v1 * m[1*4+0];
-    dst[5] = v1 * m[1*4+1];
-    dst[6] = v1 * m[1*4+2];
-    dst[7] = v1 * m[1*4+3];
-    dst[8] = v2 * m[2*4+0];
-    dst[9] = v2 * m[2*4+1];
-    dst[10] = v2 * m[2*4+2];
-    dst[11] = v2 * m[2*4+3];
+    dst[ 0] = v0 * m[0 * 4 + 0];
+    dst[ 1] = v0 * m[0 * 4 + 1];
+    dst[ 2] = v0 * m[0 * 4 + 2];
+    dst[ 3] = v0 * m[0 * 4 + 3];
+    dst[ 4] = v1 * m[1 * 4 + 0];
+    dst[ 5] = v1 * m[1 * 4 + 1];
+    dst[ 6] = v1 * m[1 * 4 + 2];
+    dst[ 7] = v1 * m[1 * 4 + 3];
+    dst[ 8] = v2 * m[2 * 4 + 0];
+    dst[ 9] = v2 * m[2 * 4 + 1];
+    dst[10] = v2 * m[2 * 4 + 2];
+    dst[11] = v2 * m[2 * 4 + 3];
 
     if (m !== dst) {
       dst[12] = m[12];
@@ -1133,7 +1130,7 @@
     }
 
     return m;
-  };
+  }
 
   /**
    * Takes a 4-by-4 matrix and a vector with 3 entries,
@@ -1150,14 +1147,14 @@
     var v0 = v[0];
     var v1 = v[1];
     var v2 = v[2];
-    var d = v0 * m[0*4+3] + v1 * m[1*4+3] + v2 * m[2*4+3] + m[3*4+3];
+    var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
 
-    dst[0] = (v0 * m[0*4+0] + v1 * m[1*4+0] + v2 * m[2*4+0] + m[3*4+0]) / d;
-    dst[1] = (v0 * m[0*4+1] + v1 * m[1*4+1] + v2 * m[2*4+1] + m[3*4+1]) / d;
-    dst[2] = (v0 * m[0*4+2] + v1 * m[1*4+2] + v2 * m[2*4+2] + m[3*4+2]) / d;
+    dst[0] = (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d;
+    dst[1] = (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d;
+    dst[2] = (v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2] + m[3 * 4 + 2]) / d;
 
     return dst;
-  };
+  }
 
   /**
    * Takes a 4-by-4 matrix and a vector with 3 entries, interprets the vector as a
@@ -1179,12 +1176,12 @@
     var v1 = v[1];
     var v2 = v[2];
 
-    dst[0] = v0 * m[0*4+0] + v1 * m[1*4+0] + v2 * m[2*4+0];
-    dst[1] = v0 * m[0*4+1] + v1 * m[1*4+1] + v2 * m[2*4+1];
-    dst[2] = v0 * m[0*4+2] + v1 * m[1*4+2] + v2 * m[2*4+2];
+    dst[0] = v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0];
+    dst[1] = v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1];
+    dst[2] = v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2];
 
     return dst;
-  };
+  }
 
   /**
    * Takes a 4-by-4 matrix m and a vector v with 3 entries, interprets the vector
@@ -1208,12 +1205,12 @@
     var v1 = v[1];
     var v2 = v[2];
 
-    dst[0] = v0 * mi[0*4+0] + v1 * mi[0*4+1] + v2 * mi[0*4+2];
-    dst[1] = v0 * mi[1*4+0] + v1 * mi[1*4+1] + v2 * mi[1*4+2];
-    dst[2] = v0 * mi[2*4+0] + v1 * mi[2*4+1] + v2 * mi[2*4+2];
+    dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
+    dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
+    dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
 
     return dst;
-  };
+  }
 
   return {
     axisRotate: axisRotate,

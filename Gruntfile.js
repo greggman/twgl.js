@@ -172,6 +172,15 @@ module.exports = function(grunt) {
         },
       },
     },
+    eslint: {
+        target: [
+          'src',
+        ],
+        options: {
+            config: 'build/conf/eslint.json',
+            rulesdir: ['build/rules'],
+        },
+    },
     clean: [
       'docs',
       'dist',
@@ -181,6 +190,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-eslint');
 
   grunt.registerTask('makeindex', function() {
     var marked  = require('marked');
@@ -197,6 +207,6 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
-  grunt.registerTask('default', ['clean', 'uglify', 'makeindex', 'jsdoc']);
+  grunt.registerTask('default', ['eslint', 'clean', 'uglify', 'makeindex', 'jsdoc']);
 };
 

@@ -28,6 +28,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+"use strict";
 
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -42,7 +43,6 @@
     });
   }
 }(this, function () {
-  "use strict";
 
   /** @module twgl */
   var error = this.console && this.console.error ? this.console.error.bind(this.console) : function() { };
@@ -54,13 +54,13 @@
    *     created.
    * @return {WebGLRenderingContext} The created context.
    */
-  var create3DContext = function(canvas, opt_attribs) {
+  function create3DContext(canvas, opt_attribs) {
     var names = ["webgl", "experimental-webgl"];
     var context = null;
     for (var ii = 0; ii < names.length; ++ii) {
       try {
         context = canvas.getContext(names[ii], opt_attribs);
-      } catch(e) {}
+      } catch(e) {}  // eslint-disable-line
       if (context) {
         break;
       }
@@ -77,7 +77,7 @@
   function getWebGLContext(canvas, opt_attribs) {
     var gl = create3DContext(canvas, opt_attribs);
     return gl;
-  };
+  }
 
   /**
    * Error Callback
@@ -151,14 +151,14 @@
     var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
     if (!linked) {
         // something went wrong with the link
-        var lastError = gl.getProgramInfoLog (program);
+        var lastError = gl.getProgramInfoLog(program);
         errFn("Error in program linking:" + lastError);
 
         gl.deleteProgram(program);
         return null;
     }
     return program;
-  };
+  }
 
   /**
    * Loads a shader from a script tag.
@@ -175,29 +175,28 @@
     var shaderType;
     var shaderScript = document.getElementById(scriptId);
     if (!shaderScript) {
-      throw("*** Error: unknown script element" + scriptId);
+      throw "*** Error: unknown script element" + scriptId;
     }
     shaderSource = shaderScript.text;
 
     if (!opt_shaderType) {
-      if (shaderScript.type == "x-shader/x-vertex") {
+      if (shaderScript.type === "x-shader/x-vertex") {
         shaderType = gl.VERTEX_SHADER;
-      } else if (shaderScript.type == "x-shader/x-fragment") {
+      } else if (shaderScript.type === "x-shader/x-fragment") {
         shaderType = gl.FRAGMENT_SHADER;
-      } else if (shaderType != gl.VERTEX_SHADER && shaderType != gl.FRAGMENT_SHADER) {
-        throw("*** Error: unknown shader type");
-        return null;
+      } else if (shaderType !== gl.VERTEX_SHADER && shaderType !== gl.FRAGMENT_SHADER) {
+        throw "*** Error: unknown shader type";
       }
     }
 
     return loadShader(
         gl, shaderSource, opt_shaderType ? opt_shaderType : shaderType,
         opt_errorCallback);
-  };
+  }
 
   var defaultShaderType = [
     "VERTEX_SHADER",
-    "FRAGMENT_SHADER"
+    "FRAGMENT_SHADER",
   ];
 
   /**
@@ -222,12 +221,12 @@
       var shader = createShaderFromScript(
           gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], opt_errorCallback);
       if (!shader) {
-        return null
+        return null;
       }
       shaders.push(shader);
-    };
+    }
     return createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
-  };
+  }
 
   /**
    * Creates a program from 2 sources.
@@ -251,70 +250,24 @@
       var shader = loadShader(
           gl, shaderSources[ii], gl[defaultShaderType[ii]], opt_errorCallback);
       if (!shader) {
-        return null
+        return null;
       }
       shaders.push(shader);
-    };
+    }
     return createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
-  };
-
-  /**
-   * @typedef {Object} ProgramInfo
-   * @property {WebGLProgram} program A shader program
-   * @property {Object<string, function>} uniformSetters: object of setters as returned from createUniformSetters,
-   * @property {Object<string, function>} attribSetters: object of setters as returned from createAttribSetters,
-   * @memberOf module:twgl
-   */
-
-  /**
-   * Creates a ProgramInfo from 2 sources.
-   *
-   * A ProgramInfo contains
-   *
-   *     programInfo = {
-   *        program: WebGLProgram,
-   *        uniformSetters: object of setters as returned from createUniformSetters,
-   *        attribSetters: object of setters as returned from createAttribSetters,
-   *     }
-   *
-   * @param {WebGLRenderingContext} gl The WebGLRenderingContext
-   *        to use.
-   * @param {string[]} shaderSourcess Array of sources for the
-   *        shaders or ids. The first is assumed to be the vertex shader,
-   *        the second the fragment shader.
-   * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
-   * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
-   *        on error. If you want something else pass an callback. It's passed an error message.
-   * @return {module:twgl.ProgramInfo} The created program.
-   * @memberOf module:twgl
-   */
-  function createProgramInfo(
-      gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-    var shaderSources = shaderSources.map(function(source) {
-      var script = document.getElementById(source);
-      return script ? script.text : source;
-    });
-    var program = createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback);
-    if (!program) {
-      return;
-    }
-    var uniformSetters = createUniformSetters(gl, program);
-    var attribSetters = createAttributeSetters(gl, program);
-    return {
-      program: program,
-      uniformSetters: uniformSetters,
-      attribSetters: attribSetters,
-    }
-  };
+  }
 
   /**
    * Returns the corresponding bind point for a given sampler type
    */
   function getBindPointForSamplerType(gl, type) {
-    if (type == gl.SAMPLER_2D)   return gl.TEXTURE_2D;
-    if (type == gl.SAMPLER_CUBE) return gl.TEXTURE_CUBE_MAP;
-  };
+    if (type === gl.SAMPLER_2D) {
+      return gl.TEXTURE_2D;
+    }
+    if (type === gl.SAMPLER_CUBE) {
+      return gl.TEXTURE_CUBE_MAP;
+    }
+  }
 
   /**
    * @typedef {Object.<string, function>} Setters
@@ -344,42 +297,59 @@
       var location = gl.getUniformLocation(program, uniformInfo.name);
       var type = uniformInfo.type;
       // Check if this uniform is an array
-      var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) == "[0]");
-      if (type == gl.FLOAT && isArray)
+      var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
+      if (type === gl.FLOAT && isArray) {
         return function(v) { gl.uniform1fv(location, v); };
-      if (type == gl.FLOAT)
+      }
+      if (type === gl.FLOAT) {
         return function(v) { gl.uniform1f(location, v); };
-      if (type == gl.FLOAT_VEC2)
+      }
+      if (type === gl.FLOAT_VEC2) {
         return function(v) { gl.uniform2fv(location, v); };
-      if (type == gl.FLOAT_VEC3)
+      }
+      if (type === gl.FLOAT_VEC3) {
         return function(v) { gl.uniform3fv(location, v); };
-      if (type == gl.FLOAT_VEC4)
+      }
+      if (type === gl.FLOAT_VEC4) {
         return function(v) { gl.uniform4fv(location, v); };
-      if (type == gl.INT && isArray)
+      }
+      if (type === gl.INT && isArray) {
         return function(v) { gl.uniform1iv(location, v); };
-      if (type == gl.INT)
+      }
+      if (type === gl.INT) {
         return function(v) { gl.uniform1i(location, v); };
-      if (type == gl.INT_VEC2)
+      }
+      if (type === gl.INT_VEC2) {
         return function(v) { gl.uniform2iv(location, v); };
-      if (type == gl.INT_VEC3)
+      }
+      if (type === gl.INT_VEC3) {
         return function(v) { gl.uniform3iv(location, v); };
-      if (type == gl.INT_VEC4)
+      }
+      if (type === gl.INT_VEC4) {
         return function(v) { gl.uniform4iv(location, v); };
-      if (type == gl.BOOL)
+      }
+      if (type === gl.BOOL) {
         return function(v) { gl.uniform1iv(location, v); };
-      if (type == gl.BOOL_VEC2)
+      }
+      if (type === gl.BOOL_VEC2) {
         return function(v) { gl.uniform2iv(location, v); };
-      if (type == gl.BOOL_VEC3)
+      }
+      if (type === gl.BOOL_VEC3) {
         return function(v) { gl.uniform3iv(location, v); };
-      if (type == gl.BOOL_VEC4)
+      }
+      if (type === gl.BOOL_VEC4) {
         return function(v) { gl.uniform4iv(location, v); };
-      if (type == gl.FLOAT_MAT2)
+      }
+      if (type === gl.FLOAT_MAT2) {
         return function(v) { gl.uniformMatrix2fv(location, false, v); };
-      if (type == gl.FLOAT_MAT3)
+      }
+      if (type === gl.FLOAT_MAT3) {
         return function(v) { gl.uniformMatrix3fv(location, false, v); };
-      if (type == gl.FLOAT_MAT4)
+      }
+      if (type === gl.FLOAT_MAT4) {
         return function(v) { gl.uniformMatrix4fv(location, false, v); };
-      if ((type == gl.SAMPLER_2D || type == gl.SAMPLER_CUBE) && isArray) {
+      }
+      if ((type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) && isArray) {
         var units = [];
         for (var ii = 0; ii < info.size; ++ii) {
           units.push(textureUnit++);
@@ -391,10 +361,10 @@
               gl.activeTexture(gl.TEXTURE0 + units[index]);
               gl.bindTexture(bindPoint, tetxure);
             });
-          }
+          };
         }(getBindPointForSamplerType(gl, type), units);
       }
-      if (type == gl.SAMPLER_2D || type == gl.SAMPLER_CUBE)
+      if (type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) {
         return function(bindPoint, unit) {
           return function(texture) {
             gl.uniform1i(location, unit);
@@ -402,8 +372,9 @@
             gl.bindTexture(bindPoint, texture);
           };
         }(getBindPointForSamplerType(gl, type), textureUnit++);
+      }
       throw ("unknown type: 0x" + type.toString(16)); // we should never get here.
-    };
+    }
 
     var uniformSetters = { };
     var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
@@ -415,14 +386,14 @@
       }
       var name = uniformInfo.name;
       // remove the array suffix.
-      if (name.substr(-3) == "[0]") {
+      if (name.substr(-3) === "[0]") {
         name = name.substr(0, name.length - 3);
       }
       var setter = createUniformSetter(program, uniformInfo);
       uniformSetters[name] = setter;
     }
     return uniformSetters;
-  };
+  }
 
   /**
    * Set uniforms and binds related textures.
@@ -510,7 +481,7 @@
         setter(values[name]);
       }
     });
-  };
+  }
 
   /**
    * Creates setter functions for all attributes of a shader
@@ -545,7 +516,7 @@
     }
 
     return attribSetters;
-  };
+  }
 
   /**
    * Sets attributes and binds buffers (deprecated... use {@link module:twgl.setBuffersAndAttributes})
@@ -607,7 +578,7 @@
         setter(buffers[name]);
       }
     });
-  };
+  }
 
   /**
    * Sets attributes and buffers including the `ELEMENT_ARRAY_BUFFER` if appropriate
@@ -650,7 +621,57 @@
     if (buffers.indices) {
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     }
-  };
+  }
+
+  /**
+   * @typedef {Object} ProgramInfo
+   * @property {WebGLProgram} program A shader program
+   * @property {Object<string, function>} uniformSetters: object of setters as returned from createUniformSetters,
+   * @property {Object<string, function>} attribSetters: object of setters as returned from createAttribSetters,
+   * @memberOf module:twgl
+   */
+
+  /**
+   * Creates a ProgramInfo from 2 sources.
+   *
+   * A ProgramInfo contains
+   *
+   *     programInfo = {
+   *        program: WebGLProgram,
+   *        uniformSetters: object of setters as returned from createUniformSetters,
+   *        attribSetters: object of setters as returned from createAttribSetters,
+   *     }
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext
+   *        to use.
+   * @param {string[]} shaderSourcess Array of sources for the
+   *        shaders or ids. The first is assumed to be the vertex shader,
+   *        the second the fragment shader.
+   * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+   *        on error. If you want something else pass an callback. It's passed an error message.
+   * @return {module:twgl.ProgramInfo?} The created program.
+   * @memberOf module:twgl
+   */
+  function createProgramInfo(
+      gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
+    shaderSources = shaderSources.map(function(source) {
+      var script = document.getElementById(source);
+      return script ? script.text : source;
+    });
+    var program = createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback);
+    if (!program) {
+      return null;
+    }
+    var uniformSetters = createUniformSetters(gl, program);
+    var attribSetters = createAttributeSetters(gl, program);
+    return {
+      program: program,
+      uniformSetters: uniformSetters,
+      attribSetters: attribSetters,
+    };
+  }
 
   /**
    * Resize a canvas to match the size it's displayed.
@@ -664,74 +685,14 @@
     multiplier = Math.max(1, multiplier);
     var width  = canvas.clientWidth  * multiplier | 0;
     var height = canvas.clientHeight * multiplier | 0;
-    if (canvas.width != width ||
-        canvas.height != height) {
+    if (canvas.width !== width ||
+        canvas.height !== height) {
       canvas.width = width;
       canvas.height = height;
       return true;
     }
     return false;
-  };
-
-  /**
-   * Add `push` to a typed array. It just keeps a 'cursor'
-   * and allows use to `push` values into the array so we
-   * don't have to manually compute offsets
-   * @param {TypedArray} typedArray TypedArray to augment
-FIXME   * @param {number} numComponents number of components.
-   */
-  function augmentTypedArray(typedArray, numComponents) {
-    var cursor = 0;
-    typedArray.push = function() {
-      for (var ii = 0; ii < arguments.length; ++ii) {
-        var value = arguments[ii];
-        if (value instanceof Array || (value.buffer && value.buffer instanceof ArrayBuffer)) {
-          for (var jj = 0; jj < value.length; ++jj) {
-            typedArray[cursor++] = value[jj];
-          }
-        } else {
-          typedArray[cursor++] = value;
-        }
-      }
-    };
-    typedArray.reset = function(opt_index) {
-      cursor = opt_index || 0;
-    };
-//    typedArray.numComponents = numComponents;
-//    Object.defineProperty(typedArray, 'numElements', {
-//      get: function() {
-//        return this.length / this.numComponents | 0;
-//      },
-//    });
-    return typedArray;
-  };
-
-  /**
-   * creates a typed array with a `push` function attached
-   * so that you can easily *push* values.
-   *
-   * `push` can take multiple arguments. If an argument is an array each element
-   * of the array will be added to the typed array.
-   *
-   * Example:
-   *
-   *     var array = createAugmentedTypedArray(3, 2);  // creates a Float32Array with 6 values
-   *     array.push(1, 2, 3);
-   *     array.push([4, 5, 6]);
-   *     // array now contains [1, 2, 3, 4, 5, 6]
-   *
-//FIXME   * Also has `numComponents` and `numElements` properties.
-   *
-//FIXME   * @param {number} numComponents number of components
-//FIXME   * @param {number} numElements number of elements. The total size of the array will be `numComponents * numElements`.
-   * @param {constructor} opt_type A constructor for the type. Default = `Float32Array`.
-   * @return {ArrayBuffer} A typed array.
-   * @memberOf module:twgl
-   */
-  function createAugmentedTypedArray(size, opt_type) {
-    var type = opt_type || Float32Array;
-    return augmentTypedArray(new type(size));
-  };
+  }
 
   function createBufferFromTypedArray(gl, array, type, drawType) {
     type = type || gl.ARRAY_BUFFER;
@@ -739,11 +700,11 @@ FIXME   * @param {number} numComponents number of components.
     gl.bindBuffer(type, buffer);
     gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
     return buffer;
-  };
+  }
 
   function allButIndices(name) {
     return name !== "indices";
-  };
+  }
 
   function createMapping(obj) {
     var mapping = {};
@@ -751,9 +712,10 @@ FIXME   * @param {number} numComponents number of components.
       mapping["a_" + key] = key;
     });
     return mapping;
-  };
+  }
 
   function getGLTypeForTypedArray(gl, typedArray) {
+    /*eslint brace-style:0*/
     if (typedArray instanceof Int8Array)    { return gl.BYTE; }
     if (typedArray instanceof Uint8Array)   { return gl.UNSIGNED_BYTE; }
     if (typedArray instanceof Int16Array)   { return gl.SHORT; }
@@ -762,7 +724,7 @@ FIXME   * @param {number} numComponents number of components.
     if (typedArray instanceof Uint32Array)  { return gl.UNSIGNED_INT; }
     if (typedArray instanceof Float32Array) { return gl.FLOAT; }
     throw "unsupported typed array type";
-  };
+  }
 
   // This is really just a guess. Though I can't really imagine using
   // anything else? Maybe for some compression?
@@ -770,11 +732,11 @@ FIXME   * @param {number} numComponents number of components.
     if (typedArray instanceof Int8Array)    { return true; }
     if (typedArray instanceof Uint8Array)   { return true; }
     return false;
-  };
+  }
 
   function isArrayBuffer(a) {
     return a.buffer && a.buffer instanceof ArrayBuffer;
-  };
+  }
 
   function guessNumComponentsFromName(name, length) {
     var numComponents;
@@ -791,7 +753,7 @@ FIXME   * @param {number} numComponents number of components.
     }
 
     return numComponents;
-  };
+  }
 
   function makeTypedArray(array, name) {
     if (isArrayBuffer(array)) {
@@ -808,12 +770,12 @@ FIXME   * @param {number} numComponents number of components.
 //      array.numComponents = guessNumComponentsFromName(name, array.length);
 //    }
 
-    var type = array.type;
-    if (!type) {
+    var Type = array.type;
+    if (!Type) {
       if (name === "indices") {
-        type = Uint16Array;
+        Type = Uint16Array;
       } else {
-        type = Float32Array;
+        Type = Float32Array;
       }
     }
 //    var numElements = array.data.length / array.numComponents;
@@ -822,8 +784,8 @@ FIXME   * @param {number} numComponents number of components.
 //    }
 //FIXME    var typedArray = createAugmentedTypedArray(array.length, type);
 //FIXME    typedArray.push(array.data);
-    return new type(array.data);
-  };
+    return new Type(array.data);
+  }
 
   /**
    * @typedef {Object} AttribInfo
@@ -881,7 +843,7 @@ FIXME   * @param {number} numComponents number of components.
       };
     });
     return attribs;
-  };
+  }
 
   /**
    * tries to get the number of elements from a set of arrays.
@@ -896,7 +858,7 @@ FIXME   * @param {number} numComponents number of components.
         break;
       }
     }
-    if (ii == positionKeys.length) {
+    if (ii === positionKeys.length) {
       key = Object.keys(arrays)[0];
     }
     var length = array.length || array.data.length;
@@ -906,7 +868,7 @@ FIXME   * @param {number} numComponents number of components.
       throw "numComponents " + numComponent + " not correct for length " + length;
     }
     return numElements;
-  };
+  }
 
   /**
    * @typedef {Object} BufferInfo
@@ -1052,7 +1014,7 @@ FIXME   * @param {number} numComponents number of components.
     }
 
     return bufferInfo;
-  };
+  }
 
   /**
    * Creates buffers from typed arrays
@@ -1081,13 +1043,13 @@ FIXME   * @param {number} numComponents number of components.
   function createBuffersFromArrays(gl, arrays) {
     var buffers = { };
     Object.keys(arrays).forEach(function(key) {
-      var type = key == "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+      var type = key === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
       var array = makeTypedArray(arrays[key], name);
       buffers[key] = createBufferFromTypedArray(gl, array, type);
     });
 
     return buffers;
-  };
+  }
 
   /**
    * Calls `gl.drawElements` or `gl.drawArrays`, whichever is appropriate
@@ -1112,7 +1074,7 @@ FIXME   * @param {number} numComponents number of components.
     } else {
       gl.drawArrays(type, offset, numElements);
     }
-  };
+  }
 
   /**
    * @typedef {Object} DrawObject
@@ -1141,7 +1103,7 @@ FIXME   * @param {number} numComponents number of components.
       }
 
       // Setup all the needed attributes.
-      if (bufferInfo != lastUsedBufferInfo) {
+      if (bufferInfo !== lastUsedBufferInfo) {
         lastUsedBufferInfo = bufferInfo;
         setBuffersAndAttributes(gl, programInfo, bufferInfo);
       }
@@ -1155,7 +1117,6 @@ FIXME   * @param {number} numComponents number of components.
   }
 
   return {
-    createAugmentedTypedArray: createAugmentedTypedArray,
     createAttribsFromArrays: createAttribsFromArrays,
     createBuffersFromArrays: createBuffersFromArrays,
     createBufferInfoFromArrays: createBufferInfoFromArrays,

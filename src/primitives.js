@@ -29,6 +29,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+"use strict";
+
 /**
  * Various functions to make simple primitives
  *
@@ -44,8 +46,6 @@
     root.twgl.primitives = factory.call(root);
   }
 }(this, function (twgl, m4) {
-
-  "use strict";
 
   twgl = twgl || this.twgl;
   m4 = m4 || twgl.m4;
@@ -81,7 +81,7 @@
       },
     });
     return typedArray;
-  };
+  }
 
   /**
    * creates a typed array with a `push` function attached
@@ -106,9 +106,185 @@
    * @memberOf module:twgl
    */
   function createAugmentedTypedArray(numComponents, numElements, opt_type) {
-    var type = opt_type || Float32Array;
-    return augmentTypedArray(new type(numComponents * numElements), numComponents);
-  };
+    var Type = opt_type || Float32Array;
+    return augmentTypedArray(new Type(numComponents * numElements), numComponents);
+  }
+
+  function allButIndices(name) {
+    return name !== "indices";
+  }
+
+  /**
+   * Given indexed vertices creates a new set of vertices unindexed by expanding the indexed vertices.
+   * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex
+   * @return {Object.<string, TypedArray>} The deindexed vertices
+   * @memberOf module:twgl/primitives
+   */
+  function deindexVertices(vertices) {
+    var indices = vertices.indices;
+    var newVertices = {};
+    var numElements = indices.length;
+
+    function expandToUnindexed(channel) {
+      var srcBuffer = vertices[channel];
+      var numComponents = srcBuffer.numComponents;
+      var dstBuffer = createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
+      for (var ii = 0; ii < numElements; ++ii) {
+        var ndx = indices[ii];
+        var offset = ndx * numComponents;
+        for (var jj = 0; jj < numComponents; ++jj) {
+          dstBuffer.push(srcBuffer[offset + jj]);
+        }
+      }
+      newVertices[channel] = dstBuffer;
+    }
+
+    Object.keys(vertices).filter(allButIndices).forEach(expandToUnindexed);
+
+    return newVertices;
+  }
+
+  /**
+   * flattens the normals of deindexed vertices in place.
+   * @param {Object.<string, TypedArray>} vertices The deindexed vertices who's normals to flatten
+   * @return {Object.<string, TypedArray>} The flattened vertices (same as was passed in)
+   * @memberOf module:twgl/primitives
+   */
+  function flattenNormals(vertices) {
+    if (vertices.indices) {
+      throw "can't flatten normals of indexed vertices. deindex them first";
+    }
+
+    var normals = vertices.normal;
+    var numNormals = normals.length;
+    for (var ii = 0; ii < numNormals; ii += 9) {
+      // pull out the 3 normals for this triangle
+      var nax = normals[ii + 0];
+      var nay = normals[ii + 1];
+      var naz = normals[ii + 2];
+
+      var nbx = normals[ii + 3];
+      var nby = normals[ii + 4];
+      var nbz = normals[ii + 5];
+
+      var ncx = normals[ii + 6];
+      var ncy = normals[ii + 7];
+      var ncz = normals[ii + 8];
+
+      // add them
+      var nx = nax + nbx + ncx;
+      var ny = nay + nby + ncy;
+      var nz = naz + nbz + ncz;
+
+      // normalize them
+      var length = Math.sqrt(nx * nx + ny * ny + nz * nz);
+
+      nx /= length;
+      ny /= length;
+      nz /= length;
+
+      // copy them back in
+      normals[ii + 0] = nx;
+      normals[ii + 1] = ny;
+      normals[ii + 2] = nz;
+
+      normals[ii + 3] = nx;
+      normals[ii + 4] = ny;
+      normals[ii + 5] = nz;
+
+      normals[ii + 6] = nx;
+      normals[ii + 7] = ny;
+      normals[ii + 8] = nz;
+    }
+
+    return vertices;
+  }
+
+  function applyFuncToV3Array(array, matrix, fn) {
+    var len = array.length;
+    var tmp = new Float32Array(3);
+    for (var ii = 0; ii < len; ii += 3) {
+      fn(matrix, [array[ii], array[ii + 1], array[ii + 2]], tmp);
+      array[ii    ] = tmp[0];
+      array[ii + 1] = tmp[1];
+      array[ii + 2] = tmp[2];
+    }
+  }
+
+  function transformNormal(mi, v, dst) {
+    dst = dst || v3.create();
+    var v0 = v[0];
+    var v1 = v[1];
+    var v2 = v[2];
+
+    dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
+    dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
+    dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
+
+    return dst;
+  }
+
+  /**
+   * Reorients directions by the given matrix..
+   * @param {number[]|TypedArray} array The array. Assumes value floats per element.
+   * @param {Matrix} matrix A matrix to multiply by.
+   * @return {number[]|TypedArray} the same array that was passed in
+   * @memberOf module:twgl/primitives
+   */
+  function reorientDirections(array, matrix) {
+    applyFuncToV3Array(array, matrix, m4.transformDirection);
+    return array;
+  }
+
+  /**
+   * Reorients normals by the inverse-transpose of the given
+   * matrix..
+   * @param {number[]|TypedArray} array The array. Assumes value floats per element.
+   * @param {Matrix} matrix A matrix to multiply by.
+   * @return {number[]|TypedArray} the same array that was passed in
+   * @memberOf module:twgl/primitives
+   */
+  function reorientNormals(array, matrix) {
+    applyFuncToV3Array(array, m4.inverse(matrix), transformNormal);
+    return array;
+  }
+
+  /**
+   * Reorients positions by the given matrix. In other words, it
+   * multiplies each vertex by the given matrix.
+   * @param {number[]|TypedArray} array The array. Assumes value floats per element.
+   * @param {Matrix} matrix A matrix to multiply by.
+   * @return {number[]|TypedArray} the same array that was passed in
+   * @memberOf module:twgl/primitives
+   */
+  function reorientPositions(array, matrix) {
+    applyFuncToV3Array(array, matrix, m4.transformPoint);
+    return array;
+  }
+
+  /**
+   * Reorients arrays by the given matrix. Assumes arrays have
+   * names that contains 'pos' could be reoriented as positions,
+   * 'binorm' or 'tan' as directions, and 'norm' as normals.
+   *
+   * @param {Object.<string, (number[]|TypedArray)>} arrays The vertices to reorient
+   * @param {Matrix} matrix matrix to reorient by.
+   * @return {Object.<string, (number[]|TypedArray)>} same arrays that were passed in.
+   * @memberOf module:twgl/primitives
+   */
+  function reorientVertices(arrays, matrix) {
+    Object.keys(arrays).forEach(function(name) {
+      var array = arrays[name];
+      if (name.indexOf("pos") >= 0) {
+        reorientPositions(array, matrix);
+      } else if (name.indexOf("tan") >= 0 || name.indexOf("binorm") >= 0) {
+        reorientDirections(array, matrix);
+      } else if (name.indexOf("norm") >= 0) {
+        reorientNormals(array, matrix);
+      }
+    });
+    return arrays;
+  }
 
   /**
    * Creates XZ plane vertices.
@@ -157,8 +333,8 @@
     var indices = createAugmentedTypedArray(
         3, subdivisionsWidth * subdivisionsDepth * 2, Uint16Array);
 
-    for (var z = 0; z < subdivisionsDepth; z++) {
-      for (var x = 0; x < subdivisionsWidth; x++) {
+    for (var z = 0; z < subdivisionsDepth; z++) {  // eslint-disable-line
+      for (var x = 0; x < subdivisionsWidth; x++) {  // eslint-disable-line
         // Make triangle 1 of quad.
         indices.push(
             (z + 0) * numVertsAcross + x,
@@ -180,7 +356,7 @@
       indices: indices,
     }, matrix);
     return arrays;
-  };
+  }
 
   /**
    * Creates sphere vertices.
@@ -252,8 +428,8 @@
 
     var numVertsAround = subdivisionsAxis + 1;
     var indices = createAugmentedTypedArray(3, subdivisionsAxis * subdivisionsHeight * 2, Uint16Array);
-    for (var x = 0; x < subdivisionsAxis; x++) {
-      for (var y = 0; y < subdivisionsHeight; y++) {
+    for (var x = 0; x < subdivisionsAxis; x++) {  // eslint-disable-line
+      for (var y = 0; y < subdivisionsHeight; y++) {  // eslint-disable-line
         // Make triangle 1 of quad.
         indices.push(
             (y + 0) * numVertsAround + x,
@@ -274,19 +450,19 @@
       texcoord: texCoords,
       indices: indices,
     };
-  };
+  }
 
   /**
    * Array of the indices of corners of each face of a cube.
    * @type {Array.<number[]>}
    */
   var CUBE_FACE_INDICES = [
-    [3, 7, 5, 1], // right
-    [6, 2, 0, 4], // left
-    [6, 7, 3, 2], // ??
-    [0, 1, 5, 4], // ??
-    [7, 6, 4, 5], // front
-    [2, 3, 1, 0]  // back
+    [3, 7, 5, 1],  // right
+    [6, 2, 0, 4],  // left
+    [6, 7, 3, 2],  // ??
+    [0, 1, 5, 4],  // ??
+    [7, 6, 4, 5],  // front
+    [2, 3, 1, 0],  // back
   ];
 
   /**
@@ -325,7 +501,7 @@
       [1, 0],
       [0, 0],
       [0, 1],
-      [1, 1]
+      [1, 1],
     ];
 
     var numVertices = 6 * 4;
@@ -360,7 +536,7 @@
       texcoord: texCoords,
       indices: indices,
     };
-  };
+  }
 
   /**
    * Creates vertices for a truncated cone, which is like a cylinder
@@ -422,7 +598,7 @@
     var end = verticalSubdivisions + (bottomCap ? 2 : 0);
 
     for (var yy = start; yy <= end; ++yy) {
-      var v = yy / verticalSubdivisions
+      var v = yy / verticalSubdivisions;
       var y = height * v;
       var ringRadius;
       if (yy < 0) {
@@ -437,7 +613,7 @@
         ringRadius = bottomRadius +
           (topRadius - bottomRadius) * (yy / verticalSubdivisions);
       }
-      if (yy == -2 || yy == verticalSubdivisions + 2) {
+      if (yy === -2 || yy === verticalSubdivisions + 2) {
         ringRadius = 0;
         v = 0;
       }
@@ -454,8 +630,8 @@
       }
     }
 
-    for (var yy = 0; yy < verticalSubdivisions + extra; ++yy) {
-      for (var ii = 0; ii < radialSubdivisions; ++ii) {
+    for (var yy = 0; yy < verticalSubdivisions + extra; ++yy) {  // eslint-disable-line
+      for (var ii = 0; ii < radialSubdivisions; ++ii) {  // eslint-disable-line
         indices.push(vertsAroundEdge * (yy + 0) + 0 + ii,
                      vertsAroundEdge * (yy + 0) + 1 + ii,
                      vertsAroundEdge * (yy + 1) + 1 + ii);
@@ -471,7 +647,7 @@
       texcoord: texCoords,
       indices: indices,
     };
-  };
+  }
 
   /**
    * Expands RLE data
@@ -865,186 +1041,10 @@
 
     for (var ii = 0; ii < numVerts; ++ii) {
       arrays.indices.push(ii);
-    };
+    }
 
     return arrays;
-  };
-
-  function allButIndices(name) {
-    return name !== "indices";
-  };
-
-  /**
-   * Given indexed vertices creates a new set of vertices unindexed by expanding the indexed vertices.
-   * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex
-   * @return {Object.<string, TypedArray>} The deindexed vertices
-   * @memberOf module:twgl/primitives
-   */
-  function deindexVertices(vertices) {
-    var indices = vertices.indices;
-    var newVertices = {};
-    var numElements = indices.length;
-
-    function expandToUnindexed(channel) {
-      var srcBuffer = vertices[channel];
-      var numComponents = srcBuffer.numComponents;
-      var dstBuffer = createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
-      for (var ii = 0; ii < numElements; ++ii) {
-        var ndx = indices[ii];
-        var offset = ndx * numComponents;
-        for (var jj = 0; jj < numComponents; ++jj) {
-          dstBuffer.push(srcBuffer[offset + jj]);
-        }
-      }
-      newVertices[channel] = dstBuffer;
-    }
-
-    Object.keys(vertices).filter(allButIndices).forEach(expandToUnindexed);
-
-    return newVertices;
-  };
-
-  /**
-   * flattens the normals of deindexed vertices in place.
-   * @param {Object.<string, TypedArray>} vertices The deindexed vertices who's normals to flatten
-   * @return {Object.<string, TypedArray>} The flattened vertices (same as was passed in)
-   * @memberOf module:twgl/primitives
-   */
-  function flattenNormals(vertices) {
-    if (vertices.indices) {
-      throw "can't flatten normals of indexed vertices. deindex them first";
-    }
-
-    var normals = vertices.normal;
-    var numNormals = normals.length;
-    for (var ii = 0; ii < numNormals; ii += 9) {
-      // pull out the 3 normals for this triangle
-      var nax = normals[ii + 0];
-      var nay = normals[ii + 1];
-      var naz = normals[ii + 2];
-
-      var nbx = normals[ii + 3];
-      var nby = normals[ii + 4];
-      var nbz = normals[ii + 5];
-
-      var ncx = normals[ii + 6];
-      var ncy = normals[ii + 7];
-      var ncz = normals[ii + 8];
-
-      // add them
-      var nx = nax + nbx + ncx;
-      var ny = nay + nby + ncy;
-      var nz = naz + nbz + ncz;
-
-      // normalize them
-      var length = Math.sqrt(nx * nx + ny * ny + nz * nz);
-
-      nx /= length;
-      ny /= length;
-      nz /= length;
-
-      // copy them back in
-      normals[ii + 0] = nx;
-      normals[ii + 1] = ny;
-      normals[ii + 2] = nz;
-
-      normals[ii + 3] = nx;
-      normals[ii + 4] = ny;
-      normals[ii + 5] = nz;
-
-      normals[ii + 6] = nx;
-      normals[ii + 7] = ny;
-      normals[ii + 8] = nz;
-    }
-
-    return vertices;
-  };
-
-  var applyFuncToV3Array = function(array, matrix, fn) {
-    var len = array.length;
-    var tmp = new Float32Array(3);
-    for (var ii = 0; ii < len; ii += 3) {
-      fn(matrix, [array[ii], array[ii + 1], array[ii + 2]], tmp);
-      array[ii    ] = tmp[0];
-      array[ii + 1] = tmp[1];
-      array[ii + 2] = tmp[2];
-    }
-  };
-
-  function transformNormal(mi, v, dst) {
-    var dst = dst || v3.create();
-    var v0 = v[0];
-    var v1 = v[1];
-    var v2 = v[2];
-
-    dst[0] = v0 * mi[0*4+0] + v1 * mi[0*4+1] + v2 * mi[0*4+2];
-    dst[1] = v0 * mi[1*4+0] + v1 * mi[1*4+1] + v2 * mi[1*4+2];
-    dst[2] = v0 * mi[2*4+0] + v1 * mi[2*4+1] + v2 * mi[2*4+2];
-
-    return dst;
-  };
-
-  /**
-   * Reorients directions by the given matrix..
-   * @param {number[]|TypedArray} array The array. Assumes value floats per element.
-   * @param {Matrix} matrix A matrix to multiply by.
-   * @return {number[]|TypedArray} the same array that was passed in
-   * @memberOf module:twgl/primitives
-   */
-  function reorientDirections(array, matrix) {
-    applyFuncToV3Array(array, matrix, m4.transformDirection);
-    return array;
-  };
-
-  /**
-   * Reorients normals by the inverse-transpose of the given
-   * matrix..
-   * @param {number[]|TypedArray} array The array. Assumes value floats per element.
-   * @param {Matrix} matrix A matrix to multiply by.
-   * @return {number[]|TypedArray} the same array that was passed in
-   * @memberOf module:twgl/primitives
-   */
-  function reorientNormals(array, matrix) {
-    applyFuncToV3Array(array, m4.inverse(matrix), transformNormal);
-    return array;
-  };
-
-  /**
-   * Reorients positions by the given matrix. In other words, it
-   * multiplies each vertex by the given matrix.
-   * @param {number[]|TypedArray} array The array. Assumes value floats per element.
-   * @param {Matrix} matrix A matrix to multiply by.
-   * @return {number[]|TypedArray} the same array that was passed in
-   * @memberOf module:twgl/primitives
-   */
-  function reorientPositions(array, matrix) {
-    applyFuncToV3Array(array, matrix, m4.transformPoint);
-    return array;
-  };
-
-  /**
-   * Reorients arrays by the given matrix. Assumes arrays have
-   * names that contains 'pos' could be reoriented as positions,
-   * 'binorm' or 'tan' as directions, and 'norm' as normals.
-   *
-   * @param {Object.<string, (number[]|TypedArray)>} arrays The vertices to reorient
-   * @param {Matrix} matrix matrix to reorient by.
-   * @return {Object.<string, (number[]|TypedArray)>} same arrays that were passed in.
-   * @memberOf module:twgl/primitives
-   */
-  function reorientVertices(arrays, matrix) {
-    Object.keys(arrays).forEach(function(name) {
-      var array = arrays[name];
-      if (name.indexOf("pos") >= 0) {
-        reorientPositions(array, matrix);
-      } else if (name.indexOf("tan") >= 0 || name.indexOf("binorm") >= 0) {
-        reorientDirections(array, matrix);
-      } else if (name.indexOf("norm") >= 0) {
-        reorientNormals(array, matrix);
-      }
-    });
-    return arrays;
-  };
+  }
 
   /**
    * creates a random integer between 0 and range - 1 inclusive.
@@ -1053,7 +1053,7 @@
    */
   function randInt(range) {
     return Math.random() * range | 0;
-  };
+  }
 
   /**
    * Used to supply random colors
@@ -1098,7 +1098,7 @@
       // make random colors per triangle
       var numVertsPerColor = options.vertsPerColor || 3;
       var numSets = numElements / numVertsPerColor;
-      for (var ii = 0; ii < numSets; ++ii) {
+      for (var ii = 0; ii < numSets; ++ii) {  // eslint-disable-line
         var color = [rand(ii, 0), rand(ii, 1), rand(ii, 2), rand(ii, 3)];
         for (var jj = 0; jj < numVertsPerColor; ++jj) {
           vcolors.push(color);
@@ -1106,7 +1106,7 @@
       }
     }
     return vertices;
-  };
+  }
 
   /**
    * creates a function that calls fn to create vertices and then
@@ -1116,8 +1116,8 @@
     return function(gl) {
       var arrays = fn.apply(this, Array.prototype.slice.call(arguments, 1));
       return twgl.createBuffersFromArrays(gl, arrays);
-    }
-  };
+    };
+  }
 
   /**
    * creates a function that calls fn to create vertices and then
@@ -1128,7 +1128,7 @@
       var arrays = fn.apply(null,  Array.prototype.slice.call(arguments, 1));
       return twgl.createBufferInfoFromArrays(gl, arrays);
     };
-  };
+  }
 
   return {
     create3DFBufferInfo: createBufferInfoFunc(create3DFVertices),

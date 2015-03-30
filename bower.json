@@ -27,6 +27,7 @@
     "docs",
     "jsdoc-template",
     "resources",
+    "build",
     "src",
     "templates",
     "node_modules",

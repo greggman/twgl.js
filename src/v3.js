@@ -28,6 +28,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+"use strict";
+
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -39,7 +41,6 @@
     root.twgl.v3 = lib;
   }
 }(this, function () {
-  "use strict";
 
   /** @module twgl/v3 */
 
@@ -52,7 +53,7 @@
    */
   function create() {
     return new VecType(3);
-  };
+  }
 
   /**
    * Adds two vectors; assumes a and b have the same dimension.
@@ -69,7 +70,7 @@
     dst[2] = a[2] + b[2];
 
     return dst;
-  };
+  }
 
   /**
    * Subtracts two vectors.
@@ -86,7 +87,7 @@
     dst[2] = a[2] - b[2];
 
     return dst;
-  };
+  }
 
   /**
    * Performs linear interpolation on two vectors.
@@ -106,7 +107,7 @@
     dst[2] = (1 - t) * a[2] + t * b[2];
 
     return dst;
-  };
+  }
 
   /**
    * Mutiplies a vector by a scalar.
@@ -124,7 +125,7 @@
     dst[2] = v[2] * k;
 
     return dst;
-  };
+  }
 
   /**
    * Divides a vector by a scalar.
@@ -142,7 +143,7 @@
     dst[2] = v[2] / k;
 
     return dst;
-  };
+  }
 
   /**
    * Computes the cross product of two vectors; assumes both vectors have
@@ -161,7 +162,7 @@
     dst[2] = a[0] * b[1] - a[1] * b[0];
 
     return dst;
-  };
+  }
 
   /**
    * Computes the dot product of two vectors; assumes both vectors have
@@ -173,7 +174,7 @@
    */
   function dot(a, b) {
     return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
-  };
+  }
 
   /**
    * Computes the length of vector
@@ -182,7 +183,7 @@
    * @memberOf module:twgl/v3
    */
   function length(v) {
-    return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+    return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
   }
 
   /**
@@ -191,8 +192,8 @@
    * @return {number} square of the length of vector.
    * @memberOf module:twgl/v3
    */
-  function lengthSq(a) {
-    return a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
+  function lengthSq(v) {
+    return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
   }
 
   /**
@@ -218,7 +219,7 @@
     }
 
     return dst;
-  };
+  }
 
   /**
    * Negates a vector.
@@ -235,7 +236,7 @@
     dst[2] = -v[2];
 
     return dst;
-  };
+  }
 
   /**
    * Copies a vector.
@@ -252,7 +253,7 @@
     dst[2] = v[2];
 
     return dst;
-  };
+  }
 
   /**
    * Multiplies a vector by another vector (component-wise); assumes a and
@@ -272,7 +273,7 @@
     dst[2] = a[2] * b[2];
 
     return dst;
-  };
+  }
 
   /**
    * Divides a vector by another vector (component-wise); assumes a and
@@ -292,7 +293,7 @@
     dst[2] = a[2] / b[2];
 
     return dst;
-  };
+  }
 
   return {
     add: add,
