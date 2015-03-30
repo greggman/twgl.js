@@ -113,7 +113,7 @@ module.exports = function(grunt) {
 
   var docsFiles = srcFiles.concat(extraFiles, 'README.md');
   var libFiles = srcFiles.concat(thirdPartyFiles);
-  var fullLibFiles = [].concat(extraFiles, srcFiles, thirdPartyFiles);
+  var fullLibFiles = [].concat(srcFiles, extraFiles, thirdPartyFiles);
 
   grunt.initConfig({
     jsdoc: {

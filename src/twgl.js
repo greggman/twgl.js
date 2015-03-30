@@ -678,7 +678,7 @@
    * and allows use to `push` values into the array so we
    * don't have to manually compute offsets
    * @param {TypedArray} typedArray TypedArray to augment
-   * @param {number} numComponents number of components.
+FIXME   * @param {number} numComponents number of components.
    */
   function augmentTypedArray(typedArray, numComponents) {
     var cursor = 0;
@@ -697,12 +697,12 @@
     typedArray.reset = function(opt_index) {
       cursor = opt_index || 0;
     };
-    typedArray.numComponents = numComponents;
-    Object.defineProperty(typedArray, 'numElements', {
-      get: function() {
-        return this.length / this.numComponents | 0;
-      },
-    });
+//    typedArray.numComponents = numComponents;
+//    Object.defineProperty(typedArray, 'numElements', {
+//      get: function() {
+//        return this.length / this.numComponents | 0;
+//      },
+//    });
     return typedArray;
   };
 
@@ -720,17 +720,17 @@
    *     array.push([4, 5, 6]);
    *     // array now contains [1, 2, 3, 4, 5, 6]
    *
-   * Also has `numComponents` and `numElements` properties.
+//FIXME   * Also has `numComponents` and `numElements` properties.
    *
-   * @param {number} numComponents number of components
-   * @param {number} numElements number of elements. The total size of the array will be `numComponents * numElements`.
+//FIXME   * @param {number} numComponents number of components
+//FIXME   * @param {number} numElements number of elements. The total size of the array will be `numComponents * numElements`.
    * @param {constructor} opt_type A constructor for the type. Default = `Float32Array`.
    * @return {ArrayBuffer} A typed array.
    * @memberOf module:twgl
    */
-  function createAugmentedTypedArray(numComponents, numElements, opt_type) {
+  function createAugmentedTypedArray(size, opt_type) {
     var type = opt_type || Float32Array;
-    return augmentTypedArray(new type(numComponents * numElements), numComponents);
+    return augmentTypedArray(new type(size));
   };
 
   function createBufferFromTypedArray(gl, array, type, drawType) {
@@ -804,23 +804,25 @@
       };
     }
 
-    if (!array.numComponents) {
-      array.numComponents = guessNumComponentsFromName(name, array.length);
-    }
+//    if (!array.numComponents) {
+//      array.numComponents = guessNumComponentsFromName(name, array.length);
+//    }
 
     var type = array.type;
     if (!type) {
       if (name === "indices") {
         type = Uint16Array;
+      } else {
+        type = Float32Array;
       }
     }
-    var numElements = array.data.length / array.numComponents;
-    if (numElements % 1) {
-      console.warn("numComponents = ", array.numComponents, "doesn't match length = ", array.length, "of data given");
-    }
-    var typedArray = createAugmentedTypedArray(array.numComponents, numElements, type);
-    typedArray.push(array.data);
-    return typedArray;
+//    var numElements = array.data.length / array.numComponents;
+//    if (numElements % 1) {
+//      console.warn("numComponents = ", array.numComponents, "doesn't match length = ", array.length, "of data given");
+//    }
+//FIXME    var typedArray = createAugmentedTypedArray(array.length, type);
+//FIXME    typedArray.push(array.data);
+    return new type(array.data);
   };
 
   /**
@@ -884,14 +886,26 @@
   /**
    * tries to get the number of elements from a set of arrays.
    */
+  var positionKeys = ['position', 'positions', 'a_position'];
+//FIXME
   function getNumElementsFromNonIndexedArrays(arrays) {
-    var key = Object.keys(arrays)[0];
-    var array = arrays[key];
-    if (isArrayBuffer(array)) {
-      return array.numElements;
-    } else {
-      return array.data.length / array.numComponents;
+    var key;
+    for (var ii = 0; ii < positionKeys.length; ++ii) {
+      key = positionKeys[ii];
+      if (key in arrays) {
+        break;
+      }
     }
+    if (ii == positionKeys.length) {
+      key = Object.keys(arrays)[0];
+    }
+    var length = array.length || array.data.length;
+    var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
+    var numElements = length / numComponents;
+    if (length % numComponents > 0) {
+      throw "numComponents " + numComponent + " not correct for length " + length;
+    }
+    return numElements;
   };
 
   /**

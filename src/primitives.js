@@ -43,12 +43,72 @@
     root.twgl = root.twgl || {};
     root.twgl.primitives = factory.call(root);
   }
-}(this, function (webglUtils, m4) {
+}(this, function (twgl, m4) {
 
   "use strict";
 
-  webglUtils = webglUtils || this.twgl;
-  m4 = m4 || this;
+  twgl = twgl || this.twgl;
+  m4 = m4 || twgl.m4;
+
+  /**
+   * Add `push` to a typed array. It just keeps a 'cursor'
+   * and allows use to `push` values into the array so we
+   * don't have to manually compute offsets
+   * @param {TypedArray} typedArray TypedArray to augment
+   * @param {number} numComponents number of components.
+   */
+  function augmentTypedArray(typedArray, numComponents) {
+    var cursor = 0;
+    typedArray.push = function() {
+      for (var ii = 0; ii < arguments.length; ++ii) {
+        var value = arguments[ii];
+        if (value instanceof Array || (value.buffer && value.buffer instanceof ArrayBuffer)) {
+          for (var jj = 0; jj < value.length; ++jj) {
+            typedArray[cursor++] = value[jj];
+          }
+        } else {
+          typedArray[cursor++] = value;
+        }
+      }
+    };
+    typedArray.reset = function(opt_index) {
+      cursor = opt_index || 0;
+    };
+    typedArray.numComponents = numComponents;
+    Object.defineProperty(typedArray, 'numElements', {
+      get: function() {
+        return this.length / this.numComponents | 0;
+      },
+    });
+    return typedArray;
+  };
+
+  /**
+   * creates a typed array with a `push` function attached
+   * so that you can easily *push* values.
+   *
+   * `push` can take multiple arguments. If an argument is an array each element
+   * of the array will be added to the typed array.
+   *
+   * Example:
+   *
+   *     var array = createAugmentedTypedArray(3, 2);  // creates a Float32Array with 6 values
+   *     array.push(1, 2, 3);
+   *     array.push([4, 5, 6]);
+   *     // array now contains [1, 2, 3, 4, 5, 6]
+   *
+   * Also has `numComponents` and `numElements` properties.
+   *
+   * @param {number} numComponents number of components
+   * @param {number} numElements number of elements. The total size of the array will be `numComponents * numElements`.
+   * @param {constructor} opt_type A constructor for the type. Default = `Float32Array`.
+   * @return {ArrayBuffer} A typed array.
+   * @memberOf module:twgl
+   */
+  function createAugmentedTypedArray(numComponents, numElements, opt_type) {
+    var type = opt_type || Float32Array;
+    return augmentTypedArray(new type(numComponents * numElements), numComponents);
+  };
 
   /**
    * Creates XZ plane vertices.
@@ -76,9 +136,9 @@
     matrix = matrix || m4.identity();
 
     var numVertices = (subdivisionsWidth + 1) * (subdivisionsDepth + 1);
-    var positions = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var normals = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var texcoords = webglUtils.createAugmentedTypedArray(2, numVertices);
+    var positions = createAugmentedTypedArray(3, numVertices);
+    var normals = createAugmentedTypedArray(3, numVertices);
+    var texcoords = createAugmentedTypedArray(2, numVertices);
 
     for (var z = 0; z <= subdivisionsDepth; z++) {
       for (var x = 0; x <= subdivisionsWidth; x++) {
@@ -94,7 +154,7 @@
     }
 
     var numVertsAcross = subdivisionsWidth + 1;
-    var indices = webglUtils.createAugmentedTypedArray(
+    var indices = createAugmentedTypedArray(
         3, subdivisionsWidth * subdivisionsDepth * 2, Uint16Array);
 
     for (var z = 0; z < subdivisionsDepth; z++) {
@@ -165,9 +225,9 @@
     // spherical coordinates and generating 2 triangles for each quad on a
     // ring of the sphere.
     var numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
-    var positions = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var normals   = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var texCoords = webglUtils.createAugmentedTypedArray(2 , numVertices);
+    var positions = createAugmentedTypedArray(3, numVertices);
+    var normals   = createAugmentedTypedArray(3, numVertices);
+    var texCoords = createAugmentedTypedArray(2 , numVertices);
 
     // Generate the individual vertices in our vertex buffer.
     for (var y = 0; y <= subdivisionsHeight; y++) {
@@ -191,7 +251,7 @@
     }
 
     var numVertsAround = subdivisionsAxis + 1;
-    var indices = webglUtils.createAugmentedTypedArray(3, subdivisionsAxis * subdivisionsHeight * 2, Uint16Array);
+    var indices = createAugmentedTypedArray(3, subdivisionsAxis * subdivisionsHeight * 2, Uint16Array);
     for (var x = 0; x < subdivisionsAxis; x++) {
       for (var y = 0; y < subdivisionsHeight; y++) {
         // Make triangle 1 of quad.
@@ -269,10 +329,10 @@
     ];
 
     var numVertices = 6 * 4;
-    var positions = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var normals   = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var texCoords = webglUtils.createAugmentedTypedArray(2 , numVertices);
-    var indices   = webglUtils.createAugmentedTypedArray(3, 6 * 2, Uint16Array);
+    var positions = createAugmentedTypedArray(3, numVertices);
+    var normals   = createAugmentedTypedArray(3, numVertices);
+    var texCoords = createAugmentedTypedArray(2 , numVertices);
+    var indices   = createAugmentedTypedArray(3, 6 * 2, Uint16Array);
 
     for (var f = 0; f < 6; ++f) {
       var faceIndices = CUBE_FACE_INDICES[f];
@@ -346,10 +406,10 @@
     var extra = (topCap ? 2 : 0) + (bottomCap ? 2 : 0);
 
     var numVertices = (radialSubdivisions + 1) * (verticalSubdivisions + 1 + extra);
-    var positions = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var normals   = webglUtils.createAugmentedTypedArray(3, numVertices);
-    var texCoords = webglUtils.createAugmentedTypedArray(2, numVertices);
-    var indices   = webglUtils.createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+    var positions = createAugmentedTypedArray(3, numVertices);
+    var normals   = createAugmentedTypedArray(3, numVertices);
+    var texCoords = createAugmentedTypedArray(2, numVertices);
+    var indices   = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
 
     var vertsAroundEdge = radialSubdivisions + 1;
 
@@ -791,11 +851,11 @@
     var numVerts = positions.length / 3;
 
     var arrays = {
-      position: webglUtils.createAugmentedTypedArray(3, numVerts),
-      texcoord: webglUtils.createAugmentedTypedArray(2,  numVerts),
-      normal: webglUtils.createAugmentedTypedArray(3, numVerts),
-      color: webglUtils.createAugmentedTypedArray(4, numVerts, Uint8Array),
-      indices: webglUtils.createAugmentedTypedArray(3, numVerts / 3, Uint16Array),
+      position: createAugmentedTypedArray(3, numVerts),
+      texcoord: createAugmentedTypedArray(2,  numVerts),
+      normal: createAugmentedTypedArray(3, numVerts),
+      color: createAugmentedTypedArray(4, numVerts, Uint8Array),
+      indices: createAugmentedTypedArray(3, numVerts / 3, Uint16Array),
     };
 
     arrays.position.push(positions);
@@ -828,7 +888,7 @@
     function expandToUnindexed(channel) {
       var srcBuffer = vertices[channel];
       var numComponents = srcBuffer.numComponents;
-      var dstBuffer = webglUtils.createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
+      var dstBuffer = createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
       for (var ii = 0; ii < numElements; ++ii) {
         var ndx = indices[ii];
         var offset = ndx * numComponents;
@@ -1024,7 +1084,7 @@
   function makeRandomVertexColors(vertices, options) {
     options = options || {};
     var numElements = vertices.position.numElements;
-    var vcolors = webglUtils.createAugmentedTypedArray(4, numElements, Uint8Array);
+    var vcolors = createAugmentedTypedArray(4, numElements, Uint8Array);
     var rand = options.rand || function(ndx, channel) {
       return channel < 3 ? randInt(256) : 255;
     };
@@ -1055,7 +1115,7 @@
   function createBufferFunc(fn) {
     return function(gl) {
       var arrays = fn.apply(this, Array.prototype.slice.call(arguments, 1));
-      return webglUtils.createBuffersFromArrays(gl, arrays);
+      return twgl.createBuffersFromArrays(gl, arrays);
     }
   };
 
@@ -1066,7 +1126,7 @@
   function createBufferInfoFunc(fn) {
     return function(gl) {
       var arrays = fn.apply(null,  Array.prototype.slice.call(arguments, 1));
-      return webglUtils.createBufferInfoFromArrays(gl, arrays);
+      return twgl.createBufferInfoFromArrays(gl, arrays);
     };
   };
 
@@ -1074,6 +1134,7 @@
     create3DFBufferInfo: createBufferInfoFunc(create3DFVertices),
     create3DFBuffer: createBufferFunc(create3DFVertices),
     create3DFVertices: create3DFVertices,
+    createAugmentedTypedArray: createAugmentedTypedArray,
     createCubeBufferInfo: createBufferInfoFunc(createCubeVertices),
     createCubeBuffers: createBufferFunc(createCubeVertices),
     createCubeVertices: createCubeVertices,
@@ -1083,7 +1144,7 @@
     createSphereBufferInfo: createBufferInfoFunc(createSphereVertices),
     createSphereBuffers: createBufferFunc(createSphereVertices),
     createSphereVertices: createSphereVertices,
-    createTruncatedConeBufferInfo: createBufferFunc(createTruncatedConeVertices),
+    createTruncatedConeBufferInfo: createBufferInfoFunc(createTruncatedConeVertices),
     createTruncatedConeBuffers: createBufferFunc(createTruncatedConeVertices),
     createTruncatedConeVertices: createTruncatedConeVertices,
     deindexVertices: deindexVertices,
