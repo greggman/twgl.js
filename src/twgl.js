@@ -44,73 +44,8 @@
 }(this, function () {
   "use strict";
 
-  var topWindow = this;
-
   /** @module twgl */
-
-  /**
-   * Wrapped logging function.
-   * @param {string} msg The message to log.
-   */
-  function log(msg) {
-    if (topWindow.console && topWindow.console.log) {
-      topWindow.console.log(msg);
-    }
-  };
-
-  /**
-   * Wrapped logging function.
-   * @param {string} msg The message to log.
-   */
-  function error(msg) {
-    if (topWindow.console) {
-      if (topWindow.console.error) {
-        topWindow.console.error(msg);
-      }
-      else if (topWindow.console.log) {
-        topWindow.console.log(msg);
-      }
-    }
-  };
-
-  /**
-   * Turn off all logging.
-   */
-  function loggingOff() {
-    log = function() {};
-    error = function() {};
-  };
-
-  /**
-   * Converts a WebGL enum to a string
-   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
-   * @param {number} value The enum value.
-   * @return {string} The enum as a string.
-   */
-  function glEnumToString(gl, value) {
-    for (var p in gl) {
-      if (gl[p] == value) {
-        return p;
-      }
-    }
-    return "0x" + value.toString(16);
-  };
-
-  /**
-   * Creates a webgl context. If creation fails it will
-   * change the contents of the container of the <canvas>
-   * tag to an error message with the correct links for WebGL.
-   * @param {HTMLCanvasElement} canvas. The canvas element to
-   *     create a context from.
-   * @param {WebGLContextCreationAttirbutes} opt_attribs Any
-   *     creation attributes you want to pass in.
-   * @return {WebGLRenderingContext} The created context.
-   * @memberOf module:twgl
-   */
-  function setupWebGL(canvas, opt_attribs) {
-    var context = create3DContext(canvas, opt_attribs);
-    return context;
-  };
+  var error = this.console && this.console.error ? this.console.error.bind(this.console) : function() { };
 
   /**
    * Creates a webgl context.
@@ -135,13 +70,12 @@
 
   /**
    * Gets a WebGL context.
-   * makes its backing store the size it is displayed.
    * @param {HTMLCanvasElement} canvas a canvas element.
    * @param {WebGLContextCreationAttirbutes?} opt_attribs optional webgl context creation attributes
    * @memberOf module:twgl
    */
   function getWebGLContext(canvas, opt_attribs) {
-    var gl = setupWebGL(canvas, opt_attribs);
+    var gl = create3DContext(canvas, opt_attribs);
     return gl;
   };
 
@@ -191,24 +125,25 @@
    * @param {WebGLShader[]} shaders The shaders to attach
    * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+   * @param {module:twgl.ErrorCallback?} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
+   * @return {WebGLProgram?) the created program or null if error.
    * @memberOf module:twgl
    */
   function createProgram(
       gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
     var errFn = opt_errorCallback || error;
     var program = gl.createProgram();
-    for (var ii = 0; ii < shaders.length; ++ii) {
-      gl.attachShader(program, shaders[ii]);
-    }
+    shaders.forEach(function(shader) {
+      gl.attachShader(program, shader);
+    });
     if (opt_attribs) {
-      for (var ii = 0; ii < opt_attribs.length; ++ii) {
+      opt_attribs.forEach(function(attrib,  ndx) {
         gl.bindAttribLocation(
             program,
-            opt_locations ? opt_locations[ii] : ii,
-            opt_attribs[ii]);
-      }
+            opt_locations ? opt_locations[ndx] : ndx,
+            attrib);
+      });
     }
     gl.linkProgram(program);
 
@@ -229,10 +164,10 @@
    * Loads a shader from a script tag.
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
    * @param {string} scriptId The id of the script tag.
-   * @param {number} opt_shaderType The type of shader. If not passed in it will
+   * @param {number?} opt_shaderType The type of shader. If not passed in it will
    *     be derived from the type of the script tag.
-   * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
-   * @return {WebGLShader} The created shader.
+   * @param {module:twgl.ErrorCallback?} opt_errorCallback callback for errors.
+   * @return {WebGLShader?} The created shader or null if error.
    */
   function createShaderFromScript(
       gl, scriptId, opt_shaderType, opt_errorCallback) {
@@ -284,9 +219,13 @@
       gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
     var shaders = [];
     for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
-      shaders.push(createShaderFromScript(
-          gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], opt_errorCallback));
-    }
+      var shader = createShaderFromScript(
+          gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], opt_errorCallback);
+      if (!shader) {
+        return null
+      }
+      shaders.push(shader);
+    };
     return createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
   };
 
@@ -309,9 +248,13 @@
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
     var shaders = [];
     for (var ii = 0; ii < shaderSources.length; ++ii) {
-      shaders.push(loadShader(
-          gl, shaderSources[ii], gl[defaultShaderType[ii]], opt_errorCallback));
-    }
+      var shader = loadShader(
+          gl, shaderSources[ii], gl[defaultShaderType[ii]], opt_errorCallback);
+      if (!shader) {
+        return null
+      }
+      shaders.push(shader);
+    };
     return createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
   };
 
@@ -553,7 +496,7 @@
    *     setUniforms(programInfo, uniforms);
    *     setUniforms(programInfo, moreUniforms);
    *
-   * @param {Object.<string, fucntion>} setters the setters returned from
+   * @param {module:twgl.ProgramInfo|Object.<string, function>} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
    *        `createUniformSetters`.
    * @param {Object.<string, value>} an object with values for the
    *        uniforms.
@@ -698,7 +641,7 @@
    *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
-   * @param {Object.<string, function>} setters Attribute setters as returned from `createAttributeSetters`
+   * @param {module:twgl.ProgramInfo|Object.<string, function>} setters A `ProgramInfo` as returned from `createProgrmaInfo` Attribute setters as returned from `createAttributeSetters`
    * @param {module:twgl.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
    * @memberOf module:twgl
    */
@@ -709,43 +652,18 @@
     }
   };
 
-  // Add your prefix here.
-  var browserPrefixes = [
-    "",
-    "MOZ_",
-    "OP_",
-    "WEBKIT_"
-  ];
-
   /**
-   * Given an extension name like WEBGL_compressed_texture_s3tc
-   * returns the supported version extension, like
-   * WEBKIT_WEBGL_compressed_teture_s3tc
-   * @param {string} name Name of extension to look for
-   * @return {WebGLExtension} The extension or undefined if not
-   *     found.
-   * @memberOf module:twgl
-   */
-  function getExtensionWithKnownPrefixes(gl, name) {
-    for (var ii = 0; ii < browserPrefixes.length; ++ii) {
-      var prefixedName = browserPrefixes[ii] + name;
-      var ext = gl.getExtension(prefixedName);
-      if (ext) {
-        return ext;
-      }
-    }
-  };
-
-
-  /**
-   * Resize a canvas to match the size its displayed.
+   * Resize a canvas to match the size it's displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
-   * @param {boolean} true if the canvas was resized.
+   * @param {number?} a multiplier. So you can pass in `window.devicePixelRatio` if you want to.
+   * @return {boolean} true if the canvas was resized.
    * @memberOf module:twgl
    */
-  function resizeCanvasToDisplaySize(canvas) {
-    var width = canvas.clientWidth;
-    var height = canvas.clientHeight;
+  function resizeCanvasToDisplaySize(canvas, multiplier) {
+    multiplier = multiplier || 1;
+    multiplier = Math.max(1, multiplier);
+    var width  = canvas.clientWidth  * multiplier | 0;
+    var height = canvas.clientHeight * multiplier | 0;
     if (canvas.width != width ||
         canvas.height != height) {
       canvas.width = width;
@@ -755,9 +673,13 @@
     return false;
   };
 
-  // Add `push` to a typed array. It just keeps a 'cursor'
-  // and allows use to `push` values into the array so we
-  // don't have to manually compute offsets
+  /**
+   * Add `push` to a typed array. It just keeps a 'cursor'
+   * and allows use to `push` values into the array so we
+   * don't have to manually compute offsets
+   * @param {TypedArray} typedArray TypedArray to augment
+   * @param {number} numComponents number of components.
+   */
   function augmentTypedArray(typedArray, numComponents) {
     var cursor = 0;
     typedArray.push = function() {
@@ -785,7 +707,7 @@
   };
 
   /**
-   * creates a typed array with a `push` fucntion attached
+   * creates a typed array with a `push` function attached
    * so that you can easily *push* values.
    *
    * `push` can take multiple arguments. If an argument is an array each element
@@ -1150,13 +1072,6 @@
       buffers[key] = createBufferFromTypedArray(gl, array, type);
     });
 
-    // hrm
-    if (arrays.indices) {
-      buffers.numElements = arrays.indices.length;
-    } else if (arrays.position) {
-      buffers.numElements = arrays.position.length / 3;
-    }
-
     return buffers;
   };
 
@@ -1239,12 +1154,10 @@
     drawBufferInfo: drawBufferInfo,
     drawObjectList: drawObjectList,
     getWebGLContext: getWebGLContext,
-    getExtensionWithKnownPrefixes: getExtensionWithKnownPrefixes,
     resizeCanvasToDisplaySize: resizeCanvasToDisplaySize,
     setAttributes: setAttributes,
     setBuffersAndAttributes: setBuffersAndAttributes,
     setUniforms: setUniforms,
-    setupWebGL: setupWebGL,
   };
 
 }));
