@@ -6,6 +6,13 @@ To Do
 *   fix cone
 *   make other kind of sphere
 *   fix gawd damn docs
+*   add texture stuff
+    *   loading
+    *   setting filtering
+    *   creation?  {
+        src: url/img/cav/array,
+        width: height: Assumed Math.sqrt() or Wx1
+        min: mag: wrap: wrapS: wrapT
 
 Done
 ====
