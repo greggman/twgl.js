@@ -1132,7 +1132,7 @@
 
   return {
     create3DFBufferInfo: createBufferInfoFunc(create3DFVertices),
-    create3DFBuffer: createBufferFunc(create3DFVertices),
+    create3DFBuffers: createBufferFunc(create3DFVertices),
     create3DFVertices: create3DFVertices,
     createAugmentedTypedArray: createAugmentedTypedArray,
     createCubeBufferInfo: createBufferInfoFunc(createCubeVertices),
