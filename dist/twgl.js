@@ -906,12 +906,12 @@ define('twgl/twgl',[], function () {
    */
   function setUniforms(setters, values) {
     setters = setters.uniformSetters || setters;
-    Object.keys(values).forEach(function(name) {
+    for (var name in values) {
       var setter = setters[name];
       if (setter) {
         setter(values[name]);
       }
-    });
+    }
   }
 
   /**
@@ -1003,12 +1003,12 @@ define('twgl/twgl',[], function () {
    * @deprecated use {@link module:twgl.setBuffersAndAttributes}
    */
   function setAttributes(setters, buffers) {
-    Object.keys(buffers).forEach(function(name) {
+    for (var name in buffers) {
       var setter = setters[name];
       if (setter) {
         setter(buffers[name]);
       }
-    });
+    }
   }
 
   /**
