@@ -9,7 +9,7 @@
 
 <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, user-scalable=yes">
 <meta property="og:title" content="%(title)s" />
-<meta property="og:type" content="library" />
+<meta property="og:type" content="website" />
 <meta property="og:image" content="http://twgljs.org/resources/images/twgljs.png" />
 <meta property="og:description" content="TWGL.js, a tiny WebGL helper library" />
 
