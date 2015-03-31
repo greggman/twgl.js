@@ -1,7 +1,9 @@
+"use strict";
+
 require.config({
   paths: {
-    twgl: '../../src'
-  }
+    twgl: '../../src',
+  },
 });
 require([
     'twgl/twgl',
@@ -37,10 +39,11 @@ require([
   var tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
-    255,255,255,255,
-    192,192,192,255,
-    192,192,192,255,
-    255,255,255,255]));
+    255, 255, 255, 255,
+    192, 192, 192, 255,
+    192, 192, 192, 255,
+    255, 255, 255, 255,
+  ]));
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
@@ -84,7 +87,6 @@ require([
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     var time = Date.now() * 0.001;
-    var radius = 6;
     var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
     var eye = [1, 4, -20];
     var target = [0, 0, 0];
@@ -94,7 +96,7 @@ require([
     m4.inverse(camera, view);
     m4.multiply(view, projection, viewProjection);
 
-    objects.forEach(function(obj, ndx) {
+    objects.forEach(function(obj) {
       var uni = obj.uniforms;
       var world = uni.u_world;
       m4.identity(world);

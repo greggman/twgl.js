@@ -178,6 +178,8 @@ module.exports = function(grunt) {
     eslint: {
       target: [
         'src',
+        'resources/js',
+        'examples/js',
       ],
       options: {
         config: 'build/conf/eslint.json',

@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
   var m4 = twgl.m4;
   var gl = twgl.getWebGLContext(document.createElement("canvas"), {
@@ -24,7 +26,7 @@
         0, 1, 1, 3, 3, 2, 2, 0,
         4, 5, 5, 7, 7, 6, 6, 4,
         0, 4, 1, 5, 2, 6, 3, 7,
-      ]
+      ],
     },
   };
   var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
@@ -34,7 +36,6 @@
     u_color: [0.3, 0.5, 1, 1],
   };
 
-  var then = Date.now() * 0.001;
   var camera = m4.identity();
   var view = m4.identity();
   var world = m4.identity();
@@ -49,16 +50,14 @@
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
     var time = Date.now() * 0.001;
-    var elapsed = time - then;
-    then = time;
 
-    gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3])
+    gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight
+    var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     m4.perspective(30 * Math.PI / 180, aspect, 0.1, 20, projection);
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);

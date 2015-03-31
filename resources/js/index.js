@@ -1,8 +1,10 @@
+"use strict";
+
 document.addEventListener("DOMContentLoaded", function() {
   Array.prototype.forEach.call(document.querySelectorAll('pre>code'), function(section) {
     // Unwrap
     var parent = section.parentElement;
-    while(section.firstChild) {
+    while (section.firstChild) {
       var child = section.firstChild;
       section.removeChild(child);
       parent.appendChild(child);
