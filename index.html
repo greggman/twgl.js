@@ -38,14 +38,14 @@
 to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
 <h2 id="download">Download</h2>
 <ul>
-<li><p>from git</p>
-<pre><code>git clone https://github.com/greggman/twgl.js.git
-</code></pre></li>
+<li><p>from github</p>
+<p><a href="http://github.com/greggman/twgl.js">http://github.com/greggman/twgl.js</a></p>
+</li>
 <li><p>from bower</p>
 <pre><code>bower install twgl.js
 </code></pre></li>
-<li><p>from github</p>
-<pre><code>http://github.com/greggman/twgl.js
+<li><p>from git</p>
+<pre><code>git clone https://github.com/greggman/twgl.js.git
 </code></pre></li>
 </ul>
 <h2 id="why-what-how-">Why? What? How?</h2>
@@ -203,12 +203,16 @@ gl.enableVertexAttribArray(normalLoc);
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(texcoordLoc);
+gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+gl.vertexAttribPointer(colorLoc, 4, gl.UNSIGNED_BYTE, true, 0, 0);
+gl.enableVertexAttribArray(colorLoc);
 </code></pre><p><code>setAttributes</code> is just the simplest code to do that for you.</p>
 <pre><code>// make attributes for TWGL manually
 var attribs = {
-  a_position: { buffer: positionBuffer, size: 3 },
-  a_normal:   { buffer: normalBuffer, size: 3 },
-  a_texcoord: { buffer: texcoord: size: 2, },
+  a_position: { buffer: positionBuffer, size: 3, },
+  a_normal:   { buffer: normalBuffer,   size: 3, },
+  a_texcoord: { buffer: texcoordBuffer, size: 2, },
+  a_color:    { buffer: colorBuffer,    size: 4, type: gl.UNSIGNED_BYTE, normalize: true, },
 };
 setAttributes(attribSetters, attribs);
 </code></pre><p>The point of the example above is TWGL is a <strong>thin</strong> wrapper. All it&#39;s doing is trying

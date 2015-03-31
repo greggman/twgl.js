@@ -10,17 +10,17 @@ to do stuff low-level with WebGL consider using [TWGL](http://github.com/greggma
 
 ## Download
 
-*   from git
+*   from github
 
-        git clone https://github.com/greggman/twgl.js.git
+    [http://github.com/greggman/twgl.js](http://github.com/greggman/twgl.js)
 
 *   from bower
 
         bower install twgl.js
 
-*   from github
+*   from git
 
-        http://github.com/greggman/twgl.js
+        git clone https://github.com/greggman/twgl.js.git
 
 ## Why? What? How?
 
@@ -211,14 +211,18 @@ In WebGL you might write code like this
     gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
     gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(texcoordLoc);
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+    gl.vertexAttribPointer(colorLoc, 4, gl.UNSIGNED_BYTE, true, 0, 0);
+    gl.enableVertexAttribArray(colorLoc);
 
 `setAttributes` is just the simplest code to do that for you.
 
     // make attributes for TWGL manually
     var attribs = {
-      a_position: { buffer: positionBuffer, size: 3 },
-      a_normal:   { buffer: normalBuffer, size: 3 },
-      a_texcoord: { buffer: texcoord: size: 2, },
+      a_position: { buffer: positionBuffer, size: 3, },
+      a_normal:   { buffer: normalBuffer,   size: 3, },
+      a_texcoord: { buffer: texcoordBuffer, size: 2, },
+      a_color:    { buffer: colorBuffer,    size: 4, type: gl.UNSIGNED_BYTE, normalize: true, },
     };
     setAttributes(attribSetters, attribs);
 
