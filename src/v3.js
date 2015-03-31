@@ -96,7 +96,7 @@
    * @param {Vec3} a Operand vector.
    * @param {Vec3} b Operand vector.
    * @param {number} t Interpolation coefficient.
-  * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @param {Vec3?} dst vector to hold result. If not new one is created..
    * @memberOf module:twgl/v3
    */
   function lerp(a, b, t, dst) {
