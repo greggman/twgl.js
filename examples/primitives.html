@@ -186,7 +186,7 @@ void main() {
         m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
       });
 
-      twgl.drawObjectList(drawObjects);
+      twgl.drawObjectList(gl, drawObjects);
 
       requestAnimationFrame(render);
     }

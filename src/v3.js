@@ -30,17 +30,7 @@
  */
 "use strict";
 
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
-  } else {
-    // Browser globals
-    var lib = factory.call(root);
-    root.twgl = root.twgl || {};
-    root.twgl.v3 = lib;
-  }
-}(this, function () {
+define([], function () {
 
   /** @module twgl/v3 */
 
@@ -313,4 +303,4 @@
     subtract: subtract,
   };
 
-}));
+});

@@ -1,36 +1,17 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-/*
-* Copyright 2015, Gregg Tavares.
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are
-* met:
-*
-*     * Redistributions of source code must retain the above copyright
-* notice, this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above
-* copyright notice, this list of conditions and the following disclaimer
-* in the documentation and/or other materials provided with the
-* distribution.
-*     * Neither the name of Gregg Tavares. nor the names of his
-* contributors may be used to endorse or promote products derived from
-* this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-* DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+/**
+ * @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * Available via the MIT.
+ * see: http://github.com/greggman/twgl.js for details
+ */
+/**
+ * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/almond for details
+ */
+
 -->
 <html>
 <head>
@@ -55,6 +36,18 @@
 <h2 id="tl-dr">TL;DR</h2>
 <p>If you want to get shit done use <a href="http://threejs.org">three.js</a>. If you want
 to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
+<h2 id="download">Download</h2>
+<ul>
+<li><p>from git</p>
+<pre><code>git clone https://github.com/greggman/twgl.js.git
+</code></pre></li>
+<li><p>from bower</p>
+<pre><code>bower install twgl.js
+</code></pre></li>
+<li><p>from github</p>
+<pre><code>http://github.com/greggman/twgl.js
+</code></pre></li>
+</ul>
 <h2 id="why-what-how-">Why? What? How?</h2>
 <p>WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.</p>
@@ -167,6 +160,18 @@ gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(w
 gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));
 </code></pre><h3 id="compare">Compare</h3>
 <p><a href="http://twgljs.org/examples/twgl-cube.html">TWGL example</a> vs <a href="http://twgljs.org/examples/webgl-cube.html">WebGL example</a></p>
+<h2 id="examples">Examples</h2>
+<ul>
+<li><a href="http://twgljs.org/examples/twgl-cube.html">twgl cube</a></li>
+<li><a href="http://twgljs.org/examples/primitives.html">primitives</a></li>
+<li><a href="http://twgljs.org/examples/2d-lines.html">2d-lines</a></li>
+<li><a href="http://twgljs.org/examples/zoom-around.html">zoom-around</a></li>
+</ul>
+<h2 id="amd-support">AMD support</h2>
+<ul>
+<li><a href="http://twgljs.org/examples/amd.html">amd</a></li>
+<li><a href="http://twgljs.org/examples/amd-compiled.html">amd-compiled</a></li>
+</ul>
 <h2 id="other-features">Other Features</h2>
 <ul>
 <li><p>Includes some optional 3d math functions (full version)</p>

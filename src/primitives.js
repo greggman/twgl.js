@@ -36,19 +36,13 @@
  *
  * @module twgl/primitives
  */
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define(['./twgl', './m4'], factory);
-  } else {
-    // Browser globals
-    root.twgl = root.twgl || {};
-    root.twgl.primitives = factory.call(root);
-  }
-}(this, function (twgl, m4) {
-
-  twgl = twgl || this.twgl;
-  m4 = m4 || twgl.m4;
+define([
+    './twgl',
+    './m4',
+  ], function (
+    twgl,
+    m4
+  ) {
 
   /**
    * Add `push` to a typed array. It just keeps a 'cursor'
@@ -1156,4 +1150,4 @@
     reorientVertices: reorientVertices,
   };
 
-}));
+});

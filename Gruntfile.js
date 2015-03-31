@@ -1,37 +1,18 @@
 "use strict";
 
 var license = [
-'/*                                                                         ',
-' * Copyright 2015, Gregg Tavares.                                          ',
-' * All rights reserved.                                                    ',
-' *                                                                         ',
-' * Redistribution and use in source and binary forms, with or without      ',
-' * modification, are permitted provided that the following conditions are  ',
-' * met:                                                                    ',
-' *                                                                         ',
-' *     * Redistributions of source code must retain the above copyright    ',
-' * notice, this list of conditions and the following disclaimer.           ',
-' *     * Redistributions in binary form must reproduce the above           ',
-' * copyright notice, this list of conditions and the following disclaimer  ',
-' * in the documentation and/or other materials provided with the           ',
-' * distribution.                                                           ',
-' *     * Neither the name of Gregg Tavares. nor the names of his           ',
-' * contributors may be used to endorse or promote products derived from    ',
-' * this software without specific prior written permission.                ',
-' *                                                                         ',
-' * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS     ',
-' * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT       ',
-' * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR   ',
-' * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT    ',
-' * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,   ',
-' * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT        ',
-' * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,   ',
-' * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY   ',
-' * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT     ',
-' * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE   ',
-' * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.    ',
-' */                                                                        ',
-].map(function(s) { return s.trim(); }).join("\n");
+'/**                                                                                       ',
+' * @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.                ',
+' * Available via the MIT.                                                                 ',
+' * see: http://github.com/greggman/twgl.js for details                                    ',
+' */                                                                                       ',
+'/**                                                                                       ',
+' * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.',
+' * Available via the MIT or new BSD license.                                              ',
+' * see: http://github.com/jrburke/almond for details                                      ',
+' */                                                                                       ',
+'',
+].map(function(s) { return s.replace(/\s+$/, ''); }).join("\n");
 
 var replaceHandlers = {};
 function registerReplaceHandler(keyword, handler) {
@@ -126,6 +107,50 @@ module.exports = function(grunt) {
         },
       },
     },
+    //concat: {
+    //  max: {
+    //    src: libFiles,
+    //    dest: 'dist/twgl.js',
+    //  },
+    //  fullMax: {
+    //    src:  fullLibFiles,
+    //    dest: 'dist/twgl-full.js',
+    //  },
+    //},
+    requirejs: {
+      full: {
+        options: {
+          baseUrl: "./",
+          name: "node_modules/almond/almond.js",
+          include: "build/js/twgl-includer-full",
+          out: "dist/twgl-full.js",
+          optimize: "none",
+          wrap: {
+            startFile: 'build/js/twgl-start.js',
+            endFile: 'build/js/twgl-end.js',
+          },
+          paths: {
+            twgl: 'src',
+          }
+        },
+      },
+      small: {
+        options: {
+          baseUrl: "./",
+          name: "node_modules/almond/almond.js",
+          include: "build/js/twgl-includer",
+          out: "dist/twgl.js",
+          optimize: "none",
+          wrap: {
+            startFile: 'build/js/twgl-start.js',
+            endFile: 'build/js/twgl-end.js',
+          },
+          paths: {
+            twgl: 'src',
+          }
+        },
+      },
+    },
     uglify: {
       min: {
         options: {
@@ -135,18 +160,7 @@ module.exports = function(grunt) {
           compress: true,
         },
         files: {
-          'dist/twgl.min.js': libFiles,
-        },
-      },
-      max: {
-        options: {
-          mangle: false,
-          screwIE8: true,
-          banner: license,
-          compress: false,
-        },
-        files: {
-          'dist/twgl.js': libFiles,
+          'dist/twgl.min.js': ['dist/twgl.js'],
         },
       },
       fullMin: {
@@ -157,29 +171,18 @@ module.exports = function(grunt) {
           compress: false,
         },
         files: {
-          'dist/twgl-full.min.js': fullLibFiles,
-        },
-      },
-      fullMax: {
-        options: {
-          mangle: false,
-          screwIE8: true,
-          banner: license,
-          compress: false,
-        },
-        files: {
-          'dist/twgl-full.js': fullLibFiles,
+          'dist/twgl-full.min.js': ['dist/twgl-full.js'],
         },
       },
     },
     eslint: {
-        target: [
-          'src',
-        ],
-        options: {
-            config: 'build/conf/eslint.json',
-            rulesdir: ['build/rules'],
-        },
+      target: [
+        'src',
+      ],
+      options: {
+        config: 'build/conf/eslint.json',
+        rulesdir: ['build/rules'],
+      },
     },
     clean: [
       'docs',
@@ -188,9 +191,11 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('makeindex', function() {
     var marked  = require('marked');
@@ -207,6 +212,6 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
-  grunt.registerTask('default', ['eslint', 'clean', 'uglify', 'makeindex', 'jsdoc']);
+  grunt.registerTask('default', ['eslint', 'clean', 'requirejs', /*'concat',*/ 'uglify', 'makeindex', 'jsdoc']);
 };
 

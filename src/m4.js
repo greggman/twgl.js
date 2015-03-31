@@ -31,25 +31,9 @@
 
 "use strict";
 
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define(['./v3'], factory);
-  } else {
-    // Browser globals
-    var lib = factory.call(root);
-    root.twgl = root.twgl || {};
-    root.twgl.m4 = lib;
-  }
-}(this, function (v3) {
+define(['./v3'], function (v3) {
 
   /** @module twgl/m4 */
-
-  v3 = v3 || this.twgl.v3;
-  if (!v3) {
-    throw "need v3.js";
-  }
-
   var MatType = Float32Array;
 
   var tempV3a = v3.create();
@@ -1243,5 +1227,5 @@
     translation: translation,
     transpose: transpose,
   };
-}));
+});
 

@@ -30,22 +30,12 @@
  */
 "use strict";
 
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
-  } else {
-    // Browser globals
-    var lib = factory.call(root);
-    root.twgl = root.twgl || {};
-    Object.keys(lib).forEach(function(key) {
-      root.twgl[key] = lib[key];
-    });
-  }
-}(this, function () {
-
+define([], function () {
   /** @module twgl */
-  var error = this.console && this.console.error ? this.console.error.bind(this.console) : function() { };
+
+  var error = window.console && window.console.error ? window.console.error.bind(window.console) : function() { };
+  // make sure we don't see a global gl
+  var gl = undefined;  // eslint-disable-line
 
   /**
    * Creates a webgl context.
@@ -766,10 +756,6 @@
       };
     }
 
-//    if (!array.numComponents) {
-//      array.numComponents = guessNumComponentsFromName(name, array.length);
-//    }
-
     var Type = array.type;
     if (!Type) {
       if (name === "indices") {
@@ -778,12 +764,6 @@
         Type = Float32Array;
       }
     }
-//    var numElements = array.data.length / array.numComponents;
-//    if (numElements % 1) {
-//      console.warn("numComponents = ", array.numComponents, "doesn't match length = ", array.length, "of data given");
-//    }
-//FIXME    var typedArray = createAugmentedTypedArray(array.length, type);
-//FIXME    typedArray.push(array.data);
     return new Type(array.data);
   }
 
@@ -848,28 +828,31 @@
   /**
    * tries to get the number of elements from a set of arrays.
    */
-  var positionKeys = ['position', 'positions', 'a_position'];
-//FIXME
-  function getNumElementsFromNonIndexedArrays(arrays) {
-    var key;
-    for (var ii = 0; ii < positionKeys.length; ++ii) {
-      key = positionKeys[ii];
-      if (key in arrays) {
-        break;
+
+  var getNumElementsFromNonIndexedArrays = (function() {
+    var positionKeys = ['position', 'positions', 'a_position'];
+
+    return function getNumElementsFromNonIndexedArrays(arrays) {
+      var key;
+      for (var ii = 0; ii < positionKeys.length; ++ii) {
+        key = positionKeys[ii];
+        if (key in arrays) {
+          break;
+        }
       }
-    }
-    if (ii === positionKeys.length) {
-      key = Object.keys(arrays)[0];
-    }
-    var array = arrays[key];
-    var length = array.length || array.data.length;
-    var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
-    var numElements = length / numComponents;
-    if (length % numComponents > 0) {
-      throw "numComponents " + numComponent + " not correct for length " + length;
-    }
-    return numElements;
-  }
+      if (ii === positionKeys.length) {
+        key = Object.keys(arrays)[0];
+      }
+      var array = arrays[key];
+      var length = array.length || array.data.length;
+      var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
+      var numElements = length / numComponents;
+      if (length % numComponents > 0) {
+        throw "numComponents " + numComponent + " not correct for length " + length;
+      }
+      return numElements;
+    };
+  }());
 
   /**
    * @typedef {Object} BufferInfo
@@ -1091,7 +1074,7 @@
    * @param {DrawObject[]} objectsToDraw an array of objects to draw.
    * @memberOf module:twgl
    */
-  function drawObjectList(objectsToDraw) {
+  function drawObjectList(gl, objectsToDraw) {
     var lastUsedProgramInfo = null;
     var lastUsedBufferInfo = null;
 
@@ -1137,5 +1120,5 @@
     setUniforms: setUniforms,
   };
 
-}));
+});
 
