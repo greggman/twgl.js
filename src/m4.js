@@ -591,8 +591,8 @@
 
     v3.normalize(
         v3.subtract(eye, target, zAxis), zAxis);
-    v3.cross(up, zAxis, xAxis);
-    v3.cross(zAxis, xAxis, yAxis);
+    v3.normalize(v3.cross(up, zAxis, xAxis), xAxis);
+    v3.normalize(v3.cross(zAxis, xAxis, yAxis), yAxis);
 
     dst[ 0] = xAxis[0];
     dst[ 1] = xAxis[1];
