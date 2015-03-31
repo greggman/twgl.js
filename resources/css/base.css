@@ -48,7 +48,7 @@ h2,h3 {
 }
 
 code {
-    background-color: #EEE;
+    background-color: #DDD;
     color: black;
     font-family: monospace;
     font-size: larger;
@@ -99,7 +99,7 @@ pre.prettyprint ul.modifiedlines li.lineadded {
 
 pre.prettyprint, code.prettyprint {
     color: #000;
-    background: #eee;
+    background: #ddd;
     border: 1px solid #000;
     box-shadow: 3px 3px 10px #ccc;
     font-family: "Lucida Console", Monaco, monospace;
