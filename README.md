@@ -168,6 +168,11 @@ WebGL
 *   [2d-lines](http://twgljs.org/examples/2d-lines.html)
 *   [zoom-around](http://twgljs.org/examples/zoom-around.html)
 
+## AMD support
+
+*   [amd](http://twgljs.org/examples/amd.html)
+*   [amd-compiled](http://twgljs.org/examples/amd-compiled.html)
+
 ## Other Features
 
 *   Includes some optional 3d math functions (full version)
