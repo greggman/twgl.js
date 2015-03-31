@@ -229,6 +229,10 @@ In WebGL you might write code like this
 The point of the example above is TWGL is a **thin** wrapper. All it's doing is trying
 to make common WebGL operations easier and less verbose.
 
+## Want to learn WebGL?
+
+Try [webglfundamentals.org](http://webglfundamentals.org)
+
 ## Future
 
 *   What needs to change for WebGL 2.0?
