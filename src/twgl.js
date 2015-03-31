@@ -1078,6 +1078,7 @@
 
   /**
    * @typedef {Object} DrawObject
+   * @property {number?} type type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
    * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
    * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
    * @property {Object<string, ?>} uniforms The values for the uniforms
@@ -1112,7 +1113,7 @@
       setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo);
     });
   }
 
