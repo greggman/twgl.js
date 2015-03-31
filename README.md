@@ -8,6 +8,20 @@ This library's sole purpose is to make using the WebGL API less verbose.
 If you want to get shit done use [three.js](http://threejs.org). If you want
 to do stuff low-level with WebGL consider using [TWGL](http://github.com/greggman/twgl.js/).
 
+## Download
+
+*   from git
+
+        git clone https://github.com/greggman/twgl.js.git
+
+*   from bower
+
+        bower install twgl.js
+
+*   from github
+
+        http://github.com/greggman/twgl.js
+
 ## Why? What? How?
 
 WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
@@ -146,6 +160,13 @@ WebGL
 ### Compare
 
 [TWGL example](http://twgljs.org/examples/twgl-cube.html) vs [WebGL example](http://twgljs.org/examples/webgl-cube.html)
+
+## Examples
+
+*   [twgl cube](http://twgljs.org/examples/twgl-cube.html)
+*   [primitives](http://twgljs.org/examples/primitives.html)
+*   [2d-lines](http://twgljs.org/examples/2d-lines.html)
+*   [zoom-around](http://twgljs.org/examples/zoom-around.html)
 
 ## Other Features
 

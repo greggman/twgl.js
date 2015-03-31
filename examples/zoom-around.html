@@ -23,7 +23,7 @@
   </head>
   <body>
     <canvas id="c"></canvas>
-    <div id="b"><a href="http://twgljs.org">twgl.js</a> - primitives</div>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - zoom around</div>
   </body>
   <script id="vs" type="notjs">
 uniform mat4 u_worldViewProjection;
@@ -93,18 +93,27 @@ void main() {
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     var m4 = twgl.m4;
+    var v3 = twgl.v3;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     var shapes = [
       twgl.primitives.createCubeBufferInfo(gl, 2),
       twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
-      twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
       twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
     ];
 
     function rand(min, max) {
       return min + Math.random() * (max - min);
+    }
+
+    function easeInOut(t, start, end) {
+      var c = end - start;
+      if ((t /= 0.5) < 1) {
+        return c / 2 * t * t + start;
+      } else {
+        return -c / 2 * ((--t) * (t - 2) - 1) + start;
+      }
     }
 
     // Shared values
@@ -113,6 +122,19 @@ void main() {
     var camera = m4.identity();
     var view = m4.identity();
     var viewProjection = m4.identity();
+    var targetNdx = 0;
+    var targetTimer = 0;
+    var zoomTimer = 0;
+    var eye = v3.copy([1, 4, -60]);
+    var target = v3.copy([0, 0, 0]);
+    var up = [0, 1, 0];
+    var zoomScale = 1.4;
+    var zoomDuration = 2;
+    var targetChangeInterval = 3;
+    var oldEye;
+    var oldTarget;
+    var newEye;
+    var newTarget;
 
     var tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -148,12 +170,16 @@ void main() {
         uniforms: uniforms,
       });
       objects.push({
-        translation: [rand(-10, 10), rand(-10, 10), rand(-10, 10)],
-        ySpeed: rand(0.1, 0.3),
-        zSpeed: rand(0.1, 0.3),
+        translation: [rand(-50, 50), rand(-50, 50), rand(-50, 50)],
+        scale: rand(1, 5),
+        size: 2,
+        xSpeed: rand(0.2, 0.7),
+        zSpeed: rand(0.2, 0.7),
         uniforms: uniforms,
       });
     }
+
+    var then = Date.now() * 0.001;
 
     function render() {
       twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -164,11 +190,32 @@ void main() {
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       var time = Date.now() * 0.001;
+      var elapsed = time - then;
+      then = time;
+
       var radius = 6;
-      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-      var eye = [1, 4, -20];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      var fovy = 30 * Math.PI / 180;
+      var projection = m4.perspective(fovy, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 200);
+
+      targetTimer -= elapsed;
+      if (targetTimer <= 0) {
+        targetTimer = targetChangeInterval;
+        zoomTimer = 0;
+        targetNdx = (targetNdx + 1) % objects.length;
+        oldEye = v3.copy(eye);
+        oldTarget = v3.copy(target);
+        var targetObj = objects[targetNdx];
+        newTarget = targetObj.translation;
+        var halfSize = targetObj.size * targetObj.scale * zoomScale * 0.5;
+        var distance = halfSize / Math.tan(fovy * 0.5);
+        var direction = v3.normalize(v3.subtract(eye, newTarget));
+        newEye = v3.add(newTarget, v3.mulScalar(direction, distance));
+      }
+
+      zoomTimer += elapsed;
+      var lerp = easeInOut(Math.min(1, zoomTimer / zoomDuration), 0, 1);
+      eye = v3.lerp(oldEye, newEye, lerp);
+      target = v3.lerp(oldTarget, newTarget, lerp);
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
@@ -178,10 +225,10 @@ void main() {
         var uni = obj.uniforms;
         var world = uni.u_world;
         m4.identity(world);
-        m4.rotateY(world, time * obj.ySpeed, world);
-        m4.rotateZ(world, time * obj.zSpeed, world);
         m4.translate(world, obj.translation, world);
-        m4.rotateX(world, time, world);
+        m4.rotateX(world, time * obj.xSpeed, world);
+        m4.rotateZ(world, time * obj.zSpeed, world);
+        m4.scale(world, [obj.scale, obj.scale, obj.scale], world);
         m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
         m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
       });
