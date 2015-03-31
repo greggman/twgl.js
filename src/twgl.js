@@ -861,6 +861,7 @@
     if (ii === positionKeys.length) {
       key = Object.keys(arrays)[0];
     }
+    var array = arrays[key];
     var length = array.length || array.data.length;
     var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
     var numElements = length / numComponents;
