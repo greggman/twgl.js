@@ -16,6 +16,7 @@
 <title>%(title)s</title>
 
 <link rel="stylesheet" href="/resources/css/base.css" type="text/css" />
+<link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 </head>
 <body>
 <div id="canvas">
