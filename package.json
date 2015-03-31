@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/greggman/twgl.js",
   "devDependencies": {
+    "almond": "^0.3.1",
     "eslint": "^0.18.0",
     "eslint-plugin-google-camelcase": "0.0.1",
     "eslint-plugin-one-variable-per-var": "0.0.3",
@@ -28,6 +29,8 @@
     "eslint-plugin-require-trailing-comma": "0.0.1",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-requirejs": "^0.4.4",
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-eslint": "^10.0.0",
     "grunt-jsdoc": "^0.5.8",
