@@ -131,7 +131,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="createAttribsFromArrays"><span class="type-signature">&lt;static> </span>createAttribsFromArrays<span class="signature">(gl, arrays, opt_mapping)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#AttribInfo">module:twgl.AttribInfo</a>>}</span></h4>
+    <h4 class="name" id="createAttribsFromArrays"><span class="type-signature">&lt;static> </span>createAttribsFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#AttribInfo">module:twgl.AttribInfo</a>>}</span></h4>
     
     
 </dt>
@@ -150,11 +150,33 @@
  };</code></pre>
 <p>returns something like</p>
 <pre><code> var attribs = {
-   a_position: { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
-   a_texcoord: { numComponents: 2, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
-   a_normal:   { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
-   a_color:    { numComponents: 4, type: gl.UNSIGNED_BYTE, normalize: true,  buffer: WebGLBuffer, },
+   position: { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   texcoord: { numComponents: 2, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   normal:   { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   color:    { numComponents: 4, type: gl.UNSIGNED_BYTE, normalize: true,  buffer: WebGLBuffer, },
  };</code></pre>
+<p>notes:</p>
+<ul>
+<li><p>Arrays can take various forms</p>
+<p>Bare JavaScript Arrays</p>
+<pre><code>var arrays = {
+   position: [-1, 1, 0],
+   normal: [0, 1, 0],
+   ...
+}</code></pre>
+<p>Bare TypedArrays</p>
+<pre><code>var arrays = {
+   position: new Float32Array([-1, 1, 0]),
+   color: new Uint8Array([255, 128, 64, 255]),
+   ...
+}</code></pre>
+</li>
+<li><p>Will guess at numComponents if not specified based on name.</p>
+<p>If 'coord' is in the name assumes numComponents = 2</p>
+<p>If 'color' is in the name assumes numComponents = 4</p>
+<p>otherwise assumes numComponents = 3</p>
+</li>
+</ul>
     </div>
     
 
@@ -175,8 +197,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
 		
 
 		
@@ -203,14 +223,6 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -234,52 +246,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
             <td class="description last"><p>The arrays</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>opt_mapping</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">?Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>mapping from attribute name to array name.
-    if not specified defaults to &quot;a_name&quot; -&gt; &quot;name&quot;.</p></td>
         </tr>
 
 	
@@ -698,7 +668,7 @@ array.push([4, 5, 6]);
         
             
 <dt>
-    <h4 class="name" id="createBufferInfoFromArrays"><span class="type-signature">&lt;static> </span>createBufferInfoFromArrays<span class="signature">(gl, arrays, opt_mapping)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
+    <h4 class="name" id="createBufferInfoFromArrays"><span class="type-signature">&lt;static> </span>createBufferInfoFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
     
     
 </dt>
@@ -798,8 +768,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
 		<th>Type</th>
 
 		
-		<th>Argument</th>
-		
 
 		
 
@@ -825,14 +793,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -856,76 +816,10 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
             <td class="description last"><p>Your data</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>opt_mapping</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">?Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>an optional mapping of attribute to array name.
-   If not passed in it's assumed the array names will be mapped to an attibute
-   of the same name with &quot;a_&quot; prefixed to it. An other words.</p>
-<pre><code>   var arrays = {
-      position: ...,
-      texcoord: ...,
-      normal:   ...,
-      indices:  ...,
-   };
-
-   bufferInfo = createBufferInfoFromArrays(gl, arrays);</code></pre>
-<p>   Is the same as</p>
-<pre><code>   var arrays = {
-      position: ...,
-      texcoord: ...,
-      normal:   ...,
-      indices:  ...,
-   };
-
-   var mapping = {
-     a_position: &quot;position&quot;,
-     a_texcoord: &quot;texcoord&quot;,
-     a_normal:   &quot;normal&quot;,
-   };
-
-   bufferInfo = createBufferInfoFromArrays(gl, arrays, mapping);</code></pre></td>
         </tr>
 
 	

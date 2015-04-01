@@ -477,6 +477,29 @@ define('twgl/twgl',[], function () {
   var error = window.console && window.console.error ? window.console.error.bind(window.console) : function() { };
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
+  var defaultAttribPrefix = "";
+
+  /**
+   * Sets the default attrib prefix
+   *
+   * When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
+   * as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+   *
+   * In otherwords I'll create arrays of geometry like this
+   *
+   *     var arrays = {
+   *       position: ...
+   *       normal: ...
+   *       texcoord: ...
+   *     };
+   *
+   * But need those mapped to attributes and my attributes start with `a_`.
+   *
+   * @param {string} prefix prefix for attribs
+   */
+  function setAttributePrefix(prefix) {
+    defaultAttribPrefix = prefix;
+  }
 
   /**
    * Creates a webgl context.
@@ -1133,16 +1156,8 @@ define('twgl/twgl',[], function () {
     return buffer;
   }
 
-  function allButIndices(name) {
-    return name !== "indices";
-  }
-
-  function createMapping(obj) {
-    var mapping = {};
-    Object.keys(obj).filter(allButIndices).forEach(function(key) {
-      mapping["a_" + key] = key;
-    });
-    return mapping;
+  function isIndices(name) {
+    return name === "indices";
   }
 
   function getGLTypeForTypedArray(gl, typedArray) {
@@ -1237,31 +1252,59 @@ define('twgl/twgl',[], function () {
    * returns something like
    *
    *      var attribs = {
-   *        a_position: { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
-   *        a_texcoord: { numComponents: 2, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
-   *        a_normal:   { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
-   *        a_color:    { numComponents: 4, type: gl.UNSIGNED_BYTE, normalize: true,  buffer: WebGLBuffer, },
+   *        position: { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   *        texcoord: { numComponents: 2, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   *        normal:   { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   *        color:    { numComponents: 4, type: gl.UNSIGNED_BYTE, normalize: true,  buffer: WebGLBuffer, },
    *      };
+   *
+   * notes:
+   *
+   * *   Arrays can take various forms
+   *
+   *     Bare JavaScript Arrays
+   *
+   *         var arrays = {
+   *            position: [-1, 1, 0],
+   *            normal: [0, 1, 0],
+   *            ...
+   *         }
+   *
+   *     Bare TypedArrays
+   *
+   *         var arrays = {
+   *            position: new Float32Array([-1, 1, 0]),
+   *            color: new Uint8Array([255, 128, 64, 255]),
+   *            ...
+   *         }
+   *
+   * *   Will guess at numComponents if not specified based on name.
+   *
+   *     If 'coord' is in the name assumes numComponents = 2
+   *
+   *     If 'color' is in the name assumes numComponents = 4
+   *
+   *     otherwise assumes numComponents = 3
    *
    * @param {WebGLRenderingContext} gl The webgl rendering context.
    * @param {Object.<string, array|typedarray>} arrays The arrays
-   * @param {Object.<string, string>?} opt_mapping mapping from attribute name to array name.
-   *     if not specified defaults to "a_name" -> "name".
    * @return {Object.<string, module:twgl.AttribInfo>} the attribs
    * @memberOf module:twgl
    */
-  function createAttribsFromArrays(gl, arrays, opt_mapping) {
-    var mapping = opt_mapping || createMapping(arrays);
+  function createAttribsFromArrays(gl, arrays) {
     var attribs = {};
-    Object.keys(mapping).forEach(function(attribName) {
-      var bufferName = mapping[attribName];
-      var array = makeTypedArray(arrays[bufferName], bufferName);
-      attribs[attribName] = {
-        buffer:        createBufferFromTypedArray(gl, array),
-        numComponents: array.numComponents || guessNumComponentsFromName(bufferName),
-        type:          getGLTypeForTypedArray(gl, array),
-        normalize:     getNormalizationForTypedArray(array),
-      };
+    Object.keys(arrays).forEach(function(arrayName) {
+      if (!isIndices(arrayName)) {
+        var array = arrays[arrayName];
+        var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
+        var typedArray = makeTypedArray(array, arrayName);
+        attribs[attribName] = {
+          buffer:        createBufferFromTypedArray(gl, typedArray),
+          numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
+          type:          getGLTypeForTypedArray(gl, typedArray),
+          normalize:     getNormalizationForTypedArray(typedArray),
+        };
+      }
     });
     return attribs;
   }
@@ -1392,42 +1435,12 @@ define('twgl/twgl',[], function () {
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {Object.<string, array|object|typedarray>} arrays Your data
-   * @param {Object.<string, string>?} opt_mapping an optional mapping of attribute to array name.
-   *    If not passed in it's assumed the array names will be mapped to an attibute
-   *    of the same name with "a_" prefixed to it. An other words.
-   *
-   *        var arrays = {
-   *           position: ...,
-   *           texcoord: ...,
-   *           normal:   ...,
-   *           indices:  ...,
-   *        };
-   *
-   *        bufferInfo = createBufferInfoFromArrays(gl, arrays);
-   *
-   *    Is the same as
-   *
-   *        var arrays = {
-   *           position: ...,
-   *           texcoord: ...,
-   *           normal:   ...,
-   *           indices:  ...,
-   *        };
-   *
-   *        var mapping = {
-   *          a_position: "position",
-   *          a_texcoord: "texcoord",
-   *          a_normal:   "normal",
-   *        };
-   *
-   *        bufferInfo = createBufferInfoFromArrays(gl, arrays, mapping);
-   *
    * @return {module:twgl.BufferInfo} A BufferInfo
    * @memberOf module:twgl
    */
-  function createBufferInfoFromArrays(gl, arrays, opt_mapping) {
+  function createBufferInfoFromArrays(gl, arrays) {
     var bufferInfo = {
-      attribs: createAttribsFromArrays(gl, arrays, opt_mapping),
+      attribs: createAttribsFromArrays(gl, arrays),
     };
     var indices = arrays.indices;
     if (indices) {
@@ -1557,6 +1570,7 @@ define('twgl/twgl',[], function () {
     getWebGLContext: getWebGLContext,
     resizeCanvasToDisplaySize: resizeCanvasToDisplaySize,
     setAttributes: setAttributes,
+    setAttributePrefix: setAttributePrefix,
     setBuffersAndAttributes: setBuffersAndAttributes,
     setUniforms: setUniforms,
   };

@@ -67,6 +67,7 @@ void main() {
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     var m4 = twgl.m4;
+    twgl.setAttributePrefix("a_");
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 

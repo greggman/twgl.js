@@ -94,6 +94,7 @@ void main() {
   <script src="../dist/twgl-full.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
+    twgl.setAttributePrefix("a_");
     var m4 = twgl.m4;
     var v3 = twgl.v3;
     var gl = twgl.getWebGLContext(document.getElementById("c"));

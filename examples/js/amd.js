@@ -15,6 +15,7 @@ require([
     m4,
     primitives,
     chroma) {
+  twgl.setAttributePrefix("a_");
   var gl = twgl.getWebGLContext(document.getElementById("c"));
   var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 

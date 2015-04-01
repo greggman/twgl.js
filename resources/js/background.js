@@ -1,6 +1,7 @@
 "use strict";
 
 (function() {
+  twgl.setAttributePrefix("a_");
   var m4 = twgl.m4;
   var gl = twgl.getWebGLContext(document.createElement("canvas"), {
     alpha: false,
