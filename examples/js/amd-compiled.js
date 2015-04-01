@@ -31,16 +31,16 @@ require([
   var view = m4.identity();
   var viewProjection = m4.identity();
 
-  var tex = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
-    255, 255, 255, 255,
-    192, 192, 192, 255,
-    192, 192, 192, 255,
-    255, 255, 255, 255,
-  ]));
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  var tex = twgl.createTexture(gl, {
+    min: gl.NEAREST,
+    mag: gl.NEAREST,
+    src: [
+      255, 255, 255, 255,
+      192, 192, 192, 255,
+      192, 192, 192, 255,
+      255, 255, 255, 255,
+    ],
+  });
 
   var objects = [];
   var drawObjects = [];

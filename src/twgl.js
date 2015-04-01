@@ -37,6 +37,24 @@ define([], function () {
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
   var defaultAttribPrefix = "";
+  var defaultTextureColor = new Uint8Array([128, 192, 255, 255]);
+  var defaultTextureOptions = {};
+
+  /**
+   * Sets the default texture color.
+   *
+   * The default texture color is used when loading textures from
+   * urls. Because the URL will be loaded async we'd like to be
+   * able to use the texture immediately. By putting a 1x1 pixel
+   * color in the texture we can start using the texture before
+   * the URL has loaded.
+   *
+   * @param {number[]} color Array of 4 values in the range 0 to 1
+   * @memberOf module:twgl
+   */
+  function setDefaultTextureColor(color) {
+    defaultTextureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
+  }
 
   /**
    * Sets the default attrib prefix
@@ -55,10 +73,41 @@ define([], function () {
    * But need those mapped to attributes and my attributes start with `a_`.
    *
    * @param {string} prefix prefix for attribs
+   * @memberOf module:twgl
    */
   function setAttributePrefix(prefix) {
     defaultAttribPrefix = prefix;
   }
+
+  /**
+   * Gets a string for gl enum
+   *
+   * Note: Several enums are the same. Without more
+   * context (which function) it's impossible to always
+   * give the correct enum.
+   *
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {number} value the value of the enum you want to look up.
+   */
+  var glEnumToString = (function() {
+    var enums;
+
+    function init(gl) {
+      if (!enums) {
+        enums = {};
+        Object.keys(gl).forEach(function(key) {
+          if (typeof gl[key] === 'number') {
+            enums[gl[key]] = key;
+          }
+        });
+      }
+    }
+
+    return function glEnumToString(gl, value) {
+      init();
+      return enums[value] || ("0x" + value.toString(16));
+    };
+  }());
 
   /**
    * Creates a webgl context.
@@ -312,55 +361,89 @@ define([], function () {
       // Check if this uniform is an array
       var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
       if (type === gl.FLOAT && isArray) {
-        return function(v) { gl.uniform1fv(location, v); };
+        return function(v) {
+          gl.uniform1fv(location, v);
+        };
       }
       if (type === gl.FLOAT) {
-        return function(v) { gl.uniform1f(location, v); };
+        return function(v) {
+          gl.uniform1f(location, v);
+        };
       }
       if (type === gl.FLOAT_VEC2) {
-        return function(v) { gl.uniform2fv(location, v); };
+        return function(v) {
+          gl.uniform2fv(location, v);
+        };
       }
       if (type === gl.FLOAT_VEC3) {
-        return function(v) { gl.uniform3fv(location, v); };
+        return function(v) {
+          gl.uniform3fv(location, v);
+        };
       }
       if (type === gl.FLOAT_VEC4) {
-        return function(v) { gl.uniform4fv(location, v); };
+        return function(v) {
+          gl.uniform4fv(location, v);
+        };
       }
       if (type === gl.INT && isArray) {
-        return function(v) { gl.uniform1iv(location, v); };
+        return function(v) {
+          gl.uniform1iv(location, v);
+        };
       }
       if (type === gl.INT) {
-        return function(v) { gl.uniform1i(location, v); };
+        return function(v) {
+          gl.uniform1i(location, v);
+        };
       }
       if (type === gl.INT_VEC2) {
-        return function(v) { gl.uniform2iv(location, v); };
+        return function(v) {
+          gl.uniform2iv(location, v);
+        };
       }
       if (type === gl.INT_VEC3) {
-        return function(v) { gl.uniform3iv(location, v); };
+        return function(v) {
+          gl.uniform3iv(location, v);
+        };
       }
       if (type === gl.INT_VEC4) {
-        return function(v) { gl.uniform4iv(location, v); };
+        return function(v) {
+          gl.uniform4iv(location, v);
+        };
       }
       if (type === gl.BOOL) {
-        return function(v) { gl.uniform1iv(location, v); };
+        return function(v) {
+          gl.uniform1iv(location, v);
+        };
       }
       if (type === gl.BOOL_VEC2) {
-        return function(v) { gl.uniform2iv(location, v); };
+        return function(v) {
+          gl.uniform2iv(location, v);
+        };
       }
       if (type === gl.BOOL_VEC3) {
-        return function(v) { gl.uniform3iv(location, v); };
+        return function(v) {
+          gl.uniform3iv(location, v);
+        };
       }
       if (type === gl.BOOL_VEC4) {
-        return function(v) { gl.uniform4iv(location, v); };
+        return function(v) {
+          gl.uniform4iv(location, v);
+        };
       }
       if (type === gl.FLOAT_MAT2) {
-        return function(v) { gl.uniformMatrix2fv(location, false, v); };
+        return function(v) {
+          gl.uniformMatrix2fv(location, false, v);
+        };
       }
       if (type === gl.FLOAT_MAT3) {
-        return function(v) { gl.uniformMatrix3fv(location, false, v); };
+        return function(v) {
+          gl.uniformMatrix3fv(location, false, v);
+        };
       }
       if (type === gl.FLOAT_MAT4) {
-        return function(v) { gl.uniformMatrix4fv(location, false, v); };
+        return function(v) {
+          gl.uniformMatrix4fv(location, false, v);
+        };
       }
       if ((type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) && isArray) {
         var units = [];
@@ -720,22 +803,35 @@ define([], function () {
   }
 
   function getGLTypeForTypedArray(gl, typedArray) {
-    /*eslint brace-style:0*/
-    if (typedArray instanceof Int8Array)    { return gl.BYTE; }
-    if (typedArray instanceof Uint8Array)   { return gl.UNSIGNED_BYTE; }
-    if (typedArray instanceof Int16Array)   { return gl.SHORT; }
-    if (typedArray instanceof Uint16Array)  { return gl.UNSIGNED_SHORT; }
-    if (typedArray instanceof Int32Array)   { return gl.INT; }
-    if (typedArray instanceof Uint32Array)  { return gl.UNSIGNED_INT; }
-    if (typedArray instanceof Float32Array) { return gl.FLOAT; }
+    if (typedArray instanceof Int8Array)    { return gl.BYTE; }           // eslint-disable-line
+    if (typedArray instanceof Uint8Array)   { return gl.UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Int16Array)   { return gl.SHORT; }          // eslint-disable-line
+    if (typedArray instanceof Uint16Array)  { return gl.UNSIGNED_SHORT; } // eslint-disable-line
+    if (typedArray instanceof Int32Array)   { return gl.INT; }            // eslint-disable-line
+    if (typedArray instanceof Uint32Array)  { return gl.UNSIGNED_INT; }   // eslint-disable-line
+    if (typedArray instanceof Float32Array) { return gl.FLOAT; }          // eslint-disable-line
     throw "unsupported typed array type";
+  }
+
+  function getTypedArrayTypeForGLType(gl, type) {
+    switch (type) {
+      case gl.BYTE:           return Int8Array;     // eslint-disable-line
+      case gl.UNSIGNED_BYTE:  return Uint8Array;    // eslint-disable-line
+      case gl.SHORT:          return Int16Array;    // eslint-disable-line
+      case gl.UNSIGNED_SHORT: return Uint16Array;   // eslint-disable-line
+      case gl.INT:            return Int32Array;    // eslint-disable-line
+      case gl.UNSIGNED_INT:   return Uint32Array;   // eslint-disable-line
+      case gl.FLOAT:          return Float32Array;  // eslint-disable-line
+      default:
+        throw "unknown gl type";
+    }
   }
 
   // This is really just a guess. Though I can't really imagine using
   // anything else? Maybe for some compression?
   function getNormalizationForTypedArray(typedArray) {
-    if (typedArray instanceof Int8Array)    { return true; }
-    if (typedArray instanceof Uint8Array)   { return true; }
+    if (typedArray instanceof Int8Array)    { return true; }  // eslint-disable-line
+    if (typedArray instanceof Uint8Array)   { return true; }  // eslint-disable-line
     return false;
   }
 
@@ -1114,6 +1210,174 @@ define([], function () {
     });
   }
 
+  function setTextureParameters(gl, tex, options) {
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    if (options.min) {
+      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, options.min);
+    }
+    if (options.mag) {
+      gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, options.mag);
+    }
+    if (options.wrap) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrap);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrap);
+    }
+    if (options.wrapS) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrapS);
+    }
+    if (options.wrapT) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrapT);
+    }
+  }
+
+  function make1Pixel(color) {
+    color = color || defaultTextureColor;
+    if (isArrayBuffer(color)) {
+      return color;
+    }
+    return new Uint8Array(color);
+  }
+
+  function isPowerOf2(value) {
+    return (value & (value - 1)) === 0;
+  }
+
+  function setTextureFilteringForSize(gl, tex, width, height) {
+    if (!isPowerOf2(width) || !isPowerOf2(height)) {
+      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_Y, gl.CLAMP_TO_EDGE);
+    }
+  }
+
+  function setTextureToElement(gl, tex, element, options) {
+    options = options || defaultTextureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    gl.texImage2D(target, 0, options.format, options.format, options.type, element);
+    if (options.auto !== false) {
+      setTextureFilteringForSize(gl, tex, element.width, element.height);
+    } else {
+      gl.generateMipmap(target);
+    }
+    setTextureParameters(gl, tex, options);
+  }
+
+  function loadTextureFromURL(gl, tex, options, callback) {
+    options = options || defaultTextureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    // Assume it's a URL
+    // Put 1x1 pixels in texture. That makes it renderable immediately regardless of filtering.
+    gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, make1Pixel(options.color));
+    var img = new Image();
+    // Because it's async we need to copy the options.
+    // It would arguably be more appropriate to copy just the options we need
+    // but those can change so for now let's just do this.
+    options = JSON.parse(JSON.stringify(options));
+    img.onerror = function() {
+      if (callback) {
+        callback("couldn't load image", tex, img);
+      }
+    };
+    img.onload = function() {
+      setTextureToElement(gl, tex, element, options);
+      if (callback) {
+        callback(null, tex, img);
+      }
+    };
+    img.src = options.src;
+  }
+
+  function getNumComponentsForFormat(gl, format) {
+    switch (format) {
+      case gl.ALPHA:
+      case gl.LUMINANCE:
+        return 1;
+      case gl.LUMINANCE_ALPHA:
+        return 2;
+      case gl.RGB:
+        return 3;
+      case gl.RGBA:
+        return 4;
+      default:
+        throw "unknown type: " + type;
+    }
+  }
+
+  function getTextureTypeForArrayType(gl, src) {
+    if (isArrayBuffer(src)) {
+      return getGLTypeForTypedArray(gl, src);
+    }
+    return gl.UNSIGNED_BYTE;
+  }
+
+  function setTextureFromArray(gl, tex, src, options) {
+    options = options || defaultTextureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    var width = options.width;
+    var height = options.height;
+    var format = options.format || gl.RGBA;
+    var type = options.type || getTextureTypeForArrayType(gl, src);
+    var numComponents = getNumComponentsForFormat(gl, format);
+    var numElements = src.length / numComponents;
+    if (numElements % 1) {
+      throw "length wrong size of format: " + glEnumToString(gl, format);
+    }
+    if (!width && !height) {
+      var size = Math.sqrt(numElements);
+      if (size % 1 === 0) {
+        width = size;
+        height = size;
+      } else {
+        width = numElements;
+        height = 1;
+      }
+    } else if (!height) {
+      height = numElements / width;
+      if (height % 1) {
+        throw "can't guess height";
+      }
+    } else if (!width) {
+      width = numElements / height;
+      if (width % 1) {
+        throw "can't guess width";
+      }
+    }
+    if (!isArrayBuffer(src)) {
+      var Type = getTypedArrayTypeForGLType(gl, type);
+      src = new Type(src);
+    }
+    gl.texImage2D(target, 0, format, width, height, 0, format, type, src);
+  }
+
+  function setEmptyTexture(gl, tex, options) {
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    var format = options.format || gl.RGBA;
+    var type = options.type || gl.UNSIGNED_BYTE;
+    gl.texImage2D(target, 0, format, options.width, options.height, 0, format, type, null);
+  }
+
+  function createTexture(gl, options, callback) {
+    options = options || defaultTextureOptions;
+    var tex = gl.createTexture();
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    setTextureParameters(gl, tex, options);
+    var src = options.src;
+    if (src) {
+      if (typeof (src) === "string") {
+        loadTextureFromUrl(gl, tex, options, callback);
+      } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
+        setTextureFromArray(gl, tex, src, options);
+      }
+    } else {
+      setEmptyTexture(gl, tex, options);
+    }
+    return tex;
+  }
+
   return {
     createAttribsFromArrays: createAttribsFromArrays,
     createBuffersFromArrays: createBuffersFromArrays,
@@ -1132,6 +1396,15 @@ define([], function () {
     setAttributePrefix: setAttributePrefix,
     setBuffersAndAttributes: setBuffersAndAttributes,
     setUniforms: setUniforms,
+
+    createTexture: createTexture,
+    setEmptyTexture: setEmptyTexture,
+    setTextureFromArray: setTextureFromArray,
+    loadTextureFromURL: loadTextureFromURL,
+    setTextureToElement: setTextureToElement,
+    setTextureFilteringForSize: setTextureFilteringForSize,
+    setTextureParameters: setTextureParameters,
+    setDefaultTextureColor: setDefaultTextureColor,
   };
 
 });
