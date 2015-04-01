@@ -1,7 +1,7 @@
 To Do
 =====
 
-*   remove "a_" prefix
+*   document arrays in one place
 *   make program attributes an option, not a optional argument?
 *   fix cone
 *   make other kind of sphere
@@ -17,6 +17,7 @@ To Do
 Done
 ====
 
+*   remove "a_" prefix
 *   make primitives bufferInfo creator generate array { numComponents: x, data: y } ? (decided not to change this)
 *   make a augmentedTypedArray example that's lines so I know it works
 *   make AMD test
