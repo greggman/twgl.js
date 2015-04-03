@@ -1211,6 +1211,9 @@ define([], function () {
   }
 
   /**
+   * Texture options passed to most texture functions. Each function will use whatever options
+   * are appropriate for its needs. This lets you pass the same options to all functions.
+   *
    * @typedef {Object} TextureOptions
    * @property {number?} target the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
    * @property {number?} width the width of the texture. Only used if src is an array or typed array or null.
@@ -1241,8 +1244,12 @@ define([], function () {
    *    mips are generated for power of 2 images.
    * @property {number[]?} cubeFaceOrder The order that cube faces are pull out of an img or set of images. The default is
    *
-   *     [gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-   *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
+   *     [gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+   *      gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+   *      gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+   *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+   *      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+   *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
    *
    * @property {number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|?} src source for texture
    *
@@ -1265,9 +1272,9 @@ define([], function () {
    *
    *    *   If only one of `width` or `height` is specified then the other equals `numElements / specifiedDimension`.
    *
-   *    If `number[]` will be converted to `type`.
+   * If `number[]` will be converted to `type`.
    *
-   *    If `src` is undefined then an empty texture will be created of size `width` by `height`.
+   * If `src` is undefined then an empty texture will be created of size `width` by `height`.
    *
    * @memberOf module:twgl
    */
@@ -1417,6 +1424,7 @@ define([], function () {
    * @param {HTMLElement} element a canvas, img, or video element.
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
+   * @kind function
    */
   var setTextureFromElement = function() {
     var ctx = document.createElement("canvas").getContext("2d");

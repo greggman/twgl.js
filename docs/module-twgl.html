@@ -124,64 +124,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-<dt class="name" id="setTextureFromElement">
-    <h4><span class="type-signature">&lt;static> </span>setTextureFromElement<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Set a texture from the contents of an element. Will also set
-texture filtering or generate mips based on the dimensions of the element
-unless <code>options.auto === false</code>. If <code>target === gl.TEXTURE_CUBE_MAP</code> will
-attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
-    </div>
-    
-
-    
-
-    
-<dl class="details">
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        </dl>
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -5054,6 +4996,193 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.
         
             
 <dt>
+    <h4 class="name" id="setTextureFromElement"><span class="type-signature">&lt;static> </span>setTextureFromElement<span class="signature">(gl, tex, element, options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set a texture from the contents of an element. Will also set
+texture filtering or generate mips based on the dimensions of the element
+unless <code>options.auto === false</code>. If <code>target === gl.TEXTURE_CUBE_MAP</code> will
+attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a canvas, img, or video element.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="setTextureParameters"><span class="type-signature">&lt;static> </span>setTextureParameters<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
     
     
@@ -6549,6 +6678,11 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 </dt>
 <dd>
     
+    <div class="description">
+        <p>Texture options passed to most texture functions. Each function will use whatever options
+are appropriate for its needs. This lets you pass the same options to all functions.</p>
+    </div>
+    
 
     
         <h5>Type:</h5>
@@ -7127,8 +7261,12 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             
 
             <td class="description last"><p>The order that cube faces are pull out of an img or set of images. The default is</p>
-<pre><code>[gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
- gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]</code></pre></td>
+<pre><code>[gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+ gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+ gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+ gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+ gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+ gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]</code></pre></td>
         </tr>
 
 	
@@ -7194,10 +7332,10 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
 </li>
 <li><p>If only one of <code>width</code> or <code>height</code> is specified then the other equals <code>numElements / specifiedDimension</code>.</p>
-<p>If <code>number[]</code> will be converted to <code>type</code>.</p>
-<p>If <code>src</code> is undefined then an empty texture will be created of size <code>width</code> by <code>height</code>.</p>
 </li>
-</ul></td>
+</ul>
+<p>If <code>number[]</code> will be converted to <code>type</code>.</p>
+<p>If <code>src</code> is undefined then an empty texture will be created of size <code>width</code> by <code>height</code>.</p></td>
         </tr>
 
 	
