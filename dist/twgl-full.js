@@ -1824,7 +1824,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function setTextureFilteringForSize(gl, tex, options, width, height) {
-    options = otions || defaultTextureOptions;
+    options = options || defaultTextureOptions;
     var target = options.target || gl.TEXTURE_2D;
     width = width || options.width;
     height = height || options.height;
@@ -2345,34 +2345,36 @@ define('twgl/twgl',[], function () {
     return textures;
   }
 
+  // Using quotes prevents Uglify from changing the names.
+  // No speed diff AFAICT.
   return {
-    createAttribsFromArrays: createAttribsFromArrays,
-    createBuffersFromArrays: createBuffersFromArrays,
-    createBufferInfoFromArrays: createBufferInfoFromArrays,
-    createAttributeSetters: createAttributeSetters,
-    createProgram: createProgram,
-    createProgramFromScripts: createProgramFromScripts,
-    createProgramFromSources: createProgramFromSources,
-    createProgramInfo: createProgramInfo,
-    createUniformSetters: createUniformSetters,
-    drawBufferInfo: drawBufferInfo,
-    drawObjectList: drawObjectList,
-    getWebGLContext: getWebGLContext,
-    resizeCanvasToDisplaySize: resizeCanvasToDisplaySize,
-    setAttributes: setAttributes,
-    setAttributePrefix: setAttributePrefix,
-    setBuffersAndAttributes: setBuffersAndAttributes,
-    setUniforms: setUniforms,
+    "createAttribsFromArrays": createAttribsFromArrays,
+    "createBuffersFromArrays": createBuffersFromArrays,
+    "createBufferInfoFromArrays": createBufferInfoFromArrays,
+    "createAttributeSetters": createAttributeSetters,
+    "createProgram": createProgram,
+    "createProgramFromScripts": createProgramFromScripts,
+    "createProgramFromSources": createProgramFromSources,
+    "createProgramInfo": createProgramInfo,
+    "createUniformSetters": createUniformSetters,
+    "drawBufferInfo": drawBufferInfo,
+    "drawObjectList": drawObjectList,
+    "getWebGLContext": getWebGLContext,
+    "resizeCanvasToDisplaySize": resizeCanvasToDisplaySize,
+    "setAttributes": setAttributes,
+    "setAttributePrefix": setAttributePrefix,
+    "setBuffersAndAttributes": setBuffersAndAttributes,
+    "setUniforms": setUniforms,
 
-    createTexture: createTexture,
-    setEmptyTexture: setEmptyTexture,
-    setTextureFromArray: setTextureFromArray,
-    loadTextureFromUrl: loadTextureFromUrl,
-    setTextureFromElement: setTextureFromElement,
-    setTextureFilteringForSize: setTextureFilteringForSize,
-    setTextureParameters: setTextureParameters,
-    setDefaultTextureColor: setDefaultTextureColor,
-    createTextures: createTextures,
+    "createTexture": createTexture,
+    "setEmptyTexture": setEmptyTexture,
+    "setTextureFromArray": setTextureFromArray,
+    "loadTextureFromUrl": loadTextureFromUrl,
+    "setTextureFromElement": setTextureFromElement,
+    "setTextureFilteringForSize": setTextureFilteringForSize,
+    "setTextureParameters": setTextureParameters,
+    "setDefaultTextureColor": setDefaultTextureColor,
+    "createTextures": createTextures,
   };
 
 });
@@ -2665,22 +2667,24 @@ define('twgl/v3',[], function () {
     return dst;
   }
 
+  // Using quotes prevents Uglify from changing the names.
+  // No speed diff AFAICT.
   return {
-    add: add,
-    copy: copy,
-    create: create,
-    cross: cross,
-    divide: divide,
-    divScalar: divScalar,
-    dot: dot,
-    lerp: lerp,
-    length: length,
-    lengthSq: lengthSq,
-    mulScalar: mulScalar,
-    multiply: multiply,
-    negate: negate,
-    normalize: normalize,
-    subtract: subtract,
+    "add": add,
+    "copy": copy,
+    "create": create,
+    "cross": cross,
+    "divide": divide,
+    "divScalar": divScalar,
+    "dot": dot,
+    "lerp": lerp,
+    "length": length,
+    "lengthSq": lengthSq,
+    "mulScalar": mulScalar,
+    "multiply": multiply,
+    "negate": negate,
+    "normalize": normalize,
+    "subtract": subtract,
   };
 
 });
@@ -3883,36 +3887,38 @@ define('twgl/m4',['./v3'], function (v3) {
     return dst;
   }
 
+  // Using quotes prevents Uglify from changing the names.
+  // No speed diff AFAICT.
   return {
-    axisRotate: axisRotate,
-    axisRotation: axisRotation,
-    create: identity,
-    copy: copy,
-    frustum: frustum,
-    getAxis: getAxis,
-    getTranslation: getTranslation,
-    identity: identity,
-    inverse: inverse,
-    lookAt: lookAt,
-    multiply: multiply,
-    negate: negate,
-    ortho: ortho,
-    perspective: perspective,
-    rotateX: rotateX,
-    rotateY: rotateY,
-    rotateZ: rotateZ,
-    rotationX: rotationX,
-    rotationY: rotationY,
-    rotationZ: rotationZ,
-    scale: scale,
-    scaling: scaling,
-    setTranslation: setTranslation,
-    transformDirection: transformDirection,
-    transformNormal: transformNormal,
-    transformPoint: transformPoint,
-    translate: translate,
-    translation: translation,
-    transpose: transpose,
+    "axisRotate": axisRotate,
+    "axisRotation": axisRotation,
+    "create": identity,
+    "copy": copy,
+    "frustum": frustum,
+    "getAxis": getAxis,
+    "getTranslation": getTranslation,
+    "identity": identity,
+    "inverse": inverse,
+    "lookAt": lookAt,
+    "multiply": multiply,
+    "negate": negate,
+    "ortho": ortho,
+    "perspective": perspective,
+    "rotateX": rotateX,
+    "rotateY": rotateY,
+    "rotateZ": rotateZ,
+    "rotationX": rotationX,
+    "rotationY": rotationY,
+    "rotationZ": rotationZ,
+    "scale": scale,
+    "scaling": scaling,
+    "setTranslation": setTranslation,
+    "transformDirection": transformDirection,
+    "transformNormal": transformNormal,
+    "transformPoint": transformPoint,
+    "translate": translate,
+    "translation": translation,
+    "transpose": transpose,
   };
 });
 
@@ -5043,30 +5049,32 @@ define('twgl/primitives',[
     };
   }
 
+  // Using quotes prevents Uglify from changing the names.
+  // No speed diff AFAICT.
   return {
-    create3DFBufferInfo: createBufferInfoFunc(create3DFVertices),
-    create3DFBuffers: createBufferFunc(create3DFVertices),
-    create3DFVertices: create3DFVertices,
-    createAugmentedTypedArray: createAugmentedTypedArray,
-    createCubeBufferInfo: createBufferInfoFunc(createCubeVertices),
-    createCubeBuffers: createBufferFunc(createCubeVertices),
-    createCubeVertices: createCubeVertices,
-    createPlaneBufferInfo: createBufferInfoFunc(createPlaneVertices),
-    createPlaneBuffers: createBufferFunc(createPlaneVertices),
-    createPlaneVertices: createPlaneVertices,
-    createSphereBufferInfo: createBufferInfoFunc(createSphereVertices),
-    createSphereBuffers: createBufferFunc(createSphereVertices),
-    createSphereVertices: createSphereVertices,
-    createTruncatedConeBufferInfo: createBufferInfoFunc(createTruncatedConeVertices),
-    createTruncatedConeBuffers: createBufferFunc(createTruncatedConeVertices),
-    createTruncatedConeVertices: createTruncatedConeVertices,
-    deindexVertices: deindexVertices,
-    flattenNormals: flattenNormals,
-    makeRandomVertexColors: makeRandomVertexColors,
-    reorientDirections: reorientDirections,
-    reorientNormals: reorientNormals,
-    reorientPositions: reorientPositions,
-    reorientVertices: reorientVertices,
+    "create3DFBufferInfo": createBufferInfoFunc(create3DFVertices),
+    "create3DFBuffers": createBufferFunc(create3DFVertices),
+    "create3DFVertices": create3DFVertices,
+    "createAugmentedTypedArray": createAugmentedTypedArray,
+    "createCubeBufferInfo": createBufferInfoFunc(createCubeVertices),
+    "createCubeBuffers": createBufferFunc(createCubeVertices),
+    "createCubeVertices": createCubeVertices,
+    "createPlaneBufferInfo": createBufferInfoFunc(createPlaneVertices),
+    "createPlaneBuffers": createBufferFunc(createPlaneVertices),
+    "createPlaneVertices": createPlaneVertices,
+    "createSphereBufferInfo": createBufferInfoFunc(createSphereVertices),
+    "createSphereBuffers": createBufferFunc(createSphereVertices),
+    "createSphereVertices": createSphereVertices,
+    "createTruncatedConeBufferInfo": createBufferInfoFunc(createTruncatedConeVertices),
+    "createTruncatedConeBuffers": createBufferFunc(createTruncatedConeVertices),
+    "createTruncatedConeVertices": createTruncatedConeVertices,
+    "deindexVertices": deindexVertices,
+    "flattenNormals": flattenNormals,
+    "makeRandomVertexColors": makeRandomVertexColors,
+    "reorientDirections": reorientDirections,
+    "reorientNormals": reorientNormals,
+    "reorientPositions": reorientPositions,
+    "reorientVertices": reorientVertices,
   };
 
 });
