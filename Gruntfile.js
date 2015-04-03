@@ -154,7 +154,7 @@ module.exports = function(grunt) {
     uglify: {
       min: {
         options: {
-          mangle: false,
+          mangle: true,
           screwIE8: true,
           banner: license,
           compress: true,
@@ -165,10 +165,10 @@ module.exports = function(grunt) {
       },
       fullMin: {
         options: {
-          mangle: false,
+          mangle: true,
           screwIE8: true,
           banner: license,
-          compress: false,
+          compress: true,
         },
         files: {
           'dist/twgl-full.min.js': ['dist/twgl-full.js'],
@@ -186,10 +186,12 @@ module.exports = function(grunt) {
         rulesdir: ['build/rules'],
       },
     },
-    clean: [
-      'docs',
-      'dist',
-    ],
+    clean: {
+      docs: [ 'docs' ],
+      dist:
+        [ 'dist' ],
+
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -214,6 +216,7 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
-  grunt.registerTask('default', ['eslint', 'clean', 'requirejs', /*'concat',*/ 'uglify', 'makeindex']);
+  grunt.registerTask('docs', ['clean:docs', 'jsdoc']);
+  grunt.registerTask('default', ['eslint', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify', 'makeindex']);
 };
 
