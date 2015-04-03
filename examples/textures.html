@@ -25,9 +25,9 @@
   </head>
   <body>
     <canvas id="c"></canvas>
-    <div id="b"><a href="http://twgljs.org">twgl.js</a> - primitives</div>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - textures</div>
   </body>
-  <script id="vs" type="notjs">
+  <script id="one-point-vs" type="notjs">
 uniform mat4 u_worldViewProjection;
 uniform vec3 u_lightWorldPos;
 uniform mat4 u_world;
@@ -53,7 +53,7 @@ void main() {
   gl_Position = v_position;
 }
   </script>
-  <script id="fs" type="notjs">
+  <script id="one-point-fs" type="notjs">
 precision mediump float;
 
 varying vec4 v_position;
@@ -78,6 +78,9 @@ vec4 lit(float l ,float h, float m) {
 
 void main() {
   vec4 diffuseColor = texture2D(u_diffuse, v_texCoord) * u_diffuseMult;
+  if (diffuseColor.a < 0.1) {
+    discard;
+  }
   vec3 a_normal = normalize(v_normal);
   vec3 surfaceToLight = normalize(v_surfaceToLight);
   vec3 surfaceToView = normalize(v_surfaceToView);
@@ -91,13 +94,47 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script src="../dist/twgl-full.js"></script>
+  <script id="env-map-vs" type="notjs">
+uniform mat4 u_viewInverse;
+uniform mat4 u_world;
+uniform mat4 u_worldViewProjection;
+uniform mat4 u_worldInverseTranspose;
+
+attribute vec4 a_position;
+attribute vec3 a_normal;
+
+varying vec3 v_normal;
+varying vec3 v_surfaceToView;
+
+void main() {
+  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
+  gl_Position = u_worldViewProjection * a_position;
+}
+  </script>
+  <script id="env-map-fs" type="notjs">
+precision mediump float;
+
+uniform samplerCube u_texture;
+
+varying vec3 v_surfaceToView;
+varying vec3 v_normal;
+
+void main() {
+  vec3 normal = normalize(v_normal);
+  vec3 surfaceToView = normalize(v_surfaceToView);
+  vec4 color = textureCube(u_texture, -reflect(surfaceToView, normal));
+  gl_FragColor = color;
+}
+  </script>
+  <script src="../dist/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     twgl.setAttributePrefix("a_");
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    var onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"]);
+    var envMapProgramInfo = twgl.createProgramInfo(gl, ["env-map-vs", "env-map-fs"]);
 
     var shapes = [
       twgl.primitives.createCubeBufferInfo(gl, 2),
@@ -117,42 +154,122 @@ void main() {
     var view = m4.identity();
     var viewProjection = m4.identity();
 
-    // Create texture from URL
-    // Create multiple textures from mulitple URLs
-    // Create texture from URL with all options
-    // Create both npot and non-npot texture
-    // Create color texture
-    // Create canvas texture
-    // Update canvas texture
+    var ctx = document.createElement("canvas").getContext("2d");
+    ctx.canvas.width  = 64;
+    ctx.canvas.height = 64;
 
-    var tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
-      255,255,255,255,
-      192,192,192,255,
-      192,192,192,255,
-      255,255,255,255]));
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    function updateCanvas(time) {
+      ctx.fillStyle = "#00f";
+      ctx.strokeStyle = "#ff0";
+      ctx.lineWidth = "10";
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.beginPath();
+      ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, ctx.canvas.width / 2.2 * Math.abs(Math.cos(time)), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    updateCanvas(0);
+
+    var textures = twgl.createTextures(gl, {
+      // a power of 2 image
+      hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
+      // a non-power of 2 image
+      clover: { src: "images/clover.jpg" },
+      // From a canvas
+      fromCanvas: { src: ctx.canvas },
+      // A cubemap from 6 images
+      yokohama: {
+        target: gl.TEXTURE_CUBE_MAP,
+        src: [
+          'images/yokohama/posx.jpg',
+          'images/yokohama/negx.jpg',
+          'images/yokohama/posy.jpg',
+          'images/yokohama/negy.jpg',
+          'images/yokohama/posz.jpg',
+          'images/yokohama/negz.jpg',
+        ],
+      },
+      // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
+      goldengate: {
+        target: gl.TEXTURE_CUBE_MAP,
+        src: 'images/goldengate.jpg',
+      },
+      // A 2x2 pixel texture from a JavaScript array
+      checker: {
+        mag: gl.NEAREST,
+        min: gl.LINEAR,
+        src: [
+          255,255,255,255,
+          192,192,192,255,
+          192,192,192,255,
+          255,255,255,255,
+        ],
+      },
+      // a 1x2 pixel texture from a typed array.
+      stripe: {
+        mag: gl.NEAREST,
+        min: gl.LINEAR,
+        format: gl.LUMINANCE,
+        src: new Uint8Array([
+          255,
+          128,
+          255,
+          128,
+          255,
+          128,
+          255,
+          128,
+        ]),
+        width: 1,
+      },
+    });
+
+    // This is soley to make it easy to pick textures at random
+    var twoDTextures = [
+      textures.checker,
+      textures.stripe,
+      textures.hftIcon,
+      textures.clover,
+      textures.fromCanvas,
+    ];
 
     var objects = [];
     var drawObjects = [];
     var numObjects = 100;
     var baseHue = rand(0, 360);
     for (var ii = 0; ii < numObjects; ++ii) {
-      var uniforms = {
-        u_lightWorldPos: lightWorldPosition,
-        u_lightColor: lightColor,
-        u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
-        u_specular: [1, 1, 1, 1],
-        u_shininess: 50,
-        u_specularFactor: 1,
-        u_diffuse: tex,
-        u_viewInverse: camera,
-        u_world: m4.identity(),
-        u_worldInverseTranspose: m4.identity(),
-        u_worldViewProjection: m4.identity(),
-      };
+      var uniforms;
+      var programInfo;
+      var renderType = 0; //rand(0, 2) | 0;
+      switch (renderType) {
+        case 0:  // checker
+          programInfo = onePointProgramInfo;
+          uniforms = {
+            u_lightWorldPos: lightWorldPosition,
+            u_lightColor: lightColor,
+            u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
+            u_specular: [1, 1, 1, 1],
+            u_shininess: 50,
+            u_specularFactor: 1,
+            u_diffuse: twoDTextures[rand(0, twoDTextures.length) | 0],
+            u_viewInverse: camera,
+            u_world: m4.identity(),
+            u_worldInverseTranspose: m4.identity(),
+            u_worldViewProjection: m4.identity(),
+          };
+          break;
+        case 1:  // yokohama
+          programInfo = envMapProgramInfo;
+          uniforms = {
+            u_texture: Math.random() > 0.5 ? textures.yokohama : textures.goldengate,
+            u_viewInverse: camera,
+            u_world: m4.identity(),
+            u_worldInverseTranspose: m4.identity(),
+            u_worldViewProjection: m4.identity(),
+          };
+          break;
+        default:
+          throw "wAT!";
+      }
       drawObjects.push({
         programInfo: programInfo,
         bufferInfo: shapes[ii % shapes.length],
@@ -171,19 +288,24 @@ void main() {
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
       gl.enable(gl.DEPTH_TEST);
-      gl.enable(gl.CULL_FACE);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       var time = Date.now() * 0.001;
-      var radius = 6;
+      var radius = 20;
+      var orbitSpeed = time * 0.1
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-      var eye = [1, 4, -20];
+      var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
       var target = [0, 0, 0];
       var up = [0, 1, 0];
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
       m4.multiply(view, projection, viewProjection);
+
+      updateCanvas(time);
+      twgl.setTextureFromElement(gl, textures.fromCanvas, ctx.canvas);
 
       objects.forEach(function(obj, ndx) {
         var uni = obj.uniforms;
