@@ -214,6 +214,6 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
-  grunt.registerTask('default', ['eslint', 'clean', 'requirejs', /*'concat',*/ 'uglify', 'makeindex', 'jsdoc']);
+  grunt.registerTask('default', ['eslint', 'clean', 'requirejs', /*'concat',*/ 'uglify', 'makeindex']);
 };
 
