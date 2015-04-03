@@ -478,6 +478,24 @@ define('twgl/twgl',[], function () {
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
   var defaultAttribPrefix = "";
+  var defaultTextureColor = new Uint8Array([128, 192, 255, 255]);
+  var defaultTextureOptions = {};
+
+  /**
+   * Sets the default texture color.
+   *
+   * The default texture color is used when loading textures from
+   * urls. Because the URL will be loaded async we'd like to be
+   * able to use the texture immediately. By putting a 1x1 pixel
+   * color in the texture we can start using the texture before
+   * the URL has loaded.
+   *
+   * @param {number[]} color Array of 4 values in the range 0 to 1
+   * @memberOf module:twgl
+   */
+  function setDefaultTextureColor(color) {
+    defaultTextureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
+  }
 
   /**
    * Sets the default attrib prefix
@@ -496,10 +514,41 @@ define('twgl/twgl',[], function () {
    * But need those mapped to attributes and my attributes start with `a_`.
    *
    * @param {string} prefix prefix for attribs
+   * @memberOf module:twgl
    */
   function setAttributePrefix(prefix) {
     defaultAttribPrefix = prefix;
   }
+
+  /**
+   * Gets a string for gl enum
+   *
+   * Note: Several enums are the same. Without more
+   * context (which function) it's impossible to always
+   * give the correct enum.
+   *
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {number} value the value of the enum you want to look up.
+   */
+  var glEnumToString = (function() {
+    var enums;
+
+    function init(gl) {
+      if (!enums) {
+        enums = {};
+        Object.keys(gl).forEach(function(key) {
+          if (typeof gl[key] === 'number') {
+            enums[gl[key]] = key;
+          }
+        });
+      }
+    }
+
+    return function glEnumToString(gl, value) {
+      init();
+      return enums[value] || ("0x" + value.toString(16));
+    };
+  }());
 
   /**
    * Creates a webgl context.
@@ -753,55 +802,89 @@ define('twgl/twgl',[], function () {
       // Check if this uniform is an array
       var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
       if (type === gl.FLOAT && isArray) {
-        return function(v) { gl.uniform1fv(location, v); };
+        return function(v) {
+          gl.uniform1fv(location, v);
+        };
       }
       if (type === gl.FLOAT) {
-        return function(v) { gl.uniform1f(location, v); };
+        return function(v) {
+          gl.uniform1f(location, v);
+        };
       }
       if (type === gl.FLOAT_VEC2) {
-        return function(v) { gl.uniform2fv(location, v); };
+        return function(v) {
+          gl.uniform2fv(location, v);
+        };
       }
       if (type === gl.FLOAT_VEC3) {
-        return function(v) { gl.uniform3fv(location, v); };
+        return function(v) {
+          gl.uniform3fv(location, v);
+        };
       }
       if (type === gl.FLOAT_VEC4) {
-        return function(v) { gl.uniform4fv(location, v); };
+        return function(v) {
+          gl.uniform4fv(location, v);
+        };
       }
       if (type === gl.INT && isArray) {
-        return function(v) { gl.uniform1iv(location, v); };
+        return function(v) {
+          gl.uniform1iv(location, v);
+        };
       }
       if (type === gl.INT) {
-        return function(v) { gl.uniform1i(location, v); };
+        return function(v) {
+          gl.uniform1i(location, v);
+        };
       }
       if (type === gl.INT_VEC2) {
-        return function(v) { gl.uniform2iv(location, v); };
+        return function(v) {
+          gl.uniform2iv(location, v);
+        };
       }
       if (type === gl.INT_VEC3) {
-        return function(v) { gl.uniform3iv(location, v); };
+        return function(v) {
+          gl.uniform3iv(location, v);
+        };
       }
       if (type === gl.INT_VEC4) {
-        return function(v) { gl.uniform4iv(location, v); };
+        return function(v) {
+          gl.uniform4iv(location, v);
+        };
       }
       if (type === gl.BOOL) {
-        return function(v) { gl.uniform1iv(location, v); };
+        return function(v) {
+          gl.uniform1iv(location, v);
+        };
       }
       if (type === gl.BOOL_VEC2) {
-        return function(v) { gl.uniform2iv(location, v); };
+        return function(v) {
+          gl.uniform2iv(location, v);
+        };
       }
       if (type === gl.BOOL_VEC3) {
-        return function(v) { gl.uniform3iv(location, v); };
+        return function(v) {
+          gl.uniform3iv(location, v);
+        };
       }
       if (type === gl.BOOL_VEC4) {
-        return function(v) { gl.uniform4iv(location, v); };
+        return function(v) {
+          gl.uniform4iv(location, v);
+        };
       }
       if (type === gl.FLOAT_MAT2) {
-        return function(v) { gl.uniformMatrix2fv(location, false, v); };
+        return function(v) {
+          gl.uniformMatrix2fv(location, false, v);
+        };
       }
       if (type === gl.FLOAT_MAT3) {
-        return function(v) { gl.uniformMatrix3fv(location, false, v); };
+        return function(v) {
+          gl.uniformMatrix3fv(location, false, v);
+        };
       }
       if (type === gl.FLOAT_MAT4) {
-        return function(v) { gl.uniformMatrix4fv(location, false, v); };
+        return function(v) {
+          gl.uniformMatrix4fv(location, false, v);
+        };
       }
       if ((type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) && isArray) {
         var units = [];
@@ -1161,22 +1244,35 @@ define('twgl/twgl',[], function () {
   }
 
   function getGLTypeForTypedArray(gl, typedArray) {
-    /*eslint brace-style:0*/
-    if (typedArray instanceof Int8Array)    { return gl.BYTE; }
-    if (typedArray instanceof Uint8Array)   { return gl.UNSIGNED_BYTE; }
-    if (typedArray instanceof Int16Array)   { return gl.SHORT; }
-    if (typedArray instanceof Uint16Array)  { return gl.UNSIGNED_SHORT; }
-    if (typedArray instanceof Int32Array)   { return gl.INT; }
-    if (typedArray instanceof Uint32Array)  { return gl.UNSIGNED_INT; }
-    if (typedArray instanceof Float32Array) { return gl.FLOAT; }
+    if (typedArray instanceof Int8Array)    { return gl.BYTE; }           // eslint-disable-line
+    if (typedArray instanceof Uint8Array)   { return gl.UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Int16Array)   { return gl.SHORT; }          // eslint-disable-line
+    if (typedArray instanceof Uint16Array)  { return gl.UNSIGNED_SHORT; } // eslint-disable-line
+    if (typedArray instanceof Int32Array)   { return gl.INT; }            // eslint-disable-line
+    if (typedArray instanceof Uint32Array)  { return gl.UNSIGNED_INT; }   // eslint-disable-line
+    if (typedArray instanceof Float32Array) { return gl.FLOAT; }          // eslint-disable-line
     throw "unsupported typed array type";
+  }
+
+  function getTypedArrayTypeForGLType(gl, type) {
+    switch (type) {
+      case gl.BYTE:           return Int8Array;     // eslint-disable-line
+      case gl.UNSIGNED_BYTE:  return Uint8Array;    // eslint-disable-line
+      case gl.SHORT:          return Int16Array;    // eslint-disable-line
+      case gl.UNSIGNED_SHORT: return Uint16Array;   // eslint-disable-line
+      case gl.INT:            return Int32Array;    // eslint-disable-line
+      case gl.UNSIGNED_INT:   return Uint32Array;   // eslint-disable-line
+      case gl.FLOAT:          return Float32Array;  // eslint-disable-line
+      default:
+        throw "unknown gl type";
+    }
   }
 
   // This is really just a guess. Though I can't really imagine using
   // anything else? Maybe for some compression?
   function getNormalizationForTypedArray(typedArray) {
-    if (typedArray instanceof Int8Array)    { return true; }
-    if (typedArray instanceof Uint8Array)   { return true; }
+    if (typedArray instanceof Int8Array)    { return true; }  // eslint-disable-line
+    if (typedArray instanceof Uint8Array)   { return true; }  // eslint-disable-line
     return false;
   }
 
@@ -1555,6 +1651,692 @@ define('twgl/twgl',[], function () {
     });
   }
 
+  /**
+   * @typedef {Object} TextureOptions
+   * @property {number?} target the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
+   * @property {number?} width the width of the texture. Only used if src is an array or typed array or null.
+   * @property {number?} height the height of a texture. Only used if src is an array or typed array or null.
+   * @property {number?} min the min filter setting (eg. `gl.LINEAR`). Defaults to `gl.NEAREST_MIPMAP_LINEAR`
+   *     or if texture is not a power of 2 on both dimensions then defaults to `gl.LINEAR`.
+   * @property {number?} mag the mag filter setting (eg. `gl.LINEAR`). Defaults to `gl.LINEAR`
+   * @property {number?} format format for texture. Defaults to `gl.RGBA`.
+   * @property {number?} type type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
+   *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
+   * @property {number?} wrap Texture wrapping for both S and T. Defaults to `gl.REPEAT`.
+   * @property {number?} wrapS Texture wrapping for S. Defaults to `gl.REPEAT`. If set takes precedence over `wrap`.
+   * @property {number?} wrapT Texture wrapping for T. Defaults to 'gl.REPEAT`. If set takes precedence over `wrap`.
+   * @property {number?} unpackAlignment The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
+   * @property {number?} premultiplyAlpha Whether or not to premultiply alpha. Defaults to whatever the current setting is.
+   *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
+   *     the current setting for specific textures.
+   * @property {number?} flipY Whether or not to flip the texture vertically on upload. Defaults to whatever the current setting is.
+   *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
+   *     the current setting for specific textures.
+   * @property {number?} colorspaceConversion Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.
+   *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
+   *     the current setting for specific textures.
+   * @property {number[]|ArrayBuffer} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
+   *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in [1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0.
+   *    Defaults to [0.5, 0.75, 1, 1]. See `SetDefaultTextureColor`. If `false` texture is set. Can be used to re-load a texture
+   * @property {boolean?} auto If not `false` then texture working filtering is set automatically for non-power of 2 images and
+   *    mips are generated for power of 2 images.
+   * @property {number[]?} cubeFaceOrder The order that cube faces are pull out of an img or set of images. The default is
+   *
+   *     [gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+   *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
+   *
+   * @property {number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|?} src source for texture
+   *
+   *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
+   *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
+   *    If `target` is gl.TEXTURE_CUBE_MAP will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
+   *    The pieces will be uploaded in `cubeFaceOrder`
+   *
+   *    If `string[]` then it must have 6 entries, one for each face of a cube map. Target must be `gl.TEXTURE_CUBE_MAP`.
+   *
+   *    If `HTMLElement` then it wil be used immediately to create the contents of the texture. Examples `HTMLImageElement`,
+   *    `HTMLCanvasElement`, `HTMLVideoElement`.
+   *
+   *    If `number[]` or `ArrayBuffer` it's assumed to be data for a texture. If `width` or `height` is
+   *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponets`
+   *    where `numComponents` is derived from `format`. Then,
+   *
+   *    *   If neither `width` nor `height` are specified and `sqrt(numElements)` is an integer width and height
+   *        are set to `sqrt(numElements)`. Otherwise `width = numElements` and `height = 1`.
+   *
+   *    *   If only one of `width` or `height` is specified then the other equals `numElements / specifiedDimension`.
+   *
+   *    If `number[]` will be converted to `type`.
+   *
+   *    If `src` is undefined then an empty texture will be created of size `width` by `height`.
+   *
+   * @memberOf module:twgl
+   */
+
+  // NOTE: While querying GL is considered slow it's not remotely as slow
+  // as uploading a texture. On top of that you're unlikely to call this in
+  // a perf critical loop. Even if upload a texture every frame that's unlikely
+  // to be more than 1 or 2 textures a frame. In other words, the benefits of
+  // making the API easy to use outweigh any supposed perf benefits
+  var lastPackState = {};
+
+  /**
+   * Saves any packing state that will be set based on the options.
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   */
+  function savePackState(gl, options) {
+    if (options.colorspaceConversion !== undefined) {
+      lastPackState.colorSpaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
+    }
+    if (options.premultiplyAlpha !== undefined) {
+      lastPackState.premultiplyAlpha = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
+    }
+    if (options.flipY !== undefined) {
+      lastPackState.flipY = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
+    }
+  }
+
+  /**
+   * Restores any packing state that was set based on the options.
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   */
+  function restorePackState(gl, options) {
+    if (options.colorspaceConversion !== undefined) {
+      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorSpaceConversion);
+    }
+    if (options.premultiplyAlpha !== undefined) {
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
+    }
+    if (options.flipY !== undefined) {
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
+    }
+  }
+
+  /**
+   * Sets the texture parameters of a texture.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @memberOf module:twgl
+   */
+  function setTextureParameters(gl, tex, options) {
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    if (options.min) {
+      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, options.min);
+    }
+    if (options.mag) {
+      gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, options.mag);
+    }
+    if (options.wrap) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrap);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrap);
+    }
+    if (options.wrapS) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrapS);
+    }
+    if (options.wrapT) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrapT);
+    }
+  }
+
+  /**
+   * Makes a 1x1 pixel
+   * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
+   * @param {number[]|ArrayBuffer|?} color The color using 0-1 values
+   * @return {Uint8Array} Unit8Array with color.
+   */
+  function make1Pixel(color) {
+    color = color || defaultTextureColor;
+    if (isArrayBuffer(color)) {
+      return color;
+    }
+    return new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
+  }
+
+  /**
+   * Returns true if value is power of 2
+   * @param {number} value number to check.
+   * @return true if value is power of 2
+   */
+  function isPowerOf2(value) {
+    return (value & (value - 1)) === 0;
+  }
+
+  /**
+   * Sets filtering or generates mips for texture based on width or height
+   * If width or height is not passed in uses `options.width` and//or `options.height`
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {number?} width width of texture
+   * @param {number?} height height of texture
+   * @memberOf module:twgl
+   */
+  function setTextureFilteringForSize(gl, tex, options, width, height) {
+    options = otions || defaultTextureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    width = width || options.width;
+    height = height || options.height;
+    gl.bindTexture(target, tex);
+    if (!isPowerOf2(width) || !isPowerOf2(height)) {
+      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    } else {
+      gl.generateMipmap(target);
+    }
+  }
+
+  /**
+   * Gets an array of cubemap face enums
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @return {number[]} cubemap face enums
+   */
+  function getCubeFaceOrder(gl, options) {
+    return options.cubeFaceOrder || [
+        gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+        gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+        gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+      ];
+  }
+
+  /**
+   * Set a texture from the contents of an element. Will also set
+   * texture filtering or generate mips based on the dimensions of the element
+   * unless `options.auto === false`. If `target === gl.TEXTURE_CUBE_MAP` will
+   * attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {HTMLElement} element a canvas, img, or video element.
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @memberOf module:twgl
+   */
+  var setTextureFromElement = function() {
+    var ctx = document.createElement("canvas").getContext("2d");
+    return function setTextureFromElement(gl, tex, element, options) {
+      options = options || defaultTextureOptions;
+      var target = options.target || gl.TEXTURE_2D;
+      var width = element.width;
+      var height = element.height;
+      var format = options.format || gl.RGBA;
+      var type = options.type || gl.UNSIGNED_BYTE;
+      savePackState(gl, options);
+      gl.bindTexture(target, tex);
+      if (target === gl.TEXTURE_CUBE_MAP) {
+        // guess the parts
+        var imgWidth  = element.width;
+        var imgHeight = element.height;
+        var size;
+        var slices;
+        if (imgWidth / 6 === imgHeight) {
+          // It's 6x1
+          size = imgHeight;
+          slices = [0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0];
+        } else if (imgHeight / 6 === imgWidth) {
+          // It's 1x6
+          size = imgWidth;
+          slices = [0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5];
+        } else if (imgWidth / 3 === imgHeight / 2) {
+          // It's 3x2
+          size = imgWidth / 3;
+          slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
+        } else if (imgWidth / 2 === imgHeight / 3) {
+          // It's 2x3
+          size = imgWidth / 2;
+          slices = [0, 0, 1, 0, 0, 1, 1, 1, 0, 2, 1, 2];
+        } else {
+          throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
+        }
+        var faces = getCubeFaceOrder(gl, options);
+        ctx.canvas.width = size;
+        ctx.canvas.height = size;
+        width = size;
+        height = size;
+        for (var ii = 0; ii < 6; ++ii) {
+          var xOffset = slices[ii * 2 + 0] * size;
+          var yOffset = slices[ii * 2 + 1] * size;
+          ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
+          gl.texImage2D(faces[ii], 0, format, format, type, ctx.canvas);
+        }
+        // Free up the canvas memory
+        ctx.canvas.width = 1;
+        ctx.canvas.height = 1;
+      } else {
+        gl.texImage2D(target, 0, format, format, type, element);
+      }
+      restorePackState(gl, options);
+      if (options.auto !== false) {
+        setTextureFilteringForSize(gl, tex, options, width, height);
+      }
+      setTextureParameters(gl, tex, options);
+    };
+  }();
+
+  /**
+   * Copy an object 1 level deep
+   * @param {object} src object to copy
+   * @return {object} the copy
+   */
+  function shallowCopy(src) {
+    var dst = {};
+    Object.keys(src).forEach(function(key) {
+      dst[key] = src[key];
+    });
+    return dst;
+  }
+
+  /**
+   * Loads an image
+   * @param {string} url url to image
+   * @param {function(err, img)} a callback that's passed an error and the image. The error will be non-null
+   *     if there was an error
+   * @return {HTMLImageElement} the image being loaded.
+   */
+  function loadImage(url, callback) {
+    var img = new Image();
+    img.onerror = function() {
+      var msg = "couldn't load image: " + url;
+      error(msg);
+      callback(msg, img);
+    };
+    img.onload = function() {
+      callback(null, img);
+    };
+    img.src = url;
+    return img;
+  }
+
+  /**
+   * Sets a texture to a 1x1 pixel color. If `options.color === false` is nothing happens. If it's not set
+   * the default texture color is used which can be set by calling `setDefaultTextureColor`.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @memberOf module:twgl
+   */
+  function setTextureTo1PixelColor(gl, tex, options) {
+    options = options || defaultTextureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    if (options.color === false) {
+      return;
+    }
+    // Assume it's a URL
+    // Put 1x1 pixels in texture. That makes it renderable immediately regardless of filtering.
+    var color = make1Pixel(options.color);
+    if (target === gl.TEXTURE_CUBE_MAP) {
+      for (var ii = 0; ii < 6; ++ii) {
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
+      }
+    } else {
+      gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
+    }
+  }
+
+  /**
+   * Loads a texture from an image from a Url as specified in `options.src`
+   * If `options.color !== false` will set the texture to a 1x1 pixel color so that the texture is
+   * immediately useable. It will be updated with the contents of the image once the image has finished
+   * downloading. Filtering options will be set as approriate for image unless `options.auto === false`.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {function(err, tex, img)} callback A function to be called when the image has finished loading. err will
+   *    be non null if there was an error.
+   * @return {HTMLImageElement} the image being downloaded.
+   * @memberOf module:twgl
+   */
+  function loadTextureFromUrl(gl, tex, options, callback) {
+    options = options || defaultTextureOptions;
+    setTextureTo1PixelColor(gl, tex, options);
+    // Because it's async we need to copy the options.
+    options = shallowCopy(options);
+    img = loadImage(options.src, function(err, img) {
+      if (err) {
+        callback(err, tex, img);
+      } else {
+        setTextureFromElement(gl, tex, img, options);
+        callback(null, tex, img);
+      }
+    });
+    return img;
+  }
+
+  /**
+   * Loads a cubemap from 6 urls as specified in `options.src`. Will set the cubemap to a 1x1 pixel color
+   * so that it is usable immediately unless `option.color === false`.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {function(err, tex, img)} callback A function to be called when all the images have finished loading. err will
+   *    be non null if there was an error.
+   * @memberOf module:twgl
+   */
+  function loadCubemapFromUrls(gl, tex, options, callback) {
+    var urls = options.src;
+    if (urls.length !== 6) {
+      throw "there must be 6 urls for a cubemap";
+    }
+    var format = options.format || gl.RGBA;
+    var type = options.type || gl.UNSIGNED_BYTE;
+    var target = options.target || gl.TEXTURE_2D;
+    if (target !== gl.TEXTURE_CUBE_MAP) {
+      throw "target must be TEXTURE_CUBE_MAP";
+    }
+    setTextureTo1PixelColor(gl, tex, options);
+    // Because it's async we need to copy the options.
+    options = shallowCopy(options);
+    var numToLoad = 6;
+    var errors = [];
+    var imgs;
+    var faces = getCubeFaceOrder(gl, options);
+
+    function uploadImg(faceTarget) {
+      return function(err, img) {
+        --numToLoad;
+        if (err) {
+          errors.push(err);
+        } else {
+          if (img.width !== img.height) {
+            errors.push("cubemap face img is not a square: " + img.src);
+          } else {
+            savePackState(gl, options);
+            gl.bindTexture(target, tex);
+            gl.texImage2D(faceTarget, 0, format, format, type, img);
+
+            // So assuming this is the first image we now have one face that's img sized
+            // and 5 faces that are 1x1 pixel so size the other faces
+            if (numToLoad === 5) {
+              faces.forEach(function(otherTarget) {
+                if (otherTarget !== faceTarget) {
+                  // Should we re-use the same face or a color?
+                  gl.texImage2D(otherTarget, 0, format, format, type, img);
+                }
+              });
+            }
+            restorePackState(gl, options);
+            gl.generateMipmap(target);
+          }
+        }
+
+        if (numToLoad === 0) {
+          if (callback) {
+            callback(errors.length ? errors : undefined, imgs, tex);
+          }
+        }
+      };
+    }
+
+    imgs = urls.map(function(url, ndx) {
+      return loadImage(url, uploadImg(faces[ndx]));
+    });
+  }
+
+  /**
+   * Gets the number of compontents for a given image format.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {number} format the format.
+   * @return {number} the number of components for the format.
+   */
+  function getNumComponentsForFormat(gl, format) {
+    switch (format) {
+      case gl.ALPHA:
+      case gl.LUMINANCE:
+        return 1;
+      case gl.LUMINANCE_ALPHA:
+        return 2;
+      case gl.RGB:
+        return 3;
+      case gl.RGBA:
+        return 4;
+      default:
+        throw "unknown type: " + type;
+    }
+  }
+
+  /**
+   * Gets the texture type for a given array type.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @return {number} the gl texture type
+   */
+  function getTextureTypeForArrayType(gl, src) {
+    if (isArrayBuffer(src)) {
+      return getGLTypeForTypedArray(gl, src);
+    }
+    return gl.UNSIGNED_BYTE;
+  }
+
+  /**
+   * Sets a texture from an array or typed array. If the width or height is not provided will attempt to
+   * guess the size. See {@link module:twgl.TextureOptions}.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {number[]|ArrayBuffer} src An array or typed arry with texture data.
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @memberOf module:twgl
+   */
+  function setTextureFromArray(gl, tex, src, options) {
+    options = options || defaultTextureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    var width = options.width;
+    var height = options.height;
+    var format = options.format || gl.RGBA;
+    var type = options.type || getTextureTypeForArrayType(gl, src);
+    var numComponents = getNumComponentsForFormat(gl, format);
+    var numElements = src.length / numComponents;
+    if (numElements % 1) {
+      throw "length wrong size of format: " + glEnumToString(gl, format);
+    }
+    if (!width && !height) {
+      var size = Math.sqrt(numElements);
+      if (size % 1 === 0) {
+        width = size;
+        height = size;
+      } else {
+        width = numElements;
+        height = 1;
+      }
+    } else if (!height) {
+      height = numElements / width;
+      if (height % 1) {
+        throw "can't guess height";
+      }
+    } else if (!width) {
+      width = numElements / height;
+      if (width % 1) {
+        throw "can't guess width";
+      }
+    }
+    if (!isArrayBuffer(src)) {
+      var Type = getTypedArrayTypeForGLType(gl, type);
+      src = new Type(src);
+    }
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
+    savePackState(gl, options);
+    gl.texImage2D(target, 0, format, width, height, 0, format, type, src);
+    restorePackState(gl, options);
+  }
+
+  /**
+   * Sets a texture with no contents of a certain size. In other words calls `gl.texImage2D` with `null`.
+   * You must set `options.width` and `options.height`.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @memberOf module:twgl
+   */
+  function setEmptyTexture(gl, tex, options) {
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    var format = options.format || gl.RGBA;
+    var type = options.type || gl.UNSIGNED_BYTE;
+    savePackState(gl, options);
+    if (target === gl.TEXTURE_CUBE_MAP) {
+      for (var ii = 0; ii < 6; ++ii) {
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, format, options.width, options.height, 0, format, type, null);
+      }
+    } else {
+      gl.texImage2D(target, 0, format, options.width, options.height, 0, format, type, null);
+    }
+    restorePackState(gl, options);
+  }
+
+  /**
+   * Creates a texture based on the options passed in.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @return {WebGLTexture} the created texture.
+   * @memberOf module:twgl
+   */
+  function createTexture(gl, options, callback) {
+    options = options || defaultTextureOptions;
+    var tex = gl.createTexture();
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    setTextureParameters(gl, tex, options);
+    var src = options.src;
+    if (src) {
+      if (typeof (src) === "string") {
+        loadTextureFromUrl(gl, tex, options, callback);
+      } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
+        setTextureFromArray(gl, tex, src, options);
+      } else if (Array.isArray(src) && typeof (src[0]) === 'string') {
+        loadCubemapFromUrls(gl, tex, options, callback);
+      } else if (src instanceof HTMLElement) {
+        setTextureFromElement(gl, tex, src, options);
+      } else {
+        throw "unsupported src type";
+      }
+    } else {
+      setEmptyTexture(gl, tex, options);
+    }
+    return tex;
+  }
+
+  /**
+   * Check if a src is an async request.
+   * if src is a string we're going to download an image
+   * if src is an array of strings we're going to download cubemap images
+   * @param {*} src The src from a TextureOptions
+   * @returns {bool} true if src is async.
+   */
+  function isAsyncSrc(src) {
+    return typeof src === 'string' ||
+           (Array.isArray(src) && typeof src[0] === 'string');
+  }
+
+  /**
+   * Creates a bunch of textures based on the passed in options.
+   *
+   * Example:
+   *
+   *     var textures = twgl.createTextures(gl, {
+   *       // a power of 2 image
+   *       hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
+   *       // a non-power of 2 image
+   *       clover: { src: "images/clover.jpg" },
+   *       // From a canvas
+   *       fromCanvas: { src: ctx.canvas },
+   *       // A cubemap from 6 images
+   *       yokohama: {
+   *         target: gl.TEXTURE_CUBE_MAP,
+   *         src: [
+   *           'images/yokohama/posx.jpg',
+   *           'images/yokohama/negx.jpg',
+   *           'images/yokohama/posy.jpg',
+   *           'images/yokohama/negy.jpg',
+   *           'images/yokohama/posz.jpg',
+   *           'images/yokohama/negz.jpg',
+   *         ],
+   *       },
+   *       // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
+   *       goldengate: {
+   *         target: gl.TEXTURE_CUBE_MAP,
+   *         src: 'images/goldengate.jpg',
+   *       },
+   *       // A 2x2 pixel texture from a JavaScript array
+   *       checker: {
+   *         mag: gl.NEAREST,
+   *         min: gl.LINEAR,
+   *         src: [
+   *           255,255,255,255,
+   *           192,192,192,255,
+   *           192,192,192,255,
+   *           255,255,255,255,
+   *         ],
+   *       },
+   *       // a 1x2 pixel texture from a typed array.
+   *       stripe: {
+   *         mag: gl.NEAREST,
+   *         min: gl.LINEAR,
+   *         format: gl.LUMINANCE,
+   *         src: new Uint8Array([
+   *           255,
+   *           128,
+   *           255,
+   *           128,
+   *           255,
+   *           128,
+   *           255,
+   *           128,
+   *         ]),
+   *         width: 1,
+   *       },
+   *     });
+   *
+   * Now
+   *
+   * *   `textures.hftIcon` will be a 2d texture
+   * *   `textures.clover` will be a 2d texture
+   * *   `textures.fromCanvas` will be a 2d texture
+   * *   `textures.yohohama` will be a cubemap texture
+   * *   `textures.goldengate` will be a cubemap texture
+   * *   `textures.checker` will be a 2d texture
+   * *   `textures.stripe` will be a 2d texture
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {Object.<string,module:twgl.TextureOptions>} options A TextureOptions object with whatever parameters you want set.
+   * @return {Object.<string,WebGLTexture>) the created textures by name
+   * @memberOf module:twgl
+   */
+  function createTextures(gl, textureOptions, callback) {
+    var numDownloading = 0;
+    var errors = [];
+    var textures = {};
+
+    function finishedDownloading(err) {
+      --numDownloading;
+      if (err) {
+        errors.push(err);
+      }
+      if (numDownloading === 0) {
+        if (callback) {
+          callback(errors.length ? errors : undefined, textureOptions);
+        }
+      }
+    }
+
+    Object.keys(textureOptions).forEach(function(name) {
+      var options = textureOptions[name];
+      var onLoadFn = undefined;
+      if (isAsyncSrc(options.src)) {
+        onLoadFn = finishedDownloading;
+        ++numDownloading;
+      }
+      textures[name] = createTexture(gl, options, onLoadFn);
+    });
+
+    return textures;
+  }
+
   return {
     createAttribsFromArrays: createAttribsFromArrays,
     createBuffersFromArrays: createBuffersFromArrays,
@@ -1573,6 +2355,16 @@ define('twgl/twgl',[], function () {
     setAttributePrefix: setAttributePrefix,
     setBuffersAndAttributes: setBuffersAndAttributes,
     setUniforms: setUniforms,
+
+    createTexture: createTexture,
+    setEmptyTexture: setEmptyTexture,
+    setTextureFromArray: setTextureFromArray,
+    loadTextureFromUrl: loadTextureFromUrl,
+    setTextureFromElement: setTextureFromElement,
+    setTextureFilteringForSize: setTextureFilteringForSize,
+    setTextureParameters: setTextureParameters,
+    setDefaultTextureColor: setDefaultTextureColor,
+    createTextures: createTextures,
   };
 
 });
