@@ -157,6 +157,141 @@ WebGL
     gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
     gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));
 
+### Loading / Setting up textures
+
+TWGL
+
+    var textures = twgl.createTextures(gl, {
+      // a power of 2 image
+      hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
+      // a non-power of 2 image
+      clover: { src: "images/clover.jpg" },
+      // From a canvas
+      fromCanvas: { src: ctx.canvas },
+      // A cubemap from 6 images
+      yokohama: {
+        target: gl.TEXTURE_CUBE_MAP,
+        src: [
+          'images/yokohama/posx.jpg',
+          'images/yokohama/negx.jpg',
+          'images/yokohama/posy.jpg',
+          'images/yokohama/negy.jpg',
+          'images/yokohama/posz.jpg',
+          'images/yokohama/negz.jpg',
+        ],
+      },
+      // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
+      goldengate: {
+        target: gl.TEXTURE_CUBE_MAP,
+        src: 'images/goldengate.jpg',
+      },
+      // A 2x2 pixel texture from a JavaScript array
+      checker: {
+        mag: gl.NEAREST,
+        min: gl.LINEAR,
+        src: [
+          255,255,255,255,
+          192,192,192,255,
+          192,192,192,255,
+          255,255,255,255,
+        ],
+      },
+      // a 1x8 pixel texture from a typed array.
+      stripe: {
+        mag: gl.NEAREST,
+        min: gl.LINEAR,
+        format: gl.LUMINANCE,
+        src: new Uint8Array([
+          255,
+          128,
+          255,
+          128,
+          255,
+          128,
+          255,
+          128,
+        ]),
+        width: 1,
+      },
+    });
+
+WebGL
+
+    // Let's assume I already loaded all the images
+
+    // a power of 2 image
+    var hftIconTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, hftIconImg);
+    gl.generateMipmaps(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    // a non-power of 2 image
+    var cloverTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, hftIconImg);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    // From a canvas
+    var cloverTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, ctx.canvas);
+    gl.generateMipmaps(gl.TEXTURE_2D);
+    // A cubemap from 6 images
+    var yokohamaTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, tex);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, posXImg);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, negXImg);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, posYImg);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, negYImg);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, posZImg);
+    gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, negZImg);
+    gl.generateMipmaps(gl.TEXTURE_CUBE_MAP);
+    // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
+    var goldengateTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, tex);
+    var size = goldengate.width / 3;  // assume it's a 3x2 texture
+    var slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
+    var tempCtx = document.createElement("canvas").getContext("2d");
+    tempCtx.canvas.width = size;
+    tempCtx.canvas.height = size;
+    for (var ii = 0; ii < 6; ++ii) {
+      var xOffset = slices[ii * 2 + 0] * size;
+      var yOffset = slices[ii * 2 + 1] * size;
+      tempCtx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
+      gl.texImage2D(faces[ii], 0, format, format, type, tempCtx.canvas);
+    }
+    gl.generateMipmaps(gl.TEXTURE_CUBE_MAP);
+    // A 2x2 pixel texture from a JavaScript array
+    var checkerTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
+        255,255,255,255,
+        192,192,192,255,
+        192,192,192,255,
+        255,255,255,255,
+      ]));
+    gl.generateMipmaps(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    // a 1x8 pixel texture from a typed array.
+    var stripeTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, gl.LUMINANCE, gl.UNSIGNED_BYTE, new Uint8Array([
+        255,
+        128,
+        255,
+        128,
+        255,
+        128,
+        255,
+        128,
+      ]));
+    gl.generateMipmaps(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
 ### Compare
 
 [TWGL example](http://twgljs.org/examples/twgl-cube.html) vs [WebGL example](http://twgljs.org/examples/webgl-cube.html)
@@ -164,6 +299,7 @@ WebGL
 ## Examples
 
 *   [twgl cube](http://twgljs.org/examples/twgl-cube.html)
+*   [textures](http://twgljs.org/examples/textures.html)
 *   [primitives](http://twgljs.org/examples/primitives.html)
 *   [2d-lines](http://twgljs.org/examples/2d-lines.html)
 *   [zoom-around](http://twgljs.org/examples/zoom-around.html)
