@@ -1383,7 +1383,7 @@ define([], function () {
    * @memberOf module:twgl
    */
   function setTextureFilteringForSize(gl, tex, options, width, height) {
-    options = otions || defaultTextureOptions;
+    options = options || defaultTextureOptions;
     var target = options.target || gl.TEXTURE_2D;
     width = width || options.width;
     height = height || options.height;
@@ -1904,34 +1904,36 @@ define([], function () {
     return textures;
   }
 
+  // Using quotes prevents Uglify from changing the names.
+  // No speed diff AFAICT.
   return {
-    createAttribsFromArrays: createAttribsFromArrays,
-    createBuffersFromArrays: createBuffersFromArrays,
-    createBufferInfoFromArrays: createBufferInfoFromArrays,
-    createAttributeSetters: createAttributeSetters,
-    createProgram: createProgram,
-    createProgramFromScripts: createProgramFromScripts,
-    createProgramFromSources: createProgramFromSources,
-    createProgramInfo: createProgramInfo,
-    createUniformSetters: createUniformSetters,
-    drawBufferInfo: drawBufferInfo,
-    drawObjectList: drawObjectList,
-    getWebGLContext: getWebGLContext,
-    resizeCanvasToDisplaySize: resizeCanvasToDisplaySize,
-    setAttributes: setAttributes,
-    setAttributePrefix: setAttributePrefix,
-    setBuffersAndAttributes: setBuffersAndAttributes,
-    setUniforms: setUniforms,
+    "createAttribsFromArrays": createAttribsFromArrays,
+    "createBuffersFromArrays": createBuffersFromArrays,
+    "createBufferInfoFromArrays": createBufferInfoFromArrays,
+    "createAttributeSetters": createAttributeSetters,
+    "createProgram": createProgram,
+    "createProgramFromScripts": createProgramFromScripts,
+    "createProgramFromSources": createProgramFromSources,
+    "createProgramInfo": createProgramInfo,
+    "createUniformSetters": createUniformSetters,
+    "drawBufferInfo": drawBufferInfo,
+    "drawObjectList": drawObjectList,
+    "getWebGLContext": getWebGLContext,
+    "resizeCanvasToDisplaySize": resizeCanvasToDisplaySize,
+    "setAttributes": setAttributes,
+    "setAttributePrefix": setAttributePrefix,
+    "setBuffersAndAttributes": setBuffersAndAttributes,
+    "setUniforms": setUniforms,
 
-    createTexture: createTexture,
-    setEmptyTexture: setEmptyTexture,
-    setTextureFromArray: setTextureFromArray,
-    loadTextureFromUrl: loadTextureFromUrl,
-    setTextureFromElement: setTextureFromElement,
-    setTextureFilteringForSize: setTextureFilteringForSize,
-    setTextureParameters: setTextureParameters,
-    setDefaultTextureColor: setDefaultTextureColor,
-    createTextures: createTextures,
+    "createTexture": createTexture,
+    "setEmptyTexture": setEmptyTexture,
+    "setTextureFromArray": setTextureFromArray,
+    "loadTextureFromUrl": loadTextureFromUrl,
+    "setTextureFromElement": setTextureFromElement,
+    "setTextureFilteringForSize": setTextureFilteringForSize,
+    "setTextureParameters": setTextureParameters,
+    "setDefaultTextureColor": setDefaultTextureColor,
+    "createTextures": createTextures,
   };
 
 });

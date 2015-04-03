@@ -285,22 +285,24 @@ define([], function () {
     return dst;
   }
 
+  // Using quotes prevents Uglify from changing the names.
+  // No speed diff AFAICT.
   return {
-    add: add,
-    copy: copy,
-    create: create,
-    cross: cross,
-    divide: divide,
-    divScalar: divScalar,
-    dot: dot,
-    lerp: lerp,
-    length: length,
-    lengthSq: lengthSq,
-    mulScalar: mulScalar,
-    multiply: multiply,
-    negate: negate,
-    normalize: normalize,
-    subtract: subtract,
+    "add": add,
+    "copy": copy,
+    "create": create,
+    "cross": cross,
+    "divide": divide,
+    "divScalar": divScalar,
+    "dot": dot,
+    "lerp": lerp,
+    "length": length,
+    "lengthSq": lengthSq,
+    "mulScalar": mulScalar,
+    "multiply": multiply,
+    "negate": negate,
+    "normalize": normalize,
+    "subtract": subtract,
   };
 
 });
