@@ -239,9 +239,11 @@ void main() {
     for (var ii = 0; ii < numObjects; ++ii) {
       var uniforms;
       var programInfo;
-      var renderType = 0; //rand(0, 2) | 0;
+      var shape;
+      var renderType = rand(0, 2) | 0;
       switch (renderType) {
         case 0:  // checker
+          shape = shapes[ii % shapes.length];
           programInfo = onePointProgramInfo;
           uniforms = {
             u_lightWorldPos: lightWorldPosition,
@@ -258,6 +260,7 @@ void main() {
           };
           break;
         case 1:  // yokohama
+          shape = rand(0, 2) < 1 ? shapes[1] : shapes[3];
           programInfo = envMapProgramInfo;
           uniforms = {
             u_texture: Math.random() > 0.5 ? textures.yokohama : textures.goldengate,
@@ -272,7 +275,7 @@ void main() {
       }
       drawObjects.push({
         programInfo: programInfo,
-        bufferInfo: shapes[ii % shapes.length],
+        bufferInfo: shape,
         uniforms: uniforms,
       });
       objects.push({
