@@ -203,7 +203,7 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
-  grunt.registerTask('docs', ['clean:docs', 'jsdoc']);
-  grunt.registerTask('default', ['eslint', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify', 'makeindex']);
+  grunt.registerTask('docs', ['clean:docs', 'jsdoc', 'makeindex']);
+  grunt.registerTask('default', ['eslint', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
 };
 
