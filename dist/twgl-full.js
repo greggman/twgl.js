@@ -1320,14 +1320,89 @@ define('twgl/twgl',[], function () {
   }
 
   /**
+   * The info for an attribute. This is effectively just the arguments to `gl.vertexAttribPointer` plus the WebGLBuffer
+   * for the attribute.
+   *
    * @typedef {Object} AttribInfo
    * @property {number} [numComponents] the number of components for this attribute.
-   * @property {number} [size] the number of components for this attribute.
+   * @property {number} [size] synonym for `numComponents`.
    * @property {number} [type] the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
    * @property {boolean} [normalized] whether or not to normalize the data. Default = false
    * @property {number} [offset] offset into buffer in bytes. Default = 0
    * @property {number} [stride] the stride in bytes per element. Default = 0
    * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
+   * @memberOf module:twgl
+   */
+
+  /**
+   * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
+   * @typedef {Object} FullArraySpec
+   * @property {(number[]|ArrayBuffer)} data The data of the array.
+   * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
+   *    If `coord` is in the name assumes `numComponents = 2`.
+   *    If `color` is in the name assumes `numComponents = 4`.
+   *    otherwise assumes `numComponents = 3`
+   * @property {constructor} type The type. This is only used if `data` is a JavaScript array. It is the constructor for the typedarray. (eg. `Uint8Array`).
+   * For example if you want colors in a `Uint8Array` you might have a `FullArraySpec` like `{ type: Uint8Array, data: [255,0,255,255, ...], }`.
+   * @property {number} [size] synonym for `numComponents`.
+   * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
+   * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
+   * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
+   * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array + defaultAttribPrefix.
+   * @property {string} [name] synonym for `attrib`.
+   * @property {string} [attribName] synonym for `attrib`.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * An individual array in {@link module:twgl.Arrays}
+   *
+   * When passed to {@link module:twgl.createBufferInfoFromArrays} if an ArraySpec is `number[]` or `ArrayBuffer`
+   * the types will be guessed based on the name. `indices` will be `Uint16Array`, everything else will
+   * be `Float32Array`
+   *
+   * @typedef {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} ArraySpec
+   * @memberOf module:twgl
+   */
+
+  /**
+   * This is a JavaScript object of arrays by name. The names should match your shader's attributes. If your
+   * attributes have a common prefix you can specify it by calling {@link module:twgl.setAttributePrefix}.
+   *
+   *     Bare JavaScript Arrays
+   *
+   *         var arrays = {
+   *            position: [-1, 1, 0],
+   *            normal: [0, 1, 0],
+   *            ...
+   *         }
+   *
+   *     Bare TypedArrays
+   *
+   *         var arrays = {
+   *            position: new Float32Array([-1, 1, 0]),
+   *            color: new Uint8Array([255, 128, 64, 255]),
+   *            ...
+   *         }
+   *
+   * *   Will guess at `numComponents` if not specified based on name.
+   *
+   *     If `coord` is in the name assumes `numComponents = 2`
+   *
+   *     If `color` is in the name assumes `numComponents = 4`
+   *
+   *     otherwise assumes `numComponents = 3`
+   *
+   * Objects with various fields. See {@link module:twgl.FullArraySpec}.
+   *
+   *     var arrays = {
+   *       position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
+   *       texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
+   *       normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
+   *       indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
+   *     };
+   *
+   * @typedef {Object.<string, module:twgl.ArraySpec>} Arrays
    * @memberOf module:twgl
    */
 
@@ -1383,7 +1458,7 @@ define('twgl/twgl',[], function () {
    *     otherwise assumes `numComponents = 3`
    *
    * @param {WebGLRenderingContext} gl The webgl rendering context.
-   * @param {(Object.<string, array|typedarray>)} arrays The arrays
+   * @param {module:twgl.Arrays} arrays The arrays
    * @return {Object.<string, module:twgl.AttribInfo>} the attribs
    * @memberOf module:twgl
    */
@@ -1398,7 +1473,9 @@ define('twgl/twgl',[], function () {
           buffer:        createBufferFromTypedArray(gl, typedArray),
           numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
           type:          getGLTypeForTypedArray(gl, typedArray),
-          normalize:     getNormalizationForTypedArray(typedArray),
+          normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
+          stride:        array.stride || 0,
+          offset:        array.offset || 0,
         };
       }
     });
@@ -1530,7 +1607,7 @@ define('twgl/twgl',[], function () {
    *     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {(Object.<string, array|object|typedarray>)} arrays Your data
+   * @param {module:twgl.Arrays} arrays Your data
    * @return {module:twgl.BufferInfo} A BufferInfo
    * @memberOf module:twgl
    */
@@ -1570,7 +1647,7 @@ define('twgl/twgl',[], function () {
    * If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.
    *
    * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
-   * @param {(Object<string, array|typedarray>)} arrays
+   * @param {module:twgl.Arrays} arrays
    * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
    * @memberOf module:twgl
    */
@@ -1686,7 +1763,7 @@ define('twgl/twgl',[], function () {
    *     the current setting for specific textures.
    * @property {(number[]|ArrayBuffer)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
    *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in [1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0.
-   *    Defaults to [0.5, 0.75, 1, 1]. See `SetDefaultTextureColor`. If `false` texture is set. Can be used to re-load a texture
+   *    Defaults to [0.5, 0.75, 1, 1]. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
    * @property {boolean} [auto] If not `false` then texture working filtering is set automatically for non-power of 2 images and
    *    mips are generated for power of 2 images.
    * @property {number[]} [cubeFaceOrder] The order that cube faces are pull out of an img or set of images. The default is
