@@ -1473,12 +1473,19 @@ define([], function () {
         ctx.canvas.height = size;
         width = size;
         height = size;
-        for (var ii = 0; ii < 6; ++ii) {
-          var xOffset = slices[ii * 2 + 0] * size;
-          var yOffset = slices[ii * 2 + 1] * size;
+        // work around bug in chrome. We must do first face first?
+        var facesWithNdx = faces.map(function(face, ndx) {
+          return { face: face, ndx: ndx };
+        });
+        facesWithNdx.sort(function(a, b) {
+          return a.face - b.face;
+        } );
+        facesWithNdx.forEach(function(f) {
+          var xOffset = slices[f.ndx * 2 + 0] * size;
+          var yOffset = slices[f.ndx * 2 + 1] * size;
           ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-          gl.texImage2D(faces[ii], 0, format, format, type, ctx.canvas);
-        }
+          gl.texImage2D(f.face, 0, format, format, type, ctx.canvas);
+        });
         // Free up the canvas memory
         ctx.canvas.width = 1;
         ctx.canvas.height = 1;
@@ -1623,18 +1630,18 @@ define([], function () {
           } else {
             savePackState(gl, options);
             gl.bindTexture(target, tex);
-            gl.texImage2D(faceTarget, 0, format, format, type, img);
 
             // So assuming this is the first image we now have one face that's img sized
             // and 5 faces that are 1x1 pixel so size the other faces
             if (numToLoad === 5) {
               faces.forEach(function(otherTarget) {
-                if (otherTarget !== faceTarget) {
-                  // Should we re-use the same face or a color?
-                  gl.texImage2D(otherTarget, 0, format, format, type, img);
-                }
+                // Should we re-use the same face or a color?
+                gl.texImage2D(otherTarget, 0, format, format, type, img);
               });
+            } else {
+              gl.texImage2D(faceTarget, 0, format, format, type, img);
             }
+
             restorePackState(gl, options);
             gl.generateMipmap(target);
           }
