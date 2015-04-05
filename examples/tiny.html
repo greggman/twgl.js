@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <title>twgl.js - tiny</title>
+    <style>
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - tiny</div>
+  </body>
+  <script id="vs" type="notjs">
+attribute vec4 position;
+
+void main() {
+  gl_Position = position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+uniform vec2 resolution;
+uniform float time;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / resolution;
+  float color = 0.0;
+  // lifted from glslsandbox.com
+  color += sin( uv.x * cos( time / 3.0 ) * 60.0 ) + cos( uv.y * cos( time / 2.80 ) * 10.0 );
+  color += sin( uv.y * sin( time / 2.0 ) * 40.0 ) + cos( uv.x * sin( time / 1.70 ) * 40.0 );
+  color += sin( uv.x * sin( time / 1.0 ) * 10.0 ) + sin( uv.y * sin( time / 3.50 ) * 80.0 );
+  color *= sin( time / 10.0 ) * 0.5;
+
+  gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
+}
+  </script>
+  <script src="../dist/twgl.min.js"></script>
+  <script>
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    var arrays = {
+      position: { numComponents: 2, data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1] },
+    };
+    var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    var start = Date.now() * 0.001;
+
+    function render() {
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      var uniforms = {
+        time: Date.now() * 0.001 - start,
+        resolution: [gl.canvas.width, gl.canvas.height],
+      };
+
+      gl.useProgram(programInfo.program);
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+      twgl.setUniforms(programInfo, uniforms);
+      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+
+      requestAnimationFrame(render);
+    }
+    render();
+  </script>
+</html>
+
+
