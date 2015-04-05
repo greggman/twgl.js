@@ -102,21 +102,11 @@ module.exports = function(grunt) {
         src: docsFiles,
         options: {
           destination: 'docs',
-          configure: 'jsdoc.conf.json',
-          template: 'node_modules/ink-docstrap/template',
+          configure: 'build/jsdoc.conf.json',
+          template: 'build/jsdoc-template/template',
         },
       },
     },
-    //concat: {
-    //  max: {
-    //    src: libFiles,
-    //    dest: 'dist/twgl.js',
-    //  },
-    //  fullMax: {
-    //    src:  fullLibFiles,
-    //    dest: 'dist/twgl-full.js',
-    //  },
-    //},
     requirejs: {
       full: {
         options: {
@@ -188,14 +178,11 @@ module.exports = function(grunt) {
     },
     clean: {
       docs: [ 'docs' ],
-      dist:
-        [ 'dist' ],
-
+      dist: [ 'dist' ],
     },
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-eslint');
