@@ -8,24 +8,56 @@ This library's sole purpose is to make using the WebGL API less verbose.
 If you want to get shit done use [three.js](http://threejs.org). If you want
 to do stuff low-level with WebGL consider using [TWGL](http://github.com/greggman/twgl.js/).
 
-## Download
+## The tinyest example
 
-*   from github
+Not including the shaders (which is a simple quad shader) here's the entire code
 
-    [http://github.com/greggman/twgl.js](http://github.com/greggman/twgl.js)
+    <canvas id="c"></canvas>
+    <script src="../dist/twgl-full.min.js"></script>
+    <script>
+      var m4 = twgl.m4;
+      var gl = twgl.getWebGLContext(document.getElementById("c"));
+      var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-*   from bower
+      var arrays = {
+        position: { numComponents: 2, data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1] },
+      };
+      var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+      var start = Date.now() * 0.001;
 
-        bower install twgl.js
+      function render() {
+        twgl.resizeCanvasToDisplaySize(gl.canvas);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-*   from git
+        var uniforms = {
+          time: Date.now() * 0.001 - start,
+          resolution: [gl.canvas.width, gl.canvas.height],
+        };
 
-        git clone https://github.com/greggman/twgl.js.git
+        gl.useProgram(programInfo.program);
+        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+        twgl.setUniforms(programInfo, uniforms);
+        twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+
+        requestAnimationFrame(render);
+      }
+      render();
+    </script>
 
 ## Why? What? How?
 
 WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.
+
+At its core there's really only a few functions
+
+*   `twgl.createProgramInfo` compiles a shader and creates setters for attribs and uniforms
+*   `twgl.createBufferInfoFromArrays` creates buffers and attribute settings
+*   `twgl.setBuffersAndAttributes` binds buffers and sets attributes
+*   `twgl.setUniforms` sets the uniforms
+*   `twgl.createTextures` creates textures various sorts
+
+There's a few extra helpers but those 5 functions are the core.
 
 Compare the code for a point lit cube.
 
@@ -298,6 +330,7 @@ WebGL
 
 ## Examples
 
+*   [tiny](http://twgljs.org/examples/tiny.html)
 *   [twgl cube](http://twgljs.org/examples/twgl-cube.html)
 *   [textures](http://twgljs.org/examples/textures.html)
 *   [primitives](http://twgljs.org/examples/primitives.html)
@@ -320,16 +353,39 @@ WebGL
 
     planes, cubes, spheres, ... Just to help get started
 
-## Docs
+## Usage
 
-[Docs are here](http://twgljs.org/docs/).
+See the examples. Otherwise there's a few different versions
+
+*   `twgl-full.min.js` the minified full version
+*   `twgl-full.js` the concatinated full version
+*   `twgl.min.js` the minimum version (no 3d math, no primitives)
+*   `twgl.js` the concatinated minimum version (no 3d math, no primitives)
+
+## API Docs
+
+[API Docs are here](http://twgljs.org/docs/).
+
+## Download
+
+*   from github
+
+    [http://github.com/greggman/twgl.js](http://github.com/greggman/twgl.js)
+
+*   from bower
+
+        bower install twgl.js
+
+*   from git
+
+        git clone https://github.com/greggman/twgl.js.git
 
 ## Rational and other chit-chat
 
 TWGL's is an attempt to make WebGL simpler by providing a few tiny helper functions
 that make it much less verbose and remove the tedium. TWGL is **NOT** trying to help
 with the complexity of managing shaders and writing GLSL. Nor is it a 3D library like
-[three.js](http://threejs.org).
+[three.js](http://threejs.org). It's just trying to make WebGL less verbose.
 
 TWGL can be considered a spiritual successor to [TDL](http://github.com/greggman/tdl). Where
 as TDL created several *classes* that wrapped WebGL, TWGL tries not to wrap anything. In fact
