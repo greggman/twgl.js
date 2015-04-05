@@ -5,11 +5,6 @@
 	<meta charset="utf-8">
 	<title>TWGL Module: twgl</title>
 
-	<!--[if lt IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
-
 	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
 
 </head>
@@ -131,7 +126,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="createAttribsFromArrays"><span class="type-signature">&lt;static> </span>createAttribsFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#AttribInfo">module:twgl.AttribInfo</a>>}</span></h4>
+    <h4 class="name" id="createAttribsFromArrays"><span class="type-signature"> </span>createAttribsFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#AttribInfo">AttribInfo</a>>}</span></h4>
     
     
 </dt>
@@ -171,10 +166,10 @@
    ...
 }</code></pre>
 </li>
-<li><p>Will guess at numComponents if not specified based on name.</p>
-<p>If 'coord' is in the name assumes numComponents = 2</p>
-<p>If 'color' is in the name assumes numComponents = 4</p>
-<p>otherwise assumes numComponents = 3</p>
+<li><p>Will guess at <code>numComponents</code> if not specified based on name.</p>
+<p>If <code>coord</code> is in the name assumes <code>numComponents = 2</code></p>
+<p>If <code>color</code> is in the name assumes <code>numComponents = 4</code></p>
+<p>otherwise assumes <code>numComponents = 3</code></p>
 </li>
 </ul>
     </div>
@@ -218,7 +213,6 @@
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -240,7 +234,6 @@
             
                 
 <span class="param-type">Object.&lt;string, (array|typedarray)></span>
-
 
             
             </td>
@@ -314,8 +307,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">Object.&lt;string, <a href="module-twgl.html#AttribInfo">module:twgl.AttribInfo</a>></span>
-
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#AttribInfo">AttribInfo</a>></span>
 
 	</dd>
 </dl>
@@ -329,7 +321,7 @@
         
             
 <dt>
-    <h4 class="name" id="createAttributeSetters"><span class="type-signature">&lt;static> </span>createAttributeSetters<span class="signature">(program)</span><span class="type-signature"> &rarr; {Object.&lt;string, function()>}</span></h4>
+    <h4 class="name" id="createAttributeSetters"><span class="type-signature"> </span>createAttributeSetters<span class="signature">(program)</span><span class="type-signature"> &rarr; {Object.&lt;string, function()>}</span></h4>
     
     
 </dt>
@@ -338,7 +330,7 @@
     
     <div class="description">
         <p>Creates setter functions for all attributes of a shader
-program. You can pass this to <a href="module-twgl.html#setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> to set all your buffers and attributes.</p>
+program. You can pass this to <a href="module-twgl.html#setBuffersAndAttributes"><code>setBuffersAndAttributes</code></a> to set all your buffers and attributes.</p>
     </div>
     
 
@@ -379,7 +371,6 @@ program. You can pass this to <a href="module-twgl.html#setBuffersAndAttributes"
             
                 
 <span class="param-type">WebGLProgram</span>
-
 
             
             </td>
@@ -427,7 +418,7 @@ program. You can pass this to <a href="module-twgl.html#setBuffersAndAttributes"
 	<dt class="tag-see">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li><a href="module-twgl.html#setAttributes"><code>module:twgl.setAttributes</code></a> for example</li>
+			<li><a href="module-twgl.html#setAttributes"><code>setAttributes</code></a> for example</li>
 			</ul>
 	</dd>
 	
@@ -462,7 +453,6 @@ program. You can pass this to <a href="module-twgl.html#setBuffersAndAttributes"
 		
 <span class="param-type">Object.&lt;string, function()></span>
 
-
 	</dd>
 </dl>
 
@@ -475,7 +465,7 @@ program. You can pass this to <a href="module-twgl.html#setBuffersAndAttributes"
         
             
 <dt>
-    <h4 class="name" id="createAugmentedTypedArray"><span class="type-signature">&lt;static> </span>createAugmentedTypedArray<span class="signature">(numComponents, numElements, opt_type)</span><span class="type-signature"> &rarr; {ArrayBuffer}</span></h4>
+    <h4 class="name" id="createAugmentedTypedArray"><span class="type-signature"> </span>createAugmentedTypedArray<span class="signature">(numComponents, numElements, opt_type)</span><span class="type-signature"> &rarr; {ArrayBuffer}</span></h4>
     
     
 </dt>
@@ -534,7 +524,6 @@ array.push([4, 5, 6]);
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
@@ -557,7 +546,6 @@ array.push([4, 5, 6]);
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
@@ -579,7 +567,6 @@ array.push([4, 5, 6]);
             
                 
 <span class="param-type">constructor</span>
-
 
             
             </td>
@@ -655,7 +642,6 @@ array.push([4, 5, 6]);
 		
 <span class="param-type">ArrayBuffer</span>
 
-
 	</dd>
 </dl>
 
@@ -668,7 +654,7 @@ array.push([4, 5, 6]);
         
             
 <dt>
-    <h4 class="name" id="createBufferInfoFromArrays"><span class="type-signature">&lt;static> </span>createBufferInfoFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
+    <h4 class="name" id="createBufferInfoFromArrays"><span class="type-signature"> </span>createBufferInfoFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
     
     
 </dt>
@@ -677,7 +663,7 @@ array.push([4, 5, 6]);
     
     <div class="description">
         <p>Creates a BufferInfo from an object of arrays.</p>
-<p>This can be passed to <a href="module-twgl.html#setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to
+<p>This can be passed to <a href="module-twgl.html#setBuffersAndAttributes"><code>setBuffersAndAttributes</code></a> and to
 <code>module:twgl:drawBufferInfo</code>.</p>
 <p>Given an object like</p>
 <pre><code>var arrays = {
@@ -788,7 +774,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -810,7 +795,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             
                 
 <span class="param-type">Object.&lt;string, (array|object|typedarray)></span>
-
 
             
             </td>
@@ -884,8 +868,7 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a></span>
-
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
 
 	</dd>
 </dl>
@@ -899,7 +882,7 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
         
             
 <dt>
-    <h4 class="name" id="createBuffersFromArrays"><span class="type-signature">&lt;static> </span>createBuffersFromArrays<span class="signature">({WebGLRenderingContext), arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    <h4 class="name" id="createBuffersFromArrays"><span class="type-signature"> </span>createBuffersFromArrays<span class="signature">({WebGLRenderingContext), arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
     
     
 </dt>
@@ -978,7 +961,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
                 
 <span class="param-type">Object.&lt;string, (array|typedarray)></span>
 
-
             
             </td>
 
@@ -1053,7 +1035,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
 		
 <span class="param-type">Object.&lt;string, WebGLBuffer></span>
 
-
 	</dd>
 </dl>
 
@@ -1066,7 +1047,7 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
         
             
 <dt>
-    <h4 class="name" id="createProgram"><span class="type-signature">&lt;static> </span>createProgram<span class="signature">(shaders, opt_attribs, opt_locations, opt_errorCallback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createProgram"><span class="type-signature"> </span>createProgram<span class="signature">(shaders, <span class="optional">opt_attribs</span>, <span class="optional">opt_locations</span>, <span class="optional">opt_errorCallback</span>)</span><span class="type-signature"> &rarr; {WebGLProgram}</span></h4>
     
     
 </dt>
@@ -1119,7 +1100,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">WebGLShader[]</span>
 
-
             
             </td>
 
@@ -1148,8 +1128,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">string[]?</span>
-
+<span class="param-type">string[]</span>
 
             
             </td>
@@ -1157,9 +1136,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1181,8 +1160,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">number[]?</span>
-
+<span class="param-type">number[]</span>
 
             
             </td>
@@ -1190,9 +1168,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1214,8 +1192,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ErrorCallback">module:twgl.ErrorCallback</a></span>
-
+<span class="param-type"><a href="module-twgl.html#ErrorCallback">ErrorCallback</a></span>
 
             
             </td>
@@ -1223,9 +1200,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1289,10 +1266,21 @@ program and calls useProgram.</p>
     
             
 <div class="param-desc">
-    <p>{WebGLProgram?) the created program or null if error.</p>
+    <p>the created program or null if error.</p>
 </div>
 
 
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">WebGLProgram</span>
+
+	</dd>
+</dl>
 
 
         
@@ -1303,7 +1291,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createProgramFromScripts"><span class="type-signature">&lt;static> </span>createProgramFromScripts<span class="signature">(gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback)</span><span class="type-signature"> &rarr; {WebGLProgram}</span></h4>
+    <h4 class="name" id="createProgramFromScripts"><span class="type-signature"> </span>createProgramFromScripts<span class="signature">(gl, shaderScriptIds, <span class="optional">opt_attribs</span>, <span class="optional">opt_locations</span>, opt_errorCallback)</span><span class="type-signature"> &rarr; {WebGLProgram}</span></h4>
     
     
 </dt>
@@ -1355,7 +1343,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -1387,7 +1374,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">string[]</span>
 
-
             
             </td>
 
@@ -1418,8 +1404,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">string[]?</span>
-
+<span class="param-type">string[]</span>
 
             
             </td>
@@ -1427,9 +1412,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1451,8 +1436,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">number[]?</span>
-
+<span class="param-type">number[]</span>
 
             
             </td>
@@ -1460,9 +1444,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1484,8 +1468,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ErrorCallback">module:twgl.ErrorCallback</a></span>
-
+<span class="param-type"><a href="module-twgl.html#ErrorCallback">ErrorCallback</a></span>
 
             
             </td>
@@ -1570,7 +1553,6 @@ program and calls useProgram.</p>
 		
 <span class="param-type">WebGLProgram</span>
 
-
 	</dd>
 </dl>
 
@@ -1583,7 +1565,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createProgramFromSources"><span class="type-signature">&lt;static> </span>createProgramFromSources<span class="signature">(gl, shaderSourcess, opt_attribs, opt_locations, opt_errorCallback)</span><span class="type-signature"> &rarr; {WebGLProgram}</span></h4>
+    <h4 class="name" id="createProgramFromSources"><span class="type-signature"> </span>createProgramFromSources<span class="signature">(gl, shaderSourcess, <span class="optional">opt_attribs</span>, <span class="optional">opt_locations</span>, opt_errorCallback)</span><span class="type-signature"> &rarr; {WebGLProgram}</span></h4>
     
     
 </dt>
@@ -1635,7 +1617,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -1667,7 +1648,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">string[]</span>
 
-
             
             </td>
 
@@ -1698,8 +1678,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">string[]?</span>
-
+<span class="param-type">string[]</span>
 
             
             </td>
@@ -1707,9 +1686,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1731,8 +1710,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">number[]?</span>
-
+<span class="param-type">number[]</span>
 
             
             </td>
@@ -1740,9 +1718,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1764,8 +1742,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ErrorCallback">module:twgl.ErrorCallback</a></span>
-
+<span class="param-type"><a href="module-twgl.html#ErrorCallback">ErrorCallback</a></span>
 
             
             </td>
@@ -1850,7 +1827,6 @@ program and calls useProgram.</p>
 		
 <span class="param-type">WebGLProgram</span>
 
-
 	</dd>
 </dl>
 
@@ -1863,7 +1839,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createProgramInfo"><span class="type-signature">&lt;static> </span>createProgramInfo<span class="signature">(gl, shaderSourcess, opt_attribs, opt_locations, opt_errorCallback)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
+    <h4 class="name" id="createProgramInfo"><span class="type-signature"> </span>createProgramInfo<span class="signature">(gl, shaderSourcess, <span class="optional">opt_attribs</span>, <span class="optional">opt_locations</span>, opt_errorCallback)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#ProgramInfo">ProgramInfo</a>}</span></h4>
     
     
 </dt>
@@ -1921,7 +1897,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -1953,7 +1928,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">string[]</span>
 
-
             
             </td>
 
@@ -1984,8 +1958,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">string[]?</span>
-
+<span class="param-type">string[]</span>
 
             
             </td>
@@ -1993,9 +1966,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -2017,8 +1990,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">number[]?</span>
-
+<span class="param-type">number[]</span>
 
             
             </td>
@@ -2026,9 +1998,9 @@ program and calls useProgram.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -2050,8 +2022,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ErrorCallback">module:twgl.ErrorCallback</a></span>
-
+<span class="param-type"><a href="module-twgl.html#ErrorCallback">ErrorCallback</a></span>
 
             
             </td>
@@ -2134,8 +2105,7 @@ program and calls useProgram.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="module-twgl.html#ProgramInfo">module:twgl.ProgramInfo</a></span>
-
+<span class="param-type"><a href="module-twgl.html#ProgramInfo">ProgramInfo</a></span>
 
 	</dd>
 </dl>
@@ -2149,7 +2119,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createTexture"><span class="type-signature">&lt;static> </span>createTexture<span class="signature">(gl, options)</span><span class="type-signature"> &rarr; {WebGLTexture}</span></h4>
+    <h4 class="name" id="createTexture"><span class="type-signature"> </span>createTexture<span class="signature">(gl, options)</span><span class="type-signature"> &rarr; {WebGLTexture}</span></h4>
     
     
 </dt>
@@ -2199,7 +2169,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -2220,8 +2189,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -2297,7 +2265,6 @@ program and calls useProgram.</p>
 		
 <span class="param-type">WebGLTexture</span>
 
-
 	</dd>
 </dl>
 
@@ -2310,7 +2277,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createTextures"><span class="type-signature">&lt;static> </span>createTextures<span class="signature">(gl, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createTextures"><span class="type-signature"> </span>createTextures<span class="signature">(gl, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2424,7 +2391,6 @@ program and calls useProgram.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -2445,8 +2411,7 @@ program and calls useProgram.</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a>></span>
-
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#TextureOptions">TextureOptions</a>></span>
 
             
             </td>
@@ -2523,7 +2488,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createUniformSetters"><span class="type-signature">&lt;static> </span>createUniformSetters<span class="signature">(program)</span><span class="type-signature"> &rarr; {Object.&lt;string, function()>}</span></h4>
+    <h4 class="name" id="createUniformSetters"><span class="type-signature"> </span>createUniformSetters<span class="signature">(program)</span><span class="type-signature"> &rarr; {Object.&lt;string, function()>}</span></h4>
     
     
 </dt>
@@ -2574,7 +2539,6 @@ program.</p>
                 
 <span class="param-type">WebGLProgram</span>
 
-
             
             </td>
 
@@ -2621,7 +2585,7 @@ program.</p>
 	<dt class="tag-see">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li><a href="module-twgl.html#setUniforms"><code>module:twgl.setUniforms</code></a></li>
+			<li><a href="module-twgl.html#setUniforms"><code>setUniforms</code></a></li>
 			</ul>
 	</dd>
 	
@@ -2656,7 +2620,6 @@ program.</p>
 		
 <span class="param-type">Object.&lt;string, function()></span>
 
-
 	</dd>
 </dl>
 
@@ -2669,7 +2632,7 @@ program.</p>
         
             
 <dt>
-    <h4 class="name" id="drawBufferInfo"><span class="type-signature">&lt;static> </span>drawBufferInfo<span class="signature">(gl, type, bufferInfo, count, offset)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="drawBufferInfo"><span class="type-signature"> </span>drawBufferInfo<span class="signature">(gl, type, bufferInfo, <span class="optional">count</span>, <span class="optional">offset</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2724,7 +2687,6 @@ data you don't have to remember to update your draw call.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -2755,7 +2717,6 @@ data you don't have to remember to update your draw call.</p>
                 
 <span class="param-type">enum</span>
 
-
             
             </td>
 
@@ -2784,8 +2745,7 @@ data you don't have to remember to update your draw call.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a></span>
-
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
 
             
             </td>
@@ -2817,16 +2777,15 @@ data you don't have to remember to update your draw call.</p>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -2850,16 +2809,15 @@ data you don't have to remember to update your draw call.</p>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -2925,7 +2883,7 @@ data you don't have to remember to update your draw call.</p>
         
             
 <dt>
-    <h4 class="name" id="drawObjectList"><span class="type-signature">&lt;static> </span>drawObjectList<span class="signature">(objectsToDraw)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="drawObjectList"><span class="type-signature"> </span>drawObjectList<span class="signature">(objectsToDraw)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2974,7 +2932,6 @@ data you don't have to remember to update your draw call.</p>
             
                 
 <span class="param-type">DrawObject[]</span>
-
 
             
             </td>
@@ -3040,7 +2997,7 @@ data you don't have to remember to update your draw call.</p>
         
             
 <dt>
-    <h4 class="name" id="getWebGLContext"><span class="type-signature">&lt;static> </span>getWebGLContext<span class="signature">(canvas, opt_attribs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getWebGLContext"><span class="type-signature"> </span>getWebGLContext<span class="signature">(canvas, <span class="optional">opt_attribs</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -3092,7 +3049,6 @@ data you don't have to remember to update your draw call.</p>
                 
 <span class="param-type">HTMLCanvasElement</span>
 
-
             
             </td>
 
@@ -3123,16 +3079,15 @@ data you don't have to remember to update your draw call.</p>
                 
 <span class="param-type">WebGLContextCreationAttirbutes</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -3198,7 +3153,7 @@ data you don't have to remember to update your draw call.</p>
         
             
 <dt>
-    <h4 class="name" id="loadCubemapFromUrls"><span class="type-signature">&lt;static> </span>loadCubemapFromUrls<span class="signature">(gl, tex, options, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loadCubemapFromUrls"><span class="type-signature"> </span>loadCubemapFromUrls<span class="signature">(gl, tex, options, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -3249,7 +3204,6 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -3272,7 +3226,6 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -3293,8 +3246,7 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -3317,7 +3269,6 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
             
                 
 <span class="param-type">function</span>
-
 
             
             </td>
@@ -3384,7 +3335,7 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
         
             
 <dt>
-    <h4 class="name" id="loadTextureFromUrl"><span class="type-signature">&lt;static> </span>loadTextureFromUrl<span class="signature">(gl, tex, options, callback)</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></h4>
+    <h4 class="name" id="loadTextureFromUrl"><span class="type-signature"> </span>loadTextureFromUrl<span class="signature">(gl, tex, options, callback)</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></h4>
     
     
 </dt>
@@ -3437,7 +3388,6 @@ downloading. Filtering options will be set as approriate for image unless <code>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -3460,7 +3410,6 @@ downloading. Filtering options will be set as approriate for image unless <code>
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -3481,8 +3430,7 @@ downloading. Filtering options will be set as approriate for image unless <code>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -3505,7 +3453,6 @@ downloading. Filtering options will be set as approriate for image unless <code>
             
                 
 <span class="param-type">function</span>
-
 
             
             </td>
@@ -3582,7 +3529,6 @@ downloading. Filtering options will be set as approriate for image unless <code>
 		
 <span class="param-type">HTMLImageElement</span>
 
-
 	</dd>
 </dl>
 
@@ -3595,7 +3541,7 @@ downloading. Filtering options will be set as approriate for image unless <code>
         
             
 <dt>
-    <h4 class="name" id="resizeCanvasToDisplaySize"><span class="type-signature">&lt;static> </span>resizeCanvasToDisplaySize<span class="signature">(canvas, a)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="resizeCanvasToDisplaySize"><span class="type-signature"> </span>resizeCanvasToDisplaySize<span class="signature">(canvas, <span class="optional">a</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
@@ -3647,7 +3593,6 @@ downloading. Filtering options will be set as approriate for image unless <code>
                 
 <span class="param-type">HTMLCanvasElement</span>
 
-
             
             </td>
 
@@ -3678,16 +3623,15 @@ downloading. Filtering options will be set as approriate for image unless <code>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -3763,7 +3707,6 @@ downloading. Filtering options will be set as approriate for image unless <code>
 		
 <span class="param-type">boolean</span>
 
-
 	</dd>
 </dl>
 
@@ -3776,7 +3719,7 @@ downloading. Filtering options will be set as approriate for image unless <code>
         
             
 <dt>
-    <h4 class="name" id="setAttributePrefix"><span class="type-signature">&lt;static> </span>setAttributePrefix<span class="signature">(prefix)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setAttributePrefix"><span class="type-signature"> </span>setAttributePrefix<span class="signature">(prefix)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -3834,7 +3777,6 @@ as it makes it clear where they came from. But, when building geometry I prefer 
             
                 
 <span class="param-type">string</span>
-
 
             
             </td>
@@ -3900,7 +3842,7 @@ as it makes it clear where they came from. But, when building geometry I prefer 
         
             
 <dt>
-    <h4 class="name" id="setAttributes"><span class="type-signature">&lt;static> </span>setAttributes<span class="signature">(setters, buffers)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setAttributes"><span class="type-signature"> </span>setAttributes<span class="signature">(setters, buffers)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -3908,7 +3850,7 @@ as it makes it clear where they came from. But, when building geometry I prefer 
     
     
     <div class="description">
-        <p>Sets attributes and binds buffers (deprecated... use <a href="module-twgl.html#setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a>)</p>
+        <p>Sets attributes and binds buffers (deprecated... use <a href="module-twgl.html#setBuffersAndAttributes"><code>setBuffersAndAttributes</code></a>)</p>
 <p>Example:</p>
 <pre><code>var program = createProgramFromScripts(
     gl, [&quot;some-vs&quot;, &quot;some-fs&quot;);
@@ -3989,7 +3931,6 @@ attribs like this</p>
                 
 <span class="param-type">Object.&lt;string, function()></span>
 
-
             
             </td>
 
@@ -4010,8 +3951,7 @@ attribs like this</p>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="module-twgl.html#AttribInfo">module:twgl.AttribInfo</a>></span>
-
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#AttribInfo">AttribInfo</a>></span>
 
             
             </td>
@@ -4044,7 +3984,7 @@ attribs like this</p>
 	
 	<dd>
 		<ul class="dummy">
-			<li>use <a href="module-twgl.html#setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a></li>
+			<li>use <a href="module-twgl.html#setBuffersAndAttributes"><code>setBuffersAndAttributes</code></a></li>
 		</ul>
 	</dd>
 	
@@ -4086,7 +4026,7 @@ attribs like this</p>
         
             
 <dt>
-    <h4 class="name" id="setBuffersAndAttributes"><span class="type-signature">&lt;static> </span>setBuffersAndAttributes<span class="signature">(gl, setters, buffers)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setBuffersAndAttributes"><span class="type-signature"> </span>setBuffersAndAttributes<span class="signature">(gl, setters, buffers)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4158,7 +4098,6 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -4179,11 +4118,9 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ProgramInfo">module:twgl.ProgramInfo</a></span>
-|
+<span class="param-type"><a href="module-twgl.html#ProgramInfo">ProgramInfo</a>|</span>
 
 <span class="param-type">Object.&lt;string, function()></span>
-
 
             
             </td>
@@ -4205,8 +4142,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a></span>
-
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
 
             
             </td>
@@ -4272,7 +4208,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
         
             
 <dt>
-    <h4 class="name" id="setDefaultTextureColor"><span class="type-signature">&lt;static> </span>setDefaultTextureColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setDefaultTextureColor"><span class="type-signature"> </span>setDefaultTextureColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4326,7 +4262,6 @@ the URL has loaded.</p>
             
                 
 <span class="param-type">number[]</span>
-
 
             
             </td>
@@ -4392,7 +4327,7 @@ the URL has loaded.</p>
         
             
 <dt>
-    <h4 class="name" id="setEmptyTexture"><span class="type-signature">&lt;static> </span>setEmptyTexture<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setEmptyTexture"><span class="type-signature"> </span>setEmptyTexture<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4443,7 +4378,6 @@ You must set <code>options.width</code> and <code>options.height</code>.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -4466,7 +4400,6 @@ You must set <code>options.width</code> and <code>options.height</code>.</p>
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -4487,8 +4420,7 @@ You must set <code>options.width</code> and <code>options.height</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -4554,7 +4486,7 @@ You must set <code>options.width</code> and <code>options.height</code>.</p>
         
             
 <dt>
-    <h4 class="name" id="setTextureFilteringForSize"><span class="type-signature">&lt;static> </span>setTextureFilteringForSize<span class="signature">(gl, tex, options, width, height)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureFilteringForSize"><span class="type-signature"> </span>setTextureFilteringForSize<span class="signature">(gl, tex, options, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4607,7 +4539,6 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -4638,7 +4569,6 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -4667,8 +4597,7 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -4700,16 +4629,15 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -4733,16 +4661,15 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -4808,7 +4735,7 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
         
             
 <dt>
-    <h4 class="name" id="setTextureFromArray"><span class="type-signature">&lt;static> </span>setTextureFromArray<span class="signature">(gl, tex, src, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureFromArray"><span class="type-signature"> </span>setTextureFromArray<span class="signature">(gl, tex, src, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4817,7 +4744,7 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
     
     <div class="description">
         <p>Sets a texture from an array or typed array. If the width or height is not provided will attempt to
-guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p>
+guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptions</code></a>.</p>
     </div>
     
 
@@ -4859,7 +4786,6 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -4882,7 +4808,6 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -4903,11 +4828,9 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
-|
+<span class="param-type">Array.&lt;number>|</span>
 
 <span class="param-type">ArrayBuffer</span>
-
 
             
             </td>
@@ -4929,8 +4852,7 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -4996,7 +4918,7 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>module:twgl.
         
             
 <dt>
-    <h4 class="name" id="setTextureFromElement"><span class="type-signature">&lt;static> </span>setTextureFromElement<span class="signature">(gl, tex, element, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureFromElement"><span class="type-signature"> </span>setTextureFromElement<span class="signature">(gl, tex, element, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -5049,7 +4971,6 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -5071,7 +4992,6 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             
                 
 <span class="param-type">WebGLTexture</span>
-
 
             
             </td>
@@ -5095,7 +5015,6 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
                 
 <span class="param-type">HTMLElement</span>
 
-
             
             </td>
 
@@ -5116,8 +5035,7 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -5183,7 +5101,7 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
         
             
 <dt>
-    <h4 class="name" id="setTextureParameters"><span class="type-signature">&lt;static> </span>setTextureParameters<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureParameters"><span class="type-signature"> </span>setTextureParameters<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -5233,7 +5151,6 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -5256,7 +5173,6 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -5277,8 +5193,7 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -5344,7 +5259,7 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
         
             
 <dt>
-    <h4 class="name" id="setTextureTo1PixelColor"><span class="type-signature">&lt;static> </span>setTextureTo1PixelColor<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureTo1PixelColor"><span class="type-signature"> </span>setTextureTo1PixelColor<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -5395,7 +5310,6 @@ the default texture color is used which can be set by calling <code>setDefaultTe
                 
 <span class="param-type">WebGLRenderingContext</span>
 
-
             
             </td>
 
@@ -5418,7 +5332,6 @@ the default texture color is used which can be set by calling <code>setDefaultTe
                 
 <span class="param-type">WebGLTexture</span>
 
-
             
             </td>
 
@@ -5439,8 +5352,7 @@ the default texture color is used which can be set by calling <code>setDefaultTe
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#TextureOptions">module:twgl.TextureOptions</a></span>
-
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
 
             
             </td>
@@ -5506,7 +5418,7 @@ the default texture color is used which can be set by calling <code>setDefaultTe
         
             
 <dt>
-    <h4 class="name" id="setUniforms"><span class="type-signature">&lt;static> </span>setUniforms<span class="signature">(setters, an)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setUniforms"><span class="type-signature"> </span>setUniforms<span class="signature">(setters, an)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -5615,11 +5527,9 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ProgramInfo">module:twgl.ProgramInfo</a></span>
-|
+<span class="param-type"><a href="module-twgl.html#ProgramInfo">ProgramInfo</a>|</span>
 
 <span class="param-type">Object.&lt;string, function()></span>
-
 
             
             </td>
@@ -5643,7 +5553,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             
                 
 <span class="param-type">Object.&lt;string, value></span>
-
 
             
             </td>
@@ -5730,7 +5639,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">Object</span>
 
-
             </li>
         </ul>
     
@@ -5775,16 +5683,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -5806,16 +5713,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -5837,16 +5743,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -5868,16 +5773,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">boolean</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -5899,16 +5803,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -5930,16 +5833,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -5960,7 +5862,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             
                 
 <span class="param-type">WebGLBuffer</span>
-
 
             
             </td>
@@ -6033,7 +5934,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">Object</span>
 
-
             </li>
         </ul>
     
@@ -6078,7 +5978,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
@@ -6107,16 +6006,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">WebGLBuffer</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6136,8 +6034,7 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="module-twgl.html#AttribInfo">module:twgl.AttribInfo</a>></span>
-
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#AttribInfo">AttribInfo</a>></span>
 
             
             </td>
@@ -6210,7 +6107,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">Object</span>
 
-
             </li>
         </ul>
     
@@ -6255,16 +6151,15 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6284,8 +6179,7 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#ProgramInfo">module:twgl.ProgramInfo</a></span>
-
+<span class="param-type"><a href="module-twgl.html#ProgramInfo">ProgramInfo</a></span>
 
             
             </td>
@@ -6313,8 +6207,7 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl.html#BufferInfo">module:twgl.BufferInfo</a></span>
-
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
 
             
             </td>
@@ -6343,7 +6236,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
             
                 
 <span class="param-type">Object.&lt;string, ?></span>
-
 
             
             </td>
@@ -6452,7 +6344,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">string</span>
 
-
             
             </td>
 
@@ -6531,7 +6422,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">Object</span>
 
-
             </li>
         </ul>
     
@@ -6574,7 +6464,6 @@ setUniforms(programInfo, moreUniforms);</code></pre>
                 
 <span class="param-type">WebGLProgram</span>
 
-
             
             </td>
 
@@ -6589,14 +6478,13 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
         <tr>
             
-                <td class="name"><code>uniformSetters:</code></td>
+                <td class="name"><code>uniformSetters</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">Object.&lt;string, function()></span>
-
 
             
             </td>
@@ -6612,14 +6500,13 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
         <tr>
             
-                <td class="name"><code>attribSetters:</code></td>
+                <td class="name"><code>attribSetters</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">Object.&lt;string, function()></span>
-
 
             
             </td>
@@ -6691,7 +6578,6 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">Object</span>
 
-
             </li>
         </ul>
     
@@ -6736,16 +6622,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6767,16 +6652,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6798,16 +6682,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6829,16 +6712,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6861,16 +6743,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6892,16 +6773,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6923,16 +6803,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6955,16 +6834,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -6986,16 +6864,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7017,16 +6894,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7048,16 +6924,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7079,16 +6954,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7112,16 +6986,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7145,16 +7018,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">number</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7176,11 +7048,9 @@ are appropriate for its needs. This lets you pass the same options to all functi
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
-|
+<span class="param-type">Array.&lt;number>|</span>
 
 <span class="param-type">ArrayBuffer</span>
-
 
             
             </td>
@@ -7212,16 +7082,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
                 
 <span class="param-type">boolean</span>
 
-
             
             </td>
 
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7242,8 +7111,7 @@ are appropriate for its needs. This lets you pass the same options to all functi
             <td class="type">
             
                 
-<span class="param-type">number[]?</span>
-
+<span class="param-type">number[]</span>
 
             
             </td>
@@ -7251,9 +7119,9 @@ are appropriate for its needs. This lets you pass the same options to all functi
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -7279,35 +7147,27 @@ are appropriate for its needs. This lets you pass the same options to all functi
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
-|
+<span class="param-type">Array.&lt;number>|</span>
 
-<span class="param-type">ArrayBuffer</span>
-|
+<span class="param-type">ArrayBuffer|</span>
 
-<span class="param-type">HTMLCanvasElement</span>
-|
+<span class="param-type">HTMLCanvasElement|</span>
 
-<span class="param-type">HTMLImageElement</span>
-|
+<span class="param-type">HTMLImageElement|</span>
 
-<span class="param-type">HTMLVideoElement</span>
-|
+<span class="param-type">HTMLVideoElement|</span>
 
-<span class="param-type">string</span>
-|
+<span class="param-type">string|</span>
 
 <span class="param-type">Array.&lt;string></span>
-|
-
-<span class="param-type">?</span>
-
 
             
             </td>
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
@@ -7393,16 +7253,6 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 				<footer>
 					
 					
-		<span class="copyright">
-		copyright Gregg Tavares
-		</span>
-					<br />
-					
-		<span class="jsdoc-message">
-		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
-		on Fri Apr 3rd 2015 using the <a
-			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
-		</span>
 				</footer>
 			</div>
 
@@ -7416,6 +7266,7 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 
 	</div>
 	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/prettify/prettify.js"></script>
 	<script src="scripts/docstrap.lib.js"></script>
 	<script src="scripts/bootstrap-dropdown.js"></script>
 	<script src="scripts/toc.js"></script>
@@ -7429,10 +7280,6 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 			} );
 
 			$( "#toc" ).toc( {
-				anchorName  : function ( i, heading, prefix ) {
-					return $( heading ).attr( "id" ) || ( prefix + i );
-				},
-				selectors   : "h1,h2,h3,h4",
 				showAndHide : false,
 				scrollTo    : "100px"
 			} );
@@ -7440,7 +7287,6 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
 			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
 			$( '.dropdown-toggle' ).dropdown();
-//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
 
 			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
 				var $this = $( this );
@@ -7459,18 +7305,18 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 				if ( lang ) {
 
 					$this
-						.addClass( "sunlight-highlight-" + lang )
-						.addClass( "linenums" )
+						.addClass( "prettyprint" )
 						.html( example.html() );
 
 				}
 			} );
 
-			Sunlight.highlightAll( {
-				lineNumbers : true,
-				showMenu : true,
-				enableDoclinks : true
-			} );
+			$('pre>code')
+			   .unwrap()
+			   .replaceWith(function() {
+				 return $('<pre class="prettyprint showlinemods">' + this.innerHTML + '</pre>')
+			   });
+			prettyPrint();
 		} );
 	 </script>
 

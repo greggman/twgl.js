@@ -55,16 +55,21 @@ $.fn.toc = function(options) {
       headingOffsets.push($h.offset().top - opts.highlightOffset);
 
       //add anchor
-      var anchor = $('<span/>').attr('id', opts.anchorName(i, heading, opts.prefix)).insertBefore($h);
+      if (opts.addAnchor !== false) {
+        var anchor = $('<span/>').attr('id', opts.anchorName(i, heading, opts.prefix)).insertBefore($h);
+      }
 
       //build TOC item
       var a = $('<a/>')
         .text(opts.headerText(i, heading, $h))
-        .attr('href', '#' + opts.anchorName(i, heading, opts.prefix))
-        .bind('click', function(e) { 
-          scrollTo(e);
-          el.trigger('selected', $(this).attr('href'));
-        });
+        .attr('href', opts.anchorName(i, heading, opts.prefix, '#'));
+
+      if (opts.goOnClick !== false) {
+          a.bind('click', function(e) {
+            scrollTo(e);
+            el.trigger('selected', $(this).attr('href'));
+          });
+      }
 
       var li = $('<li/>')
         .addClass(opts.itemClass(i, heading, $h, opts.prefix))
@@ -77,24 +82,49 @@ $.fn.toc = function(options) {
 };
 
 
-jQuery.fn.toc.defaults = {
+var indexOpts = {
+  container: '.dropdown-menu ',
+  selectors: 'li,ul',
+  smoothScrolling: true,
+  goOnClick: false,
+  prefix: 'toc',
+  onHighlight: function() {},
+  highlightOnScroll: false,
+  highlightOffset: 100,
+  addAnchor: false,
+  anchorName: function(i, heading, prefix) {
+    return $(heading).find("a").attr('href');
+  },
+  headerText: function(i, heading, $heading) {
+    return $heading.attr("id") || $heading.text();
+  },
+  itemClass: function(i, heading, $heading, prefix) {
+    return prefix + '-' + $heading[0].tagName.toLowerCase();
+  }
+};
+
+var normalOpts = {
   container: 'body',
-  selectors: 'h1,h2,h3',
+  selectors: 'h1,h2,h3,h4',
   smoothScrolling: true,
   prefix: 'toc',
   onHighlight: function() {},
   highlightOnScroll: true,
   highlightOffset: 100,
-  anchorName: function(i, heading, prefix) {
-    return prefix+i;
+  anchorName: function(i, heading, prefix, mark) {
+    return (mark || '') + ($( heading ).attr( "id" ) || ( prefix + i ));
   },
   headerText: function(i, heading, $heading) {
-    return $heading.text();
+    return $heading.attr("id") || $heading.text();
   },
   itemClass: function(i, heading, $heading, prefix) {
     return prefix + '-' + $heading[0].tagName.toLowerCase();
   }
-
 };
 
+var opts = window.location.pathname.indexOf("index.html") >= 0 ? indexOpts : normalOpts
+jQuery.fn.toc.defaults = opts;
+
 })(jQuery);
+
+
