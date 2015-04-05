@@ -74,7 +74,7 @@ to do stuff low-level with WebGL consider using <a href="http://github.com/gregg
 </code></pre><h2 id="why-what-how-">Why? What? How?</h2>
 <p>WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.</p>
-<p>At its core there&#39;s really only a few functions</p>
+<p>At its core there&#39;s really only a few main functions</p>
 <ul>
 <li><code>twgl.createProgramInfo</code> compiles a shader and creates setters for attribs and uniforms</li>
 <li><code>twgl.createBufferInfoFromArrays</code> creates buffers and attribute settings</li>
@@ -82,8 +82,8 @@ takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls 
 <li><code>twgl.setUniforms</code> sets the uniforms</li>
 <li><code>twgl.createTextures</code> creates textures various sorts</li>
 </ul>
-<p>There&#39;s a few extra helpers but those 5 functions are the core.</p>
-<p>Compare the code for a point lit cube.</p>
+<p>There&#39;s a few extra helpers and lower-level functions if you need them but those 5 functions are the core of TWGL.</p>
+<p>Compare the TWGL vs WebGL code for a point lit cube.</p>
 <h3 id="compiling-a-shader-and-looking-up-locations">Compiling a Shader and looking up locations</h3>
 <p>TWGL</p>
 <pre><code>var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);

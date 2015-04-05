@@ -49,7 +49,7 @@ Not including the shaders (which is a simple quad shader) here's the entire code
 WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.
 
-At its core there's really only a few functions
+At its core there's really only a few main functions
 
 *   `twgl.createProgramInfo` compiles a shader and creates setters for attribs and uniforms
 *   `twgl.createBufferInfoFromArrays` creates buffers and attribute settings
@@ -57,9 +57,9 @@ At its core there's really only a few functions
 *   `twgl.setUniforms` sets the uniforms
 *   `twgl.createTextures` creates textures various sorts
 
-There's a few extra helpers but those 5 functions are the core.
+There's a few extra helpers and lower-level functions if you need them but those 5 functions are the core of TWGL.
 
-Compare the code for a point lit cube.
+Compare the TWGL vs WebGL code for a point lit cube.
 
 ### Compiling a Shader and looking up locations
 

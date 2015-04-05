@@ -233,7 +233,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, (array|typedarray)></span>
+<span class="param-type"><a href="module-twgl.html#Arrays">Arrays</a></span>
 
             
             </td>
@@ -794,7 +794,7 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, (array|object|typedarray)></span>
+<span class="param-type"><a href="module-twgl.html#Arrays">Arrays</a></span>
 
             
             </td>
@@ -959,7 +959,7 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, (array|typedarray)></span>
+<span class="param-type"><a href="module-twgl.html#Arrays">Arrays</a></span>
 
             
             </td>
@@ -5624,12 +5624,174 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
         <dl>
                 
+<dt class="name" id="Arrays">
+    <h4>Arrays</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>This is a JavaScript object of arrays by name. The names should match your shader's attributes. If your
+attributes have a common prefix you can specify it by calling <a href="module-twgl.html#setAttributePrefix"><code>setAttributePrefix</code></a>.</p>
+<pre><code>Bare JavaScript Arrays
+
+    var arrays = {
+       position: [-1, 1, 0],
+       normal: [0, 1, 0],
+       ...
+    }
+
+Bare TypedArrays
+
+    var arrays = {
+       position: new Float32Array([-1, 1, 0]),
+       color: new Uint8Array([255, 128, 64, 255]),
+       ...
+    }</code></pre>
+<ul>
+<li><p>Will guess at <code>numComponents</code> if not specified based on name.</p>
+<p>If <code>coord</code> is in the name assumes <code>numComponents = 2</code></p>
+<p>If <code>color</code> is in the name assumes <code>numComponents = 4</code></p>
+<p>otherwise assumes <code>numComponents = 3</code></p>
+</li>
+</ul>
+<p>Objects with various fields. See <a href="module-twgl.html#FullArraySpec"><code>FullArraySpec</code></a>.</p>
+<pre><code>var arrays = {
+  position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
+  texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
+  normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
+  indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
+};</code></pre>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#ArraySpec">ArraySpec</a>></span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="name" id="ArraySpec">
+    <h4>ArraySpec</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>An individual array in <a href="module-twgl.html#Arrays"><code>Arrays</code></a></p>
+<p>When passed to <a href="module-twgl.html#createBufferInfoFromArrays"><code>createBufferInfoFromArrays</code></a> if an ArraySpec is <code>number[]</code> or <code>ArrayBuffer</code>
+the types will be guessed based on the name. <code>indices</code> will be <code>Uint16Array</code>, everything else will
+be <code>Float32Array</code></p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Array.&lt;number>|</span>
+
+<span class="param-type">ArrayBuffer|</span>
+
+<span class="param-type"><a href="module-twgl.html#FullArraySpec">FullArraySpec</a></span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
 <dt class="name" id="AttribInfo">
     <h4>AttribInfo</h4>
 
     
 </dt>
 <dd>
+    
+    <div class="description">
+        <p>The info for an attribute. This is effectively just the arguments to <code>gl.vertexAttribPointer</code> plus the WebGLBuffer
+for the attribute.</p>
+    </div>
     
 
     
@@ -5728,7 +5890,7 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
             
 
-            <td class="description last"><p>the number of components for this attribute.</p></td>
+            <td class="description last"><p>synonym for <code>numComponents</code>.</p></td>
         </tr>
 
 	
@@ -6407,6 +6569,399 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
             
                 
+<dt class="name" id="FullArraySpec">
+    <h4>FullArraySpec</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Use this type of array spec when TWGL can't guess the type or number of compoments of an array</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	<h5 class="subsection-title">Properties:</h5>
+
+	<dl>
+
+<table class="props table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number>|</span>
+
+<span class="param-type">ArrayBuffer</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The data of the array.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>numComponents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of components for <code>vertexAttribPointer</code>. Default is based on the name of the array.
+   If <code>coord</code> is in the name assumes <code>numComponents = 2</code>.
+   If <code>color</code> is in the name assumes <code>numComponents = 4</code>.
+   otherwise assumes <code>numComponents = 3</code></p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">constructor</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The type. This is only used if <code>data</code> is a JavaScript array. It is the constructor for the typedarray. (eg. <code>Uint8Array</code>).
+For example if you want colors in a <code>Uint8Array</code> you might have a <code>FullArraySpec</code> like <code>{ type: Uint8Array, data: [255,0,255,255, ...], }</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>synonym for <code>numComponents</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>normalize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>normalize for <code>vertexAttribPointer</code>. Default is true if type is <code>Int8Array</code> or <code>Uint8Array</code> otherwise false.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stride</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>stride for <code>vertexAttribPointer</code>. Default = 0</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>offset for <code>vertexAttribPointer</code>. Default = 0</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attrib</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>name of attribute this array maps to. Defaults to same name as array + defaultAttribPrefix.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>synonym for <code>attrib</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attribName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>synonym for <code>attrib</code>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+</dl>
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
 <dt class="name" id="ProgramInfo">
     <h4>ProgramInfo</h4>
 
@@ -7067,7 +7622,7 @@ are appropriate for its needs. This lets you pass the same options to all functi
 
             <td class="description last"><p>color used as temporary 1x1 pixel color for textures loaded async when src is a string.
    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in [1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0.
-   Defaults to [0.5, 0.75, 1, 1]. See <code>SetDefaultTextureColor</code>. If <code>false</code> texture is set. Can be used to re-load a texture</p></td>
+   Defaults to [0.5, 0.75, 1, 1]. See <a href="module-twgl.html#setDefaultTextureColor"><code>setDefaultTextureColor</code></a>. If <code>false</code> texture is set. Can be used to re-load a texture</p></td>
         </tr>
 
 	
