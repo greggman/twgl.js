@@ -37,6 +37,22 @@ define([], function () {
   var VecType = Float32Array;
 
   /**
+   * A JavaScript array with 3 values or a Float32Array with 3 values.
+   * When created by the library will create the default type which is `Float32Array`
+   * but can be set by calling {@link module:twgl/v3.setDefaultType}.
+   * @typedef {(number[]|Float32Array)} Vec3
+   * @memberOf module:twgl/v3
+   */
+
+  /**
+   * Sets the type this library creates for a Vec3
+   * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
+   */
+  function setDefaultType(ctor) {
+      VecType = ctor;
+  }
+
+  /**
    * Creates a vec3
    * @return {Vec3} the created vector
    * @memberOf module:twgl/v3
@@ -47,9 +63,9 @@ define([], function () {
 
   /**
    * Adds two vectors; assumes a and b have the same dimension.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
    * @memberOf module:twgl/v3
    */
   function add(a, b, dst) {
@@ -64,9 +80,9 @@ define([], function () {
 
   /**
    * Subtracts two vectors.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
    * @memberOf module:twgl/v3
    */
   function subtract(a, b, dst) {
@@ -83,10 +99,10 @@ define([], function () {
    * Performs linear interpolation on two vectors.
    * Given vectors a and b and interpolation coefficient t, returns
    * (1 - t) * a + t * b.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
    * @param {number} t Interpolation coefficient.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
    * @memberOf module:twgl/v3
    */
   function lerp(a, b, t, dst) {
@@ -101,10 +117,10 @@ define([], function () {
 
   /**
    * Mutiplies a vector by a scalar.
-   * @param {Vec3} v The vector.
+   * @param {module:twgl/v3.Vec3} v The vector.
    * @param {number} k The scalar.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} dst.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} dst.
    * @memberOf module:twgl/v3
    */
   function mulScalar(v, k, dst) {
@@ -119,10 +135,10 @@ define([], function () {
 
   /**
    * Divides a vector by a scalar.
-   * @param {Vec3} v The vector.
+   * @param {module:twgl/v3.Vec3} v The vector.
    * @param {number} k The scalar.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} dst.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} dst.
    * @memberOf module:twgl/v3
    */
   function divScalar(v, k, dst) {
@@ -138,10 +154,10 @@ define([], function () {
   /**
    * Computes the cross product of two vectors; assumes both vectors have
    * three entries.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} The vector a cross b.
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} The vector a cross b.
    * @memberOf module:twgl/v3
    */
   function cross(a, b, dst) {
@@ -157,8 +173,8 @@ define([], function () {
   /**
    * Computes the dot product of two vectors; assumes both vectors have
    * three entries.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
    * @return {number} dot product
    * @memberOf module:twgl/v3
    */
@@ -168,7 +184,7 @@ define([], function () {
 
   /**
    * Computes the length of vector
-   * @param {Vec3} v vector.
+   * @param {module:twgl/v3.Vec3} v vector.
    * @return {number} length of vector.
    * @memberOf module:twgl/v3
    */
@@ -178,7 +194,7 @@ define([], function () {
 
   /**
    * Computes the square of the length of vector
-   * @param {Vec3} v vector.
+   * @param {module:twgl/v3.Vec3} v vector.
    * @return {number} square of the length of vector.
    * @memberOf module:twgl/v3
    */
@@ -188,9 +204,9 @@ define([], function () {
 
   /**
    * Divides a vector by its Euclidean length and returns the quotient.
-   * @param {Vec3} a The vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} The normalized vector.
+   * @param {module:twgl/v3.Vec3} a The vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} The normalized vector.
    * @memberOf module:twgl/v3
    */
   function normalize(a, dst) {
@@ -213,9 +229,9 @@ define([], function () {
 
   /**
    * Negates a vector.
-   * @param {Vec3} v The vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} -v.
+   * @param {module:twgl/v3.Vec3} v The vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} -v.
    * @memberOf module:twgl/v3
    */
   function negate(v, dst) {
@@ -230,9 +246,9 @@ define([], function () {
 
   /**
    * Copies a vector.
-   * @param {Vec3} v The vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} A copy of v.
+   * @param {module:twgl/v3.Vec3} v The vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} A copy of v.
    * @memberOf module:twgl/v3
    */
   function copy(v, dst) {
@@ -248,10 +264,10 @@ define([], function () {
   /**
    * Multiplies a vector by another vector (component-wise); assumes a and
    * b have the same length.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} The vector of products of entries of a and
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} The vector of products of entries of a and
    *     b.
    * @memberOf module:twgl/v3
    */
@@ -268,10 +284,10 @@ define([], function () {
   /**
    * Divides a vector by another vector (component-wise); assumes a and
    * b have the same length.
-   * @param {Vec3} a Operand vector.
-   * @param {Vec3} b Operand vector.
-   * @param {Vec3?} dst vector to hold result. If not new one is created..
-   * @return {Vec3} The vector of quotients of entries of a and
+   * @param {module:twgl/v3.Vec3} a Operand vector.
+   * @param {module:twgl/v3.Vec3} b Operand vector.
+   * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+   * @return {module:twgl/v3.Vec3} The vector of quotients of entries of a and
    *     b.
    * @memberOf module:twgl/v3
    */
@@ -302,6 +318,7 @@ define([], function () {
     "multiply": multiply,
     "negate": negate,
     "normalize": normalize,
+    "setDefaultType": setDefaultType,
     "subtract": subtract,
   };
 
