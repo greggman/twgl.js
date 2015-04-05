@@ -372,9 +372,6 @@ Try [webglfundamentals.org](http://webglfundamentals.org)
 ## Future
 
 *   What needs to change for WebGL 2.0?
-*   Consider adding texture related stuff
-    *   loading a list of textures from URLs
-    *   setting filtering for NPOT
 *   Consider adding framebuffer related stuff
 
 
