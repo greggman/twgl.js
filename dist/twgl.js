@@ -574,7 +574,7 @@ define('twgl/twgl',[], function () {
   /**
    * Gets a WebGL context.
    * @param {HTMLCanvasElement} canvas a canvas element.
-   * @param {WebGLContextCreationAttirbutes?} opt_attribs optional webgl context creation attributes
+   * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
    * @memberOf module:twgl
    */
   function getWebGLContext(canvas, opt_attribs) {
@@ -626,11 +626,11 @@ define('twgl/twgl',[], function () {
    * Creates a program, attaches shaders, binds attrib locations, links the
    * program and calls useProgram.
    * @param {WebGLShader[]} shaders The shaders to attach
-   * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
-   * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
-   * @param {module:twgl.ErrorCallback?} opt_errorCallback callback for errors. By default it just prints an error to the console
+   * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
-   * @return {WebGLProgram?) the created program or null if error.
+   * @return {WebGLProgram?} the created program or null if error.
    * @memberOf module:twgl
    */
   function createProgram(
@@ -667,9 +667,9 @@ define('twgl/twgl',[], function () {
    * Loads a shader from a script tag.
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
    * @param {string} scriptId The id of the script tag.
-   * @param {number?} opt_shaderType The type of shader. If not passed in it will
+   * @param {number} [opt_shaderType] The type of shader. If not passed in it will
    *     be derived from the type of the script tag.
-   * @param {module:twgl.ErrorCallback?} opt_errorCallback callback for errors.
+   * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors.
    * @return {WebGLShader?} The created shader or null if error.
    */
   function createShaderFromScript(
@@ -710,8 +710,8 @@ define('twgl/twgl',[], function () {
    * @param {string[]} shaderScriptIds Array of ids of the script
    *        tags for the shaders. The first is assumed to be the
    *        vertex shader, the second the fragment shader.
-   * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
-   * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram} The created program.
@@ -739,8 +739,8 @@ define('twgl/twgl',[], function () {
    * @param {string[]} shaderSourcess Array of sources for the
    *        shaders. The first is assumed to be the vertex shader,
    *        the second the fragment shader.
-   * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
-   * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram} The created program.
@@ -773,7 +773,7 @@ define('twgl/twgl',[], function () {
   }
 
   /**
-   * @typedef {Object.<string, function>} Setters
+   * @typedef {Object.<string,function>} Setters
    */
 
   /**
@@ -1004,7 +1004,7 @@ define('twgl/twgl',[], function () {
    *     setUniforms(programInfo, uniforms);
    *     setUniforms(programInfo, moreUniforms);
    *
-   * @param {module:twgl.ProgramInfo|Object.<string, function>} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
+   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
    *        `createUniformSetters`.
    * @param {Object.<string, value>} an object with values for the
    *        uniforms.
@@ -1149,7 +1149,7 @@ define('twgl/twgl',[], function () {
    *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
-   * @param {module:twgl.ProgramInfo|Object.<string, function>} setters A `ProgramInfo` as returned from `createProgrmaInfo` Attribute setters as returned from `createAttributeSetters`
+   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from `createProgrmaInfo` Attribute setters as returned from `createAttributeSetters`
    * @param {module:twgl.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
    * @memberOf module:twgl
    */
@@ -1163,8 +1163,8 @@ define('twgl/twgl',[], function () {
   /**
    * @typedef {Object} ProgramInfo
    * @property {WebGLProgram} program A shader program
-   * @property {Object<string, function>} uniformSetters: object of setters as returned from createUniformSetters,
-   * @property {Object<string, function>} attribSetters: object of setters as returned from createAttribSetters,
+   * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
+   * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
    * @memberOf module:twgl
    */
 
@@ -1184,8 +1184,8 @@ define('twgl/twgl',[], function () {
    * @param {string[]} shaderSourcess Array of sources for the
    *        shaders or ids. The first is assumed to be the vertex shader,
    *        the second the fragment shader.
-   * @param {string[]?} opt_attribs An array of attribs names. Locations will be assigned by index if not passed in
-   * @param {number[]?} opt_locations The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {module:twgl.ProgramInfo?} The created program.
@@ -1213,7 +1213,7 @@ define('twgl/twgl',[], function () {
   /**
    * Resize a canvas to match the size it's displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
-   * @param {number?} a multiplier. So you can pass in `window.devicePixelRatio` if you want to.
+   * @param {number} [a] multiplier. So you can pass in `window.devicePixelRatio` if you want to.
    * @return {boolean} true if the canvas was resized.
    * @memberOf module:twgl
    */
@@ -1321,12 +1321,12 @@ define('twgl/twgl',[], function () {
 
   /**
    * @typedef {Object} AttribInfo
-   * @property {number?} numComponents the number of components for this attribute.
-   * @property {number?} size the number of components for this attribute.
-   * @property {number?} type the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
-   * @property {boolean?} normalized whether or not to normalize the data. Default = false
-   * @property {number?} offset offset into buffer in bytes. Default = 0
-   * @property {number?} stride the stride in bytes per element. Default = 0
+   * @property {number} [numComponents] the number of components for this attribute.
+   * @property {number} [size] the number of components for this attribute.
+   * @property {number} [type] the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
+   * @property {boolean} [normalized] whether or not to normalize the data. Default = false
+   * @property {number} [offset] offset into buffer in bytes. Default = 0
+   * @property {number} [stride] the stride in bytes per element. Default = 0
    * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
    * @memberOf module:twgl
    */
@@ -1374,16 +1374,16 @@ define('twgl/twgl',[], function () {
    *            ...
    *         }
    *
-   * *   Will guess at numComponents if not specified based on name.
+   * *   Will guess at `numComponents` if not specified based on name.
    *
-   *     If 'coord' is in the name assumes numComponents = 2
+   *     If `coord` is in the name assumes `numComponents = 2`
    *
-   *     If 'color' is in the name assumes numComponents = 4
+   *     If `color` is in the name assumes `numComponents = 4`
    *
-   *     otherwise assumes numComponents = 3
+   *     otherwise assumes `numComponents = 3`
    *
    * @param {WebGLRenderingContext} gl The webgl rendering context.
-   * @param {Object.<string, array|typedarray>} arrays The arrays
+   * @param {(Object.<string, array|typedarray>)} arrays The arrays
    * @return {Object.<string, module:twgl.AttribInfo>} the attribs
    * @memberOf module:twgl
    */
@@ -1437,7 +1437,7 @@ define('twgl/twgl',[], function () {
   /**
    * @typedef {Object} BufferInfo
    * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
-   * @property {WebGLBuffer?} indices The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
+   * @property {WebGLBuffer} [indices] The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
    * @property {Object.<string, module:twgl.AttribInfo>} attribs The attribs approriate to call `setAttributes`
    * @memberOf module:twgl
    */
@@ -1530,7 +1530,7 @@ define('twgl/twgl',[], function () {
    *     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {Object.<string, array|object|typedarray>} arrays Your data
+   * @param {(Object.<string, array|object|typedarray>)} arrays Your data
    * @return {module:twgl.BufferInfo} A BufferInfo
    * @memberOf module:twgl
    */
@@ -1570,7 +1570,7 @@ define('twgl/twgl',[], function () {
    * If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.
    *
    * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
-   * @param {Object<string, array|typedarray>} arrays
+   * @param {(Object<string, array|typedarray>)} arrays
    * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
    * @memberOf module:twgl
    */
@@ -1595,8 +1595,8 @@ define('twgl/twgl',[], function () {
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
    * @param {module:twgl.BufferInfo} bufferInfo as returned from createBufferInfoFromArrays
-   * @param {number?} count An optional count. Defaults to bufferInfo.numElements
-   * @param {number?} offset An optional offset. Defaults to 0.
+   * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
+   * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl
    */
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
@@ -1612,7 +1612,7 @@ define('twgl/twgl',[], function () {
 
   /**
    * @typedef {Object} DrawObject
-   * @property {number?} type type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
+   * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
    * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
    * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
    * @property {Object<string, ?>} uniforms The values for the uniforms
@@ -1662,34 +1662,34 @@ define('twgl/twgl',[], function () {
    * are appropriate for its needs. This lets you pass the same options to all functions.
    *
    * @typedef {Object} TextureOptions
-   * @property {number?} target the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
-   * @property {number?} width the width of the texture. Only used if src is an array or typed array or null.
-   * @property {number?} height the height of a texture. Only used if src is an array or typed array or null.
-   * @property {number?} min the min filter setting (eg. `gl.LINEAR`). Defaults to `gl.NEAREST_MIPMAP_LINEAR`
+   * @property {number} [target] the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
+   * @property {number} [width] the width of the texture. Only used if src is an array or typed array or null.
+   * @property {number} [height] the height of a texture. Only used if src is an array or typed array or null.
+   * @property {number} [min] the min filter setting (eg. `gl.LINEAR`). Defaults to `gl.NEAREST_MIPMAP_LINEAR`
    *     or if texture is not a power of 2 on both dimensions then defaults to `gl.LINEAR`.
-   * @property {number?} mag the mag filter setting (eg. `gl.LINEAR`). Defaults to `gl.LINEAR`
-   * @property {number?} format format for texture. Defaults to `gl.RGBA`.
-   * @property {number?} type type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
+   * @property {number} [mag] the mag filter setting (eg. `gl.LINEAR`). Defaults to `gl.LINEAR`
+   * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
+   * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
    *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
-   * @property {number?} wrap Texture wrapping for both S and T. Defaults to `gl.REPEAT`.
-   * @property {number?} wrapS Texture wrapping for S. Defaults to `gl.REPEAT`. If set takes precedence over `wrap`.
-   * @property {number?} wrapT Texture wrapping for T. Defaults to 'gl.REPEAT`. If set takes precedence over `wrap`.
-   * @property {number?} unpackAlignment The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
-   * @property {number?} premultiplyAlpha Whether or not to premultiply alpha. Defaults to whatever the current setting is.
+   * @property {number} [wrap] Texture wrapping for both S and T. Defaults to `gl.REPEAT`.
+   * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT`. If set takes precedence over `wrap`.
+   * @property {number} [wrapT] Texture wrapping for T. Defaults to 'gl.REPEAT`. If set takes precedence over `wrap`.
+   * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
+   * @property {number} [premultiplyAlpha] Whether or not to premultiply alpha. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
    *     the current setting for specific textures.
-   * @property {number?} flipY Whether or not to flip the texture vertically on upload. Defaults to whatever the current setting is.
+   * @property {number} [flipY] Whether or not to flip the texture vertically on upload. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
    *     the current setting for specific textures.
-   * @property {number?} colorspaceConversion Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.
+   * @property {number} [colorspaceConversion] Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
    *     the current setting for specific textures.
-   * @property {number[]|ArrayBuffer} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
+   * @property {(number[]|ArrayBuffer)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
    *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in [1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0.
    *    Defaults to [0.5, 0.75, 1, 1]. See `SetDefaultTextureColor`. If `false` texture is set. Can be used to re-load a texture
-   * @property {boolean?} auto If not `false` then texture working filtering is set automatically for non-power of 2 images and
+   * @property {boolean} [auto] If not `false` then texture working filtering is set automatically for non-power of 2 images and
    *    mips are generated for power of 2 images.
-   * @property {number[]?} cubeFaceOrder The order that cube faces are pull out of an img or set of images. The default is
+   * @property {number[]} [cubeFaceOrder] The order that cube faces are pull out of an img or set of images. The default is
    *
    *     [gl.TEXTURE_CUBE_MAP_POSITIVE_X,
    *      gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -1698,7 +1698,7 @@ define('twgl/twgl',[], function () {
    *      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
    *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
    *
-   * @property {number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|?} src source for texture
+   * @property {(number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[])} [src] source for texture
    *
    *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
    *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
@@ -1798,7 +1798,7 @@ define('twgl/twgl',[], function () {
   /**
    * Makes a 1x1 pixel
    * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
-   * @param {number[]|ArrayBuffer|?} color The color using 0-1 values
+   * @param {(number[]|ArrayBuffer)} [color] The color using 0-1 values
    * @return {Uint8Array} Unit8Array with color.
    */
   function make1Pixel(color) {
@@ -1825,8 +1825,8 @@ define('twgl/twgl',[], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @param {number?} width width of texture
-   * @param {number?} height height of texture
+   * @param {number} [width] width of texture
+   * @param {number} [height] height of texture
    * @memberOf module:twgl
    */
   function setTextureFilteringForSize(gl, tex, options, width, height) {
@@ -2133,7 +2133,7 @@ define('twgl/twgl',[], function () {
    * guess the size. See {@link module:twgl.TextureOptions}.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {number[]|ArrayBuffer} src An array or typed arry with texture data.
+   * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    */
