@@ -84,21 +84,51 @@
 <h2>TL;DR</h2>
 <p>If you want to get shit done use <a href="http://threejs.org">three.js</a>. If you want
 to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
-<h2>Download</h2>
-<ul>
-<li><p>from github</p>
-<p><a href="http://github.com/greggman/twgl.js"><a href="http://github.com/greggman/twgl.js">http://github.com/greggman/twgl.js</a></a></p>
-</li>
-<li><p>from bower</p>
-<pre><code>bower install twgl.js</code></pre>
-</li>
-<li><p>from git</p>
-<pre><code>git clone https://github.com/greggman/twgl.js.git</code></pre>
-</li>
-</ul>
+<h2>The tinyest example</h2>
+<p>Not including the shaders (which is a simple quad shader) here's the entire code</p>
+<pre><code>&lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
+&lt;script src=&quot;../dist/twgl-full.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  var m4 = twgl.m4;
+  var gl = twgl.getWebGLContext(document.getElementById(&quot;c&quot;));
+  var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
+
+  var arrays = {
+    position: { numComponents: 2, data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1] },
+  };
+  var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+  var start = Date.now() * 0.001;
+
+  function render() {
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    var uniforms = {
+      time: Date.now() * 0.001 - start,
+      resolution: [gl.canvas.width, gl.canvas.height],
+    };
+
+    gl.useProgram(programInfo.program);
+    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    twgl.setUniforms(programInfo, uniforms);
+    twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+
+    requestAnimationFrame(render);
+  }
+  render();
+&lt;/script&gt;</code></pre>
 <h2>Why? What? How?</h2>
 <p>WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.</p>
+<p>At its core there's really only a few functions</p>
+<ul>
+<li><code>twgl.createProgramInfo</code> compiles a shader and creates setters for attribs and uniforms</li>
+<li><code>twgl.createBufferInfoFromArrays</code> creates buffers and attribute settings</li>
+<li><code>twgl.setBuffersAndAttributes</code> binds buffers and sets attributes</li>
+<li><code>twgl.setUniforms</code> sets the uniforms</li>
+<li><code>twgl.createTextures</code> creates textures various sorts</li>
+</ul>
+<p>There's a few extra helpers but those 5 functions are the core.</p>
 <p>Compare the code for a point lit cube.</p>
 <h3>Compiling a Shader and looking up locations</h3>
 <p>TWGL</p>
@@ -340,6 +370,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</code></pre>
 <p><a href="http://twgljs.org/examples/twgl-cube.html">TWGL example</a> vs <a href="http://twgljs.org/examples/webgl-cube.html">WebGL example</a></p>
 <h2>Examples</h2>
 <ul>
+<li><a href="http://twgljs.org/examples/tiny.html">tiny</a></li>
 <li><a href="http://twgljs.org/examples/twgl-cube.html">twgl cube</a></li>
 <li><a href="http://twgljs.org/examples/textures.html">textures</a></li>
 <li><a href="http://twgljs.org/examples/primitives.html">primitives</a></li>
@@ -361,13 +392,33 @@ or JavaScript arrays.</p>
 <p>planes, cubes, spheres, ... Just to help get started</p>
 </li>
 </ul>
-<h2>Docs</h2>
-<p><a href="http://twgljs.org/docs/">Docs are here</a>.</p>
+<h2>Usage</h2>
+<p>See the examples. Otherwise there's a few different versions</p>
+<ul>
+<li><code>twgl-full.min.js</code> the minified full version</li>
+<li><code>twgl-full.js</code> the concatinated full version</li>
+<li><code>twgl.min.js</code> the minimum version (no 3d math, no primitives)</li>
+<li><code>twgl.js</code> the concatinated minimum version (no 3d math, no primitives)</li>
+</ul>
+<h2>API Docs</h2>
+<p><a href="http://twgljs.org/docs/">API Docs are here</a>.</p>
+<h2>Download</h2>
+<ul>
+<li><p>from github</p>
+<p><a href="http://github.com/greggman/twgl.js"><a href="http://github.com/greggman/twgl.js">http://github.com/greggman/twgl.js</a></a></p>
+</li>
+<li><p>from bower</p>
+<pre><code>bower install twgl.js</code></pre>
+</li>
+<li><p>from git</p>
+<pre><code>git clone https://github.com/greggman/twgl.js.git</code></pre>
+</li>
+</ul>
 <h2>Rational and other chit-chat</h2>
 <p>TWGL's is an attempt to make WebGL simpler by providing a few tiny helper functions
 that make it much less verbose and remove the tedium. TWGL is <strong>NOT</strong> trying to help
 with the complexity of managing shaders and writing GLSL. Nor is it a 3D library like
-<a href="http://threejs.org">three.js</a>.</p>
+<a href="http://threejs.org">three.js</a>. It's just trying to make WebGL less verbose.</p>
 <p>TWGL can be considered a spiritual successor to <a href="http://github.com/greggman/tdl">TDL</a>. Where
 as TDL created several <em>classes</em> that wrapped WebGL, TWGL tries not to wrap anything. In fact
 you can manually create nearly all TWGL data structures.</p>
