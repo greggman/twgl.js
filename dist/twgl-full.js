@@ -472,7 +472,11 @@ define("node_modules/almond/almond.js", function(){});
 
 
 define('twgl/twgl',[], function () {
-  /** @module twgl */
+  /**
+   * The main TWGL module.
+   *
+   * @module twgl
+   */
 
   var error = window.console && window.console.error ? window.console.error.bind(window.console) : function() { };
   // make sure we don't see a global gl
@@ -1713,6 +1717,7 @@ define('twgl/twgl',[], function () {
       if (programInfo !== lastUsedProgramInfo) {
         lastUsedProgramInfo = programInfo;
         gl.useProgram(programInfo.program);
+
         // We have to rebind buffers when changing programs because we
         // only bind buffers the program uses. So if 2 programs use the same
         // bufferInfo but the 1st one uses only positions the when the
@@ -1733,6 +1738,15 @@ define('twgl/twgl',[], function () {
       drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo);
     });
   }
+
+  /**
+   * A function to generate the source for a texture.
+   * @callback TextureFunc
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {module:twgl.TextureOptions} options the texture options
+   * @return {*} Returns any of the things documentented for `src` for {@link module:twgl.TextureOptions}.
+   * @memberOf module:twgl
+   */
 
   /**
    * Texture options passed to most texture functions. Each function will use whatever options
@@ -1775,7 +1789,7 @@ define('twgl/twgl',[], function () {
    *      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
    *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
    *
-   * @property {(number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[])} [src] source for texture
+   * @property {(number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|module:twgl.TextureFunc)} [src] source for texture
    *
    *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
    *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
@@ -1797,6 +1811,11 @@ define('twgl/twgl',[], function () {
    *    *   If only one of `width` or `height` is specified then the other equals `numElements / specifiedDimension`.
    *
    * If `number[]` will be converted to `type`.
+   *
+   * If `src` is a function it will be called with these a `WebGLRenderingContext` and these options.
+   * Whatever it returns is subject to these rules. So it can return a string url, an `HTMLElement`
+   * an array etc...
+   *
    *
    * If `src` is undefined then an empty texture will be created of size `width` by `height`.
    *
@@ -1901,7 +1920,7 @@ define('twgl/twgl',[], function () {
    *
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @param {number} [width] width of texture
    * @param {number} [height] height of texture
    * @memberOf module:twgl
@@ -1946,7 +1965,7 @@ define('twgl/twgl',[], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {HTMLElement} element a canvas, img, or video element.
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    * @kind function
    */
@@ -2057,7 +2076,7 @@ define('twgl/twgl',[], function () {
    * the default texture color is used which can be set by calling `setDefaultTextureColor`.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    */
   function setTextureTo1PixelColor(gl, tex, options) {
@@ -2080,14 +2099,41 @@ define('twgl/twgl',[], function () {
   }
 
   /**
+   * A callback for when an image finished downloading and been uploaded into a texture
+   * @callback TextureReadyCallback
+   * @param {*} err If truthy there was an error.
+   * @param {WebGLTexture} tex the texture.
+   * @param {HTMLImageElement} img the image element.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * A callback for when all images have finished downloading and been uploaded into their respective textures
+   * @callback TexturesReadyCallback
+   * @param {*} err If truthy there was an error.
+   * @param {WebGLTexture} tex the texture.
+   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * A callback for when an image finished downloading and been uploaded into a texture
+   * @callback CubemapReadyCallback
+   * @param {*} err If truthy there was an error.
+   * @param {WebGLTexture} tex the texture.
+   * @param {HTMLImageElement[]} imgs the images for each face.
+   * @memberOf module:twgl
+   */
+
+  /**
    * Loads a texture from an image from a Url as specified in `options.src`
    * If `options.color !== false` will set the texture to a 1x1 pixel color so that the texture is
    * immediately useable. It will be updated with the contents of the image once the image has finished
    * downloading. Filtering options will be set as approriate for image unless `options.auto === false`.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @param {function(err, tex, img)} callback A function to be called when the image has finished loading. err will
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureReadyCallback} [callback] A function to be called when the image has finished loading. err will
    *    be non null if there was an error.
    * @return {HTMLImageElement} the image being downloaded.
    * @memberOf module:twgl
@@ -2114,7 +2160,7 @@ define('twgl/twgl',[], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @param {function(err, tex, img)} callback A function to be called when all the images have finished loading. err will
+   * @param {module:twgl.CubemapReadyCallback} callback A function to be called when all the images have finished loading. err will
    *    be non null if there was an error.
    * @memberOf module:twgl
    */
@@ -2218,7 +2264,7 @@ define('twgl/twgl',[], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    */
   function setTextureFromArray(gl, tex, src, options) {
@@ -2290,7 +2336,8 @@ define('twgl/twgl',[], function () {
   /**
    * Creates a texture based on the options passed in.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
    * @return {WebGLTexture} the created texture.
    * @memberOf module:twgl
    */
@@ -2302,6 +2349,9 @@ define('twgl/twgl',[], function () {
     setTextureParameters(gl, tex, options);
     var src = options.src;
     if (src) {
+      if (typeof src === "function") {
+        src = src(gl, options);
+      }
       if (typeof (src) === "string") {
         loadTextureFromUrl(gl, tex, options, callback);
       } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
@@ -2401,7 +2451,8 @@ define('twgl/twgl',[], function () {
    * *   `textures.stripe` will be a 2d texture
    *
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {Object.<string,module:twgl.TextureOptions>} options A TextureOptions object with whatever parameters you want set.
+   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+   * @param {module:twgl.TexturesReadyCallback} [callback] A callback called when all textures have been downloaded.
    * @return {Object.<string,WebGLTexture>) the created textures by name
    * @memberOf module:twgl
    */
@@ -2410,16 +2461,22 @@ define('twgl/twgl',[], function () {
     var errors = [];
     var textures = {};
 
+    function callCallbackIfReady() {
+      if (numDownloading === 0) {
+        if (callback) {
+          setTimeout(function() {
+            callback(errors.length ? errors : undefined, textureOptions);
+          }, 0);
+        }
+      }
+    }
+
     function finishedDownloading(err) {
       --numDownloading;
       if (err) {
         errors.push(err);
       }
-      if (numDownloading === 0) {
-        if (callback) {
-          callback(errors.length ? errors : undefined, textureOptions);
-        }
-      }
+      callCallbackIfReady();
     }
 
     Object.keys(textureOptions).forEach(function(name) {
@@ -2431,6 +2488,12 @@ define('twgl/twgl',[], function () {
       }
       textures[name] = createTexture(gl, options, onLoadFn);
     });
+
+    // queue the callback if there are no images to download.
+    // We do this because if your code is structured to wait for
+    // images to download but then you comment out all the async
+    // images your code would break.
+    callCallbackIfReady();
 
     return textures;
   }
@@ -2504,7 +2567,29 @@ define('twgl/twgl',[], function () {
 
 define('twgl/v3',[], function () {
 
-  /** @module twgl/v3 */
+  /**
+   *
+   * Vec3 math math functions.
+   *
+   * Almost all functions take an optional `dst` argument. If it is not passed in the
+   * functions will create a new Vec3. In other words you can do this
+   *
+   *     var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.
+   *
+   * or
+   *
+   *     var v3 = v3.create();
+   *     v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v
+   *
+   * The first style is often easier but depending on where it's used it generates garbage where
+   * as there is almost never allocation with the second style.
+   *
+   * It is always save to pass any vector as the destination. So for example
+   *
+   *     v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1
+   *
+   * @module twgl/v3
+   */
 
   var VecType = Float32Array;
 
@@ -2831,7 +2916,30 @@ define('twgl/v3',[], function () {
 
 define('twgl/m4',['./v3'], function (v3) {
 
-  /** @module twgl/m4 */
+  /**
+   * 4x4 Matrix math math functions.
+   *
+   * Almost all functions take an optional `dst` argument. If it is not passed in the
+   * functions will create a new matrix. In other words you can do this
+   *
+   *     var mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
+   *
+   * or
+   *
+   *     var mat = m4.create();
+   *     m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.
+   *
+   * The first style is often easier but depending on where it's used it generates garbage where
+   * as there is almost never allocation with the second style.
+   *
+   * It is always save to pass any matrix as the destination. So for example
+   *
+   *     var mat = m4.identity();
+   *     var trans = m4.translation([1, 2, 3]);
+   *     m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
+   *
+   * @module twgl/m4
+   */
   var MatType = Float32Array;
 
   var tempV3a = v3.create();
@@ -4083,6 +4191,33 @@ define('twgl/m4',['./v3'], function (v3) {
 /**
  * Various functions to make simple primitives
  *
+ * note: Most primitive functions come in 3 styles
+ *
+ * *  `createSomeShapeBufferInfo`
+ *
+ *    These functions are almost always the functions you want to call. They
+ *    create vertices then make WebGLBuffers and create {@link module:twgl.AttribInfo}s
+ *    returing a {@link module:twgl.BufferInfo} you can pass to {@link module:twgl.setBuffersAndAttributes}
+ *    and {@link module:twgl.drawBufferInfo} etc...
+ *
+ * *  `createSomeShapeBuffers`
+ *
+ *    These create WebGLBuffers but nothing else.
+ *    It's a shortcut to doing it yourself if you don't want to use
+ *    the higher level functions.
+ *
+ * *  `createSomeShapeVertices`
+ *
+ *    These just create vertices, no buffers. This allows you to manipulate the vertices
+ *    or add more before generating a {@link module:twgl.BufferInfo}. Once you're finished
+ *    manipulating the vertices call {@link module:twgl.createBufferInfoFromArrays}.
+ *
+ *    example:
+ *
+ *        var arrays = twgl.primitives.createPlaneArrays(1);
+ *        twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
+ *        var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+ *
  * @module twgl/primitives
  */
 define('twgl/primitives',[
@@ -4333,11 +4468,11 @@ define('twgl/primitives',[
    * Creates XZ plane vertices.
    * The created plane has position, normal and uv streams.
    *
-   * @param {number?} width Width of the plane. Default = 1
-   * @param {number?} depth Depth of the plane. Default = 1
-   * @param {number?} subdivisionsWidth Number of steps across the plane. Default = 1
-   * @param {number?} subdivisionsDepth Number of steps down the plane. Default = 1
-   * @param {Matrix4?} matrix A matrix by which to multiply all the vertices.
+   * @param {number} [width] Width of the plane. Default = 1
+   * @param {number} [depth] Depth of the plane. Default = 1
+   * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
+   * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
+   * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
    * @memberOf module:twgl/primitives
@@ -4408,13 +4543,13 @@ define('twgl/primitives',[
    * @param {number} radius radius of the sphere.
    * @param {number} subdivisionsAxis number of steps around the sphere.
    * @param {number} subdivisionsHeight number of vertically on the sphere.
-   * @param {number?} opt_startLatitudeInRadians where to start the
+   * @param {number} [opt_startLatitudeInRadians] where to start the
    *     top of the sphere. Default = 0.
-   * @param {number?} opt_endLatitudeInRadians Where to end the
+   * @param {number} [opt_endLatitudeInRadians] Where to end the
    *     bottom of the sphere. Default = Math.PI.
-   * @param {number?} opt_startLongitudeInRadians where to start
+   * @param {number} [opt_startLongitudeInRadians] where to start
    *     wrapping the sphere. Default = 0.
-   * @param {number?} opt_endLongitudeInRadians where to end
+   * @param {number} [opt_endLongitudeInRadians] where to end
    *     wrapping the sphere. Default = 2 * Math.PI.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
@@ -4596,8 +4731,8 @@ define('twgl/primitives',[
    *     truncated cone.
    * @param {number} verticalSubdivisions The number of subdivisions down the
    *     truncated cone.
-   * @param {boolean?} opt_topCap Create top cap. Default = true.
-   * @param {boolean?} opt_bottomCap Create bottom cap. Default =
+   * @param {boolean} [opt_topCap] Create top cap. Default = true.
+   * @param {boolean} [opt_bottomCap] Create bottom cap. Default =
    *        true.
    * @return {Object.<string, TypedArray>} The
    *         created plane vertices.
@@ -4695,7 +4830,7 @@ define('twgl/primitives',[
   /**
    * Expands RLE data
    * @param {number[]} rleData data in format of run-length, x, y, z, run-length, x, y, z
-   * @param {number[]?} padding value to add each entry with.
+   * @param {number[]} [padding] value to add each entry with.
    * @return {number[]} the expanded rleData
    */
   function expandRLEData(rleData, padding) {
@@ -5109,8 +5244,8 @@ define('twgl/primitives',[
 
   /**
    * @typedef {Object} RandomVerticesOptions
-   * @property {number?} vertsPerColor Defaults to 3 for non-indexed vertices
-   * @property {module:twgl/primitives.RandomColorFunc?} rand A function to generate random numbers
+   * @property {number} [vertsPerColor] Defaults to 3 for non-indexed vertices
+   * @property {module:twgl/primitives.RandomColorFunc} [rand] A function to generate random numbers
    * @memberOf module:twgl/primitives
    */
 
@@ -5120,7 +5255,7 @@ define('twgl/primitives',[
    * just make random colors. Otherwise assumes they are triangless
    * and makes one random color for every 3 vertices.
    * @param {Object.<string, augmentedTypedArray>} vertices Vertices as returned from one of the createXXXVertices functions.
-   * @param {module:twgl/primitives.RandomVerticesOptions?} options options.
+   * @param {module:twgl/primitives.RandomVerticesOptions} [options] options.
    * @return {Object.<string, augmentedTypedArray>} same vertices as passed in with `color` added.
    * @memberOf module:twgl/primitives
    */
