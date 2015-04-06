@@ -21,7 +21,7 @@ Not including the shaders (which is a simple quad shader) here's the entire code
       var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
       var arrays = {
-        position: { numComponents: 2, data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1] },
+        position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0,  1, 1, 0],
       };
       var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
       var start = Date.now() * 0.001;
