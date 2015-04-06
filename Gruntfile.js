@@ -193,7 +193,7 @@ module.exports = function(grunt) {
     var fs      = require('fs');
     marked.setOptions({ rawHtml: true });
     var html = marked(fs.readFileSync('README.md', {encoding: 'utf8'}));
-    var template = fs.readFileSync('templates/index.template', {encoding: 'utf8'});
+    var template = fs.readFileSync('build/templates/index.template', {encoding: 'utf8'});
     var content = replaceParams(template, {
       content: html,
       license: license,
