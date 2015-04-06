@@ -19,6 +19,7 @@ html, body {
     margin: 0px;
     font-family: Helvetica, Arial, sanf-serif;
     line-height: 1.2em;
+    background-color: rgb(51, 102, 204);
 }
 
 h1 {
