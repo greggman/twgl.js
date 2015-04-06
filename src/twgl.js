@@ -1299,6 +1299,15 @@ define([], function () {
   }
 
   /**
+   * A function to generate the source for a texture.
+   * @callback TextureFunc
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {module:twgl.TextureOptions} options the texture options
+   * @return {*} Returns any of the things documentented for `src` for {@link module:twgl.TextureOptions}.
+   * @memberOf module:twgl
+   */
+
+  /**
    * Texture options passed to most texture functions. Each function will use whatever options
    * are appropriate for its needs. This lets you pass the same options to all functions.
    *
@@ -1339,7 +1348,7 @@ define([], function () {
    *      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
    *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
    *
-   * @property {(number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[])} [src] source for texture
+   * @property {(number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|module:twgl.TextureFunc)} [src] source for texture
    *
    *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
    *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
@@ -1361,6 +1370,11 @@ define([], function () {
    *    *   If only one of `width` or `height` is specified then the other equals `numElements / specifiedDimension`.
    *
    * If `number[]` will be converted to `type`.
+   *
+   * If `src` is a function it will be called with these a `WebGLRenderingContext` and these options.
+   * Whatever it returns is subject to these rules. So it can return a string url, an `HTMLElement`
+   * an array etc...
+   *
    *
    * If `src` is undefined then an empty texture will be created of size `width` by `height`.
    *
@@ -1465,7 +1479,7 @@ define([], function () {
    *
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @param {number} [width] width of texture
    * @param {number} [height] height of texture
    * @memberOf module:twgl
@@ -1510,7 +1524,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {HTMLElement} element a canvas, img, or video element.
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    * @kind function
    */
@@ -1621,7 +1635,7 @@ define([], function () {
    * the default texture color is used which can be set by calling `setDefaultTextureColor`.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    */
   function setTextureTo1PixelColor(gl, tex, options) {
@@ -1644,14 +1658,41 @@ define([], function () {
   }
 
   /**
+   * A callback for when an image finished downloading and been uploaded into a texture
+   * @callback TextureReadyCallback
+   * @param {*} err If truthy there was an error.
+   * @param {WebGLTexture} tex the texture.
+   * @param {HTMLImageElement} img the image element.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * A callback for when all images have finished downloading and been uploaded into their respective textures
+   * @callback TexturesReadyCallback
+   * @param {*} err If truthy there was an error.
+   * @param {WebGLTexture} tex the texture.
+   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * A callback for when an image finished downloading and been uploaded into a texture
+   * @callback CubemapReadyCallback
+   * @param {*} err If truthy there was an error.
+   * @param {WebGLTexture} tex the texture.
+   * @param {HTMLImageElement[]} imgs the images for each face.
+   * @memberOf module:twgl
+   */
+
+  /**
    * Loads a texture from an image from a Url as specified in `options.src`
    * If `options.color !== false` will set the texture to a 1x1 pixel color so that the texture is
    * immediately useable. It will be updated with the contents of the image once the image has finished
    * downloading. Filtering options will be set as approriate for image unless `options.auto === false`.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @param {function(err, tex, img)} callback A function to be called when the image has finished loading. err will
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureReadyCallback} [callback] A function to be called when the image has finished loading. err will
    *    be non null if there was an error.
    * @return {HTMLImageElement} the image being downloaded.
    * @memberOf module:twgl
@@ -1678,7 +1719,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @param {function(err, tex, img)} callback A function to be called when all the images have finished loading. err will
+   * @param {module:twgl.CubemapReadyCallback} callback A function to be called when all the images have finished loading. err will
    *    be non null if there was an error.
    * @memberOf module:twgl
    */
@@ -1782,7 +1823,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @memberOf module:twgl
    */
   function setTextureFromArray(gl, tex, src, options) {
@@ -1854,7 +1895,8 @@ define([], function () {
   /**
    * Creates a texture based on the options passed in.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
    * @return {WebGLTexture} the created texture.
    * @memberOf module:twgl
    */
@@ -1866,6 +1908,9 @@ define([], function () {
     setTextureParameters(gl, tex, options);
     var src = options.src;
     if (src) {
+      if (typeof src === "function") {
+        src = src(gl, options);
+      }
       if (typeof (src) === "string") {
         loadTextureFromUrl(gl, tex, options, callback);
       } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
@@ -1965,7 +2010,8 @@ define([], function () {
    * *   `textures.stripe` will be a 2d texture
    *
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {Object.<string,module:twgl.TextureOptions>} options A TextureOptions object with whatever parameters you want set.
+   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+   * @param {module:twgl.TexturesReadyCallback} [callback] A callback called when all textures have been downloaded.
    * @return {Object.<string,WebGLTexture>) the created textures by name
    * @memberOf module:twgl
    */
@@ -1974,16 +2020,22 @@ define([], function () {
     var errors = [];
     var textures = {};
 
+    function callCallbackIfReady() {
+      if (numDownloading === 0) {
+        if (callback) {
+          setTimeout(function() {
+            callback(errors.length ? errors : undefined, textureOptions);
+          }, 0);
+        }
+      }
+    }
+
     function finishedDownloading(err) {
       --numDownloading;
       if (err) {
         errors.push(err);
       }
-      if (numDownloading === 0) {
-        if (callback) {
-          callback(errors.length ? errors : undefined, textureOptions);
-        }
-      }
+      callCallbackIfReady();
     }
 
     Object.keys(textureOptions).forEach(function(name) {
@@ -1995,6 +2047,12 @@ define([], function () {
       }
       textures[name] = createTexture(gl, options, onLoadFn);
     });
+
+    // queue the callback if there are no images to download.
+    // We do this because if your code is structured to wait for
+    // images to download but then you comment out all the async
+    // images your code would break.
+    callCallbackIfReady();
 
     return textures;
   }
