@@ -19,6 +19,8 @@ html, body {
     margin: 0px;
     font-family: Helvetica, Arial, sanf-serif;
     line-height: 1.2em;
+}
+html {
     background-color: rgb(51, 102, 204);
 }
 
