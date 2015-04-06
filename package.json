@@ -33,6 +33,7 @@
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-eslint": "^10.0.0",
     "grunt-jsdoc": "^0.5.8",
-    "marked": "^0.3.3"
+    "marked": "^0.3.3",
+    "eslint-plugin-html": "git+https://github.com/greggman/eslint-plugin-html.git#fix-space-eating"
   }
 }
