@@ -69,7 +69,6 @@
 		</div>
 
 	</div>
-	<!--<script src="scripts/sunlight.js"></script>-->
 	<script src="scripts/prettify/prettify.js"></script>
 	<script src="scripts/docstrap.lib.js"></script>
 	<script src="scripts/bootstrap-dropdown.js"></script>
@@ -82,6 +81,11 @@
 
 				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 			} );
+
+			$(".dropdown-menu a").each(function() {
+				var text = $(this).text();
+				$(this).text(text.replace(/\//g, '.'));
+			});
 
 			$( "#toc" ).toc( {
 				showAndHide : false,
@@ -121,6 +125,7 @@
 				 return $('<pre class="prettyprint showlinemods">' + this.innerHTML + '</pre>')
 			   });
 			prettyPrint();
+
 		} );
 	 </script>
 

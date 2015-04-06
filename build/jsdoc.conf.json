@@ -18,7 +18,11 @@
 		"linenums"              : true,
 		"collapseSymbols"       : false,
 		"inverseNav"            : true,
-		"highlightTutorialCode" : true
+		"highlightTutorialCode" : true,
+		"analytics": {
+			"ua": "UA-61260681-1",
+			"domain": "auto",
+		}
 	},
 	"markdown"  : {
 		"parser"   : "gfm",
