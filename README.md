@@ -338,6 +338,7 @@ WebGL
 *   [primitives](http://twgljs.org/examples/primitives.html)
 *   [2d-lines](http://twgljs.org/examples/2d-lines.html)
 *   [zoom-around](http://twgljs.org/examples/zoom-around.html)
+*   [text](http://twgljs.org/examples/text.html)
 
 ## AMD support
 
