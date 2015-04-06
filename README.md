@@ -17,7 +17,6 @@ Not including the shaders (which is a simple quad shader) here's the entire code
     <canvas id="c"></canvas>
     <script src="../dist/twgl-full.min.js"></script>
     <script>
-      var m4 = twgl.m4;
       var gl = twgl.getWebGLContext(document.getElementById("c"));
       var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
