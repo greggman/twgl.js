@@ -58,7 +58,7 @@ At its core there's really only a few main functions
 *   `twgl.createBufferInfoFromArrays` creates buffers and attribute settings
 *   `twgl.setBuffersAndAttributes` binds buffers and sets attributes
 *   `twgl.setUniforms` sets the uniforms
-*   `twgl.createTextures` creates textures various sorts
+*   `twgl.createTextures` creates textures of various sorts
 
 There's a few extra helpers and lower-level functions if you need them but those 5 functions are the core of TWGL.
 
