@@ -33,7 +33,30 @@
 
 define(['./v3'], function (v3) {
 
-  /** @module twgl/m4 */
+  /**
+   * 4x4 Matrix math math functions.
+   *
+   * Almost all functions take an optional `dst` argument. If it is not passed in the
+   * functions will create a new matrix. In other words you can do this
+   *
+   *     var mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
+   *
+   * or
+   *
+   *     var mat = m4.create();
+   *     m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.
+   *
+   * The first style is often easier but depending on where it's used it generates garbage where
+   * as there is almost never allocation with the second style.
+   *
+   * It is always save to pass any matrix as the destination. So for example
+   *
+   *     var mat = m4.identity();
+   *     var trans = m4.translation([1, 2, 3]);
+   *     m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
+   *
+   * @module twgl/m4
+   */
   var MatType = Float32Array;
 
   var tempV3a = v3.create();

@@ -32,7 +32,29 @@
 
 define([], function () {
 
-  /** @module twgl/v3 */
+  /**
+   *
+   * Vec3 math math functions.
+   *
+   * Almost all functions take an optional `dst` argument. If it is not passed in the
+   * functions will create a new Vec3. In other words you can do this
+   *
+   *     var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.
+   *
+   * or
+   *
+   *     var v3 = v3.create();
+   *     v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v
+   *
+   * The first style is often easier but depending on where it's used it generates garbage where
+   * as there is almost never allocation with the second style.
+   *
+   * It is always save to pass any vector as the destination. So for example
+   *
+   *     v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1
+   *
+   * @module twgl/v3
+   */
 
   var VecType = Float32Array;
 

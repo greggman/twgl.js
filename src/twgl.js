@@ -31,7 +31,11 @@
 "use strict";
 
 define([], function () {
-  /** @module twgl */
+  /**
+   * The main TWGL module.
+   *
+   * @module twgl
+   */
 
   var error = window.console && window.console.error ? window.console.error.bind(window.console) : function() { };
   // make sure we don't see a global gl
