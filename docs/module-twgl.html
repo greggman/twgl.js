@@ -2121,7 +2121,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createTexture"><span class="type-signature"> </span>createTexture<span class="signature">(gl, options)</span><span class="type-signature"> &rarr; {WebGLTexture}</span></h4>
+    <h4 class="name" id="createTexture"><span class="type-signature"> </span>createTexture<span class="signature">(gl, <span class="optional">options</span>, <span class="optional">callback</span>)</span><span class="type-signature"> &rarr; {WebGLTexture}</span></h4>
     
     
 </dt>
@@ -2151,6 +2151,8 @@ program and calls useProgram.</p>
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -2175,6 +2177,14 @@ program and calls useProgram.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -2197,10 +2207,52 @@ program and calls useProgram.</p>
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#TextureReadyCallback">TextureReadyCallback</a></span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A callback called when an image has been downloaded and uploaded to the texture.</p></td>
         </tr>
 
 	
@@ -2279,7 +2331,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createTextures"><span class="type-signature"> </span>createTextures<span class="signature">(gl, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createTextures"><span class="type-signature"> </span>createTextures<span class="signature">(gl, options, <span class="optional">callback</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2373,6 +2425,8 @@ program and calls useProgram.</p>
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -2397,6 +2451,14 @@ program and calls useProgram.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -2419,10 +2481,50 @@ program and calls useProgram.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+            <td class="description last"><p>A object of TextureOptions one per texture.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#TexturesReadyCallback">TexturesReadyCallback</a></span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A callback called when all textures have been downloaded.</p></td>
         </tr>
 
 	
@@ -3270,7 +3372,7 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="module-twgl.html#CubemapReadyCallback">CubemapReadyCallback</a></span>
 
             
             </td>
@@ -3337,7 +3439,7 @@ so that it is usable immediately unless <code>option.color === false</code>.</p>
         
             
 <dt>
-    <h4 class="name" id="loadTextureFromUrl"><span class="type-signature"> </span>loadTextureFromUrl<span class="signature">(gl, tex, options, callback)</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></h4>
+    <h4 class="name" id="loadTextureFromUrl"><span class="type-signature"> </span>loadTextureFromUrl<span class="signature">(gl, tex, <span class="optional">options</span>, <span class="optional">callback</span>)</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></h4>
     
     
 </dt>
@@ -3370,6 +3472,8 @@ downloading. Filtering options will be set as approriate for image unless <code>
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -3394,6 +3498,14 @@ downloading. Filtering options will be set as approriate for image unless <code>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -3415,6 +3527,14 @@ downloading. Filtering options will be set as approriate for image unless <code>
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -3438,6 +3558,16 @@ downloading. Filtering options will be set as approriate for image unless <code>
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -3454,11 +3584,21 @@ downloading. Filtering options will be set as approriate for image unless <code>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="module-twgl.html#TextureReadyCallback">TextureReadyCallback</a></span>
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -4488,7 +4628,7 @@ You must set <code>options.width</code> and <code>options.height</code>.</p>
         
             
 <dt>
-    <h4 class="name" id="setTextureFilteringForSize"><span class="type-signature"> </span>setTextureFilteringForSize<span class="signature">(gl, tex, options, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureFilteringForSize"><span class="type-signature"> </span>setTextureFilteringForSize<span class="signature">(gl, tex, <span class="optional">options</span>, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4606,6 +4746,8 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
@@ -4737,7 +4879,7 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
         
             
 <dt>
-    <h4 class="name" id="setTextureFromArray"><span class="type-signature"> </span>setTextureFromArray<span class="signature">(gl, tex, src, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureFromArray"><span class="type-signature"> </span>setTextureFromArray<span class="signature">(gl, tex, src, <span class="optional">options</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4768,6 +4910,8 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -4792,6 +4936,14 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -4813,6 +4965,14 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -4838,6 +4998,14 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -4859,6 +5027,16 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -4920,7 +5098,7 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
         
             
 <dt>
-    <h4 class="name" id="setTextureFromElement"><span class="type-signature"> </span>setTextureFromElement<span class="signature">(gl, tex, element, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureFromElement"><span class="type-signature"> </span>setTextureFromElement<span class="signature">(gl, tex, element, <span class="optional">options</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -4953,6 +5131,8 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -4977,6 +5157,14 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -4998,6 +5186,14 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -5021,6 +5217,14 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -5042,6 +5246,16 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -5261,7 +5475,7 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
         
             
 <dt>
-    <h4 class="name" id="setTextureTo1PixelColor"><span class="type-signature"> </span>setTextureTo1PixelColor<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setTextureTo1PixelColor"><span class="type-signature"> </span>setTextureTo1PixelColor<span class="signature">(gl, tex, <span class="optional">options</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -5292,6 +5506,8 @@ the default texture color is used which can be set by calling <code>setDefaultTe
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -5316,6 +5532,14 @@ the default texture color is used which can be set by calling <code>setDefaultTe
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -5338,6 +5562,14 @@ the default texture color is used which can be set by calling <code>setDefaultTe
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -5359,6 +5591,16 @@ the default texture color is used which can be set by calling <code>setDefaultTe
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -6256,6 +6498,164 @@ for the attribute.</p>
 
             
                 
+<dt>
+    <h4 class="name" id="CubemapReadyCallback"><span class="type-signature"></span>CubemapReadyCallback<span class="signature">(err, tex, imgs)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A callback for when an image finished downloading and been uploaded into a texture</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>err</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>If truthy there was an error.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the texture.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>imgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLImageElement[]</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the images for each face.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+            
+                
 <dt class="name" id="DrawObject">
     <h4>DrawObject</h4>
 
@@ -7115,6 +7515,164 @@ For example if you want colors in a <code>Uint8Array</code> you might have a <co
 
             
                 
+<dt>
+    <h4 class="name" id="TextureFunc"><span class="type-signature"></span>TextureFunc<span class="signature">(gl, options)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A function to generate the source for a texture.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the texture options</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Returns any of the things documentented for <code>src</code> for <a href="module-twgl.html#TextureOptions"><code>TextureOptions</code></a>.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">*</span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+            
+                
 <dt class="name" id="TextureOptions">
     <h4>TextureOptions</h4>
 
@@ -7716,7 +8274,9 @@ are appropriate for its needs. This lets you pass the same options to all functi
 
 <span class="param-type">string|</span>
 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array.&lt;string>|</span>
+
+<span class="param-type"><a href="module-twgl.html#TextureFunc">TextureFunc</a></span>
 
             
             </td>
@@ -7752,6 +8312,9 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 </li>
 </ul>
 <p>If <code>number[]</code> will be converted to <code>type</code>.</p>
+<p>If <code>src</code> is a function it will be called with these a <code>WebGLRenderingContext</code> and these options.
+Whatever it returns is subject to these rules. So it can return a string url, an <code>HTMLElement</code>
+an array etc...</p>
 <p>If <code>src</code> is undefined then an empty texture will be created of size <code>width</code> by <code>height</code>.</p></td>
         </tr>
 
@@ -7790,6 +8353,322 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 </dl>
 
 
+    
+</dd>
+
+            
+                
+<dt>
+    <h4 class="name" id="TextureReadyCallback"><span class="type-signature"></span>TextureReadyCallback<span class="signature">(err, tex, img)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A callback for when an image finished downloading and been uploaded into a texture</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>err</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>If truthy there was an error.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the texture.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>img</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLImageElement</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the image element.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <h4 class="name" id="TexturesReadyCallback"><span class="type-signature"></span>TexturesReadyCallback<span class="signature">(err, tex, options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A callback for when all images have finished downloading and been uploaded into their respective textures</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>err</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>If truthy there was an error.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the texture.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#TextureOptions">TextureOptions</a>></span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A object of TextureOptions one per texture.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
     
 </dd>
 
