@@ -44,6 +44,8 @@ Not including the shaders (which is a simple quad shader) here's the entire code
       render();
     </script>
 
+[And here it is live](http://twgljs.org/examples/tiny.html).
+
 ## Why? What? How?
 
 WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
