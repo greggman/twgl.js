@@ -5721,6 +5721,10 @@ span.param-type {
 .params p {
     margin: 0px;
 }
+.signature {
+    color: #777;
+    padding-left: 0.5em;
+}
 
 div#pronouce {
   font-size: 8pt;
