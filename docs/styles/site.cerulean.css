@@ -5606,6 +5606,20 @@ i[class^="icon-"] {
   background-color: #022c55;
   color: #ffffff;
 }
+.toc-params {
+    color: #666;
+}
+#toc a,
+#toc a:hover,
+#toc a:visited {
+    color: #317eac;
+}
+.toc-h1,
+.toc-h2,
+.toc-h3,
+.toc-h4 {
+    white-space: pre;
+}
 .toc-h1 {
   margin-left: 2px;
   margin-right: 2px;
@@ -5706,6 +5720,10 @@ span.param-type {
 }
 .params p {
     margin: 0px;
+}
+.signature {
+    color: #777;
+    padding-left: 0.5em;
 }
 
 div#pronouce {

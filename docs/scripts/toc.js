@@ -61,7 +61,7 @@ $.fn.toc = function(options) {
 
       //build TOC item
       var a = $('<a/>')
-        .text(opts.headerText(i, heading, $h))
+        .html(opts.headerText(i, heading, $h))
         .attr('href', opts.anchorName(i, heading, opts.prefix, '#'));
 
       if (opts.goOnClick !== false) {
@@ -115,14 +115,24 @@ var normalOpts = {
     return (mark || '') + ($( heading ).attr( "id" ) || ( prefix + i ));
   },
   headerText: function(i, heading, $heading) {
-    return $heading.attr("id") || $heading.text();
+    return $heading.text()
+                  .replace(/\</g, '&lt;')
+                  .replace(/\(/g, '<span class="toc-params"> (')
+                  .replace(/\)/g, ')</span>');
+    //return $heading.attr("id") || $heading.text();
   },
   itemClass: function(i, heading, $heading, prefix) {
     return prefix + '-' + $heading[0].tagName.toLowerCase();
   }
 };
 
-var opts = window.location.pathname.indexOf("index.html") >= 0 ? indexOpts : normalOpts
+function isIndex() {
+  var path = window.location.pathname
+  return path.indexOf("index.html") >= 0 ||
+         path.substr(-1) === "/";
+}
+
+var opts = isIndex() ? indexOpts : normalOpts
 jQuery.fn.toc.defaults = opts;
 
 })(jQuery);

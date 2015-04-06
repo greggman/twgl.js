@@ -71,6 +71,18 @@
 
     
         
+            <div class="description"><p>Vec3 math math functions.</p>
+<p>Almost all functions take an optional <code>dst</code> argument. If it is not passed in the
+functions will create a new Vec3. In other words you can do this</p>
+<pre><code>var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.</code></pre>
+<p>or</p>
+<pre><code>var v3 = v3.create();
+v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre>
+<p>The first style is often easier but depending on where it's used it generates garbage where
+as there is almost never allocation with the second style.</p>
+<p>It is always save to pass any vector as the destination. So for example</p>
+<pre><code>v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1</code></pre></div>
+        
 
         
 <dl class="details">
@@ -2910,7 +2922,6 @@ but can be set by calling <code>setDefaultType</code>.</p>
 		</div>
 
 	</div>
-	<!--<script src="scripts/sunlight.js"></script>-->
 	<script src="scripts/prettify/prettify.js"></script>
 	<script src="scripts/docstrap.lib.js"></script>
 	<script src="scripts/bootstrap-dropdown.js"></script>
@@ -2923,6 +2934,11 @@ but can be set by calling <code>setDefaultType</code>.</p>
 
 				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 			} );
+
+			$(".dropdown-menu a").each(function() {
+				var text = $(this).text();
+				$(this).text(text.replace(/\//g, '.'));
+			});
 
 			$( "#toc" ).toc( {
 				showAndHide : false,
@@ -2962,6 +2978,7 @@ but can be set by calling <code>setDefaultType</code>.</p>
 				 return $('<pre class="prettyprint showlinemods">' + this.innerHTML + '</pre>')
 			   });
 			prettyPrint();
+
 		} );
 	 </script>
 
@@ -2972,6 +2989,23 @@ but can be set by calling <code>setDefaultType</code>.</p>
 
 
 	<!--Google Analytics-->
+	
+	<script>
+		(function ( i, s, o, g, r, a, m ) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push( arguments )
+			}, i[r].l = 1 * new Date();
+			a = s.createElement( o ),
+				m = s.getElementsByTagName( o )[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore( a, m )
+		})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+		ga( 'create', 'UA-61260681-1', 'auto' );
+		ga( 'send', 'pageview' );
+	</script>
 	
 
 </body>

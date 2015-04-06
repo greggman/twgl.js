@@ -71,7 +71,30 @@
 
     
         
-            <div class="description"><p>Various functions to make simple primitives</p></div>
+            <div class="description"><p>Various functions to make simple primitives</p>
+<p>note: Most primitive functions come in 3 styles</p>
+<ul>
+<li><p><code>createSomeShapeBufferInfo</code></p>
+<p>These functions are almost always the functions you want to call. They
+create vertices then make WebGLBuffers and create <a href="module-twgl.html#AttribInfo"><code>AttribInfo</code></a>s
+returing a <a href="module-twgl.html#BufferInfo"><code>BufferInfo</code></a> you can pass to <a href="module-twgl.html#setBuffersAndAttributes"><code>setBuffersAndAttributes</code></a>
+and <a href="module-twgl.html#drawBufferInfo"><code>drawBufferInfo</code></a> etc...</p>
+</li>
+<li><p><code>createSomeShapeBuffers</code></p>
+<p>These create WebGLBuffers but nothing else.
+It's a shortcut to doing it yourself if you don't want to use
+the higher level functions.</p>
+</li>
+<li><p><code>createSomeShapeVertices</code></p>
+<p>These just create vertices, no buffers. This allows you to manipulate the vertices
+or add more before generating a <a href="module-twgl.html#BufferInfo"><code>BufferInfo</code></a>. Once you're finished
+manipulating the vertices call <a href="module-twgl.html#createBufferInfoFromArrays"><code>createBufferInfoFromArrays</code></a>.</p>
+<p>example:</p>
+<pre><code>var arrays = twgl.primitives.createPlaneArrays(1);
+twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
+var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
+</li>
+</ul></div>
         
 
         
@@ -357,7 +380,7 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
         
             
 <dt>
-    <h4 class="name" id="createPlaneVertices"><span class="type-signature"> </span>createPlaneVertices<span class="signature">(width, depth, subdivisionsWidth, subdivisionsDepth, matrix)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
+    <h4 class="name" id="createPlaneVertices"><span class="type-signature"> </span>createPlaneVertices<span class="signature">(<span class="optional">width</span>, <span class="optional">depth</span>, <span class="optional">subdivisionsWidth</span>, <span class="optional">subdivisionsDepth</span>, <span class="optional">matrix</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
 </dt>
@@ -416,9 +439,9 @@ The created plane has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -448,9 +471,9 @@ The created plane has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -480,9 +503,9 @@ The created plane has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -512,9 +535,9 @@ The created plane has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -544,9 +567,9 @@ The created plane has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -635,7 +658,7 @@ The created plane has position, normal and uv streams.</p>
         
             
 <dt>
-    <h4 class="name" id="createSphereVertices"><span class="type-signature"> </span>createSphereVertices<span class="signature">(radius, subdivisionsAxis, subdivisionsHeight, opt_startLatitudeInRadians, opt_endLatitudeInRadians, opt_startLongitudeInRadians, opt_endLongitudeInRadians)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
+    <h4 class="name" id="createSphereVertices"><span class="type-signature"> </span>createSphereVertices<span class="signature">(radius, subdivisionsAxis, subdivisionsHeight, <span class="optional">opt_startLatitudeInRadians</span>, <span class="optional">opt_endLatitudeInRadians</span>, <span class="optional">opt_startLongitudeInRadians</span>, <span class="optional">opt_endLongitudeInRadians</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
 </dt>
@@ -784,9 +807,9 @@ The created sphere has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -817,9 +840,9 @@ The created sphere has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -850,9 +873,9 @@ The created sphere has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -883,9 +906,9 @@ The created sphere has position, normal and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -975,7 +998,7 @@ The created sphere has position, normal and uv streams.</p>
         
             
 <dt>
-    <h4 class="name" id="createTruncatedConeVertices"><span class="type-signature"> </span>createTruncatedConeVertices<span class="signature">(bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, opt_topCap, opt_bottomCap)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
+    <h4 class="name" id="createTruncatedConeVertices"><span class="type-signature"> </span>createTruncatedConeVertices<span class="signature">(bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">opt_topCap</span>, <span class="optional">opt_bottomCap</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
 </dt>
@@ -1190,9 +1213,9 @@ and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1222,9 +1245,9 @@ and uv streams.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -1586,7 +1609,7 @@ and uv streams.</p>
         
             
 <dt>
-    <h4 class="name" id="makeRandomVertexColors"><span class="type-signature"> </span>makeRandomVertexColors<span class="signature">(vertices, options)</span><span class="type-signature"> &rarr; {Object.&lt;string, augmentedTypedArray>}</span></h4>
+    <h4 class="name" id="makeRandomVertexColors"><span class="type-signature"> </span>makeRandomVertexColors<span class="signature">(vertices, <span class="optional">options</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, augmentedTypedArray>}</span></h4>
     
     
 </dt>
@@ -1677,9 +1700,9 @@ and makes one random color for every 3 vertices.</p>
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -2643,9 +2666,9 @@ names that contains 'pos' could be reoriented as positions,
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -2673,9 +2696,9 @@ names that contains 'pos' could be reoriented as positions,
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
                 </td>
             
@@ -2752,7 +2775,6 @@ names that contains 'pos' could be reoriented as positions,
 		</div>
 
 	</div>
-	<!--<script src="scripts/sunlight.js"></script>-->
 	<script src="scripts/prettify/prettify.js"></script>
 	<script src="scripts/docstrap.lib.js"></script>
 	<script src="scripts/bootstrap-dropdown.js"></script>
@@ -2765,6 +2787,11 @@ names that contains 'pos' could be reoriented as positions,
 
 				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
 			} );
+
+			$(".dropdown-menu a").each(function() {
+				var text = $(this).text();
+				$(this).text(text.replace(/\//g, '.'));
+			});
 
 			$( "#toc" ).toc( {
 				showAndHide : false,
@@ -2804,6 +2831,7 @@ names that contains 'pos' could be reoriented as positions,
 				 return $('<pre class="prettyprint showlinemods">' + this.innerHTML + '</pre>')
 			   });
 			prettyPrint();
+
 		} );
 	 </script>
 
@@ -2814,6 +2842,23 @@ names that contains 'pos' could be reoriented as positions,
 
 
 	<!--Google Analytics-->
+	
+	<script>
+		(function ( i, s, o, g, r, a, m ) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push( arguments )
+			}, i[r].l = 1 * new Date();
+			a = s.createElement( o ),
+				m = s.getElementsByTagName( o )[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore( a, m )
+		})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+		ga( 'create', 'UA-61260681-1', 'auto' );
+		ga( 'send', 'pageview' );
+	</script>
 	
 
 </body>
