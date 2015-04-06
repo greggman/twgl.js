@@ -1272,6 +1272,7 @@ define([], function () {
       if (programInfo !== lastUsedProgramInfo) {
         lastUsedProgramInfo = programInfo;
         gl.useProgram(programInfo.program);
+
         // We have to rebind buffers when changing programs because we
         // only bind buffers the program uses. So if 2 programs use the same
         // bufferInfo but the 1st one uses only positions the when the
