@@ -200,6 +200,7 @@ module.exports = function(grunt) {
       srcFileName: 'README.md',
       title: 'TWGL.js',
     });
+    content = content.replace(/href="http\:\/\/twgljs.org\//g, 'href="/');
     fs.writeFileSync('index.html', content);
   });
 
