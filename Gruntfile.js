@@ -169,6 +169,7 @@ module.exports = function(grunt) {
       target: [
         'src',
         'resources/js',
+        'examples/*.html',
         'examples/js',
       ],
       options: {
