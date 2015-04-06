@@ -10,7 +10,7 @@ This library's sole purpose is to make using the WebGL API less verbose.
 If you want to get shit done use [three.js](http://threejs.org). If you want
 to do stuff low-level with WebGL consider using [TWGL](http://github.com/greggman/twgl.js/).
 
-## The tinyest example
+## The tiniest example
 
 Not including the shaders (which is a simple quad shader) here's the entire code
 
