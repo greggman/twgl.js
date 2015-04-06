@@ -46,11 +46,14 @@
   var target = [0, 0, 0];
   var up = [0.2, 0.8, 0];
   var clearColor = [0.2, 0.4, 0.8, 1];
+  var start = Date.now() * 0.001;
 
   function render() {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
     var time = Date.now() * 0.001;
+    var fadeTime = time - start;
+    var fade = Math.min(1, fadeTime / 6);
 
     gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -93,7 +96,7 @@
       m4.scale(world, [s, s, s], world);
       m4.multiply(world, viewProjection, uniforms.u_matrix);
 
-      uniforms.u_color[3] = ii / num * 1;
+      uniforms.u_color[3] = ii / num * fade;
 
       twgl.setUniforms(programInfo, uniforms);
 
