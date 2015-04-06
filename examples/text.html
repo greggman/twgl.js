@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <title>twgl.js - text</title>
+    <style>
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: monospace;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - text</div>
+  </body>
+  <script id="vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+
+attribute vec4 a_position;
+attribute vec2 a_texcoord;
+
+varying vec2 v_texcoord;
+
+void main() {
+  v_texcoord = a_texcoord;
+  gl_Position = u_worldViewProjection * a_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec2 v_texcoord;
+uniform sampler2D u_texture;
+uniform vec4 u_color;
+
+void main() {
+  vec4 color = texture2D(u_texture, v_texcoord) * u_color;
+  if (color.a < 0.1) {
+    discard;
+  }
+  gl_FragColor = color;
+}
+  </script>
+  <script src="../dist/twgl-full.js"></script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script>
+    "use strict";
+    twgl.setAttributePrefix("a_");
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    var bufferInfo = twgl.primitives.createPlaneBufferInfo(gl, 1, 1, 1, 1, m4.rotationX(Math.PI * 0.5));
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    // Shared values
+    var camera = m4.identity();
+    var view = m4.identity();
+    var viewProjection = m4.identity();
+    var world = m4.identity();
+
+    var ctx = document.createElement("canvas").getContext("2d");
+    function makeText(text) {
+      ctx.font = "20px monospace";
+      var t = ctx.measureText(text);
+      ctx.canvas.width  = Math.ceil(t.width) + 2;
+      ctx.canvas.height = 24;
+      ctx.font = "20px monospace";
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.textBaseAlign = "middle";
+      ctx.fillText(text, ctx.canvas.width / 2 | 0, ctx.canvas.height / 2 | 0);
+      return ctx.canvas;
+    }
+
+    var msgs = [
+      "al",
+      "joe",
+      "jill",
+      "brian",
+      "thomas",
+      "chrissy",
+      "jennifer",
+      "alexander",
+    ];
+
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+    var textTextures = msgs.map(function(msg) {
+      var canvas = makeText(msg);
+      var scale = 0.01;
+      return {
+        tex: twgl.createTexture(gl, { src: canvas }),
+        scale: [canvas.width * scale, canvas.height * scale, 1],
+      };
+    });
+
+    var objects = [];
+    var drawObjects = [];
+    var numObjects = 500;
+    var baseHue = rand(0, 360);
+    for (var ii = 0; ii < numObjects; ++ii) {
+      var texNdx = rand(0, textTextures.length) | 0;
+      var text   = textTextures[texNdx];
+      var uniforms = {
+        u_texture: text.tex,
+        u_worldViewProjection: m4.identity(),
+        u_color: chroma.hsv((baseHue + rand(0, 60)) % 360, 1, 1).gl(),
+      };
+      drawObjects.push({
+        programInfo: programInfo,
+        bufferInfo: bufferInfo,
+        uniforms: uniforms,
+      });
+      objects.push({
+        translation: [rand(-10, 10), rand(-10, 10), rand(-10, 10)],
+        ySpeed: rand(0.1, 0.3),
+        zSpeed: rand(0.1, 0.3),
+        uniforms: uniforms,
+        texInfo: text,
+      });
+    }
+    var clearColor = chroma.hsv((baseHue + 30) % 360, 0.5, 0.5).gl();
+
+    function render() {
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      gl.enable(gl.DEPTH_TEST);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      var time = Date.now() * 0.001;
+      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      var eye = [1, 4, -20];
+      var target = [0, 0, 0];
+      var up = [0, 1, 0];
+
+      m4.lookAt(eye, target, up, camera);
+      m4.inverse(camera, view);
+      m4.multiply(view, projection, viewProjection);
+
+      objects.forEach(function(obj) {
+        var uni = obj.uniforms;
+        var texInfo = obj.texInfo;
+        m4.identity(world);
+        m4.rotateY(world, time * obj.ySpeed, world);
+        m4.rotateZ(world, time * obj.zSpeed, world);
+        m4.translate(world, obj.translation, world);
+        m4.rotateX(world, time, world);
+        m4.scale(world, texInfo.scale, world);
+        m4.multiply(world, view, world);
+
+        m4.multiply(world, projection, uni.u_worldViewProjection);
+      });
+
+      twgl.drawObjectList(gl, drawObjects);
+
+      requestAnimationFrame(render);
+    }
+    render();
+
+  </script>
+</html>
+
+
+
+

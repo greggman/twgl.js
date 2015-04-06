@@ -131,6 +131,7 @@ void main() {
   <script src="../dist/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
+    "use strict";
     twgl.setAttributePrefix("a_");
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
@@ -199,10 +200,10 @@ void main() {
         mag: gl.NEAREST,
         min: gl.LINEAR,
         src: [
-          255,255,255,255,
-          192,192,192,255,
-          192,192,192,255,
-          255,255,255,255,
+          255, 255, 255, 255,
+          192, 192, 192, 255,
+          192, 192, 192, 255,
+          255, 255, 255, 255,
         ],
       },
       // a 1x8 pixel texture from a typed array.
@@ -298,7 +299,7 @@ void main() {
 
       var time = Date.now() * 0.001;
       var radius = 20;
-      var orbitSpeed = time * 0.1
+      var orbitSpeed = time * 0.1;
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
       var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
       var target = [0, 0, 0];
@@ -311,7 +312,7 @@ void main() {
       updateCanvas(time);
       twgl.setTextureFromElement(gl, textures.fromCanvas, ctx.canvas);
 
-      objects.forEach(function(obj, ndx) {
+      objects.forEach(function(obj) {
         var uni = obj.uniforms;
         var world = uni.u_world;
         m4.identity(world);

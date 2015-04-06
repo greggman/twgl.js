@@ -69,6 +69,7 @@ void main() {
   <script src="../dist/twgl-full.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
+    "use strict";
     var m4 = twgl.m4;
     twgl.setAttributePrefix("a_");
     var gl = twgl.getWebGLContext(document.getElementById("c"));
@@ -84,17 +85,13 @@ void main() {
       return min + Math.random() * (max - min);
     }
 
-    function r256() {
-      return rand(0, 256) | 0;
-    }
-
     var hue = rand(0, 360);
     for (var ii = 0; ii < numLines; ++ii) {
       var u = ii / numLines;
       var h = (360 + hue + (Math.abs(u - 0.5) * 100)) % 360;
       var s = Math.sin(u * Math.PI * 2) * 0.25 + 0.75;
       var v = 1;
-      var color = chroma.hsv(h, s, 1);
+      var color = chroma.hsv(h, s, v);
       arrays.position.push(u, 1);
       arrays.color.push(color.rgb());
       arrays.position.push(u, 0);

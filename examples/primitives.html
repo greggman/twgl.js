@@ -95,6 +95,7 @@ void main() {
   <script src="../dist/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
+    "use strict";
     twgl.setAttributePrefix("a_");
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
@@ -169,7 +170,6 @@ void main() {
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       var time = Date.now() * 0.001;
-      var radius = 6;
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
       var eye = [1, 4, -20];
       var target = [0, 0, 0];
@@ -179,7 +179,7 @@ void main() {
       m4.inverse(camera, view);
       m4.multiply(view, projection, viewProjection);
 
-      objects.forEach(function(obj, ndx) {
+      objects.forEach(function(obj) {
         var uni = obj.uniforms;
         var world = uni.u_world;
         m4.identity(world);

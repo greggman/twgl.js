@@ -55,7 +55,7 @@ void main() {
   </script>
   <script src="../dist/twgl.min.js"></script>
   <script>
-    var m4 = twgl.m4;
+    "use strict";
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
