@@ -174,7 +174,7 @@ module.exports = function(grunt) {
       ],
       options: {
         config: 'build/conf/eslint.json',
-        rulesdir: ['build/rules'],
+        //rulesdir: ['build/rules'],
       },
     },
     clean: {
