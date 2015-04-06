@@ -59,7 +59,18 @@
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    m4.perspective(30 * Math.PI / 180, aspect, 0.1, 20, projection);
+    var maxFieldOfViewX = 50 * Math.PI / 180;
+    var fieldOfViewY = 30 * Math.PI / 180;
+
+    // Compute the field of view for X
+    var fieldOfViewX = 2 * Math.atan(Math.tan(fieldOfViewY * 0.5) * aspect);
+
+    // If it's too wide then use our maxFieldOfViewX to compute a fieldOfViewY
+    if (fieldOfViewX > maxFieldOfViewX) {
+      fieldOfViewY = 2 * Math.atan(Math.tan(maxFieldOfViewX * 0.5) * 1 / aspect);
+    }
+
+    m4.perspective(fieldOfViewY, aspect, 0.1, 20, projection);
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);
     m4.multiply(view, projection, viewProjection);
