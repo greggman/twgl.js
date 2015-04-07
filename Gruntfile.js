@@ -199,7 +199,7 @@ module.exports = function(grunt) {
       content: html,
       license: license,
       srcFileName: 'README.md',
-      title: 'TWGL.js',
+      title: 'TWGL.js, a tiny WebGL helper library',
     });
     content = content.replace(/href="http\:\/\/twgljs.org\//g, 'href="/');
     fs.writeFileSync('index.html', content);
