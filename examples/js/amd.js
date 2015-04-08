@@ -79,7 +79,8 @@ require([
     });
   }
 
-  function render() {
+  function render(time) {
+    time *= 0.001;
     twgl.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
@@ -87,7 +88,6 @@ require([
     gl.enable(gl.CULL_FACE);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var time = Date.now() * 0.001;
     var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
     var eye = [1, 4, -20];
     var target = [0, 0, 0];
@@ -113,7 +113,7 @@ require([
 
     requestAnimationFrame(render);
   }
-  render();
+  requestAnimationFrame(render);
 });
 
 

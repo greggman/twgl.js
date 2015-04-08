@@ -46,13 +46,12 @@
   var target = [0, 0, 0];
   var up = [0.2, 0.8, 0];
   var clearColor = [0.2, 0.4, 0.8, 1];
-  var start = Date.now() * 0.001;
 
-  function render() {
+  function render(time) {
+    time *= 0.001;
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
-    var time = Date.now() * 0.001;
-    var fadeTime = time - start;
+    var fadeTime = time;
     var fade = Math.min(1, fadeTime / 6);
 
     gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);

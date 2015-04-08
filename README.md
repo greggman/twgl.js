@@ -25,14 +25,13 @@ Not including the shaders (which is a simple quad shader) here's the entire code
     position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
   };
   var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
-  var start = Date.now() * 0.001;
 
-  function render() {
+  function render(time) {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     var uniforms = {
-      time: Date.now() * 0.001 - start,
+      time: time * 0.001,
       resolution: [gl.canvas.width, gl.canvas.height],
     };
 
@@ -43,7 +42,7 @@ Not including the shaders (which is a simple quad shader) here's the entire code
 
     requestAnimationFrame(render);
   }
-  render();
+  requestAnimationFrame(render);
 </script>
 ```
 

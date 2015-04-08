@@ -288,7 +288,8 @@ void main() {
       });
     }
 
-    function render() {
+    function render(time) {
+      time *= 0.001;
       twgl.resizeCanvasToDisplaySize(gl.canvas);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
@@ -297,7 +298,6 @@ void main() {
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var time = Date.now() * 0.001;
       var radius = 20;
       var orbitSpeed = time * 0.1;
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
@@ -328,7 +328,7 @@ void main() {
 
       requestAnimationFrame(render);
     }
-    render();
+    requestAnimationFrame(render);
 
   </script>
 </html>

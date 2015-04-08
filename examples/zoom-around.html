@@ -185,19 +185,19 @@ void main() {
       });
     }
 
-    var then = Date.now() * 0.001;
+    var then = 0;
 
-    function render() {
+    function render(time) {
+      time *= 0.001;
+      var elapsed = time - then;
+      then = time;
+
       twgl.resizeCanvasToDisplaySize(gl.canvas);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
       gl.enable(gl.DEPTH_TEST);
       gl.enable(gl.CULL_FACE);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-      var time = Date.now() * 0.001;
-      var elapsed = time - then;
-      then = time;
 
       var fovy = 30 * Math.PI / 180;
       var projection = m4.perspective(fovy, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 200);
@@ -242,7 +242,7 @@ void main() {
 
       requestAnimationFrame(render);
     }
-    render();
+    requestAnimationFrame(render);
 
   </script>
 </html>

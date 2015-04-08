@@ -146,7 +146,8 @@ void main() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
-    function render() {
+    function render(time) {
+      time *= 0.001;
       twgl.resizeCanvasToDisplaySize(gl.canvas);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
@@ -154,7 +155,6 @@ void main() {
       gl.enable(gl.CULL_FACE);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var time = Date.now() * 0.001;
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 10);
       var eye = [1, 4, -6];
       var target = [0, 0, 0];
@@ -197,7 +197,7 @@ void main() {
 
       requestAnimationFrame(render);
     }
-    render();
+    requestAnimationFrame(render);
 
   </script>
 </html>
