@@ -1683,7 +1683,7 @@ define('twgl/twgl',[], function () {
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
     var indices = bufferInfo.indices;
     var numElements = count === undefined ? bufferInfo.numElements : count;
-    offset = offset === undefined ? offset : 0;
+    offset = offset === undefined ? 0 : offset;
     if (indices) {
       gl.drawElements(type, numElements, gl.UNSIGNED_SHORT, offset);
     } else {
@@ -1697,6 +1697,8 @@ define('twgl/twgl',[], function () {
    * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
    * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
    * @property {Object<string, ?>} uniforms The values for the uniforms
+   * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
+   * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
    * @memberOf module:twgl
    */
 
@@ -1735,7 +1737,7 @@ define('twgl/twgl',[], function () {
       setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo);
+      drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo, object.count, object.offset);
     });
   }
 
