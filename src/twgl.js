@@ -2064,6 +2064,49 @@ define([], function () {
     return textures;
   }
 
+  /**
+   * @typedef {Object} AttachmentOptions
+   * @property {number} [attach] The attachment point. Defaults to `gl.COLOR_ATTACTMENT0 + ndx`.
+   * @property {number} [format] The format. If one of `gl.RGBA4`, `gl.RGB565`, `gl.RGB5_A1`, `gl.DEPTH_COMPONENT16`,
+   *   `gl.STENCIL_INDEX8` or `gl.DEPTH_STENCIL` then will create a renderbuffer. Otherwise will create a texture. Default = `gl.RGBA`
+   * @property {number} [type} The type. Used for texture
+   * @property {WebGLObject} [attachment] An existing renderbuffer or texture. If provided will attach this Object
+   * @memberOf module:twgl
+   */
+
+  /**
+   * @typedef {Object} FramebufferOptions
+   * @property {number} [width] width Width of attachments. Default = same size as gl context
+   * @property {number} [height] height Height of attachments. Default = same size as gl context
+   * @property {AttachmentOptions[]} [attachments] attachments defaults 1 RGBA UNSIGNED_BYTE texture and 1 DEPTH BUFFER
+   * @memberOf module:twgl
+   */
+
+  var defaultFramebufferOptions = {
+    attachments: [
+      { format: gl.RGBA, type: gl.UNSIGNED_BYTE },
+      { format: gl.DEPTH_STENCIL, },
+    ],
+  }
+
+  /**
+   *
+   * @memberOf module:twgl
+   */
+  return createFramebuffer(gl, options) {
+    options = options || defaultFramebufferOptions;
+    var fb = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER);
+    var attachments = options.attachments || defaultFramebufferOptions.attachments
+    attachments.forEach(function(attachmentOptions) {
+      var attachment;
+      if (attachmentOptions.attachment) {
+        if () {
+        }
+      }
+    });
+  }
+
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
