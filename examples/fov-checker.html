@@ -417,7 +417,7 @@ void main() {
     }
 
     rangeElem.addEventListener('input', updateFOV, false);
-    window.addEventListener('resize', render, false);
+    window.addEventListener('resize', updateFOV, false);
 
     render();
 
