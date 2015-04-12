@@ -1252,6 +1252,7 @@ define([], function () {
 
   /**
    * @typedef {Object} DrawObject
+   * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
    * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
    * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
    * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
@@ -1271,6 +1272,10 @@ define([], function () {
     var lastUsedBufferInfo = null;
 
     objectsToDraw.forEach(function(object) {
+      if (object.active === false) {
+        return;
+      }
+
       var programInfo = object.programInfo;
       var bufferInfo = object.bufferInfo;
       var bindBuffers = false;
