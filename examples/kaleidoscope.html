@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <title>twgl.js - kaleidoscope</title>
+    <style>
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: monospace;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - kaleidoscope</div>
+  </body>
+  <script id="kaleid-vs" type="notjs">
+    attribute vec4 a_position;
+    attribute vec2 a_id;
+    varying vec2 v_texcoord;
+    uniform mat4 u_matrix;
+    uniform mat4 u_projection;
+    uniform float u_angleTime;
+    uniform float u_angleScale;
+    void main() {
+      vec4 localPosition = u_matrix * a_position;
+      float angle = a_id.x * u_angleScale + u_angleTime;
+      float radius = localPosition.y;
+      float c = cos(angle);
+      float s = sin(angle);
+      mat4 m = mat4(
+          vec4(c, s, 0, 0),
+          vec4(-s, c, 0, 0),
+          vec4(0, 0, 1, 0),
+          vec4(0, 0, 0, 1));
+      gl_Position = u_projection * m * localPosition;
+      v_texcoord = a_position.xy * 0.5 + 0.5;
+    }
+  </script>
+  <script id="kaleid-fs" type="notjs">
+    precision mediump float;
+
+    varying vec2 v_texcoord;
+    uniform sampler2D u_texture;
+
+    void main() {
+      gl_FragColor = texture2D(u_texture, v_texcoord);
+    }
+  </script>
+  <script id="tex-vs" type="notjs">
+    attribute vec4 a_position;
+    attribute vec2 a_texcoord;
+    varying vec2 v_texcoord;
+    uniform mat4 u_matrix;
+    void main() {
+      gl_Position = u_matrix * a_position;
+      v_texcoord = a_texcoord;
+    }
+  </script>
+  <script id="tex-fs" type="notjs">
+    precision mediump float;
+
+    varying vec2 v_texcoord;
+    uniform sampler2D u_texture;
+    uniform vec4 u_color;
+
+    void main() {
+      gl_FragColor = u_color * texture2D(u_texture, v_texcoord);
+    }
+  </script>
+  <script id="vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+uniform vec3 u_lightWorldPos;
+uniform mat4 u_world;
+uniform mat4 u_viewInverse;
+uniform mat4 u_worldInverseTranspose;
+
+attribute vec4 a_position;
+attribute vec3 a_normal;
+attribute vec2 a_texcoord;
+
+varying vec4 v_position;
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+
+void main() {
+  v_texCoord = a_texcoord;
+  v_position = (u_worldViewProjection * a_position);
+  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
+  v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
+  gl_Position = v_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec4 v_position;
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+
+uniform vec4 u_lightColor;
+uniform vec4 u_ambient;
+uniform sampler2D u_diffuse;
+uniform vec4 u_specular;
+uniform float u_shininess;
+uniform float u_specularFactor;
+uniform float u_fogNear;
+uniform float u_fogFar;
+uniform vec4 u_fogColor;
+
+vec4 lit(float l ,float h, float m) {
+  return vec4(1.0,
+              abs(l),
+              (l > 0.0) ? pow(max(0.0, h), m) : 0.0,
+              1.0);
+}
+
+void main() {
+  float depth = gl_FragCoord.z / gl_FragCoord.w;
+  float fogFactor = smoothstep(u_fogNear, u_fogFar, depth);
+  vec4 diffuseColor = texture2D(u_diffuse, v_texCoord);
+  vec3 a_normal = normalize(v_normal);
+  vec3 surfaceToLight = normalize(v_surfaceToLight);
+  vec3 surfaceToView = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLight + surfaceToView);
+  vec4 litR = lit(dot(a_normal, surfaceToLight),
+                    dot(a_normal, halfVector), u_shininess);
+  vec4 outColor = vec4((
+  u_lightColor * (diffuseColor * litR.y + diffuseColor * u_ambient +
+                u_specular * litR.z * u_specularFactor)).rgb,
+      diffuseColor.a);
+  gl_FragColor = mix(outColor, u_fogColor, fogFactor);
+}
+  </script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script src="../dist/twgl-full.min.js"></script>
+  <script>
+    /*eslint no-unused-vars:0*/
+    "use strict";
+    twgl.setAttributePrefix("a_");
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    var texProgramInfo = twgl.createProgramInfo(gl, ["tex-vs", "tex-fs"]);
+    var kaleidProgramInfo = twgl.createProgramInfo(gl, ["kaleid-vs", "kaleid-fs"]);
+
+    function createUnitQuadsBufferInfo(gl, across, down) {
+      var numQuads    = across * down;
+      var numVertices = 4 * numQuads;
+      var numIndices  = 6 * numQuads;
+
+      var positions = twgl.primitives.createAugmentedTypedArray(3, numVertices);
+      var ids       = twgl.primitives.createAugmentedTypedArray(2, numVertices, Uint16Array);
+      var indices   = twgl.primitives.createAugmentedTypedArray(3, numIndices, Uint16Array);
+
+      var verts = [
+        -1, -1, -1,
+         1, -1,  0,
+        -1,  1,  0,
+         1,  1,  1,
+      ];
+
+      var ndx = 0;
+      for (var yy = 0; yy < down; ++yy) {
+        for (var xx = 0; xx < across; ++xx) {
+          positions.push(verts);
+          ids.push(xx, yy, xx, yy, xx, yy, xx, yy);
+          indices.push(ndx + 0, ndx + 1, ndx + 2, ndx + 2, ndx + 1, ndx + 3);
+          ndx += 4;
+        }
+      }
+
+      return twgl.createBufferInfoFromArrays(gl, {
+        position: positions,
+        id: ids,
+        indices: indices,
+      });
+    }
+
+
+    var segments = 20;
+    var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
+    var unitQuadBufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
+    var screenBufferInfo = createUnitQuadsBufferInfo(gl, segments, 1);
+
+    var fbSize = 1024;
+    var framebufferInfo = twgl.createFramebufferInfo(gl, undefined, fbSize, fbSize);
+
+    var tex = twgl.createTexture(gl, {
+      min: gl.NEAREST,
+      mag: gl.NEAREST,
+      src: [
+        255, 255, 255, 255,
+        192, 192, 192, 255,
+        192, 192, 192, 255,
+        255, 255, 255, 255,
+      ],
+    });
+
+    var uniforms = {
+      u_lightWorldPos: [1, 8, -10],
+      u_lightColor: [0.2, 0.5, 1.0, 1],
+      u_ambient: [0, 0, 0, 1],
+      u_specular: [1, 1, 1, 1],
+      u_shininess: 50,
+      u_specularFactor: 1,
+      u_diffuse: tex,
+      u_fogColor: [1, 1, 1, 1],
+      u_fogNear: 5,
+      u_fogFar: 25,
+      u_world: m4.identity(),
+    };
+
+    var screenUniforms = {
+      u_texture: framebufferInfo.attachments[0],
+      u_matrix: m4.translation([1, 1, 0]),
+      u_projection: m4.identity(),
+      u_angleTime: 0,
+      u_angleScale: 1,
+    };
+
+    var unitQuadUniforms = {
+      u_matrix: m4.identity(),
+      u_texture: twgl.createTexture(gl, {
+        src: [0, 64, 128, 255],
+        width: 2,
+        format: gl.LUMINANCE,
+        wrap: gl.CLAMP_TO_EDGE,
+      }),
+      u_color: [0, 1, 1, 1],
+    };
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    var useFramebuffer = true;
+
+    window.addEventListener('keypress', function() {
+      useFramebuffer = !useFramebuffer;
+    }, false);
+
+    var currentBaseColor;
+    var targetBaseColor;
+    var baseColorScale;
+    var colorFadeDuration = 5;
+    var colorChangeDuration = 10;
+    var colorFadeTimer;
+    var colorChangeTimer;
+
+    function pickNewColor() {
+      currentBaseColor = targetBaseColor || chroma.hsv(Math.random() * 360, 1, 1);
+      targetBaseColor = chroma.hsv(Math.random() * 360, 1, 1);
+      baseColorScale = chroma.scale([currentBaseColor, targetBaseColor]).mode('lab');
+      colorFadeTimer = colorFadeDuration;
+      colorChangeTimer = colorChangeDuration;
+    }
+    pickNewColor();
+
+    var then = 0;
+    function render(time) {
+      time *= 0.001;
+      var deltaTime = time - then;
+      then = time;
+
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+
+      var aspect;
+      if (useFramebuffer) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferInfo.framebuffer);
+        gl.viewport(0, 0, fbSize, fbSize);
+        aspect = 1;
+      } else {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      }
+
+      colorFadeTimer -= deltaTime;
+      colorChangeTimer -= deltaTime;
+      if (colorChangeTimer <= 0) {
+        pickNewColor();
+      }
+
+      var colorLerp = 1 - Math.max(0, colorFadeTimer / colorFadeDuration);
+      var fadeColor = baseColorScale(colorLerp);
+      uniforms.u_fogColor = fadeColor.gl();
+      var fc = uniforms.u_fogColor;
+
+      gl.enable(gl.CULL_FACE);
+      gl.enable(gl.DEPTH_TEST);
+      gl.clearColor(fc[0], fc[1], fc[2], fc[3]);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      var projection = m4.perspective(30 * Math.PI / 180, aspect, 0.5, 30);
+      var eye = [1, 0, -16];
+      var target = [0, 0, 0];
+      var up = [0, 1, 0];
+
+      var camera = m4.lookAt(eye, target, up);
+      var view = m4.inverse(camera);
+      var viewProjection = m4.multiply(view, projection);
+      uniforms.u_viewInverse = camera;
+
+      gl.useProgram(programInfo.program);
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+      for (var ii = 0; ii < 25; ++ii) {
+        var x = ii % 5;
+        var y = ii / 5 | 0;
+        var world = uniforms.u_world;
+        m4.identity(world);
+        m4.translate(world, [0, 0, 0], world);
+        m4.rotateY(world, time * 0.43, world);
+        m4.rotateZ(world, time * 0.37, world);
+        m4.translate(world, [x * 3 - 7 - 3, y * 3 - 5 - 3, 0], world);
+        m4.rotateX(world, time * 0.21 + ii, world);
+        m4.rotateY(world, time * 0.53 + ii, world);
+
+        uniforms.u_world = world;
+        uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
+        uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
+//        uniforms.u_lightColor[0] = x / 4;
+//        uniforms.u_lightColor[1] = y / 4;
+//        uniforms.u_lightColor[2] = 1 - (x + y) / 8;
+
+//        uniforms.u_lightColor[0] = Math.max(x, y) / 5;
+//        uniforms.u_lightColor[1] = Math.max(y, x) / 5;
+//        uniforms.u_lightColor[2] = 1;// - (x + y) / 8;
+        uniforms.u_lightColor = [2, 2, 2, 1];
+
+        twgl.setUniforms(programInfo, uniforms);
+        twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      }
+
+      if (useFramebuffer) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.useProgram(kaleidProgramInfo.program);
+
+        var maxScale = Math.PI * 2 / 6;
+        var minScale = Math.PI * 2 / segments;
+        var s = 0.7;
+        aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        m4.ortho(-aspect * s, aspect * s, -1 * s, 1 * s, -1, 1, screenUniforms.u_projection);
+        screenUniforms.u_angleTime = time * 0.1;
+        screenUniforms.u_angleScale = lerp(minScale, maxScale, Math.sin(time * 0.017) * 0.5 + 0.5);
+        m4.identity(screenUniforms.u_matrix);
+        m4.translate(screenUniforms.u_matrix, [1, 0.5, 0], screenUniforms.u_matrix);
+        m4.scale(screenUniforms.u_matrix, [1, 2, 1], screenUniforms.u_matrix);
+
+        twgl.setBuffersAndAttributes(gl, kaleidProgramInfo, screenBufferInfo);
+        twgl.setUniforms(kaleidProgramInfo, screenUniforms);
+        twgl.drawBufferInfo(gl, gl.TRIANGLES, screenBufferInfo);
+      }
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+  </script>
+</html>
+
+
