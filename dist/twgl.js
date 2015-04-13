@@ -1281,6 +1281,9 @@ define('twgl/twgl',[], function () {
   }
 
   function createBufferFromTypedArray(gl, array, type, drawType) {
+    if (array instanceof WebGLBuffer) {
+      return array;
+    }
     type = type || gl.ARRAY_BUFFER;
     var buffer = gl.createBuffer();
     gl.bindBuffer(type, buffer);
@@ -1326,7 +1329,7 @@ define('twgl/twgl',[], function () {
   }
 
   function isArrayBuffer(a) {
-    return a.buffer && a.buffer instanceof ArrayBuffer;
+    return a && a.buffer && a.buffer instanceof ArrayBuffer;
   }
 
   function guessNumComponentsFromName(name, length) {
@@ -1349,6 +1352,10 @@ define('twgl/twgl',[], function () {
   function makeTypedArray(array, name) {
     if (isArrayBuffer(array)) {
       return array;
+    }
+
+    if (isArrayBuffer(array.data)) {
+      return array.data;
     }
 
     if (Array.isArray(array)) {
@@ -2629,7 +2636,7 @@ define('twgl/twgl',[], function () {
    */
 
   var defaultAttachments = [
-    { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, auto: false },
+    { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, },
     { format: DEPTH_STENCIL, },
   ];
 
