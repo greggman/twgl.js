@@ -64,6 +64,17 @@ pre {
     font-size: small;
 }
 
+.lang-javascript {
+    font-size: small;
+    background-color: #CCC;
+    display: block;
+    padding: 1em;
+    line-height: 1.2em;
+    border: 1px solid #000;
+    box-shadow: 3px 3px 10px #ccc;
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
 /* --- Prettify --- */
 pre.prettyprint .nocode { background-color: none; color: #000 }
 pre.prettyprint .str { color: #080 } /* string          */
