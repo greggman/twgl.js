@@ -212,7 +212,7 @@ void main() {
     var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
     var unitQuadBufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
     var screenBufferInfo = createUnitQuadsBufferInfo(gl, segments, 1);
-    var cylinderBufferInfo = twgl.primitives.createCylinderBufferInfo(gl, 3, 200, cyAcross, cyDown, false, false);
+    var cylinderBufferInfo = twgl.primitives.createCylinderBufferInfo(gl, 1, 200, cyAcross, cyDown, false, false);
 
     var fbSize = 1024;
     var framebufferInfo = twgl.createFramebufferInfo(gl, undefined, fbSize, fbSize);
@@ -279,12 +279,15 @@ void main() {
     var useFramebuffer = true;
     var useCylinder = false;
 
-    window.addEventListener('keypress', function() {
+    function switchMode() {
       useFramebuffer = !useFramebuffer;
       if (!useFramebuffer) {
         useCylinder = !useCylinder;
       }
-    }, false);
+    }
+
+    window.addEventListener('keypress', switchMode, false);
+    window.addEventListener('click', switchMode, false);
 
     var currentBaseColor;
     var targetBaseColor;
