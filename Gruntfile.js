@@ -166,15 +166,25 @@ module.exports = function(grunt) {
       },
     },
     eslint: {
-      target: [
-        'src',
-        'resources/js',
-        'examples/*.html',
-        'examples/js',
-      ],
-      options: {
-        config: 'build/conf/eslint.json',
-        //rulesdir: ['build/rules'],
+      lib: {
+        src: [
+          'src/*',
+        ],
+        options: {
+          config: 'build/conf/eslint.json',
+          //rulesdir: ['build/rules'],
+        },
+      },
+      examples: {
+        src: [
+          'resources/js',
+          'examples/*.html',
+          'examples/js',
+        ],
+        options: {
+          config: 'build/conf/eslint.json',
+          //rulesdir: ['build/rules'],
+        },
       },
     },
     clean: {
@@ -186,7 +196,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-contrib-eslint');
   grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('makeindex', function() {
@@ -205,7 +215,7 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
-  grunt.registerTask('docs', ['clean:docs', 'jsdoc', 'makeindex']);
-  grunt.registerTask('default', ['eslint', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
+  grunt.registerTask('docs', ['eslint:examples', 'clean:docs', 'jsdoc', 'makeindex']);
+  grunt.registerTask('default', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
 };
 
