@@ -44,6 +44,51 @@ define([], function () {
   var defaultTextureColor = new Uint8Array([128, 192, 255, 255]);
   var defaultTextureOptions = {};
 
+  /* DataType */
+  var BYTE                           = 0x1400;
+  var UNSIGNED_BYTE                  = 0x1401;
+  var SHORT                          = 0x1402;
+  var UNSIGNED_SHORT                 = 0x1403;
+  var INT                            = 0x1404;
+  var UNSIGNED_INT                   = 0x1405;
+  var FLOAT                          = 0x1406;
+
+  /* PixelFormat */
+  var DEPTH_COMPONENT                = 0x1902;
+  var ALPHA                          = 0x1906;
+  var RGB                            = 0x1907;
+  var RGBA                           = 0x1908;
+  var LUMINANCE                      = 0x1909;
+  var LUMINANCE_ALPHA                = 0x190A;
+
+  /* Framebuffer Object. */
+  var RGBA4                          = 0x8056;
+  var RGB5_A1                        = 0x8057;
+  var RGB565                         = 0x8D62;
+  var DEPTH_COMPONENT16              = 0x81A5;
+  var STENCIL_INDEX                  = 0x1901;
+  var STENCIL_INDEX8                 = 0x8D48;
+  var DEPTH_STENCIL                  = 0x84F9;
+  var COLOR_ATTACHMENT0              = 0x8CE0;
+  var DEPTH_ATTACHMENT               = 0x8D00;
+  var STENCIL_ATTACHMENT             = 0x8D20;
+  var DEPTH_STENCIL_ATTACHMENT       = 0x821A;
+
+  /* TextureWrapMode */
+  var REPEAT                         = 0x2901;  // eslint-disable-line
+  var CLAMP_TO_EDGE                  = 0x812F;
+  var MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
+
+  /* TextureMagFilter */
+  var NEAREST                        = 0x2600;  // eslint-disable-line
+  var LINEAR                         = 0x2601;
+
+  /* TextureMinFilter */
+  var NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
+  var LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
+  var NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
+  var LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
+
   /**
    * Sets the default texture color.
    *
@@ -806,14 +851,14 @@ define([], function () {
     return name === "indices";
   }
 
-  function getGLTypeForTypedArray(gl, typedArray) {
-    if (typedArray instanceof Int8Array)    { return gl.BYTE; }           // eslint-disable-line
-    if (typedArray instanceof Uint8Array)   { return gl.UNSIGNED_BYTE; }  // eslint-disable-line
-    if (typedArray instanceof Int16Array)   { return gl.SHORT; }          // eslint-disable-line
-    if (typedArray instanceof Uint16Array)  { return gl.UNSIGNED_SHORT; } // eslint-disable-line
-    if (typedArray instanceof Int32Array)   { return gl.INT; }            // eslint-disable-line
-    if (typedArray instanceof Uint32Array)  { return gl.UNSIGNED_INT; }   // eslint-disable-line
-    if (typedArray instanceof Float32Array) { return gl.FLOAT; }          // eslint-disable-line
+  function getGLTypeForTypedArray(typedArray) {
+    if (typedArray instanceof Int8Array)    { return BYTE; }           // eslint-disable-line
+    if (typedArray instanceof Uint8Array)   { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Int16Array)   { return SHORT; }          // eslint-disable-line
+    if (typedArray instanceof Uint16Array)  { return UNSIGNED_SHORT; } // eslint-disable-line
+    if (typedArray instanceof Int32Array)   { return INT; }            // eslint-disable-line
+    if (typedArray instanceof Uint32Array)  { return UNSIGNED_INT; }   // eslint-disable-line
+    if (typedArray instanceof Float32Array) { return FLOAT; }          // eslint-disable-line
     throw "unsupported typed array type";
   }
 
@@ -1035,7 +1080,7 @@ define([], function () {
         attribs[attribName] = {
           buffer:        createBufferFromTypedArray(gl, typedArray),
           numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
-          type:          getGLTypeForTypedArray(gl, typedArray),
+          type:          getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
           stride:        array.stride || 0,
           offset:        array.offset || 0,
@@ -1792,20 +1837,19 @@ define([], function () {
 
   /**
    * Gets the number of compontents for a given image format.
-   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {number} format the format.
    * @return {number} the number of components for the format.
    */
-  function getNumComponentsForFormat(gl, format) {
+  function getNumComponentsForFormat(format) {
     switch (format) {
-      case gl.ALPHA:
-      case gl.LUMINANCE:
+      case ALPHA:
+      case LUMINANCE:
         return 1;
-      case gl.LUMINANCE_ALPHA:
+      case LUMINANCE_ALPHA:
         return 2;
-      case gl.RGB:
+      case RGB:
         return 3;
-      case gl.RGBA:
+      case RGBA:
         return 4;
       default:
         throw "unknown type: " + type;
@@ -1819,7 +1863,7 @@ define([], function () {
    */
   function getTextureTypeForArrayType(gl, src) {
     if (isArrayBuffer(src)) {
-      return getGLTypeForTypedArray(gl, src);
+      return getGLTypeForTypedArray(src);
     }
     return gl.UNSIGNED_BYTE;
   }
@@ -1840,7 +1884,7 @@ define([], function () {
     var height = options.height;
     var format = options.format || gl.RGBA;
     var type = options.type || getTextureTypeForArrayType(gl, src);
-    var numComponents = getNumComponentsForFormat(gl, format);
+    var numComponents = getNumComponentsForFormat(format);
     var numElements = src.length / numComponents;
     if (numElements % 1) {
       throw "length wrong size of format: " + glEnumToString(gl, format);
@@ -1873,6 +1917,10 @@ define([], function () {
     savePackState(gl, options);
     gl.texImage2D(target, 0, format, width, height, 0, format, type, src);
     restorePackState(gl, options);
+    return {
+      width: width,
+      height: height,
+    };
   }
 
   /**
@@ -1896,7 +1944,6 @@ define([], function () {
     } else {
       gl.texImage2D(target, 0, format, options.width, options.height, 0, format, type, null);
     }
-    restorePackState(gl, options);
   }
 
   /**
@@ -1911,8 +1958,9 @@ define([], function () {
     options = options || defaultTextureOptions;
     var tex = gl.createTexture();
     var target = options.target || gl.TEXTURE_2D;
+    var width  = options.width  || 1;
+    var height = options.height || 1;
     gl.bindTexture(target, tex);
-    setTextureParameters(gl, tex, options);
     var src = options.src;
     if (src) {
       if (typeof src === "function") {
@@ -1921,18 +1969,66 @@ define([], function () {
       if (typeof (src) === "string") {
         loadTextureFromUrl(gl, tex, options, callback);
       } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
-        setTextureFromArray(gl, tex, src, options);
+        var dimensions = setTextureFromArray(gl, tex, src, options);
+        width  = dimensions.width;
+        height = dimensions.height;
       } else if (Array.isArray(src) && typeof (src[0]) === 'string') {
         loadCubemapFromUrls(gl, tex, options, callback);
       } else if (src instanceof HTMLElement) {
         setTextureFromElement(gl, tex, src, options);
+        width  = src.width;
+        height = src.height;
       } else {
         throw "unsupported src type";
       }
     } else {
       setEmptyTexture(gl, tex, options);
     }
+    if (options.auto !== false) {
+      setTextureFilteringForSize(gl, tex, options, width, height);
+    }
+    setTextureParameters(gl, tex, options);
     return tex;
+  }
+
+  /**
+   * Resizes a texture based on the options passed in.
+   *
+   * Note: This is not a generic resize anything function.
+   * It's mostly used by {@link module:twgl.resizeFramebufferInfo}
+   * It will use `options.src` if it exists to try to determine a `type`
+   * otherwise it will assume `gl.UNSIGNED_BYTE`. No data is provided
+   * for the texture. Texture parameters will be set accordingly
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the texture to resize
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @param {number} [width] the new width. If not passed in will use `options.width`
+   * @param {number} [height] the new height. If not passed in will use `options.height`
+   * @memberOf module:twgl
+   */
+  function resizeTexture(gl, tex, options, width, height) {
+    width = width || options.width;
+    height = height || options.height;
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    var format = options.format || gl.RGBA;
+    var type;
+    var src = options.src;
+    if (!src) {
+      type = options.type || gl.UNSIGNED_BYTE;
+    } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
+      type = options.type || getTextureTypeForArrayType(gl, src);
+    } else {
+      type = options.type || gl.UNSIGNED_BYTE;
+    }
+    if (target === gl.TEXTURE_CUBE_MAP) {
+      for (var ii = 0; ii < 6; ++ii) {
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, format, width, height, 0, format, type, null);
+      }
+    } else {
+      gl.texImage2D(target, 0, format, width, height, 0, format, type, null);
+    }
   }
 
   /**
@@ -2065,47 +2161,215 @@ define([], function () {
   }
 
   /**
+   * The options for a framebuffer attachment.
+   *
+   * Note: For a `format` that is a texture include all the texture
+   * options from {@link module:twgl.TextureOptions} for example
+   * `min`, `mag`, `clamp`, etc... Note that unlike {@link module:twgl.TextureOptions}
+   * `auto` defaults to `false` for attachment textures
+   *
    * @typedef {Object} AttachmentOptions
-   * @property {number} [attach] The attachment point. Defaults to `gl.COLOR_ATTACTMENT0 + ndx`.
-   * @property {number} [format] The format. If one of `gl.RGBA4`, `gl.RGB565`, `gl.RGB5_A1`, `gl.DEPTH_COMPONENT16`,
-   *   `gl.STENCIL_INDEX8` or `gl.DEPTH_STENCIL` then will create a renderbuffer. Otherwise will create a texture. Default = `gl.RGBA`
-   * @property {number} [type} The type. Used for texture
-   * @property {WebGLObject} [attachment] An existing renderbuffer or texture. If provided will attach this Object
+   * @property {number} [attach] The attachment point. Defaults
+   *   to `gl.COLOR_ATTACTMENT0 + ndx` unless type is a depth or stencil type
+   *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
+   *   on the format or attachment type.
+   * @property {number} [format] The format. If one of `gl.RGBA4`,
+   *   `gl.RGB565`, `gl.RGB5_A1`, `gl.DEPTH_COMPONENT16`,
+   *   `gl.STENCIL_INDEX8` or `gl.DEPTH_STENCIL` then will create a
+   *   renderbuffer. Otherwise will create a texture. Default = `gl.RGBA`
+   * @property {number} [type] The type. Used for texture. Default = `gl.UNSIGNED_BYTE`.
+   * @property {number} [target] The texture target for `gl.framebufferTexture2D`.
+   *   Defaults to `gl.TEXTURE_2D`. Set to appropriate face for cube maps.
+   * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
+   * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
+   *    If provided will attach this Object. This allows you to share
+   *    attachemnts across framebuffers.
    * @memberOf module:twgl
    */
 
-  /**
-   * @typedef {Object} FramebufferOptions
-   * @property {number} [width] width Width of attachments. Default = same size as gl context
-   * @property {number} [height] height Height of attachments. Default = same size as gl context
-   * @property {AttachmentOptions[]} [attachments] attachments defaults 1 RGBA UNSIGNED_BYTE texture and 1 DEPTH BUFFER
-   * @memberOf module:twgl
-   */
+  var defaultAttachments = [
+    { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, auto: false },
+    { format: DEPTH_STENCIL, },
+  ];
 
-  var defaultFramebufferOptions = {
-    attachments: [
-      { format: gl.RGBA, type: gl.UNSIGNED_BYTE },
-      { format: gl.DEPTH_STENCIL, },
-    ],
+  var attachmentsByFormat = {};
+  attachmentsByFormat[DEPTH_STENCIL] = DEPTH_STENCIL_ATTACHMENT;
+  attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
+  attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
+  attachmentsByFormat[DEPTH_COMPONENT] = DEPTH_ATTACHMENT;
+  attachmentsByFormat[DEPTH_COMPONENT16] = DEPTH_ATTACHMENT;
+
+  function getAttachmentPointForFormat(format) {
+    return attachmentsByFormat[format];
+  }
+
+  var renderbufferFormats = {};
+  renderbufferFormats[RGBA4] = true;
+  renderbufferFormats[RGB5_A1] = true;
+  renderbufferFormats[RGB565] = true;
+  renderbufferFormats[DEPTH_STENCIL] = true;
+  renderbufferFormats[DEPTH_COMPONENT16] = true;
+  renderbufferFormats[STENCIL_INDEX] = true;
+  renderbufferFormats[STENCIL_INDEX8] = true;
+
+  function isRenderbufferFormat(format) {
+    return renderbufferFormats[format];
   }
 
   /**
-   *
+   * @typedef {Object} FramebufferInfo
+   * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
+   * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
    * @memberOf module:twgl
    */
-  return createFramebuffer(gl, options) {
-    options = options || defaultFramebufferOptions;
+
+  /**
+   * Creates a framebuffer and attachments.
+   *
+   * This returns a {@link module:twgl.FramebufferInfo} because it needs to return the attachments as well as the framebuffer.
+   *
+   * The simplest usage
+   *
+   *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+   *     var fbi = twgl.createFramebuffer(gl);
+   *
+   * More complex usage
+   *
+   *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+   *     var attachments = [
+   *       { format: RGB565, mag: NEAREST },
+   *       { format: STENCIL_INDEX8 },
+   *     ]
+   *     var fbi = twgl.createFramebuffer(gl, attachments);
+   *
+   * Passing in a specific size
+   *
+   *     var width = 256;
+   *     var height = 256;
+   *     var fbi = twgl.createFramebuffer(gl, attachments, width, height);
+   *
+   * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
+   * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.AttachmentOptions[]} [attachments] which attachments to create. If not provided the default is a framebuffer with an
+   *    `RGBA`, `UNSIGNED_BYTE` texture `COLOR_ATTACHMENT0` and a `DEPTH_STENCIL` renderbuffer `DEPTH_STENCIL_ATTACHMENT`.
+   * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
+   * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+   * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
+   * @memberOf module:twgl
+   */
+  function createFramebufferInfo(gl, attachments, width, height) {
+    var target = gl.FRAMEBUFFER;
     var fb = gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER);
-    var attachments = options.attachments || defaultFramebufferOptions.attachments
+    gl.bindFramebuffer(target, fb);
+    width  = width  || gl.drawingBufferWidth;
+    height = height || gl.drawingBufferHeight;
+    attachments = attachments || defaultAttachments;
+    var colorAttachmentCount = 0;
+    var framebufferInfo = {
+      framebuffer: fb,
+      attachments: [],
+    };
     attachments.forEach(function(attachmentOptions) {
-      var attachment;
-      if (attachmentOptions.attachment) {
-        if () {
+      var attachment = attachmentOptions.attachment;
+      var format = attachmentOptions.format;
+      var attachmentPoint = getAttachmentPointForFormat(format);
+      if (!attachmentPoint) {
+        attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
+      }
+      if (!attachment) {
+        if (isRenderbufferFormat(format)) {
+          attachment = gl.createRenderbuffer();
+          gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
+          gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
+        } else {
+          var textureOptions = shallowCopy(attachmentOptions);
+          textureOptions.width = width;
+          textureOptions.height = height;
+          textureOptions.auto = attachmentOptions.auto === undefined ? false : attachmentOptions.auto;
+          attachment = createTexture(gl, textureOptions);
         }
+      }
+      if (attachment instanceof WebGLRenderbuffer) {
+        gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
+      } else if (attachment instanceof WebGLTexture) {
+        gl.framebufferTexture2D(
+            target,
+            attachmentPoint,
+            attachmentOptions.texTarget || gl.TEXTURE_2D,
+            attachment,
+            attachmentOptions.level || 0);
+      } else {
+        throw "unknown attachment type";
+      }
+      framebufferInfo.attachments.push(attachment);
+    });
+    return framebufferInfo;
+  }
+
+  /**
+   * Resizes the attachments of a framebuffer.
+   *
+   * You need to pass in the same `attachments` as you passed in {@link module:twgl.createFramebuffer}
+   * because TWGL has no idea the format/type of each attachment.
+   *
+   * The simplest usage
+   *
+   *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+   *     var fbi = twgl.createFramebuffer(gl);
+   *
+   *     ...
+   *
+   *     function render() {
+   *       if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+   *         // resize the attachments
+   *         twgl.resizeFramebufferInfo(gl, fbi);
+   *       }
+   *
+   * More complex usage
+   *
+   *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+   *     var attachments = [
+   *       { format: RGB565, mag: NEAREST },
+   *       { format: STENCIL_INDEX8 },
+   *     ]
+   *     var fbi = twgl.createFramebuffer(gl, attachments);
+   *
+   *     ...
+   *
+   *     function render() {
+   *       if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+   *         // resize the attachments to match
+   *         twgl.resizeFramebufferInfo(gl, fbi, attachments);
+   *       }
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebuffer}.
+   * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebuffer}.
+   * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
+   * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+   * @memberOf module:twgl
+   */
+  function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
+    width  = width  || gl.drawingBufferWidth;
+    height = height || gl.drawingBufferHeight;
+    attachments = attachments || defaultAttachments;
+    attachments.forEach(function(attachmentOptions, ndx) {
+      var attachment = framebufferInfo.attachments[ndx];
+      var format = attachmentOptions.format;
+      if (attachment instanceof WebGLRenderbuffer) {
+        gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
+        gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
+      } else if (attachment instanceof WebGLTexture) {
+        resizeTexture(gl, attachment, attachmentOptions, width, height);
+      } else {
+        throw "unknown attachment type";
       }
     });
   }
+
+
 
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
@@ -2137,6 +2401,10 @@ define([], function () {
     "setTextureParameters": setTextureParameters,
     "setDefaultTextureColor": setDefaultTextureColor,
     "createTextures": createTextures,
+    "resizeTexture": resizeTexture,
+
+    "createFramebufferInfo": createFramebufferInfo,
+    "resizeFramebufferInfo": resizeFramebufferInfo,
   };
 
 });
