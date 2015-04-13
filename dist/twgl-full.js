@@ -638,6 +638,11 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
 
+  function addLineNumbers(src) {
+    return src.split("\n").map(function(line, ndx) {
+      return (ndx + 1) + ": " + line;
+    }).join("\n");
+  }
 
   /**
    * Loads a shader.
@@ -663,7 +668,7 @@ define('twgl/twgl',[], function () {
     if (!compiled) {
       // Something went wrong during compilation; get the error
       var lastError = gl.getShaderInfoLog(shader);
-      errFn("*** Error compiling shader '" + shader + "':" + lastError);
+      errFn(addLineNumbers(shaderSource) + "\n*** Error compiling shader: " + lastError);
       gl.deleteShader(shader);
       return null;
     }
@@ -5709,13 +5714,10 @@ define('twgl/primitives',[
    *
    * @param {number} radius Radius of cylinder.
    * @param {number} height Height of cylinder.
-   * @param {number} radialSubdivisions The number of subdivisions around the
-   *     cylinder.
-   * @param {number} verticalSubdivisions The number of subdivisions down the
-   *     cylinder.
+   * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
+   * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
    * @param {boolean} [topCap] Create top cap. Default = true.
-   * @param {boolean} [bottomCap] Create bottom cap. Default =
-   *        true.
+   * @param {boolean} [bottomCap] Create bottom cap. Default = true.
    * @return {Object.<string, TypedArray>} The created vertices.
    * @memberOf module:twgl/primitives
    */
