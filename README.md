@@ -344,6 +344,36 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 ```
 
+### Creating Framebuffers and attachments
+
+TWGL
+
+```javascript
+var attachments = [
+  { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE },
+  { format: DEPTH_STENCIL, },
+];
+var fbi = twgl.createFramebufferInfo(gl, attachments);
+```
+
+WebGL
+
+```javascript
+var fb = gl.createFramebuffer(gl.FRAMEBUFFER);
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+var tex = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, tex);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.drawingBufferWidth, gl.drawingBufferHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+var rb = gl.createRenderbuffer();
+gl.bindRenderbuffer(gl.RENDERBUFFER, rb);
+gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, gl.drawingBufferWidth, gl.drawingBufferHeight);
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb);
+```
+
 ### Compare
 
 [TWGL example](http://twgljs.org/examples/twgl-cube.html) vs [WebGL example](http://twgljs.org/examples/webgl-cube.html)
