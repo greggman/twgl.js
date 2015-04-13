@@ -308,6 +308,53 @@ define([
   }
 
   /**
+   * Creates a XY quad
+   *
+   * The default with no parameters will return a 2x2 quad with values from -1 to +1.
+   * If you want a unit quad with that goes from 0 to 1 you'd call it with
+   *
+   *     twgl.primitives.createXYQuadVertices(1, 0.5, 0.5);
+   *
+   * If you want a unit quad centered above 0,0 you'd call it with
+   *
+   *     twgl.primitives.createXYQuadVertices(1, 0, 0.5);
+   *
+   * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
+   * @param {number} [xOffset] the amount to offset the quad in X
+   * @param {number} [yOffset] the amount to offset the quad in Y
+   */
+  function createXYQuadVertices(size, xOffset, yOffset) {
+    size = size || 2;
+    xOffset = xOffset || 0;
+    yOffset = yOffset || 0;
+    size *= 0.5;
+    return {
+      position: {
+        numComponents: 2,
+        data: [
+          xOffset + -1 * size, yOffset + -1 * size,
+          xOffset +  1 * size, yOffset + -1 * size,
+          xOffset + -1 * size, yOffset +  1 * size,
+          xOffset +  1 * size, yOffset +  1 * size,
+        ],
+      },
+      normal: [
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+      ],
+      texcoord: [
+        0, 0,
+        1, 0,
+        0, 1,
+        1, 1,
+      ],
+      indices: [ 0, 1, 2, 2, 1, 3 ],
+    };
+  }
+
+  /**
    * Creates XZ plane vertices.
    * The created plane has position, normal and uv streams.
    *
@@ -1170,6 +1217,9 @@ define([
     "createTruncatedConeBufferInfo": createBufferInfoFunc(createTruncatedConeVertices),
     "createTruncatedConeBuffers": createBufferFunc(createTruncatedConeVertices),
     "createTruncatedConeVertices": createTruncatedConeVertices,
+    "createXYQuadBufferInfo": createBufferInfoFunc(createXYQuadVertices),
+    "createXYQuadBuffers": createBufferFunc(createXYQuadVertices),
+    "createXYQuadVertices": createXYQuadVertices,
     "deindexVertices": deindexVertices,
     "flattenNormals": flattenNormals,
     "makeRandomVertexColors": makeRandomVertexColors,
