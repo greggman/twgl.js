@@ -1049,6 +1049,266 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
         
             
 <dt>
+    <h4 class="name" id="createFramebufferInfo"><span class="type-signature"> </span>createFramebufferInfo<span class="signature">(gl, <span class="optional">attachments</span>, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#FramebufferInfo">FramebufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a framebuffer and attachments.</p>
+<p>This returns a <a href="module-twgl.html#FramebufferInfo"><code>FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.</p>
+<p>The simplest usage</p>
+<pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+var fbi = twgl.createFramebuffer(gl);</code></pre>
+<p>More complex usage</p>
+<pre><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+var attachments = [
+  { format: RGB565, mag: NEAREST },
+  { format: STENCIL_INDEX8 },
+]
+var fbi = twgl.createFramebuffer(gl, attachments);</code></pre>
+<p>Passing in a specific size</p>
+<pre><code>var width = 256;
+var height = 256;
+var fbi = twgl.createFramebuffer(gl, attachments, width, height);</code></pre>
+<p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.
+<a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL only guarantees 3 combinations of attachments work</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attachments</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">AttachmentOptions[]</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>which attachments to create. If not provided the default is a framebuffer with an
+   <code>RGBA</code>, <code>UNSIGNED_BYTE</code> texture <code>COLOR_ATTACHMENT0</code> and a <code>DEPTH_STENCIL</code> renderbuffer <code>DEPTH_STENCIL_ATTACHMENT</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the width for the attachments. Default = size of drawingBuffer</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the height for the attachments. Defautt = size of drawingBuffer</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the framebuffer and attachments.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#FramebufferInfo">FramebufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createProgram"><span class="type-signature"> </span>createProgram<span class="signature">(shaders, <span class="optional">opt_attribs</span>, <span class="optional">opt_locations</span>, <span class="optional">opt_errorCallback</span>)</span><span class="type-signature"> &rarr; {WebGLProgram}</span></h4>
     
     
@@ -3861,6 +4121,537 @@ downloading. Filtering options will be set as approriate for image unless <code>
         
             
 <dt>
+    <h4 class="name" id="resizeFramebufferInfo"><span class="type-signature"> </span>resizeFramebufferInfo<span class="signature">(gl, framebufferInfo, <span class="optional">attachments</span>, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Resizes the attachments of a framebuffer.</p>
+<p>You need to pass in the same <code>attachments</code> as you passed in <code>createFramebuffer</code>
+because TWGL has no idea the format/type of each attachment.</p>
+<p>The simplest usage</p>
+<pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+var fbi = twgl.createFramebuffer(gl);
+
+...
+
+function render() {
+  if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+    // resize the attachments
+    twgl.resizeFramebufferInfo(gl, fbi);
+  }</code></pre>
+<p>More complex usage</p>
+<pre><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+var attachments = [
+  { format: RGB565, mag: NEAREST },
+  { format: STENCIL_INDEX8 },
+]
+var fbi = twgl.createFramebuffer(gl, attachments);
+
+...
+
+function render() {
+  if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+    // resize the attachments to match
+    twgl.resizeFramebufferInfo(gl, fbi, attachments);
+  }</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>framebufferInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#FramebufferInfo">FramebufferInfo</a></span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a framebufferInfo as returned from <code>createFramebuffer</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attachments</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">AttachmentOptions[]</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the same attachments options as passed to <code>createFramebuffer</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the width for the attachments. Default = size of drawingBuffer</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the height for the attachments. Defautt = size of drawingBuffer</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="resizeTexture"><span class="type-signature"> </span>resizeTexture<span class="signature">(gl, tex, options, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Resizes a texture based on the options passed in.</p>
+<p>Note: This is not a generic resize anything function.
+It's mostly used by <a href="module-twgl.html#resizeFramebufferInfo"><code>resizeFramebufferInfo</code></a>
+It will use <code>options.src</code> if it exists to try to determine a <code>type</code>
+otherwise it will assume <code>gl.UNSIGNED_BYTE</code>. No data is provided
+for the texture. Texture parameters will be set accordingly</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the texture to resize</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#TextureOptions">TextureOptions</a></span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the new width. If not passed in will use <code>options.width</code></p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the new height. If not passed in will use <code>options.height</code></p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="setAttributePrefix"><span class="type-signature"> </span>setAttributePrefix<span class="signature">(prefix)</span><span class="type-signature"></span></h4>
     
     
@@ -6025,6 +6816,290 @@ be <code>Float32Array</code></p>
 
             
                 
+<dt class="name" id="AttachmentOptions">
+    <h4>AttachmentOptions</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The options for a framebuffer attachment.</p>
+<p>Note: For a <code>format</code> that is a texture include all the texture
+options from <a href="module-twgl.html#TextureOptions"><code>TextureOptions</code></a> for example
+<code>min</code>, <code>mag</code>, <code>clamp</code>, etc... Note that unlike <a href="module-twgl.html#TextureOptions"><code>TextureOptions</code></a>
+<code>auto</code> defaults to <code>false</code> for attachment textures</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	<h5 class="subsection-title">Properties:</h5>
+
+	<dl>
+
+<table class="props table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>attach</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The attachment point. Defaults
+  to <code>gl.COLOR_ATTACTMENT0 + ndx</code> unless type is a depth or stencil type
+  then it's gl.DEPTH_ATTACHMENT or <code>gl.DEPTH_STENCIL_ATTACHMENT</code> depending
+  on the format or attachment type.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The format. If one of <code>gl.RGBA4</code>,
+  <code>gl.RGB565</code>, <code>gl.RGB5_A1</code>, <code>gl.DEPTH_COMPONENT16</code>,
+  <code>gl.STENCIL_INDEX8</code> or <code>gl.DEPTH_STENCIL</code> then will create a
+  renderbuffer. Otherwise will create a texture. Default = <code>gl.RGBA</code></p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The type. Used for texture. Default = <code>gl.UNSIGNED_BYTE</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The texture target for <code>gl.framebufferTexture2D</code>.
+  Defaults to <code>gl.TEXTURE_2D</code>. Set to appropriate face for cube maps.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>level for <code>gl.framebufferTexture2D</code>. Defaults to 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attachment</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLObject</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An existing renderbuffer or texture.
+   If provided will attach this Object. This allows you to share
+   attachemnts across framebuffers.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+</dl>
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
 <dt class="name" id="AttribInfo">
     <h4>AttribInfo</h4>
 
@@ -7056,6 +8131,135 @@ for the attribute.</p>
     
     
     
+    
+</dd>
+
+            
+                
+<dt class="name" id="FramebufferInfo">
+    <h4>FramebufferInfo</h4>
+
+    
+</dt>
+<dd>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	<h5 class="subsection-title">Properties:</h5>
+
+	<dl>
+
+<table class="props table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>framebuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLFramebuffer</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The WebGLFramebuffer for this framebufferInfo</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attachments</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLObject[]</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The created attachments in the same order as passed in to <a href="module-twgl.html#createFramebufferInfo"><code>createFramebufferInfo</code></a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+</dl>
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
     
 </dd>
 
