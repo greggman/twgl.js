@@ -197,6 +197,11 @@ define([], function () {
    * @memberOf module:twgl
    */
 
+  function addLineNumbers(src) {
+    return src.split("\n").map(function(line, ndx) {
+      return (ndx + 1) + ": " + line;
+    }).join("\n");
+  }
 
   /**
    * Loads a shader.
@@ -222,7 +227,7 @@ define([], function () {
     if (!compiled) {
       // Something went wrong during compilation; get the error
       var lastError = gl.getShaderInfoLog(shader);
-      errFn("*** Error compiling shader '" + shader + "':" + lastError);
+      errFn(addLineNumbers(shaderSource) + "\n*** Error compiling shader: " + lastError);
       gl.deleteShader(shader);
       return null;
     }
