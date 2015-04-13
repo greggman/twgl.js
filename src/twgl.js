@@ -2188,7 +2188,7 @@ define([], function () {
    */
 
   var defaultAttachments = [
-    { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, auto: false },
+    { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, },
     { format: DEPTH_STENCIL, },
   ];
 
