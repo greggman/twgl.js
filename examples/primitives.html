@@ -106,6 +106,10 @@ void main() {
       twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
       twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
       twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
+      twgl.primitives.createCresentBufferInfo(gl, 1, 1, 0.5, 0.1, 24),
+      twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 24, 2),
+      twgl.primitives.createDiscBufferInfo(gl, 1, 24),
+      twgl.primitives.createTorusBufferInfo(gl, 1, 0.4, 24, 12),
     ];
 
     function rand(min, max) {
@@ -167,7 +171,6 @@ void main() {
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
       gl.enable(gl.DEPTH_TEST);
-      gl.enable(gl.CULL_FACE);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
