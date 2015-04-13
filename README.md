@@ -456,6 +456,5 @@ Try [webglfundamentals.org](http://webglfundamentals.org)
 ## Future
 
 *   What needs to change for WebGL 2.0?
-*   Consider adding framebuffer related stuff
 
 
