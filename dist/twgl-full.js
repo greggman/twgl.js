@@ -1060,16 +1060,51 @@ define('twgl/twgl',[], function () {
    *
    * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
    *        `createUniformSetters`.
-   * @param {Object.<string, value>} an object with values for the
+   * @param {Object.<string, ?>} values an object with values for the
    *        uniforms.
+   *   You can pass multiple objects by putting them in an array or by calling with more arguments.For example
+   *
+   *     var sharedUniforms = {
+   *       u_fogNear: 10,
+   *       u_projection: ...
+   *       ...
+   *     };
+   *
+   *     var localUniforms = {
+   *       u_world: ...
+   *       u_diffuseColor: ...
+   *     };
+   *
+   *     twgl.setUniforms(programInfo, sharedUniforms, localUniforms);
+   *
+   *     // is the same as
+   *
+   *     twgl.setUniforms(programInfo, [sharedUniforms, localUniforms]);
+   *
+   *     // is the same as
+   *
+   *     twgl.setUniforms(programInfo, sharedUniforms);
+   *     twgl.setUniforms(programInfo, localUniforms};
+   *
    * @memberOf module:twgl
    */
-  function setUniforms(setters, values) {
+  function setUniforms(setters, values) {  // eslint-disable-line
     setters = setters.uniformSetters || setters;
-    for (var name in values) {
-      var setter = setters[name];
-      if (setter) {
-        setter(values[name]);
+    var numArgs = arguments.length;
+    for (var andx = 1; andx < numArgs; ++andx) {
+      var vals = arguments[andx];
+      if (Array.isArray(vals)) {
+        var numValues = vals.length;
+        for (var ii = 0; ii < numValues; ++ii) {
+          setUniforms(setters, vals[ii]);
+        }
+      } else {
+        for (var name in vals) {
+          var setter = setters[name];
+          if (setter) {
+            setter(vals[name]);
+          }
+        }
       }
     }
   }
@@ -1754,7 +1789,25 @@ define('twgl/twgl',[], function () {
    * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
    * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
    * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
-   * @property {Object<string, ?>} uniforms The values for the uniforms
+   * @property {Object<string, ?>} uniforms The values for the uniforms.
+   *   You can pass multiple objects by putting them in an array. For example
+   *
+   *     var sharedUniforms = {
+   *       u_fogNear: 10,
+   *       u_projection: ...
+   *       ...
+   *     };
+   *
+   *     var localUniforms = {
+   *       u_world: ...
+   *       u_diffuseColor: ...
+   *     };
+   *
+   *     var drawObj = {
+   *       ...
+   *       uniforms: [sharedUniforms, localUniforms],
+   *     };
+   *
    * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
    * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
    * @memberOf module:twgl
@@ -4532,14 +4585,14 @@ define('twgl/m4',['./v3'], function (v3) {
  *
  * *  `createSomeShapeBuffers`
  *
- *    These create WebGLBuffers but nothing else.
+ *    These create WebGLBuffers and put your data in them but nothing else.
  *    It's a shortcut to doing it yourself if you don't want to use
  *    the higher level functions.
  *
  * *  `createSomeShapeVertices`
  *
  *    These just create vertices, no buffers. This allows you to manipulate the vertices
- *    or add more before generating a {@link module:twgl.BufferInfo}. Once you're finished
+ *    or add more data before generating a {@link module:twgl.BufferInfo}. Once you're finished
  *    manipulating the vertices call {@link module:twgl.createBufferInfoFromArrays}.
  *
  *    example:
@@ -4797,7 +4850,49 @@ define('twgl/primitives',[
   }
 
   /**
-   * Creates a XY quad
+   * Creates XY quad BufferInfo
+   *
+   * The default with no parameters will return a 2x2 quad with values from -1 to +1.
+   * If you want a unit quad with that goes from 0 to 1 you'd call it with
+   *
+   *     twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);
+   *
+   * If you want a unit quad centered above 0,0 you'd call it with
+   *
+   *     twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
+   * @param {number} [xOffset] the amount to offset the quad in X
+   * @param {number} [yOffset] the amount to offset the quad in Y
+   * @return {Object.<string, WebGLBuffer>} the created XY Quad BufferInfo
+   * @memberOf module:twgl/primitives
+   * @function createXYQuadBufferInfo
+   */
+
+  /**
+   * Creates XY quad Buffers
+   *
+   * The default with no parameters will return a 2x2 quad with values from -1 to +1.
+   * If you want a unit quad with that goes from 0 to 1 you'd call it with
+   *
+   *     twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);
+   *
+   * If you want a unit quad centered above 0,0 you'd call it with
+   *
+   *     twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
+   * @param {number} [xOffset] the amount to offset the quad in X
+   * @param {number} [yOffset] the amount to offset the quad in Y
+   * @return {module:twgl.BufferInfo} the created XY Quad buffers
+   * @memberOf module:twgl/primitives
+   * @function createXYQuadBuffers
+   */
+
+  /**
+   * Creates XY quad vertices
    *
    * The default with no parameters will return a 2x2 quad with values from -1 to +1.
    * If you want a unit quad with that goes from 0 to 1 you'd call it with
@@ -4811,6 +4906,8 @@ define('twgl/primitives',[
    * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
    * @param {number} [xOffset] the amount to offset the quad in X
    * @param {number} [yOffset] the amount to offset the quad in Y
+   * @return {Object.<string, TypedArray> the created XY Quad vertices
+   * @memberOf module:twgl/primitives
    */
   function createXYQuadVertices(size, xOffset, yOffset) {
     size = size || 2;
@@ -4844,16 +4941,48 @@ define('twgl/primitives',[
   }
 
   /**
+   * Creates XZ plane BufferInfo.
+   *
+   * The created plane has position, normal, and texcoord data
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} [width] Width of the plane. Default = 1
+   * @param {number} [depth] Depth of the plane. Default = 1
+   * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
+   * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
+   * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
+   * @return {@module:twgl.BufferInfo} The created plane BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createPlaneBufferInfo
+   */
+
+  /**
+   * Creates XZ plane buffers.
+   *
+   * The created plane has position, normal, and texcoord data
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} [width] Width of the plane. Default = 1
+   * @param {number} [depth] Depth of the plane. Default = 1
+   * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
+   * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
+   * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
+   * @return {Object.<string, WebGLBuffer>} The created plane buffers.
+   * @memberOf module:twgl/primitives
+   * @function createPlaneBuffers
+   */
+
+  /**
    * Creates XZ plane vertices.
-   * The created plane has position, normal and uv streams.
+   *
+   * The created plane has position, normal, and texcoord data
    *
    * @param {number} [width] Width of the plane. Default = 1
    * @param {number} [depth] Depth of the plane. Default = 1
    * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
    * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
    * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
-   * @return {Object.<string, TypedArray>} The
-   *         created plane vertices.
+   * @return {Object.<string, TypedArray>} The created plane vertices.
    * @memberOf module:twgl/primitives
    */
   function createPlaneVertices(
@@ -4916,8 +5045,53 @@ define('twgl/primitives',[
   }
 
   /**
+   * Creates sphere BufferInfo.
+   *
+   * The created sphere has position, normal, and texcoord data
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} radius radius of the sphere.
+   * @param {number} subdivisionsAxis number of steps around the sphere.
+   * @param {number} subdivisionsHeight number of vertically on the sphere.
+   * @param {number} [opt_startLatitudeInRadians] where to start the
+   *     top of the sphere. Default = 0.
+   * @param {number} [opt_endLatitudeInRadians] Where to end the
+   *     bottom of the sphere. Default = Math.PI.
+   * @param {number} [opt_startLongitudeInRadians] where to start
+   *     wrapping the sphere. Default = 0.
+   * @param {number} [opt_endLongitudeInRadians] where to end
+   *     wrapping the sphere. Default = 2 * Math.PI.
+   * @return {module:twgl.BufferInfo} The created sphere BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createSphereBufferInfo
+   */
+
+  /**
+   * Creates sphere buffers.
+   *
+   * The created sphere has position, normal, and texcoord data
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} radius radius of the sphere.
+   * @param {number} subdivisionsAxis number of steps around the sphere.
+   * @param {number} subdivisionsHeight number of vertically on the sphere.
+   * @param {number} [opt_startLatitudeInRadians] where to start the
+   *     top of the sphere. Default = 0.
+   * @param {number} [opt_endLatitudeInRadians] Where to end the
+   *     bottom of the sphere. Default = Math.PI.
+   * @param {number} [opt_startLongitudeInRadians] where to start
+   *     wrapping the sphere. Default = 0.
+   * @param {number} [opt_endLongitudeInRadians] where to end
+   *     wrapping the sphere. Default = 2 * Math.PI.
+   * @return {Object.<string, WebGLBuffer>} The created sphere buffers.
+   * @memberOf module:twgl/primitives
+   * @function createSphereBuffers
+   */
+
+  /**
    * Creates sphere vertices.
-   * The created sphere has position, normal and uv streams.
+   *
+   * The created sphere has position, normal, and texcoord data
    *
    * @param {number} radius radius of the sphere.
    * @param {number} subdivisionsAxis number of steps around the sphere.
@@ -4930,8 +5104,7 @@ define('twgl/primitives',[
    *     wrapping the sphere. Default = 0.
    * @param {number} [opt_endLongitudeInRadians] where to end
    *     wrapping the sphere. Default = 2 * Math.PI.
-   * @return {Object.<string, TypedArray>} The
-   *         created plane vertices.
+   * @return {Object.<string, TypedArray>} The created sphere vertices.
    * @memberOf module:twgl/primitives
    */
   function createSphereVertices(
@@ -5023,15 +5196,40 @@ define('twgl/primitives',[
   ];
 
   /**
-   * Creates the vertices and indices for a cube. The
-   * cube will be created around the origin. (-size / 2, size / 2)
+   * Creates a BufferInfo for a cube.
    *
-   * @param {number} size Width, height and depth of the cube.
-   * @return {Object.<string, TypedArray>} The
-   *         created plane vertices.
+   * The cube is created around the origin. (-size / 2, size / 2).
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} [size] width, height and depth of the cube.
+   * @return {module:twgl.BufferInfo} The created BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createCubeBufferInfo
+   */
+
+  /**
+   * Creates the buffers and indices for a cube.
+   *
+   * The cube is created around the origin. (-size / 2, size / 2).
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} [size] width, height and depth of the cube.
+   * @return {Object.<string, WebGLBuffer>} The created buffers.
+   * @memberOf module:twgl/primitives
+   * @function createCubeBuffers
+   */
+
+  /**
+   * Creates the vertices and indices for a cube.
+   *
+   * The cube is created around the origin. (-size / 2, size / 2).
+   *
+   * @param {number} [size] width, height and depth of the cube.
+   * @return {Object.<string, TypedArray>} The created vertices.
    * @memberOf module:twgl/primitives
    */
   function createCubeVertices(size) {
+    size = size || 1;
     var k = size / 2;
 
     var cornerVertices = [
@@ -5096,12 +5294,55 @@ define('twgl/primitives',[
   }
 
   /**
+   * Creates a BufferInfo for a truncated cone, which is like a cylinder
+   * except that it has different top and bottom radii. A truncated cone
+   * can also be used to create cylinders and regular cones. The
+   * truncated cone will be created centered about the origin, with the
+   * y axis as its vertical axis.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} bottomRadius Bottom radius of truncated cone.
+   * @param {number} topRadius Top radius of truncated cone.
+   * @param {number} height Height of truncated cone.
+   * @param {number} radialSubdivisions The number of subdivisions around the
+   *     truncated cone.
+   * @param {number} verticalSubdivisions The number of subdivisions down the
+   *     truncated cone.
+   * @param {boolean} [opt_topCap] Create top cap. Default = true.
+   * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
+   * @return {module:twgl.BufferInfo} The created cone BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createTruncatedCodeBufferInfo
+   */
+
+  /**
+   * Creates buffers for a truncated cone, which is like a cylinder
+   * except that it has different top and bottom radii. A truncated cone
+   * can also be used to create cylinders and regular cones. The
+   * truncated cone will be created centered about the origin, with the
+   * y axis as its vertical axis.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} bottomRadius Bottom radius of truncated cone.
+   * @param {number} topRadius Top radius of truncated cone.
+   * @param {number} height Height of truncated cone.
+   * @param {number} radialSubdivisions The number of subdivisions around the
+   *     truncated cone.
+   * @param {number} verticalSubdivisions The number of subdivisions down the
+   *     truncated cone.
+   * @param {boolean} [opt_topCap] Create top cap. Default = true.
+   * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
+   * @return {Object.<string, WebGLBuffer>} The created cone buffers.
+   * @memberOf module:twgl/primitives
+   * @function createTruncatedCodeBuffers
+   */
+
+  /**
    * Creates vertices for a truncated cone, which is like a cylinder
    * except that it has different top and bottom radii. A truncated cone
    * can also be used to create cylinders and regular cones. The
    * truncated cone will be created centered about the origin, with the
-   * y axis as its vertical axis. The created cone has position, normal
-   * and uv streams.
+   * y axis as its vertical axis. .
    *
    * @param {number} bottomRadius Bottom radius of truncated cone.
    * @param {number} topRadius Top radius of truncated cone.
@@ -5111,10 +5352,8 @@ define('twgl/primitives',[
    * @param {number} verticalSubdivisions The number of subdivisions down the
    *     truncated cone.
    * @param {boolean} [opt_topCap] Create top cap. Default = true.
-   * @param {boolean} [opt_bottomCap] Create bottom cap. Default =
-   *        true.
-   * @return {Object.<string, TypedArray>} The
-   *         created plane vertices.
+   * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
+   * @return {Object.<string, TypedArray>} The created cone vertices.
    * @memberOf module:twgl/primitives
    */
   function createTruncatedConeVertices(
@@ -5227,9 +5466,31 @@ define('twgl/primitives',[
   }
 
   /**
+   * Creates 3D 'F' BufferInfo.
+   * An 'F' is useful because you can easily tell which way it is oriented.
+   * The created 'F' has position, normal, texcoord, and color buffers.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @return {module:twgl.BufferInfo} The created BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function create3DFBufferInfo
+   */
+
+  /**
+   * Creates 3D 'F' buffers.
+   * An 'F' is useful because you can easily tell which way it is oriented.
+   * The created 'F' has position, normal, texcoord, and color buffers.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @return {Object.<string, WebGLBuffer>} The created buffers.
+   * @memberOf module:twgl/primitives
+   * @function create3DFBuffers
+   */
+
+  /**
    * Creates 3D 'F' vertices.
    * An 'F' is useful because you can easily tell which way it is oriented.
-   * The created 'F' has position, normal and uv streams.
+   * The created 'F' has position, normal, texcoord, and color arrays.
    *
    * @return {Object.<string, TypedArray>} The created vertices.
    * @memberOf module:twgl/primitives
@@ -5603,6 +5864,40 @@ define('twgl/primitives',[
   }
 
   /**
+   * Creates cresent BufferInfo.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} verticalRadius The vertical radius of the cresent.
+   * @param {number} outerRadius The outer radius of the cresent.
+   * @param {number} innerRadius The inner radius of the cresent.
+   * @param {number} thickness The thickness of the cresent.
+   * @param {number} subdivisionsDown number of steps around the cresent.
+   * @param {number} subdivisionsThick number of vertically on the cresent.
+   * @param {number} [startOffset] Where to start arc. Default 0.
+   * @param {number} [endOffset] Where to end arg. Default 1.
+   * @return {module:twgl.BufferInfo} The created BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createCresentBufferInfo
+   */
+
+  /**
+   * Creates cresent buffers.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} verticalRadius The vertical radius of the cresent.
+   * @param {number} outerRadius The outer radius of the cresent.
+   * @param {number} innerRadius The inner radius of the cresent.
+   * @param {number} thickness The thickness of the cresent.
+   * @param {number} subdivisionsDown number of steps around the cresent.
+   * @param {number} subdivisionsThick number of vertically on the cresent.
+   * @param {number} [startOffset] Where to start arc. Default 0.
+   * @param {number} [endOffset] Where to end arg. Default 1.
+   * @return {Object.<string, WebGLBuffer>} The created buffers.
+   * @memberOf module:twgl/primitives
+   * @function createCresentBuffers
+   */
+
+  /**
    * Creates cresent vertices.
    *
    * @param {number} verticalRadius The vertical radius of the cresent.
@@ -5709,18 +6004,50 @@ define('twgl/primitives',[
   }
 
   /**
-   * Creates cylinder vertices. The cylinder will be created around the origin
-   * along the y-axis. The created cylinder has position, normal and uv streams.
+   * Creates cylinder BufferInfo. The cylinder will be created around the origin
+   * along the y-axis.
    *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
    * @param {number} radius Radius of cylinder.
    * @param {number} height Height of cylinder.
    * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
    * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
    * @param {boolean} [topCap] Create top cap. Default = true.
    * @param {boolean} [bottomCap] Create bottom cap. Default = true.
-   * @return {Object.<string, TypedArray>} The created vertices.
+   * @return {module:twgl.BufferInfo} The created BufferInfo.
    * @memberOf module:twgl/primitives
+   * @function createCylinderBufferInfo
    */
+
+   /**
+    * Creates cylinder buffers. The cylinder will be created around the origin
+    * along the y-axis.
+    *
+    * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+    * @param {number} radius Radius of cylinder.
+    * @param {number} height Height of cylinder.
+    * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
+    * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
+    * @param {boolean} [topCap] Create top cap. Default = true.
+    * @param {boolean} [bottomCap] Create bottom cap. Default = true.
+    * @return {Object.<string, WebGLBuffer>} The created buffers.
+    * @memberOf module:twgl/primitives
+    * @function createCylinderBuffers
+    */
+
+   /**
+    * Creates cylinder vertices. The cylinder will be created around the origin
+    * along the y-axis.
+    *
+    * @param {number} radius Radius of cylinder.
+    * @param {number} height Height of cylinder.
+    * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
+    * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
+    * @param {boolean} [topCap] Create top cap. Default = true.
+    * @param {boolean} [bottomCap] Create bottom cap. Default = true.
+    * @return {Object.<string, TypedArray>} The created vertices.
+    * @memberOf module:twgl/primitives
+    */
   function createCylinderVertices(
       radius,
       height,
@@ -5737,6 +6064,36 @@ define('twgl/primitives',[
         topCap,
         bottomCap);
   }
+
+  /**
+   * Creates BufferInfo for a torus
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} radius radius of center of torus circle.
+   * @param {number} thickness radius of torus ring.
+   * @param {number} radialSubdivisions The number of subdivisions around the torus.
+   * @param {number} bodySubdivisions The number of subdivisions around the body torus.
+   * @param {boolean} [startAngle] start angle in radians. Default = 0.
+   * @param {boolean} [endAngle] end angle in radians. Default = Math.PI * 2.
+   * @return {module:twgl.BufferInfo} The created BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createTorusBufferInfo
+   */
+
+  /**
+   * Creates buffers for a torus
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} radius radius of center of torus circle.
+   * @param {number} thickness radius of torus ring.
+   * @param {number} radialSubdivisions The number of subdivisions around the torus.
+   * @param {number} bodySubdivisions The number of subdivisions around the body torus.
+   * @param {boolean} [startAngle] start angle in radians. Default = 0.
+   * @param {boolean} [endAngle] end angle in radians. Default = Math.PI * 2.
+   * @return {Object.<string, WebGLBuffer>} The created buffers.
+   * @memberOf module:twgl/primitives
+   * @function createTorusBuffers
+   */
 
   /**
    * Creates vertices for a torus
@@ -5820,7 +6177,63 @@ define('twgl/primitives',[
 
 
   /**
-   * Creates a disc. The disc will be in the xz plane, centered at
+   * Creates a disc BufferInfo. The disc will be in the xz plane, centered at
+   * the origin. When creating, at least 3 divisions, or pie
+   * pieces, need to be specified, otherwise the triangles making
+   * up the disc will be degenerate. You can also specify the
+   * number of radial pieces `stacks`. A value of 1 for
+   * stacks will give you a simple disc of pie pieces.  If you
+   * want to create an annulus you can set `innerRadius` to a
+   * value > 0. Finally, `stackPower` allows you to have the widths
+   * increase or decrease as you move away from the center. This
+   * is particularly useful when using the disc as a ground plane
+   * with a fixed camera such that you don't need the resolution
+   * of small triangles near the perimeter. For example, a value
+   * of 2 will produce stacks whose ouside radius increases with
+   * the square of the stack index. A value of 1 will give uniform
+   * stacks.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} radius Radius of the ground plane.
+   * @param {number} divisions Number of triangles in the ground plane (at least 3).
+   * @param {number} [stacks] Number of radial divisions (default=1).
+   * @param {number} [innerRadius] Default 0.
+   * @param {number} [stackPower] Power to raise stack size to for decreasing width.
+   * @return {module:twgl.BufferInfo} The created BufferInfo.
+   * @memberOf module:twgl/primitives
+   * @function createDiscBufferInfo
+   */
+
+  /**
+   * Creates disc buffers. The disc will be in the xz plane, centered at
+   * the origin. When creating, at least 3 divisions, or pie
+   * pieces, need to be specified, otherwise the triangles making
+   * up the disc will be degenerate. You can also specify the
+   * number of radial pieces `stacks`. A value of 1 for
+   * stacks will give you a simple disc of pie pieces.  If you
+   * want to create an annulus you can set `innerRadius` to a
+   * value > 0. Finally, `stackPower` allows you to have the widths
+   * increase or decrease as you move away from the center. This
+   * is particularly useful when using the disc as a ground plane
+   * with a fixed camera such that you don't need the resolution
+   * of small triangles near the perimeter. For example, a value
+   * of 2 will produce stacks whose ouside radius increases with
+   * the square of the stack index. A value of 1 will give uniform
+   * stacks.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+   * @param {number} radius Radius of the ground plane.
+   * @param {number} divisions Number of triangles in the ground plane (at least 3).
+   * @param {number} [stacks] Number of radial divisions (default=1).
+   * @param {number} [innerRadius] Default 0.
+   * @param {number} [stackPower] Power to raise stack size to for decreasing width.
+   * @return {Object.<string, WebGLBuffer>} The created buffers.
+   * @memberOf module:twgl/primitives
+   * @function createDiscBuffers
+   */
+
+  /**
+   * Creates disc vertices. The disc will be in the xz plane, centered at
    * the origin. When creating, at least 3 divisions, or pie
    * pieces, need to be specified, otherwise the triangles making
    * up the disc will be degenerate. You can also specify the
