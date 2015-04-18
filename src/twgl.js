@@ -619,16 +619,51 @@ define([], function () {
    *
    * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
    *        `createUniformSetters`.
-   * @param {Object.<string, value>} an object with values for the
+   * @param {Object.<string, ?>} values an object with values for the
    *        uniforms.
+   *   You can pass multiple objects by putting them in an array or by calling with more arguments.For example
+   *
+   *     var sharedUniforms = {
+   *       u_fogNear: 10,
+   *       u_projection: ...
+   *       ...
+   *     };
+   *
+   *     var localUniforms = {
+   *       u_world: ...
+   *       u_diffuseColor: ...
+   *     };
+   *
+   *     twgl.setUniforms(programInfo, sharedUniforms, localUniforms);
+   *
+   *     // is the same as
+   *
+   *     twgl.setUniforms(programInfo, [sharedUniforms, localUniforms]);
+   *
+   *     // is the same as
+   *
+   *     twgl.setUniforms(programInfo, sharedUniforms);
+   *     twgl.setUniforms(programInfo, localUniforms};
+   *
    * @memberOf module:twgl
    */
-  function setUniforms(setters, values) {
+  function setUniforms(setters, values) {  // eslint-disable-line
     setters = setters.uniformSetters || setters;
-    for (var name in values) {
-      var setter = setters[name];
-      if (setter) {
-        setter(values[name]);
+    var numArgs = arguments.length;
+    for (var andx = 1; andx < numArgs; ++andx) {
+      var vals = arguments[andx];
+      if (Array.isArray(vals)) {
+        var numValues = vals.length;
+        for (var ii = 0; ii < numValues; ++ii) {
+          setUniforms(setters, vals[ii]);
+        }
+      } else {
+        for (var name in vals) {
+          var setter = setters[name];
+          if (setter) {
+            setter(vals[name]);
+          }
+        }
       }
     }
   }
@@ -1313,7 +1348,25 @@ define([], function () {
    * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
    * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
    * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
-   * @property {Object<string, ?>} uniforms The values for the uniforms
+   * @property {Object<string, ?>} uniforms The values for the uniforms.
+   *   You can pass multiple objects by putting them in an array. For example
+   *
+   *     var sharedUniforms = {
+   *       u_fogNear: 10,
+   *       u_projection: ...
+   *       ...
+   *     };
+   *
+   *     var localUniforms = {
+   *       u_world: ...
+   *       u_diffuseColor: ...
+   *     };
+   *
+   *     var drawObj = {
+   *       ...
+   *       uniforms: [sharedUniforms, localUniforms],
+   *     };
+   *
    * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
    * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
    * @memberOf module:twgl
