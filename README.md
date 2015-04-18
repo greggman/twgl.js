@@ -388,6 +388,7 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [zoom-around](http://twgljs.org/examples/zoom-around.html)
 *   [text](http://twgljs.org/examples/text.html)
 *   [kaleidoscope](http://twgljs.org/examples/kaleidoscope.html)
+*   [tunnel](http://twgljs.org/examples/tunnel.html)
 
 ## AMD support
 
