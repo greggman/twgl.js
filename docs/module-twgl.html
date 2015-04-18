@@ -6453,7 +6453,7 @@ the default texture color is used which can be set by calling <code>setDefaultTe
         
             
 <dt>
-    <h4 class="name" id="setUniforms"><span class="type-signature"> </span>setUniforms<span class="signature">(setters, an)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setUniforms"><span class="type-signature"> </span>setUniforms<span class="signature">(setters, values)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -6581,13 +6581,13 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
         <tr>
             
-                <td class="name"><code>an</code></td>
+                <td class="name"><code>values</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, value></span>
+<span class="param-type">Object.&lt;string, ?></span>
 
             
             </td>
@@ -6596,8 +6596,30 @@ setUniforms(programInfo, moreUniforms);</code></pre>
 
             
 
-            <td class="description last"><p>object with values for the
-       uniforms.</p></td>
+            <td class="description last"><p>an object with values for the
+       uniforms.
+  You can pass multiple objects by putting them in an array or by calling with more arguments.For example</p>
+<pre><code>var sharedUniforms = {
+  u_fogNear: 10,
+  u_projection: ...
+  ...
+};
+
+var localUniforms = {
+  u_world: ...
+  u_diffuseColor: ...
+};
+
+twgl.setUniforms(programInfo, sharedUniforms, localUniforms);
+
+// is the same as
+
+twgl.setUniforms(programInfo, [sharedUniforms, localUniforms]);
+
+// is the same as
+
+twgl.setUniforms(programInfo, sharedUniforms);
+twgl.setUniforms(programInfo, localUniforms};</code></pre></td>
         </tr>
 
 	
@@ -7919,7 +7941,23 @@ for the attribute.</p>
 
             
 
-            <td class="description last"><p>The values for the uniforms</p></td>
+            <td class="description last"><p>The values for the uniforms.
+  You can pass multiple objects by putting them in an array. For example</p>
+<pre><code>var sharedUniforms = {
+  u_fogNear: 10,
+  u_projection: ...
+  ...
+};
+
+var localUniforms = {
+  u_world: ...
+  u_diffuseColor: ...
+};
+
+var drawObj = {
+  ...
+  uniforms: [sharedUniforms, localUniforms],
+};</code></pre></td>
         </tr>
 
 	
