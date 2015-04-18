@@ -81,13 +81,13 @@ returing a <a href="module-twgl.html#BufferInfo"><code>BufferInfo</code></a> you
 and <a href="module-twgl.html#drawBufferInfo"><code>drawBufferInfo</code></a> etc...</p>
 </li>
 <li><p><code>createSomeShapeBuffers</code></p>
-<p>These create WebGLBuffers but nothing else.
+<p>These create WebGLBuffers and put your data in them but nothing else.
 It's a shortcut to doing it yourself if you don't want to use
 the higher level functions.</p>
 </li>
 <li><p><code>createSomeShapeVertices</code></p>
 <p>These just create vertices, no buffers. This allows you to manipulate the vertices
-or add more before generating a <a href="module-twgl.html#BufferInfo"><code>BufferInfo</code></a>. Once you're finished
+or add more data before generating a <a href="module-twgl.html#BufferInfo"><code>BufferInfo</code></a>. Once you're finished
 manipulating the vertices call <a href="module-twgl.html#createBufferInfoFromArrays"><code>createBufferInfoFromArrays</code></a>.</p>
 <p>example:</p>
 <pre><code>var arrays = twgl.primitives.createPlaneArrays(1);
@@ -151,6 +151,282 @@ var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
         <dl>
             
 <dt>
+    <h4 class="name" id="create3DFBufferInfo"><span class="type-signature"> </span>create3DFBufferInfo<span class="signature">(gl)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates 3D 'F' BufferInfo.
+An 'F' is useful because you can easily tell which way it is oriented.
+The created 'F' has position, normal, texcoord, and color buffers.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="create3DFBuffers"><span class="type-signature"> </span>create3DFBuffers<span class="signature">(gl)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates 3D 'F' buffers.
+An 'F' is useful because you can easily tell which way it is oriented.
+The created 'F' has position, normal, texcoord, and color buffers.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="create3DFVertices"><span class="type-signature"> </span>create3DFVertices<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
@@ -161,7 +437,7 @@ var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
     <div class="description">
         <p>Creates 3D 'F' vertices.
 An 'F' is useful because you can easily tell which way it is oriented.
-The created 'F' has position, normal and uv streams.</p>
+The created 'F' has position, normal, texcoord, and color arrays.</p>
     </div>
     
 
@@ -228,6 +504,786 @@ The created 'F' has position, normal and uv streams.</p>
 	<dd>
 		
 <span class="param-type">Object.&lt;string, TypedArray></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCresentBufferInfo"><span class="type-signature"> </span>createCresentBufferInfo<span class="signature">(gl, verticalRadius, outerRadius, innerRadius, thickness, subdivisionsDown, subdivisionsThick, <span class="optional">startOffset</span>, <span class="optional">endOffset</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates cresent BufferInfo.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>verticalRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The vertical radius of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>outerRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The outer radius of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>innerRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The inner radius of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>thickness</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The thickness of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsDown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of steps around the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsThick</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of vertically on the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>startOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Where to start arc. Default 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>endOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Where to end arg. Default 1.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCresentBuffers"><span class="type-signature"> </span>createCresentBuffers<span class="signature">(gl, verticalRadius, outerRadius, innerRadius, thickness, subdivisionsDown, subdivisionsThick, <span class="optional">startOffset</span>, <span class="optional">endOffset</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates cresent buffers.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>verticalRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The vertical radius of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>outerRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The outer radius of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>innerRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The inner radius of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>thickness</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The thickness of the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsDown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of steps around the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsThick</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of vertically on the cresent.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>startOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Where to start arc. Default 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>endOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Where to end arg. Default 1.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
 
 	</dd>
 </dl>
@@ -601,7 +1657,7 @@ The created 'F' has position, normal and uv streams.</p>
         
             
 <dt>
-    <h4 class="name" id="createCubeVertices"><span class="type-signature"> </span>createCubeVertices<span class="signature">(size)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
+    <h4 class="name" id="createCubeBufferInfo"><span class="type-signature"> </span>createCubeBufferInfo<span class="signature">(gl, <span class="optional">size</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
     
     
 </dt>
@@ -609,8 +1665,8 @@ The created 'F' has position, normal and uv streams.</p>
     
     
     <div class="description">
-        <p>Creates the vertices and indices for a cube. The
-cube will be created around the origin. (-size / 2, size / 2)</p>
+        <p>Creates a BufferInfo for a cube.</p>
+<p>The cube is created around the origin. (-size / 2, size / 2).</p>
     </div>
     
 
@@ -632,6 +1688,8 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -640,6 +1698,36 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
 	</thead>
 
 	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
 	
 
         <tr>
@@ -656,10 +1744,20 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Width, height and depth of the cube.</p></td>
+            <td class="description last"><p>width, height and depth of the cube.</p></td>
         </tr>
 
 	
@@ -713,8 +1811,335 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
     
             
 <div class="param-desc">
-    <p>The
-        created plane vertices.</p>
+    <p>The created BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCubeBuffers"><span class="type-signature"> </span>createCubeBuffers<span class="signature">(gl, <span class="optional">size</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates the buffers and indices for a cube.</p>
+<p>The cube is created around the origin. (-size / 2, size / 2).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>width, height and depth of the cube.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCubeVertices"><span class="type-signature"> </span>createCubeVertices<span class="signature">(<span class="optional">size</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates the vertices and indices for a cube.</p>
+<p>The cube is created around the origin. (-size / 2, size / 2).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>width, height and depth of the cube.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created vertices.</p>
 </div>
 
 
@@ -739,6 +2164,668 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
         
             
 <dt>
+    <h4 class="name" id="createCylinderBufferInfo"><span class="type-signature"> </span>createCylinderBufferInfo<span class="signature">(gl, radius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">topCap</span>, <span class="optional">bottomCap</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates cylinder BufferInfo. The cylinder will be created around the origin
+along the y-axis.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Radius of cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Height of cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>verticalSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions down the cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>topCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create top cap. Default = true.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bottomCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create bottom cap. Default = true.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCylinderBuffers"><span class="type-signature"> </span>createCylinderBuffers<span class="signature">(gl, radius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">topCap</span>, <span class="optional">bottomCap</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates cylinder buffers. The cylinder will be created around the origin
+along the y-axis.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Radius of cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Height of cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>verticalSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions down the cylinder.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>topCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create top cap. Default = true.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bottomCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create bottom cap. Default = true.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createCylinderVertices"><span class="type-signature"> </span>createCylinderVertices<span class="signature">(radius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">topCap</span>, <span class="optional">bottomCap</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
@@ -748,7 +2835,7 @@ cube will be created around the origin. (-size / 2, size / 2)</p>
     
     <div class="description">
         <p>Creates cylinder vertices. The cylinder will be created around the origin
-along the y-axis. The created cylinder has position, normal and uv streams.</p>
+along the y-axis.</p>
     </div>
     
 
@@ -1040,6 +3127,638 @@ along the y-axis. The created cylinder has position, normal and uv streams.</p>
         
             
 <dt>
+    <h4 class="name" id="createDiscBufferInfo"><span class="type-signature"> </span>createDiscBufferInfo<span class="signature">(gl, radius, divisions, <span class="optional">stacks</span>, <span class="optional">innerRadius</span>, <span class="optional">stackPower</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a disc BufferInfo. The disc will be in the xz plane, centered at
+the origin. When creating, at least 3 divisions, or pie
+pieces, need to be specified, otherwise the triangles making
+up the disc will be degenerate. You can also specify the
+number of radial pieces <code>stacks</code>. A value of 1 for
+stacks will give you a simple disc of pie pieces.  If you
+want to create an annulus you can set <code>innerRadius</code> to a
+value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths
+increase or decrease as you move away from the center. This
+is particularly useful when using the disc as a ground plane
+with a fixed camera such that you don't need the resolution
+of small triangles near the perimeter. For example, a value
+of 2 will produce stacks whose ouside radius increases with
+the square of the stack index. A value of 1 will give uniform
+stacks.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Radius of the ground plane.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>divisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of triangles in the ground plane (at least 3).</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stacks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of radial divisions (default=1).</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>innerRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Default 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stackPower</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Power to raise stack size to for decreasing width.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createDiscBuffers"><span class="type-signature"> </span>createDiscBuffers<span class="signature">(gl, radius, divisions, <span class="optional">stacks</span>, <span class="optional">innerRadius</span>, <span class="optional">stackPower</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates disc buffers. The disc will be in the xz plane, centered at
+the origin. When creating, at least 3 divisions, or pie
+pieces, need to be specified, otherwise the triangles making
+up the disc will be degenerate. You can also specify the
+number of radial pieces <code>stacks</code>. A value of 1 for
+stacks will give you a simple disc of pie pieces.  If you
+want to create an annulus you can set <code>innerRadius</code> to a
+value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths
+increase or decrease as you move away from the center. This
+is particularly useful when using the disc as a ground plane
+with a fixed camera such that you don't need the resolution
+of small triangles near the perimeter. For example, a value
+of 2 will produce stacks whose ouside radius increases with
+the square of the stack index. A value of 1 will give uniform
+stacks.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Radius of the ground plane.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>divisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of triangles in the ground plane (at least 3).</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stacks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of radial divisions (default=1).</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>innerRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Default 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stackPower</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Power to raise stack size to for decreasing width.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createDiscVertices"><span class="type-signature"> </span>createDiscVertices<span class="signature">(radius, divisions, <span class="optional">stacks</span>, <span class="optional">innerRadius</span>, <span class="optional">stackPower</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
@@ -1048,7 +3767,7 @@ along the y-axis. The created cylinder has position, normal and uv streams.</p>
     
     
     <div class="description">
-        <p>Creates a disc. The disc will be in the xz plane, centered at
+        <p>Creates disc vertices. The disc will be in the xz plane, centered at
 the origin. When creating, at least 3 divisions, or pie
 pieces, need to be specified, otherwise the triangles making
 up the disc will be degenerate. You can also specify the
@@ -1326,6 +4045,609 @@ stacks.</p>
         
             
 <dt>
+    <h4 class="name" id="createPlaneBufferInfo"><span class="type-signature"> </span>createPlaneBufferInfo<span class="signature">(gl, <span class="optional">width</span>, <span class="optional">depth</span>, <span class="optional">subdivisionsWidth</span>, <span class="optional">subdivisionsDepth</span>, <span class="optional">matrix</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates XZ plane BufferInfo.</p>
+<p>The created plane has position, normal, and texcoord data</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Width of the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>depth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Depth of the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of steps across the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsDepth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of steps down the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Matrix4</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A matrix by which to multiply all the vertices.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>{@BufferInfo} The created plane BufferInfo.</p>
+</div>
+
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createPlaneBuffers"><span class="type-signature"> </span>createPlaneBuffers<span class="signature">(gl, <span class="optional">width</span>, <span class="optional">depth</span>, <span class="optional">subdivisionsWidth</span>, <span class="optional">subdivisionsDepth</span>, <span class="optional">matrix</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates XZ plane buffers.</p>
+<p>The created plane has position, normal, and texcoord data</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Width of the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>depth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Depth of the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of steps across the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsDepth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of steps down the plane. Default = 1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Matrix4</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A matrix by which to multiply all the vertices.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created plane buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createPlaneVertices"><span class="type-signature"> </span>createPlaneVertices<span class="signature">(<span class="optional">width</span>, <span class="optional">depth</span>, <span class="optional">subdivisionsWidth</span>, <span class="optional">subdivisionsDepth</span>, <span class="optional">matrix</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
@@ -1334,8 +4656,8 @@ stacks.</p>
     
     
     <div class="description">
-        <p>Creates XZ plane vertices.
-The created plane has position, normal and uv streams.</p>
+        <p>Creates XZ plane vertices.</p>
+<p>The created plane has position, normal, and texcoord data</p>
     </div>
     
 
@@ -1578,8 +4900,7 @@ The created plane has position, normal and uv streams.</p>
     
             
 <div class="param-desc">
-    <p>The
-        created plane vertices.</p>
+    <p>The created plane vertices.</p>
 </div>
 
 
@@ -1604,6 +4925,744 @@ The created plane has position, normal and uv streams.</p>
         
             
 <dt>
+    <h4 class="name" id="createSphereBufferInfo"><span class="type-signature"> </span>createSphereBufferInfo<span class="signature">(gl, radius, subdivisionsAxis, subdivisionsHeight, <span class="optional">opt_startLatitudeInRadians</span>, <span class="optional">opt_endLatitudeInRadians</span>, <span class="optional">opt_startLongitudeInRadians</span>, <span class="optional">opt_endLongitudeInRadians</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates sphere BufferInfo.</p>
+<p>The created sphere has position, normal, and texcoord data</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>radius of the sphere.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsAxis</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of steps around the sphere.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsHeight</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of vertically on the sphere.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_startLatitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>where to start the
+    top of the sphere. Default = 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_endLatitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Where to end the
+    bottom of the sphere. Default = Math.PI.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_startLongitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>where to start
+    wrapping the sphere. Default = 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_endLongitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>where to end
+    wrapping the sphere. Default = 2 * Math.PI.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created sphere BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createSphereBuffers"><span class="type-signature"> </span>createSphereBuffers<span class="signature">(gl, radius, subdivisionsAxis, subdivisionsHeight, <span class="optional">opt_startLatitudeInRadians</span>, <span class="optional">opt_endLatitudeInRadians</span>, <span class="optional">opt_startLongitudeInRadians</span>, <span class="optional">opt_endLongitudeInRadians</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates sphere buffers.</p>
+<p>The created sphere has position, normal, and texcoord data</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>radius of the sphere.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsAxis</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of steps around the sphere.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>subdivisionsHeight</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>number of vertically on the sphere.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_startLatitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>where to start the
+    top of the sphere. Default = 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_endLatitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Where to end the
+    bottom of the sphere. Default = Math.PI.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_startLongitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>where to start
+    wrapping the sphere. Default = 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_endLongitudeInRadians</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>where to end
+    wrapping the sphere. Default = 2 * Math.PI.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created sphere buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createSphereVertices"><span class="type-signature"> </span>createSphereVertices<span class="signature">(radius, subdivisionsAxis, subdivisionsHeight, <span class="optional">opt_startLatitudeInRadians</span>, <span class="optional">opt_endLatitudeInRadians</span>, <span class="optional">opt_startLongitudeInRadians</span>, <span class="optional">opt_endLongitudeInRadians</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
@@ -1612,8 +5671,8 @@ The created plane has position, normal and uv streams.</p>
     
     
     <div class="description">
-        <p>Creates sphere vertices.
-The created sphere has position, normal and uv streams.</p>
+        <p>Creates sphere vertices.</p>
+<p>The created sphere has position, normal, and texcoord data</p>
     </div>
     
 
@@ -1918,8 +5977,7 @@ The created sphere has position, normal and uv streams.</p>
     
             
 <div class="param-desc">
-    <p>The
-        created plane vertices.</p>
+    <p>The created sphere vertices.</p>
 </div>
 
 
@@ -1931,6 +5989,666 @@ The created sphere has position, normal and uv streams.</p>
 	<dd>
 		
 <span class="param-type">Object.&lt;string, TypedArray></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTorusBufferInfo"><span class="type-signature"> </span>createTorusBufferInfo<span class="signature">(gl, radius, thickness, radialSubdivisions, bodySubdivisions, <span class="optional">startAngle</span>, <span class="optional">endAngle</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates BufferInfo for a torus</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>radius of center of torus circle.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>thickness</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>radius of torus ring.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the torus.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bodySubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the body torus.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>startAngle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>start angle in radians. Default = 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>endAngle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>end angle in radians. Default = Math.PI * 2.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTorusBuffers"><span class="type-signature"> </span>createTorusBuffers<span class="signature">(gl, radius, thickness, radialSubdivisions, bodySubdivisions, <span class="optional">startAngle</span>, <span class="optional">endAngle</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates buffers for a torus</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>radius of center of torus circle.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>thickness</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>radius of torus ring.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the torus.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bodySubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the body torus.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>startAngle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>start angle in radians. Default = 0.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>endAngle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>end angle in radians. Default = Math.PI * 2.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
 
 	</dd>
 </dl>
@@ -2244,6 +6962,738 @@ The created sphere has position, normal and uv streams.</p>
         
             
 <dt>
+    <h4 class="name" id="createTruncatedCodeBufferInfo"><span class="type-signature"> </span>createTruncatedCodeBufferInfo<span class="signature">(gl, bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">opt_topCap</span>, <span class="optional">opt_bottomCap</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a BufferInfo for a truncated cone, which is like a cylinder
+except that it has different top and bottom radii. A truncated cone
+can also be used to create cylinders and regular cones. The
+truncated cone will be created centered about the origin, with the
+y axis as its vertical axis.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bottomRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Bottom radius of truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>topRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Top radius of truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Height of truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the
+    truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>verticalSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions down the
+    truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_topCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create top cap. Default = true.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_bottomCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create bottom cap. Default = true.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created cone BufferInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTruncatedCodeBuffers"><span class="type-signature"> </span>createTruncatedCodeBuffers<span class="signature">(gl, bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">opt_topCap</span>, <span class="optional">opt_bottomCap</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates buffers for a truncated cone, which is like a cylinder
+except that it has different top and bottom radii. A truncated cone
+can also be used to create cylinders and regular cones. The
+truncated cone will be created centered about the origin, with the
+y axis as its vertical axis.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bottomRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Bottom radius of truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>topRadius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Top radius of truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Height of truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions around the
+    truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>verticalSubdivisions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The number of subdivisions down the
+    truncated cone.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_topCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create top cap. Default = true.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opt_bottomCap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Create bottom cap. Default = true.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created cone buffers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createTruncatedConeVertices"><span class="type-signature"> </span>createTruncatedConeVertices<span class="signature">(bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, <span class="optional">opt_topCap</span>, <span class="optional">opt_bottomCap</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, TypedArray>}</span></h4>
     
     
@@ -2256,8 +7706,7 @@ The created sphere has position, normal and uv streams.</p>
 except that it has different top and bottom radii. A truncated cone
 can also be used to create cylinders and regular cones. The
 truncated cone will be created centered about the origin, with the
-y axis as its vertical axis. The created cone has position, normal
-and uv streams.</p>
+y axis as its vertical axis. .</p>
     </div>
     
 
@@ -2502,8 +7951,7 @@ and uv streams.</p>
 
             
 
-            <td class="description last"><p>Create bottom cap. Default =
-       true.</p></td>
+            <td class="description last"><p>Create bottom cap. Default = true.</p></td>
         </tr>
 
 	
@@ -2557,8 +8005,7 @@ and uv streams.</p>
     
             
 <div class="param-desc">
-    <p>The
-        created plane vertices.</p>
+    <p>The created cone vertices.</p>
 </div>
 
 
@@ -2573,6 +8020,706 @@ and uv streams.</p>
 
 	</dd>
 </dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createXYQuadBufferInfo"><span class="type-signature"> </span>createXYQuadBufferInfo<span class="signature">(gl, <span class="optional">size</span>, <span class="optional">xOffset</span>, <span class="optional">yOffset</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates XY quad BufferInfo</p>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the size across the quad. Defaults to 2 which means vertices will go from -1 to +1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>xOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the amount to offset the quad in X</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>yOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the amount to offset the quad in Y</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the created XY Quad BufferInfo</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createXYQuadBuffers"><span class="type-signature"> </span>createXYQuadBuffers<span class="signature">(gl, <span class="optional">size</span>, <span class="optional">xOffset</span>, <span class="optional">yOffset</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates XY quad Buffers</p>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the size across the quad. Defaults to 2 which means vertices will go from -1 to +1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>xOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the amount to offset the quad in X</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>yOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the amount to offset the quad in Y</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the created XY Quad buffers</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#BufferInfo">BufferInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createXYQuadVertices"><span class="type-signature"> </span>createXYQuadVertices<span class="signature">(<span class="optional">size</span>, <span class="optional">xOffset</span>, <span class="optional">yOffset</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates XY quad vertices</p>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadVertices(1, 0.5, 0.5);</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadVertices(1, 0, 0.5);</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the size across the quad. Defaults to 2 which means vertices will go from -1 to +1</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>xOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the amount to offset the quad in X</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>yOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the amount to offset the quad in Y</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>{Object.<string, TypedArray> the created XY Quad vertices</p>
+</div>
+
+
 
 
         
