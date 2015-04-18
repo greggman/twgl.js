@@ -176,8 +176,6 @@ void main() {
     var cyAcross = 12;
     var cyDown = 25;
     var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
-    var unitQuadBufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
-    var screenBufferInfo = createUnitQuadsBufferInfo(gl, segments, 1);
     var cylinderBufferInfo = twgl.primitives.createCylinderBufferInfo(gl, 1, 200, cyAcross, cyDown, false, false);
 
     var fbSize = 1024;
@@ -217,25 +215,6 @@ void main() {
       u_fogColor: [1, 1, 1, 1],
       u_fogNear: 0.1,
       u_fogFar: 190,
-    };
-
-    var screenUniforms = {
-      u_texture: framebufferInfo.attachments[0],
-      u_matrix: m4.translation([1, 1, 0]),
-      u_projection: m4.identity(),
-      u_angleTime: 0,
-      u_angleScale: 1,
-    };
-
-    var unitQuadUniforms = {
-      u_matrix: m4.identity(),
-      u_texture: twgl.createTexture(gl, {
-        src: [0, 64, 128, 255],
-        width: 2,
-        format: gl.LUMINANCE,
-        wrap: gl.CLAMP_TO_EDGE,
-      }),
-      u_color: [0, 1, 1, 1],
     };
 
     function lerp(a, b, t) {

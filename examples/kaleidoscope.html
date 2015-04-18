@@ -61,36 +61,6 @@
       gl_FragColor = texture2D(u_texture, v_texcoord);
     }
   </script>
-  <script id="tex-vs" type="notjs">
-    attribute vec4 a_position;
-    attribute vec2 a_texcoord;
-    varying vec2 v_texcoord;
-    uniform mat4 u_matrix;
-    void main() {
-      gl_Position = u_matrix * a_position;
-      v_texcoord = a_texcoord;
-    }
-  </script>
-  <script id="tex-fs" type="notjs">
-    precision mediump float;
-
-    varying vec2 v_texcoord;
-    uniform sampler2D u_texture;
-    uniform vec4 u_color;
-    uniform mat4 u_texMatrix;
-    uniform vec2 u_texMod;
-    uniform float u_fogNear;
-    uniform float u_fogFar;
-    uniform vec4 u_fogColor;
-
-    void main() {
-      float depth = gl_FragCoord.z / gl_FragCoord.w;
-      float fogFactor = smoothstep(u_fogNear, u_fogFar, depth);
-      vec2 uv = (u_texMatrix * vec4(v_texcoord, 0, 1)).xy;
-      vec4 outColor = u_color * texture2D(u_texture, mod(uv, u_texMod));
-      gl_FragColor = mix(outColor, u_fogColor, fogFactor);
-    }
-  </script>
   <script id="vs" type="notjs">
 uniform mat4 u_worldViewProjection;
 uniform vec3 u_lightWorldPos;
@@ -169,7 +139,6 @@ void main() {
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-    var texProgramInfo = twgl.createProgramInfo(gl, ["tex-vs", "tex-fs"]);
     var kaleidProgramInfo = twgl.createProgramInfo(gl, ["kaleid-vs", "kaleid-fs"]);
 
     function createUnitQuadsBufferInfo(gl, across, down) {
@@ -210,9 +179,7 @@ void main() {
     var cyAcross = 12;
     var cyDown = 25;
     var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
-    var unitQuadBufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
     var screenBufferInfo = createUnitQuadsBufferInfo(gl, segments, 1);
-    var cylinderBufferInfo = twgl.primitives.createCylinderBufferInfo(gl, 1, 200, cyAcross, cyDown, false, false);
 
     var fbSize = 1024;
     var framebufferInfo = twgl.createFramebufferInfo(gl, undefined, fbSize, fbSize);
@@ -242,17 +209,6 @@ void main() {
       u_world: m4.identity(),
     };
 
-    var cylinderUniforms = {
-      u_texture: framebufferInfo.attachments[0],
-      u_matrix: m4.identity(),
-      u_color: [1, 1, 1, 1],
-      u_texMod: [1, 1],
-      u_texMatrix: m4.identity(),
-      u_fogColor: [1, 1, 1, 1],
-      u_fogNear: 0.1,
-      u_fogFar: 190,
-    };
-
     var screenUniforms = {
       u_texture: framebufferInfo.attachments[0],
       u_matrix: m4.translation([1, 1, 0]),
@@ -261,29 +217,14 @@ void main() {
       u_angleScale: 1,
     };
 
-    var unitQuadUniforms = {
-      u_matrix: m4.identity(),
-      u_texture: twgl.createTexture(gl, {
-        src: [0, 64, 128, 255],
-        width: 2,
-        format: gl.LUMINANCE,
-        wrap: gl.CLAMP_TO_EDGE,
-      }),
-      u_color: [0, 1, 1, 1],
-    };
-
     function lerp(a, b, t) {
       return a + (b - a) * t;
     }
 
     var useFramebuffer = true;
-    var useCylinder = false;
 
     function switchMode() {
       useFramebuffer = !useFramebuffer;
-      if (!useFramebuffer) {
-        useCylinder = !useCylinder;
-      }
     }
 
     window.addEventListener('keypress', switchMode, false);
@@ -336,7 +277,6 @@ void main() {
       var fadeColor = baseColorScale(colorLerp);
       uniforms.u_fogColor = fadeColor.gl();
       var fc = uniforms.u_fogColor;
-      cylinderUniforms.u_fogColor = fc;
 
       gl.cullFace(gl.BACK);
       gl.enable(gl.CULL_FACE);
@@ -388,49 +328,24 @@ void main() {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-        if (useCylinder) {
-          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-          gl.cullFace(gl.FRONT);
-          gl.useProgram(texProgramInfo.program);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.useProgram(kaleidProgramInfo.program);
 
-          aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-          var mat = cylinderUniforms.u_matrix;
-          m4.perspective(30 * Math.PI / 180, aspect, 0.5, 190, mat);
-          m4.translate(mat, [0, 0, -100], mat);
-          m4.rotateZ(mat, -time * 0.1, mat);
-          m4.rotateX(mat, Math.PI * 0.5, mat);
+        var maxScale = Math.PI * 2 / 6;
+        var minScale = Math.PI * 2 / segments;
+        var s = 0.7;
+        aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        m4.ortho(-aspect * s, aspect * s, -1 * s, 1 * s, -1, 1, screenUniforms.u_projection);
+        screenUniforms.u_angleTime = time * 0.1;
+        screenUniforms.u_angleScale = lerp(minScale, maxScale, Math.sin(time * 0.017) * 0.5 + 0.5);
+        m4.identity(screenUniforms.u_matrix);
+        m4.translate(screenUniforms.u_matrix, [1, 0.5, 0], screenUniforms.u_matrix);
+        m4.scale(screenUniforms.u_matrix, [1, 2, 1], screenUniforms.u_matrix);
 
-          var cmat = cylinderUniforms.u_texMatrix;
-          m4.identity(cmat);
-          m4.translate(cmat, [time * 1, time * 2, 0], cmat);
-          m4.scale(cmat, [lerp(6, cyAcross, Math.sin(time) * 0.5 + 0.5), cyDown, 1], cmat);
-          m4.rotateZ(cmat, time * 0.1, cmat);
-          cylinderUniforms.u_texMod[0] = 0.5;
-          cylinderUniforms.u_texMod[1] = 0.5;
-
-          twgl.setBuffersAndAttributes(gl, texProgramInfo, cylinderBufferInfo);
-          twgl.setUniforms(texProgramInfo, cylinderUniforms);
-          twgl.drawBufferInfo(gl, gl.TRIANGLES, cylinderBufferInfo);
-        } else {
-          gl.clearColor(0, 0, 0, 0);
-          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-          gl.useProgram(kaleidProgramInfo.program);
-
-          var maxScale = Math.PI * 2 / 6;
-          var minScale = Math.PI * 2 / segments;
-          var s = 0.7;
-          aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-          m4.ortho(-aspect * s, aspect * s, -1 * s, 1 * s, -1, 1, screenUniforms.u_projection);
-          screenUniforms.u_angleTime = time * 0.1;
-          screenUniforms.u_angleScale = lerp(minScale, maxScale, Math.sin(time * 0.017) * 0.5 + 0.5);
-          m4.identity(screenUniforms.u_matrix);
-          m4.translate(screenUniforms.u_matrix, [1, 0.5, 0], screenUniforms.u_matrix);
-          m4.scale(screenUniforms.u_matrix, [1, 2, 1], screenUniforms.u_matrix);
-
-          twgl.setBuffersAndAttributes(gl, kaleidProgramInfo, screenBufferInfo);
-          twgl.setUniforms(kaleidProgramInfo, screenUniforms);
-          twgl.drawBufferInfo(gl, gl.TRIANGLES, screenBufferInfo);
-        }
+        twgl.setBuffersAndAttributes(gl, kaleidProgramInfo, screenBufferInfo);
+        twgl.setUniforms(kaleidProgramInfo, screenUniforms);
+        twgl.drawBufferInfo(gl, gl.TRIANGLES, screenBufferInfo);
       }
 
       requestAnimationFrame(render);
