@@ -171,16 +171,22 @@ void main() {
     ];
 
     function rand(min, max) {
+      if (max === undefined) {
+        max = min;
+        min = 0;
+      }
       return min + Math.random() * (max - min);
     }
 
     // Shared values
+    var baseHue = rand(360);
     var lightWorldPosition = [1, 8, -10];
     var lightColor = [1, 1, 1, 1];
     var camera = m4.identity();
     var view = m4.identity();
     var viewProjection = m4.identity();
 
+    // A circle on a canvas
     var ctx = document.createElement("canvas").getContext("2d");
     ctx.canvas.width  = 64;
     ctx.canvas.height = 64;
@@ -195,6 +201,25 @@ void main() {
       ctx.stroke();
     }
     updateCanvas(0);
+
+    // A cubemap drawn to a canvas with a circle on each face.
+    var cubemapCtx = document.createElement("canvas").getContext("2d");
+    var size = 40;
+    cubemapCtx.canvas.width  = size * 6;
+    cubemapCtx.canvas.height = size;
+    cubemapCtx.fillStyle = "#888";
+    for (var ff = 0; ff < 6; ++ff) {
+      var color = chroma.hsv((baseHue + ff * 10) % 360, 1 - ff / 6, 1);
+      cubemapCtx.fillStyle = color.darken().hex();
+      cubemapCtx.fillRect(size * ff, 0, size, size);
+      cubemapCtx.save();
+      cubemapCtx.translate(size * (ff + 0.5), size * 0.5);
+      cubemapCtx.beginPath();
+      cubemapCtx.arc(0, 0, size * 0.3, 0, Math.PI * 2);
+      cubemapCtx.fillStyle = color.hex();
+      cubemapCtx.fill();
+      cubemapCtx.restore();
+    }
 
     var textures = twgl.createTextures(gl, {
       // a power of 2 image
@@ -248,6 +273,20 @@ void main() {
         ]),
         width: 1,
       },
+      // a cubemap from array
+      cubemapFromArray: {
+        target: gl.TEXTURE_CUBE_MAP,
+        format: gl.LUMINANCE,
+        src: [
+          0xF0,
+          0xE0,
+          0xD0,
+          0xC0,
+          0xB0,
+          0xA0,
+        ],
+      },
+      cubemapFromCanvas: { target: gl.TEXTURE_CUBE_MAP, src: cubemapCtx.canvas },
     });
 
     // This is soley to make it easy to pick textures at random
@@ -259,10 +298,16 @@ void main() {
       textures.fromCanvas,
     ];
 
+    var cubeTextures = [
+      textures.yokohama,
+      textures.goldengate,
+      textures.cubemapFromCanvas,
+      textures.cubemapFromArray,
+    ];
+
     var objects = [];
     var drawObjects = [];
     var numObjects = 100;
-    var baseHue = rand(0, 360);
     for (var ii = 0; ii < numObjects; ++ii) {
       var uniforms;
       var programInfo;
@@ -290,7 +335,7 @@ void main() {
           shape = rand(0, 2) < 1 ? shapes[1] : shapes[3];
           programInfo = envMapProgramInfo;
           uniforms = {
-            u_texture: Math.random() > 0.5 ? textures.yokohama : textures.goldengate,
+            u_texture: cubeTextures[rand(0, cubeTextures.length) | 0],
             u_viewInverse: camera,
             u_world: m4.identity(),
             u_worldInverseTranspose: m4.identity(),
