@@ -9628,14 +9628,15 @@ are appropriate for its needs. This lets you pass the same options to all functi
             <td class="description last"><p>source for texture</p>
 <p>   If <code>string</code> then it's assumed to be a URL to an image. The image will be downloaded async. A usable
    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
-   If <code>target</code> is gl.TEXTURE_CUBE_MAP will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
+   If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
    The pieces will be uploaded in <code>cubeFaceOrder</code></p>
 <p>   If <code>string[]</code> then it must have 6 entries, one for each face of a cube map. Target must be <code>gl.TEXTURE_CUBE_MAP</code>.</p>
 <p>   If <code>HTMLElement</code> then it wil be used immediately to create the contents of the texture. Examples <code>HTMLImageElement</code>,
    <code>HTMLCanvasElement</code>, <code>HTMLVideoElement</code>.</p>
 <p>   If <code>number[]</code> or <code>ArrayBuffer</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is
    not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponets</code>
-   where <code>numComponents</code> is derived from <code>format</code>. Then,</p>
+   where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided
+   by 6. Then</p>
 <ul>
 <li><p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer width and height
 are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
@@ -9644,6 +9645,7 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 </li>
 </ul>
 <p>If <code>number[]</code> will be converted to <code>type</code>.</p>
+<p>If target is a <code>gl.TEXTURE_CUBE_MAP</code></p>
 <p>If <code>src</code> is a function it will be called with these a <code>WebGLRenderingContext</code> and these options.
 Whatever it returns is subject to these rules. So it can return a string url, an <code>HTMLElement</code>
 an array etc...</p>
