@@ -1469,7 +1469,7 @@ define([], function () {
    *
    *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
    *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
-   *    If `target` is gl.TEXTURE_CUBE_MAP will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
+   *    If `target` is `gl.TEXTURE_CUBE_MAP` will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
    *    The pieces will be uploaded in `cubeFaceOrder`
    *
    *    If `string[]` then it must have 6 entries, one for each face of a cube map. Target must be `gl.TEXTURE_CUBE_MAP`.
@@ -1479,7 +1479,8 @@ define([], function () {
    *
    *    If `number[]` or `ArrayBuffer` it's assumed to be data for a texture. If `width` or `height` is
    *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponets`
-   *    where `numComponents` is derived from `format`. Then,
+   *    where `numComponents` is derived from `format`. If `target` is `gl.TEXTURE_CUBE_MAP` then `numElements` is divided
+   *    by 6. Then
    *
    *    *   If neither `width` nor `height` are specified and `sqrt(numElements)` is an integer width and height
    *        are set to `sqrt(numElements)`. Otherwise `width = numElements` and `height = 1`.
@@ -1487,6 +1488,8 @@ define([], function () {
    *    *   If only one of `width` or `height` is specified then the other equals `numElements / specifiedDimension`.
    *
    * If `number[]` will be converted to `type`.
+   *
+   * If target is a `gl.TEXTURE_CUBE_MAP`
    *
    * If `src` is a function it will be called with these a `WebGLRenderingContext` and these options.
    * Whatever it returns is subject to these rules. So it can return a string url, an `HTMLElement`
@@ -1623,6 +1626,7 @@ define([], function () {
    * @return {number[]} cubemap face enums
    */
   function getCubeFaceOrder(gl, options) {
+    options = options || {};
     return options.cubeFaceOrder || [
         gl.TEXTURE_CUBE_MAP_POSITIVE_X,
         gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -1631,6 +1635,36 @@ define([], function () {
         gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
         gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
       ];
+  }
+
+  /**
+   * @typedef {Object} FaceInfo
+   * @property {number} face gl enum for texImage2D
+   * @property {number} ndx face index (0 - 5) into source data
+   */
+
+  /**
+   * Gets an array of FaceInfos
+   * There's a bug in some NVidia drivers that will crash the driver if
+   * `gl.TEXTURE_CUBE_MAP_POSITIVE_X` is not uploaded first. So, we take
+   * the user's desired order from his faces to WebGL and make sure we
+   * do the faces in WebGL order
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundent but
+   *    it's needed internally to sort the array of `ndx` properties by `face`.
+   */
+  function getCubeFacesWithNdx(gl, options) {
+    var faces = getCubeFaceOrder(gl, options);
+    // work around bug in NVidia drivers. We have to upload the first face first else the driver crashes :(
+    var facesWithNdx = faces.map(function(face, ndx) {
+      return { face: face, ndx: ndx };
+    });
+    facesWithNdx.sort(function(a, b) {
+      return a.face - b.face;
+    });
+    return facesWithNdx;
   }
 
   /**
@@ -1681,19 +1715,11 @@ define([], function () {
         } else {
           throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
         }
-        var faces = getCubeFaceOrder(gl, options);
         ctx.canvas.width = size;
         ctx.canvas.height = size;
         width = size;
         height = size;
-        // work around bug in chrome. We must do first face first?
-        var facesWithNdx = faces.map(function(face, ndx) {
-          return { face: face, ndx: ndx };
-        });
-        facesWithNdx.sort(function(a, b) {
-          return a.face - b.face;
-        } );
-        facesWithNdx.forEach(function(f) {
+        getCubeFacesWithNdx(gl, options).forEach(function(f) {
           var xOffset = slices[f.ndx * 2 + 0] * size;
           var yOffset = slices[f.ndx * 2 + 1] * size;
           ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
@@ -1874,7 +1900,8 @@ define([], function () {
             // So assuming this is the first image we now have one face that's img sized
             // and 5 faces that are 1x1 pixel so size the other faces
             if (numToLoad === 5) {
-              faces.forEach(function(otherTarget) {
+              // use the default order
+              getCubeFaceOrder(gl).forEach(function(otherTarget) {
                 // Should we re-use the same face or a color?
                 gl.texImage2D(otherTarget, 0, format, format, type, img);
               });
@@ -1955,7 +1982,7 @@ define([], function () {
       throw "length wrong size of format: " + glEnumToString(gl, format);
     }
     if (!width && !height) {
-      var size = Math.sqrt(numElements);
+      var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
       if (size % 1 === 0) {
         width = size;
         height = size;
@@ -1980,7 +2007,16 @@ define([], function () {
     }
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
     savePackState(gl, options);
-    gl.texImage2D(target, 0, format, width, height, 0, format, type, src);
+    if (target === gl.TEXTURE_CUBE_MAP) {
+      var faceSize = numElements / 6 * numComponents;
+      getCubeFacesWithNdx(gl, options).forEach(function(f) {
+        var offset = faceSize * f.ndx;
+        var data = src.subarray(offset, offset + faceSize);
+        gl.texImage2D(f.face, 0, format, width, height, 0, format, type, data);
+      });
+    } else {
+      gl.texImage2D(target, 0, format, width, height, 0, format, type, src);
+    }
     restorePackState(gl, options);
     return {
       width: width,
@@ -2033,7 +2069,13 @@ define([], function () {
       }
       if (typeof (src) === "string") {
         loadTextureFromUrl(gl, tex, options, callback);
-      } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
+      } else if (isArrayBuffer(src) ||
+                 (Array.isArray(src) && (
+                      typeof src[0] === 'number' ||
+                      Array.isArray(src[0]) ||
+                      isArrayBuffer(src[0]))
+                 )
+                ) {
         var dimensions = setTextureFromArray(gl, tex, src, options);
         width  = dimensions.width;
         height = dimensions.height;
