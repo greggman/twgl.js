@@ -6168,20 +6168,22 @@ define('twgl/primitives',[
     endAngle = endAngle || Math.PI * 2;
     range = endAngle - startAngle;
 
-    var numVertices = (radialSubdivisions) * (bodySubdivisions);
+    var radialParts = radialSubdivisions + 1;
+    var bodyParts   = bodySubdivisions + 1;
+    var numVertices = radialParts * bodyParts;
     var positions   = createAugmentedTypedArray(3, numVertices);
     var normals     = createAugmentedTypedArray(3, numVertices);
     var texcoords   = createAugmentedTypedArray(2, numVertices);
     var indices     = createAugmentedTypedArray(3, (radialSubdivisions) * (bodySubdivisions) * 2, Uint16Array);
 
-    for (var slice = 0; slice < bodySubdivisions; ++slice) {
+    for (var slice = 0; slice < bodyParts; ++slice) {
       var v = slice / bodySubdivisions;
       var sliceAngle = v * Math.PI * 2;
       var sliceSin = Math.sin(sliceAngle);
       var ringRadius = radius + sliceSin * thickness;
       var ny = Math.cos(sliceAngle);
       var y = ny * thickness;
-      for (var ring = 0; ring < radialSubdivisions; ++ring) {
+      for (var ring = 0; ring < radialParts; ++ring) {
         var u = ring / radialSubdivisions;
         var ringAngle = startAngle + u * range;
         var xSin = Math.sin(ringAngle);
@@ -6198,14 +6200,14 @@ define('twgl/primitives',[
 
     for (var slice = 0; slice < bodySubdivisions; ++slice) {  // eslint-disable-line
       for (var ring = 0; ring < radialSubdivisions; ++ring) {  // eslint-disable-line
-        var nextRingIndex = (1 + ring) % radialSubdivisions;
-        var nextSliceIndex = (1 + slice) % bodySubdivisions;
-        indices.push(radialSubdivisions * slice          + ring,
-                     radialSubdivisions * nextSliceIndex + ring,
-                     radialSubdivisions * slice          + nextRingIndex);
-        indices.push(radialSubdivisions * nextSliceIndex + ring,
-                     radialSubdivisions * nextSliceIndex + nextRingIndex,
-                     radialSubdivisions * slice          + nextRingIndex);
+        var nextRingIndex  = 1 + ring;
+        var nextSliceIndex = 1 + slice;
+        indices.push(radialParts * slice          + ring,
+                     radialParts * nextSliceIndex + ring,
+                     radialParts * slice          + nextRingIndex);
+        indices.push(radialParts * nextSliceIndex + ring,
+                     radialParts * nextSliceIndex + nextRingIndex,
+                     radialParts * slice          + nextRingIndex);
       }
     }
 
