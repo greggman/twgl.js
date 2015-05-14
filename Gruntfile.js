@@ -145,7 +145,7 @@ module.exports = function(grunt) {
       min: {
         options: {
           mangle: true,
-          screwIE8: true,
+          //screwIE8: true,
           banner: license,
           compress: true,
         },
@@ -156,7 +156,7 @@ module.exports = function(grunt) {
       fullMin: {
         options: {
           mangle: true,
-          screwIE8: true,
+          //screwIE8: true,
           banner: license,
           compress: true,
         },
