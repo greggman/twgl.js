@@ -414,7 +414,7 @@ define(['./v3'], function (v3) {
    */
   function setTranslation(a, v, dst) {
     dst = dst || identity();
-    if(a!==dst){
+    if (a !== dst) {
       dst[ 0] = a[ 0];
       dst[ 1] = a[ 1];
       dst[ 2] = a[ 2];
