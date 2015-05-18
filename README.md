@@ -479,7 +479,7 @@ setAttributes(attribSetters, attribs);
 ```
 
 The point of the example above is TWGL is a **thin** wrapper. All it's doing is trying
-to make common WebGL operations easier and less verbose.
+to make common WebGL operations easier and less verbose. Feel free to mix it with raw WebGL.
 
 ## Want to learn WebGL?
 
