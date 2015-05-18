@@ -408,11 +408,26 @@ define(['./v3'], function (v3) {
    * vector.
    * @param {module:twgl/m4.Mat4} a The matrix.
    * @param {Vec3} v The vector.
+   * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
    * @return {module:twgl/m4.Mat4} a once modified.
    * @memberOf module:twgl/m4
    */
-  function setTranslation(a, dst) {
+  function setTranslation(a, v, dst) {
     dst = dst || identity();
+    if (a !== dst) {
+      dst[ 0] = a[ 0];
+      dst[ 1] = a[ 1];
+      dst[ 2] = a[ 2];
+      dst[ 3] = a[ 3];
+      dst[ 4] = a[ 4];
+      dst[ 5] = a[ 5];
+      dst[ 6] = a[ 6];
+      dst[ 7] = a[ 7];
+      dst[ 8] = a[ 8];
+      dst[ 9] = a[ 9];
+      dst[10] = a[10];
+      dst[11] = a[11];
+    }
     dst[12] = v[0];
     dst[13] = v[1];
     dst[14] = v[2];
