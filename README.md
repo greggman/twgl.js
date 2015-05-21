@@ -436,7 +436,7 @@ See the examples. Otherwise there's a few different versions
 	git clone https://github.com/greggman/twgl.js.git
 	```
 
-## Rational and other chit-chat
+## Rationale and other chit-chat
 
 TWGL's is an attempt to make WebGL simpler by providing a few tiny helper functions
 that make it much less verbose and remove the tedium. TWGL is **NOT** trying to help
