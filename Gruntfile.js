@@ -1,8 +1,10 @@
 "use strict";
 
+var fs = require('fs');
+
 var license = [
 '/**                                                                                       ',
-' * @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.                ',
+' * @license twgl.js %(version)s Copyright (c) 2015, Gregg Tavares All Rights Reserved.    ',
 ' * Available via the MIT license.                                                         ',
 ' * see: http://github.com/greggman/twgl.js for details                                    ',
 ' */                                                                                       ',
@@ -76,6 +78,7 @@ var replaceParams = (function() {
   };
 }());
 
+license = replaceParams(license, JSON.parse(fs.readFileSync("bower.json", {encoding: "utf8"})));
 
 module.exports = function(grunt) {
 
