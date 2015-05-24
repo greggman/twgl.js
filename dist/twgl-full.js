@@ -1,3 +1,13 @@
+/**
+ * @license twgl.js 0.0.19 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://github.com/greggman/twgl.js for details
+ */
+/**
+ * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/almond for details
+ */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define([], factory);
