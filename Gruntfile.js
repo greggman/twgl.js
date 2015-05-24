@@ -1,6 +1,7 @@
 "use strict";
 
-var fs = require('fs');
+var fs     = require('fs');
+var semver = require('semver');
 
 var license = [
 '/**                                                                                       ',
@@ -78,7 +79,14 @@ var replaceParams = (function() {
   };
 }());
 
-license = replaceParams(license, JSON.parse(fs.readFileSync("bower.json", {encoding: "utf8"})));
+// We need to insert the version we expect to ship
+// because `bower version patch` will inc the version
+// and tag the repo.
+var bower = JSON.parse(fs.readFileSync("bower.json", {encoding: "utf8"}));
+var bowerInfo = {
+  version: semver.inc(bower.version, "patch"),
+}
+license = replaceParams(license, bowerInfo);
 
 module.exports = function(grunt) {
 
@@ -119,7 +127,7 @@ module.exports = function(grunt) {
           out: "dist/twgl-full.js",
           optimize: "none",
           wrap: {
-            startFile: 'build/js/twgl-start.js',
+            start: license + fs.readFileSync('build/js/twgl-start.js', {encoding: "utf8"}),
             endFile: 'build/js/twgl-end.js',
           },
           paths: {
@@ -135,7 +143,7 @@ module.exports = function(grunt) {
           out: "dist/twgl.js",
           optimize: "none",
           wrap: {
-            startFile: 'build/js/twgl-start.js',
+            start: license + fs.readFileSync('build/js/twgl-start.js', {encoding: "utf8"}),
             endFile: 'build/js/twgl-end.js',
           },
           paths: {
@@ -216,6 +224,25 @@ module.exports = function(grunt) {
     });
     content = content.replace(/href="http\:\/\/twgljs.org\//g, 'href="/');
     fs.writeFileSync('index.html', content);
+  });
+
+  grunt.registerTask('versioncheck', function() {
+    var fs = require('fs');
+    var twglVersionRE = / (\d+\.\d+\.\d+) /;
+    var good = true;
+    [
+      'dist/twgl.js',
+      'dist/twgl-full.js',
+      'dist/twgl.min.js',
+      'dist/twgl-full.min.js',
+    ].forEach(function(filename) {
+      var version = twglVersionRE.exec(fs.readFileSync(filename, {encoding: "utf8"}))[1];
+      if (version !== bower.version) {
+        good = false;
+        grunt.log.error("version mis-match in:", filename, " Expected:", bower.version, " Actual:", version);
+      }
+    });
+    return good;
   });
 
   grunt.registerTask('docs', ['eslint:examples', 'clean:docs', 'jsdoc', 'makeindex']);
