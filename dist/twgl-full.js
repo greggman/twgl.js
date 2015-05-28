@@ -4556,7 +4556,7 @@ define('twgl/m4',['./v3'], function (v3) {
    */
   function transformNormal(m, v, dst) {
     dst = dst || v3.create();
-    var mi = m4.inverse(m);
+    var mi = inverse(m);
     var v0 = v[0];
     var v1 = v[1];
     var v2 = v[2];
