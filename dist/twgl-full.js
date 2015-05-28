@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.19 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.20 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5379,7 +5379,7 @@ define('twgl/primitives',[
    * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
    * @return {module:twgl.BufferInfo} The created cone BufferInfo.
    * @memberOf module:twgl/primitives
-   * @function createTruncatedCodeBufferInfo
+   * @function createTruncatedConeBufferInfo
    */
 
   /**
@@ -5401,7 +5401,7 @@ define('twgl/primitives',[
    * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
    * @return {Object.<string, WebGLBuffer>} The created cone buffers.
    * @memberOf module:twgl/primitives
-   * @function createTruncatedCodeBuffers
+   * @function createTruncatedConeBuffers
    */
 
   /**

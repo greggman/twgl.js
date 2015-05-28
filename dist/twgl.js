@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.19 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.20 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1576,7 +1576,7 @@ define('twgl/twgl',[], function () {
         var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
-          buffer:        createBufferFromTypedArray(gl, typedArray),
+          buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
           numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
           type:          getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
