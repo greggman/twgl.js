@@ -772,7 +772,7 @@ define([
    * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
    * @return {module:twgl.BufferInfo} The created cone BufferInfo.
    * @memberOf module:twgl/primitives
-   * @function createTruncatedCodeBufferInfo
+   * @function createTruncatedConeBufferInfo
    */
 
   /**
@@ -794,7 +794,7 @@ define([
    * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
    * @return {Object.<string, WebGLBuffer>} The created cone buffers.
    * @memberOf module:twgl/primitives
-   * @function createTruncatedCodeBuffers
+   * @function createTruncatedConeBuffers
    */
 
   /**

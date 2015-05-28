@@ -1576,7 +1576,7 @@ define('twgl/twgl',[], function () {
         var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
-          buffer:        createBufferFromTypedArray(gl, typedArray),
+          buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
           numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
           type:          getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
@@ -4556,7 +4556,7 @@ define('twgl/m4',['./v3'], function (v3) {
    */
   function transformNormal(m, v, dst) {
     dst = dst || v3.create();
-    var mi = m4.inverse(m);
+    var mi = inverse(m);
     var v0 = v[0];
     var v1 = v[1];
     var v2 = v[2];

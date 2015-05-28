@@ -1125,7 +1125,7 @@ define([], function () {
         var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
-          buffer:        createBufferFromTypedArray(gl, typedArray),
+          buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
           numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
           type:          getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
