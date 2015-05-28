@@ -1117,7 +1117,7 @@ define([], function () {
    * @return {Object.<string, module:twgl.AttribInfo>} the attribs
    * @memberOf module:twgl
    */
-  function createAttribsFromArrays(gl, arrays) {
+  function createAttribsFromArrays(gl, arrays, drawType) {
     var attribs = {};
     Object.keys(arrays).forEach(function(arrayName) {
       if (!isIndices(arrayName)) {
@@ -1125,7 +1125,7 @@ define([], function () {
         var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
-          buffer:        createBufferFromTypedArray(gl, typedArray),
+          buffer:        createBufferFromTypedArray(gl, typedArray, undefined, drawType),
           numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
           type:          getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
@@ -1266,9 +1266,9 @@ define([], function () {
    * @return {module:twgl.BufferInfo} A BufferInfo
    * @memberOf module:twgl
    */
-  function createBufferInfoFromArrays(gl, arrays) {
+  function createBufferInfoFromArrays(gl, arrays, drawType) {
     var bufferInfo = {
-      attribs: createAttribsFromArrays(gl, arrays),
+      attribs: createAttribsFromArrays(gl, arrays, drawType),
     };
     var indices = arrays.indices;
     if (indices) {
