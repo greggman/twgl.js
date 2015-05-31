@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - item list" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/itemlist.png" />
+    <meta property="og:description" content="TWGL.js - item list" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - item list">
+    <meta name="twitter:url" content="http://twgljs.org/examples/itemlist.html">
+    <meta name="twitter:description" content="TWGL.js - item list">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/itemlist.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - item list</title>
+    <style>
+      * {
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+      }
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        font-family: monospace;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #c {
+          position: fixed;
+      }
+      #outer {
+          width: 100%;
+          z-index: 2;
+          position: absolute;
+          top: 0px;
+      }
+      #content {
+          margin: auto;
+          max-width: 600px;
+          padding: 2em;
+      }
+      #b {
+        width: 100%;
+        text-align: center;
+      }
+      .list-item {
+          margin: 2em;
+          display: -webkit-flex;
+          display: flex;
+          flex-direction: row;
+          -webkit-flex-direction: row;
+      }
+      .list-item .view {
+          width: 200px;
+          height: 200px;
+          flex: 0 0 auto;
+          -webkit-flex: 0 0 auto;
+      }
+      .list-item .description {
+          font-family: sans-serif;
+          font-size: large;
+          padding-left: 2em;
+          flex: 1 1 auto;
+          -webkit-flex: 1 1 auto;
+      }
+
+      @media only screen and (max-width : 600px) {
+          #content {
+              width: 100%;
+          }
+          .list-item {
+              margin: 0.5em;
+              flex-direction: column;
+              -webkit-flex-direction: column;
+          }
+          .list-item .description {
+              padding-left: 0em;
+          }
+      }
+
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="outer">
+      <div id="content">
+        <div id="b"><a href="http://twgljs.org">twgl.js</a> - item list</div>
+        <div id="list"></div>
+      </div>
+    </div>
+  </body>
+  <script id="list-item-template" type="notjs">
+    <div class="view"></div>
+    <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget enim mauris. In quis orci augue. Suspendisse aliquam enim non sem scelerisque pulvinar. Vestibulum elementum rhoncus tortor, a dapibus massa maximus vel. Praesent feugiat rutrum est a feugiat. Nam quis metus in arcu hendrerit molestie. Donec tempor purus id egestas convallis. Etiam libero nulla, gravida a eros at, blandit varius risus. Vivamus ut dui mi.</div>
+  </script>
+  <script id="vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+uniform vec3 u_lightWorldPos;
+uniform mat4 u_world;
+uniform mat4 u_viewInverse;
+uniform mat4 u_worldInverseTranspose;
+
+attribute vec4 a_position;
+attribute vec3 a_normal;
+attribute vec2 a_texcoord;
+
+varying vec4 v_position;
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+
+void main() {
+  v_texCoord = a_texcoord;
+  v_position = (u_worldViewProjection * a_position);
+  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
+  v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
+  gl_Position = v_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec4 v_position;
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+
+uniform vec4 u_lightColor;
+uniform vec4 u_diffuseMult;
+uniform sampler2D u_diffuse;
+uniform vec4 u_specular;
+uniform float u_shininess;
+uniform float u_specularFactor;
+
+vec4 lit(float l ,float h, float m) {
+  return vec4(1.0,
+              abs(l),//max(l, 0.0),
+              (l > 0.0) ? pow(max(0.0, h), m) : 0.0,
+              1.0);
+}
+
+void main() {
+  vec4 diffuseColor = texture2D(u_diffuse, v_texCoord) * u_diffuseMult;
+  vec3 a_normal = normalize(v_normal);
+  vec3 surfaceToLight = normalize(v_surfaceToLight);
+  vec3 surfaceToView = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLight + surfaceToView);
+  vec4 litR = lit(dot(a_normal, surfaceToLight),
+                    dot(a_normal, halfVector), u_shininess);
+  vec4 outColor = vec4((
+  u_lightColor * (diffuseColor * litR.y +
+                u_specular * litR.z * u_specularFactor)).rgb,
+      diffuseColor.a);
+  gl_FragColor = outColor;
+}
+  </script>
+  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script>
+    "use strict";
+    twgl.setAttributePrefix("a_");
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    var shapes = [
+      twgl.primitives.createCubeBufferInfo(gl, 2),
+      twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
+      twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
+      twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
+      twgl.primitives.createCresentBufferInfo(gl, 1, 1, 0.5, 0.1, 24),
+      twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 24, 2),
+      twgl.primitives.createDiscBufferInfo(gl, 1, 24),
+      twgl.primitives.createTorusBufferInfo(gl, 1, 0.4, 24, 12),
+    ];
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    // Shared values
+    var lightWorldPosition = [1, 8, -10];
+    var lightColor = [1, 1, 1, 1];
+    var camera = m4.identity();
+    var view = m4.identity();
+    var viewProjection = m4.identity();
+
+    var tex = twgl.createTexture(gl, {
+      min: gl.NEAREST,
+      mag: gl.NEAREST,
+      src: [
+        255, 255, 255, 255,
+        192, 192, 192, 255,
+        192, 192, 192, 255,
+        255, 255, 255, 255,
+      ],
+    });
+
+    var objects = [];
+    var numObjects = 100;
+    var list = document.getElementById("list");
+    var listItemTemplate = document.getElementById("list-item-template").text;
+    for (var ii = 0; ii < numObjects; ++ii) {
+      var listElement = document.createElement("div");
+      listElement.innerHTML = listItemTemplate;
+      listElement.className = "list-item";
+      var viewElement = listElement.querySelector(".view");
+      var uniforms = {
+        u_lightWorldPos: lightWorldPosition,
+        u_lightColor: lightColor,
+        u_diffuseMult: chroma.hsv(rand(0, 360), 0.4, 0.8).gl(),
+        u_specular: [1, 1, 1, 1],
+        u_shininess: 50,
+        u_specularFactor: 1,
+        u_diffuse: tex,
+        u_viewInverse: camera,
+        u_world: m4.identity(),
+        u_worldInverseTranspose: m4.identity(),
+        u_worldViewProjection: m4.identity(),
+      };
+      objects.push({
+        ySpeed: rand(0.1, 0.3),
+        zSpeed: rand(0.1, 0.3),
+        uniforms: uniforms,
+        viewElement: viewElement,
+        programInfo: programInfo,
+        bufferInfo: shapes[ii % shapes.length],
+      });
+      list.appendChild(listElement);
+    }
+
+    var showRenderingArea = false;
+
+    function render(time) {
+      time *= 0.001;
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+
+      gl.enable(gl.DEPTH_TEST);
+      gl.disable(gl.SCISSOR_TEST);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      if (showRenderingArea) {
+        gl.enable(gl.SCISSOR_TEST);
+        gl.clearColor(0, 0, 1, 1);
+      }
+
+      var eye = [0, 0, -8];
+      var target = [0, 0, 0];
+      var up = [0, 1, 0];
+
+      m4.lookAt(eye, target, up, camera);
+      m4.inverse(camera, view);
+
+      objects.forEach(function(obj) {
+        var viewElement = obj.viewElement;
+        // get viewElement's position
+        var rect = viewElement.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top  > gl.canvas.clientHeight ||
+            rect.right  < 0 || rect.left > gl.canvas.clientWidth) {
+          return;  // it's off screen
+        }
+
+        var width  = rect.right - rect.left;
+        var height = rect.bottom - rect.top;
+        var left   = rect.left;
+        var bottom = gl.canvas.clientHeight - rect.bottom - 1;
+
+        gl.viewport(left, bottom, width, height);
+
+        if (showRenderingArea) {
+          gl.scissor(left, bottom, width, height);
+          gl.clear(gl.COLOR_BUFFER_BIT);
+        }
+
+        var projection = m4.perspective(30 * Math.PI / 180, width / height, 0.5, 100);
+        m4.multiply(view, projection, viewProjection);
+
+        var uni = obj.uniforms;
+        var world = uni.u_world;
+        m4.identity(world);
+        m4.rotateY(world, time * obj.ySpeed, world);
+        m4.rotateZ(world, time * obj.zSpeed, world);
+        m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
+        m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
+
+        gl.useProgram(obj.programInfo.program);
+        twgl.setBuffersAndAttributes(gl, obj.programInfo, obj.bufferInfo);
+        twgl.setUniforms(obj.programInfo, uni);
+        twgl.drawBufferInfo(gl, gl.TRIANGLES, obj.bufferInfo);
+      });
+    }
+
+    var animated = true;
+    if (animated) {
+        var renderContinuously = function(time) {
+            render(time);
+            requestAnimationFrame(renderContinuously);
+        };
+        requestAnimationFrame(renderContinuously);
+    } else {
+        var requestId;
+        var renderRequest = function(time) {
+            render(time);
+            requestId = undefined;
+        };
+        // If animated
+        var queueRender = function() {
+            if (!requestId) {
+              requestId = requestAnimationFrame(renderRequest);
+            }
+        };
+
+        window.addEventListener('resize', queueRender);
+        window.addEventListener('scroll', queueRender);
+
+        queueRender();
+    }
+
+  </script>
+</html>
+
+
+
