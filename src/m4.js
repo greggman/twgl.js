@@ -1304,7 +1304,7 @@ define(['./v3'], function (v3) {
     "identity": identity,
     "inverse": inverse,
     "lookAt": lookAt,
-    "makeRotationFromQuaternion", makeRotationFromQuaternion
+    "makeRotationFromQuaternion", makeRotationFromQuaternion,
     "multiply": multiply,
     "negate": negate,
     "ortho": ortho,
