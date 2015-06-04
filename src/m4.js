@@ -1249,7 +1249,7 @@ define(['./v3'], function (v3) {
 
     return dst;
   }
-  
+
    /**
     * Creates and returns a 4-by-4 rotation matrix from a parsed quaternion.
     * Code is curtesy of three.js, specificially:
@@ -1261,11 +1261,22 @@ define(['./v3'], function (v3) {
   function makeRotationFromQuaternion(q, dst) {
     dst = dst || new MatType(16);
 
-    var x = q[0], y = q[1], z = q[2], w = q[3];
-    var x2 = x + x, y2 = y + y, z2 = z + z;
-    var xx = x * x2, xy = x * y2, xz = x * z2;
-    var yy = y * y2, yz = y * z2, zz = z * z2;
-    var wx = w * x2, wy = w * y2, wz = w * z2;
+    var x = q[0];
+    var y = q[1];
+    var z = q[2];
+    var w = q[3];
+    var x2 = x + x;
+    var y2 = y + y;
+    var z2 = z + z;
+    var xx = x * x2;
+    var xy = x * y2;
+    var xz = x * z2;
+    var yy = y * y2;
+    var yz = y * z2;
+    var zz = z * z2;
+    var wx = w * x2;
+    var wy = w * y2;
+    var wz = w * z2;
 
     dst[0] = 1 - (yy + zz);
     dst[4] = xy - wz;
@@ -1287,7 +1298,7 @@ define(['./v3'], function (v3) {
     dst[13] = 0;
     dst[14] = 0;
     dst[15] = 1;
-  
+
     return dst;
   }
 
