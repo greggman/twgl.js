@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - no-box-skybox" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/no-box-skybox.png" />
+    <meta property="og:description" content="TWGL.js - no-box-skybox" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - no-box-skybox">
+    <meta name="twitter:url" content="http://twgljs.org/examples/no-box-skybox.html">
+    <meta name="twitter:description" content="TWGL.js - no-box-skybox">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/no-box-skybox.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - no-box-skybox</title>
+    <style>
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: monospace;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+      #ui {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 300px;
+        z-index: 3;
+        padding: 1em;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      input {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - no-box-skybox</div>
+    <div id="ui">
+      <div>fov: <span id="fov"></span></div>
+      <div><input id="fov-input" type="range" min="5" max="170" value="30"></input></div>
+    </div>
+  </body>
+  <script id="vs" type="notjs">
+attribute vec4 a_position;
+varying vec4 v_position;
+void main() {
+  v_position = a_position;
+  gl_Position = a_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+uniform samplerCube u_skybox;
+uniform mat4 u_viewDirectionProjectionInverse;
+
+varying vec4 v_position;
+void main() {
+  vec4 t = u_viewDirectionProjectionInverse * v_position;
+  gl_FragColor = textureCube(
+      u_skybox,
+      normalize(t.xyz / t.w));
+}
+  </script>
+  <script src="../dist/twgl-full.min.js"></script>
+  <script>
+    "use strict";
+    var $ = document.getElementById.bind(document);
+    twgl.setAttributePrefix("a_");
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    var plane = twgl.primitives.createXYQuadBufferInfo(gl);
+
+    // Shared values
+    var camera = m4.identity();
+    var view = m4.identity();
+    var viewProjection = m4.identity();
+    var viewDirection = m4.identity();
+    var viewDirectionProjection = m4.identity();
+    var viewDirectionProjectionInverse = m4.identity();
+
+    var uniforms = {
+      u_skybox: twgl.createTexture(gl, {
+        target: gl.TEXTURE_CUBE_MAP,
+        src: [
+          'images/niagarafalls2s/posx.jpg',
+          'images/niagarafalls2s/negx.jpg',
+          'images/niagarafalls2s/posy.jpg',
+          'images/niagarafalls2s/negy.jpg',
+          'images/niagarafalls2s/posz.jpg',
+          'images/niagarafalls2s/negz.jpg',
+        ],
+      }),
+      u_viewDirectionProjectionInverse: viewDirectionProjectionInverse,
+    };
+
+    var fov = 90;
+    var fovElem = $("fov");
+    var fovNode = document.createTextNode(fov);
+    var fovInput = $("fov-input");
+    fovInput.value = fov;
+    fovElem.appendChild(fovNode);
+
+    fovInput.addEventListener('input', function() {
+      fov = fovInput.value;
+      fovNode.nodeValue = fov;
+    });
+
+    function render(time) {
+      time *= 0.001;
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      var orbitSpeed = time * 0.1;
+      var radius = 20;
+      var projection = m4.perspective(fov * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
+      var target = [0, 0, 0];
+      var up = [0, 1, 0];
+
+      m4.lookAt(eye, target, up, camera);
+      m4.inverse(camera, view);
+      m4.setTranslation(view, [0, 0, 0], viewDirection);
+      m4.multiply(viewDirection, projection, viewDirectionProjection);
+      m4.inverse(viewDirectionProjection, viewDirectionProjectionInverse);
+
+      gl.useProgram(programInfo.program);
+      twgl.setBuffersAndAttributes(gl, programInfo, plane);
+      twgl.setUniforms(programInfo, uniforms);
+      twgl.drawBufferInfo(gl, gl.TRIANGLES, plane);
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+  </script>
+</html>
+
+
