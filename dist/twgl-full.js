@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.20 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.21 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1889,9 +1889,9 @@ define('twgl/twgl',[], function () {
    * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
    * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
    *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
-   * @property {number} [wrap] Texture wrapping for both S and T. Defaults to `gl.REPEAT`.
-   * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT`. If set takes precedence over `wrap`.
-   * @property {number} [wrapT] Texture wrapping for T. Defaults to 'gl.REPEAT`. If set takes precedence over `wrap`.
+   * @property {number} [wrap] Texture wrapping for both S and T. Defaults to `gl.REPEAT` for 2D and `gl.CLAMP_TO_EDGE` for cube
+   * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
+   * @property {number} [wrapT] Texture wrapping for T. Defaults to 'gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
    * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
    * @property {number} [premultiplyAlpha] Whether or not to premultiply alpha. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
@@ -2513,6 +2513,11 @@ define('twgl/twgl',[], function () {
     var width  = options.width  || 1;
     var height = options.height || 1;
     gl.bindTexture(target, tex);
+    if (target === gl.TEXTURE_CUBE_MAP) {
+      // this should have been the default for CUBEMAPS :(
+      gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    }
     var src = options.src;
     if (src) {
       if (typeof src === "function") {
