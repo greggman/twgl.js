@@ -54,7 +54,6 @@
       }
       #content {
           margin: auto;
-          max-width: 600px;
           padding: 2em;
       }
       #b {
@@ -62,34 +61,35 @@
         text-align: center;
       }
       .list-item {
-          margin: 2em;
-          display: -webkit-flex;
-          display: flex;
-          flex-direction: row;
-          -webkit-flex-direction: row;
+          margin: 1em;
+          padding: 1em;
+          border: 1px solid #ccc;
+          display: inline-block;
+          width: 400px;
       }
       .list-item .view {
           width: 200px;
           height: 200px;
-          flex: 0 0 auto;
-          -webkit-flex: 0 0 auto;
+          float: left;
+          margin: 0 1em 1em 0;
       }
       .list-item .description {
           font-family: sans-serif;
-          font-size: large;
-          padding-left: 2em;
-          flex: 1 1 auto;
-          -webkit-flex: 1 1 auto;
+          font-size: small;
       }
 
       @media only screen and (max-width : 600px) {
           #content {
-              width: 100%;
+              padding: 0.5em;
           }
           .list-item {
-              margin: 0.5em;
-              flex-direction: column;
-              -webkit-flex-direction: column;
+              width: 90%;
+              margin: 1em;
+              padding: 0.5em;
+          }
+          .list-item .view {
+              width: 150px;
+              height: 150px;
           }
           .list-item .description {
               padding-left: 0em;
@@ -250,8 +250,6 @@ void main() {
       list.appendChild(listElement);
     }
 
-    var showRenderingArea = false;
-
     function render(time) {
       time *= 0.001;
       twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -261,10 +259,8 @@ void main() {
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      if (showRenderingArea) {
-        gl.enable(gl.SCISSOR_TEST);
-        gl.clearColor(0, 0, 1, 1);
-      }
+      gl.enable(gl.SCISSOR_TEST);
+      gl.clearColor(0.8, 0.8, 0.8, 1);
 
       var eye = [0, 0, -8];
       var target = [0, 0, 0];
@@ -288,11 +284,8 @@ void main() {
         var bottom = gl.canvas.clientHeight - rect.bottom - 1;
 
         gl.viewport(left, bottom, width, height);
-
-        if (showRenderingArea) {
-          gl.scissor(left, bottom, width, height);
-          gl.clear(gl.COLOR_BUFFER_BIT);
-        }
+        gl.scissor(left, bottom, width, height);
+        gl.clear(gl.COLOR_BUFFER_BIT);
 
         var projection = m4.perspective(30 * Math.PI / 180, width / height, 0.5, 100);
         m4.multiply(view, projection, viewProjection);
