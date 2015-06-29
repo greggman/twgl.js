@@ -21,6 +21,7 @@
     "jsdoc.conf.json",
     "index.html",
     "Gruntfile.js",
+    "package.json",
     "CNAME",
     "3rdparty",
     "examples",
