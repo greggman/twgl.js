@@ -227,6 +227,7 @@ module.exports = function(grunt) {
   });
 
   function getHeaderVersion(filename) {
+    var twglVersionRE = / (\d+\.\d+\.\d+) /;
     return twglVersionRE.exec(fs.readFileSync(filename, {encoding: "utf8"}))[1];
   }
 
@@ -243,7 +244,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('versioncheck', function() {
     var fs = require('fs');
-    var twglVersionRE = / (\d+\.\d+\.\d+) /;
     var good = true;
     [
       { filename: 'dist/twgl.js',          fn: getHeaderVersion, },
