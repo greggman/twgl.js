@@ -226,26 +226,42 @@ module.exports = function(grunt) {
     fs.writeFileSync('index.html', content);
   });
 
+  function getHeaderVersion(filename) {
+    return twglVersionRE.exec(fs.readFileSync(filename, {encoding: "utf8"}))[1];
+  }
+
+  function getPackageVersion(filename) {
+    return JSON.parse(fs.readFileSync(filename, {encoding: "utf8"})).version;
+  }
+
+  grunt.registerTask('setpackageversion', function() {
+    var filename = "package.json";
+    var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
+    p.version = bower.version;
+    fs.writeFileSync(filename, JSON.stringify(p, null, 2));
+  });
+
   grunt.registerTask('versioncheck', function() {
     var fs = require('fs');
     var twglVersionRE = / (\d+\.\d+\.\d+) /;
     var good = true;
     [
-      'dist/twgl.js',
-      'dist/twgl-full.js',
-      'dist/twgl.min.js',
-      'dist/twgl-full.min.js',
-    ].forEach(function(filename) {
-      var version = twglVersionRE.exec(fs.readFileSync(filename, {encoding: "utf8"}))[1];
+      { filename: 'dist/twgl.js',          fn: getHeaderVersion, },
+      { filename: 'dist/twgl-full.js',     fn: getHeaderVersion, },
+      { filename: 'dist/twgl.min.js',      fn: getHeaderVersion, },
+      { filename: 'dist/twgl-full.min.js', fn: getHeaderVersion, },
+      { filename: 'package.json',          fn: getPackageVersion, },
+    ].forEach(function(file) {
+      var version = file.fn(file.filename);
       if (version !== bower.version) {
         good = false;
-        grunt.log.error("version mis-match in:", filename, " Expected:", bower.version, " Actual:", version);
+        grunt.log.error("version mis-match in:", file.filename, " Expected:", bower.version, " Actual:", version);
       }
     });
     return good;
   });
 
   grunt.registerTask('docs', ['eslint:examples', 'clean:docs', 'jsdoc', 'makeindex']);
-  grunt.registerTask('default', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
+  grunt.registerTask('default', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify', 'setpackageversion']);
 };
 
