@@ -237,7 +237,7 @@ module.exports = function(grunt) {
   grunt.registerTask('setpackageversion', function() {
     var filename = "package.json";
     var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
-    p.version = bower.version;
+    p.version = bowerInfo.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
   });
 
