@@ -1275,6 +1275,7 @@ define([], function () {
       indices = makeTypedArray(indices, "indices");
       bufferInfo.indices = createBufferFromTypedArray(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
       bufferInfo.numElements = indices.length;
+      bufferInfo.elementType = (indices instanceof Uint32Array) ?  gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
     } else {
       bufferInfo.numElements = getNumElementsFromNonIndexedArrays(arrays);
     }
@@ -1336,7 +1337,7 @@ define([], function () {
     var numElements = count === undefined ? bufferInfo.numElements : count;
     offset = offset === undefined ? 0 : offset;
     if (indices) {
-      gl.drawElements(type, numElements, gl.UNSIGNED_SHORT, offset);
+      gl.drawElements(type, numElements, bufferInfo.elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
     } else {
       gl.drawArrays(type, offset, numElements);
     }
