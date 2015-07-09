@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.24 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.25 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -952,7 +952,7 @@ define('twgl/twgl',[], function () {
       }
       if ((type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) && isArray) {
         var units = [];
-        for (var ii = 0; ii < info.size; ++ii) {
+        for (var ii = 0; ii < uniformInfo.size; ++ii) {
           units.push(textureUnit++);
         }
         return function(bindPoint, units) {
@@ -960,7 +960,7 @@ define('twgl/twgl',[], function () {
             gl.uniform1iv(location, units);
             textures.forEach(function(texture, index) {
               gl.activeTexture(gl.TEXTURE0 + units[index]);
-              gl.bindTexture(bindPoint, tetxure);
+              gl.bindTexture(bindPoint, texture);
             });
           };
         }(getBindPointForSamplerType(gl, type), units);
@@ -1611,7 +1611,7 @@ define('twgl/twgl',[], function () {
       var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
       var numElements = length / numComponents;
       if (length % numComponents > 0) {
-        throw "numComponents " + numComponent + " not correct for length " + length;
+        throw "numComponents " + numComponents + " not correct for length " + length;
       }
       return numElements;
     };
@@ -1726,6 +1726,7 @@ define('twgl/twgl',[], function () {
       indices = makeTypedArray(indices, "indices");
       bufferInfo.indices = createBufferFromTypedArray(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
       bufferInfo.numElements = indices.length;
+      bufferInfo.elementType = (indices instanceof Uint32Array) ?  gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
     } else {
       bufferInfo.numElements = getNumElementsFromNonIndexedArrays(arrays);
     }
@@ -1761,7 +1762,7 @@ define('twgl/twgl',[], function () {
     var buffers = { };
     Object.keys(arrays).forEach(function(key) {
       var type = key === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
-      var array = makeTypedArray(arrays[key], name);
+      var array = makeTypedArray(arrays[key], key);
       buffers[key] = createBufferFromTypedArray(gl, array, type);
     });
 
@@ -1787,7 +1788,7 @@ define('twgl/twgl',[], function () {
     var numElements = count === undefined ? bufferInfo.numElements : count;
     offset = offset === undefined ? 0 : offset;
     if (indices) {
-      gl.drawElements(type, numElements, gl.UNSIGNED_SHORT, offset);
+      gl.drawElements(type, numElements, bufferInfo.elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
     } else {
       gl.drawArrays(type, offset, numElements);
     }
@@ -2296,7 +2297,7 @@ define('twgl/twgl',[], function () {
     setTextureTo1PixelColor(gl, tex, options);
     // Because it's async we need to copy the options.
     options = shallowCopy(options);
-    img = loadImage(options.src, function(err, img) {
+    var img = loadImage(options.src, function(err, img) {
       if (err) {
         callback(err, tex, img);
       } else {
@@ -2395,7 +2396,7 @@ define('twgl/twgl',[], function () {
       case RGBA:
         return 4;
       default:
-        throw "unknown type: " + type;
+        throw "unknown type: " + format;
     }
   }
 
