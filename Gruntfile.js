@@ -79,16 +79,18 @@ var replaceParams = (function() {
   };
 }());
 
-// We need to insert the version we expect to ship
-// because `bower version patch` will inc the version
-// and tag the repo.
-var bower = JSON.parse(fs.readFileSync("bower.json", {encoding: "utf8"}));
-var bowerInfo = {
-  version: semver.inc(bower.version, "patch"),
-}
-license = replaceParams(license, bowerInfo);
+var bower = JSON.parse(fs.readFileSync('bower.json', {encoding: "utf8"}));
 
 module.exports = function(grunt) {
+
+  function setLicense() {
+    var s = replaceParams(license, bower);
+    grunt.config.set('uglify.min.options.banner', s);
+    grunt.config.set('uglify.fullMin.options.banner', s);
+    var start = s + fs.readFileSync('build/js/twgl-start.js', {encoding: "utf8"})
+    grunt.config.set('requirejs.full.options.wrap.start', start);
+    grunt.config.set('requirejs.small.options.wrap.start', start);
+  }
 
   var srcFiles = [
     'src/twgl.js',
@@ -127,7 +129,7 @@ module.exports = function(grunt) {
           out: "dist/twgl-full.js",
           optimize: "none",
           wrap: {
-            start: license + fs.readFileSync('build/js/twgl-start.js', {encoding: "utf8"}),
+            start: '<%= rsStart %>',
             endFile: 'build/js/twgl-end.js',
           },
           paths: {
@@ -143,7 +145,7 @@ module.exports = function(grunt) {
           out: "dist/twgl.js",
           optimize: "none",
           wrap: {
-            start: license + fs.readFileSync('build/js/twgl-start.js', {encoding: "utf8"}),
+            start: '<%= rsStart %>',
             endFile: 'build/js/twgl-end.js',
           },
           paths: {
@@ -157,7 +159,7 @@ module.exports = function(grunt) {
         options: {
           mangle: true,
           //screwIE8: true,
-          banner: license,
+          banner: '<%= license %>',
           compress: true,
         },
         files: {
@@ -168,7 +170,7 @@ module.exports = function(grunt) {
         options: {
           mangle: true,
           //screwIE8: true,
-          banner: license,
+          banner: '<%= license %>',
           compress: true,
         },
         files: {
@@ -235,11 +237,14 @@ module.exports = function(grunt) {
     return JSON.parse(fs.readFileSync(filename, {encoding: "utf8"})).version;
   }
 
-  grunt.registerTask('setpackageversion', function() {
+  grunt.registerTask('bumpversion', function() {
+    bower.version = semver.inc(bower.version, 'patch');
+    fs.writeFileSync("bower.json", JSON.stringify(bower, null, 2));
     var filename = "package.json";
     var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
-    p.version = bowerInfo.version;
+    p.version = bower.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
+    setLicense();
   });
 
   grunt.registerTask('versioncheck', function() {
@@ -262,6 +267,12 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('docs', ['eslint:examples', 'clean:docs', 'jsdoc', 'makeindex']);
-  grunt.registerTask('default', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify', 'setpackageversion']);
+  grunt.registerTask('build', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
+  grunt.registerTask('publish', ['bumpversion', 'build', 'docs']);
+  grunt.registerTask('default', 'build');
+
+  setLicense();
+
+
 };
 
