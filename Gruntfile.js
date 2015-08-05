@@ -220,9 +220,10 @@ module.exports = function(grunt) {
     var template = fs.readFileSync('build/templates/index.template', {encoding: 'utf8'});
     var content = replaceParams(template, {
       content: html,
-      license: license,
+      license: replaceParams(license, bower),
       srcFileName: 'README.md',
       title: 'TWGL.js, a tiny WebGL helper library',
+      version: bower.version,
     });
     content = content.replace(/href="http\:\/\/twgljs.org\//g, 'href="/');
     fs.writeFileSync('index.html', content);
