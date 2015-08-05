@@ -915,9 +915,14 @@ define('twgl/twgl',[], function () {
           gl.uniform4iv(location, v);
         };
       }
-      if (type === gl.BOOL) {
+      if (type === gl.BOOL && isArray) {
         return function(v) {
           gl.uniform1iv(location, v);
+        };
+      }
+      if (type === gl.BOOL) {
+        return function(v) {
+          gl.uniform1i(location, v);
         };
       }
       if (type === gl.BOOL_VEC2) {
