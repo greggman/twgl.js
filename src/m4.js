@@ -1270,6 +1270,7 @@ define(['./v3'], function (v3) {
     "rotateX": rotateX,
     "rotateY": rotateY,
     "rotateZ": rotateZ,
+    "rotateAxis": axisRotate,
     "rotationX": rotationX,
     "rotationY": rotationY,
     "rotationZ": rotationZ,

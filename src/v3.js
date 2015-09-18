@@ -75,12 +75,16 @@ define([], function () {
   }
 
   /**
-   * Creates a vec3
+   * Creates a vec3; may be called with x, y, z to set initial values.
    * @return {Vec3} the created vector
    * @memberOf module:twgl/v3
    */
-  function create() {
-    return new VecType(3);
+  function create(x, y, z) {
+    var dst = new VecType(3);
+    if (x) dst[0] = x;
+    if (y) dst[1] = y;
+    if (z) dst[2] = z;
+    return dst;
   }
 
   /**
