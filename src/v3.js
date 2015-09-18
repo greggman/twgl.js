@@ -81,9 +81,15 @@ define([], function () {
    */
   function create(x, y, z) {
     var dst = new VecType(3);
-    if (x) dst[0] = x;
-    if (y) dst[1] = y;
-    if (z) dst[2] = z;
+    if (x) {
+      dst[0] = x;
+    }
+    if (y) {
+      dst[1] = y;
+    }
+    if (z) {
+      dst[2] = z;
+    }
     return dst;
   }
 
