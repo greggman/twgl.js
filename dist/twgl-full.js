@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.26 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.27 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3056,12 +3056,22 @@ define('twgl/v3',[], function () {
   }
 
   /**
-   * Creates a vec3
+   * Creates a vec3; may be called with x, y, z to set initial values.
    * @return {Vec3} the created vector
    * @memberOf module:twgl/v3
    */
-  function create() {
-    return new VecType(3);
+  function create(x, y, z) {
+    var dst = new VecType(3);
+    if (x) {
+      dst[0] = x;
+    }
+    if (y) {
+      dst[1] = y;
+    }
+    if (z) {
+      dst[2] = z;
+    }
+    return dst;
   }
 
   /**
@@ -4599,6 +4609,7 @@ define('twgl/m4',['./v3'], function (v3) {
     "rotateX": rotateX,
     "rotateY": rotateY,
     "rotateZ": rotateZ,
+    "rotateAxis": axisRotate,
     "rotationX": rotationX,
     "rotationY": rotationY,
     "rotationZ": rotationZ,
