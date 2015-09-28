@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.27 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.28 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2209,14 +2209,18 @@ define('twgl/twgl',[], function () {
     return dst;
   }
 
+  function noop() {
+  }
+
   /**
    * Loads an image
    * @param {string} url url to image
-   * @param {function(err, img)} a callback that's passed an error and the image. The error will be non-null
+   * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
    *     if there was an error
    * @return {HTMLImageElement} the image being loaded.
    */
   function loadImage(url, callback) {
+    callback = callback || noop;
     var img = new Image();
     img.onerror = function() {
       var msg = "couldn't load image: " + url;
@@ -2298,6 +2302,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function loadTextureFromUrl(gl, tex, options, callback) {
+    callback = callback || noop;
     options = options || defaultTextureOptions;
     setTextureTo1PixelColor(gl, tex, options);
     // Because it's async we need to copy the options.
@@ -2319,11 +2324,12 @@ define('twgl/twgl',[], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @param {module:twgl.CubemapReadyCallback} callback A function to be called when all the images have finished loading. err will
+   * @param {module:twgl.CubemapReadyCallback} [callback] A function to be called when all the images have finished loading. err will
    *    be non null if there was an error.
    * @memberOf module:twgl
    */
   function loadCubemapFromUrls(gl, tex, options, callback) {
+    callback = callback || noop;
     var urls = options.src;
     if (urls.length !== 6) {
       throw "there must be 6 urls for a cubemap";
@@ -2372,9 +2378,7 @@ define('twgl/twgl',[], function () {
         }
 
         if (numToLoad === 0) {
-          if (callback) {
-            callback(errors.length ? errors : undefined, imgs, tex);
-          }
+          callback(errors.length ? errors : undefined, imgs, tex);
         }
       };
     }
@@ -2513,6 +2517,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function createTexture(gl, options, callback) {
+    callback = callback || noop;
     options = options || defaultTextureOptions;
     var tex = gl.createTexture();
     var target = options.target || gl.TEXTURE_2D;
@@ -2688,17 +2693,16 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function createTextures(gl, textureOptions, callback) {
+    callback = callback || noop;
     var numDownloading = 0;
     var errors = [];
     var textures = {};
 
     function callCallbackIfReady() {
       if (numDownloading === 0) {
-        if (callback) {
-          setTimeout(function() {
-            callback(errors.length ? errors : undefined, textureOptions);
-          }, 0);
-        }
+        setTimeout(function() {
+          callback(errors.length ? errors : undefined, textureOptions);
+        }, 0);
       }
     }
 
