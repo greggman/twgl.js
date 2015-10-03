@@ -1,5 +1,6 @@
 "use strict";
 
+var path   = require('path');
 var fs     = require('fs');
 var semver = require('semver');
 
@@ -79,6 +80,15 @@ var replaceParams = (function() {
   };
 }());
 
+function hackForCommonJSAndBrowserify(text, sourceMapText) {
+  var dirname = path.dirname(this.outPath);
+  if (!fs.existsSync(dirname)) {
+    fs.mkdirSync(dirname);
+  }
+  text = text.replace(/require/g, 'notrequirebecasebrowserifymessesup');
+  fs.writeFileSync(this.outPath, text, {encoding: "utf-8"});
+}
+
 var bower = JSON.parse(fs.readFileSync('bower.json', {encoding: "utf8"}));
 
 module.exports = function(grunt) {
@@ -126,7 +136,8 @@ module.exports = function(grunt) {
           baseUrl: "./",
           name: "node_modules/almond/almond.js",
           include: "build/js/twgl-includer-full",
-          out: "dist/twgl-full.js",
+          outPath: "dist/twgl-full.js",  // used by hackForCommonJSAndBrowserify
+          out: hackForCommonJSAndBrowserify,
           optimize: "none",
           wrap: {
             start: '<%= rsStart %>',
@@ -134,7 +145,7 @@ module.exports = function(grunt) {
           },
           paths: {
             twgl: 'src',
-          }
+          },
         },
       },
       small: {
@@ -142,7 +153,8 @@ module.exports = function(grunt) {
           baseUrl: "./",
           name: "node_modules/almond/almond.js",
           include: "build/js/twgl-includer",
-          out: "dist/twgl.js",
+          outPath: "dist/twgl.js",
+          out: hackForCommonJSAndBrowserify,
           optimize: "none",
           wrap: {
             start: '<%= rsStart %>',
@@ -150,7 +162,7 @@ module.exports = function(grunt) {
           },
           paths: {
             twgl: 'src',
-          }
+          },
         },
       },
     },
@@ -200,12 +212,20 @@ module.exports = function(grunt) {
         },
       },
     },
+    browserify: {
+      example: {
+        files: {
+          'examples/js/browserified-example.js': ['examples/js/browserify-example.js'],
+        },
+      },
+    },
     clean: {
       docs: [ 'docs' ],
       dist: [ 'dist' ],
     },
   });
 
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -269,7 +289,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('docs', ['eslint:examples', 'clean:docs', 'jsdoc', 'makeindex']);
   grunt.registerTask('build', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
-  grunt.registerTask('publish', ['bumpversion', 'build', 'docs']);
+  grunt.registerTask('publish', ['bumpversion', 'build', 'browserify', 'docs']);
   grunt.registerTask('default', 'build');
 
   setLicense();
