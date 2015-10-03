@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.28 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.29 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -11,6 +11,8 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define([], factory);
+    } if (typeof exports !== 'undefined') {
+        exports = factory();
     } else {
         root.twgl = factory();
     }
@@ -26,7 +28,7 @@
 /*jslint sloppy: true */
 /*global setTimeout: false */
 
-var requirejs, require, define;
+var notrequirebecasebrowserifymessesupjs, notrequirebecasebrowserifymessesup, define;
 (function (undef) {
     var main, req, makeMap, handlers,
         defined = {},
@@ -59,7 +61,7 @@ var requirejs, require, define;
         //Adjust any relative paths.
         if (name && name.charAt(0) === ".") {
             //If have a base name, try to normalize against it,
-            //otherwise, assume it is a top-level require that will
+            //otherwise, assume it is a top-level notrequirebecasebrowserifymessesup that will
             //be relative to baseUrl in the end.
             if (baseName) {
                 name = name.split('/');
@@ -163,12 +165,12 @@ var requirejs, require, define;
 
     function makeRequire(relName, forceSync) {
         return function () {
-            //A version of a require function that passes a moduleName
+            //A version of a notrequirebecasebrowserifymessesup function that passes a moduleName
             //value for items that may need to
             //look up paths relative to the moduleName
             var args = aps.call(arguments, 0);
 
-            //If first arg is not require('string'), and there is only
+            //If first arg is not notrequirebecasebrowserifymessesup('string'), and there is only
             //one arg, it is the array form without a callback. Insert
             //a null so that the following concat is correct.
             if (typeof args[0] !== 'string' && args.length === 1) {
@@ -267,7 +269,7 @@ var requirejs, require, define;
     }
 
     handlers = {
-        require: function (name) {
+        notrequirebecasebrowserifymessesup: function (name) {
             return makeRequire(name);
         },
         exports: function (name) {
@@ -301,15 +303,15 @@ var requirejs, require, define;
         if (callbackType === 'undefined' || callbackType === 'function') {
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
-            //Default to [require, exports, module] if no deps
-            deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
+            //Default to [notrequirebecasebrowserifymessesup, exports, module] if no deps
+            deps = !deps.length && callback.length ? ['notrequirebecasebrowserifymessesup', 'exports', 'module'] : deps;
             for (i = 0; i < deps.length; i += 1) {
                 map = makeMap(deps[i], relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
-                if (depName === "require") {
-                    args[i] = handlers.require(name);
+                if (depName === "notrequirebecasebrowserifymessesup") {
+                    args[i] = handlers.notrequirebecasebrowserifymessesup(name);
                 } else if (depName === "exports") {
                     //CommonJS module spec 1.1
                     args[i] = handlers.exports(name);
@@ -350,7 +352,7 @@ var requirejs, require, define;
         }
     };
 
-    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
+    notrequirebecasebrowserifymessesupjs = notrequirebecasebrowserifymessesup = req = function (deps, callback, relName, forceSync, alt) {
         if (typeof deps === "string") {
             if (handlers[deps]) {
                 //callback in this case is really relName
@@ -382,7 +384,7 @@ var requirejs, require, define;
             }
         }
 
-        //Support require(['a'])
+        //Support notrequirebecasebrowserifymessesup(['a'])
         callback = callback || function () {};
 
         //If relName is a function, it is an errback handler,
@@ -399,7 +401,7 @@ var requirejs, require, define;
             //Using a non-zero value because of concern for what old browsers
             //do, and latest browsers "upgrade" to 4 if lower value is used:
             //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
-            //If want a value immediately, use require('id') instead -- something
+            //If want a value immediately, use notrequirebecasebrowserifymessesup('id') instead -- something
             //that works in almond on the global level, but not guaranteed and
             //unlikely to work in other AMD implementations.
             setTimeout(function () {
@@ -421,7 +423,7 @@ var requirejs, require, define;
     /**
      * Expose module registry for debugging and tooling
      */
-    requirejs._defined = defined;
+    notrequirebecasebrowserifymessesupjs._defined = defined;
 
     define = function (name, deps, callback) {
         if (typeof name !== 'string') {
@@ -6562,7 +6564,7 @@ define('main', [
     return twgl;
 })
 
-require(['main'], function(main) {
+notrequirebecasebrowserifymessesup(['main'], function(main) {
   return main;
 }, undefined, true);   // forceSync = true
 
@@ -6570,5 +6572,5 @@ require(['main'], function(main) {
 ;
 define("build/js/twgl-includer-full", function(){});
 
-    return require('main');
+    return notrequirebecasebrowserifymessesup('main');
 }));
