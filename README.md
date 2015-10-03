@@ -397,6 +397,10 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [amd](http://twgljs.org/examples/amd.html)
 *   [amd-compiled](http://twgljs.org/examples/amd-compiled.html)
 
+## CommonJS / Browserify support
+
+*   [browserify](http://twgljs.org/examples/browserify.html)
+
 ## Other Features
 
 *   Includes some optional 3d math functions (full version)
