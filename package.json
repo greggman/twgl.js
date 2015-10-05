@@ -38,7 +38,5 @@
     "marked": "^0.3.3",
     "semver": "^4.3.4"
   },
-  "dependencies": {
-    "requirejs": "^2.1.20"
-  }
+  "dependencies": {}
 }
