@@ -181,6 +181,7 @@ twgl.setUniforms(programInfo, uniforms);
 ```
 
 WebGL
+
 ```javascript
 // At Init time
 var u_lightWorldPos = [1, 8, -10];
@@ -434,14 +435,21 @@ See the examples. Otherwise there's a few different versions
 
 *   from bower
 
-	```bash
-	bower install twgl.js
-	```
+    ```bash
+    bower install twgl.js
+    ```
+
+*   from npm
+
+    ```bash
+    npm install twgl.js
+    ```
 
 *   from git
-	```bash
-	git clone https://github.com/greggman/twgl.js.git
-	```
+
+    ```bash
+    git clone https://github.com/greggman/twgl.js.git
+    ```
 
 ## Rationale and other chit-chat
 
