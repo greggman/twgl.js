@@ -2036,6 +2036,7 @@ define([], function () {
   function setTextureFromArray(gl, tex, src, options) {
     options = options || defaultTextureOptions;
     var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
     var width = options.width;
     var height = options.height;
     var format = options.format || gl.RGBA;
