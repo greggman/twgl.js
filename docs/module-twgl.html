@@ -5585,7 +5585,8 @@ If width or height is not passed in uses <code>options.width</code> and//or <cod
 
             
 
-            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.
+  This is often the same options you passed in when you created the texture.</p></td>
         </tr>
 
 	
@@ -5868,7 +5869,8 @@ guess the size. See <a href="module-twgl.html#TextureOptions"><code>TextureOptio
 
             
 
-            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.
+  This is often the same options you passed in when you created the texture.</p></td>
         </tr>
 
 	
@@ -6087,7 +6089,8 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
 
             
 
-            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.
+  This is often the same options you passed in when you created the texture.</p></td>
         </tr>
 
 	
@@ -6245,7 +6248,8 @@ attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
 
             
 
-            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.
+  This is often the same options you passed in when you created the texture.</p></td>
         </tr>
 
 	
@@ -6432,7 +6436,8 @@ the default texture color is used which can be set by calling <code>setDefaultTe
 
             
 
-            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.
+  This is often the same options you passed in when you created the texture.</p></td>
         </tr>
 
 	
@@ -7416,6 +7421,36 @@ for the attribute.</p>
             
 
             <td class="description last"><p>the buffer that contains the data for this attribute</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>drawType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW</p></td>
         </tr>
 
 	
@@ -8629,7 +8664,7 @@ For example if you want colors in a <code>Uint8Array</code> you might have a <co
 
             
 
-            <td class="description last"><p>name of attribute this array maps to. Defaults to same name as array + defaultAttribPrefix.</p></td>
+            <td class="description last"><p>name of attribute this array maps to. Defaults to same name as array prefixed by the defaultAttribPrefix.</p></td>
         </tr>
 
 	
@@ -9681,8 +9716,7 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 </li>
 </ul>
 <p>If <code>number[]</code> will be converted to <code>type</code>.</p>
-<p>If target is a <code>gl.TEXTURE_CUBE_MAP</code></p>
-<p>If <code>src</code> is a function it will be called with these a <code>WebGLRenderingContext</code> and these options.
+<p>If <code>src</code> is a function it will be called with a <code>WebGLRenderingContext</code> and these options.
 Whatever it returns is subject to these rules. So it can return a string url, an <code>HTMLElement</code>
 an array etc...</p>
 <p>If <code>src</code> is undefined then an empty texture will be created of size <code>width</code> by <code>height</code>.</p></td>
