@@ -128,11 +128,6 @@ void main() {
     var context = new AudioContext();
     var analyser = context.createAnalyser();
 
-    var clickElem = document.querySelector("#click");
-    clickElem.addEventListener('click', startMusic);
-    clickElem.addEventListener('touchstart', startMusic);
-
-    var m4 = twgl.m4;
     twgl.setAttributePrefix("a_");
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
@@ -176,7 +171,6 @@ void main() {
     }
     requestAnimationFrame(render);
 
-
     function startMusic(e) {
       if (musicStarted) {
         return;
@@ -196,6 +190,9 @@ void main() {
       analyser.connect(context.destination);
     }
 
+    var clickElem = document.querySelector("#click");
+    clickElem.addEventListener('click', startMusic);
+    clickElem.addEventListener('touchstart', startMusic);
   </script>
 </html>
 
