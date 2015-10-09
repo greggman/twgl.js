@@ -385,6 +385,7 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [textures](http://twgljs.org/examples/textures.html)
 *   [primitives](http://twgljs.org/examples/primitives.html)
 *   [2d-lines](http://twgljs.org/examples/2d-lines.html)
+*   [dynamic-buffers](http://twgljs.org/examples/dynamic-buffers.html)
 *   [zoom-around](http://twgljs.org/examples/zoom-around.html)
 *   [text](http://twgljs.org/examples/text.html)
 *   [kaleidoscope](http://twgljs.org/examples/kaleidoscope.html)
