@@ -884,14 +884,18 @@ define([], function () {
     return false;
   }
 
+  function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
+    gl.bindBuffer(type, buffer);
+    gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
+  }
+
   function createBufferFromTypedArray(gl, array, type, drawType) {
     if (array instanceof WebGLBuffer) {
       return array;
     }
     type = type || gl.ARRAY_BUFFER;
     var buffer = gl.createBuffer();
-    gl.bindBuffer(type, buffer);
-    gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
+    setBufferFromTypedArray(gl, type, buffer, array, drawType);
     return buffer;
   }
 
@@ -991,6 +995,7 @@ define([], function () {
    * @property {number} [offset] offset into buffer in bytes. Default = 0
    * @property {number} [stride] the stride in bytes per element. Default = 0
    * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
+   * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
    * @memberOf module:twgl
    */
 
@@ -1008,7 +1013,7 @@ define([], function () {
    * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
    * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
    * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
-   * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array + defaultAttribPrefix.
+   * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the defaultAttribPrefix.
    * @property {string} [name] synonym for `attrib`.
    * @property {string} [attribName] synonym for `attrib`.
    * @memberOf module:twgl
@@ -1136,10 +1141,56 @@ define([], function () {
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
           stride:        array.stride || 0,
           offset:        array.offset || 0,
+          drawType:      array.drawType,
         };
       }
     });
     return attribs;
+  }
+
+  /**
+   * Sets the contents of a buffer attached to an attribInfo
+   *
+   * This is helper function to dynamically update a buffer.
+   *
+   * Let's say you make a bufferInfo
+   *
+   *     var arrays = {
+   *        position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
+   *        texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
+   *        normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
+   *        indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
+   *     };
+   *     var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+   *
+   *  And you want to dynamically upate the positions. You could do this
+   *
+   *     // assuming arrays.position has already been updated with new data.
+   *     twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);
+   *
+   * @param {WebGLRenderingContext} gl
+   * @param {AttribInfo} attribInfo The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix
+   *   the name of the attribute will include the prefix.
+   * @param {ArraySpec} array Note: it is arguably ineffient to pass in anything but a typed array because anything
+   *    else will have to be converted to a typed array before it can be used by WebGL. During init time that
+   *    inefficiency is usually not important but if you're updating data dynamically best to be efficient.
+   * @param {number} [offset] an optional offset into the buffer. This is only an offset into the WebGL buffer
+   *    not the array. To pass in an offset into the array itself use a typed array and create an `ArrayBufferView`
+   *    for the portion of the array you want to use.
+   *
+   *        var someArray = new Float32Array(1000); // an array with 1000 floats
+   *        var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray
+   *
+   *    Now you can pass `someSubArray` into setAttribInfoBufferFromArray`
+   */
+  function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
+    array = makeTypedArray(array);
+    if (offset) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
+    } else {
+      setBufferFromTypedArray(gl, gl.ARRAY_BUFFER, attribInfo.buffer, array, attribInfo.drawType);
+    }
   }
 
   /**
@@ -1495,12 +1546,9 @@ define([], function () {
    *
    * If `number[]` will be converted to `type`.
    *
-   * If target is a `gl.TEXTURE_CUBE_MAP`
-   *
-   * If `src` is a function it will be called with these a `WebGLRenderingContext` and these options.
+   * If `src` is a function it will be called with a `WebGLRenderingContext` and these options.
    * Whatever it returns is subject to these rules. So it can return a string url, an `HTMLElement`
    * an array etc...
-   *
    *
    * If `src` is undefined then an empty texture will be created of size `width` by `height`.
    *
@@ -1553,6 +1601,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
    * @memberOf module:twgl
    */
   function setTextureParameters(gl, tex, options) {
@@ -1606,6 +1655,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
    * @param {number} [width] width of texture
    * @param {number} [height] height of texture
    * @memberOf module:twgl
@@ -1629,6 +1679,7 @@ define([], function () {
    * Gets an array of cubemap face enums
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
    * @return {number[]} cubemap face enums
    */
   function getCubeFaceOrder(gl, options) {
@@ -1682,6 +1733,7 @@ define([], function () {
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {HTMLElement} element a canvas, img, or video element.
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
    * @memberOf module:twgl
    * @kind function
    */
@@ -1789,6 +1841,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
    * @memberOf module:twgl
    */
   function setTextureTo1PixelColor(gl, tex, options) {
@@ -1977,6 +2030,7 @@ define([], function () {
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
    * @memberOf module:twgl
    */
   function setTextureFromArray(gl, tex, src, options) {
@@ -2500,11 +2554,14 @@ define([], function () {
     "createBuffersFromArrays": createBuffersFromArrays,
     "createBufferInfoFromArrays": createBufferInfoFromArrays,
     "createAttributeSetters": createAttributeSetters,
+    "setAttribInfoBufferFromArray": setAttribInfoBufferFromArray,
+
     "createProgram": createProgram,
     "createProgramFromScripts": createProgramFromScripts,
     "createProgramFromSources": createProgramFromSources,
     "createProgramInfo": createProgramInfo,
     "createUniformSetters": createUniformSetters,
+
     "drawBufferInfo": drawBufferInfo,
     "drawObjectList": drawObjectList,
     "getWebGLContext": getWebGLContext,
