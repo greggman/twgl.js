@@ -143,9 +143,6 @@ void main() {
       height: { data: heightArray, numComponents: 1, drawType: gl.DYNAMIC_DRAW },
     };
     var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
-    var uniforms = {
-      u_color: [1, 0, 0, 1],
-    };
 
     function render() {
       twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -159,12 +156,9 @@ void main() {
       gl.useProgram(programInfo.program);
 
       analyser.getByteFrequencyData(heightArray);
-
       twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.a_height, heightArray);
 
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-      twgl.setUniforms(programInfo, uniforms);
-
       twgl.drawBufferInfo(gl, gl.LINE_STRIP, bufferInfo);
 
       requestAnimationFrame(render);
