@@ -171,7 +171,9 @@ void main() {
     }
     requestAnimationFrame(render);
 
-    function startMusic(e) {
+    var clickElem = document.querySelector("#click");
+
+    function startMusic() {
       if (musicStarted) {
         return;
       }
@@ -190,7 +192,6 @@ void main() {
       analyser.connect(context.destination);
     }
 
-    var clickElem = document.querySelector("#click");
     clickElem.addEventListener('click', startMusic);
     clickElem.addEventListener('touchstart', startMusic);
   </script>
