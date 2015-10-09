@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.32 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.33 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2489,6 +2489,7 @@ define('twgl/twgl',[], function () {
   function setTextureFromArray(gl, tex, src, options) {
     options = options || defaultTextureOptions;
     var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
     var width = options.width;
     var height = options.height;
     var format = options.format || gl.RGBA;
