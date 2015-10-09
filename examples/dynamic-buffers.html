@@ -58,7 +58,7 @@
           position: absolute;
           left: 0;
           top: 0;
-          z-index: 2,
+          z-index: 2;
           background-color: rgba(0,0,0,0.8);
           width: 100%;
           height: 100%;
@@ -75,7 +75,7 @@
           min-height: auto;
       }
       #click>div {
-          font-size: 48pt;
+          font-size: 24pt;
           color: white;
           background-color: blue;
           border-radius: 1em;
@@ -90,7 +90,7 @@
        <div>music: <a href="http://youtu.be/eUX39M_0MJ8">DOCTOR VOX - Level Up<a/></div>
     </div>
     <div id="click">
-      <div>click to play</div>
+      <div>tap to play</div>
     </div>
   </body>
   <script id="vs" type="notjs">
@@ -125,7 +125,7 @@ void main() {
     "use strict";
 
     var musicStarted = false;
-    var context = new AudioContext();
+    var context = new (window.AudioContext || window.webkitAudioContext)();
     var analyser = context.createAnalyser();
 
     twgl.setAttributePrefix("a_");
@@ -176,7 +176,7 @@ void main() {
         return;
       }
       musicStarted = true;
-      e.target.style.display = "none";
+      clickElem.style.display = "none";
 
       var audio = new Audio();
       audio.src = 'sounds/DOCTOR VOX - Level Up.mp3';
