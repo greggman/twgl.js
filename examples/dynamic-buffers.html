@@ -130,11 +130,16 @@ void main() {
   gl_FragColor = v_color;
 }
   </script>
+  <script src="../3rdparty/audiostreamsource.js"></script>
   <script src="../dist/twgl-full.min.js"></script>
   <script>
     "use strict";
 
-    var shittyBrowser = window.AudioContext === undefined;
+    // There's really no good way to tell which browsers fail.
+    // Right now Safari doesn't expose AudioContext (it's still webkitAudioContext)
+    // so my hope is whenever they get around to actually supporting the 3+ year old
+    // standard that things will actually work.
+    var shittyBrowser = window.AudioContext === undefined && /iPhone|iPad|iPod/.test(navigator.userAgent);
     var musicStarted = false;
     var context = new (window.AudioContext || window.webkitAudioContext)();
     var analyser = context.createAnalyser();
@@ -185,58 +190,25 @@ void main() {
       loadElem.style.display = "none";
     }
 
-    var audio;
-    var audioBuffer;
-    var source;
+    var streamSource = audioStreamSource.create({
+      context: context,
+      loop: true,
+      src: 'sounds/DOCTOR VOX - Level Up.mp3',
+      lofiSrc: 'sounds/DOCTOR VOX - Level Up - for shitty browsers.mp3',  // for shitty browsers like Safari on iOS
+    }, showClick);
+
     var connected;
-
-    if (!shittyBrowser) {
-      audio = new Audio();
-      audio.addEventListener('canplay', showClick);
-      audio.src = 'sounds/DOCTOR VOX - Level Up.mp3';
-      audio.loop = true;
-      audio.load();
-    } else {
-      // shitty browsers (eg, Safari) can't stream into the WebAudio API
-      var req = new XMLHttpRequest();
-      req.open("GET", 'sounds/DOCTOR VOX - Level Up - for shitty browsers.mp3', true);
-      req.responseType = "arraybuffer";
-      req.addEventListener('load', function() {
-        context.decodeAudioData(req.response, function onSuccess(decodedBuffer) {
-          audioBuffer = decodedBuffer;
-          showClick();
-        });
-      });
-      req.send();
-    }
-
     function connectSource(source) {
-      if (!connected) {
-        connected = true;
         source.connect(analyser);
         analyser.connect(context.destination);
-      }
     }
 
     function startMusic() {
-      if (musicStarted) {
-        return;
-      }
-      musicStarted = true;
       clickElem.style.display = "none";
 
-      if (!shittyBrowser) {
-        audio.addEventListener('playing', function() {
-          connectSource(context.createMediaElementSource(audio));
-        });
-        audio.play();
-      } else {
-        source = context.createBufferSource();
-        source.buffer = audioBuffer;
-        source.loop = true;
-        source.start(0);
-        connectSource(source);
-      }
+      streamSource.play();
+      streamSource.source.connect(analyser);
+      analyser.connect(context.destination);
     }
 
     clickElem.addEventListener('click', startMusic);
