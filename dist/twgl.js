@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.33 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.34 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1275,6 +1275,33 @@ define('twgl/twgl',[], function () {
    */
 
   /**
+   * Creates a ProgramInfo from an existing program.
+   *
+   * A ProgramInfo contains
+   *
+   *     programInfo = {
+   *        program: WebGLProgram,
+   *        uniformSetters: object of setters as returned from createUniformSetters,
+   *        attribSetters: object of setters as returned from createAttribSetters,
+   *     }
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext
+   *        to use.
+   * @param {WebGLProgram} program an existing WebGLProgram.
+   * @return {module:twgl.ProgramInfo} The created ProgramInfo.
+   * @memberOf module:twgl
+   */
+  function createProgramInfoFromProgram(gl, program) {
+    var uniformSetters = createUniformSetters(gl, program);
+    var attribSetters = createAttributeSetters(gl, program);
+    return {
+      program: program,
+      uniformSetters: uniformSetters,
+      attribSetters: attribSetters,
+    };
+  }
+
+  /**
    * Creates a ProgramInfo from 2 sources.
    *
    * A ProgramInfo contains
@@ -1294,7 +1321,7 @@ define('twgl/twgl',[], function () {
    * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
-   * @return {module:twgl.ProgramInfo?} The created program.
+   * @return {module:twgl.ProgramInfo?} The created ProgramInfo.
    * @memberOf module:twgl
    */
   function createProgramInfo(
@@ -1307,13 +1334,7 @@ define('twgl/twgl',[], function () {
     if (!program) {
       return null;
     }
-    var uniformSetters = createUniformSetters(gl, program);
-    var attribSetters = createAttributeSetters(gl, program);
-    return {
-      program: program,
-      uniformSetters: uniformSetters,
-      attribSetters: attribSetters,
-    };
+    return createProgramInfoFromProgram(gl, program);
   }
 
   /**
@@ -1356,6 +1377,13 @@ define('twgl/twgl',[], function () {
     return name === "indices";
   }
 
+  /**
+   * Get the GL type for a typedArray
+   * @param {ArrayBuffer|ArrayBufferView} typedArray a typedArray
+   * @return {number} the GL type for array. For example pass in an `Int8Array` and `gl.BYTE` will
+   *   be returned. Pass in a `Uint32Array` and `gl.UNSIGNED_INT` will be returned
+   * @memberOf module:twgl
+   */
   function getGLTypeForTypedArray(typedArray) {
     if (typedArray instanceof Int8Array)    { return BYTE; }           // eslint-disable-line
     if (typedArray instanceof Uint8Array)   { return UNSIGNED_BYTE; }  // eslint-disable-line
@@ -1367,15 +1395,21 @@ define('twgl/twgl',[], function () {
     throw "unsupported typed array type";
   }
 
-  function getTypedArrayTypeForGLType(gl, type) {
+  /**
+   * Get the typed array constructor for a given GL type
+   * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
+   * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
+   * @memberOf module:twgl
+   */
+  function getTypedArrayTypeForGLType(type) {
     switch (type) {
-      case gl.BYTE:           return Int8Array;     // eslint-disable-line
-      case gl.UNSIGNED_BYTE:  return Uint8Array;    // eslint-disable-line
-      case gl.SHORT:          return Int16Array;    // eslint-disable-line
-      case gl.UNSIGNED_SHORT: return Uint16Array;   // eslint-disable-line
-      case gl.INT:            return Int32Array;    // eslint-disable-line
-      case gl.UNSIGNED_INT:   return Uint32Array;   // eslint-disable-line
-      case gl.FLOAT:          return Float32Array;  // eslint-disable-line
+      case BYTE:           return Int8Array;     // eslint-disable-line
+      case UNSIGNED_BYTE:  return Uint8Array;    // eslint-disable-line
+      case SHORT:          return Int16Array;    // eslint-disable-line
+      case UNSIGNED_SHORT: return Uint16Array;   // eslint-disable-line
+      case INT:            return Int32Array;    // eslint-disable-line
+      case UNSIGNED_INT:   return Uint32Array;   // eslint-disable-line
+      case FLOAT:          return Float32Array;  // eslint-disable-line
       default:
         throw "unknown gl type";
     }
@@ -2447,6 +2481,7 @@ define('twgl/twgl',[], function () {
    * Gets the number of compontents for a given image format.
    * @param {number} format the format.
    * @return {number} the number of components for the format.
+   * @memberOf module:twgl
    */
   function getNumComponentsForFormat(format) {
     switch (format) {
@@ -2520,7 +2555,7 @@ define('twgl/twgl',[], function () {
       }
     }
     if (!isArrayBuffer(src)) {
-      var Type = getTypedArrayTypeForGLType(gl, type);
+      var Type = getTypedArrayTypeForGLType(type);
       src = new Type(src);
     }
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
@@ -2900,6 +2935,8 @@ define('twgl/twgl',[], function () {
     var framebufferInfo = {
       framebuffer: fb,
       attachments: [],
+      width: width,
+      height: height,
     };
     attachments.forEach(function(attachmentOptions) {
       var attachment = attachmentOptions.attachment;
@@ -2984,6 +3021,8 @@ define('twgl/twgl',[], function () {
   function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
     width  = width  || gl.drawingBufferWidth;
     height = height || gl.drawingBufferHeight;
+    framebufferInfo.width = width;
+    framebufferInfo.height = height;
     attachments = attachments || defaultAttachments;
     attachments.forEach(function(attachmentOptions, ndx) {
       var attachment = framebufferInfo.attachments[ndx];
@@ -2999,7 +3038,36 @@ define('twgl/twgl',[], function () {
     });
   }
 
+  /**
+   * Binds a framebuffer
+   *
+   * This function pretty much soley exists because I spent hours
+   * trying to figure out why something I wrote wasn't working only
+   * to realize I forget to set the viewport dimensions.
+   * My hope is this function will fix that.
+   *
+   * It is effectively the same as
+   *
+   *     gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
+   *     gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebuffer}.
+   *   If not passed will bind the canvas.
+   * @param {number} [target] The target. If not passed `gl.FRAMEBUFFER` will be used.
+   * @memberOf module:twgl
+   */
 
+  function bindFramebufferInfo(gl, framebufferInfo, target) {
+    target = target || gl.FRAMEBUFFER;
+    if (framebufferInfo) {
+      gl.bindFramebuffer(target, framebufferInfo.framebuffer);
+      gl.viewport(0, 0, framebufferInfo.width, framebufferInfo.height);
+    } else {
+      gl.bindFramebuffer(target, null);
+      gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    }
+  }
 
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
@@ -3014,6 +3082,7 @@ define('twgl/twgl',[], function () {
     "createProgramFromScripts": createProgramFromScripts,
     "createProgramFromSources": createProgramFromSources,
     "createProgramInfo": createProgramInfo,
+    "createProgramInfoFromProgram": createProgramInfoFromProgram,
     "createUniformSetters": createUniformSetters,
 
     "drawBufferInfo": drawBufferInfo,
@@ -3036,8 +3105,13 @@ define('twgl/twgl',[], function () {
     "createTextures": createTextures,
     "resizeTexture": resizeTexture,
 
+    "bindFramebufferInfo": bindFramebufferInfo,
     "createFramebufferInfo": createFramebufferInfo,
     "resizeFramebufferInfo": resizeFramebufferInfo,
+
+    "getNumComponentsForFormat": getNumComponentsForFormat,
+    "getGLTypeForTypedArray": getGLTypeForTypedArray,
+    "getTypedArrayTypeForGLType": getTypedArrayTypeForGLType,
   };
 
 });

@@ -128,6 +128,202 @@
         <dl>
             
 <dt>
+    <h4 class="name" id="bindFramebufferInfo"><span class="type-signature"> </span>bindFramebufferInfo<span class="signature">(gl, <span class="optional">framebufferInfo</span>, <span class="optional">target</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Binds a framebuffer</p>
+<p>This function pretty much soley exists because I spent hours
+trying to figure out why something I wrote wasn't working only
+to realize I forget to set the viewport dimensions.
+My hope is this function will fix that.</p>
+<p>It is effectively the same as</p>
+<pre><code>gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
+gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>framebufferInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#FramebufferInfo">FramebufferInfo</a></span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a framebufferInfo as returned from <code>createFramebuffer</code>.
+  If not passed will bind the canvas.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The target. If not passed <code>gl.FRAMEBUFFER</code> will be used.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createAttribsFromArrays"><span class="type-signature"> </span>createAttribsFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#AttribInfo">AttribInfo</a>>}</span></h4>
     
     
@@ -2356,7 +2552,172 @@ program and calls useProgram.</p>
     
             
 <div class="param-desc">
-    <p>The created program.</p>
+    <p>The created ProgramInfo.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="module-twgl.html#ProgramInfo">ProgramInfo</a></span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createProgramInfoFromProgram"><span class="type-signature"> </span>createProgramInfoFromProgram<span class="signature">(gl, program)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#ProgramInfo">ProgramInfo</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a ProgramInfo from an existing program.</p>
+<p>A ProgramInfo contains</p>
+<pre><code>programInfo = {
+   program: WebGLProgram,
+   uniformSetters: object of setters as returned from createUniformSetters,
+   attribSetters: object of setters as returned from createAttribSetters,
+}</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The WebGLRenderingContext
+       to use.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>program</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLProgram</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an existing WebGLProgram.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The created ProgramInfo.</p>
 </div>
 
 
@@ -3354,6 +3715,417 @@ data you don't have to remember to update your draw call.</p>
     
     
     
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getGLTypeForTypedArray"><span class="type-signature"> </span>getGLTypeForTypedArray<span class="signature">(typedArray)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the GL type for a typedArray</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>typedArray</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer|</span>
+
+<span class="param-type">ArrayBufferView</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a typedArray</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the GL type for array. For example pass in an <code>Int8Array</code> and <code>gl.BYTE</code> will
+  be returned. Pass in a <code>Uint32Array</code> and <code>gl.UNSIGNED_INT</code> will be returned</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getNumComponentsForFormat"><span class="type-signature"> </span>getNumComponentsForFormat<span class="signature">(format)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the number of compontents for a given image format.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the format.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the number of components for the format.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getTypedArrayTypeForGLType"><span class="type-signature"> </span>getTypedArrayTypeForGLType<span class="signature">(type)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the typed array constructor for a given GL type</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the GL type. (eg: <code>gl.UNSIGNED_INT</code>)</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the constructor for a the corresponding typed array. (eg. <code>Uint32Array</code>).</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">function</span>
+
+	</dd>
+</dl>
+
+
+        
     
     
 </dd>
