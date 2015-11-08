@@ -283,12 +283,10 @@ void main() {
 
       var aspect;
       if (useFramebuffer) {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferInfo.framebuffer);
-        gl.viewport(0, 0, fbSize, fbSize);
+        twgl.bindFramebufferInfo(gl, framebufferInfo);
         aspect = 1;
       } else {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        twgl.bindFramebufferInfo(gl, null);
         aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
       }
 
@@ -350,8 +348,7 @@ void main() {
       }
 
       if (useFramebuffer) {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        twgl.bindFramebufferInfo(gl, null);
 
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
