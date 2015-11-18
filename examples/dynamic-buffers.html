@@ -199,10 +199,10 @@ void main() {
     }
 
     streamSource.on('error', function(e) {
-      console.error("audio error:", e);
+      console.error("audio error:", e);  // eslint-disable-line
     });
 
-    streamSource.on('newSource', function(source) {
+    streamSource.on('newSource', function(/* source */) {
       loadElem.style.display = "none";
       if (!isMobile) {
         startMusic();
