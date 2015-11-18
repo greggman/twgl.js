@@ -37,7 +37,13 @@ define([], function () {
    * @module twgl
    */
 
-  var error = window.console && window.console.error ? window.console.error.bind(window.console) : function() { };
+  var error =
+      (    window.console
+        && window.console.error
+        && typeof window.console.error === "function"
+      )
+      ? window.console.error.bind(window.console)
+      : function() { };
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
   var defaultAttribPrefix = "";
