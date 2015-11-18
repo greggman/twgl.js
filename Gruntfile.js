@@ -287,9 +287,27 @@ module.exports = function(grunt) {
     return good;
   });
 
-  grunt.registerTask('docs', ['eslint:examples', 'clean:docs', 'jsdoc', 'makeindex']);
-  grunt.registerTask('build', ['eslint:lib', 'clean:dist', 'requirejs', /*'concat',*/ 'uglify']);
-  grunt.registerTask('publish', ['bumpversion', 'build', 'browserify', 'docs']);
+  grunt.registerTask('docs', [
+      'eslint:examples',
+      'clean:docs',
+      'jsdoc',
+      'makeindex',
+  ]);
+  grunt.registerTask('build', [
+      'eslint:lib',
+      'clean:dist',
+      'requirejs',
+      /*'concat',*/
+      'uglify',
+  ]);
+  grunt.registerTask('publish', [
+      'eslint:lib',
+      'eslint:examples',
+      'bumpversion',
+      'build',
+      'browserify',
+      'docs',
+  ]);
   grunt.registerTask('default', 'build');
 
   setLicense();
