@@ -186,6 +186,10 @@ void main() {
     var clickElem = document.querySelector("#click");
     var loadElem = document.querySelector("#load");
 
+    var streamSource = audioStreamSource.create({
+      context: context,
+      loop: true,
+    });
 
     function startMusic() {
       clickElem.style.display = "none";
@@ -193,11 +197,6 @@ void main() {
       streamSource.getSource().connect(analyser);
       analyser.connect(context.destination);
     }
-
-    var streamSource = audioStreamSource.create({
-      context: context,
-      loop: true,
-    });
 
     streamSource.on('error', function(e) {
       console.error("audio error:", e);
