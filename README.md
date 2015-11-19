@@ -60,8 +60,9 @@ At its core there's really only a few main functions
 *   `twgl.setBuffersAndAttributes` binds buffers and sets attributes
 *   `twgl.setUniforms` sets the uniforms
 *   `twgl.createTextures` creates textures of various sorts
+*   `twgl.createFramebufferInfo` creates a framebuffer and attachments.
 
-There's a few extra helpers and lower-level functions if you need them but those 5 functions are the core of TWGL.
+There's a few extra helpers and lower-level functions if you need them but those 6 functions are the core of TWGL.
 
 Compare the TWGL vs WebGL code for a point lit cube.
 
