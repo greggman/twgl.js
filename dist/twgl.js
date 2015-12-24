@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.36 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.37 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1369,13 +1369,24 @@ define('twgl/twgl',[], function () {
     gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
   }
 
-  function createBufferFromTypedArray(gl, array, type, drawType) {
-    if (array instanceof WebGLBuffer) {
-      return array;
+  /**
+   * Given typed array creates a WebGLBuffer and copies the typed array
+   * into it.
+   *
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {ArrayBuffer|ArrayBufferView|WebGLBuffer} typedArray the typed array. Note: If a WebGLBuffer is passed in it will just be returned. No action will be taken
+   * @param {number} [type] the GL bind type for the buffer. Default = `gl.ARRAY_BUFFER`.
+   * @param {number} [drawType] the GL draw type for the buffer. Default = 'gl.STATIC_DRAW`.
+   * @return {WebGLBuffer} the created WebGLBuffer
+   * @memberOf module:twgl
+   */
+  function createBufferFromTypedArray(gl, typedArray, type, drawType) {
+    if (typedArray instanceof WebGLBuffer) {
+      return typedArray;
     }
     type = type || gl.ARRAY_BUFFER;
     var buffer = gl.createBuffer();
-    setBufferFromTypedArray(gl, type, buffer, array, drawType);
+    setBufferFromTypedArray(gl, type, buffer, typedArray, drawType);
     return buffer;
   }
 
@@ -1833,7 +1844,39 @@ define('twgl/twgl',[], function () {
   }
 
   /**
-   * Creates buffers from typed arrays
+   * Creates a buffer from an array, typed array, or array spec
+   *
+   * Given something like this
+   *
+   *     [1, 2, 3],
+   *
+   * or
+   *
+   *     new Uint16Array([1,2,3]);
+   *
+   * or
+   *
+   *     {
+   *        data: [1, 2, 3],
+   *        type: Uint8Array,
+   *     }
+   *
+   * returns a WebGLBuffer that constains the given data.
+   *
+   * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
+   * @param {module:twgl.ArraySpec} array an array, typed array, or array spec.
+   * @param {string} arrayName name of array. Used to guess the type if type can not be dervied other wise.
+   * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
+   * @memberOf module:twgl
+   */
+  function createBufferFromArray(gl, array, arrayName) {
+    var type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+    var typedArray = makeTypedArray(array, arrayName);
+    return createBufferFromTypedArray(gl, typedArray, type);
+  }
+
+  /**
+   * Creates buffers from arrays or typed arrays
    *
    * Given something like this
    *
@@ -1859,9 +1902,7 @@ define('twgl/twgl',[], function () {
   function createBuffersFromArrays(gl, arrays) {
     var buffers = { };
     Object.keys(arrays).forEach(function(key) {
-      var type = key === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
-      var array = makeTypedArray(arrays[key], key);
-      buffers[key] = createBufferFromTypedArray(gl, array, type);
+      buffers[key] = createBufferFromArray(gl, arrays[key], key);
     });
 
     return buffers;
@@ -3080,6 +3121,8 @@ define('twgl/twgl',[], function () {
   return {
     "createAttribsFromArrays": createAttribsFromArrays,
     "createBuffersFromArrays": createBuffersFromArrays,
+    "createBufferFromArray": createBufferFromArray,
+    "createBufferFromTypedArray": createBufferFromTypedArray,
     "createBufferInfoFromArrays": createBufferInfoFromArrays,
     "createAttributeSetters": createAttributeSetters,
     "setAttribInfoBufferFromArray": setAttribInfoBufferFromArray,
