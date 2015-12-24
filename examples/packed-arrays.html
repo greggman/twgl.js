@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - packed-arrays" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/packed-arrays.png" />
+    <meta property="og:description" content="TWGL.js - packed-arrays" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - packed-arrays">
+    <meta name="twitter:url" content="http://twgljs.org/examples/packed-arrays.html">
+    <meta name="twitter:description" content="TWGL.js - packed-arrays">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/packed-arrays.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - packed-arrays</title>
+    <style>
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: monospace;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - packed-arrays</div>
+  </body>
+  <script id="vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+uniform vec3 u_lightWorldPos;
+uniform mat4 u_world;
+uniform mat4 u_viewInverse;
+uniform mat4 u_worldInverseTranspose;
+
+attribute vec4 a_position;
+attribute vec3 a_normal;
+attribute vec2 a_texcoord;
+
+varying vec4 v_position;
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+
+void main() {
+  v_texCoord = a_texcoord;
+  v_position = (u_worldViewProjection * a_position);
+  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
+  v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
+  gl_Position = v_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec4 v_position;
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+
+uniform vec4 u_lightColor;
+uniform vec4 u_diffuseMult;
+uniform sampler2D u_diffuse;
+uniform vec4 u_specular;
+uniform float u_shininess;
+uniform float u_specularFactor;
+
+vec4 lit(float l ,float h, float m) {
+  return vec4(1.0,
+              abs(l),//max(l, 0.0),
+              (l > 0.0) ? pow(max(0.0, h), m) : 0.0,
+              1.0);
+}
+
+void main() {
+  vec4 diffuseColor = texture2D(u_diffuse, v_texCoord) * u_diffuseMult;
+  vec3 a_normal = normalize(v_normal);
+  vec3 surfaceToLight = normalize(v_surfaceToLight);
+  vec3 surfaceToView = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLight + surfaceToView);
+  vec4 litR = lit(dot(a_normal, surfaceToLight),
+                    dot(a_normal, halfVector), u_shininess);
+  vec4 outColor = vec4((
+  u_lightColor * (diffuseColor * litR.y +
+                u_specular * litR.z * u_specularFactor)).rgb,
+      diffuseColor.a);
+  gl_FragColor = outColor;
+}
+  </script>
+  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script>
+    "use strict";
+    twgl.setAttributePrefix("a_");
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+// ------------------------------------------------------------------
+// This is all the code needed to automatically pack unpacked arrays
+// It's not included in TWGL because packing unpacked arrays seems
+// like overkill. Do you really gain much? If you're really going
+// for perf it seems like you'd pack offline
+
+    function isArrayBuffer(a) {
+      return a && a.buffer && a.buffer instanceof ArrayBuffer;
+    }
+
+    function getGLTypeForArray(array, arrayName) {
+      if (isArrayBuffer(array)) {
+        return twgl.getGLTypeForTypedArray(array);
+      }
+
+      if (isArrayBuffer(array.data)) {
+        return twgl.getGLTypeForTypedArray(array.data);
+      }
+
+      var Type = array.type;
+      if (!Type) {
+        if (arrayName === "indices") {
+          Type = Uint16Array;
+        } else {
+          Type = Float32Array;
+        }
+      }
+      return twgl.getGLTypeForTypedArray(new Type(0));
+    }
+
+    function getNormalizationForGLType(gl, type) {
+      switch (type) {
+        case gl.BYTE:
+        case gl.UNSIGNED_BYTE:
+          return true;
+        default:
+          return false;
+      }
+    }
+
+    function getNumBytesForGLType(type) {
+      switch (type) {
+        case gl.BYTE:           return 1;  // eslint-disable-line
+        case gl.UNSIGNED_BYTE:  return 1;  // eslint-disable-line
+        case gl.SHORT:          return 2;  // eslint-disable-line
+        case gl.UNSIGNED_SHORT: return 2;  // eslint-disable-line
+        case gl.INT:            return 4;  // eslint-disable-line
+        case gl.UNSIGNED_INT:   return 4;  // eslint-disable-line
+        case gl.FLOAT:          return 4;  // eslint-disable-line
+        default:
+          throw "unknown gl type";
+      }
+    }
+
+    var defaultAttribPrefix = "a_";
+    function createPackedBufferInfoFromArrays(gl, arrays) {
+      // compute size of array needed and offsets
+      var offset      = 0;
+      var maxElements = 0;
+
+      var attribs = {};
+
+      Object.keys(arrays).forEach(function(arrayName) {
+        if (arrayName === "indices") {
+          return;
+        }
+        var array = arrays[arrayName];
+        var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
+        var glType = getGLTypeForArray(array, arrayName);
+        var attrib = {
+          numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
+          type:          glType,
+          normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForGLType(gl, glType),
+          offset:        offset,
+        };
+        attribs[attribName] = attrib;
+        var sizeInBytes = attrib.numComponents * getNumBytesForGLType(glType);
+        // should we handle padding? For example RGB8 is 3 bytes and will need padding
+        offset += sizeInBytes;
+        // should we check that all lengths are the same?
+        var length = array.length || array.data.length;
+        var numElements = length / attrib.numComponents;
+        maxElements = Math.max(maxElements, numElements);
+      });
+
+      var stride = offset;
+      var arrayBuffer = new ArrayBuffer(stride * maxElements);
+      var buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+      Object.keys(arrays).forEach(function(arrayName) {
+        if (arrayName === "indices") {
+          return;
+        }
+        var array = arrays[arrayName];
+        var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
+        var attrib = attribs[attribName];
+        attrib.buffer = buffer;
+        attrib.stride = stride;
+        var data = array.length ? array : array.data;
+        var length = data.length;
+        var numComponents = attrib.numComponents;
+        var numElements = length / numComponents;
+        var Type = twgl.getTypedArrayTypeForGLType(attrib.type);
+        var view = new Type(arrayBuffer, attrib.offset);
+        var localStride = stride / getNumBytesForGLType(attrib.type);
+        var offset = 0;
+        var index = 0;
+        for (var elem = 0; elem < numElements; ++elem) {
+          for (var component = 0; component < numComponents; ++component) {
+            view[offset + component] = data[index++];
+          }
+          offset += localStride;
+        }
+      });
+
+      gl.bufferData(gl.ARRAY_BUFFER, arrayBuffer, gl.STATIC_DRAW);
+
+      var bufferInfo = {
+        attribs: attribs,
+      };
+      var indices = arrays.indices;
+      if (indices) {
+        bufferInfo.indices = twgl.createBufferFromArray(gl, indices, "indices");
+        bufferInfo.numElements = indices.length || indices.data.length;
+        bufferInfo.elementType = (indices instanceof Uint32Array) ?  gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
+      } else {
+        bufferInfo.numElements = numElements;
+      }
+
+      return bufferInfo;
+    }
+
+// end of packing code
+// -------------------------------------------------------
+
+    var shapes = [
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createCubeVertices(2)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createSphereVertices(1, 24, 12)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createPlaneVertices(2, 2)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createTruncatedConeVertices(1, 0, 2, 24, 1)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createCresentVertices(1, 1, 0.5, 0.1, 24)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createCylinderVertices(1, 2, 24, 2)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createDiscVertices(1, 24)),
+      createPackedBufferInfoFromArrays(gl, twgl.primitives.createTorusVertices(1, 0.4, 24, 12)),
+    ];
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    // Shared values
+    var lightWorldPosition = [1, 8, -10];
+    var lightColor = [1, 1, 1, 1];
+    var camera = m4.identity();
+    var view = m4.identity();
+    var viewProjection = m4.identity();
+
+    var tex = twgl.createTexture(gl, {
+      min: gl.NEAREST,
+      mag: gl.NEAREST,
+      src: [
+        255, 255, 255, 255,
+        192, 192, 192, 255,
+        192, 192, 192, 255,
+        255, 255, 255, 255,
+      ],
+    });
+
+    var objects = [];
+    var drawObjects = [];
+    var numObjects = 100;
+    var baseHue = rand(0, 360);
+    for (var ii = 0; ii < numObjects; ++ii) {
+      var uniforms = {
+        u_lightWorldPos: lightWorldPosition,
+        u_lightColor: lightColor,
+        u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
+        u_specular: [1, 1, 1, 1],
+        u_shininess: 50,
+        u_specularFactor: 1,
+        u_diffuse: tex,
+        u_viewInverse: camera,
+        u_world: m4.identity(),
+        u_worldInverseTranspose: m4.identity(),
+        u_worldViewProjection: m4.identity(),
+      };
+      drawObjects.push({
+        programInfo: programInfo,
+        bufferInfo: shapes[ii % shapes.length],
+        uniforms: uniforms,
+      });
+      objects.push({
+        translation: [rand(-10, 10), rand(-10, 10), rand(-10, 10)],
+        ySpeed: rand(0.1, 0.3),
+        zSpeed: rand(0.1, 0.3),
+        uniforms: uniforms,
+      });
+    }
+
+    function render(time) {
+      time *= 0.001;
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      gl.enable(gl.DEPTH_TEST);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      var eye = [1, 4, -20];
+      var target = [0, 0, 0];
+      var up = [0, 1, 0];
+
+      m4.lookAt(eye, target, up, camera);
+      m4.inverse(camera, view);
+      m4.multiply(view, projection, viewProjection);
+
+      objects.forEach(function(obj) {
+        var uni = obj.uniforms;
+        var world = uni.u_world;
+        m4.identity(world);
+        m4.rotateY(world, time * obj.ySpeed, world);
+        m4.rotateZ(world, time * obj.zSpeed, world);
+        m4.translate(world, obj.translation, world);
+        m4.rotateX(world, time, world);
+        m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
+        m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
+      });
+
+      twgl.drawObjectList(gl, drawObjects);
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+  </script>
+</html>
+
+
+
