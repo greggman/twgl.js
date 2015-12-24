@@ -852,6 +852,437 @@ array.push([4, 5, 6]);
         
             
 <dt>
+    <h4 class="name" id="createBufferFromArray"><span class="type-signature"> </span>createBufferFromArray<span class="signature">({WebGLRenderingContext), array, arrayName)</span><span class="type-signature"> &rarr; {WebGLBuffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a buffer from an array, typed array, or array spec</p>
+<p>Given something like this</p>
+<pre><code>[1, 2, 3],</code></pre>
+<p>or</p>
+<pre><code>new Uint16Array([1,2,3]);</code></pre>
+<p>or</p>
+<pre><code>{
+   data: [1, 2, 3],
+   type: Uint8Array,
+}</code></pre>
+<p>returns a WebGLBuffer that constains the given data.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>{WebGLRenderingContext)</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>gl A WebGLRenderingContext.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#ArraySpec">ArraySpec</a></span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array, typed array, or array spec.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>arrayName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of array. Used to guess the type if type can not be dervied other wise.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>a WebGLBuffer containing the data in array.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">WebGLBuffer</span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createBufferFromTypedArray"><span class="type-signature"> </span>createBufferFromTypedArray<span class="signature">(gl, typedArray, <span class="optional">type</span>, <span class="optional">drawType</span>)</span><span class="type-signature"> &rarr; {WebGLBuffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Given typed array creates a WebGLBuffer and copies the typed array
+into it.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>typedArray</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer|</span>
+
+<span class="param-type">ArrayBufferView|</span>
+
+<span class="param-type">WebGLBuffer</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the typed array. Note: If a WebGLBuffer is passed in it will just be returned. No action will be taken</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the GL bind type for the buffer. Default = <code>gl.ARRAY_BUFFER</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>drawType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the GL draw type for the buffer. Default = 'gl.STATIC_DRAW`.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the created WebGLBuffer</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">WebGLBuffer</span>
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="createBufferInfoFromArrays"><span class="type-signature"> </span>createBufferInfoFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#BufferInfo">BufferInfo</a>}</span></h4>
     
     
@@ -1088,7 +1519,7 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
     
     
     <div class="description">
-        <p>Creates buffers from typed arrays</p>
+        <p>Creates buffers from arrays or typed arrays</p>
 <p>Given something like this</p>
 <pre><code>var arrays = {
    positions: [1, 2, 3],
