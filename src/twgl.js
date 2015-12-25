@@ -1233,11 +1233,12 @@ define([], function () {
    *        var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray
    *
    *    Now you can pass `someSubArray` into setAttribInfoBufferFromArray`
+   * @memberOf module:twgl
    */
   function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
     array = makeTypedArray(array);
     if (offset) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, attribInfo.buffer);
       gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
     } else {
       setBufferFromTypedArray(gl, gl.ARRAY_BUFFER, attribInfo.buffer, array, attribInfo.drawType);
