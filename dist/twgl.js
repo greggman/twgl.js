@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.37 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.38 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1686,11 +1686,12 @@ define('twgl/twgl',[], function () {
    *        var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray
    *
    *    Now you can pass `someSubArray` into setAttribInfoBufferFromArray`
+   * @memberOf module:twgl
    */
   function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
     array = makeTypedArray(array);
     if (offset) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, attribInfo.buffer);
       gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
     } else {
       setBufferFromTypedArray(gl, gl.ARRAY_BUFFER, attribInfo.buffer, array, attribInfo.drawType);
