@@ -5891,6 +5891,242 @@ for the texture. Texture parameters will be set accordingly</p>
         
             
 <dt>
+    <h4 class="name" id="setAttribInfoBufferFromArray"><span class="type-signature"> </span>setAttribInfoBufferFromArray<span class="signature">(gl, attribInfo, array, <span class="optional">offset</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Sets the contents of a buffer attached to an attribInfo</p>
+<p>This is helper function to dynamically update a buffer.</p>
+<p>Let's say you make a bufferInfo</p>
+<pre><code>var arrays = {
+   position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
+   texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
+   normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
+   indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
+};
+var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
+<p> And you want to dynamically upate the positions. You could do this</p>
+<pre><code>// assuming arrays.position has already been updated with new data.
+twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);</code></pre>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attribInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">AttribInfo</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix
+  the name of the attribute will include the prefix.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArraySpec</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Note: it is arguably ineffient to pass in anything but a typed array because anything
+   else will have to be converted to a typed array before it can be used by WebGL. During init time that
+   inefficiency is usually not important but if you're updating data dynamically best to be efficient.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>an optional offset into the buffer. This is only an offset into the WebGL buffer
+   not the array. To pass in an offset into the array itself use a typed array and create an <code>ArrayBufferView</code>
+   for the portion of the array you want to use.</p>
+<pre><code>   var someArray = new Float32Array(1000); // an array with 1000 floats
+   var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray</code></pre>
+<p>   Now you can pass <code>someSubArray</code> into setAttribInfoBufferFromArray`</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="setAttributePrefix"><span class="type-signature"> </span>setAttributePrefix<span class="signature">(prefix)</span><span class="type-signature"></span></h4>
     
     
