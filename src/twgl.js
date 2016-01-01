@@ -2384,28 +2384,28 @@ define([], function () {
     var numDownloading = 0;
     var errors = [];
     var textures = {};
+    var images = {};
 
     function callCallbackIfReady() {
       if (numDownloading === 0) {
         setTimeout(function() {
-          callback(errors.length ? errors : undefined, textureOptions);
+          callback(errors.length ? errors : undefined, textures, images);
         }, 0);
       }
-    }
-
-    function finishedDownloading(err) {
-      --numDownloading;
-      if (err) {
-        errors.push(err);
-      }
-      callCallbackIfReady();
     }
 
     Object.keys(textureOptions).forEach(function(name) {
       var options = textureOptions[name];
       var onLoadFn = undefined;
       if (isAsyncSrc(options.src)) {
-        onLoadFn = finishedDownloading;
+        onLoadFn = function(err, tex, img) {
+          images[name] = img;
+          --numDownloading;
+          if (err) {
+            errors.push(err);
+          }
+          callCallbackIfReady();
+        };
         ++numDownloading;
       }
       textures[name] = createTexture(gl, options, onLoadFn);
