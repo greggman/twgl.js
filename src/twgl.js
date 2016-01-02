@@ -1579,7 +1579,7 @@ define([], function () {
    *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
    * @property {number} [wrap] Texture wrapping for both S and T. Defaults to `gl.REPEAT` for 2D and `gl.CLAMP_TO_EDGE` for cube
    * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
-   * @property {number} [wrapT] Texture wrapping for T. Defaults to 'gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
+   * @property {number} [wrapT] Texture wrapping for T. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
    * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
    * @property {number} [premultiplyAlpha] Whether or not to premultiply alpha. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
@@ -1591,11 +1591,11 @@ define([], function () {
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
    *     the current setting for specific textures.
    * @property {(number[]|ArrayBuffer)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
-   *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in [1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0.
-   *    Defaults to [0.5, 0.75, 1, 1]. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
+   *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in `[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0`.
+   *    Defaults to `[0.5, 0.75, 1, 1]`. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
    * @property {boolean} [auto] If not `false` then texture working filtering is set automatically for non-power of 2 images and
    *    mips are generated for power of 2 images.
-   * @property {number[]} [cubeFaceOrder] The order that cube faces are pull out of an img or set of images. The default is
+   * @property {number[]} [cubeFaceOrder] The order that cube faces are pulled out of an img or set of images. The default is
    *
    *     [gl.TEXTURE_CUBE_MAP_POSITIVE_X,
    *      gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -1621,7 +1621,7 @@ define([], function () {
    *    where `numComponents` is derived from `format`. If `target` is `gl.TEXTURE_CUBE_MAP` then `numElements` is divided
    *    by 6. Then
    *
-   *    *   If neither `width` nor `height` are specified and `sqrt(numElements)` is an integer width and height
+   *    *   If neither `width` nor `height` are specified and `sqrt(numElements)` is an integer then width and height
    *        are set to `sqrt(numElements)`. Otherwise `width = numElements` and `height = 1`.
    *
    *    *   If only one of `width` or `height` is specified then the other equals `numElements / specifiedDimension`.
@@ -1946,11 +1946,23 @@ define([], function () {
   }
 
   /**
+   * The src image(s) used to create a texture.
+   *
+   * When you call {@link module:twgl.createTexture} or {@link module:twgl.createTextures}
+   * you can pass in urls for images to load into the textures. If it's a single url
+   * then this will be a single HTMLImageElement. If it's an array of urls used for a cubemap
+   * this will be a corresponding array of images for the cubemap.
+   *
+   * @typedef {HTMLImageElement|HTMLImageElement[]} TextureSrc
+   * @memberOf module:twgl
+   */
+
+  /**
    * A callback for when an image finished downloading and been uploaded into a texture
    * @callback TextureReadyCallback
    * @param {*} err If truthy there was an error.
-   * @param {WebGLTexture} tex the texture.
-   * @param {HTMLImageElement} img the image element.
+   * @param {WebGLTexture} texture the texture.
+   * @param {module:twgl.TextureSrc} souce image(s) used to as the src for the texture
    * @memberOf module:twgl
    */
 
@@ -1958,8 +1970,8 @@ define([], function () {
    * A callback for when all images have finished downloading and been uploaded into their respective textures
    * @callback TexturesReadyCallback
    * @param {*} err If truthy there was an error.
-   * @param {WebGLTexture} tex the texture.
-   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+   * @param {Object.<string, WebGLTexture>} textures the created textures by name. Same as returned by {@link module:twgl.createTextures}.
+   * @param {Object.<string, module:twgl.TextureSrc>} sources the image(s) used for the texture by name.
    * @memberOf module:twgl
    */
 
@@ -2376,7 +2388,7 @@ define([], function () {
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
    * @param {module:twgl.TexturesReadyCallback} [callback] A callback called when all textures have been downloaded.
-   * @return {Object.<string,WebGLTexture>) the created textures by name
+   * @return {Object.<string,WebGLTexture>} the created textures by name
    * @memberOf module:twgl
    */
   function createTextures(gl, textureOptions, callback) {
