@@ -3383,7 +3383,7 @@ program and calls useProgram.</p>
         
             
 <dt>
-    <h4 class="name" id="createTextures"><span class="type-signature"> </span>createTextures<span class="signature">(gl, options, <span class="optional">callback</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createTextures"><span class="type-signature"> </span>createTextures<span class="signature">(gl, options, <span class="optional">callback</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLTexture>}</span></h4>
     
     
 </dt>
@@ -3630,10 +3630,21 @@ program and calls useProgram.</p>
     
             
 <div class="param-desc">
-    <p>{Object.<string,WebGLTexture>) the created textures by name</p>
+    <p>the created textures by name</p>
 </div>
 
 
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, WebGLTexture></span>
+
+	</dd>
+</dl>
 
 
         
@@ -10866,7 +10877,7 @@ are appropriate for its needs. This lets you pass the same options to all functi
 
             
 
-            <td class="description last"><p>Texture wrapping for T. Defaults to 'gl.REPEAT<code>and</code>gl.CLAMP_TO_EDGE<code>for cube. If set takes precedence over</code>wrap`.</p></td>
+            <td class="description last"><p>Texture wrapping for T. Defaults to <code>gl.REPEAT</code> and <code>gl.CLAMP_TO_EDGE</code> for cube. If set takes precedence over <code>wrap</code>.</p></td>
         </tr>
 
 	
@@ -11023,8 +11034,8 @@ are appropriate for its needs. This lets you pass the same options to all functi
             
 
             <td class="description last"><p>color used as temporary 1x1 pixel color for textures loaded async when src is a string.
-   If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in [1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0.
-   Defaults to [0.5, 0.75, 1, 1]. See <a href="module-twgl.html#setDefaultTextureColor"><code>setDefaultTextureColor</code></a>. If <code>false</code> texture is set. Can be used to re-load a texture</p></td>
+   If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in <code>[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0</code>.
+   Defaults to <code>[0.5, 0.75, 1, 1]</code>. See <a href="module-twgl.html#setDefaultTextureColor"><code>setDefaultTextureColor</code></a>. If <code>false</code> texture is set. Can be used to re-load a texture</p></td>
         </tr>
 
 	
@@ -11085,7 +11096,7 @@ are appropriate for its needs. This lets you pass the same options to all functi
 
             
 
-            <td class="description last"><p>The order that cube faces are pull out of an img or set of images. The default is</p>
+            <td class="description last"><p>The order that cube faces are pulled out of an img or set of images. The default is</p>
 <pre><code>[gl.TEXTURE_CUBE_MAP_POSITIVE_X,
  gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
  gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
@@ -11148,7 +11159,7 @@ are appropriate for its needs. This lets you pass the same options to all functi
    where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided
    by 6. Then</p>
 <ul>
-<li><p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer width and height
+<li><p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer then width and height
 are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
 </li>
 <li><p>If only one of <code>width</code> or <code>height</code> is specified then the other equals <code>numElements / specifiedDimension</code>.</p>
@@ -11202,7 +11213,7 @@ an array etc...</p>
             
                 
 <dt>
-    <h4 class="name" id="TextureReadyCallback"><span class="type-signature"></span>TextureReadyCallback<span class="signature">(err, tex, img)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TextureReadyCallback"><span class="type-signature"></span>TextureReadyCallback<span class="signature">(err, texture, souce)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -11266,7 +11277,7 @@ an array etc...</p>
 
         <tr>
             
-                <td class="name"><code>tex</code></td>
+                <td class="name"><code>texture</code></td>
             
 
             <td class="type">
@@ -11288,13 +11299,13 @@ an array etc...</p>
 
         <tr>
             
-                <td class="name"><code>img</code></td>
+                <td class="name"><code>souce</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">HTMLImageElement</span>
+<span class="param-type"><a href="module-twgl.html#TextureSrc">TextureSrc</a></span>
 
             
             </td>
@@ -11303,7 +11314,7 @@ an array etc...</p>
 
             
 
-            <td class="description last"><p>the image element.</p></td>
+            <td class="description last"><p>image(s) used to as the src for the texture</p></td>
         </tr>
 
 	
@@ -11359,8 +11370,74 @@ an array etc...</p>
 
             
                 
+<dt class="name" id="TextureSrc">
+    <h4>TextureSrc</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The src image(s) used to create a texture.</p>
+<p>When you call <a href="module-twgl.html#createTexture"><code>createTexture</code></a> or <a href="module-twgl.html#createTextures"><code>createTextures</code></a>
+you can pass in urls for images to load into the textures. If it's a single url
+then this will be a single HTMLImageElement. If it's an array of urls used for a cubemap
+this will be a corresponding array of images for the cubemap.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">HTMLImageElement|</span>
+
+<span class="param-type">Array.&lt;HTMLImageElement></span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
 <dt>
-    <h4 class="name" id="TexturesReadyCallback"><span class="type-signature"></span>TexturesReadyCallback<span class="signature">(err, tex, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TexturesReadyCallback"><span class="type-signature"></span>TexturesReadyCallback<span class="signature">(err, textures, sources)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -11424,13 +11501,13 @@ an array etc...</p>
 
         <tr>
             
-                <td class="name"><code>tex</code></td>
+                <td class="name"><code>textures</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">WebGLTexture</span>
+<span class="param-type">Object.&lt;string, WebGLTexture></span>
 
             
             </td>
@@ -11439,20 +11516,20 @@ an array etc...</p>
 
             
 
-            <td class="description last"><p>the texture.</p></td>
+            <td class="description last"><p>the created textures by name. Same as returned by <a href="module-twgl.html#createTextures"><code>createTextures</code></a>.</p></td>
         </tr>
 
 	
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>sources</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="module-twgl.html#TextureOptions">TextureOptions</a>></span>
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#TextureSrc">TextureSrc</a>></span>
 
             
             </td>
@@ -11461,7 +11538,7 @@ an array etc...</p>
 
             
 
-            <td class="description last"><p>A object of TextureOptions one per texture.</p></td>
+            <td class="description last"><p>the image(s) used for the texture by name.</p></td>
         </tr>
 
 	
