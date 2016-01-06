@@ -1905,6 +1905,7 @@ define([], function () {
   function loadImage(url, callback) {
     callback = callback || noop;
     var img = new Image();
+    img.crossOrigin = '';
     img.onerror = function() {
       var msg = "couldn't load image: " + url;
       error(msg);
@@ -2724,4 +2725,3 @@ define([], function () {
   };
 
 });
-
