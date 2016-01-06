@@ -6627,6 +6627,122 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
         
             
 <dt>
+    <h4 class="name" id="setDefaults"><span class="type-signature"> </span>setDefaults<span class="signature">(newDefaults)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Sets various defaults for twgl.</p>
+<p>In the interest of terseness which is kind of the point
+of twgl I've integrated a few of the older functions here</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>newDefaults</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#Defaults">Defaults</a></span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The default settings.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="setDefaultTextureColor"><span class="type-signature"> </span>setDefaultTextureColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
     
     
@@ -9274,6 +9390,187 @@ for the attribute.</p>
 
             
                 
+<dt class="name" id="Defaults">
+    <h4>Defaults</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Various default settings for twgl.</p>
+<p>Note: You can call this any number of times. Example:</p>
+<pre><code>twgl.setDefaults({ textureColor: [1, 0, 0, 1] });
+twgl.setDefaults({ attribPrefix: 'a_' });</code></pre>
+<p>is equivalent to</p>
+<pre><code>twgl.setDefaults({
+  textureColor: [1, 0, 0, 1],
+  attribPrefix: 'a_',
+});</code></pre>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+	
+
+	<h5 class="subsection-title">Properties:</h5>
+
+	<dl>
+
+<table class="props table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>attribPrefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The prefix to stick on attributes</p>
+<p>  When writing shaders I prefer to name attributes with <code>a_</code>, uniforms with <code>u_</code> and varyings with <code>v_</code>
+  as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.</p>
+<p>  In otherwords I'll create arrays of geometry like this</p>
+<pre><code>  var arrays = {
+    position: ...
+    normal: ...
+    texcoord: ...
+  };</code></pre>
+<p>  But need those mapped to attributes and my attributes start with <code>a_</code>.</p>
+<p>  Default: <code>&quot;&quot;</code></p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>textureColor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number[]</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of 4 values in the range 0 to 1</p>
+<p>  The default texture color is used when loading textures from
+  urls. Because the URL will be loaded async we'd like to be
+  able to use the texture immediately. By putting a 1x1 pixel
+  color in the texture we can start using the texture before
+  the URL has loaded.</p>
+<p>  Default: <code>[0.5, 0.75, 1, 1]</code></p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>crossOrigin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>If not undefined sets the crossOrigin attribute on images
+  that twgl creates when downloading images for textures.</p>
+<p>  Also see <a href="module-twgl.html#TextureOptions"><code>TextureOptions</code></a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+</dl>
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
 <dt class="name" id="DrawObject">
     <h4>DrawObject</h4>
 
@@ -10114,7 +10411,7 @@ For example if you want colors in a <code>Uint8Array</code> you might have a <co
 
             
 
-            <td class="description last"><p>name of attribute this array maps to. Defaults to same name as array prefixed by the defaultAttribPrefix.</p></td>
+            <td class="description last"><p>name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.</p></td>
         </tr>
 
 	
@@ -11170,6 +11467,37 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 Whatever it returns is subject to these rules. So it can return a string url, an <code>HTMLElement</code>
 an array etc...</p>
 <p>If <code>src</code> is undefined then an empty texture will be created of size <code>width</code> by <code>height</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>crossOrigin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>What to set the crossOrigin property of images when they are downloaded.
+   default: undefined. Also see <a href="module-twgl.html#setDefaults"><code>setDefaults</code></a>.</p></td>
         </tr>
 
 	
