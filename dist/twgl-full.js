@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.39 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.40 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -499,9 +499,11 @@ define('twgl/twgl',[], function () {
       : function() { };
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
-  var defaultAttribPrefix = "";
-  var defaultTextureColor = new Uint8Array([128, 192, 255, 255]);
-  var defaultTextureOptions = {};
+  var defaults = {
+    attribPrefix: "",
+    textureColor: new Uint8Array([128, 192, 255, 255]),
+    textureOptions: {},
+  };
 
   /* DataType */
   var BYTE                           = 0x1400;
@@ -561,7 +563,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function setDefaultTextureColor(color) {
-    defaultTextureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
+    defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
   }
 
   /**
@@ -584,7 +586,83 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function setAttributePrefix(prefix) {
-    defaultAttribPrefix = prefix;
+    defaults.attribPrefix = prefix;
+  }
+
+  var invalidDefaultKeysRE = /^textureColor$/;
+  function validDefaultKeys(key) {
+    return !invalidDefaultKeysRE.test(key);
+  }
+
+  /**
+   * Various default settings for twgl.
+   *
+   * Note: You can call this any number of times. Example:
+   *
+   *     twgl.setDefaults({ textureColor: [1, 0, 0, 1] });
+   *     twgl.setDefaults({ attribPrefix: 'a_' });
+   *
+   * is equivalent to
+   *
+   *     twgl.setDefaults({
+   *       textureColor: [1, 0, 0, 1],
+   *       attribPrefix: 'a_',
+   *     });
+   *
+   * @typedef {Object} Defaults
+   * @property {string} attribPrefix The prefix to stick on attributes
+   *
+   *   When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
+   *   as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+   *
+   *   In otherwords I'll create arrays of geometry like this
+   *
+   *       var arrays = {
+   *         position: ...
+   *         normal: ...
+   *         texcoord: ...
+   *       };
+   *
+   *   But need those mapped to attributes and my attributes start with `a_`.
+   *
+   *   Default: `""`
+   *
+   * @property {number[]} textureColor Array of 4 values in the range 0 to 1
+   *
+   *   The default texture color is used when loading textures from
+   *   urls. Because the URL will be loaded async we'd like to be
+   *   able to use the texture immediately. By putting a 1x1 pixel
+   *   color in the texture we can start using the texture before
+   *   the URL has loaded.
+   *
+   *   Default: `[0.5, 0.75, 1, 1]`
+   *
+   * @property {string} crossOrigin
+   *
+   *   If not undefined sets the crossOrigin attribute on images
+   *   that twgl creates when downloading images for textures.
+   *
+   *   Also see {@link module:twgl.TextureOptions}.
+   *
+   * @memberOf module:twgl
+   */
+
+  /**
+   * Sets various defaults for twgl.
+   *
+   * In the interest of terseness which is kind of the point
+   * of twgl I've integrated a few of the older functions here
+   *
+   * @param {module:twgl.Defaults} newDefaults The default settings.
+   * @memberOf module:twgl
+   */
+  function setDefaults(newDefaults) {
+    if (newDefaults.textureColor) {
+      setDefaultTextureColor(newDefaults.textureColor);
+    }
+    Object.keys(newDefaults).filter(validDefaultKeys).forEach(function(key) {
+      defaults[key] = newDefaults[key];
+    });
   }
 
   /**
@@ -1517,7 +1595,7 @@ define('twgl/twgl',[], function () {
    * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
    * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
    * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
-   * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the defaultAttribPrefix.
+   * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
    * @property {string} [name] synonym for `attrib`.
    * @property {string} [attribName] synonym for `attrib`.
    * @memberOf module:twgl
@@ -1636,7 +1714,7 @@ define('twgl/twgl',[], function () {
     Object.keys(arrays).forEach(function(arrayName) {
       if (!isIndices(arrayName)) {
         var array = arrays[arrayName];
-        var attribName = array.attrib || array.name || array.attribName || (defaultAttribPrefix + arrayName);
+        var attribName = array.attrib || array.name || array.attribName || (defaults.attribPrefix + arrayName);
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
           buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
@@ -2087,6 +2165,9 @@ define('twgl/twgl',[], function () {
    *
    * If `src` is undefined then an empty texture will be created of size `width` by `height`.
    *
+   * @property {string} [crossOrigin] What to set the crossOrigin property of images when they are downloaded.
+   *    default: undefined. Also see {@link module:twgl.setDefaults}.
+   *
    * @memberOf module:twgl
    */
 
@@ -2167,7 +2248,7 @@ define('twgl/twgl',[], function () {
    * @return {Uint8Array} Unit8Array with color.
    */
   function make1Pixel(color) {
-    color = color || defaultTextureColor;
+    color = color || defaults.textureColor;
     if (isArrayBuffer(color)) {
       return color;
     }
@@ -2196,7 +2277,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function setTextureFilteringForSize(gl, tex, options, width, height) {
-    options = options || defaultTextureOptions;
+    options = options || defaults.textureOptions;
     var target = options.target || gl.TEXTURE_2D;
     width = width || options.width;
     height = height || options.height;
@@ -2275,7 +2356,7 @@ define('twgl/twgl',[], function () {
   var setTextureFromElement = function() {
     var ctx = document.createElement("canvas").getContext("2d");
     return function setTextureFromElement(gl, tex, element, options) {
-      options = options || defaultTextureOptions;
+      options = options || defaults.textureOptions;
       var target = options.target || gl.TEXTURE_2D;
       var width = element.width;
       var height = element.height;
@@ -2355,9 +2436,13 @@ define('twgl/twgl',[], function () {
    *     if there was an error
    * @return {HTMLImageElement} the image being loaded.
    */
-  function loadImage(url, callback) {
+  function loadImage(url, crossOrigin, callback) {
     callback = callback || noop;
     var img = new Image();
+    crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+    if (crossOrigin !== undefined) {
+      img.crossOrigin = crossOrigin;
+    }
     img.onerror = function() {
       var msg = "couldn't load image: " + url;
       error(msg);
@@ -2380,7 +2465,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function setTextureTo1PixelColor(gl, tex, options) {
-    options = options || defaultTextureOptions;
+    options = options || defaults.textureOptions;
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
     if (options.color === false) {
@@ -2452,11 +2537,11 @@ define('twgl/twgl',[], function () {
    */
   function loadTextureFromUrl(gl, tex, options, callback) {
     callback = callback || noop;
-    options = options || defaultTextureOptions;
+    options = options || defaults.textureOptions;
     setTextureTo1PixelColor(gl, tex, options);
     // Because it's async we need to copy the options.
     options = shallowCopy(options);
-    var img = loadImage(options.src, function(err, img) {
+    var img = loadImage(options.src, options.crossOrigin, function(err, img) {
       if (err) {
         callback(err, tex, img);
       } else {
@@ -2533,7 +2618,7 @@ define('twgl/twgl',[], function () {
     }
 
     imgs = urls.map(function(url, ndx) {
-      return loadImage(url, uploadImg(faces[ndx]));
+      return loadImage(url, options.crossOrigin, uploadImg(faces[ndx]));
     });
   }
 
@@ -2582,7 +2667,7 @@ define('twgl/twgl',[], function () {
    * @memberOf module:twgl
    */
   function setTextureFromArray(gl, tex, src, options) {
-    options = options || defaultTextureOptions;
+    options = options || defaults.textureOptions;
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
     var width = options.width;
@@ -2670,7 +2755,7 @@ define('twgl/twgl',[], function () {
    */
   function createTexture(gl, options, callback) {
     callback = callback || noop;
-    options = options || defaultTextureOptions;
+    options = options || defaults.textureOptions;
     var tex = gl.createTexture();
     var target = options.target || gl.TEXTURE_2D;
     var width  = options.width  || 1;
@@ -3154,6 +3239,7 @@ define('twgl/twgl',[], function () {
     "setAttributes": setAttributes,
     "setAttributePrefix": setAttributePrefix,
     "setBuffersAndAttributes": setBuffersAndAttributes,
+    "setDefaults": setDefaults,
     "setUniforms": setUniforms,
 
     "createTexture": createTexture,
