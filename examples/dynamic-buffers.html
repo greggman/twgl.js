@@ -144,7 +144,7 @@ void main() {
     var context = new (window.AudioContext || window.webkitAudioContext)();
     var analyser = context.createAnalyser();
 
-    twgl.setAttributePrefix("a_");
+    twgl.setDefaults({attribPrefix: "a_"});
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 

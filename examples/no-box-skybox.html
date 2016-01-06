@@ -107,7 +107,7 @@ void main() {
   <script>
     "use strict";
     var $ = document.getElementById.bind(document);
-    twgl.setAttributePrefix("a_");
+    twgl.setDefaults({attribPrefix: "a_"});
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);

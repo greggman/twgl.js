@@ -9,7 +9,7 @@ require([
   var m4 = twgl.m4;
   var primitives = twgl.primitives;
 
-  twgl.setAttributePrefix("a_");
+  twgl.setDefaults({attribPrefix: "a_"});
   var gl = twgl.getWebGLContext(document.getElementById("c"));
   var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 

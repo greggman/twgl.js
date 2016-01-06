@@ -120,7 +120,7 @@ void main() {
   <script src="../dist/twgl-full.min.js"></script>
   <script>
     "use strict";
-    twgl.setAttributePrefix("a_");
+    twgl.setDefaults({attribPrefix: "a_"});
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
