@@ -172,6 +172,8 @@ define([], function () {
    *
    *   But need those mapped to attributes and my attributes start with `a_`.
    *
+   *   Default: `""`
+   *
    * @property {number[]} textureColor Array of 4 values in the range 0 to 1
    *
    *   The default texture color is used when loading textures from
@@ -179,6 +181,15 @@ define([], function () {
    *   able to use the texture immediately. By putting a 1x1 pixel
    *   color in the texture we can start using the texture before
    *   the URL has loaded.
+   *
+   *   Default: `[0.5, 0.75, 1, 1]`
+   *
+   * @property {string} crossOrigin
+   *
+   *   If not undefined sets the crossOrigin attribute on images
+   *   that twgl creates when downloading images for textures.
+   *
+   *   Also see {@link module:twgl.TextureOptions}.
    *
    * @memberOf module:twgl
    */
@@ -1701,6 +1712,9 @@ define([], function () {
    *
    * If `src` is undefined then an empty texture will be created of size `width` by `height`.
    *
+   * @property {string} [crossOrigin] What to set the crossOrigin property of images when they are downloaded.
+   *    default: undefined. Also see {@link module:twgl.setDefaults}.
+   *
    * @memberOf module:twgl
    */
 
@@ -1969,9 +1983,13 @@ define([], function () {
    *     if there was an error
    * @return {HTMLImageElement} the image being loaded.
    */
-  function loadImage(url, callback) {
+  function loadImage(url, crossOrigin, callback) {
     callback = callback || noop;
     var img = new Image();
+    crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+    if (crossOrigin !== undefined) {
+      img.crossOrigin = crossOrigin;
+    }
     img.onerror = function() {
       var msg = "couldn't load image: " + url;
       error(msg);
@@ -2070,7 +2088,7 @@ define([], function () {
     setTextureTo1PixelColor(gl, tex, options);
     // Because it's async we need to copy the options.
     options = shallowCopy(options);
-    var img = loadImage(options.src, function(err, img) {
+    var img = loadImage(options.src, options.crossOrigin, function(err, img) {
       if (err) {
         callback(err, tex, img);
       } else {
@@ -2147,7 +2165,7 @@ define([], function () {
     }
 
     imgs = urls.map(function(url, ndx) {
-      return loadImage(url, uploadImg(faces[ndx]));
+      return loadImage(url, options.crossOrigin, uploadImg(faces[ndx]));
     });
   }
 
