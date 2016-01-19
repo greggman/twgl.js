@@ -57,6 +57,7 @@ define([
    *
    * But need those mapped to attributes and my attributes start with `a_`.
    *
+   * @deprecated see {@link module:twgl.setDefaults}
    * @param {string} prefix prefix for attribs
    * @memberOf module:twgl
    */
@@ -64,15 +65,6 @@ define([
     defaults.attribPrefix = prefix;
   }
 
-  /**
-   * Sets various defaults for twgl.
-   *
-   * In the interest of terseness which is kind of the point
-   * of twgl I've integrated a few of the older functions here
-   *
-   * @param {module:twgl.Defaults} newDefaults The default settings.
-   * @memberOf module:twgl
-   */
   function setDefaults(newDefaults) {
     Object.keys(newDefaults).forEach(function(key) {
       defaults[key] = newDefaults[key];

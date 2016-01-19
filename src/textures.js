@@ -75,6 +75,7 @@ define([
    * the URL has loaded.
    *
    * @param {number[]} color Array of 4 values in the range 0 to 1
+   * @deprecated see {@link module:twgl.setDefaults}
    * @memberOf module:twgl
    */
   function setDefaultTextureColor(color) {
