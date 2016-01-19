@@ -29,9 +29,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-"use strict";
-
 define(['./v3'], function (v3) {
+  "use strict";
 
   /**
    * 4x4 Matrix math math functions.

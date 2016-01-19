@@ -29,8 +29,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-"use strict";
-
 /**
  * Various functions to make simple primitives
  *
@@ -72,6 +70,7 @@ define([
     m4,
     v3
   ) {
+  "use strict";
 
   /**
    * Add `push` to a typed array. It just keeps a 'cursor'
