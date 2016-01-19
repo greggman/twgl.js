@@ -104,6 +104,12 @@ module.exports = function(grunt) {
 
   var srcFiles = [
     'src/twgl.js',
+    'src/attributes.js',
+    'src/draw.js',
+    'src/framebuffers.js',
+    'src/programs.js',
+    'src/textures.js',
+    'src/typedarrays.js',
   ];
 
   var thirdPartyFiles = [
@@ -207,7 +213,7 @@ module.exports = function(grunt) {
           'examples/js',
         ],
         options: {
-          config: 'build/conf/eslint.json',
+          config: 'build/conf/eslint-docs.json',
           //rulesdir: ['build/rules'],
         },
       },
