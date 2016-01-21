@@ -4,7 +4,7 @@
   "description": "A Tiny WebGL helper library",
   "main": "dist/twgl-full.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/mocha/bin/mocha --recursive"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,10 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-jsdoc": "^0.5.8",
     "marked": "^0.3.3",
-    "semver": "^4.3.4"
+    "mocha": "^2.3.4",
+    "requirejs": "^2.1.22",
+    "semver": "^4.3.4",
+    "should": "^8.1.1"
   },
   "dependencies": {}
 }
