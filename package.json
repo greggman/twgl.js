@@ -1,6 +1,6 @@
 {
   "name": "twgl.js",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "description": "A Tiny WebGL helper library",
   "main": "dist/twgl-full.js",
   "scripts": {
