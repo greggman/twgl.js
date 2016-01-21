@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.41 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 0.0.42 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5184,7 +5184,7 @@ define('twgl/m4',['./v3'], function (v3) {
       dst[15] = m[15];
     }
 
-    return m;
+    return dst;
   }
 
   /**
