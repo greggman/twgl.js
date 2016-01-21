@@ -75,7 +75,7 @@ define(['./v3'], function (v3) {
    * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
    */
   function setDefaultType(ctor) {
-      VecType = ctor;
+      MatType = ctor;
   }
 
   /**
