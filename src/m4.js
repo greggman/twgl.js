@@ -1166,7 +1166,7 @@ define(['./v3'], function (v3) {
       dst[15] = m[15];
     }
 
-    return m;
+    return dst;
   }
 
   /**
