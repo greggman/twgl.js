@@ -106,8 +106,65 @@ function check(Type) {
       }, expected);
     });
 
-  // TODO inverse
-  // TODO multiply
+    it('should multiply', function() {
+      var m2 = [
+        4, 5, 6, 7,
+        1, 2, 3, 4,
+        9, 10, 11, 12,
+        -1, -2, -3, -4,
+      ];
+      var expected = [
+        m[0 * 4 + 0] * m2[0 * 4 + 0] + m[0 * 4 + 1] * m2[1 * 4 + 0] + m[0 * 4 + 2] * m2[2 * 4 + 0] + m[0 * 4 + 3] * m2[3 * 4 + 0],
+        m[0 * 4 + 0] * m2[0 * 4 + 1] + m[0 * 4 + 1] * m2[1 * 4 + 1] + m[0 * 4 + 2] * m2[2 * 4 + 1] + m[0 * 4 + 3] * m2[3 * 4 + 1],
+        m[0 * 4 + 0] * m2[0 * 4 + 2] + m[0 * 4 + 1] * m2[1 * 4 + 2] + m[0 * 4 + 2] * m2[2 * 4 + 2] + m[0 * 4 + 3] * m2[3 * 4 + 2],
+        m[0 * 4 + 0] * m2[0 * 4 + 3] + m[0 * 4 + 1] * m2[1 * 4 + 3] + m[0 * 4 + 2] * m2[2 * 4 + 3] + m[0 * 4 + 3] * m2[3 * 4 + 3],
+        m[1 * 4 + 0] * m2[0 * 4 + 0] + m[1 * 4 + 1] * m2[1 * 4 + 0] + m[1 * 4 + 2] * m2[2 * 4 + 0] + m[1 * 4 + 3] * m2[3 * 4 + 0],
+        m[1 * 4 + 0] * m2[0 * 4 + 1] + m[1 * 4 + 1] * m2[1 * 4 + 1] + m[1 * 4 + 2] * m2[2 * 4 + 1] + m[1 * 4 + 3] * m2[3 * 4 + 1],
+        m[1 * 4 + 0] * m2[0 * 4 + 2] + m[1 * 4 + 1] * m2[1 * 4 + 2] + m[1 * 4 + 2] * m2[2 * 4 + 2] + m[1 * 4 + 3] * m2[3 * 4 + 2],
+        m[1 * 4 + 0] * m2[0 * 4 + 3] + m[1 * 4 + 1] * m2[1 * 4 + 3] + m[1 * 4 + 2] * m2[2 * 4 + 3] + m[1 * 4 + 3] * m2[3 * 4 + 3],
+        m[2 * 4 + 0] * m2[0 * 4 + 0] + m[2 * 4 + 1] * m2[1 * 4 + 0] + m[2 * 4 + 2] * m2[2 * 4 + 0] + m[2 * 4 + 3] * m2[3 * 4 + 0],
+        m[2 * 4 + 0] * m2[0 * 4 + 1] + m[2 * 4 + 1] * m2[1 * 4 + 1] + m[2 * 4 + 2] * m2[2 * 4 + 1] + m[2 * 4 + 3] * m2[3 * 4 + 1],
+        m[2 * 4 + 0] * m2[0 * 4 + 2] + m[2 * 4 + 1] * m2[1 * 4 + 2] + m[2 * 4 + 2] * m2[2 * 4 + 2] + m[2 * 4 + 3] * m2[3 * 4 + 2],
+        m[2 * 4 + 0] * m2[0 * 4 + 3] + m[2 * 4 + 1] * m2[1 * 4 + 3] + m[2 * 4 + 2] * m2[2 * 4 + 3] + m[2 * 4 + 3] * m2[3 * 4 + 3],
+        m[3 * 4 + 0] * m2[0 * 4 + 0] + m[3 * 4 + 1] * m2[1 * 4 + 0] + m[3 * 4 + 2] * m2[2 * 4 + 0] + m[3 * 4 + 3] * m2[3 * 4 + 0],
+        m[3 * 4 + 0] * m2[0 * 4 + 1] + m[3 * 4 + 1] * m2[1 * 4 + 1] + m[3 * 4 + 2] * m2[2 * 4 + 1] + m[3 * 4 + 3] * m2[3 * 4 + 1],
+        m[3 * 4 + 0] * m2[0 * 4 + 2] + m[3 * 4 + 1] * m2[1 * 4 + 2] + m[3 * 4 + 2] * m2[2 * 4 + 2] + m[3 * 4 + 3] * m2[3 * 4 + 2],
+        m[3 * 4 + 0] * m2[0 * 4 + 3] + m[3 * 4 + 1] * m2[1 * 4 + 3] + m[3 * 4 + 2] * m2[2 * 4 + 3] + m[3 * 4 + 3] * m2[3 * 4 + 3],
+      ];
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.multiply(m, m2, dst);
+      }, expected);
+    });
+
+    it('should inverse', function() {
+      var m = [
+        2, 1, 3, 0,
+        1, 2, 1, 0,
+        3, 1, 2, 0,
+        4, 5, 6, 1,
+      ];
+      var expected = [
+        -0.375,
+        -0.125,
+        0.625,
+        -0,
+        -0.125,
+        0.625,
+        -0.125,
+        -0,
+        0.625,
+        -0.125,
+        -0.375,
+        -0,
+        -1.625,
+        -1.875,
+        0.375,
+        1,
+      ];
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.inverse(m, dst);
+      }, expected);
+    });
 
     it('should set translation', function() {
       var expected = [
@@ -241,7 +298,32 @@ function check(Type) {
       }, expected);
     });
 
-  // TODO lookAt
+    it('should make lookAt matrix', function() {
+      var eye = [1, 2, 3];
+      var target = [11, 22, 33];
+      var up = [-4, -5, -6];
+      var expected = [
+        0.40824833512306213,
+        -0.8164966106414795,
+        0.40824824571609497,
+        0,
+        -0.8728715181350708,
+        -0.21821792423725128,
+        0.4364357888698578,
+        0,
+        -0.26726123690605164,
+        -0.5345224738121033,
+        -0.8017837405204773,
+        0,
+        1,
+        2,
+        3,
+        1,
+      ];
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.lookAt(eye, target, up, dst);
+      }, expected);
+    });
 
     it('should make translation matrix', function() {
       var expected = [
@@ -285,7 +367,17 @@ function check(Type) {
       }, expected);
     });
 
-  // TODO rotate x
+    it('should rotate x', function() {
+      var angle = 1.23;
+      // switch to Array type to keep precision high for expected
+      var oldType = m4.setDefaultType(Array);
+      var expected = m4.multiply(m4.rotationX(angle), m);
+      m4.setDefaultType(oldType);
+
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.rotateX(m, angle, dst);
+      }, expected);
+    });
 
     it('should make y rotation matrix', function() {
       var angle = 1.23;
@@ -302,7 +394,17 @@ function check(Type) {
       }, expected);
     });
 
-  // TODO rotate y
+    it('should rotate y', function() {
+      var angle = 1.23;
+      // switch to Array type to keep precision high for expected
+      var oldType = m4.setDefaultType(Array);
+      var expected = m4.multiply(m4.rotationY(angle), m);
+      m4.setDefaultType(oldType);
+
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.rotateY(m, angle, dst);
+      }, expected);
+    });
 
     it('should make z rotation matrix', function() {
       var angle = 1.23;
@@ -319,9 +421,69 @@ function check(Type) {
       }, expected);
     });
 
-  // TODO rotate z
-  // TODO axisRotation
-  // TODO axisRotate
+    it('should rotate z', function() {
+      var angle = 1.23;
+      // switch to Array type to keep precision high for expected
+      var oldType = m4.setDefaultType(Array);
+      var expected = m4.multiply(m4.rotationZ(angle), m);
+      m4.setDefaultType(oldType);
+
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.rotateZ(m, angle, dst);
+      }, expected);
+    });
+
+    it('should make axis rotation matrix', function() {
+      var axis = [0.5, 0.6, -0.7];
+      var angle = 1.23;
+      var x = axis[0];
+      var y = axis[1];
+      var z = axis[2];
+      var n = Math.sqrt(x * x + y * y + z * z);
+      x /= n;
+      y /= n;
+      z /= n;
+      var xx = x * x;
+      var yy = y * y;
+      var zz = z * z;
+      var c = Math.cos(angle);
+      var s = Math.sin(angle);
+      var oneMinusCosine = 1 - c;
+      var expected = [
+        xx + (1 - xx) * c,
+        x * y * oneMinusCosine + z * s,
+        x * z * oneMinusCosine - y * s,
+        0,
+
+        x * y * oneMinusCosine - z * s,
+        yy + (1 - yy) * c,
+        y * z * oneMinusCosine + x * s,
+        0,
+
+        x * z * oneMinusCosine + y * s,
+        y * z * oneMinusCosine - x * s,
+        zz + (1 - zz) * c,
+        0,
+
+        0, 0, 0, 1,
+      ];
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.axisRotation(axis, angle, dst);
+      }, expected);
+    });
+
+    it('should axis rotate', function() {
+      var axis = [0.5, 0.6, -0.7];
+      var angle = 1.23;
+      // switch to Array type to keep precision high for expected
+      var oldType = m4.setDefaultType(Array);
+      var expected = m4.multiply(m4.axisRotation(axis, angle), m);
+      m4.setDefaultType(oldType);
+
+      testM4WithAndWithoutDest(function(dst) {
+        return m4.axisRotate(m, axis, angle, dst);
+      }, expected);
+    });
 
     it('should make scaling matrix', function() {
       var expected = [
@@ -391,8 +553,6 @@ function check(Type) {
         return m4.transformNormal(m, [2, 3, 4], dst);
       }, expected);
     });
-
-  // TODO transformNormal
 
   });
 }

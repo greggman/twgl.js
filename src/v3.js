@@ -69,9 +69,12 @@ define([], function () {
   /**
    * Sets the type this library creates for a Vec3
    * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
+   * @return {constructor} previous constructor for Vec3
    */
   function setDefaultType(ctor) {
+    var oldType = VecType;
     VecType = ctor;
+    return oldType;
   }
 
   /**

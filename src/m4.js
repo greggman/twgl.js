@@ -73,9 +73,12 @@ define(['./v3'], function (v3) {
   /**
    * Sets the type this library creates for a Mat4
    * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
+   * @return {constructor} previous constructor for Mat4
    */
   function setDefaultType(ctor) {
-      MatType = ctor;
+    var oldType = MatType;
+    MatType = ctor;
+    return oldType;
   }
 
   /**
