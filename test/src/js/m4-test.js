@@ -9,7 +9,7 @@ requirejs.config({
 
 var m4 = requirejs('./m4');
 
-describe('m4', function() {
+function check() {
   var m = [
      0,  1,  2,  3,
      4,  5,  6,  7,
@@ -53,15 +53,6 @@ describe('m4', function() {
     testV3WithDest(func, expected);
   }
 
-  it('should set default type', function() {
-    m4.setDefaultType(Array);
-    var d = m4.identity();
-    d.should.be.Array();
-    m4.setDefaultType(Float32Array);
-    d = m4.identity();
-    d.should.be.instanceOf(Float32Array);
-  });
-
   it('should negate', function() {
     var expected = [
       -0,  -1,  -2,  -3,
@@ -77,7 +68,9 @@ describe('m4', function() {
   it('should copy', function() {
     var expected = m;
     testM4WithAndWithoutDest(function(dst) {
-      return m4.copy(m, dst);
+      var result = m4.copy(m, dst);
+      should.notStrictEqual(result, m);
+      return result;
     }, expected);
   });
 
@@ -349,6 +342,29 @@ describe('m4', function() {
 // TODO transformPoint
 // TODO transformDirectiojn
 // TODO transformNormal
+
+}
+
+describe('m4', function() {
+
+  it('should set default type', function() {
+    m4.setDefaultType(Array);
+    var d = m4.identity();
+    d.should.be.Array();
+    m4.setDefaultType(Float32Array);
+    d = m4.identity();
+    d.should.be.instanceOf(Float32Array);
+  });
+
+  describe('using Array', function() {
+    m4.setDefaultType(Array);
+    check();
+  });
+
+  describe('using Float32Array', function() {
+    m4.setDefaultType(Float32Array);
+    check();
+  });
 
 });
 

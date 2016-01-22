@@ -71,7 +71,7 @@ define([], function () {
    * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
    */
   function setDefaultType(ctor) {
-      VecType = ctor;
+    VecType = ctor;
   }
 
   /**
