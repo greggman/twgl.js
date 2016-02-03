@@ -18,7 +18,8 @@
 		"inverseNav"            : true,
 		"highlightTutorialCode" : true,
 		"default"   : {
-			"outputSourceFiles"     : false
+			"outputSourceFiles"     : false,
+			"includeDate"           : false
 		},
 		"analytics": {
 			"ua": "UA-61260681-1",
