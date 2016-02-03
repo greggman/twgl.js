@@ -13,15 +13,16 @@
 		"systemName"            : "TWGL",
 		"footer"                : "",
 		"copyright"             : "",
-		"navType"               : "vertical",
-		"theme"                 : "cerulean",
 		"linenums"              : true,
 		"collapseSymbols"       : false,
 		"inverseNav"            : true,
 		"highlightTutorialCode" : true,
+		"default"   : {
+			"outputSourceFiles"     : false
+		},
 		"analytics": {
 			"ua": "UA-61260681-1",
-			"domain": "auto",
+			"domain": "auto"
 		}
 	},
 	"markdown"  : {
@@ -29,7 +30,7 @@
 		"hardwrap" : true
 	},
 	"opts"      : {
-		"readme"   : "docs.md",
+		"readme"   : "README.md",
 		"encoding" : "utf8"
 	}
 }
