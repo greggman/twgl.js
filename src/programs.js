@@ -238,10 +238,6 @@ define([], function () {
   }
 
   /**
-   * @typedef {Object.<string,function>} Setters
-   */
-
-  /**
    * Creates setter functions for all uniforms of a shader
    * program.
    *

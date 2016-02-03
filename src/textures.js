@@ -355,6 +355,7 @@ define([
    * @typedef {Object} FaceInfo
    * @property {number} face gl enum for texImage2D
    * @property {number} ndx face index (0 - 5) into source data
+   * @ignore
    */
 
   /**

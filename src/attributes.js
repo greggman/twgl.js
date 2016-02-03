@@ -529,7 +529,7 @@ define([
    *
    * returns a WebGLBuffer that constains the given data.
    *
-   * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
    * @param {module:twgl.ArraySpec} array an array, typed array, or array spec.
    * @param {string} arrayName name of array. Used to guess the type if type can not be dervied other wise.
    * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
@@ -560,7 +560,7 @@ define([
    *
    * If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.
    *
-   * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
    * @param {module:twgl.Arrays} arrays
    * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
    * @memberOf module:twgl
