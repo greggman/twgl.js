@@ -51,13 +51,14 @@ define([], function () {
    * @memberOf module:twgl
    */
   function getGLTypeForTypedArray(typedArray) {
-    if (typedArray instanceof Int8Array)    { return BYTE; }           // eslint-disable-line
-    if (typedArray instanceof Uint8Array)   { return UNSIGNED_BYTE; }  // eslint-disable-line
-    if (typedArray instanceof Int16Array)   { return SHORT; }          // eslint-disable-line
-    if (typedArray instanceof Uint16Array)  { return UNSIGNED_SHORT; } // eslint-disable-line
-    if (typedArray instanceof Int32Array)   { return INT; }            // eslint-disable-line
-    if (typedArray instanceof Uint32Array)  { return UNSIGNED_INT; }   // eslint-disable-line
-    if (typedArray instanceof Float32Array) { return FLOAT; }          // eslint-disable-line
+    if (typedArray instanceof Int8Array)         { return BYTE; }           // eslint-disable-line
+    if (typedArray instanceof Uint8Array)        { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Uint8ClampedArray) { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Int16Array)        { return SHORT; }          // eslint-disable-line
+    if (typedArray instanceof Uint16Array)       { return UNSIGNED_SHORT; } // eslint-disable-line
+    if (typedArray instanceof Int32Array)        { return INT; }            // eslint-disable-line
+    if (typedArray instanceof Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
+    if (typedArray instanceof Float32Array)      { return FLOAT; }          // eslint-disable-line
     throw "unsupported typed array type";
   }
 

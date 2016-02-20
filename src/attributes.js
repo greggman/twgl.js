@@ -501,7 +501,7 @@ define([
       indices = makeTypedArray(indices, "indices");
       bufferInfo.indices = createBufferFromTypedArray(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
       bufferInfo.numElements = indices.length;
-      bufferInfo.elementType = (indices instanceof Uint32Array) ?  gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
+      bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(indices);
     } else {
       bufferInfo.numElements = getNumElementsFromNonIndexedArrays(arrays);
     }

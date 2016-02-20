@@ -731,6 +731,10 @@ define([
     if (!isArrayBuffer(src)) {
       var Type = typedArrays.getTypedArrayTypeForGLType(type);
       src = new Type(src);
+    } else {
+      if (src instanceof Uint8ClampedArray) {
+        src = new Uint8Array(src.buffer);
+      }
     }
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
     savePackState(gl, options);
