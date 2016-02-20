@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 0.0.42 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -504,13 +504,14 @@ define('twgl/typedarrays',[], function () {
    * @memberOf module:twgl
    */
   function getGLTypeForTypedArray(typedArray) {
-    if (typedArray instanceof Int8Array)    { return BYTE; }           // eslint-disable-line
-    if (typedArray instanceof Uint8Array)   { return UNSIGNED_BYTE; }  // eslint-disable-line
-    if (typedArray instanceof Int16Array)   { return SHORT; }          // eslint-disable-line
-    if (typedArray instanceof Uint16Array)  { return UNSIGNED_SHORT; } // eslint-disable-line
-    if (typedArray instanceof Int32Array)   { return INT; }            // eslint-disable-line
-    if (typedArray instanceof Uint32Array)  { return UNSIGNED_INT; }   // eslint-disable-line
-    if (typedArray instanceof Float32Array) { return FLOAT; }          // eslint-disable-line
+    if (typedArray instanceof Int8Array)         { return BYTE; }           // eslint-disable-line
+    if (typedArray instanceof Uint8Array)        { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Uint8ClampedArray) { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArray instanceof Int16Array)        { return SHORT; }          // eslint-disable-line
+    if (typedArray instanceof Uint16Array)       { return UNSIGNED_SHORT; } // eslint-disable-line
+    if (typedArray instanceof Int32Array)        { return INT; }            // eslint-disable-line
+    if (typedArray instanceof Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
+    if (typedArray instanceof Float32Array)      { return FLOAT; }          // eslint-disable-line
     throw "unsupported typed array type";
   }
 
@@ -1050,7 +1051,7 @@ define('twgl/attributes',[
       indices = makeTypedArray(indices, "indices");
       bufferInfo.indices = createBufferFromTypedArray(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
       bufferInfo.numElements = indices.length;
-      bufferInfo.elementType = (indices instanceof Uint32Array) ?  gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
+      bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(indices);
     } else {
       bufferInfo.numElements = getNumElementsFromNonIndexedArrays(arrays);
     }
@@ -1078,7 +1079,7 @@ define('twgl/attributes',[
    *
    * returns a WebGLBuffer that constains the given data.
    *
-   * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
    * @param {module:twgl.ArraySpec} array an array, typed array, or array spec.
    * @param {string} arrayName name of array. Used to guess the type if type can not be dervied other wise.
    * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
@@ -1109,7 +1110,7 @@ define('twgl/attributes',[
    *
    * If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.
    *
-   * @param {WebGLRenderingContext) gl A WebGLRenderingContext.
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
    * @param {module:twgl.Arrays} arrays
    * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
    * @memberOf module:twgl
@@ -1379,10 +1380,6 @@ define('twgl/programs',[], function () {
       return gl.TEXTURE_CUBE_MAP;
     }
   }
-
-  /**
-   * @typedef {Object.<string,function>} Setters
-   */
 
   /**
    * Creates setter functions for all uniforms of a shader
@@ -2454,6 +2451,7 @@ define('twgl/textures',[
    * @typedef {Object} FaceInfo
    * @property {number} face gl enum for texImage2D
    * @property {number} ndx face index (0 - 5) into source data
+   * @ignore
    */
 
   /**
@@ -2829,6 +2827,10 @@ define('twgl/textures',[
     if (!isArrayBuffer(src)) {
       var Type = typedArrays.getTypedArrayTypeForGLType(type);
       src = new Type(src);
+    } else {
+      if (src instanceof Uint8ClampedArray) {
+        src = new Uint8Array(src.buffer);
+      }
     }
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
     savePackState(gl, options);
