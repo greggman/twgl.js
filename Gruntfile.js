@@ -266,15 +266,19 @@ module.exports = function(grunt) {
     return JSON.parse(fs.readFileSync(filename, {encoding: "utf8"})).version;
   }
 
-  grunt.registerTask('bumpversion', function() {
-    bower.version = semver.inc(bower.version, 'patch');
+  function bump(type) {
+    bower.version = semver.inc(bower.version, type);
     fs.writeFileSync("bower.json", JSON.stringify(bower, null, 2));
     var filename = "package.json";
     var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
     p.version = bower.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
     setLicense();
-  });
+  }
+
+  grunt.registerTask('bumppatchimpl', function() { bump('patch'); });
+  grunt.registerTask('bumpminorimpl', function() { bump('minor'); });
+  grunt.registerTask('bumpmajorimpl', function() { bump('major'); });
 
   grunt.registerTask('versioncheck', function() {
     var fs = require('fs');
@@ -308,10 +312,26 @@ module.exports = function(grunt) {
       /*'concat',*/
       'uglify',
   ]);
-  grunt.registerTask('publish', [
+  grunt.registerTask('bumppatch', [
       'eslint:lib',
       'eslint:examples',
-      'bumpversion',
+      'bumppatchimpl',
+      'build',
+      'browserify',
+      'docs',
+  ]);
+  grunt.registerTask('bumpminor', [
+      'eslint:lib',
+      'eslint:examples',
+      'bumpminorimpl',
+      'build',
+      'browserify',
+      'docs',
+  ]);
+  grunt.registerTask('bumpmajor', [
+      'eslint:lib',
+      'eslint:examples',
+      'bumpmajorimpl',
       'build',
       'browserify',
       'docs',
