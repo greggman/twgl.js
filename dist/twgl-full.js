@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -659,6 +659,10 @@ define('twgl/attributes',[
     return false;
   }
 
+  function getArray(array) {
+    return array.length ? array : array.data;
+  }
+
   function guessNumComponentsFromName(name, length) {
     var numComponents;
     if (name.indexOf("coord") >= 0) {
@@ -674,6 +678,10 @@ define('twgl/attributes',[
     }
 
     return numComponents;
+  }
+
+  function getNumComponents(array, arrayName) {
+    return array.numComponents || array.size || guessNumComponentsFromName(arrayName, getArray(array).length);
   }
 
   function makeTypedArray(array, name) {
@@ -855,7 +863,7 @@ define('twgl/attributes',[
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
           buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
-          numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
+          numComponents: getNumComponents(array, arrayName),
           type:          typedArrays.getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
           stride:        array.stride || 0,
@@ -932,8 +940,8 @@ define('twgl/attributes',[
         key = Object.keys(arrays)[0];
       }
       var array = arrays[key];
-      var length = array.length || array.data.length;
-      var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
+      var length = getArray(array).length;
+      var numComponents = getNumComponents(array, key);
       var numElements = length / numComponents;
       if (length % numComponents > 0) {
         throw "numComponents " + numComponents + " not correct for length " + length;
@@ -1137,6 +1145,8 @@ define('twgl/attributes',[
     "setAttributePrefix": setAttributePrefix,
 
     "setDefaults_": setDefaults,
+    "getNumComponents_": getNumComponents,
+    "getArray_": getArray,
   };
 
 });
@@ -2088,7 +2098,24 @@ define('twgl/utils',[], function () {
     return dst;
   }
 
+  /**
+   * Copy named properties
+   *
+   * @param {string[]} names names of properties to copy
+   * @param {object} src object to copy properties from
+   * @param {object} dst object to copy properties to
+   */
+  function copyNamedProperties(names, src, dst) {
+    names.forEach(function(name) {
+      var value = src[name];
+      if (value !== undefined) {
+        dst[name] = value;
+      }
+    });
+  }
+
   return {
+    copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
   };
 });
@@ -5377,15 +5404,22 @@ define('twgl/m4',['./v3'], function (v3) {
  * @module twgl/primitives
  */
 define('twgl/primitives',[
+    './attributes',
     './twgl',
+    './utils',
     './m4',
     './v3',
   ], function (
+    attributes,
     twgl,
+    utils,
     m4,
     v3
   ) {
   
+
+  var getArray = attributes.getArray_;  // eslint-disable-line
+  var getNumComponents = attributes.getNumComponents_;  // eslint-disable-line
 
   /**
    * Add `push` to a typed array. It just keeps a 'cursor'
@@ -7125,7 +7159,7 @@ define('twgl/primitives',[
   /**
    * Creates an augmentedTypedArray of random vertex colors.
    * If the vertices are indexed (have an indices array) then will
-   * just make random colors. Otherwise assumes they are triangless
+   * just make random colors. Otherwise assumes they are triangles
    * and makes one random color for every 3 vertices.
    * @param {Object.<string, augmentedTypedArray>} vertices Vertices as returned from one of the createXXXVertices functions.
    * @param {module:twgl/primitives.RandomVerticesOptions} [options] options.
@@ -7181,6 +7215,177 @@ define('twgl/primitives',[
     };
   }
 
+  var arraySpecPropertyNames = [
+    "numComponents",
+    "size",
+    "type",
+    "normalize",
+    "stride",
+    "offset",
+    "attrib",
+    "name",
+    "attribName",
+  ];
+
+  /**
+   * Copy elements from one array to another
+   *
+   * @param {Array|TypedArray} src source array
+   * @param {Array|TypedArray} dst dest array
+   * @param {number} dstNdx index in dest to copy src
+   * @param {number} [offset] offset to add to copied values
+   */
+  function copyElements(src, dst, dstNdx, offset) {
+    offset = offset || 0;
+    var length = src.length;
+    for (var ii = 0; ii < length; ++ii) {
+      dst[dstNdx + ii] = src[ii] + offset;
+    }
+  }
+
+  /**
+   * Creates an array of the same time
+   *
+   * @param {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} srcArray array who's type to copy
+   * @param {number} length size of new array
+   * @return {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} array with same type as srcArray
+   */
+  function createArrayOfSameType(srcArray, length) {
+    var arraySrc = getArray(srcArray);
+    var newArray = new arraySrc.constructor(length);
+    var newArraySpec = newArray;
+    // If it appears to have been augmented make new one augemented
+    if (arraySrc.numComponents && arraySrc.numElements) {
+      augmentTypedArray(newArray, arraySrc.numComponents);
+    }
+    // If it was a fullspec make new one a fullspec
+    if (srcArray.data) {
+      newArraySpec = {
+        data: newArray,
+      };
+      utils.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
+    }
+    return newArraySpec;
+  }
+
+  /**
+   * Concatinates sets of vertices
+   *
+   * Assumes the vertices match in composition. For example
+   * if one set of vertices has positions, normals, and indices
+   * all sets of vertices must have positions, normals, and indices
+   * and of the same type.
+   *
+   * Example:
+   *
+   *      var cubeVertices = twgl.primtiives.createCubeVertices(2);
+   *      var sphereVertices = twgl.primitives.createSphereVertices(1, 10, 10);
+   *      // move the sphere 2 units up
+   *      twgl.primitives.reorientVertices(
+   *          sphereVertices, twgl.m4.translation([0, 2, 0]));
+   *      // merge the sphere with the cube
+   *      var cubeSphereVertices = twgl.primitives.concatVertices(
+   *          [cubeVertices, sphereVertices]);
+   *      // turn them into WebGL buffers and attrib data
+   *      var bufferInfo = twgl.createBufferInfoFromArrays(gl, cubeSphereVertices);
+   *
+   * @param {module:twgl.Arrays[]} arrays Array of arrays of vertices
+   * @return {module:twgl.Arrays} The concatinated vertices.
+   * @memberOf module:twgl/primitives
+   */
+  function concatVertices(arrayOfArrays) {
+    var names = {};
+    var baseName;
+    // get names of all arrays.
+    // and numElements for each set of vertices
+    for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+      var arrays = arrayOfArrays[ii];
+      Object.keys(arrays).forEach(function(name) {  // eslint-disable-line
+        if (!names[name]) {
+          names[name] = [];
+        }
+        if (!baseName && name !== 'indices') {
+          baseName = name;
+        }
+        var arrayInfo = arrays[name];
+        var numComponents = getNumComponents(arrayInfo, name);
+        var array = getArray(arrayInfo);
+        var numElements = array.length / numComponents;
+        names[name].push(numElements);
+      });
+    }
+
+    // compute length of combined array
+    // and return one for reference
+    function getLengthOfCombinedArrays(name) {
+      var length = 0;
+      var arraySpec;
+      for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+        var arrays = arrayOfArrays[ii];
+        var arrayInfo = arrays[name];
+        var array = getArray(arrayInfo);
+        length += array.length;
+        if (!arraySpec || arrayInfo.data) {
+          arraySpec = arrayInfo;
+        }
+      }
+      return {
+        length: length,
+        spec: arraySpec,
+      };
+    }
+
+    function copyArraysToNewArray(name, base, newArray) {
+      var baseIndex = 0;
+      var offset = 0;
+      for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+        var arrays = arrayOfArrays[ii];
+        var arrayInfo = arrays[name];
+        var array = getArray(arrayInfo);
+        if (name === 'indices') {
+          copyElements(array, newArray, offset, baseIndex);
+          baseIndex += base[ii];
+        } else {
+          copyElements(array, newArray, offset);
+        }
+        offset += array.length;
+      }
+    }
+
+    var base = names[baseName];
+
+    var newArrays = {};
+    Object.keys(names).forEach(function(name) {
+      var info = getLengthOfCombinedArrays(name);
+      var newArraySpec = createArrayOfSameType(info.spec, info.length);
+      copyArraysToNewArray(name, base, getArray(newArraySpec));
+      newArrays[name] = newArraySpec;
+    });
+    return newArrays;
+  }
+
+  /**
+   * Creates a duplicate set of vertices
+   *
+   * This is useful for calling reorientVertices when you
+   * also want to keep the original available
+   *
+   * @param {module:twgl.Arrays} arrays of vertices
+   * @return {module:twgl.Arrays} The dupilicated vertices.
+   * @memberOf module:twgl/primitives
+   */
+  function duplicateVertices(arrays) {
+    var newArrays = {};
+    Object.keys(arrays).forEach(function(name) {
+      var arraySpec = arrays[name];
+      var srcArray = getArray(arraySpec);
+      var newArraySpec = createArrayOfSameType(arraySpec, srcArray.length);
+      copyElements(srcArray, getArray(newArraySpec), 0);
+      newArrays[name] = newArraySpec;
+    });
+    return newArrays;
+  }
+
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
@@ -7222,6 +7427,8 @@ define('twgl/primitives',[
     "reorientNormals": reorientNormals,
     "reorientPositions": reorientPositions,
     "reorientVertices": reorientVertices,
+    "concatVertices": concatVertices,
+    "duplicateVertices": duplicateVertices,
   };
 
 });

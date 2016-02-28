@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -659,6 +659,10 @@ define('twgl/attributes',[
     return false;
   }
 
+  function getArray(array) {
+    return array.length ? array : array.data;
+  }
+
   function guessNumComponentsFromName(name, length) {
     var numComponents;
     if (name.indexOf("coord") >= 0) {
@@ -674,6 +678,10 @@ define('twgl/attributes',[
     }
 
     return numComponents;
+  }
+
+  function getNumComponents(array, arrayName) {
+    return array.numComponents || array.size || guessNumComponentsFromName(arrayName, getArray(array).length);
   }
 
   function makeTypedArray(array, name) {
@@ -855,7 +863,7 @@ define('twgl/attributes',[
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
           buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
-          numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
+          numComponents: getNumComponents(array, arrayName),
           type:          typedArrays.getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
           stride:        array.stride || 0,
@@ -932,8 +940,8 @@ define('twgl/attributes',[
         key = Object.keys(arrays)[0];
       }
       var array = arrays[key];
-      var length = array.length || array.data.length;
-      var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
+      var length = getArray(array).length;
+      var numComponents = getNumComponents(array, key);
       var numElements = length / numComponents;
       if (length % numComponents > 0) {
         throw "numComponents " + numComponents + " not correct for length " + length;
@@ -1137,6 +1145,8 @@ define('twgl/attributes',[
     "setAttributePrefix": setAttributePrefix,
 
     "setDefaults_": setDefaults,
+    "getNumComponents_": getNumComponents,
+    "getArray_": getArray,
   };
 
 });
@@ -2088,7 +2098,24 @@ define('twgl/utils',[], function () {
     return dst;
   }
 
+  /**
+   * Copy named properties
+   *
+   * @param {string[]} names names of properties to copy
+   * @param {object} src object to copy properties from
+   * @param {object} dst object to copy properties to
+   */
+  function copyNamedProperties(names, src, dst) {
+    names.forEach(function(name) {
+      var value = src[name];
+      if (value !== undefined) {
+        dst[name] = value;
+      }
+    });
+  }
+
   return {
+    copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
   };
 });
