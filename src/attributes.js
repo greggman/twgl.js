@@ -109,6 +109,10 @@ define([
     return false;
   }
 
+  function getArray(array) {
+    return array.length ? array : array.data;
+  }
+
   function guessNumComponentsFromName(name, length) {
     var numComponents;
     if (name.indexOf("coord") >= 0) {
@@ -124,6 +128,10 @@ define([
     }
 
     return numComponents;
+  }
+
+  function getNumComponents(array, arrayName) {
+    return array.numComponents || array.size || guessNumComponentsFromName(arrayName, getArray(array).length);
   }
 
   function makeTypedArray(array, name) {
@@ -305,7 +313,7 @@ define([
         var typedArray = makeTypedArray(array, arrayName);
         attribs[attribName] = {
           buffer:        createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
-          numComponents: array.numComponents || array.size || guessNumComponentsFromName(arrayName),
+          numComponents: getNumComponents(array, arrayName),
           type:          typedArrays.getGLTypeForTypedArray(typedArray),
           normalize:     array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
           stride:        array.stride || 0,
@@ -382,8 +390,8 @@ define([
         key = Object.keys(arrays)[0];
       }
       var array = arrays[key];
-      var length = array.length || array.data.length;
-      var numComponents = array.numComponents || guessNumComponentsFromName(key, length);
+      var length = getArray(array).length;
+      var numComponents = getNumComponents(array, key);
       var numElements = length / numComponents;
       if (length % numComponents > 0) {
         throw "numComponents " + numComponents + " not correct for length " + length;
@@ -587,6 +595,8 @@ define([
     "setAttributePrefix": setAttributePrefix,
 
     "setDefaults_": setDefaults,
+    "getNumComponents_": getNumComponents,
+    "getArray_": getArray,
   };
 
 });

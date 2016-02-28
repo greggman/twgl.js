@@ -62,15 +62,22 @@
  * @module twgl/primitives
  */
 define([
+    './attributes',
     './twgl',
+    './utils',
     './m4',
     './v3',
   ], function (
+    attributes,
     twgl,
+    utils,
     m4,
     v3
   ) {
   "use strict";
+
+  var getArray = attributes.getArray_;  // eslint-disable-line
+  var getNumComponents = attributes.getNumComponents_;  // eslint-disable-line
 
   /**
    * Add `push` to a typed array. It just keeps a 'cursor'
@@ -1866,6 +1873,138 @@ define([
     };
   }
 
+  var arraySpecPropertyNames = [
+    "numComponents",
+    "size",
+    "type",
+    "normalize",
+    "stride",
+    "offset",
+    "attrib",
+    "name",
+    "attribName",
+  ];
+
+  /**
+   * Concatinates sets of vertices
+   *
+   * Assumes the vertices match in composition. For example
+   * if one set of vertices has positions, normals, and indices
+   * all sets of vertices must have positions, normals, and indices
+   * and of the same type.
+   *
+   * Example:
+   *
+   *      var cubeVertices = twgl.primtiives.createCubeVertices(2);
+   *      var sphereVertices = twgl.primitives.createSphereVertices(1, 10, 10);
+   *      // move the sphere 2 units up
+   *      twgl.primitives.reorientVertices(
+   *          sphereVertices, twgl.m4.translation([0, 2, 0]));
+   *      // merge the sphere with the cube
+   *      var cubeSphereVertices = twgl.primitives.concatVertices(
+   *          [cubeVertices, sphereVertices]);
+   *      // turn them into WebGL buffers and attrib data
+   *      var bufferInfo = twgl.createBufferInfoFromArrays(gl, cubeSphereVertices);
+   *
+   * @param {module:twgl.Arrays[]} arrays Array of arrays of vertices
+   * @return {module:twgl.Arrays} The concatinated vertices.
+   * @memberOf module:twgl/primitives
+   */
+  function concatVertices(arrayOfArrays) {
+    var names = {};
+    var baseName;
+    // get names of all arrays.
+    // and numElements for each set of vertices
+    for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+      var arrays = arrayOfArrays[ii];
+      Object.keys(arrays).forEach(function(name) {  // eslint-disable-line
+        if (!names[name]) {
+          names[name] = [];
+        }
+        if (!baseName && name !== 'indices') {
+          baseName = name;
+        }
+        var arrayInfo = arrays[name];
+        var numComponents = getNumComponents(arrayInfo, name);
+        var array = getArray(arrayInfo);
+        var numElements = array.length / numComponents;
+        names[name].push(numElements);
+      });
+    }
+
+    function copy(src, dst, dstNdx, offset) {
+      offset = offset || 0;
+      var length = src.length;
+      for (var ii = 0; ii < length; ++ii) {
+        dst[dstNdx + ii] = src[ii] + offset;
+      }
+    }
+
+
+    // compute length of combined array
+    // and return one for reference
+    function getLengthOfCombinedArrays(name) {
+      var length = 0;
+      var arraySpec;
+      for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+        var arrays = arrayOfArrays[ii];
+        var arrayInfo = arrays[name];
+        var array = getArray(arrayInfo);
+        length += array.length;
+        if (!arraySpec || arrayInfo.data) {
+          arraySpec = arrayInfo;
+        }
+      }
+      return {
+        length: length,
+        spec: arraySpec,
+      };
+    }
+
+    function copyArraysToNewArray(name, base, newArray) {
+      var baseIndex = 0;
+      var offset = 0;
+      for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+        var arrays = arrayOfArrays[ii];
+        var arrayInfo = arrays[name];
+        var array = getArray(arrayInfo);
+        if (name === 'indices') {
+          copy(array, newArray, offset, baseIndex);
+          baseIndex += base[ii];
+        } else {
+          copy(array, newArray, offset);
+        }
+        offset += array.length;
+      }
+    }
+
+    var base = names[baseName];
+
+    var newArrays = {};
+    Object.keys(names).forEach(function(name) {
+      var info = getLengthOfCombinedArrays(name);
+      var arraySpec = info.spec;
+      var arraySrc = getArray(arraySpec);
+      // create new array
+      var newArray = new arraySrc.constructor(info.length);
+      var newArraySpec = newArray;
+      // If it appears to have been augmented make new one augemented
+      if (arraySrc.numComponents && arraySrc.numElements) {
+        augmentTypedArray(newArray, arraySrc.numComponents);
+      }
+      // If it was a fullspec make new one a fullspec
+      if (arraySpec.data) {
+        newArraySpec = {
+          data: newArray,
+        };
+        utils.copyNamedProperties(arraySpecPropertyNames, arraySpec, newArraySpec);
+      }
+      copyArraysToNewArray(name, base, newArray);
+      newArrays[name] = newArraySpec;
+    });
+    return newArrays;
+  }
+
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
@@ -1907,6 +2046,7 @@ define([
     "reorientNormals": reorientNormals,
     "reorientPositions": reorientPositions,
     "reorientVertices": reorientVertices,
+    "concatVertices": concatVertices,
   };
 
 });

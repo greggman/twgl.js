@@ -45,7 +45,24 @@ define([], function () {
     return dst;
   }
 
+  /**
+   * Copy named properties
+   *
+   * @param {string[]} names names of properties to copy
+   * @param {object} src object to copy properties from
+   * @param {object} dst object to copy properties to
+   */
+  function copyNamedProperties(names, src, dst) {
+    names.forEach(function(name) {
+      var value = src[name];
+      if (value !== undefined) {
+        dst[name] = value;
+      }
+    });
+  }
+
   return {
+    copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
   };
 });
