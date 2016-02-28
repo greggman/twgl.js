@@ -1886,6 +1886,47 @@ define([
   ];
 
   /**
+   * Copy elements from one array to another
+   *
+   * @param {Array|TypedArray} src source array
+   * @param {Array|TypedArray} dst dest array
+   * @param {number} dstNdx index in dest to copy src
+   * @param {number} [offset] offset to add to copied values
+   */
+  function copyElements(src, dst, dstNdx, offset) {
+    offset = offset || 0;
+    var length = src.length;
+    for (var ii = 0; ii < length; ++ii) {
+      dst[dstNdx + ii] = src[ii] + offset;
+    }
+  }
+
+  /**
+   * Creates an array of the same time
+   *
+   * @param {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} srcArray array who's type to copy
+   * @param {number} length size of new array
+   * @return {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} array with same type as srcArray
+   */
+  function createArrayOfSameType(srcArray, length) {
+    var arraySrc = getArray(srcArray);
+    var newArray = new arraySrc.constructor(length);
+    var newArraySpec = newArray;
+    // If it appears to have been augmented make new one augemented
+    if (arraySrc.numComponents && arraySrc.numElements) {
+      augmentTypedArray(newArray, arraySrc.numComponents);
+    }
+    // If it was a fullspec make new one a fullspec
+    if (srcArray.data) {
+      newArraySpec = {
+        data: newArray,
+      };
+      utils.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
+    }
+    return newArraySpec;
+  }
+
+  /**
    * Concatinates sets of vertices
    *
    * Assumes the vertices match in composition. For example
@@ -1932,15 +1973,6 @@ define([
       });
     }
 
-    function copy(src, dst, dstNdx, offset) {
-      offset = offset || 0;
-      var length = src.length;
-      for (var ii = 0; ii < length; ++ii) {
-        dst[dstNdx + ii] = src[ii] + offset;
-      }
-    }
-
-
     // compute length of combined array
     // and return one for reference
     function getLengthOfCombinedArrays(name) {
@@ -1969,10 +2001,10 @@ define([
         var arrayInfo = arrays[name];
         var array = getArray(arrayInfo);
         if (name === 'indices') {
-          copy(array, newArray, offset, baseIndex);
+          copyElements(array, newArray, offset, baseIndex);
           baseIndex += base[ii];
         } else {
-          copy(array, newArray, offset);
+          copyElements(array, newArray, offset);
         }
         offset += array.length;
       }
@@ -1983,23 +2015,27 @@ define([
     var newArrays = {};
     Object.keys(names).forEach(function(name) {
       var info = getLengthOfCombinedArrays(name);
-      var arraySpec = info.spec;
-      var arraySrc = getArray(arraySpec);
-      // create new array
-      var newArray = new arraySrc.constructor(info.length);
-      var newArraySpec = newArray;
-      // If it appears to have been augmented make new one augemented
-      if (arraySrc.numComponents && arraySrc.numElements) {
-        augmentTypedArray(newArray, arraySrc.numComponents);
-      }
-      // If it was a fullspec make new one a fullspec
-      if (arraySpec.data) {
-        newArraySpec = {
-          data: newArray,
-        };
-        utils.copyNamedProperties(arraySpecPropertyNames, arraySpec, newArraySpec);
-      }
-      copyArraysToNewArray(name, base, newArray);
+      var newArraySpec = createArrayOfSameType(info.spec, info.length);
+      copyArraysToNewArray(name, base, getArray(newArraySpec));
+      newArrays[name] = newArraySpec;
+    });
+    return newArrays;
+  }
+
+  /**
+   * Creates a duplicate set of vertices
+   *
+   * @param {module:twgl.Arrays} arrays of vertices
+   * @return {module:twgl.Arrays} The dupilicated vertices.
+   * @memberOf module:twgl/primitives
+   */
+  function duplicateVertices(arrays) {
+    var newArrays = {};
+    Object.keys(arrays).forEach(function(name) {
+      var arraySpec = arrays[name];
+      var srcArray = getArray(arraySpec);
+      var newArraySpec = createArrayOfSameType(arraySpec, srcArray.length);
+      copyElements(srcArray, getArray(newArraySpec), 0);
       newArrays[name] = newArraySpec;
     });
     return newArrays;
@@ -2047,6 +2083,7 @@ define([
     "reorientPositions": reorientPositions,
     "reorientVertices": reorientVertices,
     "concatVertices": concatVertices,
+    "duplicateVertices": duplicateVertices,
   };
 
 });
