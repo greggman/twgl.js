@@ -137,7 +137,7 @@ void main() {
     // turn them into WebGL buffers and attrib data
     var cubeSphereBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeSphereVertices);
 
-    var cube1Arrays = {
+    var cubeArrays = {
       position: [1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1],
       normal:   [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
       texcoord: {
@@ -148,33 +148,21 @@ void main() {
       indices:  [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23],
     };
 
-    var cube2Arrays = {
-      position: [1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1],
-      normal:   [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
-      texcoord: {
-        type: Uint8Array,
-        normalize: false,
-        data: [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-      },
-      indices:  [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23],
-    };
-    twgl.primitives.reorientVertices(cube2Arrays, twgl.m4.translation([0, 3, 0]));
-    var cubeCubeVertices = twgl.primitives.concatVertices([cube1Arrays, cube2Arrays]);
+    var cubes = [];
+    for (var zz = 0; zz < 2; ++zz) {
+      for (var yy = 0; yy < 2; ++yy) {
+        for (var xx = 0; xx < 2; ++xx) {
+          cubes.push(twgl.primitives.reorientVertices(
+              twgl.primitives.duplicateVertices(cubeArrays), twgl.m4.translation([xx * 2.5, yy * 2.5, zz * 2.5])));
+        }
+      }
+    }
+    var cubeCubeVertices = twgl.primitives.concatVertices(cubes);
     var cubeCubeBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeCubeVertices);
-
-
 
     var shapes = [
       cubeSphereBufferInfo,
       cubeCubeBufferInfo,
-//      twgl.primitives.createCubeBufferInfo(gl, 2),
-//      twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
-//      twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
-//      twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
-//      twgl.primitives.createCresentBufferInfo(gl, 1, 1, 0.5, 0.1, 24),
-//      twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 24, 2),
-//      twgl.primitives.createDiscBufferInfo(gl, 1, 24),
-//      twgl.primitives.createTorusBufferInfo(gl, 1, 0.4, 24, 12),
     ];
 
     function rand(min, max) {
