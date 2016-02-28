@@ -1817,7 +1817,7 @@ define([
   /**
    * Creates an augmentedTypedArray of random vertex colors.
    * If the vertices are indexed (have an indices array) then will
-   * just make random colors. Otherwise assumes they are triangless
+   * just make random colors. Otherwise assumes they are triangles
    * and makes one random color for every 3 vertices.
    * @param {Object.<string, augmentedTypedArray>} vertices Vertices as returned from one of the createXXXVertices functions.
    * @param {module:twgl/primitives.RandomVerticesOptions} [options] options.
@@ -2024,6 +2024,9 @@ define([
 
   /**
    * Creates a duplicate set of vertices
+   *
+   * This is useful for calling reorientVertices when you
+   * also want to keep the original available
    *
    * @param {module:twgl.Arrays} arrays of vertices
    * @return {module:twgl.Arrays} The dupilicated vertices.
