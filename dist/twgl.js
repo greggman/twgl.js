@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3635,7 +3635,7 @@ define('twgl/twgl',[
   /**
    * Resize a canvas to match the size it's displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
-   * @param {number} [a] multiplier. So you can pass in `window.devicePixelRatio` if you want to.
+   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` if you want to.
    * @return {boolean} true if the canvas was resized.
    * @memberOf module:twgl
    */
