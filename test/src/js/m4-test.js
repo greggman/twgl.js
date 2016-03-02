@@ -197,6 +197,33 @@ function check(Type) {
       });
     });
 
+    it('should set axis', function() {
+      var expected = [
+        [
+          11, 22, 33,  3,
+           4,  5,  6,  7,
+           8,  9, 10, 11,
+          12, 13, 14, 15,
+        ],
+        [
+           0,  1,  2,  3,
+          11, 22, 33,  7,
+           8,  9, 10, 11,
+          12, 13, 14, 15,
+        ],
+        [
+           0,  1,  2,  3,
+           4,  5,  6,  7,
+          11, 22, 33, 11,
+          12, 13, 14, 15,
+        ],
+      ].forEach(function(expected, ndx) {
+        testM4WithAndWithoutDest(function(dst) {
+          return m4.setAxis(m, [11, 22, 33], ndx, dst);
+        }, expected);
+      });
+    });
+
     it('should compute perspective', function() {
       var fov = 2;
       var aspect = 4;
