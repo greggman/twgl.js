@@ -441,7 +441,7 @@ define(['./v3'], function (v3) {
    * Returns the translation component of a 4-by-4 matrix as a vector with 3
    * entries.
    * @param {module:twgl/m4.Mat4} m The matrix.
-   * @return {Vec3} [dst] vector..
+   * @param {Vec3} [dst] vector..
    * @return {Vec3} The translation component of m.
    * @memberOf module:twgl/m4
    */
@@ -454,7 +454,7 @@ define(['./v3'], function (v3) {
   }
 
   /**
-   * Returns the axis of a 4x4 matrix as a vector with 3 entries
+   * Returns an axis of a 4x4 matrix as a vector with 3 entries
    * @param {module:twgl/m4.Mat4} m The matrix.
    * @param {number} axis The axis 0 = x, 1 = y, 2 = z;
    * @return {Vec3} [dst] vector.
@@ -467,6 +467,25 @@ define(['./v3'], function (v3) {
     dst[0] = m[off + 0];
     dst[1] = m[off + 1];
     dst[2] = m[off + 2];
+    return dst;
+  }
+
+  /**
+   * Sets an axis of a 4x4 matrix as a vector with 3 entries
+   * @param {Vec3} v the axis vector
+   * @param {number} axis The axis  0 = x, 1 = y, 2 = z;
+   * @param {module:twgl/m4.Mat4} [dst] The matrix to set. If none a new one is created
+   * @return {module:twgl/m4.Mat4} dst
+   * @memberOf module:twgl/m4
+   */
+  function setAxis(a, v, axis, dst) {
+    if (dst !== a) {
+      dst = copy(a, dst);
+    }
+    var off = axis * 4;
+    dst[off + 0] = v[0];
+    dst[off + 1] = v[1];
+    dst[off + 2] = v[2];
     return dst;
   }
 
@@ -1278,6 +1297,7 @@ define(['./v3'], function (v3) {
     "rotationZ": rotationZ,
     "scale": scale,
     "scaling": scaling,
+    "setAxis": setAxis,
     "setDefaultType": setDefaultType,
     "setTranslation": setTranslation,
     "transformDirection": transformDirection,
