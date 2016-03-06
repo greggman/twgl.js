@@ -1,15 +1,25 @@
 To Do
 =====
 
+*   Update eslint
+*   Fix createProgramInfo to take strings and not just ids
 *   document arrays in one place
 *   make program attributes an option, not a optional argument?
 *   fix cone
 *   make other kind of sphere
-*   fix gawd damn docs
+*   option to warn all unmatched uniforms and/or attributes?
 
 Done
 ====
 
+*   make createUniformBlock make a empty block (with warning?) for non-existent block
+
+    This is so a block that gets optimized out while debugging a shader doesn't break
+    the system
+
+*   disconnect blocks from their index so they can be used in a different program
+    with a different index.
+*   fix gawd damn docs
 *   make uglyif strip names
 *   remove "a_" prefix
 *   make primitives bufferInfo creator generate array { numComponents: x, data: y } ? (decided not to change this)

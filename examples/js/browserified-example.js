@@ -22,7 +22,7 @@
 chroma.brewer=brewer={OrRd:["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000"],PuBu:["#fff7fb","#ece7f2","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"],BuPu:["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#810f7c","#4d004b"],Oranges:["#fff5eb","#fee6ce","#fdd0a2","#fdae6b","#fd8d3c","#f16913","#d94801","#a63603","#7f2704"],BuGn:["#f7fcfd","#e5f5f9","#ccece6","#99d8c9","#66c2a4","#41ae76","#238b45","#006d2c","#00441b"],YlOrBr:["#ffffe5","#fff7bc","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#993404","#662506"],YlGn:["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"],Reds:["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],RdPu:["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"],Greens:["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#00441b"],YlGnBu:["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],Purples:["#fcfbfd","#efedf5","#dadaeb","#bcbddc","#9e9ac8","#807dba","#6a51a3","#54278f","#3f007d"],GnBu:["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081"],Greys:["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"],YlOrRd:["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"],PuRd:["#f7f4f9","#e7e1ef","#d4b9da","#c994c7","#df65b0","#e7298a","#ce1256","#980043","#67001f"],Blues:["#f7fbff","#deebf7","#c6dbef","#9ecae1","#6baed6","#4292c6","#2171b5","#08519c","#08306b"],PuBuGn:["#fff7fb","#ece2f0","#d0d1e6","#a6bddb","#67a9cf","#3690c0","#02818a","#016c59","#014636"],Spectral:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],RdYlGn:["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"],RdBu:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"],PiYG:["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#f7f7f7","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"],PRGn:["#40004b","#762a83","#9970ab","#c2a5cf","#e7d4e8","#f7f7f7","#d9f0d3","#a6dba0","#5aae61","#1b7837","#00441b"],RdYlBu:["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"],BrBG:["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],RdGy:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],PuOr:["#7f3b08","#b35806","#e08214","#fdb863","#fee0b6","#f7f7f7","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b"],Set2:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"],Accent:["#7fc97f","#beaed4","#fdc086","#ffff99","#386cb0","#f0027f","#bf5b17","#666666"],Set1:["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"],Set3:["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"],Dark2:["#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d","#666666"],Paired:["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"],Pastel2:["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"],Pastel1:["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]};chroma.colors=colors={indigo:"#4b0082",gold:"#ffd700",hotpink:"#ff69b4",firebrick:"#b22222",indianred:"#cd5c5c",yellow:"#ffff00",mistyrose:"#ffe4e1",darkolivegreen:"#556b2f",olive:"#808000",darkseagreen:"#8fbc8f",pink:"#ffc0cb",tomato:"#ff6347",lightcoral:"#f08080",orangered:"#ff4500",navajowhite:"#ffdead",lime:"#00ff00",palegreen:"#98fb98",darkslategrey:"#2f4f4f",greenyellow:"#adff2f",burlywood:"#deb887",seashell:"#fff5ee",mediumspringgreen:"#00fa9a",fuchsia:"#ff00ff",papayawhip:"#ffefd5",blanchedalmond:"#ffebcd",chartreuse:"#7fff00",dimgray:"#696969",black:"#000000",peachpuff:"#ffdab9",springgreen:"#00ff7f",aquamarine:"#7fffd4",white:"#ffffff",orange:"#ffa500",lightsalmon:"#ffa07a",darkslategray:"#2f4f4f",brown:"#a52a2a",ivory:"#fffff0",dodgerblue:"#1e90ff",peru:"#cd853f",lawngreen:"#7cfc00",chocolate:"#d2691e",crimson:"#dc143c",forestgreen:"#228b22",darkgrey:"#a9a9a9",lightseagreen:"#20b2aa",cyan:"#00ffff",mintcream:"#f5fffa",silver:"#c0c0c0",antiquewhite:"#faebd7",mediumorchid:"#ba55d3",skyblue:"#87ceeb",gray:"#808080",darkturquoise:"#00ced1",goldenrod:"#daa520",darkgreen:"#006400",floralwhite:"#fffaf0",darkviolet:"#9400d3",darkgray:"#a9a9a9",moccasin:"#ffe4b5",saddlebrown:"#8b4513",grey:"#808080",darkslateblue:"#483d8b",lightskyblue:"#87cefa",lightpink:"#ffb6c1",mediumvioletred:"#c71585",slategrey:"#708090",red:"#ff0000",deeppink:"#ff1493",limegreen:"#32cd32",darkmagenta:"#8b008b",palegoldenrod:"#eee8aa",plum:"#dda0dd",turquoise:"#40e0d0",lightgrey:"#d3d3d3",lightgoldenrodyellow:"#fafad2",darkgoldenrod:"#b8860b",lavender:"#e6e6fa",maroon:"#800000",yellowgreen:"#9acd32",sandybrown:"#f4a460",thistle:"#d8bfd8",violet:"#ee82ee",navy:"#000080",magenta:"#ff00ff",dimgrey:"#696969",tan:"#d2b48c",rosybrown:"#bc8f8f",olivedrab:"#6b8e23",blue:"#0000ff",lightblue:"#add8e6",ghostwhite:"#f8f8ff",honeydew:"#f0fff0",cornflowerblue:"#6495ed",slateblue:"#6a5acd",linen:"#faf0e6",darkblue:"#00008b",powderblue:"#b0e0e6",seagreen:"#2e8b57",darkkhaki:"#bdb76b",snow:"#fffafa",sienna:"#a0522d",mediumblue:"#0000cd",royalblue:"#4169e1",lightcyan:"#e0ffff",green:"#008000",mediumpurple:"#9370db",midnightblue:"#191970",cornsilk:"#fff8dc",paleturquoise:"#afeeee",bisque:"#ffe4c4",slategray:"#708090",darkcyan:"#008b8b",khaki:"#f0e68c",wheat:"#f5deb3",teal:"#008080",darkorchid:"#9932cc",deepskyblue:"#00bfff",salmon:"#fa8072",darkred:"#8b0000",steelblue:"#4682b4",palevioletred:"#db7093",lightslategray:"#778899",aliceblue:"#f0f8ff",lightslategrey:"#778899",lightgreen:"#90ee90",orchid:"#da70d6",gainsboro:"#dcdcdc",mediumseagreen:"#3cb371",lightgray:"#d3d3d3",mediumturquoise:"#48d1cc",lemonchiffon:"#fffacd",cadetblue:"#5f9ea0",lightyellow:"#ffffe0",lavenderblush:"#fff0f5",coral:"#ff7f50",purple:"#800080",aqua:"#00ffff",whitesmoke:"#f5f5f5",mediumslateblue:"#7b68ee",darkorange:"#ff8c00",mediumaquamarine:"#66cdaa",darksalmon:"#e9967a",beige:"#f5f5dc",blueviolet:"#8a2be2",azure:"#f0ffff",lightsteelblue:"#b0c4de",oldlace:"#fdf5e6"};type=function(){var classToType,name,_i,_len,_ref1;classToType={};_ref1="Boolean Number String Function Array Date RegExp Undefined Null".split(" ");for(_i=0,_len=_ref1.length;_i<_len;_i++){name=_ref1[_i];classToType["[object "+name+"]"]=name.toLowerCase()}return function(obj){var strType;strType=Object.prototype.toString.call(obj);return classToType[strType]||"object"}}();limit=function(x,min,max){if(min==null){min=0}if(max==null){max=1}if(x<min){x=min}if(x>max){x=max}return x};unpack=function(args){if(args.length>=3){return args}else{return args[0]}};TWOPI=Math.PI*2;PITHIRD=Math.PI/3;cos=Math.cos;bezier=function(colors){var I,I0,I1,c,lab0,lab1,lab2,lab3,_ref1,_ref2,_ref3;colors=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(chroma(c))}return _results}();if(colors.length===2){_ref1=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref1[0],lab1=_ref1[1];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push(lab0[i]+t*(lab1[i]-lab0[i]))}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===3){_ref2=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref2[0],lab1=_ref2[1],lab2=_ref2[2];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*lab0[i]+2*(1-t)*t*lab1[i]+t*t*lab2[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===4){_ref3=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref3[0],lab1=_ref3[1],lab2=_ref3[2],lab3=_ref3[3];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*(1-t)*lab0[i]+3*(1-t)*(1-t)*t*lab1[i]+3*(1-t)*t*t*lab2[i]+t*t*t*lab3[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===5){I0=bezier(colors.slice(0,3));I1=bezier(colors.slice(2,5));I=function(t){if(t<.5){return I0(t*2)}else{return I1((t-.5)*2)}}}return I};chroma.interpolate.bezier=bezier}.call(this);
 },{}],2:[function(require,module,exports){
 /**
- * @license twgl.js 1.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1206,8 +1206,46 @@ define('twgl/attributes',[
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-define('twgl/programs',[], function () {
+define('twgl/utils',[], function () {
   
+
+  /**
+   * Copy an object 1 level deep
+   * @param {object} src object to copy
+   * @return {object} the copy
+   */
+  function shallowCopy(src) {
+    var dst = {};
+    Object.keys(src).forEach(function(key) {
+      dst[key] = src[key];
+    });
+    return dst;
+  }
+
+  /**
+   * Copy named properties
+   *
+   * @param {string[]} names names of properties to copy
+   * @param {object} src object to copy properties from
+   * @param {object} dst object to copy properties to
+   */
+  function copyNamedProperties(names, src, dst) {
+    names.forEach(function(name) {
+      var value = src[name];
+      if (value !== undefined) {
+        dst[name] = value;
+      }
+    });
+  }
+
+  /**
+   * Check if context is WebGL 2.0
+   * @return {bool} true if it's WebGL 2.0
+   * @memberOf module:twgl
+   */
+  function isWebGL2(gl) {
+    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  }
 
   var error =
       (    window.console
@@ -1216,6 +1254,333 @@ define('twgl/programs',[], function () {
       )
       ? window.console.error.bind(window.console)
       : function() { };
+
+  var warn =
+      (    window.console
+        && window.console.warn
+        && typeof window.console.warn === "function"
+      )
+      ? window.console.warn.bind(window.console)
+      : function() { };
+
+  return {
+    copyNamedProperties: copyNamedProperties,
+    shallowCopy: shallowCopy,
+    isWebGL2: isWebGL2,
+    error: error,
+    warn: warn,
+  };
+});
+
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+define('twgl/programs',[
+    './utils',
+  ], function (
+    utils) {
+  
+
+  var error = utils.error;
+  var warn = utils.warn;
+
+  var FLOAT                         = 0x1406;
+  var FLOAT_VEC2                    = 0x8B50;
+  var FLOAT_VEC3                    = 0x8B51;
+  var FLOAT_VEC4                    = 0x8B52;
+  var INT                           = 0x1404;
+  var INT_VEC2                      = 0x8B53;
+  var INT_VEC3                      = 0x8B54;
+  var INT_VEC4                      = 0x8B55;
+  var BOOL                          = 0x8B56;
+  var BOOL_VEC2                     = 0x8B57;
+  var BOOL_VEC3                     = 0x8B58;
+  var BOOL_VEC4                     = 0x8B59;
+  var FLOAT_MAT2                    = 0x8B5A;
+  var FLOAT_MAT3                    = 0x8B5B;
+  var FLOAT_MAT4                    = 0x8B5C;
+  var SAMPLER_2D                    = 0x8B5E;
+  var SAMPLER_CUBE                  = 0x8B60;
+  var SAMPLER_3D                    = 0x8B5F;
+  var SAMPLER_2D_SHADOW             = 0x8B62;
+  var FLOAT_MAT2x3                  = 0x8B65;
+  var FLOAT_MAT2x4                  = 0x8B66;
+  var FLOAT_MAT3x2                  = 0x8B67;
+  var FLOAT_MAT3x4                  = 0x8B68;
+  var FLOAT_MAT4x2                  = 0x8B69;
+  var FLOAT_MAT4x3                  = 0x8B6A;
+  var SAMPLER_2D_ARRAY              = 0x8DC1;
+  var SAMPLER_2D_ARRAY_SHADOW       = 0x8DC4;
+  var SAMPLER_CUBE_SHADOW           = 0x8DC5;
+  var UNSIGNED_INT                  = 0x1405;
+  var UNSIGNED_INT_VEC2             = 0x8DC6;
+  var UNSIGNED_INT_VEC3             = 0x8DC7;
+  var UNSIGNED_INT_VEC4             = 0x8DC8;
+  var INT_SAMPLER_2D                = 0x8DCA;
+  var INT_SAMPLER_3D                = 0x8DCB;
+  var INT_SAMPLER_CUBE              = 0x8DCC;
+  var INT_SAMPLER_2D_ARRAY          = 0x8DCF;
+  var UNSIGNED_INT_SAMPLER_2D       = 0x8DD2;
+  var UNSIGNED_INT_SAMPLER_3D       = 0x8DD3;
+  var UNSIGNED_INT_SAMPLER_CUBE     = 0x8DD4;
+  var UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
+
+  var TEXTURE_2D                    = 0x0DE1;
+  var TEXTURE_CUBE_MAP              = 0x8513;
+  var TEXTURE_3D                    = 0x806F;
+  var TEXTURE_2D_ARRAY              = 0x8C1A;
+
+  var typeMap = {};
+
+  /**
+   * Returns the corresponding bind point for a given sampler type
+   */
+  function getBindPointForSamplerType(gl, type) {
+    return typeMap[type].bindPoint;
+  }
+
+  // This kind of sucks! If you could compose functions as in `var fn = gl[name];`
+  // this code could be a lot smaller but that is sadly really slow (T_T)
+
+  function floatSetter(gl, location) {
+    return function(v) {
+      gl.uniform1f(location, v);
+    };
+  }
+
+  function floatArraySetter(gl, location) {
+    return function (v) {
+      gl.uniform1fv(location, v);
+    };
+  }
+
+  function floatVec2Setter(gl, location) {
+    return function(v) {
+      gl.uniform2fv(location, v);
+    };
+  }
+
+  function floatVec3Setter(gl, location) {
+    return function(v) {
+      gl.uniform3fv(location, v);
+    };
+  }
+
+  function floatVec4Setter(gl, location) {
+    return function(v) {
+      gl.uniform4fv(location, v);
+    };
+  }
+
+  function intSetter(gl, location) {
+    return function(v) {
+      gl.uniform1i(location, v);
+    };
+  }
+
+  function intArraySetter(gl, location) {
+    return function(v) {
+      gl.uniform1iv(location, v);
+    };
+  }
+
+  function intVec2Setter(gl, location) {
+    return function(v) {
+      gl.uniform2iv(location, v);
+    };
+  }
+
+  function intVec3Setter(gl, location) {
+    return function(v) {
+      gl.uniform3iv(location, v);
+    };
+  }
+
+  function intVec4Setter(gl, location) {
+    return function(v) {
+      gl.uniform4iv(location, v);
+    };
+  }
+
+  function uintSetter(gl, location) {
+    return function(v) {
+      gl.uniform1ui(location, v);
+    };
+  }
+
+  function uintArraySetter(gl, location) {
+    return function(v) {
+      gl.uniform1uiv(location, v);
+    };
+  }
+
+  function uintVec2Setter(gl, location) {
+    return function(v) {
+      gl.uniform2uiv(location, v);
+    };
+  }
+
+  function uintVec3Setter(gl, location) {
+    return function(v) {
+      gl.uniform3uiv(location, v);
+    };
+  }
+
+  function uintVec4Setter(gl, location) {
+    return function(v) {
+      gl.uniform4uiv(location, v);
+    };
+  }
+
+  function floatMat2Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix2fv(location, false, v);
+    };
+  }
+
+  function floatMat3Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix3fv(location, false, v);
+    };
+  }
+
+  function floatMat4Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix4fv(location, false, v);
+    };
+  }
+
+  function floatMat23Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix2x3fv(location, false, v);
+    };
+  }
+
+  function floatMat32Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix3x2fv(location, false, v);
+    };
+  }
+
+  function floatMat24Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix2x4fv(location, false, v);
+    };
+  }
+
+  function floatMat42Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix4x2fv(location, false, v);
+    };
+  }
+
+  function floatMat34Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix3x4fv(location, false, v);
+    };
+  }
+
+  function floatMat43Setter(gl, location) {
+    return function(v) {
+      gl.uniformMatrix4x3fv(location, false, v);
+    };
+  }
+
+  function samplerSetter(gl, type, unit, location) {
+    var bindPoint = getBindPointForSamplerType(gl, type);
+    return function(texture) {
+      gl.uniform1i(location, unit);
+      gl.activeTexture(gl.TEXTURE0 + unit);
+      gl.bindTexture(bindPoint, texture);
+    };
+  }
+
+  function samplerArraySetter(gl, type, unit, location, size) {
+    var bindPoint = getBindPointForSamplerType(gl, type);
+    var units = new Int32Array(size);
+    for (var ii = 0; ii < size; ++ii) {
+      units[ii] = unit + ii;
+    }
+
+    return function(textures) {
+      gl.uniform1iv(location, units);
+      textures.forEach(function(texture, index) {
+        gl.activeTexture(gl.TEXTURE0 + units[index]);
+        gl.bindTexture(bindPoint, texture);
+      });
+    };
+  }
+
+  typeMap[FLOAT]                         = { Type: Float32Array, size:  4, setter: floatSetter,      arraySetter: floatArraySetter, };
+  typeMap[FLOAT_VEC2]                    = { Type: Float32Array, size:  8, setter: floatVec2Setter,  };
+  typeMap[FLOAT_VEC3]                    = { Type: Float32Array, size: 12, setter: floatVec3Setter,  };
+  typeMap[FLOAT_VEC4]                    = { Type: Float32Array, size: 16, setter: floatVec4Setter,  };
+  typeMap[INT]                           = { Type: Int32Array,   size:  4, setter: intSetter,        arraySetter: intArraySetter, };
+  typeMap[INT_VEC2]                      = { Type: Int32Array,   size:  8, setter: intVec2Setter,    };
+  typeMap[INT_VEC3]                      = { Type: Int32Array,   size: 12, setter: intVec3Setter,    };
+  typeMap[INT_VEC4]                      = { Type: Int32Array,   size: 16, setter: intVec4Setter,    };
+  typeMap[UNSIGNED_INT]                  = { Type: Uint32Array,  size:  4, setter: uintSetter,       arraySetter: uintArraySetter, };
+  typeMap[UNSIGNED_INT_VEC2]             = { Type: Uint32Array,  size:  8, setter: uintVec2Setter,   };
+  typeMap[UNSIGNED_INT_VEC3]             = { Type: Uint32Array,  size: 12, setter: uintVec3Setter,   };
+  typeMap[UNSIGNED_INT_VEC4]             = { Type: Uint32Array,  size: 16, setter: uintVec4Setter,   };
+  typeMap[BOOL]                          = { Type: Uint32Array,  size:  4, setter: intSetter,        arraySetter: intArraySetter, };
+  typeMap[BOOL_VEC2]                     = { Type: Uint32Array,  size:  8, setter: intVec2Setter,    };
+  typeMap[BOOL_VEC3]                     = { Type: Uint32Array,  size: 12, setter: intVec3Setter,    };
+  typeMap[BOOL_VEC4]                     = { Type: Uint32Array,  size: 16, setter: intVec4Setter,    };
+  typeMap[FLOAT_MAT2]                    = { Type: Float32Array, size: 16, setter: floatMat2Setter,  };
+  typeMap[FLOAT_MAT3]                    = { Type: Float32Array, size: 36, setter: floatMat3Setter,  };
+  typeMap[FLOAT_MAT4]                    = { Type: Float32Array, size: 64, setter: floatMat4Setter,  };
+  typeMap[FLOAT_MAT2x3]                  = { Type: Float32Array, size: 24, setter: floatMat23Setter, };
+  typeMap[FLOAT_MAT2x4]                  = { Type: Float32Array, size: 32, setter: floatMat24Setter, };
+  typeMap[FLOAT_MAT3x2]                  = { Type: Float32Array, size: 24, setter: floatMat32Setter, };
+  typeMap[FLOAT_MAT3x4]                  = { Type: Float32Array, size: 48, setter: floatMat34Setter, };
+  typeMap[FLOAT_MAT4x2]                  = { Type: Float32Array, size: 32, setter: floatMat42Setter, };
+  typeMap[FLOAT_MAT4x3]                  = { Type: Float32Array, size: 48, setter: floatMat43Setter, };
+  typeMap[SAMPLER_2D]                    = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
+  typeMap[SAMPLER_CUBE]                  = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
+  typeMap[SAMPLER_3D]                    = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D,       };
+  typeMap[SAMPLER_2D_SHADOW]             = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
+  typeMap[SAMPLER_2D_ARRAY]              = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
+  typeMap[SAMPLER_2D_ARRAY_SHADOW]       = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
+  typeMap[SAMPLER_CUBE_SHADOW]           = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
+  typeMap[INT_SAMPLER_2D]                = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
+  typeMap[INT_SAMPLER_3D]                = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D,       };
+  typeMap[INT_SAMPLER_CUBE]              = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
+  typeMap[INT_SAMPLER_2D_ARRAY]          = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
+  typeMap[UNSIGNED_INT_SAMPLER_2D]       = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
+  typeMap[UNSIGNED_INT_SAMPLER_3D]       = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D,       };
+  typeMap[UNSIGNED_INT_SAMPLER_CUBE]     = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
+  typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
 
@@ -1223,14 +1588,20 @@ define('twgl/programs',[], function () {
    * Error Callback
    * @callback ErrorCallback
    * @param {string} msg error message.
+   * @param {number} [lineOffset] amount to add to line number
    * @memberOf module:twgl
    */
 
-  function addLineNumbers(src) {
+  function addLineNumbers(src, lineOffset) {
+    lineOffset = lineOffset || 0;
+    ++lineOffset;
+
     return src.split("\n").map(function(line, ndx) {
-      return (ndx + 1) + ": " + line;
+      return (ndx + lineOffset) + ": " + line;
     }).join("\n");
   }
+
+  var spaceRE = /^[ \t]*\n/;
 
   /**
    * Loads a shader.
@@ -1245,6 +1616,23 @@ define('twgl/programs',[], function () {
     // Create the shader object
     var shader = gl.createShader(shaderType);
 
+    // Remove the first end of line because WebGL 2.0 notrequirebecasebrowserifymessesups
+    // #version 300 es
+    // as the first line. No whitespace allowed before that line
+    // so
+    //
+    // <script>
+    // #version 300 es
+    // </script>
+    //
+    // Has one line before it which is invalid according to GLSL ES 3.00
+    //
+    var lineOffset = 0;
+    if (spaceRE.test(shaderSource)) {
+      lineOffset = 1;
+      shaderSource = shaderSource.replace(spaceRE, '');
+    }
+
     // Load the shader source
     gl.shaderSource(shader, shaderSource);
 
@@ -1256,7 +1644,7 @@ define('twgl/programs',[], function () {
     if (!compiled) {
       // Something went wrong during compilation; get the error
       var lastError = gl.getShaderInfoLog(shader);
-      errFn(addLineNumbers(shaderSource) + "\n*** Error compiling shader: " + lastError);
+      errFn(addLineNumbers(shaderSource, lineOffset) + "\n*** Error compiling shader: " + lastError);
       gl.deleteShader(shader);
       return null;
     }
@@ -1403,18 +1791,6 @@ define('twgl/programs',[], function () {
   }
 
   /**
-   * Returns the corresponding bind point for a given sampler type
-   */
-  function getBindPointForSamplerType(gl, type) {
-    if (type === gl.SAMPLER_2D) {
-      return gl.TEXTURE_2D;
-    }
-    if (type === gl.SAMPLER_CUBE) {
-      return gl.TEXTURE_CUBE_MAP;
-    }
-  }
-
-  /**
    * Creates setter functions for all uniforms of a shader
    * program.
    *
@@ -1436,124 +1812,29 @@ define('twgl/programs',[], function () {
      */
     function createUniformSetter(program, uniformInfo) {
       var location = gl.getUniformLocation(program, uniformInfo.name);
-      var type = uniformInfo.type;
-      // Check if this uniform is an array
       var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
-      if (type === gl.FLOAT && isArray) {
-        return function(v) {
-          gl.uniform1fv(location, v);
-        };
+      var type = uniformInfo.type;
+      var typeInfo = typeMap[type];
+      if (!typeInfo) {
+        throw ("unknown type: 0x" + type.toString(16)); // we should never get here.
       }
-      if (type === gl.FLOAT) {
-        return function(v) {
-          gl.uniform1f(location, v);
-        };
-      }
-      if (type === gl.FLOAT_VEC2) {
-        return function(v) {
-          gl.uniform2fv(location, v);
-        };
-      }
-      if (type === gl.FLOAT_VEC3) {
-        return function(v) {
-          gl.uniform3fv(location, v);
-        };
-      }
-      if (type === gl.FLOAT_VEC4) {
-        return function(v) {
-          gl.uniform4fv(location, v);
-        };
-      }
-      if (type === gl.INT && isArray) {
-        return function(v) {
-          gl.uniform1iv(location, v);
-        };
-      }
-      if (type === gl.INT) {
-        return function(v) {
-          gl.uniform1i(location, v);
-        };
-      }
-      if (type === gl.INT_VEC2) {
-        return function(v) {
-          gl.uniform2iv(location, v);
-        };
-      }
-      if (type === gl.INT_VEC3) {
-        return function(v) {
-          gl.uniform3iv(location, v);
-        };
-      }
-      if (type === gl.INT_VEC4) {
-        return function(v) {
-          gl.uniform4iv(location, v);
-        };
-      }
-      if (type === gl.BOOL && isArray) {
-        return function(v) {
-          gl.uniform1iv(location, v);
-        };
-      }
-      if (type === gl.BOOL) {
-        return function(v) {
-          gl.uniform1i(location, v);
-        };
-      }
-      if (type === gl.BOOL_VEC2) {
-        return function(v) {
-          gl.uniform2iv(location, v);
-        };
-      }
-      if (type === gl.BOOL_VEC3) {
-        return function(v) {
-          gl.uniform3iv(location, v);
-        };
-      }
-      if (type === gl.BOOL_VEC4) {
-        return function(v) {
-          gl.uniform4iv(location, v);
-        };
-      }
-      if (type === gl.FLOAT_MAT2) {
-        return function(v) {
-          gl.uniformMatrix2fv(location, false, v);
-        };
-      }
-      if (type === gl.FLOAT_MAT3) {
-        return function(v) {
-          gl.uniformMatrix3fv(location, false, v);
-        };
-      }
-      if (type === gl.FLOAT_MAT4) {
-        return function(v) {
-          gl.uniformMatrix4fv(location, false, v);
-        };
-      }
-      if ((type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) && isArray) {
-        var units = [];
-        for (var ii = 0; ii < uniformInfo.size; ++ii) {
-          units.push(textureUnit++);
+      if (typeInfo.bindPoint) {
+        // it's a sampler
+        var unit = textureUnit;
+        textureUnit += uniformInfo.size;
+
+        if (isArray) {
+          return typeInfo.arraySetter(gl, type, unit, location, uniformInfo.size);
+        } else {
+          return typeInfo.setter(gl, type, unit, location, uniformInfo.size);
         }
-        return function(bindPoint, units) {
-          return function(textures) {
-            gl.uniform1iv(location, units);
-            textures.forEach(function(texture, index) {
-              gl.activeTexture(gl.TEXTURE0 + units[index]);
-              gl.bindTexture(bindPoint, texture);
-            });
-          };
-        }(getBindPointForSamplerType(gl, type), units);
+      } else {
+        if (typeInfo.arraySetter && isArray) {
+          return typeInfo.arraySetter(gl, location);
+        } else {
+          return typeInfo.setter(gl, location);
+        }
       }
-      if (type === gl.SAMPLER_2D || type === gl.SAMPLER_CUBE) {
-        return function(bindPoint, unit) {
-          return function(texture) {
-            gl.uniform1i(location, unit);
-            gl.activeTexture(gl.TEXTURE0 + unit);
-            gl.bindTexture(bindPoint, texture);
-          };
-        }(getBindPointForSamplerType(gl, type), textureUnit++);
-      }
-      throw ("unknown type: 0x" + type.toString(16)); // we should never get here.
     }
 
     var uniformSetters = { };
@@ -1573,6 +1854,290 @@ define('twgl/programs',[], function () {
       uniformSetters[name] = setter;
     }
     return uniformSetters;
+  }
+
+  /**
+   * @typedef {Object} UniformData
+   * @property {number} type The WebGL type enum for this uniform
+   * @property {number} size The number of elements for this uniform
+   * @property {number} blockNdx The block index this uniform appears in
+   * @property {number} offset The byte offset in the block for this uniform's value
+   * @memberOf module:twgl
+   */
+
+  /**
+   * The specification for one UniformBlockObject
+   *
+   * @typedef {Object} BlockSpec
+   * @property {number} index The index of the block.
+   * @property {number} size The size in bytes needed for the block
+   * @property {number[]} uniformIndices The indices of the uniforms used by the block. These indices
+   *    correspond to entries in a UniformData array in the {@link module:twgl.UniformBlockSpec}.
+   * @property {bool} usedByVertexShader Self explanitory
+   * @property {bool} usedByFragmentShader Self explanitory
+   * @property {bool} used Self explanitory
+   * @memberOf module:twgl
+   */
+
+  /**
+   * A `UniformBlockSpec` represents the data needed to create and bind
+   * UniformBlockObjects for a given program
+   *
+   * @typedef {Object} UniformBlockSpec
+   * @property {Object.<string, twgl:module.BlockSpec> blockSpecs The BlockSpec for each block by block name
+   * @property {UniformData[]} uniformData An array of data for each uniform by uniform index.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * Creates a UniformBlockSpec for the given program.
+   *
+   * A UniformBlockSpec represents the data needed to create and bind
+   * UniformBlockObjects
+   *
+   * @param {WebGL2RenderingContext} gl A WebGL2 Rendering Context
+   * @param {WebGLProgram} program A WebGLProgram for a successfully linked program
+   * @return {module:twgl.UniformBlockSpec} The created UniformBlockSpec
+   * @memberOf module:twgl
+   */
+  function createUniformBlockSpecFromProgram(gl, program) {
+    var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+    var uniformData = [];
+    var uniformIndices = [];
+
+    for (var ii = 0; ii < numUniforms; ++ii) {
+      uniformIndices.push(ii);
+      uniformData.push({});
+      var uniformInfo = gl.getActiveUniform(program, ii);
+      if (!uniformInfo) {
+        break;
+      }
+      // REMOVE [0]?
+      uniformData[ii].name = uniformInfo.name;
+    }
+
+    [
+      [ "UNIFORM_TYPE", "type" ],
+      [ "UNIFORM_SIZE", "size" ],  // num elements
+      [ "UNIFORM_BLOCK_INDEX", "blockNdx" ],
+      [ "UNIFORM_OFFSET", "offset", ],
+    ].forEach(function(pair) {
+      var pname = pair[0];
+      var key = pair[1];
+      gl.getActiveUniforms(program, uniformIndices, gl[pname]).forEach(function(value, ndx) {
+        uniformData[ndx][key] = value;
+      });
+    });
+
+    var blockSpecs = {};
+
+    var numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
+    for (ii = 0; ii < numUniformBlocks; ++ii) {
+      var name = gl.getActiveUniformBlockName(program, ii);
+      var blockSpec = {
+        index: ii,
+        usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
+        usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
+        size: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_DATA_SIZE),
+        uniformIndices: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES),
+      };
+      blockSpec.used = blockSpec.usedByVertexSahder || blockSpec.usedByFragmentShader;
+      blockSpecs[name] = blockSpec;
+    }
+
+    return {
+      blockSpecs: blockSpecs,
+      uniformData: uniformData,
+    };
+  }
+
+  var arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
+
+  /**
+   * Represents a UniformBlockObject including an ArrayBuffer with all the uniform values
+   * and a corresponding WebGLBuffer to hold those values on the GPU
+   *
+   * @typedef {Object} UniformBlockInfo
+   * @property {string} name The name of the block
+   * @property {ArrayBuffer} array The array buffer that contains the uniform values
+   * @property {Float32Array} asFloat A float view on the array buffer. This is useful
+   *    inspecting the contents of the buffer in the debugger.
+   * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
+   * @property {Object.<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
+   *   each Uniform has a correctly typed `ArrayBufferView` into array at the correct offset
+   *   and length of that uniform. So for example a float uniform would have a 1 float `Float32Array`
+   *   view. A single mat4 would have a 16 element `Float32Array` view. An ivec2 would have an
+   *   `Int32Array` view, etc.
+   * @memberOf module:twgl
+   */
+
+  /**
+   * Creates a `UniformBlockInfo` for the specified block
+   *
+   * Note: **A warning is printed to the console of the blockName makes no existing blocks and a dummy
+   * `UniformBlockInfo` is returned**. This is because when debugging GLSL
+   * it is common to comment out large portions of a shader or for example set
+   * the final output to a constant. When that happens blocks get optimized out.
+   * If this function did not create dummy blocks your code would crash when debugging.
+   *
+   * @param {WebGL2RenderingContext} gl A WebGL2RenderingContext
+   * @param {WebGLProgram} program A WebGLProgram
+   * @param {module:twgl.UniformBlockSpec} uinformBlockSpec. A UniformBlockSpec as returned
+   *     from {@link module:twgl.createUniformBlockSpecFromProgram}.
+   * @param {string} blockName The name of the block.
+   * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
+   * @memberOf module:twgl
+   */
+  function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
+    var blockSpecs = uniformBlockSpec.blockSpecs;
+    var uniformData = uniformBlockSpec.uniformData;
+    var blockSpec = blockSpecs[blockName];
+    if (!blockSpec) {
+      warn("no uniform block object named:", blockName);
+      return {
+        name: blockName,
+        uniforms: {},
+      };
+    }
+    var array = new ArrayBuffer(blockSpec.size);
+    var buffer = gl.createBuffer();
+    var uniformBufferIndex = blockSpec.index;
+    gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
+    gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
+
+    var prefix = blockName + ".";
+    if (arraySuffixRE.test(prefix)) {
+      prefix = prefix.replace(arraySuffixRE, ".");
+    }
+    var uniforms = {};
+    blockSpec.uniformIndices.forEach(function(uniformNdx) {
+      var data = uniformData[uniformNdx];
+      var typeInfo = typeMap[data.type];
+      var Type = typeInfo.Type;
+      var length = data.size * typeInfo.size;
+      var name = data.name;
+      if (name.substr(0, prefix.length) === prefix) {
+        name = name.substr(prefix.length);
+      }
+      uniforms[name] = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
+    });
+    return {
+      name: blockName,
+      array: array,
+      asFloat: new Float32Array(array),  // for debugging
+      buffer: buffer,
+      uniforms: uniforms,
+    };
+  }
+
+  /**
+   * Creates a `UniformBlockInfo` for the specified block
+   *
+   * Note: **A warning is printed to the console of the blockName makes no existing blocks and a dummy
+   * `UniformBlockInfo` is returned**. This is because when debugging GLSL
+   * it is common to comment out large portions of a shader or for example set
+   * the final output to a constant. When that happens blocks get optimized out.
+   * If this function did not create dummy blocks your code would crash when debugging.
+   *
+   * @param {WebGL2RenderingContext} gl A WebGL2RenderingContext
+   * @param {module:twgl.ProgramInfo} programInfo a `ProgramInfo`
+   *     as returned from {@link module:twgl.createProgramInfo}
+   * @param {string} blockName The name of the block.
+   * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
+   * @memberOf module:twgl
+   */
+  function createUniformBlockInfo(gl, programInfo, blockName) {
+    return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
+  }
+
+  /**
+   * Binds a unform block to the matching uniform block point.
+   * Matches by blocks by name so blocks must have the same name not just the same
+   * structure.
+   *
+   * If you have changed any values and you upload the valus into the corresponding WebGLBuffer
+   * call {@link module:twgl.setUniformBlock} instead.
+   *
+   * @param {WebGL2RenderingContext} gl A WebGL 2 rendering context.
+   * @param {{module:twgl.ProgramInfo|module:twgl.UniformBlockSpec} programInfo a `ProgramInfo`
+   *     as returned from {@link module:twgl.createProgramInfo} or or `UniformBlockSpec` as
+   *     returned from {@link module:twgl.createUniformBlockSpecFromProgram}.
+   * @param {module:twgl.UniformBlockInfo} uniformBlockInfo a `UniformBlockInfo` as returned from
+   *     {@link module:twgl.createUniformBlockInfo}.
+   * @memberOf module:twgl
+   */
+  function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
+    var uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
+    var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
+    if (blockSpec) {
+      var bufferBindIndex = blockSpec.index;
+      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, 0, uniformBlockInfo.array.byteLength);
+      return true;
+    }
+  }
+
+  /**
+   * Uploads the current uniform values to the corresponding WebGLBuffer
+   * and binds that buffer to the program's corresponding bind point for the uniform block object.
+   *
+   * If you haven't changed any values and you only need to bind the uniform block object
+   * call {@link module:twgl.bindUniformBlock} instead.
+   *
+   * @param {WebGL2RenderingContext} gl A WebGL 2 rendering context.
+   * @param {{module:twgl.ProgramInfo|module:twgl.UniformBlockSpec} programInfo a `ProgramInfo`
+   *     as returned from {@link module:twgl.createProgramInfo} or or `UniformBlockSpec` as
+   *     returned from {@link module:twgl.createUniformBlockSpecFromProgram}.
+   * @param {module:twgl.UniformBlockInfo} uniformBlockInfo a `UniformBlockInfo` as returned from
+   *     {@link module:twgl.createUniformBlockInfo}.
+   * @memberOf module:twgl
+   */
+  function setUniformBlock(gl, programInfo, uniformBlockInfo) {
+    if (bindUniformBlock(gl, programInfo, uniformBlockInfo)) {
+      gl.bufferData(gl.UNIFORM_BUFFER, uniformBlockInfo.array, gl.DYNAMIC_DRAW);
+    }
+  }
+
+  /**
+   * Sets values of a uniform block object
+   *
+   * @param {module:twgl.UniformBlockInfo} uniformBlockInfo A UniformBlockInfo as returned by {@link module:twgl.createUniformBlockInfo}.
+   * @param {Object.<string, ???> values A uniform name to value map where the value is correct for the given
+   *    type of uniform. So for example given a block like
+   *
+   *       uniform SomeBlock {
+   *         float someFloat;
+   *         vec2 someVec2;
+   *         vec3 someVec3Array[2];
+   *         int someInt;
+   *       }
+   *
+   *  You can set the values of the uniform block with
+   *
+   *       twgl.setBlockUniforms(someBlockInfo, {
+   *          someFloat: 12.3,
+   *          someVec2: [1, 2],
+   *          someVec3Array: [1, 2, 3, 4, 5, 6],
+   *          someInt: 5,
+   *       }
+   *
+   *  Arrays can be JavaScript arrays or typed arrays
+   *
+   *  Any name that doesn't match will be ignored
+   * @memberOf module:twgl
+   */
+  function setBlockUniforms(uniformBlockInfo, values) {
+    var uniforms = uniformBlockInfo.uniforms;
+    for (var name in values) {
+      var array = uniforms[name];
+      if (array) {
+        var value = values[name];
+        if (value.length) {
+          array.set(value);
+        } else {
+          array[0] = value;
+        }
+      }
+    }
   }
 
   /**
@@ -1866,11 +2431,17 @@ define('twgl/programs',[], function () {
   function createProgramInfoFromProgram(gl, program) {
     var uniformSetters = createUniformSetters(gl, program);
     var attribSetters = createAttributeSetters(gl, program);
-    return {
+    var programInfo = {
       program: program,
       uniformSetters: uniformSetters,
       attribSetters: attribSetters,
     };
+
+    if (utils.isWebGL2(gl)) {
+      programInfo.uniformBlockSpec = createUniformBlockSpecFromProgram(gl, program);
+    }
+
+    return programInfo;
   }
 
   /**
@@ -1920,10 +2491,16 @@ define('twgl/programs',[], function () {
     "createProgramInfo": createProgramInfo,
     "createProgramInfoFromProgram": createProgramInfoFromProgram,
     "createUniformSetters": createUniformSetters,
+    "createUniformBlockSpecFromProgram": createUniformBlockSpecFromProgram,
+    "createUniformBlockInfoFromProgram": createUniformBlockInfoFromProgram,
+    "createUniformBlockInfo": createUniformBlockInfo,
 
     "setAttributes": setAttributes,
     "setBuffersAndAttributes": setBuffersAndAttributes,
     "setUniforms": setUniforms,
+    "setUniformBlock": setUniformBlock,
+    "setBlockUniforms": setBlockUniforms,
+    "bindUniformBlock": bindUniformBlock,
   };
 
 });
@@ -2071,76 +2648,6 @@ define('twgl/draw',[
     "drawObjectList": drawObjectList,
   };
 
-});
-
-
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-define('twgl/utils',[], function () {
-  
-
-  /**
-   * Copy an object 1 level deep
-   * @param {object} src object to copy
-   * @return {object} the copy
-   */
-  function shallowCopy(src) {
-    var dst = {};
-    Object.keys(src).forEach(function(key) {
-      dst[key] = src[key];
-    });
-    return dst;
-  }
-
-  /**
-   * Copy named properties
-   *
-   * @param {string[]} names names of properties to copy
-   * @param {object} src object to copy properties from
-   * @param {object} dst object to copy properties to
-   */
-  function copyNamedProperties(names, src, dst) {
-    names.forEach(function(name) {
-      var value = src[name];
-      if (value !== undefined) {
-        dst[name] = value;
-      }
-    });
-  }
-
-  return {
-    copyNamedProperties: copyNamedProperties,
-    shallowCopy: shallowCopy,
-  };
 });
 
 
@@ -2620,7 +3127,7 @@ define('twgl/textures',[
     }
     img.onerror = function() {
       var msg = "couldn't load image: " + url;
-      error(msg);
+      utils.error(msg);
       callback(msg, img);
     };
     img.onload = function() {
@@ -3538,13 +4045,15 @@ define('twgl/twgl',[
     './programs',
     './textures',
     './typedarrays',
+    './utils',
   ], function (
     attributes,
     draw,
     framebuffers,
     programs,
     textures,
-    typedArrays) {
+    typedArrays,
+    utils) {
   
 
   /**
@@ -3656,6 +4165,53 @@ define('twgl/twgl',[
   }
 
   /**
+   * Creates a webgl context.
+   *
+   * Will return a WebGL2 context if possible.
+   *
+   * You can check if it's WebGL2 with
+   *
+   *     twgl.isWebGL2(gl);
+   *
+   * @param {HTMLCanvasElement} canvas The canvas tag to get
+   *     context from. If one is not passed in one will be
+   *     created.
+   * @return {WebGLRenderingContext} The created context.
+   */
+  function createContext(canvas, opt_attribs) {
+    var names = ["webgl2", "experimental-webgl2", "webgl", "experimental-webgl"];
+    var context = null;
+    for (var ii = 0; ii < names.length; ++ii) {
+      try {
+        context = canvas.getContext(names[ii], opt_attribs);
+      } catch(e) {}  // eslint-disable-line
+      if (context) {
+        break;
+      }
+    }
+    return context;
+  }
+
+  /**
+   * Gets a WebGL context.  Will create a WebGL2 context if possible.
+   *
+   * You can check if it's WebGL2 with
+   *
+   *    function isWebGL2(gl) {
+   *      return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0 ") == 0;
+   *    }
+   *
+   * @param {HTMLCanvasElement} canvas a canvas element.
+   * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
+   * @return {WebGLRenderingContext} The created context.
+   * @memberOf module:twgl
+   */
+  function getContext(canvas, opt_attribs) {
+    var gl = createContext(canvas, opt_attribs);
+    return gl;
+  }
+
+  /**
    * Resize a canvas to match the size it's displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
    * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` if you want to.
@@ -3679,7 +4235,9 @@ define('twgl/twgl',[
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   var api = {
+    "getContext": getContext,
     "getWebGLContext": getWebGLContext,
+    "isWebGL2": utils.isWebGL2,
     "resizeCanvasToDisplaySize": resizeCanvasToDisplaySize,
     "setDefaults": setDefaults,
   };
