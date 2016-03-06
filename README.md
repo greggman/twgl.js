@@ -395,6 +395,7 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [item list](http://twgljs.org/examples/itemlist.html)
 *   [no box skybox](http://twgljs.org/examples/no-box-skybox.html)
 *   [cross origin](http://twgljs.org/examples/crossorigin.html)
+*   [vertex array objects](http://twgljs.org/examples/vertex-array-objects.html)
 
 ### WebGL 2 Examples
 
