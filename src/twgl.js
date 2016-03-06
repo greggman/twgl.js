@@ -148,13 +148,21 @@ define([
     if (!gl || !defaults.enableVertexArrayObjects) {
       return;
     }
-    if (!utils.isWebGL2(gl)) {
+    if (utils.isWebGL1(gl)) {
       var ext = gl.getExtension("OES_vertex_array_object");
       if (ext) {
-        gl.createVertexArray = ext.createVertexArrayOES.bind(ext);
-        gl.deleteVertexArray = ext.deleteVertexArrayOES.bind(ext);
-        gl.isVertexArray = ext.isVertexArrayOES.bind(ext);
-        gl.bindVertexArray = ext.bindVertexArrayOES.bind(ext);
+        gl.createVertexArray = function() {
+          return ext.createVertexArrayOES();
+        };
+        gl.deleteVertexArray = function(v) {
+          ext.deleteVertexArrayOES(v);
+        };
+        gl.isVertexArray = function(v) {
+          return ext.isVertexArrayOES(v);
+        };
+        gl.bindVertexArray = function(v) {
+          ext.bindVertexArrayOES(v);
+        };
         gl.VERTEX_ARRAY_BINDING = ext.VERTEX_ARRAY_BINDING_OES;
       }
     }
@@ -267,6 +275,7 @@ define([
   var api = {
     "getContext": getContext,
     "getWebGLContext": getWebGLContext,
+    "isWebGL1": utils.isWebGL1,
     "isWebGL2": utils.isWebGL2,
     "resizeCanvasToDisplaySize": resizeCanvasToDisplaySize,
     "setDefaults": setDefaults,

@@ -84,6 +84,15 @@ define([], function () {
     return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
   }
 
+  /**
+   * Check if context is WebGL 1.0
+   * @return {bool} true if it's WebGL 1.0
+   * @memberOf module:twgl
+   */
+  function isWebGL1(gl) {
+    return gl.getParameter(gl.VERSION).indexOf("WebGL 1.0") === 0;
+  }
+
   var error =
       (    window.console
         && window.console.error
@@ -104,6 +113,7 @@ define([], function () {
     copyExistingProperties: copyExistingProperties,
     copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
+    isWebGL1: isWebGL1,
     isWebGL2: isWebGL2,
     error: error,
     warn: warn,
