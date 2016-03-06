@@ -1117,14 +1117,19 @@ define([
    *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
-   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from `createProgrmaInfo` Attribute setters as returned from `createAttributeSetters`
-   * @param {module:twgl.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
+   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
+   * @param {(module:twgl.BufferInfo|module:twgl.vertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
+   *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
    * @memberOf module:twgl
    */
   function setBuffersAndAttributes(gl, programInfo, buffers) {
-    setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
-    if (buffers.indices) {
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+    if (buffers.vertexArrayObject) {
+      gl.bindVertexArray(buffers.vertexArrayObject);
+    } else {
+      setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
+      if (buffers.indices) {
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+      }
     }
   }
 
