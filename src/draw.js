@@ -44,28 +44,35 @@ define([
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
-   * @param {module:twgl.BufferInfo} bufferInfo as returned from createBufferInfoFromArrays
+   * @param {(module:twgl.BufferInfo|module.twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
+   *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl
    */
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
     var indices = bufferInfo.indices;
+    var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
     offset = offset === undefined ? 0 : offset;
-    if (indices) {
-      gl.drawElements(type, numElements, bufferInfo.elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+    if (elementType || indices) {
+      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
     } else {
       gl.drawArrays(type, offset, numElements);
     }
   }
 
   /**
+   * A DrawObject is useful for putting objects in to an array and passing them to {@link module:twgl.drawObjectList}.
+   *
+   * You need either a `BufferInfo` or a `VertexArrayInfo`.
+   *
    * @typedef {Object} DrawObject
    * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
    * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
-   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
-   * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
+   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
+   * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
+   * @property {module:twgl.VertexArrayInfo} [vertexArrayInfo] A VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @property {Object<string, ?>} uniforms The values for the uniforms.
    *   You can pass multiple objects by putting them in an array. For example
    *
@@ -105,7 +112,7 @@ define([
       }
 
       var programInfo = object.programInfo;
-      var bufferInfo = object.bufferInfo;
+      var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
       var bindBuffers = false;
 
       if (programInfo !== lastUsedProgramInfo) {
@@ -121,6 +128,9 @@ define([
 
       // Setup all the needed attributes.
       if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
+        if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject && !bufferInfo.vertexArrayObject) {
+          gl.bindVertexArray(null);
+        }
         lastUsedBufferInfo = bufferInfo;
         programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       }
@@ -131,6 +141,10 @@ define([
       // Draw
       drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo, object.count, object.offset);
     });
+
+    if (lastUsedBufferInfo.vertexArrayObject) {
+      gl.bindVertexArray(null);
+    }
   }
 
   // Using quotes prevents Uglify from changing the names.
