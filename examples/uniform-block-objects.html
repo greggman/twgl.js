@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - uniform-object-blocks" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/uniform-object-blocks.png" />
+    <meta property="og:description" content="TWGL.js - uniform-object-blocks" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - uniform-object-blocks">
+    <meta name="twitter:url" content="http://twgljs.org/examples/uniform-object-blocks.html">
+    <meta name="twitter:description" content="TWGL.js - uniform-object-blocks">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/uniform-object-blocks.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - uniform buffer objects</title>
+    <style>
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: monospace;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - uniform-object-blocks</div>
+  </body>
+  <script id="vs" type="notjs">
+#version 300 es
+uniform View {
+  mat4 u_viewInverse;
+  mat4 u_viewProjection;
+};
+
+uniform Lights {
+  vec3 u_lightWorldPos;
+  vec4 u_lightColor;
+} lights[2];
+
+uniform Model {
+  mat4 u_world;
+  mat4 u_worldInverseTranspose;
+} foo;
+
+in vec4 a_position;
+in vec3 a_normal;
+in vec2 a_texcoord;
+
+out vec4 v_position;
+out vec2 v_texCoord;
+out vec3 v_normal;
+out vec3 v_surfaceToLight;
+out vec3 v_surfaceToView;
+
+void main() {
+  v_texCoord = a_texcoord;
+//  v_position = (foo.u_world * u_viewProjection * a_position);
+  v_position = (u_viewProjection * foo.u_world * a_position);
+  v_normal = (foo.u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
+  v_surfaceToLight = lights[0].u_lightWorldPos - (foo.u_world * a_position).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (foo.u_world * a_position)).xyz;
+  gl_Position = v_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+#version 300 es
+precision mediump float;
+
+in vec4 v_position;
+in vec2 v_texCoord;
+in vec3 v_normal;
+in vec3 v_surfaceToLight;
+in vec3 v_surfaceToView;
+
+uniform Lights {
+  vec3 u_lightWorldPos;
+  vec4 u_lightColor;
+} lights[2];
+
+uniform sampler2D u_diffuse;
+
+uniform Material {
+  vec4 u_ambient;
+  vec4 u_specular;
+  float u_shininess;
+  float u_specularFactor;
+};
+
+out vec4 theColor;
+
+vec4 lit(float l ,float h, float m) {
+  return vec4(1.0,
+              max(abs(l), 0.0),
+              (l > 0.0) ? pow(max(0.0, h), m) : 0.0,
+              1.0);
+}
+
+
+
+void main() {
+  vec4 diffuseColor = texture(u_diffuse, v_texCoord);
+  vec3 a_normal = normalize(v_normal);
+  vec3 surfaceToLight = normalize(v_surfaceToLight);
+  vec3 surfaceToView = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLight + surfaceToView);
+  vec4 litR = lit(dot(a_normal, surfaceToLight),
+                    dot(a_normal, halfVector), u_shininess);
+  vec4 outColor = vec4((
+  lights[0].u_lightColor * (diffuseColor * litR.y + diffuseColor * u_ambient +
+                u_specular * litR.z * u_specularFactor)).rgb,
+      diffuseColor.a);
+  theColor = outColor;
+}
+  </script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script src="../dist/twgl-full.min.js"></script>
+  <script>
+function main() {
+  var m4 = twgl.m4;
+  twgl.setDefaults({attribPrefix: "a_"});
+  var gl = twgl.getContext(document.getElementById("c"));
+  console.log("using:" + gl.getParameter(gl.VERSION));  // eslint-disable-line
+  if (!twgl.isWebGL2(gl)) {
+    alert("Sorry, this example requires WebGL 2.0");
+    return;
+  }
+
+  var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+  var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
+
+  var tex = twgl.createTexture(gl, {
+    min: gl.NEAREST,
+    mag: gl.NEAREST,
+    src: [
+      255, 255, 255, 255,
+      192, 192, 192, 255,
+      192, 192, 192, 255,
+      255, 255, 255, 255,
+    ],
+  });
+
+  function rand(min, max) {
+    if (max === undefined) {
+      max = min;
+      min = 0;
+    }
+    return min + Math.random() * (max - min);
+  }
+
+  function randElement(array) {
+    return array[rand(array.length) | 0];
+  }
+
+  var uniforms = {
+    u_diffuse: tex,
+  };
+
+  // We pull out the Float32Array views for viewProjection and viewInverse (and world below)
+  // from the viewUboInfo but, if we're modifying the shaders it's possible they might
+  // get optimized away. So, the `|| Float32Array` basically just makes a dummy in that case
+  // so the rest of the code doesn't have to check for existence.
+
+  var viewUboInfo = twgl.createUniformBlockInfo(gl, programInfo, "View");
+  var viewProjection = viewUboInfo.uniforms.u_viewProjection || new Float32Array(16);
+  var viewInverse = viewUboInfo.uniforms.u_viewInverse || new Float32Array(16);
+
+  var lightUboInfos = [];
+  for (var ii = 0; ii < 10; ++ii) {
+    var lightUbo = twgl.createUniformBlockInfo(gl, programInfo, "Lights[0]");
+    twgl.setBlockUniforms(lightUbo, {
+      u_lightColor: chroma.hsv(rand(360), 0.6, 0.8).gl(),
+      u_lightWorldPos: [rand(-100, 100), rand(-100, 100), rand(-100, 100)],
+    });
+    twgl.setUniformBlock(gl, programInfo, lightUbo);
+    lightUboInfos.push(lightUbo);
+  }
+
+  var materialUboInfos = [];
+  for (ii = 0; ii < 4; ++ii) {
+    var materialUbo = twgl.createUniformBlockInfo(gl, programInfo, "Material");
+    twgl.setBlockUniforms(materialUbo, {
+      u_ambient: [0, 0, 0, 1],
+      u_specular: chroma.hsv(rand(360), 1, 0.5).gl(),
+      u_shininess: rand(25, 250),
+      u_specularFactor: rand(0.5, 1),
+    });
+    twgl.setUniformBlock(gl, programInfo, materialUbo);
+
+    materialUboInfos.push(materialUbo);
+  }
+
+  var objects = [];
+  for (ii = 0; ii < 300; ++ii) {
+    var modelUbo = twgl.createUniformBlockInfo(gl, programInfo, "Model");
+    var world = m4.rotateY(m4.rotateX(m4.translation([rand(-30, 30), rand(-30, 30), rand(-30, 30)]), rand(Math.PI * 2)), rand(Math.PI));
+
+    twgl.setBlockUniforms(modelUbo, {
+      u_world: world,
+      u_worldInverseTranspose: m4.transpose(m4.inverse(world)),
+    });
+    twgl.setUniformBlock(gl, programInfo, modelUbo);
+
+    var o = {
+      modelUboInfo: modelUbo,
+      materialUboInfo: randElement(materialUboInfos),
+      lightUboInfo: randElement(lightUboInfos),
+      world: modelUbo.uniforms.u_world || new Float32Array(16),  // See above
+    };
+    objects.push(o);
+  }
+
+  function render(time) {
+    time *= 0.001;
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 250);
+    var radius = 70;
+    var eye = [Math.sin(time) * radius, Math.sin(time * 0.3) * radius * 0.6, Math.cos(time) * radius];
+    var target = [0, 0, 0];
+    var up = [0, 1, 0];
+
+    var camera = m4.lookAt(eye, target, up, viewInverse);
+    var view = m4.inverse(camera);
+    m4.multiply(view, projection, viewProjection);
+
+    gl.useProgram(programInfo.program);
+    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    twgl.setUniforms(programInfo, uniforms);
+    twgl.setUniformBlock(gl, programInfo, viewUboInfo);
+
+    objects.forEach(function(o) {
+      twgl.bindUniformBlock(gl, programInfo, o.lightUboInfo);
+      twgl.bindUniformBlock(gl, programInfo, o.materialUboInfo);
+      twgl.bindUniformBlock(gl, programInfo, o.modelUboInfo);
+
+      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+    });
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+main();
+  </script>
+</html>
+
+
