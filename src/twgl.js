@@ -36,13 +36,15 @@ define([
     './programs',
     './textures',
     './typedarrays',
+    './utils',
   ], function (
     attributes,
     draw,
     framebuffers,
     programs,
     textures,
-    typedArrays) {
+    typedArrays,
+    utils) {
   "use strict";
 
   /**
@@ -154,6 +156,53 @@ define([
   }
 
   /**
+   * Creates a webgl context.
+   *
+   * Will return a WebGL2 context if possible.
+   *
+   * You can check if it's WebGL2 with
+   *
+   *     twgl.isWebGL2(gl);
+   *
+   * @param {HTMLCanvasElement} canvas The canvas tag to get
+   *     context from. If one is not passed in one will be
+   *     created.
+   * @return {WebGLRenderingContext} The created context.
+   */
+  function createContext(canvas, opt_attribs) {
+    var names = ["webgl2", "experimental-webgl2", "webgl", "experimental-webgl"];
+    var context = null;
+    for (var ii = 0; ii < names.length; ++ii) {
+      try {
+        context = canvas.getContext(names[ii], opt_attribs);
+      } catch(e) {}  // eslint-disable-line
+      if (context) {
+        break;
+      }
+    }
+    return context;
+  }
+
+  /**
+   * Gets a WebGL context.  Will create a WebGL2 context if possible.
+   *
+   * You can check if it's WebGL2 with
+   *
+   *    function isWebGL2(gl) {
+   *      return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0 ") == 0;
+   *    }
+   *
+   * @param {HTMLCanvasElement} canvas a canvas element.
+   * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
+   * @return {WebGLRenderingContext} The created context.
+   * @memberOf module:twgl
+   */
+  function getContext(canvas, opt_attribs) {
+    var gl = createContext(canvas, opt_attribs);
+    return gl;
+  }
+
+  /**
    * Resize a canvas to match the size it's displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
    * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` if you want to.
@@ -177,7 +226,9 @@ define([
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   var api = {
+    "getContext": getContext,
     "getWebGLContext": getWebGLContext,
+    "isWebGL2": utils.isWebGL2,
     "resizeCanvasToDisplaySize": resizeCanvasToDisplaySize,
     "setDefaults": setDefaults,
   };

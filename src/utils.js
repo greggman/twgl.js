@@ -61,9 +61,37 @@ define([], function () {
     });
   }
 
+  /**
+   * Check if context is WebGL 2.0
+   * @return {bool} true if it's WebGL 2.0
+   * @memberOf module:twgl
+   */
+  function isWebGL2(gl) {
+    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  }
+
+  var error =
+      (    window.console
+        && window.console.error
+        && typeof window.console.error === "function"
+      )
+      ? window.console.error.bind(window.console)
+      : function() { };
+
+  var warn =
+      (    window.console
+        && window.console.warn
+        && typeof window.console.warn === "function"
+      )
+      ? window.console.warn.bind(window.console)
+      : function() { };
+
   return {
     copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
+    isWebGL2: isWebGL2,
+    error: error,
+    warn: warn,
   };
 });
 

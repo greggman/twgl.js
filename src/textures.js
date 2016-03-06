@@ -474,7 +474,7 @@ define([
     }
     img.onerror = function() {
       var msg = "couldn't load image: " + url;
-      error(msg);
+      utils.error(msg);
       callback(msg, img);
     };
     img.onload = function() {
