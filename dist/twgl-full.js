@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.4.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -634,6 +634,15 @@ define('twgl/utils',[], function () {
     return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
   }
 
+  /**
+   * Check if context is WebGL 1.0
+   * @return {bool} true if it's WebGL 1.0
+   * @memberOf module:twgl
+   */
+  function isWebGL1(gl) {
+    return gl.getParameter(gl.VERSION).indexOf("WebGL 1.0") === 0;
+  }
+
   var error =
       (    window.console
         && window.console.error
@@ -654,6 +663,7 @@ define('twgl/utils',[], function () {
     copyExistingProperties: copyExistingProperties,
     copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
+    isWebGL1: isWebGL1,
     isWebGL2: isWebGL2,
     error: error,
     warn: warn,
@@ -4224,13 +4234,21 @@ define('twgl/twgl',[
     if (!gl || !defaults.enableVertexArrayObjects) {
       return;
     }
-    if (!utils.isWebGL2(gl)) {
+    if (utils.isWebGL1(gl)) {
       var ext = gl.getExtension("OES_vertex_array_object");
       if (ext) {
-        gl.createVertexArray = ext.createVertexArrayOES.bind(ext);
-        gl.deleteVertexArray = ext.deleteVertexArrayOES.bind(ext);
-        gl.isVertexArray = ext.isVertexArrayOES.bind(ext);
-        gl.bindVertexArray = ext.bindVertexArrayOES.bind(ext);
+        gl.createVertexArray = function() {
+          return ext.createVertexArrayOES();
+        };
+        gl.deleteVertexArray = function(v) {
+          ext.deleteVertexArrayOES(v);
+        };
+        gl.isVertexArray = function(v) {
+          return ext.isVertexArrayOES(v);
+        };
+        gl.bindVertexArray = function(v) {
+          ext.bindVertexArrayOES(v);
+        };
         gl.VERTEX_ARRAY_BINDING = ext.VERTEX_ARRAY_BINDING_OES;
       }
     }
@@ -4343,6 +4361,7 @@ define('twgl/twgl',[
   var api = {
     "getContext": getContext,
     "getWebGLContext": getWebGLContext,
+    "isWebGL1": utils.isWebGL1,
     "isWebGL2": utils.isWebGL2,
     "resizeCanvasToDisplaySize": resizeCanvasToDisplaySize,
     "setDefaults": setDefaults,
