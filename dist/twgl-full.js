@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -579,10 +579,125 @@ define('twgl/typedarrays',[], function () {
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+define('twgl/utils',[], function () {
+  
+
+  /**
+   * Copy an object 1 level deep
+   * @param {object} src object to copy
+   * @return {object} the copy
+   */
+  function shallowCopy(src) {
+    var dst = {};
+    Object.keys(src).forEach(function(key) {
+      dst[key] = src[key];
+    });
+    return dst;
+  }
+
+  /**
+   * Copy named properties
+   *
+   * @param {string[]} names names of properties to copy
+   * @param {object} src object to copy properties from
+   * @param {object} dst object to copy properties to
+   */
+  function copyNamedProperties(names, src, dst) {
+    names.forEach(function(name) {
+      var value = src[name];
+      if (value !== undefined) {
+        dst[name] = value;
+      }
+    });
+  }
+
+  /**
+   * Copies properties from source to dest only if a matching key is in dest
+   *
+   * @param {Object.<string, ?>} src the source
+   * @param {Object.<string, ?>} dst the dest
+   */
+  function copyExistingProperties(src, dst) {
+    Object.keys(dst).forEach(function(key) {
+      if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
+        dst[key] = src[key];
+      }
+    });
+  }
+
+  /**
+   * Check if context is WebGL 2.0
+   * @return {bool} true if it's WebGL 2.0
+   * @memberOf module:twgl
+   */
+  function isWebGL2(gl) {
+    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  }
+
+  var error =
+      (    window.console
+        && window.console.error
+        && typeof window.console.error === "function"
+      )
+      ? window.console.error.bind(window.console)
+      : function() { };
+
+  var warn =
+      (    window.console
+        && window.console.warn
+        && typeof window.console.warn === "function"
+      )
+      ? window.console.warn.bind(window.console)
+      : function() { };
+
+  return {
+    copyExistingProperties: copyExistingProperties,
+    copyNamedProperties: copyNamedProperties,
+    shallowCopy: shallowCopy,
+    isWebGL2: isWebGL2,
+    error: error,
+    warn: warn,
+  };
+});
+
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 define('twgl/attributes',[
     './typedarrays',
+    './utils',
   ], function (
-    typedArrays) {
+    typedArrays,
+    utils) {
   
 
   // make sure we don't see a global gl
@@ -616,9 +731,7 @@ define('twgl/attributes',[
   }
 
   function setDefaults(newDefaults) {
-    Object.keys(newDefaults).forEach(function(key) {
-      defaults[key] = newDefaults[key];
-    });
+    utils.copyExistingProperties(newDefaults, defaults);
   }
 
   function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
@@ -953,11 +1066,19 @@ define('twgl/attributes',[
   /**
    * @typedef {Object} BufferInfo
    * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
+   * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
    * @property {WebGLBuffer} [indices] The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
-   * @property {Object.<string, module:twgl.AttribInfo>} attribs The attribs approriate to call `setAttributes`
+   * @property {Object.<string, module:twgl.AttribInfo>} [attribs] The attribs approriate to call `setAttributes`
    * @memberOf module:twgl
    */
 
+  /**
+   * @typedef {Object} VertexArrayInfo
+   * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
+   * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
+   * @property {WebGLVertexArrayObject> [vertexArrayObject] a vertex array object
+   * @memberOf module:twgl
+   */
 
   /**
    * Creates a BufferInfo from an object of arrays.
@@ -1132,6 +1253,58 @@ define('twgl/attributes',[
     return buffers;
   }
 
+  /**
+   * Creates a BufferInfo from an object of arrays.
+   *
+   * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
+   * {@link module:twgl:drawBufferInfo}.
+   *
+   * > **IMPORTANT:** Vertex Array Objects are **not** a direct analog for a BufferInfo. Vertex Array Objects
+   *   assign buffers to specific attributes at creation time. That means they can only be used with programs
+   *   who's attributes use the same attribute locations for the same purposes.
+   *
+   * > Bind your attribute locations by passing an array of attribute names to {@link module:twgl.createProgramInfo}
+   *   or use WebGL 2's GLSL ES 3's `layout(location = <num>)` to make sure locations match.
+   *
+   * also
+   *
+   * > **IMPORTANT:** After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object
+   *   that Vertex Array Object will be bound. That means **ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES**
+   *   will affect the Vertex Array Object state.
+   *
+   * > Call `gl.bindVertexArray(null)` to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.
+   *
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
+   *
+   *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
+   *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
+   *    for shader 1 then only attributes A, B, and C will have their attributes set because TWGL doesn't
+   *    now attribute D's location.
+   *
+   *    So, you can pass in both shader 1 and shader 2's programInfo
+   *
+   * @return {module:twgl.VertexArrayInfo} The created VertexArrayInfo
+   *
+   * @memberOf module:twgl
+   */
+  function createVertexArrayInfo(gl, programInfos, bufferInfo) {
+    var vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    if (!programInfos.length) {
+      programInfos = [programInfos];
+    }
+    programInfos.forEach(function(programInfo) {
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    });
+    gl.bindVertexArray(null);
+    return {
+      numElements: bufferInfo.numElements,
+      elementType: bufferInfo.elementType,
+      vertexArrayObject: vao,
+    };
+  }
+
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
@@ -1142,6 +1315,8 @@ define('twgl/attributes',[
     "createBufferInfoFromArrays": createBufferInfoFromArrays,
     "setAttribInfoBufferFromArray": setAttribInfoBufferFromArray,
 
+    "createVertexArrayInfo": createVertexArrayInfo,
+
     "setAttributePrefix": setAttributePrefix,
 
     "setDefaults_": setDefaults,
@@ -1149,104 +1324,6 @@ define('twgl/attributes',[
     "getArray_": getArray,
   };
 
-});
-
-
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-define('twgl/utils',[], function () {
-  
-
-  /**
-   * Copy an object 1 level deep
-   * @param {object} src object to copy
-   * @return {object} the copy
-   */
-  function shallowCopy(src) {
-    var dst = {};
-    Object.keys(src).forEach(function(key) {
-      dst[key] = src[key];
-    });
-    return dst;
-  }
-
-  /**
-   * Copy named properties
-   *
-   * @param {string[]} names names of properties to copy
-   * @param {object} src object to copy properties from
-   * @param {object} dst object to copy properties to
-   */
-  function copyNamedProperties(names, src, dst) {
-    names.forEach(function(name) {
-      var value = src[name];
-      if (value !== undefined) {
-        dst[name] = value;
-      }
-    });
-  }
-
-  /**
-   * Check if context is WebGL 2.0
-   * @return {bool} true if it's WebGL 2.0
-   * @memberOf module:twgl
-   */
-  function isWebGL2(gl) {
-    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
-  }
-
-  var error =
-      (    window.console
-        && window.console.error
-        && typeof window.console.error === "function"
-      )
-      ? window.console.error.bind(window.console)
-      : function() { };
-
-  var warn =
-      (    window.console
-        && window.console.warn
-        && typeof window.console.warn === "function"
-      )
-      ? window.console.warn.bind(window.console)
-      : function() { };
-
-  return {
-    copyNamedProperties: copyNamedProperties,
-    shallowCopy: shallowCopy,
-    isWebGL2: isWebGL2,
-    error: error,
-    warn: warn,
-  };
 });
 
 
@@ -2369,14 +2446,19 @@ define('twgl/programs',[
    *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
-   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from `createProgrmaInfo` Attribute setters as returned from `createAttributeSetters`
-   * @param {module:twgl.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
+   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
+   * @param {(module:twgl.BufferInfo|module:twgl.vertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
+   *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
    * @memberOf module:twgl
    */
   function setBuffersAndAttributes(gl, programInfo, buffers) {
-    setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
-    if (buffers.indices) {
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+    if (buffers.vertexArrayObject) {
+      gl.bindVertexArray(buffers.vertexArrayObject);
+    } else {
+      setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
+      if (buffers.indices) {
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+      }
     }
   }
 
@@ -2529,28 +2611,35 @@ define('twgl/draw',[
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
-   * @param {module:twgl.BufferInfo} bufferInfo as returned from createBufferInfoFromArrays
+   * @param {(module:twgl.BufferInfo|module.twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
+   *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl
    */
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
     var indices = bufferInfo.indices;
+    var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
     offset = offset === undefined ? 0 : offset;
-    if (indices) {
-      gl.drawElements(type, numElements, bufferInfo.elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+    if (elementType || indices) {
+      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
     } else {
       gl.drawArrays(type, offset, numElements);
     }
   }
 
   /**
+   * A DrawObject is useful for putting objects in to an array and passing them to {@link module:twgl.drawObjectList}.
+   *
+   * You need either a `BufferInfo` or a `VertexArrayInfo`.
+   *
    * @typedef {Object} DrawObject
    * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
    * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
-   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
-   * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
+   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
+   * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
+   * @property {module:twgl.VertexArrayInfo} [vertexArrayInfo] A VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @property {Object<string, ?>} uniforms The values for the uniforms.
    *   You can pass multiple objects by putting them in an array. For example
    *
@@ -2590,7 +2679,7 @@ define('twgl/draw',[
       }
 
       var programInfo = object.programInfo;
-      var bufferInfo = object.bufferInfo;
+      var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
       var bindBuffers = false;
 
       if (programInfo !== lastUsedProgramInfo) {
@@ -2606,6 +2695,9 @@ define('twgl/draw',[
 
       // Setup all the needed attributes.
       if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
+        if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject && !bufferInfo.vertexArrayObject) {
+          gl.bindVertexArray(null);
+        }
         lastUsedBufferInfo = bufferInfo;
         programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       }
@@ -2616,6 +2708,10 @@ define('twgl/draw',[
       // Draw
       drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo, object.count, object.offset);
     });
+
+    if (lastUsedBufferInfo.vertexArrayObject) {
+      gl.bindVertexArray(null);
+    }
   }
 
   // Using quotes prevents Uglify from changing the names.
@@ -2672,6 +2768,7 @@ define('twgl/textures',[
   var defaults = {
     textureColor: new Uint8Array([128, 192, 255, 255]),
     textureOptions: {},
+    crossOrigin: undefined,
   };
   var isArrayBuffer = typedArrays.isArrayBuffer;
 
@@ -2712,18 +2809,11 @@ define('twgl/textures',[
     defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
   }
 
-  var invalidDefaultKeysRE = /^textureColor$/;
-  function validDefaultKeys(key) {
-    return !invalidDefaultKeysRE.test(key);
-  }
-
   function setDefaults(newDefaults) {
+    utils.copyExistingProperties(newDefaults, defaults);
     if (newDefaults.textureColor) {
       setDefaultTextureColor(newDefaults.textureColor);
     }
-    Object.keys(newDefaults).filter(validDefaultKeys).forEach(function(key) {
-      defaults[key] = newDefaults[key];
-    });
   }
 
   /**
@@ -4041,6 +4131,9 @@ define('twgl/twgl',[
 
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
+  var defaults = {
+    enableVertexArrayObjects: true,
+  };
 
   /**
    * Various default settings for twgl.
@@ -4092,6 +4185,19 @@ define('twgl/twgl',[
    *
    *   Also see {@link module:twgl.TextureOptions}.
    *
+   * @property {bool} enableVertexArrayObjects
+   *
+   *   If true then in WebGL 1.0 will attempt to get the `OES_vertex_array_object` extension.
+   *   If successful it will copy create/bind/delete/isVertexArrayOES from the extension to
+   *   the WebGLRenderingContext removing the OES at the end which is the standard entry point
+   *   for WebGL 2.
+   *
+   *   Note: According to webglstats.com 90% of devices support `OES_vertex_array_object`.
+   *   If you just want to count on support I suggest using [this polyfill](https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js)
+   *   or ignoring devices that don't support them.
+   *
+   *   Default: `true`
+   *
    * @memberOf module:twgl
    */
 
@@ -4105,8 +4211,29 @@ define('twgl/twgl',[
    * @memberOf module:twgl
    */
   function setDefaults(newDefaults) {
+    utils.copyExistingProperties(newDefaults, defaults);
     attributes.setDefaults_(newDefaults);  // eslint-disable-line
     textures.setDefaults_(newDefaults);  // eslint-disable-line
+  }
+
+  /**
+   * Adds Vertex Array Objects to WebGL 1 GL contexts if available
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   */
+  function addVertexArrayObjectSupport(gl) {
+    if (!gl || !defaults.enableVertexArrayObjects) {
+      return;
+    }
+    if (!utils.isWebGL2(gl)) {
+      var ext = gl.getExtension("OES_vertex_array_object");
+      if (ext) {
+        gl.createVertexArray = ext.createVertexArrayOES.bind(ext);
+        gl.deleteVertexArray = ext.deleteVertexArrayOES.bind(ext);
+        gl.isVertexArray = ext.isVertexArrayOES.bind(ext);
+        gl.bindVertexArray = ext.bindVertexArrayOES.bind(ext);
+        gl.VERTEX_ARRAY_BINDING = ext.VERTEX_ARRAY_BINDING_OES;
+      }
+    }
   }
 
   /**
@@ -4138,6 +4265,7 @@ define('twgl/twgl',[
    */
   function getWebGLContext(canvas, opt_attribs) {
     var gl = create3DContext(canvas, opt_attribs);
+    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -4185,6 +4313,7 @@ define('twgl/twgl',[
    */
   function getContext(canvas, opt_attribs) {
     var gl = createContext(canvas, opt_attribs);
+    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -7670,6 +7799,7 @@ define('twgl/primitives',[
 
     var firstIndex = 0;
     var radiusSpan = radius - innerRadius;
+    var pointsPerStack = divisions + 1;
 
     // Build the disk one stack at a time.
     for (var stack = 0; stack <= stacks; ++stack) {
@@ -7689,8 +7819,8 @@ define('twgl/primitives',[
           // the vertices a and b connect to the center vertex.
           var a = firstIndex + (i + 1);
           var b = firstIndex + i;
-          var c = firstIndex + i - divisions;
-          var d = firstIndex + (i + 1) - divisions;
+          var c = firstIndex + i - pointsPerStack;
+          var d = firstIndex + (i + 1) - pointsPerStack;
 
           // Make a quad of the vertices a, b, c, d.
           indices.push(a, b, c);
