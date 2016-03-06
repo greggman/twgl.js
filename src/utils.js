@@ -62,6 +62,20 @@ define([], function () {
   }
 
   /**
+   * Copies properties from source to dest only if a matching key is in dest
+   *
+   * @param {Object.<string, ?>} src the source
+   * @param {Object.<string, ?>} dst the dest
+   */
+  function copyExistingProperties(src, dst) {
+    Object.keys(dst).forEach(function(key) {
+      if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
+        dst[key] = src[key];
+      }
+    });
+  }
+
+  /**
    * Check if context is WebGL 2.0
    * @return {bool} true if it's WebGL 2.0
    * @memberOf module:twgl
@@ -87,6 +101,7 @@ define([], function () {
       : function() { };
 
   return {
+    copyExistingProperties: copyExistingProperties,
     copyNamedProperties: copyNamedProperties,
     shallowCopy: shallowCopy,
     isWebGL2: isWebGL2,
