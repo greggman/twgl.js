@@ -22,7 +22,7 @@
 chroma.brewer=brewer={OrRd:["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000"],PuBu:["#fff7fb","#ece7f2","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"],BuPu:["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#810f7c","#4d004b"],Oranges:["#fff5eb","#fee6ce","#fdd0a2","#fdae6b","#fd8d3c","#f16913","#d94801","#a63603","#7f2704"],BuGn:["#f7fcfd","#e5f5f9","#ccece6","#99d8c9","#66c2a4","#41ae76","#238b45","#006d2c","#00441b"],YlOrBr:["#ffffe5","#fff7bc","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#993404","#662506"],YlGn:["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"],Reds:["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],RdPu:["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"],Greens:["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#00441b"],YlGnBu:["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],Purples:["#fcfbfd","#efedf5","#dadaeb","#bcbddc","#9e9ac8","#807dba","#6a51a3","#54278f","#3f007d"],GnBu:["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081"],Greys:["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"],YlOrRd:["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"],PuRd:["#f7f4f9","#e7e1ef","#d4b9da","#c994c7","#df65b0","#e7298a","#ce1256","#980043","#67001f"],Blues:["#f7fbff","#deebf7","#c6dbef","#9ecae1","#6baed6","#4292c6","#2171b5","#08519c","#08306b"],PuBuGn:["#fff7fb","#ece2f0","#d0d1e6","#a6bddb","#67a9cf","#3690c0","#02818a","#016c59","#014636"],Spectral:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],RdYlGn:["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"],RdBu:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"],PiYG:["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#f7f7f7","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"],PRGn:["#40004b","#762a83","#9970ab","#c2a5cf","#e7d4e8","#f7f7f7","#d9f0d3","#a6dba0","#5aae61","#1b7837","#00441b"],RdYlBu:["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"],BrBG:["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],RdGy:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],PuOr:["#7f3b08","#b35806","#e08214","#fdb863","#fee0b6","#f7f7f7","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b"],Set2:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"],Accent:["#7fc97f","#beaed4","#fdc086","#ffff99","#386cb0","#f0027f","#bf5b17","#666666"],Set1:["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"],Set3:["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"],Dark2:["#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d","#666666"],Paired:["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"],Pastel2:["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"],Pastel1:["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]};chroma.colors=colors={indigo:"#4b0082",gold:"#ffd700",hotpink:"#ff69b4",firebrick:"#b22222",indianred:"#cd5c5c",yellow:"#ffff00",mistyrose:"#ffe4e1",darkolivegreen:"#556b2f",olive:"#808000",darkseagreen:"#8fbc8f",pink:"#ffc0cb",tomato:"#ff6347",lightcoral:"#f08080",orangered:"#ff4500",navajowhite:"#ffdead",lime:"#00ff00",palegreen:"#98fb98",darkslategrey:"#2f4f4f",greenyellow:"#adff2f",burlywood:"#deb887",seashell:"#fff5ee",mediumspringgreen:"#00fa9a",fuchsia:"#ff00ff",papayawhip:"#ffefd5",blanchedalmond:"#ffebcd",chartreuse:"#7fff00",dimgray:"#696969",black:"#000000",peachpuff:"#ffdab9",springgreen:"#00ff7f",aquamarine:"#7fffd4",white:"#ffffff",orange:"#ffa500",lightsalmon:"#ffa07a",darkslategray:"#2f4f4f",brown:"#a52a2a",ivory:"#fffff0",dodgerblue:"#1e90ff",peru:"#cd853f",lawngreen:"#7cfc00",chocolate:"#d2691e",crimson:"#dc143c",forestgreen:"#228b22",darkgrey:"#a9a9a9",lightseagreen:"#20b2aa",cyan:"#00ffff",mintcream:"#f5fffa",silver:"#c0c0c0",antiquewhite:"#faebd7",mediumorchid:"#ba55d3",skyblue:"#87ceeb",gray:"#808080",darkturquoise:"#00ced1",goldenrod:"#daa520",darkgreen:"#006400",floralwhite:"#fffaf0",darkviolet:"#9400d3",darkgray:"#a9a9a9",moccasin:"#ffe4b5",saddlebrown:"#8b4513",grey:"#808080",darkslateblue:"#483d8b",lightskyblue:"#87cefa",lightpink:"#ffb6c1",mediumvioletred:"#c71585",slategrey:"#708090",red:"#ff0000",deeppink:"#ff1493",limegreen:"#32cd32",darkmagenta:"#8b008b",palegoldenrod:"#eee8aa",plum:"#dda0dd",turquoise:"#40e0d0",lightgrey:"#d3d3d3",lightgoldenrodyellow:"#fafad2",darkgoldenrod:"#b8860b",lavender:"#e6e6fa",maroon:"#800000",yellowgreen:"#9acd32",sandybrown:"#f4a460",thistle:"#d8bfd8",violet:"#ee82ee",navy:"#000080",magenta:"#ff00ff",dimgrey:"#696969",tan:"#d2b48c",rosybrown:"#bc8f8f",olivedrab:"#6b8e23",blue:"#0000ff",lightblue:"#add8e6",ghostwhite:"#f8f8ff",honeydew:"#f0fff0",cornflowerblue:"#6495ed",slateblue:"#6a5acd",linen:"#faf0e6",darkblue:"#00008b",powderblue:"#b0e0e6",seagreen:"#2e8b57",darkkhaki:"#bdb76b",snow:"#fffafa",sienna:"#a0522d",mediumblue:"#0000cd",royalblue:"#4169e1",lightcyan:"#e0ffff",green:"#008000",mediumpurple:"#9370db",midnightblue:"#191970",cornsilk:"#fff8dc",paleturquoise:"#afeeee",bisque:"#ffe4c4",slategray:"#708090",darkcyan:"#008b8b",khaki:"#f0e68c",wheat:"#f5deb3",teal:"#008080",darkorchid:"#9932cc",deepskyblue:"#00bfff",salmon:"#fa8072",darkred:"#8b0000",steelblue:"#4682b4",palevioletred:"#db7093",lightslategray:"#778899",aliceblue:"#f0f8ff",lightslategrey:"#778899",lightgreen:"#90ee90",orchid:"#da70d6",gainsboro:"#dcdcdc",mediumseagreen:"#3cb371",lightgray:"#d3d3d3",mediumturquoise:"#48d1cc",lemonchiffon:"#fffacd",cadetblue:"#5f9ea0",lightyellow:"#ffffe0",lavenderblush:"#fff0f5",coral:"#ff7f50",purple:"#800080",aqua:"#00ffff",whitesmoke:"#f5f5f5",mediumslateblue:"#7b68ee",darkorange:"#ff8c00",mediumaquamarine:"#66cdaa",darksalmon:"#e9967a",beige:"#f5f5dc",blueviolet:"#8a2be2",azure:"#f0ffff",lightsteelblue:"#b0c4de",oldlace:"#fdf5e6"};type=function(){var classToType,name,_i,_len,_ref1;classToType={};_ref1="Boolean Number String Function Array Date RegExp Undefined Null".split(" ");for(_i=0,_len=_ref1.length;_i<_len;_i++){name=_ref1[_i];classToType["[object "+name+"]"]=name.toLowerCase()}return function(obj){var strType;strType=Object.prototype.toString.call(obj);return classToType[strType]||"object"}}();limit=function(x,min,max){if(min==null){min=0}if(max==null){max=1}if(x<min){x=min}if(x>max){x=max}return x};unpack=function(args){if(args.length>=3){return args}else{return args[0]}};TWOPI=Math.PI*2;PITHIRD=Math.PI/3;cos=Math.cos;bezier=function(colors){var I,I0,I1,c,lab0,lab1,lab2,lab3,_ref1,_ref2,_ref3;colors=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(chroma(c))}return _results}();if(colors.length===2){_ref1=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref1[0],lab1=_ref1[1];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push(lab0[i]+t*(lab1[i]-lab0[i]))}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===3){_ref2=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref2[0],lab1=_ref2[1],lab2=_ref2[2];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*lab0[i]+2*(1-t)*t*lab1[i]+t*t*lab2[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===4){_ref3=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref3[0],lab1=_ref3[1],lab2=_ref3[2],lab3=_ref3[3];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*(1-t)*lab0[i]+3*(1-t)*(1-t)*t*lab1[i]+3*(1-t)*t*t*lab2[i]+t*t*t*lab3[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===5){I0=bezier(colors.slice(0,3));I1=bezier(colors.slice(2,5));I=function(t){if(t<.5){return I0(t*2)}else{return I1((t-.5)*2)}}}return I};chroma.interpolate.bezier=bezier}.call(this);
 },{}],2:[function(require,module,exports){
 /**
- * @license twgl.js 1.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -602,10 +602,125 @@ define('twgl/typedarrays',[], function () {
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+define('twgl/utils',[], function () {
+  
+
+  /**
+   * Copy an object 1 level deep
+   * @param {object} src object to copy
+   * @return {object} the copy
+   */
+  function shallowCopy(src) {
+    var dst = {};
+    Object.keys(src).forEach(function(key) {
+      dst[key] = src[key];
+    });
+    return dst;
+  }
+
+  /**
+   * Copy named properties
+   *
+   * @param {string[]} names names of properties to copy
+   * @param {object} src object to copy properties from
+   * @param {object} dst object to copy properties to
+   */
+  function copyNamedProperties(names, src, dst) {
+    names.forEach(function(name) {
+      var value = src[name];
+      if (value !== undefined) {
+        dst[name] = value;
+      }
+    });
+  }
+
+  /**
+   * Copies properties from source to dest only if a matching key is in dest
+   *
+   * @param {Object.<string, ?>} src the source
+   * @param {Object.<string, ?>} dst the dest
+   */
+  function copyExistingProperties(src, dst) {
+    Object.keys(dst).forEach(function(key) {
+      if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
+        dst[key] = src[key];
+      }
+    });
+  }
+
+  /**
+   * Check if context is WebGL 2.0
+   * @return {bool} true if it's WebGL 2.0
+   * @memberOf module:twgl
+   */
+  function isWebGL2(gl) {
+    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  }
+
+  var error =
+      (    window.console
+        && window.console.error
+        && typeof window.console.error === "function"
+      )
+      ? window.console.error.bind(window.console)
+      : function() { };
+
+  var warn =
+      (    window.console
+        && window.console.warn
+        && typeof window.console.warn === "function"
+      )
+      ? window.console.warn.bind(window.console)
+      : function() { };
+
+  return {
+    copyExistingProperties: copyExistingProperties,
+    copyNamedProperties: copyNamedProperties,
+    shallowCopy: shallowCopy,
+    isWebGL2: isWebGL2,
+    error: error,
+    warn: warn,
+  };
+});
+
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 define('twgl/attributes',[
     './typedarrays',
+    './utils',
   ], function (
-    typedArrays) {
+    typedArrays,
+    utils) {
   
 
   // make sure we don't see a global gl
@@ -639,9 +754,7 @@ define('twgl/attributes',[
   }
 
   function setDefaults(newDefaults) {
-    Object.keys(newDefaults).forEach(function(key) {
-      defaults[key] = newDefaults[key];
-    });
+    utils.copyExistingProperties(newDefaults, defaults);
   }
 
   function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
@@ -976,11 +1089,19 @@ define('twgl/attributes',[
   /**
    * @typedef {Object} BufferInfo
    * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
+   * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
    * @property {WebGLBuffer} [indices] The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
-   * @property {Object.<string, module:twgl.AttribInfo>} attribs The attribs approriate to call `setAttributes`
+   * @property {Object.<string, module:twgl.AttribInfo>} [attribs] The attribs approriate to call `setAttributes`
    * @memberOf module:twgl
    */
 
+  /**
+   * @typedef {Object} VertexArrayInfo
+   * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
+   * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
+   * @property {WebGLVertexArrayObject> [vertexArrayObject] a vertex array object
+   * @memberOf module:twgl
+   */
 
   /**
    * Creates a BufferInfo from an object of arrays.
@@ -1155,6 +1276,58 @@ define('twgl/attributes',[
     return buffers;
   }
 
+  /**
+   * Creates a BufferInfo from an object of arrays.
+   *
+   * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
+   * {@link module:twgl:drawBufferInfo}.
+   *
+   * > **IMPORTANT:** Vertex Array Objects are **not** a direct analog for a BufferInfo. Vertex Array Objects
+   *   assign buffers to specific attributes at creation time. That means they can only be used with programs
+   *   who's attributes use the same attribute locations for the same purposes.
+   *
+   * > Bind your attribute locations by passing an array of attribute names to {@link module:twgl.createProgramInfo}
+   *   or use WebGL 2's GLSL ES 3's `layout(location = <num>)` to make sure locations match.
+   *
+   * also
+   *
+   * > **IMPORTANT:** After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object
+   *   that Vertex Array Object will be bound. That means **ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES**
+   *   will affect the Vertex Array Object state.
+   *
+   * > Call `gl.bindVertexArray(null)` to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.
+   *
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
+   *
+   *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
+   *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
+   *    for shader 1 then only attributes A, B, and C will have their attributes set because TWGL doesn't
+   *    now attribute D's location.
+   *
+   *    So, you can pass in both shader 1 and shader 2's programInfo
+   *
+   * @return {module:twgl.VertexArrayInfo} The created VertexArrayInfo
+   *
+   * @memberOf module:twgl
+   */
+  function createVertexArrayInfo(gl, programInfos, bufferInfo) {
+    var vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    if (!programInfos.length) {
+      programInfos = [programInfos];
+    }
+    programInfos.forEach(function(programInfo) {
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    });
+    gl.bindVertexArray(null);
+    return {
+      numElements: bufferInfo.numElements,
+      elementType: bufferInfo.elementType,
+      vertexArrayObject: vao,
+    };
+  }
+
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
@@ -1165,6 +1338,8 @@ define('twgl/attributes',[
     "createBufferInfoFromArrays": createBufferInfoFromArrays,
     "setAttribInfoBufferFromArray": setAttribInfoBufferFromArray,
 
+    "createVertexArrayInfo": createVertexArrayInfo,
+
     "setAttributePrefix": setAttributePrefix,
 
     "setDefaults_": setDefaults,
@@ -1172,104 +1347,6 @@ define('twgl/attributes',[
     "getArray_": getArray,
   };
 
-});
-
-
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-define('twgl/utils',[], function () {
-  
-
-  /**
-   * Copy an object 1 level deep
-   * @param {object} src object to copy
-   * @return {object} the copy
-   */
-  function shallowCopy(src) {
-    var dst = {};
-    Object.keys(src).forEach(function(key) {
-      dst[key] = src[key];
-    });
-    return dst;
-  }
-
-  /**
-   * Copy named properties
-   *
-   * @param {string[]} names names of properties to copy
-   * @param {object} src object to copy properties from
-   * @param {object} dst object to copy properties to
-   */
-  function copyNamedProperties(names, src, dst) {
-    names.forEach(function(name) {
-      var value = src[name];
-      if (value !== undefined) {
-        dst[name] = value;
-      }
-    });
-  }
-
-  /**
-   * Check if context is WebGL 2.0
-   * @return {bool} true if it's WebGL 2.0
-   * @memberOf module:twgl
-   */
-  function isWebGL2(gl) {
-    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
-  }
-
-  var error =
-      (    window.console
-        && window.console.error
-        && typeof window.console.error === "function"
-      )
-      ? window.console.error.bind(window.console)
-      : function() { };
-
-  var warn =
-      (    window.console
-        && window.console.warn
-        && typeof window.console.warn === "function"
-      )
-      ? window.console.warn.bind(window.console)
-      : function() { };
-
-  return {
-    copyNamedProperties: copyNamedProperties,
-    shallowCopy: shallowCopy,
-    isWebGL2: isWebGL2,
-    error: error,
-    warn: warn,
-  };
 });
 
 
@@ -2392,14 +2469,19 @@ define('twgl/programs',[
    *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
-   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from `createProgrmaInfo` Attribute setters as returned from `createAttributeSetters`
-   * @param {module:twgl.BufferInfo} buffers a BufferInfo as returned from `createBufferInfoFromArrays`.
+   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
+   * @param {(module:twgl.BufferInfo|module:twgl.vertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
+   *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
    * @memberOf module:twgl
    */
   function setBuffersAndAttributes(gl, programInfo, buffers) {
-    setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
-    if (buffers.indices) {
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+    if (buffers.vertexArrayObject) {
+      gl.bindVertexArray(buffers.vertexArrayObject);
+    } else {
+      setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
+      if (buffers.indices) {
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+      }
     }
   }
 
@@ -2552,28 +2634,35 @@ define('twgl/draw',[
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
-   * @param {module:twgl.BufferInfo} bufferInfo as returned from createBufferInfoFromArrays
+   * @param {(module:twgl.BufferInfo|module.twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
+   *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl
    */
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
     var indices = bufferInfo.indices;
+    var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
     offset = offset === undefined ? 0 : offset;
-    if (indices) {
-      gl.drawElements(type, numElements, bufferInfo.elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+    if (elementType || indices) {
+      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
     } else {
       gl.drawArrays(type, offset, numElements);
     }
   }
 
   /**
+   * A DrawObject is useful for putting objects in to an array and passing them to {@link module:twgl.drawObjectList}.
+   *
+   * You need either a `BufferInfo` or a `VertexArrayInfo`.
+   *
    * @typedef {Object} DrawObject
    * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
    * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
-   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from createProgramInfo
-   * @property {module:twgl.BufferInfo} bufferInfo A BufferInfo as returned from createBufferInfoFromArrays
+   * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
+   * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
+   * @property {module:twgl.VertexArrayInfo} [vertexArrayInfo] A VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @property {Object<string, ?>} uniforms The values for the uniforms.
    *   You can pass multiple objects by putting them in an array. For example
    *
@@ -2613,7 +2702,7 @@ define('twgl/draw',[
       }
 
       var programInfo = object.programInfo;
-      var bufferInfo = object.bufferInfo;
+      var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
       var bindBuffers = false;
 
       if (programInfo !== lastUsedProgramInfo) {
@@ -2629,6 +2718,9 @@ define('twgl/draw',[
 
       // Setup all the needed attributes.
       if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
+        if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject && !bufferInfo.vertexArrayObject) {
+          gl.bindVertexArray(null);
+        }
         lastUsedBufferInfo = bufferInfo;
         programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       }
@@ -2639,6 +2731,10 @@ define('twgl/draw',[
       // Draw
       drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo, object.count, object.offset);
     });
+
+    if (lastUsedBufferInfo.vertexArrayObject) {
+      gl.bindVertexArray(null);
+    }
   }
 
   // Using quotes prevents Uglify from changing the names.
@@ -2695,6 +2791,7 @@ define('twgl/textures',[
   var defaults = {
     textureColor: new Uint8Array([128, 192, 255, 255]),
     textureOptions: {},
+    crossOrigin: undefined,
   };
   var isArrayBuffer = typedArrays.isArrayBuffer;
 
@@ -2735,18 +2832,11 @@ define('twgl/textures',[
     defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
   }
 
-  var invalidDefaultKeysRE = /^textureColor$/;
-  function validDefaultKeys(key) {
-    return !invalidDefaultKeysRE.test(key);
-  }
-
   function setDefaults(newDefaults) {
+    utils.copyExistingProperties(newDefaults, defaults);
     if (newDefaults.textureColor) {
       setDefaultTextureColor(newDefaults.textureColor);
     }
-    Object.keys(newDefaults).filter(validDefaultKeys).forEach(function(key) {
-      defaults[key] = newDefaults[key];
-    });
   }
 
   /**
@@ -4064,6 +4154,9 @@ define('twgl/twgl',[
 
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
+  var defaults = {
+    enableVertexArrayObjects: true,
+  };
 
   /**
    * Various default settings for twgl.
@@ -4115,6 +4208,19 @@ define('twgl/twgl',[
    *
    *   Also see {@link module:twgl.TextureOptions}.
    *
+   * @property {bool} enableVertexArrayObjects
+   *
+   *   If true then in WebGL 1.0 will attempt to get the `OES_vertex_array_object` extension.
+   *   If successful it will copy create/bind/delete/isVertexArrayOES from the extension to
+   *   the WebGLRenderingContext removing the OES at the end which is the standard entry point
+   *   for WebGL 2.
+   *
+   *   Note: According to webglstats.com 90% of devices support `OES_vertex_array_object`.
+   *   If you just want to count on support I suggest using [this polyfill](https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js)
+   *   or ignoring devices that don't support them.
+   *
+   *   Default: `true`
+   *
    * @memberOf module:twgl
    */
 
@@ -4128,8 +4234,29 @@ define('twgl/twgl',[
    * @memberOf module:twgl
    */
   function setDefaults(newDefaults) {
+    utils.copyExistingProperties(newDefaults, defaults);
     attributes.setDefaults_(newDefaults);  // eslint-disable-line
     textures.setDefaults_(newDefaults);  // eslint-disable-line
+  }
+
+  /**
+   * Adds Vertex Array Objects to WebGL 1 GL contexts if available
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   */
+  function addVertexArrayObjectSupport(gl) {
+    if (!gl || !defaults.enableVertexArrayObjects) {
+      return;
+    }
+    if (!utils.isWebGL2(gl)) {
+      var ext = gl.getExtension("OES_vertex_array_object");
+      if (ext) {
+        gl.createVertexArray = ext.createVertexArrayOES.bind(ext);
+        gl.deleteVertexArray = ext.deleteVertexArrayOES.bind(ext);
+        gl.isVertexArray = ext.isVertexArrayOES.bind(ext);
+        gl.bindVertexArray = ext.bindVertexArrayOES.bind(ext);
+        gl.VERTEX_ARRAY_BINDING = ext.VERTEX_ARRAY_BINDING_OES;
+      }
+    }
   }
 
   /**
@@ -4161,6 +4288,7 @@ define('twgl/twgl',[
    */
   function getWebGLContext(canvas, opt_attribs) {
     var gl = create3DContext(canvas, opt_attribs);
+    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -4208,6 +4336,7 @@ define('twgl/twgl',[
    */
   function getContext(canvas, opt_attribs) {
     var gl = createContext(canvas, opt_attribs);
+    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -7693,6 +7822,7 @@ define('twgl/primitives',[
 
     var firstIndex = 0;
     var radiusSpan = radius - innerRadius;
+    var pointsPerStack = divisions + 1;
 
     // Build the disk one stack at a time.
     for (var stack = 0; stack <= stacks; ++stack) {
@@ -7712,8 +7842,8 @@ define('twgl/primitives',[
           // the vertices a and b connect to the center vertex.
           var a = firstIndex + (i + 1);
           var b = firstIndex + i;
-          var c = firstIndex + i - divisions;
-          var d = firstIndex + (i + 1) - divisions;
+          var c = firstIndex + i - pointsPerStack;
+          var d = firstIndex + (i + 1) - pointsPerStack;
 
           // Make a quad of the vertices a, b, c, d.
           indices.push(a, b, c);
