@@ -143,13 +143,15 @@ void main() {
   <script src="../3rdparty/chroma.min.js"></script>
   <script src="../dist/twgl-full.min.js"></script>
   <script>
+"use strict";
+
 function main() {
   var m4 = twgl.m4;
   twgl.setDefaults({attribPrefix: "a_"});
   var gl = twgl.getContext(document.getElementById("c"));
   console.log("using:" + gl.getParameter(gl.VERSION));  // eslint-disable-line
   if (!twgl.isWebGL2(gl)) {
-    alert("Sorry, this example requires WebGL 2.0");
+    alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
     return;
   }
 
