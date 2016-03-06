@@ -1750,6 +1750,7 @@ define([
 
     var firstIndex = 0;
     var radiusSpan = radius - innerRadius;
+    var pointsPerStack = divisions + 1;
 
     // Build the disk one stack at a time.
     for (var stack = 0; stack <= stacks; ++stack) {
@@ -1769,8 +1770,8 @@ define([
           // the vertices a and b connect to the center vertex.
           var a = firstIndex + (i + 1);
           var b = firstIndex + i;
-          var c = firstIndex + i - divisions;
-          var d = firstIndex + (i + 1) - divisions;
+          var c = firstIndex + i - pointsPerStack;
+          var d = firstIndex + (i + 1) - pointsPerStack;
 
           // Make a quad of the vertices a, b, c, d.
           indices.push(a, b, c);
