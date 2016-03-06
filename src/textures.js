@@ -42,6 +42,7 @@ define([
   var defaults = {
     textureColor: new Uint8Array([128, 192, 255, 255]),
     textureOptions: {},
+    crossOrigin: undefined,
   };
   var isArrayBuffer = typedArrays.isArrayBuffer;
 
@@ -82,18 +83,11 @@ define([
     defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
   }
 
-  var invalidDefaultKeysRE = /^textureColor$/;
-  function validDefaultKeys(key) {
-    return !invalidDefaultKeysRE.test(key);
-  }
-
   function setDefaults(newDefaults) {
+    utils.copyExistingProperties(newDefaults, defaults);
     if (newDefaults.textureColor) {
       setDefaultTextureColor(newDefaults.textureColor);
     }
-    Object.keys(newDefaults).filter(validDefaultKeys).forEach(function(key) {
-      defaults[key] = newDefaults[key];
-    });
   }
 
   /**
