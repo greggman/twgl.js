@@ -55,6 +55,9 @@ define([
 
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
+  var defaults = {
+    enableVertexArrayObjects: true,
+  };
 
   /**
    * Various default settings for twgl.
@@ -106,6 +109,19 @@ define([
    *
    *   Also see {@link module:twgl.TextureOptions}.
    *
+   * @property {bool} enableVertexArrayObjects
+   *
+   *   If true then in WebGL 1.0 will attempt to get the `OES_vertex_array_object` extension.
+   *   If successful it will copy create/bind/delete/isVertexArrayOES from the extension to
+   *   the WebGLRenderingContext removing the OES at the end which is the standard entry point
+   *   for WebGL 2.
+   *
+   *   Note: According to webglstats.com 90% of devices support `OES_vertex_array_object`.
+   *   If you just want to count on support I suggest using [this polyfill](https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js)
+   *   or ignoring devices that don't support them.
+   *
+   *   Default: `true`
+   *
    * @memberOf module:twgl
    */
 
@@ -119,8 +135,29 @@ define([
    * @memberOf module:twgl
    */
   function setDefaults(newDefaults) {
+    utils.copyExistingProperties(newDefaults, defaults);
     attributes.setDefaults_(newDefaults);  // eslint-disable-line
     textures.setDefaults_(newDefaults);  // eslint-disable-line
+  }
+
+  /**
+   * Adds Vertex Array Objects to WebGL 1 GL contexts if available
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   */
+  function addVertexArrayObjectSupport(gl) {
+    if (!gl || !defaults.enableVertexArrayObjects) {
+      return;
+    }
+    if (!utils.isWebGL2(gl)) {
+      var ext = gl.getExtension("OES_vertex_array_object");
+      if (ext) {
+        gl.createVertexArray = ext.createVertexArrayOES.bind(ext);
+        gl.deleteVertexArray = ext.deleteVertexArrayOES.bind(ext);
+        gl.isVertexArray = ext.isVertexArrayOES.bind(ext);
+        gl.bindVertexArray = ext.bindVertexArrayOES.bind(ext);
+        gl.VERTEX_ARRAY_BINDING = ext.VERTEX_ARRAY_BINDING_OES;
+      }
+    }
   }
 
   /**
@@ -152,6 +189,7 @@ define([
    */
   function getWebGLContext(canvas, opt_attribs) {
     var gl = create3DContext(canvas, opt_attribs);
+    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -199,6 +237,7 @@ define([
    */
   function getContext(canvas, opt_attribs) {
     var gl = createContext(canvas, opt_attribs);
+    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
