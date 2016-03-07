@@ -302,7 +302,13 @@ void main() {
         m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
       });
 
-      twgl.drawObjectList(gl, drawObjects);
+      drawObjects.forEach(function(obj) {
+        var programInfo = obj.programInfo;
+        gl.useProgram(programInfo.program);
+        twgl.setUniforms(programInfo, obj.uniforms);
+        twgl.setBuffersAndAttributes(gl, programInfo, obj.vertexArrayInfo);
+        twgl.drawBufferInfo(gl, gl.TRIANGLES, obj.vertexArrayInfo);
+      });
 
       requestAnimationFrame(render);
     }
