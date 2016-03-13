@@ -29,7 +29,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-define(['./v3'], function (v3) {
+define(['./v3'], function(v3) {
   "use strict";
 
   /**

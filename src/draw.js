@@ -31,7 +31,7 @@
 
 define([
     './programs',
-  ], function (
+  ], function(
     programs) {
   "use strict";
 

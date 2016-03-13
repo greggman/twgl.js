@@ -32,7 +32,7 @@
 define([
     './typedarrays',
     './utils',
-  ], function (
+  ], function(
     typedArrays,
     utils) {
   "use strict";

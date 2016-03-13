@@ -67,7 +67,7 @@ define([
     './utils',
     './m4',
     './v3',
-  ], function (
+  ], function(
     attributes,
     twgl,
     utils,

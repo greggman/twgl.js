@@ -31,7 +31,7 @@
 
 define([
     './utils',
-  ], function (
+  ], function(
     utils) {
   "use strict";
 
@@ -103,7 +103,7 @@ define([
   }
 
   function floatArraySetter(gl, location) {
-    return function (v) {
+    return function(v) {
       gl.uniform1fv(location, v);
     };
   }

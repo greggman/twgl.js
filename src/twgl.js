@@ -37,7 +37,7 @@ define([
     './textures',
     './typedarrays',
     './utils',
-  ], function (
+  ], function(
     attributes,
     draw,
     framebuffers,

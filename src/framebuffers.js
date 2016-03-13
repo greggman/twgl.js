@@ -32,7 +32,7 @@
 define([
     './textures',
     './utils',
-  ], function (
+  ], function(
     textures,
     utils) {
   "use strict";
