@@ -204,7 +204,7 @@ module.exports = function(grunt) {
           'src/*',
         ],
         options: {
-          config: 'build/conf/eslint.json',
+          configFile: 'build/conf/eslint.json',
           //rulesdir: ['build/rules'],
         },
       },
@@ -215,7 +215,7 @@ module.exports = function(grunt) {
           'examples/js',
         ],
         options: {
-          config: 'build/conf/eslint-docs.json',
+          configFile: 'build/conf/eslint-docs.json',
           //rulesdir: ['build/rules'],
         },
       },
@@ -237,7 +237,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-eslint');
+  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('makeindex', function() {
