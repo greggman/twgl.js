@@ -789,6 +789,8 @@ define([
    *     returned from {@link module:twgl.createUniformBlockSpecFromProgram}.
    * @param {module:twgl.UniformBlockInfo} uniformBlockInfo a `UniformBlockInfo` as returned from
    *     {@link module:twgl.createUniformBlockInfo}.
+   * @return {bool} true if buffer was bound. If the programInfo has no block with the same block name
+   *     no buffer is bound.
    * @memberOf module:twgl
    */
   function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
@@ -799,6 +801,7 @@ define([
       gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, 0, uniformBlockInfo.array.byteLength);
       return true;
     }
+    return false;
   }
 
   /**

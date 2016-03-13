@@ -973,7 +973,7 @@ define([
 
     Object.keys(textureOptions).forEach(function(name) {
       var options = textureOptions[name];
-      var onLoadFn = undefined;
+      var onLoadFn;
       if (isAsyncSrc(options.src)) {
         onLoadFn = function(err, tex, img) {
           images[name] = img;
