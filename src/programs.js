@@ -624,7 +624,7 @@ define([
    * UniformBlockObjects for a given program
    *
    * @typedef {Object} UniformBlockSpec
-   * @property {Object.<string, twgl:module.BlockSpec> blockSpecs The BlockSpec for each block by block name
+   * @property {Object.<string, module:twgl.BlockSpec> blockSpecs The BlockSpec for each block by block name
    * @property {UniformData[]} uniformData An array of data for each uniform by uniform index.
    * @memberOf module:twgl
    */
