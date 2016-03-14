@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>twgl/v3 - Documentation</title>
+    <title>twgl/textures - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">twgl/v3</h1>
+    <h1 class="page-title">twgl/textures</h1>
     
 
     
@@ -50,13 +50,10 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Vec3 math math functions.</p>
-<p>Almost all functions take an optional <code>dst</code> argument. If it is not passed in the<br>functions will create a new Vec3. In other words you can do this</p>
-<pre class="prettyprint source"><code>var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.</code></pre><p>or</p>
-<pre class="prettyprint source"><code>var v3 = v3.create();
-v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>The first style is often easier but depending on where it's used it generates garbage where<br>as there is almost never allocation with the second style.</p>
-<p>It is always save to pass any vector as the destination. So for example</p>
-<pre class="prettyprint source"><code>v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1</code></pre></div>
+            <div class="description"><p>Low level texture related functions</p>
+<p>You should generally not need to use these functions. They are provided<br>for those cases where you're doing something out of the ordinary<br>and you need lower level access.</p>
+<p>For backward compatibily they are available at both <code>twgl.textures</code> and <code>twgl</code><br>itself</p>
+<p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
         
 
         
@@ -150,14 +147,14 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
     
 
-    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(a, b, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".createTexture"><span class="type-signature">(static) </span>createTexture<span class="signature">(gl, options<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {WebGLTexture}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Adds two vectors; assumes a and b have the same dimension.</p>
+    <p>Creates a texture based on the options passed in.</p>
 </div>
 
 
@@ -195,13 +192,13 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         <tr>
             
-                <td class="name"><code>a</code></td>
+                <td class="name"><code>gl</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLRenderingContext</span>
 
 
             
@@ -219,51 +216,20 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>Operand vector.</p></td>
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>b</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
 
 
             
@@ -283,156 +249,20 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".copy"><span class="type-signature">(static) </span>copy<span class="signature">(v, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Copies a vector.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>v</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The vector.</p></td>
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>dst</code></td>
+                <td class="name"><code>callback</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type"><a href="module-twgl.html#.TextureReadyCallback">module:twgl.TextureReadyCallback</a></span>
 
 
             
@@ -452,7 +282,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
+            <td class="description last"><p>A callback called when an image has been downloaded and uploaded to the texture.</p></td>
         </tr>
 
     
@@ -515,7 +345,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         
 <div class="param-desc">
-    <p>A copy of v.</p>
+    <p>the created texture.</p>
 </div>
 
 
@@ -526,7 +356,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLTexture</span>
 
 
     </dd>
@@ -541,113 +371,77 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
     
 
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">()</span><span class="type-signature"> &rarr; {Vec3}</span></h4>
+    <h4 class="name" id=".createTextures"><span class="type-signature">(static) </span>createTextures<span class="signature">(gl, options, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLTexture>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Creates a vec3; may be called with x, y, z to set initial values.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>the created vector</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Vec3</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".cross"><span class="type-signature">(static) </span>cross<span class="signature">(a, b, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Computes the cross product of two vectors; assumes both vectors have<br>three entries.</p>
+    <p>Creates a bunch of textures based on the passed in options.</p>
+<p>Example:</p>
+<pre class="prettyprint source"><code>var textures = twgl.createTextures(gl, {
+  // a power of 2 image
+  hftIcon: { src: &quot;images/hft-icon-16.png&quot;, mag: gl.NEAREST },
+  // a non-power of 2 image
+  clover: { src: &quot;images/clover.jpg&quot; },
+  // From a canvas
+  fromCanvas: { src: ctx.canvas },
+  // A cubemap from 6 images
+  yokohama: {
+    target: gl.TEXTURE_CUBE_MAP,
+    src: [
+      'images/yokohama/posx.jpg',
+      'images/yokohama/negx.jpg',
+      'images/yokohama/posy.jpg',
+      'images/yokohama/negy.jpg',
+      'images/yokohama/posz.jpg',
+      'images/yokohama/negz.jpg',
+    ],
+  },
+  // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
+  goldengate: {
+    target: gl.TEXTURE_CUBE_MAP,
+    src: 'images/goldengate.jpg',
+  },
+  // A 2x2 pixel texture from a JavaScript array
+  checker: {
+    mag: gl.NEAREST,
+    min: gl.LINEAR,
+    src: [
+      255,255,255,255,
+      192,192,192,255,
+      192,192,192,255,
+      255,255,255,255,
+    ],
+  },
+  // a 1x2 pixel texture from a typed array.
+  stripe: {
+    mag: gl.NEAREST,
+    min: gl.LINEAR,
+    format: gl.LUMINANCE,
+    src: new Uint8Array([
+      255,
+      128,
+      255,
+      128,
+      255,
+      128,
+      255,
+      128,
+    ]),
+    width: 1,
+  },
+});</code></pre><p>Now</p>
+<ul>
+<li><code>textures.hftIcon</code> will be a 2d texture</li>
+<li><code>textures.clover</code> will be a 2d texture</li>
+<li><code>textures.fromCanvas</code> will be a 2d texture</li>
+<li><code>textures.yohohama</code> will be a cubemap texture</li>
+<li><code>textures.goldengate</code> will be a cubemap texture</li>
+<li><code>textures.checker</code> will be a 2d texture</li>
+<li><code>textures.stripe</code> will be a 2d texture</li>
+</ul>
 </div>
 
 
@@ -685,13 +479,13 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         <tr>
             
-                <td class="name"><code>a</code></td>
+                <td class="name"><code>gl</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLRenderingContext</span>
 
 
             
@@ -709,20 +503,20 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>Operand vector.</p></td>
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>b</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a>></span>
 
 
             
@@ -740,20 +534,20 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>Operand vector.</p></td>
+            <td class="description last"><p>A object of TextureOptions one per texture.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>dst</code></td>
+                <td class="name"><code>callback</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type"><a href="module-twgl.html#.TexturesReadyCallback">module:twgl.TexturesReadyCallback</a></span>
 
 
             
@@ -773,7 +567,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
+            <td class="description last"><p>A callback called when all textures have been downloaded.</p></td>
         </tr>
 
     
@@ -836,7 +630,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         
 <div class="param-desc">
-    <p>The vector a cross b.</p>
+    <p>the created textures by name</p>
 </div>
 
 
@@ -847,7 +641,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">Object.&lt;string, WebGLTexture></span>
 
 
     </dd>
@@ -862,14 +656,14 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
     
 
-    <h4 class="name" id=".divide"><span class="type-signature">(static) </span>divide<span class="signature">(a, b, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
+    <h4 class="name" id=".getNumComponentsForFormat"><span class="type-signature">(static) </span>getNumComponentsForFormat<span class="signature">(format)</span><span class="type-signature"> &rarr; {number}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Divides a vector by another vector (component-wise); assumes a and<br>b have the same length.</p>
+    <p>Gets the number of compontents for a given image format.</p>
 </div>
 
 
@@ -893,8 +687,6 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -907,260 +699,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         <tr>
             
-                <td class="name"><code>a</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>b</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The vector of quotients of entries of a and<br>    b.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".divScalar"><span class="type-signature">(static) </span>divScalar<span class="signature">(v, k, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Divides a vector by a scalar.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>v</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>k</code></td>
+                <td class="name"><code>format</code></td>
             
 
             <td class="type">
@@ -1173,51 +712,10 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>The scalar.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
+            <td class="description last"><p>the format.</p></td>
         </tr>
 
     
@@ -1280,178 +778,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         
 <div class="param-desc">
-    <p>dst.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".dot"><span class="type-signature">(static) </span>dot<span class="signature">(a, b)</span><span class="type-signature"> &rarr; {number}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Computes the dot product of two vectors; assumes both vectors have<br>three entries.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>b</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>dot product</p>
+    <p>the number of components for the format.</p>
 </div>
 
 
@@ -1477,14 +804,14 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
     
 
-    <h4 class="name" id=".length"><span class="type-signature">(static) </span>length<span class="signature">(v)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id=".loadCubemapFromUrls"><span class="type-signature">(static) </span>loadCubemapFromUrls<span class="signature">(gl, tex, options, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Computes the length of vector</p>
+    <p>Loads a cubemap from 6 urls as specified in <code>options.src</code>. Will set the cubemap to a 1x1 pixel color<br>so that it is usable immediately unless <code>option.color === false</code>.</p>
 </div>
 
 
@@ -1508,6 +835,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -1520,23 +849,359 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         <tr>
             
-                <td class="name"><code>v</code></td>
+                <td class="name"><code>gl</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLRenderingContext</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>vector.</p></td>
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.CubemapReadyCallback">module:twgl.CubemapReadyCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A function to be called when all the images have finished loading. err will<br>   be non null if there was an error.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".loadTextureFromUrl"><span class="type-signature">(static) </span>loadTextureFromUrl<span class="signature">(gl, tex, options<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Loads a texture from an image from a Url as specified in <code>options.src</code><br>If <code>options.color !== false</code> will set the texture to a 1x1 pixel color so that the texture is<br>immediately useable. It will be updated with the contents of the image once the image has finished<br>downloading. Filtering options will be set as approriate for image unless <code>options.auto === false</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureReadyCallback">module:twgl.TextureReadyCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A function to be called when the image has finished loading. err will<br>   be non null if there was an error.</p></td>
         </tr>
 
     
@@ -1599,7 +1264,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         
 <div class="param-desc">
-    <p>length of vector.</p>
+    <p>the image being downloaded.</p>
 </div>
 
 
@@ -1610,228 +1275,176 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
     </dt>
     <dd>
         
+<span class="param-type">HTMLImageElement</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".resizeTexture"><span class="type-signature">(static) </span>resizeTexture<span class="signature">(gl, tex, options, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Resizes a texture based on the options passed in.</p>
+<p>Note: This is not a generic resize anything function.<br>It's mostly used by <a href="module-twgl.html#.resizeFramebufferInfo"><code>module:twgl.resizeFramebufferInfo</code></a><br>It will use <code>options.src</code> if it exists to try to determine a <code>type</code><br>otherwise it will assume <code>gl.UNSIGNED_BYTE</code>. No data is provided<br>for the texture. Texture parameters will be set accordingly</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the texture to resize</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
 <span class="param-type">number</span>
 
 
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".lengthSq"><span class="type-signature">(static) </span>lengthSq<span class="signature">(v)</span><span class="type-signature"> &rarr; {number}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Computes the square of the length of vector</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>v</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>vector.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>square of the length of vector.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".lerp"><span class="type-signature">(static) </span>lerp<span class="signature">(a, b, t, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Performs linear interpolation on two vectors.<br>Given vectors a and b and interpolation coefficient t, returns<br>(1 - t) <em> a + t </em> b.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
             
             </td>
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
@@ -1842,45 +1455,14 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>Operand vector.</p></td>
+            <td class="description last"><p>the new width. If not passed in will use <code>options.width</code></p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>b</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>t</code></td>
+                <td class="name"><code>height</code></td>
             
 
             <td class="type">
@@ -1895,37 +1477,6 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
             
                 <td class="attributes">
                 
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Interpolation coefficient.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
                     &lt;optional><br>
                 
 
@@ -1937,7 +1488,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
+            <td class="description last"><p>the new height. If not passed in will use <code>options.height</code></p></td>
         </tr>
 
     
@@ -2004,14 +1555,315 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
     
 
-    <h4 class="name" id=".mulScalar"><span class="type-signature">(static) </span>mulScalar<span class="signature">(v, k, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
+    <h4 class="name" id=".setDefaultTextureColor"><span class="type-signature">(static) </span>setDefaultTextureColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Mutiplies a vector by a scalar.</p>
+    <p>Sets the default texture color.</p>
+<p>The default texture color is used when loading textures from<br>urls. Because the URL will be loaded async we'd like to be<br>able to use the texture immediately. By putting a 1x1 pixel<br>color in the texture we can start using the texture before<br>the URL has loaded.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of 4 values in the range 0 to 1</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>see <a href="module-twgl.html#.setDefaults"><code>module:twgl.setDefaults</code></a></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setEmptyTexture"><span class="type-signature">(static) </span>setEmptyTexture<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets a texture with no contents of a certain size. In other words calls <code>gl.texImage2D</code> with <code>null</code>.<br>You must set <code>options.width</code> and <code>options.height</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setTextureFilteringForSize"><span class="type-signature">(static) </span>setTextureFilteringForSize<span class="signature">(gl, tex, options<span class="signature-attributes">opt</span>, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets filtering or generates mips for texture based on width or height<br>If width or height is not passed in uses <code>options.width</code> and//or <code>options.height</code></p>
 </div>
 
 
@@ -2049,13 +1901,13 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         <tr>
             
-                <td class="name"><code>v</code></td>
+                <td class="name"><code>gl</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLRenderingContext</span>
 
 
             
@@ -2073,14 +1925,78 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>The vector.</p></td>
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>k</code></td>
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
             
 
             <td class="type">
@@ -2095,6 +2011,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
 
@@ -2104,20 +2022,20 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>The scalar.</p></td>
+            <td class="description last"><p>width of texture</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>dst</code></td>
+                <td class="name"><code>height</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">number</span>
 
 
             
@@ -2137,7 +2055,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
+            <td class="description last"><p>height of texture</p></td>
         </tr>
 
     
@@ -2196,28 +2114,6 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>dst.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -2226,14 +2122,14 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
     
 
-    <h4 class="name" id=".multiply"><span class="type-signature">(static) </span>multiply<span class="signature">(a, b, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
+    <h4 class="name" id=".setTextureFromArray"><span class="type-signature">(static) </span>setTextureFromArray<span class="signature">(gl, tex, src, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Multiplies a vector by another vector (component-wise); assumes a and<br>b have the same length.</p>
+    <p>Sets a texture from an array or typed array. If the width or height is not provided will attempt to<br>guess the size. See <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p>
 </div>
 
 
@@ -2271,13 +2167,13 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
         <tr>
             
-                <td class="name"><code>a</code></td>
+                <td class="name"><code>gl</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLRenderingContext</span>
 
 
             
@@ -2295,20 +2191,20 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>Operand vector.</p></td>
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>b</code></td>
+                <td class="name"><code>tex</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
+<span class="param-type">WebGLTexture</span>
 
 
             
@@ -2326,736 +2222,80 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
             
 
-            <td class="description last"><p>Operand vector.</p></td>
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>dst</code></td>
+                <td class="name"><code>src</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The vector of products of entries of a and<br>    b.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".negate"><span class="type-signature">(static) </span>negate<span class="signature">(v, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Negates a vector.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>v</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>-v.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".normalize"><span class="type-signature">(static) </span>normalize<span class="signature">(a, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Divides a vector by its Euclidean length and returns the quotient.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The normalized vector.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".subtract"><span class="type-signature">(static) </span>subtract<span class="signature">(a, b, dst<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Subtracts two vectors.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>b</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Operand vector.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dst</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-twgl_v3.html#.Vec3">module:twgl/v3.Vec3</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>vector to hold result. If not new one is created..</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
-                
-<h4 class="name" id=".Vec3">Vec3</h4>
-
-
-
-
-<div class="description">
-    <p>A JavaScript array with 3 values or a Float32Array with 3 values.<br>When created by the library will create the default type which is <code>Float32Array</code><br>but can be set by calling <code>module:twgl/v3.setDefaultType</code>.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
 <span class="param-type">Array.&lt;number></span>
 |
 
-<span class="param-type">Float32Array</span>
+<span class="param-type">ArrayBuffer</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array or typed arry with texture data.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -3101,7 +2341,622 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 
+
+
+
+
+
+
+
+
+
+
+        
             
+
+    
+
+    <h4 class="name" id=".setTextureFromElement"><span class="type-signature">(static) </span>setTextureFromElement<span class="signature">(gl, tex, element, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set a texture from the contents of an element. Will also set<br>texture filtering or generate mips based on the dimensions of the element<br>unless <code>options.auto === false</code>. If <code>target === gl.TEXTURE_CUBE_MAP</code> will<br>attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a canvas, img, or video element.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setTextureParameters"><span class="type-signature">(static) </span>setTextureParameters<span class="signature">(gl, tex, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets the texture parameters of a texture.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setTextureTo1PixelColor"><span class="type-signature">(static) </span>setTextureTo1PixelColor<span class="signature">(gl, tex, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets a texture to a 1x1 pixel color. If <code>options.color === false</code> is nothing happens. If it's not set<br>the default texture color is used which can be set by calling <code>setDefaultTextureColor</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLTexture to set parameters for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.TextureOptions">module:twgl.TextureOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
     
 
     

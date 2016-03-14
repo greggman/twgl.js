@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>twgl/framebuffers - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-twgl.html">twgl</a><ul class='methods'><li data-type='method'><a href="module-twgl.html#.bindFramebufferInfo">bindFramebufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.bindUniformBlock">bindUniformBlock</a></li><li data-type='method'><a href="module-twgl.html#.createBufferInfoFromArrays">createBufferInfoFromArrays</a></li><li data-type='method'><a href="module-twgl.html#.createFramebufferInfo">createFramebufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.createProgramInfo">createProgramInfo</a></li><li data-type='method'><a href="module-twgl.html#.createTexture">createTexture</a></li><li data-type='method'><a href="module-twgl.html#.createTextures">createTextures</a></li><li data-type='method'><a href="module-twgl.html#.createUniformBlockInfo">createUniformBlockInfo</a></li><li data-type='method'><a href="module-twgl.html#.createVertexArrayInfo">createVertexArrayInfo</a></li><li data-type='method'><a href="module-twgl.html#.drawBufferInfo">drawBufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.drawObjectList">drawObjectList</a></li><li data-type='method'><a href="module-twgl.html#.getContext">getContext</a></li><li data-type='method'><a href="module-twgl.html#.getWebGLContext">getWebGLContext</a></li><li data-type='method'><a href="module-twgl.html#.resizeCanvasToDisplaySize">resizeCanvasToDisplaySize</a></li><li data-type='method'><a href="module-twgl.html#.resizeFramebufferInfo">resizeFramebufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.resizeTexture">resizeTexture</a></li><li data-type='method'><a href="module-twgl.html#.setAttribInfoBufferFromArray">setAttribInfoBufferFromArray</a></li><li data-type='method'><a href="module-twgl.html#.setBlockUniforms">setBlockUniforms</a></li><li data-type='method'><a href="module-twgl.html#.setBuffersAndAttributes">setBuffersAndAttributes</a></li><li data-type='method'><a href="module-twgl.html#.setDefaults">setDefaults</a></li><li data-type='method'><a href="module-twgl.html#.setTextureFromArray">setTextureFromArray</a></li><li data-type='method'><a href="module-twgl.html#.setUniformBlock">setUniformBlock</a></li><li data-type='method'><a href="module-twgl.html#.setUniforms">setUniforms</a></li></ul></li><li><a href="module-twgl_attributes.html">twgl/attributes</a><ul class='methods'><li data-type='method'><a href="module-twgl_attributes.html#.createAttribsFromArrays">createAttribsFromArrays</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBufferFromArray">createBufferFromArray</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBufferFromTypedArray">createBufferFromTypedArray</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBufferInfoFromArrays">createBufferInfoFromArrays</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBuffersFromArrays">createBuffersFromArrays</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createVertexArrayInfo">createVertexArrayInfo</a></li><li data-type='method'><a href="module-twgl_attributes.html#.setAttribInfoBufferFromArray">setAttribInfoBufferFromArray</a></li><li data-type='method'><a href="module-twgl_attributes.html#.setAttributePrefix">setAttributePrefix</a></li></ul></li><li><a href="module-twgl_draw.html">twgl/draw</a><ul class='methods'><li data-type='method'><a href="module-twgl_draw.html#.drawBufferInfo">drawBufferInfo</a></li><li data-type='method'><a href="module-twgl_draw.html#.drawObjectList">drawObjectList</a></li></ul></li><li><a href="module-twgl_framebuffers.html">twgl/framebuffers</a><ul class='methods'><li data-type='method'><a href="module-twgl_framebuffers.html#.bindFramebufferInfo">bindFramebufferInfo</a></li><li data-type='method'><a href="module-twgl_framebuffers.html#.createFramebufferInfo">createFramebufferInfo</a></li><li data-type='method'><a href="module-twgl_framebuffers.html#.resizeFramebufferInfo">resizeFramebufferInfo</a></li></ul></li><li><a href="module-twgl_m4.html">twgl/m4</a><ul class='methods'><li data-type='method'><a href="module-twgl_m4.html#.axisRotate">axisRotate</a></li><li data-type='method'><a href="module-twgl_m4.html#.axisRotation">axisRotation</a></li><li data-type='method'><a href="module-twgl_m4.html#.copy">copy</a></li><li data-type='method'><a href="module-twgl_m4.html#.frustum">frustum</a></li><li data-type='method'><a href="module-twgl_m4.html#.getAxis">getAxis</a></li><li data-type='method'><a href="module-twgl_m4.html#.getTranslation">getTranslation</a></li><li data-type='method'><a href="module-twgl_m4.html#.identity">identity</a></li><li data-type='method'><a href="module-twgl_m4.html#.inverse">inverse</a></li><li data-type='method'><a href="module-twgl_m4.html#.lookAt">lookAt</a></li><li data-type='method'><a href="module-twgl_m4.html#.multiply">multiply</a></li><li data-type='method'><a href="module-twgl_m4.html#.negate">negate</a></li><li data-type='method'><a href="module-twgl_m4.html#.ortho">ortho</a></li><li data-type='method'><a href="module-twgl_m4.html#.perspective">perspective</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotateX">rotateX</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotateY">rotateY</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotateZ">rotateZ</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotationX">rotationX</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotationY">rotationY</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotationZ">rotationZ</a></li><li data-type='method'><a href="module-twgl_m4.html#.scale">scale</a></li><li data-type='method'><a href="module-twgl_m4.html#.scaling">scaling</a></li><li data-type='method'><a href="module-twgl_m4.html#.setAxis">setAxis</a></li><li data-type='method'><a href="module-twgl_m4.html#.setTranslation">setTranslation</a></li><li data-type='method'><a href="module-twgl_m4.html#.transformDirection">transformDirection</a></li><li data-type='method'><a href="module-twgl_m4.html#.transformNormal">transformNormal</a></li><li data-type='method'><a href="module-twgl_m4.html#.transformPoint">transformPoint</a></li><li data-type='method'><a href="module-twgl_m4.html#.translate">translate</a></li><li data-type='method'><a href="module-twgl_m4.html#.translation">translation</a></li><li data-type='method'><a href="module-twgl_m4.html#.transpose">transpose</a></li></ul></li><li><a href="module-twgl_primitives.html">twgl/primitives</a><ul class='methods'><li data-type='method'><a href="module-twgl_primitives.html#.concatVertices">concatVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.create3DFBufferInfo">create3DFBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.create3DFBuffers">create3DFBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.create3DFVertices">create3DFVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createAugmentedTypedArray">createAugmentedTypedArray</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCresentBufferInfo">createCresentBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCresentBuffers">createCresentBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCresentVertices">createCresentVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCubeBufferInfo">createCubeBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCubeBuffers">createCubeBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCubeVertices">createCubeVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCylinderBufferInfo">createCylinderBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCylinderBuffers">createCylinderBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCylinderVertices">createCylinderVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createDiscBufferInfo">createDiscBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createDiscBuffers">createDiscBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createDiscVertices">createDiscVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createPlaneBufferInfo">createPlaneBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createPlaneBuffers">createPlaneBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createPlaneVertices">createPlaneVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createSphereBufferInfo">createSphereBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createSphereBuffers">createSphereBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createSphereVertices">createSphereVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTorusBufferInfo">createTorusBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTorusBuffers">createTorusBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTorusVertices">createTorusVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTruncatedConeBufferInfo">createTruncatedConeBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTruncatedConeBuffers">createTruncatedConeBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTruncatedConeVertices">createTruncatedConeVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createXYQuadBufferInfo">createXYQuadBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createXYQuadBuffers">createXYQuadBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createXYQuadVertices">createXYQuadVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.deindexVertices">deindexVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.duplicateVertices">duplicateVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.flattenNormals">flattenNormals</a></li><li data-type='method'><a href="module-twgl_primitives.html#.makeRandomVertexColors">makeRandomVertexColors</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientDirections">reorientDirections</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientNormals">reorientNormals</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientPositions">reorientPositions</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientVertices">reorientVertices</a></li></ul></li><li><a href="module-twgl_programs.html">twgl/programs</a><ul class='methods'><li data-type='method'><a href="module-twgl_programs.html#.bindUniformBlock">bindUniformBlock</a></li><li data-type='method'><a href="module-twgl_programs.html#.createAttributeSetters">createAttributeSetters</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgram">createProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramFromScripts">createProgramFromScripts</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramFromSources">createProgramFromSources</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramInfo">createProgramInfo</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramInfoFromProgram">createProgramInfoFromProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformBlockInfo">createUniformBlockInfo</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformBlockInfoFromProgram">createUniformBlockInfoFromProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformBlockSpecFromProgram">createUniformBlockSpecFromProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformSetters">createUniformSetters</a></li><li data-type='method'><a href="module-twgl_programs.html#.setAttributes">setAttributes</a></li><li data-type='method'><a href="module-twgl_programs.html#.setBlockUniforms">setBlockUniforms</a></li><li data-type='method'><a href="module-twgl_programs.html#.setBuffersAndAttributes">setBuffersAndAttributes</a></li><li data-type='method'><a href="module-twgl_programs.html#.setUniformBlock">setUniformBlock</a></li><li data-type='method'><a href="module-twgl_programs.html#.setUniforms">setUniforms</a></li></ul></li><li><a href="module-twgl_textures.html">twgl/textures</a><ul class='methods'><li data-type='method'><a href="module-twgl_textures.html#.createTexture">createTexture</a></li><li data-type='method'><a href="module-twgl_textures.html#.createTextures">createTextures</a></li><li data-type='method'><a href="module-twgl_textures.html#.getNumComponentsForFormat">getNumComponentsForFormat</a></li><li data-type='method'><a href="module-twgl_textures.html#.loadCubemapFromUrls">loadCubemapFromUrls</a></li><li data-type='method'><a href="module-twgl_textures.html#.loadTextureFromUrl">loadTextureFromUrl</a></li><li data-type='method'><a href="module-twgl_textures.html#.resizeTexture">resizeTexture</a></li><li data-type='method'><a href="module-twgl_textures.html#.setDefaultTextureColor">setDefaultTextureColor</a></li><li data-type='method'><a href="module-twgl_textures.html#.setEmptyTexture">setEmptyTexture</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureFilteringForSize">setTextureFilteringForSize</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureFromArray">setTextureFromArray</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureFromElement">setTextureFromElement</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureParameters">setTextureParameters</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureTo1PixelColor">setTextureTo1PixelColor</a></li></ul></li><li><a href="module-twgl_typedArray.html">twgl/typedArray</a><ul class='methods'><li data-type='method'><a href="module-twgl_typedArray.html#.getGLTypeForTypedArray">getGLTypeForTypedArray</a></li><li data-type='method'><a href="module-twgl_typedArray.html#.getTypedArrayTypeForGLType">getTypedArrayTypeForGLType</a></li></ul></li><li><a href="module-twgl_v3.html">twgl/v3</a><ul class='methods'><li data-type='method'><a href="module-twgl_v3.html#.add">add</a></li><li data-type='method'><a href="module-twgl_v3.html#.copy">copy</a></li><li data-type='method'><a href="module-twgl_v3.html#.create">create</a></li><li data-type='method'><a href="module-twgl_v3.html#.cross">cross</a></li><li data-type='method'><a href="module-twgl_v3.html#.divide">divide</a></li><li data-type='method'><a href="module-twgl_v3.html#.divScalar">divScalar</a></li><li data-type='method'><a href="module-twgl_v3.html#.dot">dot</a></li><li data-type='method'><a href="module-twgl_v3.html#.length">length</a></li><li data-type='method'><a href="module-twgl_v3.html#.lengthSq">lengthSq</a></li><li data-type='method'><a href="module-twgl_v3.html#.lerp">lerp</a></li><li data-type='method'><a href="module-twgl_v3.html#.mulScalar">mulScalar</a></li><li data-type='method'><a href="module-twgl_v3.html#.multiply">multiply</a></li><li data-type='method'><a href="module-twgl_v3.html#.negate">negate</a></li><li data-type='method'><a href="module-twgl_v3.html#.normalize">normalize</a></li><li data-type='method'><a href="module-twgl_v3.html#.subtract">subtract</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">twgl/framebuffers</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Framebuffer related functions</p>
+<p>For backward compatibily they are available at both <code>twgl.framebuffer</code> and <code>twgl</code><br>itself</p>
+<p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".bindFramebufferInfo"><span class="type-signature">(static) </span>bindFramebufferInfo<span class="signature">(gl, framebufferInfo<span class="signature-attributes">opt</span>, target<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Binds a framebuffer</p>
+<p>This function pretty much soley exists because I spent hours<br>trying to figure out why something I wrote wasn't working only<br>to realize I forget to set the viewport dimensions.<br>My hope is this function will fix that.</p>
+<p>It is effectively the same as</p>
+<pre class="prettyprint source"><code>gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
+gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>framebufferInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.FramebufferInfo">module:twgl.FramebufferInfo</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a framebufferInfo as returned from <code>module:twgl.createFramebuffer</code>.<br>  If not passed will bind the canvas.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The target. If not passed <code>gl.FRAMEBUFFER</code> will be used.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createFramebufferInfo"><span class="type-signature">(static) </span>createFramebufferInfo<span class="signature">(gl, attachments<span class="signature-attributes">opt</span>, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.FramebufferInfo">module:twgl.FramebufferInfo</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a framebuffer and attachments.</p>
+<p>This returns a <a href="module-twgl.html#.FramebufferInfo"><code>module:twgl.FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.</p>
+<p>The simplest usage</p>
+<pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+var fbi = twgl.createFramebuffer(gl);</code></pre><p>More complex usage</p>
+<pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+var attachments = [
+  { format: RGB565, mag: NEAREST },
+  { format: STENCIL_INDEX8 },
+]
+var fbi = twgl.createFramebuffer(gl, attachments);</code></pre><p>Passing in a specific size</p>
+<pre class="prettyprint source"><code>var width = 256;
+var height = 256;
+var fbi = twgl.createFramebuffer(gl, attachments, width, height);</code></pre><p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br><a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL only guarantees 3 combinations of attachments work</a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>attachments</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="module-twgl.html#.AttachmentOptions">module:twgl.AttachmentOptions</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>which attachments to create. If not provided the default is a framebuffer with an<br>   <code>RGBA</code>, <code>UNSIGNED_BYTE</code> texture <code>COLOR_ATTACHMENT0</code> and a <code>DEPTH_STENCIL</code> renderbuffer <code>DEPTH_STENCIL_ATTACHMENT</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the width for the attachments. Default = size of drawingBuffer</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the height for the attachments. Defautt = size of drawingBuffer</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the framebuffer and attachments.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-twgl.html#.FramebufferInfo">module:twgl.FramebufferInfo</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".resizeFramebufferInfo"><span class="type-signature">(static) </span>resizeFramebufferInfo<span class="signature">(gl, framebufferInfo, attachments<span class="signature-attributes">opt</span>, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Resizes the attachments of a framebuffer.</p>
+<p>You need to pass in the same <code>attachments</code> as you passed in <code>module:twgl.createFramebuffer</code><br>because TWGL has no idea the format/type of each attachment.</p>
+<p>The simplest usage</p>
+<pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+var fbi = twgl.createFramebuffer(gl);
+
+...
+
+function render() {
+  if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+    // resize the attachments
+    twgl.resizeFramebufferInfo(gl, fbi);
+  }</code></pre><p>More complex usage</p>
+<pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+var attachments = [
+  { format: RGB565, mag: NEAREST },
+  { format: STENCIL_INDEX8 },
+]
+var fbi = twgl.createFramebuffer(gl, attachments);
+
+...
+
+function render() {
+  if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+    // resize the attachments to match
+    twgl.resizeFramebufferInfo(gl, fbi, attachments);
+  }</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>framebufferInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.FramebufferInfo">module:twgl.FramebufferInfo</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a framebufferInfo as returned from <code>module:twgl.createFramebuffer</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>attachments</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="module-twgl.html#.AttachmentOptions">module:twgl.AttachmentOptions</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the same attachments options as passed to <code>module:twgl.createFramebuffer</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the width for the attachments. Default = size of drawingBuffer</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the height for the attachments. Defautt = size of drawingBuffer</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

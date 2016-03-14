@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>twgl/attributes - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-twgl.html">twgl</a><ul class='methods'><li data-type='method'><a href="module-twgl.html#.bindFramebufferInfo">bindFramebufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.bindUniformBlock">bindUniformBlock</a></li><li data-type='method'><a href="module-twgl.html#.createBufferInfoFromArrays">createBufferInfoFromArrays</a></li><li data-type='method'><a href="module-twgl.html#.createFramebufferInfo">createFramebufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.createProgramInfo">createProgramInfo</a></li><li data-type='method'><a href="module-twgl.html#.createTexture">createTexture</a></li><li data-type='method'><a href="module-twgl.html#.createTextures">createTextures</a></li><li data-type='method'><a href="module-twgl.html#.createUniformBlockInfo">createUniformBlockInfo</a></li><li data-type='method'><a href="module-twgl.html#.createVertexArrayInfo">createVertexArrayInfo</a></li><li data-type='method'><a href="module-twgl.html#.drawBufferInfo">drawBufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.drawObjectList">drawObjectList</a></li><li data-type='method'><a href="module-twgl.html#.getContext">getContext</a></li><li data-type='method'><a href="module-twgl.html#.getWebGLContext">getWebGLContext</a></li><li data-type='method'><a href="module-twgl.html#.resizeCanvasToDisplaySize">resizeCanvasToDisplaySize</a></li><li data-type='method'><a href="module-twgl.html#.resizeFramebufferInfo">resizeFramebufferInfo</a></li><li data-type='method'><a href="module-twgl.html#.resizeTexture">resizeTexture</a></li><li data-type='method'><a href="module-twgl.html#.setAttribInfoBufferFromArray">setAttribInfoBufferFromArray</a></li><li data-type='method'><a href="module-twgl.html#.setBlockUniforms">setBlockUniforms</a></li><li data-type='method'><a href="module-twgl.html#.setBuffersAndAttributes">setBuffersAndAttributes</a></li><li data-type='method'><a href="module-twgl.html#.setDefaults">setDefaults</a></li><li data-type='method'><a href="module-twgl.html#.setTextureFromArray">setTextureFromArray</a></li><li data-type='method'><a href="module-twgl.html#.setUniformBlock">setUniformBlock</a></li><li data-type='method'><a href="module-twgl.html#.setUniforms">setUniforms</a></li></ul></li><li><a href="module-twgl_attributes.html">twgl/attributes</a><ul class='methods'><li data-type='method'><a href="module-twgl_attributes.html#.createAttribsFromArrays">createAttribsFromArrays</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBufferFromArray">createBufferFromArray</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBufferFromTypedArray">createBufferFromTypedArray</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBufferInfoFromArrays">createBufferInfoFromArrays</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createBuffersFromArrays">createBuffersFromArrays</a></li><li data-type='method'><a href="module-twgl_attributes.html#.createVertexArrayInfo">createVertexArrayInfo</a></li><li data-type='method'><a href="module-twgl_attributes.html#.setAttribInfoBufferFromArray">setAttribInfoBufferFromArray</a></li><li data-type='method'><a href="module-twgl_attributes.html#.setAttributePrefix">setAttributePrefix</a></li></ul></li><li><a href="module-twgl_draw.html">twgl/draw</a><ul class='methods'><li data-type='method'><a href="module-twgl_draw.html#.drawBufferInfo">drawBufferInfo</a></li><li data-type='method'><a href="module-twgl_draw.html#.drawObjectList">drawObjectList</a></li></ul></li><li><a href="module-twgl_framebuffers.html">twgl/framebuffers</a><ul class='methods'><li data-type='method'><a href="module-twgl_framebuffers.html#.bindFramebufferInfo">bindFramebufferInfo</a></li><li data-type='method'><a href="module-twgl_framebuffers.html#.createFramebufferInfo">createFramebufferInfo</a></li><li data-type='method'><a href="module-twgl_framebuffers.html#.resizeFramebufferInfo">resizeFramebufferInfo</a></li></ul></li><li><a href="module-twgl_m4.html">twgl/m4</a><ul class='methods'><li data-type='method'><a href="module-twgl_m4.html#.axisRotate">axisRotate</a></li><li data-type='method'><a href="module-twgl_m4.html#.axisRotation">axisRotation</a></li><li data-type='method'><a href="module-twgl_m4.html#.copy">copy</a></li><li data-type='method'><a href="module-twgl_m4.html#.frustum">frustum</a></li><li data-type='method'><a href="module-twgl_m4.html#.getAxis">getAxis</a></li><li data-type='method'><a href="module-twgl_m4.html#.getTranslation">getTranslation</a></li><li data-type='method'><a href="module-twgl_m4.html#.identity">identity</a></li><li data-type='method'><a href="module-twgl_m4.html#.inverse">inverse</a></li><li data-type='method'><a href="module-twgl_m4.html#.lookAt">lookAt</a></li><li data-type='method'><a href="module-twgl_m4.html#.multiply">multiply</a></li><li data-type='method'><a href="module-twgl_m4.html#.negate">negate</a></li><li data-type='method'><a href="module-twgl_m4.html#.ortho">ortho</a></li><li data-type='method'><a href="module-twgl_m4.html#.perspective">perspective</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotateX">rotateX</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotateY">rotateY</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotateZ">rotateZ</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotationX">rotationX</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotationY">rotationY</a></li><li data-type='method'><a href="module-twgl_m4.html#.rotationZ">rotationZ</a></li><li data-type='method'><a href="module-twgl_m4.html#.scale">scale</a></li><li data-type='method'><a href="module-twgl_m4.html#.scaling">scaling</a></li><li data-type='method'><a href="module-twgl_m4.html#.setAxis">setAxis</a></li><li data-type='method'><a href="module-twgl_m4.html#.setTranslation">setTranslation</a></li><li data-type='method'><a href="module-twgl_m4.html#.transformDirection">transformDirection</a></li><li data-type='method'><a href="module-twgl_m4.html#.transformNormal">transformNormal</a></li><li data-type='method'><a href="module-twgl_m4.html#.transformPoint">transformPoint</a></li><li data-type='method'><a href="module-twgl_m4.html#.translate">translate</a></li><li data-type='method'><a href="module-twgl_m4.html#.translation">translation</a></li><li data-type='method'><a href="module-twgl_m4.html#.transpose">transpose</a></li></ul></li><li><a href="module-twgl_primitives.html">twgl/primitives</a><ul class='methods'><li data-type='method'><a href="module-twgl_primitives.html#.concatVertices">concatVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.create3DFBufferInfo">create3DFBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.create3DFBuffers">create3DFBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.create3DFVertices">create3DFVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createAugmentedTypedArray">createAugmentedTypedArray</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCresentBufferInfo">createCresentBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCresentBuffers">createCresentBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCresentVertices">createCresentVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCubeBufferInfo">createCubeBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCubeBuffers">createCubeBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCubeVertices">createCubeVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCylinderBufferInfo">createCylinderBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCylinderBuffers">createCylinderBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createCylinderVertices">createCylinderVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createDiscBufferInfo">createDiscBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createDiscBuffers">createDiscBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createDiscVertices">createDiscVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createPlaneBufferInfo">createPlaneBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createPlaneBuffers">createPlaneBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createPlaneVertices">createPlaneVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createSphereBufferInfo">createSphereBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createSphereBuffers">createSphereBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createSphereVertices">createSphereVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTorusBufferInfo">createTorusBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTorusBuffers">createTorusBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTorusVertices">createTorusVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTruncatedConeBufferInfo">createTruncatedConeBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTruncatedConeBuffers">createTruncatedConeBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createTruncatedConeVertices">createTruncatedConeVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createXYQuadBufferInfo">createXYQuadBufferInfo</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createXYQuadBuffers">createXYQuadBuffers</a></li><li data-type='method'><a href="module-twgl_primitives.html#.createXYQuadVertices">createXYQuadVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.deindexVertices">deindexVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.duplicateVertices">duplicateVertices</a></li><li data-type='method'><a href="module-twgl_primitives.html#.flattenNormals">flattenNormals</a></li><li data-type='method'><a href="module-twgl_primitives.html#.makeRandomVertexColors">makeRandomVertexColors</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientDirections">reorientDirections</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientNormals">reorientNormals</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientPositions">reorientPositions</a></li><li data-type='method'><a href="module-twgl_primitives.html#.reorientVertices">reorientVertices</a></li></ul></li><li><a href="module-twgl_programs.html">twgl/programs</a><ul class='methods'><li data-type='method'><a href="module-twgl_programs.html#.bindUniformBlock">bindUniformBlock</a></li><li data-type='method'><a href="module-twgl_programs.html#.createAttributeSetters">createAttributeSetters</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgram">createProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramFromScripts">createProgramFromScripts</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramFromSources">createProgramFromSources</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramInfo">createProgramInfo</a></li><li data-type='method'><a href="module-twgl_programs.html#.createProgramInfoFromProgram">createProgramInfoFromProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformBlockInfo">createUniformBlockInfo</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformBlockInfoFromProgram">createUniformBlockInfoFromProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformBlockSpecFromProgram">createUniformBlockSpecFromProgram</a></li><li data-type='method'><a href="module-twgl_programs.html#.createUniformSetters">createUniformSetters</a></li><li data-type='method'><a href="module-twgl_programs.html#.setAttributes">setAttributes</a></li><li data-type='method'><a href="module-twgl_programs.html#.setBlockUniforms">setBlockUniforms</a></li><li data-type='method'><a href="module-twgl_programs.html#.setBuffersAndAttributes">setBuffersAndAttributes</a></li><li data-type='method'><a href="module-twgl_programs.html#.setUniformBlock">setUniformBlock</a></li><li data-type='method'><a href="module-twgl_programs.html#.setUniforms">setUniforms</a></li></ul></li><li><a href="module-twgl_textures.html">twgl/textures</a><ul class='methods'><li data-type='method'><a href="module-twgl_textures.html#.createTexture">createTexture</a></li><li data-type='method'><a href="module-twgl_textures.html#.createTextures">createTextures</a></li><li data-type='method'><a href="module-twgl_textures.html#.getNumComponentsForFormat">getNumComponentsForFormat</a></li><li data-type='method'><a href="module-twgl_textures.html#.loadCubemapFromUrls">loadCubemapFromUrls</a></li><li data-type='method'><a href="module-twgl_textures.html#.loadTextureFromUrl">loadTextureFromUrl</a></li><li data-type='method'><a href="module-twgl_textures.html#.resizeTexture">resizeTexture</a></li><li data-type='method'><a href="module-twgl_textures.html#.setDefaultTextureColor">setDefaultTextureColor</a></li><li data-type='method'><a href="module-twgl_textures.html#.setEmptyTexture">setEmptyTexture</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureFilteringForSize">setTextureFilteringForSize</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureFromArray">setTextureFromArray</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureFromElement">setTextureFromElement</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureParameters">setTextureParameters</a></li><li data-type='method'><a href="module-twgl_textures.html#.setTextureTo1PixelColor">setTextureTo1PixelColor</a></li></ul></li><li><a href="module-twgl_typedArray.html">twgl/typedArray</a><ul class='methods'><li data-type='method'><a href="module-twgl_typedArray.html#.getGLTypeForTypedArray">getGLTypeForTypedArray</a></li><li data-type='method'><a href="module-twgl_typedArray.html#.getTypedArrayTypeForGLType">getTypedArrayTypeForGLType</a></li></ul></li><li><a href="module-twgl_v3.html">twgl/v3</a><ul class='methods'><li data-type='method'><a href="module-twgl_v3.html#.add">add</a></li><li data-type='method'><a href="module-twgl_v3.html#.copy">copy</a></li><li data-type='method'><a href="module-twgl_v3.html#.create">create</a></li><li data-type='method'><a href="module-twgl_v3.html#.cross">cross</a></li><li data-type='method'><a href="module-twgl_v3.html#.divide">divide</a></li><li data-type='method'><a href="module-twgl_v3.html#.divScalar">divScalar</a></li><li data-type='method'><a href="module-twgl_v3.html#.dot">dot</a></li><li data-type='method'><a href="module-twgl_v3.html#.length">length</a></li><li data-type='method'><a href="module-twgl_v3.html#.lengthSq">lengthSq</a></li><li data-type='method'><a href="module-twgl_v3.html#.lerp">lerp</a></li><li data-type='method'><a href="module-twgl_v3.html#.mulScalar">mulScalar</a></li><li data-type='method'><a href="module-twgl_v3.html#.multiply">multiply</a></li><li data-type='method'><a href="module-twgl_v3.html#.negate">negate</a></li><li data-type='method'><a href="module-twgl_v3.html#.normalize">normalize</a></li><li data-type='method'><a href="module-twgl_v3.html#.subtract">subtract</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">twgl/attributes</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Low level attribute and buffer related functions</p>
+<p>You should generally not need to use these functions. They are provided<br>for those cases where you're doing something out of the ordinary<br>and you need lower level access.</p>
+<p>For backward compatibily they are available at both <code>twgl.attributes</code> and <code>twgl</code><br>itself</p>
+<p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createAttribsFromArrays"><span class="type-signature">(static) </span>createAttribsFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#.AttribInfo">module:twgl.AttribInfo</a>>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a set of attribute data and WebGLBuffers from set of arrays</p>
+<p>Given</p>
+<pre class="prettyprint source"><code> var arrays = {
+   position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
+   texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
+   normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
+   color:    { numComponents: 4, data: [255, 255, 255, 255, 255, 0, 0, 255, 0, 0, 255, 255], type: Uint8Array, },
+   indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
+ };</code></pre><p>returns something like</p>
+<pre class="prettyprint source"><code> var attribs = {
+   position: { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   texcoord: { numComponents: 2, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   normal:   { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
+   color:    { numComponents: 4, type: gl.UNSIGNED_BYTE, normalize: true,  buffer: WebGLBuffer, },
+ };</code></pre><p>notes:</p>
+<ul>
+<li><p>Arrays can take various forms</p>
+<p>Bare JavaScript Arrays</p>
+<pre class="prettyprint source"><code>var arrays = {
+   position: [-1, 1, 0],
+   normal: [0, 1, 0],
+   ...
+}</code></pre><p>Bare TypedArrays</p>
+<pre class="prettyprint source"><code>var arrays = {
+   position: new Float32Array([-1, 1, 0]),
+   color: new Uint8Array([255, 128, 64, 255]),
+   ...
+}</code></pre></li>
+<li><p>Will guess at <code>numComponents</code> if not specified based on name.</p>
+<p>If <code>coord</code> is in the name assumes <code>numComponents = 2</code></p>
+<p>If <code>color</code> is in the name assumes <code>numComponents = 4</code></p>
+<p>otherwise assumes <code>numComponents = 3</code></p>
+</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The webgl rendering context.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.Arrays">module:twgl.Arrays</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The arrays</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the attribs</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object.&lt;string, <a href="module-twgl.html#.AttribInfo">module:twgl.AttribInfo</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createBufferFromArray"><span class="type-signature">(static) </span>createBufferFromArray<span class="signature">(gl, array, arrayName)</span><span class="type-signature"> &rarr; {WebGLBuffer}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a buffer from an array, typed array, or array spec</p>
+<p>Given something like this</p>
+<pre class="prettyprint source"><code>[1, 2, 3],</code></pre><p>or</p>
+<pre class="prettyprint source"><code>new Uint16Array([1,2,3]);</code></pre><p>or</p>
+<pre class="prettyprint source"><code>{
+   data: [1, 2, 3],
+   type: Uint8Array,
+}</code></pre><p>returns a WebGLBuffer that constains the given data.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.ArraySpec">module:twgl.ArraySpec</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array, typed array, or array spec.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arrayName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of array. Used to guess the type if type can not be dervied other wise.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a WebGLBuffer containing the data in array.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">WebGLBuffer</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createBufferFromTypedArray"><span class="type-signature">(static) </span>createBufferFromTypedArray<span class="signature">(gl, typedArray, type<span class="signature-attributes">opt</span>, drawType<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {WebGLBuffer}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Given typed array creates a WebGLBuffer and copies the typed array<br>into it.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>typedArray</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">ArrayBufferView</span>
+|
+
+<span class="param-type">WebGLBuffer</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the typed array. Note: If a WebGLBuffer is passed in it will just be returned. No action will be taken</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the GL bind type for the buffer. Default = <code>gl.ARRAY_BUFFER</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>drawType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the GL draw type for the buffer. Default = 'gl.STATIC_DRAW`.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the created WebGLBuffer</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">WebGLBuffer</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createBufferInfoFromArrays"><span class="type-signature">(static) </span>createBufferInfoFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a BufferInfo from an object of arrays.</p>
+<p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br><code>module:twgl:drawBufferInfo</code>.</p>
+<p>Given an object like</p>
+<pre class="prettyprint source"><code>var arrays = {
+  position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
+  texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
+  normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
+  indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
+};</code></pre><p> Creates an BufferInfo like this</p>
+<pre class="prettyprint source"><code>bufferInfo = {
+  numElements: 4,        // or whatever the number of elements is
+  indices: WebGLBuffer,  // this property will not exist if there are no indices
+  attribs: {
+    a_position: { buffer: WebGLBuffer, numComponents: 3, },
+    a_normal:   { buffer: WebGLBuffer, numComponents: 3, },
+    a_texcoord: { buffer: WebGLBuffer, numComponents: 2, },
+  },
+};</code></pre><p> The properties of arrays can be JavaScript arrays in which case the number of components<br> will be guessed.</p>
+<pre class="prettyprint source"><code>var arrays = {
+   position: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0],
+   texcoord: [0, 0, 0, 1, 1, 0, 1, 1],
+   normal:   [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+   indices:  [0, 1, 2, 1, 2, 3],
+};</code></pre><p> They can also by TypedArrays</p>
+<pre class="prettyprint source"><code>var arrays = {
+   position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
+   texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
+   normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
+   indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
+};</code></pre><p> Or augmentedTypedArrays</p>
+<pre class="prettyprint source"><code>var positions = createAugmentedTypedArray(3, 4);
+var texcoords = createAugmentedTypedArray(2, 4);
+var normals   = createAugmentedTypedArray(3, 4);
+var indices   = createAugmentedTypedArray(3, 2, Uint16Array);
+
+positions.push([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]);
+texcoords.push([0, 0, 0, 1, 1, 0, 1, 1]);
+normals.push([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]);
+indices.push([0, 1, 2, 1, 2, 3]);
+
+var arrays = {
+   position: positions,
+   texcoord: texcoords,
+   normal:   normals,
+   indices:  indices,
+};</code></pre><p>For the last example it is equivalent to</p>
+<pre class="prettyprint source"><code>var bufferInfo = {
+  attribs: {
+    a_position: { numComponents: 3, buffer: gl.createBuffer(), },
+    a_texcoods: { numComponents: 2, buffer: gl.createBuffer(), },
+    a_normals: { numComponents: 3, buffer: gl.createBuffer(), },
+  },
+  indices: gl.createBuffer(),
+  numElements: 6,
+};
+
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_position.buffer);
+gl.bufferData(gl.ARRAY_BUFFER, arrays.position, gl.STATIC_DRAW);
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_texcoord.buffer);
+gl.bufferData(gl.ARRAY_BUFFER, arrays.texcoord, gl.STATIC_DRAW);
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_normal.buffer);
+gl.bufferData(gl.ARRAY_BUFFER, arrays.normal, gl.STATIC_DRAW);
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bufferInfo.indices);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.Arrays">module:twgl.Arrays</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Your data</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A BufferInfo</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createBuffersFromArrays"><span class="type-signature">(static) </span>createBuffersFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates buffers from arrays or typed arrays</p>
+<p>Given something like this</p>
+<pre class="prettyprint source"><code>var arrays = {
+   positions: [1, 2, 3],
+   normals: [0, 0, 1],
+}</code></pre><p>returns something like</p>
+<pre class="prettyprint source"><code>buffers = {
+  positions: WebGLBuffer,
+  normals: WebGLBuffer,
+}</code></pre><p>If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.Arrays">module:twgl.Arrays</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>returns an object with one WebGLBuffer per array</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object.&lt;string, WebGLBuffer></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".createVertexArrayInfo"><span class="type-signature">(static) </span>createVertexArrayInfo<span class="signature">(gl, programInfo)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.VertexArrayInfo">module:twgl.VertexArrayInfo</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a BufferInfo from an object of arrays.</p>
+<p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br><code>module:twgl:drawBufferInfo</code>.</p>
+<blockquote>
+<p><strong>IMPORTANT:</strong> Vertex Array Objects are <strong>not</strong> a direct analog for a BufferInfo. Vertex Array Objects<br>  assign buffers to specific attributes at creation time. That means they can only be used with programs<br>  who's attributes use the same attribute locations for the same purposes.</p>
+<p>Bind your attribute locations by passing an array of attribute names to <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a><br>  or use WebGL 2's GLSL ES 3's <code>layout(location = &lt;num&gt;)</code> to make sure locations match.</p>
+</blockquote>
+<p>also</p>
+<blockquote>
+<p><strong>IMPORTANT:</strong> After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object<br>  that Vertex Array Object will be bound. That means <strong>ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES</strong><br>  will affect the Vertex Array Object state.</p>
+<p>Call <code>gl.bindVertexArray(null)</code> to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.</p>
+</blockquote>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A WebGLRenderingContext</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>programInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a programInfo or array of programInfos</p>
+<p>   You need to make sure every attribute that will be used is bound. So for example assume shader 1<br>   uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo<br>   for shader 1 then only attributes A, B, and C will have their attributes set because TWGL doesn't<br>   now attribute D's location.</p>
+<p>   So, you can pass in both shader 1 and shader 2's programInfo</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The created VertexArrayInfo</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-twgl.html#.VertexArrayInfo">module:twgl.VertexArrayInfo</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setAttribInfoBufferFromArray"><span class="type-signature">(static) </span>setAttribInfoBufferFromArray<span class="signature">(gl, attribInfo, array, offset<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets the contents of a buffer attached to an attribInfo</p>
+<p>This is helper function to dynamically update a buffer.</p>
+<p>Let's say you make a bufferInfo</p>
+<pre class="prettyprint source"><code>var arrays = {
+   position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
+   texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
+   normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
+   indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
+};
+var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre><p> And you want to dynamically upate the positions. You could do this</p>
+<pre class="prettyprint source"><code>// assuming arrays.position has already been updated with new data.
+twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebGLRenderingContext</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>attribInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">AttribInfo</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix<br>  the name of the attribute will include the prefix.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArraySpec</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Note: it is arguably ineffient to pass in anything but a typed array because anything<br>   else will have to be converted to a typed array before it can be used by WebGL. During init time that<br>   inefficiency is usually not important but if you're updating data dynamically best to be efficient.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>an optional offset into the buffer. This is only an offset into the WebGL buffer<br>   not the array. To pass in an offset into the array itself use a typed array and create an <code>ArrayBufferView</code><br>   for the portion of the array you want to use.</p>
+<pre class="prettyprint source"><code>   var someArray = new Float32Array(1000); // an array with 1000 floats
+   var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray</code></pre><p>   Now you can pass <code>someSubArray</code> into setAttribInfoBufferFromArray`</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setAttributePrefix"><span class="type-signature">(static) </span>setAttributePrefix<span class="signature">(prefix)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets the default attrib prefix</p>
+<p>When writing shaders I prefer to name attributes with <code>a_</code>, uniforms with <code>u_</code> and varyings with <code>v_</code><br>as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.</p>
+<p>In otherwords I'll create arrays of geometry like this</p>
+<pre class="prettyprint source"><code>var arrays = {
+  position: ...
+  normal: ...
+  texcoord: ...
+};</code></pre><p>But need those mapped to attributes and my attributes start with <code>a_</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>prefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>prefix for attribs</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>see <a href="module-twgl.html#.setDefaults"><code>module:twgl.setDefaults</code></a></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
