@@ -37,6 +37,21 @@ define([
     utils) {
   "use strict";
 
+  /**
+   * Low level texture related functions
+   *
+   * You should generally not need to use these functions. They are provided
+   * for those cases where you're doing something out of the ordinary
+   * and you need lower level access.
+   *
+   * For backward compatibily they are available at both `twgl.textures` and `twgl`
+   * itself
+   *
+   * See {@link module:twgl} for core functions
+   *
+   * @module twgl/textures
+   */
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
   var defaults = {
@@ -77,7 +92,7 @@ define([
    *
    * @param {number[]} color Array of 4 values in the range 0 to 1
    * @deprecated see {@link module:twgl.setDefaults}
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function setDefaultTextureColor(color) {
     defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
@@ -253,7 +268,7 @@ define([
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
    *   This is often the same options you passed in when you created the texture.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function setTextureParameters(gl, tex, options) {
     var target = options.target || gl.TEXTURE_2D;
@@ -309,7 +324,7 @@ define([
    *   This is often the same options you passed in when you created the texture.
    * @param {number} [width] width of texture
    * @param {number} [height] height of texture
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function setTextureFilteringForSize(gl, tex, options, width, height) {
     options = options || defaults.textureOptions;
@@ -386,7 +401,7 @@ define([
    * @param {HTMLElement} element a canvas, img, or video element.
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    *   This is often the same options you passed in when you created the texture.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    * @kind function
    */
   var setTextureFromElement = function() {
@@ -485,7 +500,7 @@ define([
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    *   This is often the same options you passed in when you created the texture.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function setTextureTo1PixelColor(gl, tex, options) {
     options = options || defaults.textureOptions;
@@ -556,7 +571,7 @@ define([
    * @param {module:twgl.TextureReadyCallback} [callback] A function to be called when the image has finished loading. err will
    *    be non null if there was an error.
    * @return {HTMLImageElement} the image being downloaded.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function loadTextureFromUrl(gl, tex, options, callback) {
     callback = callback || noop;
@@ -583,7 +598,7 @@ define([
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
    * @param {module:twgl.CubemapReadyCallback} [callback] A function to be called when all the images have finished loading. err will
    *    be non null if there was an error.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function loadCubemapFromUrls(gl, tex, options, callback) {
     callback = callback || noop;
@@ -649,7 +664,7 @@ define([
    * Gets the number of compontents for a given image format.
    * @param {number} format the format.
    * @return {number} the number of components for the format.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function getNumComponentsForFormat(format) {
     switch (format) {
@@ -687,7 +702,7 @@ define([
    * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    *   This is often the same options you passed in when you created the texture.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function setTextureFromArray(gl, tex, src, options) {
     options = options || defaults.textureOptions;
@@ -755,7 +770,7 @@ define([
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function setEmptyTexture(gl, tex, options) {
     var target = options.target || gl.TEXTURE_2D;
@@ -778,7 +793,7 @@ define([
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
    * @return {WebGLTexture} the created texture.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function createTexture(gl, options, callback) {
     callback = callback || noop;
@@ -843,7 +858,7 @@ define([
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
    * @param {number} [width] the new width. If not passed in will use `options.width`
    * @param {number} [height] the new height. If not passed in will use `options.height`
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function resizeTexture(gl, tex, options, width, height) {
     width = width || options.width;
@@ -954,7 +969,7 @@ define([
    * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
    * @param {module:twgl.TexturesReadyCallback} [callback] A callback called when all textures have been downloaded.
    * @return {Object.<string,WebGLTexture>} the created textures by name
-   * @memberOf module:twgl
+   * @memberOf module:twgl/textures
    */
   function createTextures(gl, textureOptions, callback) {
     callback = callback || noop;

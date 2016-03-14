@@ -31,6 +31,22 @@
 define([], function() {
   "use strict";
 
+  /**
+   * Low level shader typed array related functions
+   *
+   * You should generally not need to use these functions. They are provided
+   * for those cases where you're doing something out of the ordinary
+   * and you need lower level access.
+   *
+   * For backward compatibily they are available at both `twgl.typedArray` and `twgl`
+   * itself
+   *
+   * See {@link module:twgl} for core functions
+   *
+   * @module twgl/typedArray
+   */
+
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
 
@@ -48,7 +64,7 @@ define([], function() {
    * @param {ArrayBuffer|ArrayBufferView} typedArray a typedArray
    * @return {number} the GL type for array. For example pass in an `Int8Array` and `gl.BYTE` will
    *   be returned. Pass in a `Uint32Array` and `gl.UNSIGNED_INT` will be returned
-   * @memberOf module:twgl
+   * @memberOf module:twgl/typedArray
    */
   function getGLTypeForTypedArray(typedArray) {
     if (typedArray instanceof Int8Array)         { return BYTE; }           // eslint-disable-line
@@ -66,7 +82,7 @@ define([], function() {
    * Get the typed array constructor for a given GL type
    * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
    * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
-   * @memberOf module:twgl
+   * @memberOf module:twgl/typedArray
    */
   function getTypedArrayTypeForGLType(type) {
     switch (type) {

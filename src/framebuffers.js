@@ -37,6 +37,17 @@ define([
     utils) {
   "use strict";
 
+  /**
+   * Framebuffer related functions
+   *
+   * For backward compatibily they are available at both `twgl.framebuffer` and `twgl`
+   * itself
+   *
+   * See {@link module:twgl} for core functions
+   *
+   * @module twgl/framebuffers
+   */
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
 
@@ -171,7 +182,7 @@ define([
    * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
    * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
    * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/framebuffers
    */
   function createFramebufferInfo(gl, attachments, width, height) {
     var target = gl.FRAMEBUFFER;
@@ -265,7 +276,7 @@ define([
    * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebuffer}.
    * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
    * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
-   * @memberOf module:twgl
+   * @memberOf module:twgl/framebuffers
    */
   function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
     width  = width  || gl.drawingBufferWidth;
@@ -304,7 +315,7 @@ define([
    * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebuffer}.
    *   If not passed will bind the canvas.
    * @param {number} [target] The target. If not passed `gl.FRAMEBUFFER` will be used.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/framebuffers
    */
 
   function bindFramebufferInfo(gl, framebufferInfo, target) {

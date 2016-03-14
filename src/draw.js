@@ -36,6 +36,17 @@ define([
   "use strict";
 
   /**
+   * Drawing related functions
+   *
+   * For backward compatibily they are available at both `twgl.draw` and `twgl`
+   * itself
+   *
+   * See {@link module:twgl} for core functions
+   *
+   * @module twgl/draw
+   */
+
+  /**
    * Calls `gl.drawElements` or `gl.drawArrays`, whichever is appropriate
    *
    * normally you'd call `gl.drawElements` or `gl.drawArrays` yourself
@@ -48,7 +59,7 @@ define([
    *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/draw
    */
   function drawBufferInfo(gl, type, bufferInfo, count, offset) {
     var indices = bufferInfo.indices;
@@ -100,7 +111,7 @@ define([
   /**
    * Draws a list of objects
    * @param {DrawObject[]} objectsToDraw an array of objects to draw.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/draw
    */
   function drawObjectList(gl, objectsToDraw) {
     var lastUsedProgramInfo = null;

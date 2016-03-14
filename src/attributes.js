@@ -37,6 +37,21 @@ define([
     utils) {
   "use strict";
 
+  /**
+   * Low level attribute and buffer related functions
+   *
+   * You should generally not need to use these functions. They are provided
+   * for those cases where you're doing something out of the ordinary
+   * and you need lower level access.
+   *
+   * For backward compatibily they are available at both `twgl.attributes` and `twgl`
+   * itself
+   *
+   * See {@link module:twgl} for core functions
+   *
+   * @module twgl/attributes
+   */
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
   var defaults = {
@@ -61,7 +76,7 @@ define([
    *
    * @deprecated see {@link module:twgl.setDefaults}
    * @param {string} prefix prefix for attribs
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function setAttributePrefix(prefix) {
     defaults.attribPrefix = prefix;
@@ -85,7 +100,7 @@ define([
    * @param {number} [type] the GL bind type for the buffer. Default = `gl.ARRAY_BUFFER`.
    * @param {number} [drawType] the GL draw type for the buffer. Default = 'gl.STATIC_DRAW`.
    * @return {WebGLBuffer} the created WebGLBuffer
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function createBufferFromTypedArray(gl, typedArray, type, drawType) {
     if (typedArray instanceof WebGLBuffer) {
@@ -302,7 +317,7 @@ define([
    * @param {WebGLRenderingContext} gl The webgl rendering context.
    * @param {module:twgl.Arrays} arrays The arrays
    * @return {Object.<string, module:twgl.AttribInfo>} the attribs
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function createAttribsFromArrays(gl, arrays) {
     var attribs = {};
@@ -359,7 +374,7 @@ define([
    *        var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray
    *
    *    Now you can pass `someSubArray` into setAttribInfoBufferFromArray`
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
     array = makeTypedArray(array);
@@ -506,7 +521,7 @@ define([
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {module:twgl.Arrays} arrays Your data
    * @return {module:twgl.BufferInfo} A BufferInfo
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function createBufferInfoFromArrays(gl, arrays) {
     var bufferInfo = {
@@ -549,7 +564,7 @@ define([
    * @param {module:twgl.ArraySpec} array an array, typed array, or array spec.
    * @param {string} arrayName name of array. Used to guess the type if type can not be dervied other wise.
    * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function createBufferFromArray(gl, array, arrayName) {
     var type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
@@ -579,7 +594,7 @@ define([
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
    * @param {module:twgl.Arrays} arrays
    * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function createBuffersFromArrays(gl, arrays) {
     var buffers = { };
@@ -623,7 +638,7 @@ define([
    *
    * @return {module:twgl.VertexArrayInfo} The created VertexArrayInfo
    *
-   * @memberOf module:twgl
+   * @memberOf module:twgl/attributes
    */
   function createVertexArrayInfo(gl, programInfos, bufferInfo) {
     var vao = gl.createVertexArray();

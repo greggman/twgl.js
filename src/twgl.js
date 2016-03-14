@@ -50,7 +50,29 @@ define([
   /**
    * The main TWGL module.
    *
+   * For most use cases you shouldn't need anything outside this module.
+   * Exceptions between the stuff added to twgl-full (v3, m4, primitives)
+   *
    * @module twgl
+   * @borrows module:twgl/attributes.setAttribInfoBufferFromArray as setAttribInfoBufferFromArray
+   * @borrows module:twgl/attributes.createBufferInfoFromArrays as createBufferInfoFromArrays
+   * @borrows module:twgl/attributes.createVertexArrayInfo as createVertexArrayInfo
+   * @borrows module:twgl/draw.drawBufferInfo as drawBufferInfo
+   * @borrows module:twgl/draw.drawObjectList as drawObjectList
+   * @borrows module:twgl/framebuffers.createFramebufferInfo as createFramebufferInfo
+   * @borrows module:twgl/framebuffers.resizeFramebufferInfo as resizeFramebufferInfo
+   * @borrows module:twgl/framebuffers.bindFramebufferInfo as bindFramebufferInfo
+   * @borrows module:twgl/programs.createProgramInfo as createProgramInfo
+   * @borrows module:twgl/programs.createUniformBlockInfo as createUniformBlockInfo
+   * @borrows module:twgl/programs.bindUniformBlock as bindUniformBlock
+   * @borrows module:twgl/programs.setUniformBlock as setUniformBlock
+   * @borrows module:twgl/programs.setBlockUniforms as setBlockUniforms
+   * @borrows module:twgl/programs.setUniforms as setUniforms
+   * @borrows module:twgl/programs.setBuffersAndAttributes as setBuffersAndAttributes
+   * @borrows module:twgl/textures.setTextureFromArray as setTextureFromArray
+   * @borrows module:twgl/textures.createTexture as createTexture
+   * @borrows module:twgl/textures.resizeTexture as resizeTexture
+   * @borrows module:twgl/textures.createTextures as createTextures
    */
 
   // make sure we don't see a global gl
@@ -289,17 +311,21 @@ define([
     Object.keys(src).filter(notPrivate).forEach(function(key) {
       dst[key] = src[key];
     });
+    return dst;
   }
 
-  [
-    attributes,
-    draw,
-    framebuffers,
-    programs,
-    textures,
-    typedArrays,
-  ].forEach(function(src) {
-    copyPublicProperties(src, api);
+  var apis = {
+    attributes: attributes,
+    draw: draw,
+    framebuffers: framebuffers,
+    programs: programs,
+    textures: textures,
+    typedArrays: typedArrays,
+  };
+  Object.keys(apis).forEach(function(name) {
+    var srcApi = apis[name];
+    copyPublicProperties(srcApi, api);
+    api[name] = copyPublicProperties(srcApi, {});
   });
 
   return api;

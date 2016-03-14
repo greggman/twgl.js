@@ -35,6 +35,21 @@ define([
     utils) {
   "use strict";
 
+  /**
+   * Low level shader program related functions
+   *
+   * You should generally not need to use these functions. They are provided
+   * for those cases where you're doing something out of the ordinary
+   * and you need lower level access.
+   *
+   * For backward compatibily they are available at both `twgl.programs` and `twgl`
+   * itself
+   *
+   * See {@link module:twgl} for core functions
+   *
+   * @module twgl/programs
+   */
+
   var error = utils.error;
   var warn = utils.warn;
 
@@ -386,7 +401,7 @@ define([
    * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram?} the created program or null if error.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createProgram(
       gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
@@ -470,7 +485,7 @@ define([
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram} The created program.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createProgramFromScripts(
       gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
@@ -499,7 +514,7 @@ define([
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {WebGLProgram} The created program.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createProgramFromSources(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
@@ -523,7 +538,7 @@ define([
    *
    * @param {WebGLProgram} program the program to create setters for.
    * @returns {Object.<string, function>} an object with a setter by name for each uniform
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createUniformSetters(gl, program) {
     var textureUnit = 0;
@@ -623,7 +638,7 @@ define([
    * @param {WebGL2RenderingContext} gl A WebGL2 Rendering Context
    * @param {WebGLProgram} program A WebGLProgram for a successfully linked program
    * @return {module:twgl.UniformBlockSpec} The created UniformBlockSpec
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createUniformBlockSpecFromProgram(gl, program) {
     var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
@@ -711,7 +726,7 @@ define([
    *     from {@link module:twgl.createUniformBlockSpecFromProgram}.
    * @param {string} blockName The name of the block.
    * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
     var blockSpecs = uniformBlockSpec.blockSpecs;
@@ -769,7 +784,7 @@ define([
    *     as returned from {@link module:twgl.createProgramInfo}
    * @param {string} blockName The name of the block.
    * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createUniformBlockInfo(gl, programInfo, blockName) {
     return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
@@ -791,7 +806,7 @@ define([
    *     {@link module:twgl.createUniformBlockInfo}.
    * @return {bool} true if buffer was bound. If the programInfo has no block with the same block name
    *     no buffer is bound.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
     var uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
@@ -817,7 +832,7 @@ define([
    *     returned from {@link module:twgl.createUniformBlockSpecFromProgram}.
    * @param {module:twgl.UniformBlockInfo} uniformBlockInfo a `UniformBlockInfo` as returned from
    *     {@link module:twgl.createUniformBlockInfo}.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function setUniformBlock(gl, programInfo, uniformBlockInfo) {
     if (bindUniformBlock(gl, programInfo, uniformBlockInfo)) {
@@ -851,7 +866,7 @@ define([
    *  Arrays can be JavaScript arrays or typed arrays
    *
    *  Any name that doesn't match will be ignored
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function setBlockUniforms(uniformBlockInfo, values) {
     var uniforms = uniformBlockInfo.uniforms;
@@ -874,7 +889,7 @@ define([
    * example:
    *
    *     var programInfo = createProgramInfo(
-   *         gl, ["some-vs", "some-fs");
+   *         gl, ["some-vs", "some-fs"]);
    *
    *     var tex1 = gl.createTexture();
    *     var tex2 = gl.createTexture();
@@ -899,7 +914,7 @@ define([
    * This will automatically bind the textures AND set the
    * uniforms.
    *
-   *     setUniforms(programInfo, uniforms);
+   *     twgl.setUniforms(programInfo, uniforms);
    *
    * For the example above it is equivalent to
    *
@@ -937,8 +952,8 @@ define([
    *       ],
    *     };
    *
-   *     setUniforms(programInfo, uniforms);
-   *     setUniforms(programInfo, moreUniforms);
+   *     twgl.setUniforms(programInfo, uniforms);
+   *     twgl.setUniforms(programInfo, moreUniforms);
    *
    * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
    *        `createUniformSetters`.
@@ -968,7 +983,7 @@ define([
    *     twgl.setUniforms(programInfo, sharedUniforms);
    *     twgl.setUniforms(programInfo, localUniforms};
    *
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function setUniforms(setters, values) {  // eslint-disable-line
     var actualSetters = setters.uniformSetters || setters;
@@ -998,7 +1013,7 @@ define([
    * @see {@link module:twgl.setAttributes} for example
    * @param {WebGLProgram} program the program to create setters for.
    * @return {Object.<string, function>} an object with a setter for each attribute by name.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createAttributeSetters(gl, program) {
     var attribSetters = {
@@ -1076,7 +1091,7 @@ define([
    *
    * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
    * @param {Object.<string, module:twgl.AttribInfo>} buffers AttribInfos mapped by attribute name.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    * @deprecated use {@link module:twgl.setBuffersAndAttributes}
    */
   function setAttributes(setters, buffers) {
@@ -1123,7 +1138,7 @@ define([
    * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
    * @param {(module:twgl.BufferInfo|module:twgl.vertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
    *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function setBuffersAndAttributes(gl, programInfo, buffers) {
     if (buffers.vertexArrayObject) {
@@ -1159,7 +1174,7 @@ define([
    *        to use.
    * @param {WebGLProgram} program an existing WebGLProgram.
    * @return {module:twgl.ProgramInfo} The created ProgramInfo.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createProgramInfoFromProgram(gl, program) {
     var uniformSetters = createUniformSetters(gl, program);
@@ -1198,7 +1213,7 @@ define([
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
    * @return {module:twgl.ProgramInfo?} The created ProgramInfo.
-   * @memberOf module:twgl
+   * @memberOf module:twgl/programs
    */
   function createProgramInfo(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
