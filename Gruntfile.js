@@ -93,6 +93,8 @@ var bower = JSON.parse(fs.readFileSync('bower.json', {encoding: "utf8"}));
 
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt);
+
   function setLicense() {
     var s = replaceParams(license, bower);
     grunt.config.set('uglify.min.options.banner', s);
@@ -232,13 +234,6 @@ module.exports = function(grunt) {
       dist: [ 'dist' ],
     },
   });
-
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-eslint');
-  grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('makeindex', function() {
     var marked  = require('marked');

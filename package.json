@@ -39,6 +39,7 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-eslint": "^18.0.0",
     "grunt-jsdoc": "^1.1.0",
+    "load-grunt-tasks": "^3.4.1",
     "marked": "^0.3.3",
     "minami": "^1.1.1",
     "mocha": "^2.3.4",
