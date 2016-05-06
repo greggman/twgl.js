@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.5.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.5.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3281,18 +3281,19 @@ define('twgl/textures',[
     function clearEventHandlers() {
       img.removeEventListener('error', onError);  // eslint-disable-line
       img.removeEventListener('load', onLoad);  // eslint-disable-line
+      img = null;
     }
 
     function onError() {
-      clearEventHandlers();
       var msg = "couldn't load image: " + url;
       utils.error(msg);
       callback(msg, img);
+      clearEventHandlers();
     }
 
     function onLoad() {
-      clearEventHandlers();
       callback(null, img);
+      clearEventHandlers();
     }
 
     img.addEventListener('error', onError);
