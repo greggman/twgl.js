@@ -481,14 +481,26 @@ define([
     if (crossOrigin !== undefined) {
       img.crossOrigin = crossOrigin;
     }
-    img.onerror = function() {
+
+    function clearEventHandlers() {
+      img.removeEventListener('error', onError);  // eslint-disable-line
+      img.removeEventListener('load', onLoad);  // eslint-disable-line
+    }
+
+    function onError() {
+      clearEventHandlers();
       var msg = "couldn't load image: " + url;
       utils.error(msg);
       callback(msg, img);
-    };
-    img.onload = function() {
+    }
+
+    function onLoad() {
+      clearEventHandlers();
       callback(null, img);
-    };
+    }
+
+    img.addEventListener('error', onError);
+    img.addEventListener('load', onLoad);
     img.src = url;
     return img;
   }
