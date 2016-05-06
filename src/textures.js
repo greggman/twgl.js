@@ -485,18 +485,19 @@ define([
     function clearEventHandlers() {
       img.removeEventListener('error', onError);  // eslint-disable-line
       img.removeEventListener('load', onLoad);  // eslint-disable-line
+      img = null;
     }
 
     function onError() {
-      clearEventHandlers();
       var msg = "couldn't load image: " + url;
       utils.error(msg);
       callback(msg, img);
+      clearEventHandlers();
     }
 
     function onLoad() {
-      clearEventHandlers();
       callback(null, img);
+      clearEventHandlers();
     }
 
     img.addEventListener('error', onError);
