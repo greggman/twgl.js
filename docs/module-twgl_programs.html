@@ -500,6 +500,10 @@
 
 <div class="description">
     <p>Creates a program, attaches shaders, binds attrib locations, links the<br>program and calls useProgram.</p>
+<p>NOTE: There are 3 signatures for this function</p>
+<pre class="prettyprint source"><code>twgl.createProgram(gl, [vs, fs], opt_errFunc);
+twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
+twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
 </div>
 
 
@@ -757,6 +761,10 @@
 
 <div class="description">
     <p>Creates a program from 2 script tags.</p>
+<p>NOTE: There are 3 signatures for this function</p>
+<pre class="prettyprint source"><code>twgl.createProgramFromScripts(gl, [vs, fs], opt_errFunc);
+twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_errFunc);
+twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
 </div>
 
 
@@ -1043,6 +1051,10 @@
 
 <div class="description">
     <p>Creates a program from 2 sources.</p>
+<p>NOTE: There are 3 signatures for this function</p>
+<pre class="prettyprint source"><code>twgl.createProgramFromSource(gl, [vs, fs], opt_errFunc);
+twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_errFunc);
+twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
 </div>
 
 
@@ -1334,7 +1346,10 @@
    program: WebGLProgram,
    uniformSetters: object of setters as returned from createUniformSetters,
    attribSetters: object of setters as returned from createAttribSetters,
-}</code></pre>
+}</code></pre><p>NOTE: There are 3 signatures for this function</p>
+<pre class="prettyprint source"><code>twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
+twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
+twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
 </div>
 
 

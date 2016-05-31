@@ -1058,7 +1058,10 @@ var fbi = twgl.createFramebuffer(gl, attachments, width, height);</code></pre><p
    program: WebGLProgram,
    uniformSetters: object of setters as returned from createUniformSetters,
    attribSetters: object of setters as returned from createAttribSetters,
-}</code></pre>
+}</code></pre><p>NOTE: There are 3 signatures for this function</p>
+<pre class="prettyprint source"><code>twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
+twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
+twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
 </div>
 
 
