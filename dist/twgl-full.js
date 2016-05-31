@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.5.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1765,6 +1765,13 @@ define('twgl/programs',[
   /**
    * Creates a program, attaches shaders, binds attrib locations, links the
    * program and calls useProgram.
+   *
+   * NOTE: There are 3 signatures for this function
+   *
+   *     twgl.createProgram(gl, [vs, fs], opt_errFunc);
+   *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
+   *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
+   *
    * @param {WebGLShader[]} shaders The shaders to attach
    * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
@@ -1775,6 +1782,14 @@ define('twgl/programs',[
    */
   function createProgram(
       gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
+    if (typeof opt_locations === 'function') {
+      opt_errorCallback = opt_locations;
+      opt_locations = undefined;
+    }
+    if (typeof opt_attribs === 'function') {
+      opt_errorCallback = opt_attribs;
+      opt_attribs = undefined;
+    }
     var errFn = opt_errorCallback || error;
     var program = gl.createProgram();
     shaders.forEach(function(shader) {
@@ -1845,6 +1860,12 @@ define('twgl/programs',[
   /**
    * Creates a program from 2 script tags.
    *
+   * NOTE: There are 3 signatures for this function
+   *
+   *     twgl.createProgramFromScripts(gl, [vs, fs], opt_errFunc);
+   *     twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_errFunc);
+   *     twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
+   *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext
    *        to use.
    * @param {string[]} shaderScriptIds Array of ids of the script
@@ -1873,6 +1894,12 @@ define('twgl/programs',[
 
   /**
    * Creates a program from 2 sources.
+   *
+   * NOTE: There are 3 signatures for this function
+   *
+   *     twgl.createProgramFromSource(gl, [vs, fs], opt_errFunc);
+   *     twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_errFunc);
+   *     twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
    *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext
    *        to use.
@@ -2573,6 +2600,12 @@ define('twgl/programs',[
    *        attribSetters: object of setters as returned from createAttribSetters,
    *     }
    *
+   * NOTE: There are 3 signatures for this function
+   *
+   *     twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
+   *     twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
+   *     twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
+   *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext
    *        to use.
    * @param {string[]} shaderSourcess Array of sources for the
@@ -2587,10 +2620,32 @@ define('twgl/programs',[
    */
   function createProgramInfo(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
+    if (typeof opt_locations === 'function') {
+      opt_errorCallback = opt_locations;
+      opt_locations = undefined;
+    }
+    if (typeof opt_attribs === 'function') {
+      opt_errorCallback = opt_attribs;
+      opt_attribs = undefined;
+    }
+    var errFn = opt_errorCallback || error;
+    var good = true;
     shaderSources = shaderSources.map(function(source) {
-      var script = document.getElementById(source);
-      return script ? script.text : source;
+      // Lets assume if there is no \n it's an id
+      if (source.indexOf("\n") < 0) {
+        var script = document.getElementById(source);
+        if (!script) {
+          errFn("no element with id: " + source);
+          good = false;
+        } else {
+          source = script.text;
+        }
+      }
+      return source;
     });
+    if (!good) {
+      return null;
+    }
     var program = createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback);
     if (!program) {
       return null;
