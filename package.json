@@ -26,7 +26,7 @@
   ],
   "devDependencies": {
     "almond": "^0.3.1",
-    "eslint": "2.4.0",
+    "eslint": "^2.11.1",
     "eslint-plugin-google-camelcase": "0.0.1",
     "eslint-plugin-html": "git+https://github.com/greggman/eslint-plugin-html.git#fix-space-eating",
     "eslint-plugin-one-variable-per-var": "0.0.3",
