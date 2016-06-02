@@ -351,7 +351,7 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
     
 
-    <h4 class="name" id=".bindUniformBlock"><span class="type-signature">(static) </span>bindUniformBlock<span class="signature">(gl, uniformBlockInfo)</span><span class="type-signature"> &rarr; {bool}</span></h4>
+    <h4 class="name" id=".bindUniformBlock"><span class="type-signature">(static) </span>bindUniformBlock<span class="signature">(gl, programInfo, uniformBlockInfo)</span><span class="type-signature"> &rarr; {bool}</span></h4>
 
     
 
@@ -418,10 +418,18 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
         <tr>
             
-                <td class="name"><code>{{module:twgl.ProgramInfo|module:twgl.UniformBlockSpec}</code></td>
+                <td class="name"><code>programInfo</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a></span>
+|
+
+<span class="param-type"><a href="module-twgl.html#.UniformBlockSpec">module:twgl.UniformBlockSpec</a></span>
+
+
             
             </td>
 
@@ -429,7 +437,7 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
             
 
-            <td class="description last"><p>programInfo a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p></td>
+            <td class="description last"><p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p></td>
         </tr>
 
     
@@ -1857,7 +1865,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Creates a <code>UniformBlockInfo</code> for the specified block</p>
-<p>Note: <strong>A warning is printed to the console of the blockName makes no existing blocks and a dummy<br><code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>it is common to comment out large portions of a shader or for example set<br>the final output to a constant. When that happens blocks get optimized out.<br>If this function did not create dummy blocks your code would crash when debugging.</p>
+<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br><code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>it is common to comment out large portions of a shader or for example set<br>the final output to a constant. When that happens blocks get optimized out.<br>If this function did not create dummy blocks your code would crash when debugging.</p>
 </div>
 
 
@@ -3978,7 +3986,7 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
 
     
 
-    <h4 class="name" id=".setBlockUniforms"><span class="type-signature">(static) </span>setBlockUniforms<span class="signature">(uniformBlockInfo)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".setBlockUniforms"><span class="type-signature">(static) </span>setBlockUniforms<span class="signature">(uniformBlockInfo, values)</span><span class="type-signature"></span></h4>
 
     
 
@@ -4044,10 +4052,15 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
 
         <tr>
             
-                <td class="name"><code>{Object.<string,</code></td>
+                <td class="name"><code>values</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, ?></span>
+
+
             
             </td>
 
@@ -4055,7 +4068,7 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
 
             
 
-            <td class="description last"><p>???&gt; values A uniform name to value map where the value is correct for the given<br>   type of uniform. So for example given a block like</p>
+            <td class="description last"><p>A uniform name to value map where the value is correct for the given<br>   type of uniform. So for example given a block like</p>
 <pre class="prettyprint source"><code>  uniform SomeBlock {
     float someFloat;
     vec2 someVec2;
@@ -4693,7 +4706,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
     
 
-    <h4 class="name" id=".setUniformBlock"><span class="type-signature">(static) </span>setUniformBlock<span class="signature">(gl, uniformBlockInfo)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".setUniformBlock"><span class="type-signature">(static) </span>setUniformBlock<span class="signature">(gl, programInfo, uniformBlockInfo)</span><span class="type-signature"></span></h4>
 
     
 
@@ -4760,10 +4773,18 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
         <tr>
             
-                <td class="name"><code>{{module:twgl.ProgramInfo|module:twgl.UniformBlockSpec}</code></td>
+                <td class="name"><code>programInfo</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type"><a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a></span>
+|
+
+<span class="param-type"><a href="module-twgl.html#.UniformBlockSpec">module:twgl.UniformBlockSpec</a></span>
+
+
             
             </td>
 
@@ -4771,7 +4792,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
             
 
-            <td class="description last"><p>programInfo a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p></td>
+            <td class="description last"><p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p></td>
         </tr>
 
     
