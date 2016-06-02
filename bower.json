@@ -30,6 +30,7 @@
     "resources",
     "build",
     "src",
+    "npm",
     "templates",
     "node_modules",
     "bower_components",
