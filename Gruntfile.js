@@ -222,6 +222,16 @@ module.exports = function(grunt) {
         },
       },
     },
+    copy: {
+      twgl: {
+        src: 'dist/twgl.js',
+        dest: 'npm/base/dist/twgl.js',
+      },
+      readme: {
+        src: 'README.md',
+        dest: 'npm/base/README.md',
+      },
+    },
     browserify: {
       example: {
         files: {
@@ -294,6 +304,16 @@ module.exports = function(grunt) {
     return good;
   });
 
+  grunt.registerTask('npmpackage', function() {
+    var p = JSON.parse(fs.readFileSync('package.json', {encoding: "utf8"}));
+    p.name = "twgl-base.js";
+    p.scripts = {};
+    p.devDependencies = {};
+    p.main = "dist/twgl.js";
+    p.files = [ 'dist/twgl.js' ];
+    fs.writeFileSync("npm/base/package.json", JSON.stringify(p, null, 2), {encoding: "utf8"});
+  });
+
   grunt.registerTask('docs', [
       'eslint:examples',
       'clean:docs',
@@ -306,6 +326,8 @@ module.exports = function(grunt) {
       'requirejs',
       /*'concat',*/
       'uglify',
+      'copy',
+      'npmpackage',
   ]);
   grunt.registerTask('bumppatch', [
       'eslint:lib',
