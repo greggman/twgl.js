@@ -452,6 +452,12 @@ See the examples. Otherwise there's a few different versions
     npm install twgl.js
     ```
 
+    or
+
+    ```bash
+    npm install twgl-base.js
+    ```
+
 *   from git
 
     ```bash
