@@ -1,0 +1,26 @@
+{
+  "name": "twgl-base.js",
+  "version": "1.6.1",
+  "description": "A Tiny WebGL helper library",
+  "main": "dist/twgl.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greggman/twgl.js.git"
+  },
+  "keywords": [
+    "WebGL",
+    "twgl"
+  ],
+  "author": "Greggman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greggman/twgl.js/issues"
+  },
+  "homepage": "https://github.com/greggman/twgl.js",
+  "files": [
+    "dist/twgl.js"
+  ],
+  "devDependencies": {},
+  "dependencies": {}
+}
