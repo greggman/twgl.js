@@ -826,7 +826,7 @@ define([
    * call {@link module:twgl.setUniformBlock} instead.
    *
    * @param {WebGL2RenderingContext} gl A WebGL 2 rendering context.
-   * @param {{module:twgl.ProgramInfo|module:twgl.UniformBlockSpec} programInfo a `ProgramInfo`
+   * @param {(module:twgl.ProgramInfo|module:twgl.UniformBlockSpec)} programInfo a `ProgramInfo`
    *     as returned from {@link module:twgl.createProgramInfo} or or `UniformBlockSpec` as
    *     returned from {@link module:twgl.createUniformBlockSpecFromProgram}.
    * @param {module:twgl.UniformBlockInfo} uniformBlockInfo a `UniformBlockInfo` as returned from
@@ -854,7 +854,7 @@ define([
    * call {@link module:twgl.bindUniformBlock} instead.
    *
    * @param {WebGL2RenderingContext} gl A WebGL 2 rendering context.
-   * @param {{module:twgl.ProgramInfo|module:twgl.UniformBlockSpec} programInfo a `ProgramInfo`
+   * @param {(module:twgl.ProgramInfo|module:twgl.UniformBlockSpec)} programInfo a `ProgramInfo`
    *     as returned from {@link module:twgl.createProgramInfo} or or `UniformBlockSpec` as
    *     returned from {@link module:twgl.createUniformBlockSpecFromProgram}.
    * @param {module:twgl.UniformBlockInfo} uniformBlockInfo a `UniformBlockInfo` as returned from
