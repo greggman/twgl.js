@@ -871,7 +871,7 @@ define([
    * Sets values of a uniform block object
    *
    * @param {module:twgl.UniformBlockInfo} uniformBlockInfo A UniformBlockInfo as returned by {@link module:twgl.createUniformBlockInfo}.
-   * @param {Object.<string, ???> values A uniform name to value map where the value is correct for the given
+   * @param {Object.<string, ?>} values A uniform name to value map where the value is correct for the given
    *    type of uniform. So for example given a block like
    *
    *       uniform SomeBlock {
