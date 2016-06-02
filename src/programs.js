@@ -741,7 +741,7 @@ define([
   /**
    * Creates a `UniformBlockInfo` for the specified block
    *
-   * Note: **A warning is printed to the console of the blockName makes no existing blocks and a dummy
+   * Note: **If the blockName matches no existing blocks a warning is printed to the console and a dummy
    * `UniformBlockInfo` is returned**. This is because when debugging GLSL
    * it is common to comment out large portions of a shader or for example set
    * the final output to a constant. When that happens blocks get optimized out.
@@ -800,7 +800,7 @@ define([
   /**
    * Creates a `UniformBlockInfo` for the specified block
    *
-   * Note: **A warning is printed to the console of the blockName makes no existing blocks and a dummy
+   * Note: **If the blockName matches no existing blocks a warning is printed to the console and a dummy
    * `UniformBlockInfo` is returned**. This is because when debugging GLSL
    * it is common to comment out large portions of a shader or for example set
    * the final output to a constant. When that happens blocks get optimized out.
