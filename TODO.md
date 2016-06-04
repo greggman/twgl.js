@@ -1,6 +1,13 @@
 To Do
 =====
 
+*   add more format to `getNumComponentsForFormat`
+*   should `setTextureTo1PixelColor` handle formats that require something other than `RGBA`/`UNSIGNED_BYTE`
+    for example R16I requires the data be integers most likely?
+*   add `TEXTURE_3D` support
+*   add `TEXTURE_ARRAY` support
+*   skip npot checks if webgl2 (setting for backward compatibility?)
+*   add new texture parameters
 *   Update eslint
 *   Fix createProgramInfo to take strings and not just ids
 *   document arrays in one place
