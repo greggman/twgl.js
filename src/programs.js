@@ -1242,10 +1242,10 @@ define([
    *        shaders or ids. The first is assumed to be the vertex shader,
    *        the second the fragment shader.
    * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
-   * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {number[]} [opt_locations] The locations for the attributes. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
-   * @return {module:twgl.ProgramInfo?} The created ProgramInfo.
+   * @return {module:twgl.ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
    * @memberOf module:twgl/programs
    */
   function createProgramInfo(
