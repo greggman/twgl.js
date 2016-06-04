@@ -1228,7 +1228,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
             
 
-            <td class="description last"><p>The locations for the. A parallel array to opt_attribs letting you assign locations.</p></td>
+            <td class="description last"><p>The locations for the attributes. A parallel array to opt_attribs letting you assign locations.</p></td>
         </tr>
 
     
@@ -1322,7 +1322,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
         
 <div class="param-desc">
-    <p>The created ProgramInfo.</p>
+    <p>The created ProgramInfo or null if it failed to link or compile</p>
 </div>
 
 
@@ -8293,6 +8293,37 @@ var drawObj = {
 
         <tr>
             
+                <td class="name"><code>depth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the depth of a texture. Only used if src is an array or type array or null and target is <code>TEXTURE_3D</code> .</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>min</code></td>
             
 
@@ -8349,6 +8380,37 @@ var drawObj = {
             
 
             <td class="description last"><p>the mag filter setting (eg. <code>gl.LINEAR</code>). Defaults to <code>gl.LINEAR</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>internalFormat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>internal format for texture. Defaults to <code>gl.RGBA</code></p></td>
         </tr>
 
     
@@ -8441,7 +8503,7 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>Texture wrapping for both S and T. Defaults to <code>gl.REPEAT</code> for 2D and <code>gl.CLAMP_TO_EDGE</code> for cube</p></td>
+            <td class="description last"><p>Texture wrapping for both S and T (and R if TEXTURE_3D). Defaults to <code>gl.REPEAT</code> for 2D unless src is WebGL1 and src not npot and <code>gl.CLAMP_TO_EDGE</code> for cube</p></td>
         </tr>
 
     
@@ -8504,6 +8566,161 @@ var drawObj = {
             
 
             <td class="description last"><p>Texture wrapping for T. Defaults to <code>gl.REPEAT</code> and <code>gl.CLAMP_TO_EDGE</code> for cube. If set takes precedence over <code>wrap</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>wrapR</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Texture wrapping for R. Defaults to <code>gl.REPEAT</code> and <code>gl.CLAMP_TO_EDGE</code> for cube. If set takes precedence over <code>wrap</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minLod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>TEXTURE_MIN_LOD setting</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxLod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>TEXTURE_MAX_LOD setting</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>baseLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>TEXTURE_BASE_LEVEL setting</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>TEXTURE_MAX_LEVEL setting</p></td>
         </tr>
 
     
