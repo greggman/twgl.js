@@ -152,15 +152,22 @@ define([
    * @property {number} [target] the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
    * @property {number} [width] the width of the texture. Only used if src is an array or typed array or null.
    * @property {number} [height] the height of a texture. Only used if src is an array or typed array or null.
+   * @property {number} [depth] the depth of a texture. Only used if src is an array or type array or null and target is `TEXTURE_3D` .
    * @property {number} [min] the min filter setting (eg. `gl.LINEAR`). Defaults to `gl.NEAREST_MIPMAP_LINEAR`
    *     or if texture is not a power of 2 on both dimensions then defaults to `gl.LINEAR`.
    * @property {number} [mag] the mag filter setting (eg. `gl.LINEAR`). Defaults to `gl.LINEAR`
+   * @property {number} [internalFormat] internal format for texture. Defaults to `gl.RGBA`
    * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
    * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
    *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
-   * @property {number} [wrap] Texture wrapping for both S and T. Defaults to `gl.REPEAT` for 2D and `gl.CLAMP_TO_EDGE` for cube
+   * @property {number} [wrap] Texture wrapping for both S and T (and R if TEXTURE_3D). Defaults to `gl.REPEAT` for 2D unless src is WebGL1 and src not npot and `gl.CLAMP_TO_EDGE` for cube
    * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
    * @property {number} [wrapT] Texture wrapping for T. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
+   * @property {number} [wrapR] Texture wrapping for R. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
+   * @property {number} [minLod] TEXTURE_MIN_LOD setting
+   * @property {number} [maxLod] TEXTURE_MAX_LOD setting
+   * @property {number} [baseLevel] TEXTURE_BASE_LEVEL setting
+   * @property {number} [maxLevel] TEXTURE_MAX_LEVEL setting
    * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
    * @property {number} [premultiplyAlpha] Whether or not to premultiply alpha. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
@@ -236,12 +243,15 @@ define([
   function savePackState(gl, options) {
     if (options.colorspaceConversion !== undefined) {
       lastPackState.colorSpaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
+      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorSpaceConversion);
     }
     if (options.premultiplyAlpha !== undefined) {
       lastPackState.premultiplyAlpha = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
     }
     if (options.flipY !== undefined) {
       lastPackState.flipY = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, options.flipY);
     }
   }
 
@@ -282,12 +292,30 @@ define([
     if (options.wrap) {
       gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrap);
       gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrap);
+      if (target === gl.TEXTURE_3D) {
+        gl.texParameteri(target, gl.TEXTURE_WRAP_R, options.wrap);
+      }
+    }
+    if (options.wrapR) {
+      gl.texParameteri(target, gl.TEXTURE_WRAP_R, options.wrapR);
     }
     if (options.wrapS) {
       gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrapS);
     }
     if (options.wrapT) {
       gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrapT);
+    }
+    if (options.minLod) {
+      gl.texParameteri(target, gl.TEXTURE_MIN_LOD, options.minLod);
+    }
+    if (options.maxLod) {
+      gl.texParameteri(target, gl.TEXTURE_MAX_LOD, options.maxLod);
+    }
+    if (options.baseLevel) {
+      gl.texParameteri(target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
+    }
+    if (options.maxLevel) {
+      gl.texParameteri(target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
     }
   }
 
@@ -411,6 +439,7 @@ define([
       var target = options.target || gl.TEXTURE_2D;
       var width = element.width;
       var height = element.height;
+      var internalFormat = options.internalFormat || gl.RGBA;
       var format = options.format || gl.RGBA;
       var type = options.type || gl.UNSIGNED_BYTE;
       savePackState(gl, options);
@@ -448,13 +477,44 @@ define([
           var xOffset = slices[f.ndx * 2 + 0] * size;
           var yOffset = slices[f.ndx * 2 + 1] * size;
           ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-          gl.texImage2D(f.face, 0, format, format, type, ctx.canvas);
+          gl.texImage2D(f.face, 0, internalFormat, format, type, ctx.canvas);
         });
         // Free up the canvas memory
         ctx.canvas.width = 1;
         ctx.canvas.height = 1;
+      } else if (target === gl.TEXTURE_3D) {
+        var smallest = Math.min(element.width, element.height);
+        var largest = Math.max(element.width, element.height);
+        var depth = largest / smallest;
+        if (depth % 1 !== 0) {
+          throw "can not compute 3D dimensions of element";
+        }
+        var xMult = element.width  === largest ? 1 : 0;
+        var yMult = element.height === largest ? 1 : 0;
+        gl.texImage3D(target, 0, internalFormat, smallest, smallest, smallest, 0, format, type, null);
+        // remove this is texSubImage3D gets width and height arguments
+        ctx.canvas.width = smallest;
+        ctx.canvas.height = smallest;
+        for (var d = 0; d < depth; ++d) {
+//          gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
+//          gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
+            var srcX = d * smallest * xMult;
+            var srcY = d * smallest * yMult;
+            var srcW = smallest;
+            var srcH = smallest;
+            var dstX = 0;
+            var dstY = 0;
+            var dstW = smallest;
+            var dstH = smallest;
+            ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+            gl.texSubImage3D(target, 0, 0, 0, d, format, type, ctx.canvas);
+        }
+        ctx.canvas.width = 0;
+        ctx.canvas.height = 0;
+// FIX (save state)
+//        gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
       } else {
-        gl.texImage2D(target, 0, format, format, type, element);
+        gl.texImage2D(target, 0, internalFormat, format, type, element);
       }
       restorePackState(gl, options);
       if (options.auto !== false) {
@@ -529,6 +589,8 @@ define([
       for (var ii = 0; ii < 6; ++ii) {
         gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
       }
+    } else if (target === gl.TEXTURE_3D) {
+      gl.texImage3D(target, 0, gl.RGBA, 1, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
     } else {
       gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
     }
@@ -707,29 +769,7 @@ define([
     return gl.UNSIGNED_BYTE;
   }
 
-  /**
-   * Sets a texture from an array or typed array. If the width or height is not provided will attempt to
-   * guess the size. See {@link module:twgl.TextureOptions}.
-   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
-   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
-   *   This is often the same options you passed in when you created the texture.
-   * @memberOf module:twgl/textures
-   */
-  function setTextureFromArray(gl, tex, src, options) {
-    options = options || defaults.textureOptions;
-    var target = options.target || gl.TEXTURE_2D;
-    gl.bindTexture(target, tex);
-    var width = options.width;
-    var height = options.height;
-    var format = options.format || gl.RGBA;
-    var type = options.type || getTextureTypeForArrayType(gl, src);
-    var numComponents = getNumComponentsForFormat(format);
-    var numElements = src.length / numComponents;
-    if (numElements % 1) {
-      throw "length wrong size for format: " + glEnumToString(gl, format);
-    }
+  function guessDimensions(gl, target, width, height, numElements) {
     if (!width && !height) {
       var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
       if (size % 1 === 0) {
@@ -750,6 +790,65 @@ define([
         throw "can't guess width";
       }
     }
+    return {
+      width: width,
+      height: height,
+    };
+  }
+
+  /**
+   * Sets a texture from an array or typed array. If the width or height is not provided will attempt to
+   * guess the size. See {@link module:twgl.TextureOptions}.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
+   * @memberOf module:twgl/textures
+   */
+  function setTextureFromArray(gl, tex, src, options) {
+    options = options || defaults.textureOptions;
+    var target = options.target || gl.TEXTURE_2D;
+    gl.bindTexture(target, tex);
+    var width = options.width;
+    var height = options.height;
+    var depth = options.depth;
+    var internalFormat = options.internalFormat || gl.RGBA;
+    var format = options.format || gl.RGBA;
+    var type = options.type || getTextureTypeForArrayType(gl, src);
+    var numComponents = getNumComponentsForFormat(format);
+    var numElements = src.length / numComponents;
+    if (numElements % 1) {
+      throw "length wrong size for format: " + glEnumToString(gl, format);
+    }
+    var dimensions;
+    if (target === gl.TEXTURE_3D) {
+      if (!width && !height && !depth) {
+        var size = Math.cbrt(numElements);
+        if (size % 1 !== 0) {
+          throw "can't guess cube size of array of numElements: " + numElements;
+        }
+        width = size;
+        height = size;
+        depth = size;
+      } else if (width && (!height || !depth)) {
+        dimensions = guessDimensions(gl, target, height, depth, numElements / width);
+        height = dimensions.width;
+        depth = dimensions.height;
+      } else if (height && (!width || !depth)) {
+        dimensions = guessDimensions(gl, target, width, depth, numElements / width);
+        width = dimensions.width;
+        depth = dimensions.height;
+      } else {
+        dimensions = guessDimensions(gl, target, width, height, numElements / width);
+        width = dimensions.width;
+        height = dimensions.height;
+      }
+    } else {
+      dimensions = guessDimensions(gl, target, width, height, numElements);
+      width = dimensions.width;
+      height = dimensions.height;
+    }
     if (!isArrayBuffer(src)) {
       var Type = typedArrays.getTypedArrayTypeForGLType(type);
       src = new Type(src);
@@ -765,15 +864,18 @@ define([
       getCubeFacesWithNdx(gl, options).forEach(function(f) {
         var offset = faceSize * f.ndx;
         var data = src.subarray(offset, offset + faceSize);
-        gl.texImage2D(f.face, 0, format, width, height, 0, format, type, data);
+        gl.texImage2D(f.face, 0, internalFormat, width, height, 0, format, type, data);
       });
+    } else if (target === gl.TEXTURE_3D) {
+      gl.texImage3D(target, 0, internalFormat, width, height, depth, 0, format, type, src);
     } else {
-      gl.texImage2D(target, 0, format, width, height, 0, format, type, src);
+      gl.texImage2D(target, 0, internalFormat, width, height, 0, format, type, src);
     }
     restorePackState(gl, options);
     return {
       width: width,
       height: height,
+      depth: depth,
     };
   }
 
@@ -789,15 +891,19 @@ define([
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
     var format = options.format || gl.RGBA;
+    var internalFormat = options.internalFormat || gl.RGBA;
     var type = options.type || gl.UNSIGNED_BYTE;
     savePackState(gl, options);
     if (target === gl.TEXTURE_CUBE_MAP) {
       for (var ii = 0; ii < 6; ++ii) {
-        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, format, options.width, options.height, 0, format, type, null);
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, internalFormat, options.width, options.height, 0, format, type, null);
       }
+    } else if (target === gl.TEXTURE_3D) {
+      gl.texImage3D(target, 0, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
     } else {
-      gl.texImage2D(target, 0, format, options.width, options.height, 0, format, type, null);
+      gl.texImage2D(target, 0, internalFormat, options.width, options.height, 0, format, type, null);
     }
+    restorePackState();
   }
 
   /**
