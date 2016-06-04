@@ -400,6 +400,7 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 ### WebGL 2 Examples
 
 *   [uniform buffer objects](http://twgljs.org/examples/uniform-buffer-objects.html)
+*   [3d textures tone mapping](http://twgljs.org/examples/3d-textures-tone-mapping.html)
 
 ## AMD support
 
