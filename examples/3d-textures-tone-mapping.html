@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - 3d-textures tone mapping" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/3d-textures.png" />
+    <meta property="og:description" content="TWGL.js - 3d-textures tone mapping" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - 3d-textures tone mapping">
+    <meta name="twitter:url" content="http://twgljs.org/examples/3d-textures-tone-mapping.html">
+    <meta name="twitter:description" content="TWGL.js - 3d-textures tone mapping">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/3d-textures-tone-mapping.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - 3d textures</title>
+    <style>
+      body {
+        margin: 0px;
+        font-family: monospace;
+        color: white;
+      }
+      canvas {
+        width: 100vw;
+        height: 100vh;
+      }
+      a {
+        color: lightblue;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 20%;
+        padding: 1em;
+        text-align: center;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b">
+        <div><a href="http://twgljs.org">twgl.js</a> - 3d-textures tone mapping</div>
+        <div>style: <span id="name"></span></div>
+    </div>
+  </body>
+  <script src="../dist/twgl-full.min.js"></script>>
+  <script>
+"use strict";
+
+function main() {
+  var m4 = twgl.m4;
+  twgl.setDefaults({attribPrefix: "a_"});
+  var gl = twgl.getContext(document.getElementById("c"));
+  console.log("using: " + gl.getParameter(gl.VERSION));  // eslint-disable-line
+  if (!twgl.isWebGL2(gl)) {
+    alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
+    return;
+  }
+
+  var size = 64;
+  var sizeMinus1 = size - 1;
+  var original = new Uint8Array(size * size * size * 4);
+  var inverse = new Uint8Array(size * size * size * 4);
+  var bw = new Uint8Array(size * size * size * 4);
+  var offset = 0;
+  for (let z = 0; z < size; ++z) {
+    let zv = z * 255 / sizeMinus1;
+    for (let y = 0; y < size; ++y) {
+      let yv = y * 255 / sizeMinus1;
+      for (let x = 0; x < size; ++x) {
+        let xv = x * 255 / sizeMinus1;
+
+        original[offset + 0] = xv;
+        original[offset + 1] = yv;
+        original[offset + 2] = zv;
+        original[offset + 3] = 255;
+
+        inverse[offset + 0] = 255 - xv;
+        inverse[offset + 1] = 255 - yv;
+        inverse[offset + 2] = 255 - zv;
+        inverse[offset + 3] = 255;
+
+        let m = Math.max(xv, yv, zv);
+        bw[offset + 0] = m;
+        bw[offset + 1] = m;
+        bw[offset + 2] = m;
+        bw[offset + 3] = 255;
+
+        offset += 4;
+      }
+    }
+  }
+
+  var images;
+  var textures = twgl.createTextures(gl, {
+    image: {
+      src: "images/tokufuji.jpg",
+      flipY: true,
+      colorspaceConversion: gl.NONE,
+    },
+    original: {
+      target: gl.TEXTURE_3D,
+      src: original,
+      gwrap: gl.CLAMP_TO_EDGE,
+    },
+    blackAndWhite: {
+      target: gl.TEXTURE_3D,
+      src: bw,
+    },
+    inverse: {
+      target: gl.TEXTURE_3D,
+      src: inverse,
+    },
+    blacklightPoster: {
+      target: gl.TEXTURE_3D,
+      src: "images/color-adjustments/blacklight-poster.png",
+      colorspaceConversion: gl.NONE,
+    },
+    orangeToGreen: {
+      target: gl.TEXTURE_3D,
+      src: "images/color-adjustments/orange-to-green.png",
+      colorspaceConversion: gl.NONE,
+    },
+    posterize: {
+      target: gl.TEXTURE_3D,
+      src: "images/color-adjustments/posterize.png",
+      colorspaceConversion: gl.NONE,
+    },
+    sepia: {
+      target: gl.TEXTURE_3D,
+      src: "images/color-adjustments/sepia.png",
+      colorspaceConversion: gl.NONE,
+    },
+    sunset: {
+      target: gl.TEXTURE_3D,
+      src: "images/color-adjustments/sunset.png",
+      colorspaceConversion: gl.NONE,
+    },
+  }, (err, textures, imgs) => {
+    images = imgs;
+    requestAnimationFrame(render);
+  });
+
+  var vs = `
+#version 300 es
+
+in vec4 a_position;
+in vec2 a_texcoord;
+
+out vec2 v_texcoord;
+
+uniform mat4 u_worldViewProjection;
+
+void main() {
+  v_texcoord = a_texcoord;
+  gl_Position = u_worldViewProjection * a_position;
+}
+`;
+
+  var fs = `
+#version 300 es
+precision mediump float;
+precision mediump sampler3D;
+
+in vec2 v_texcoord;
+
+uniform sampler2D u_image;
+uniform sampler3D u_colorCube1;
+uniform sampler3D u_colorCube2;
+uniform float u_mixAmount;
+
+out vec4 color;
+
+void main() {
+  vec3 imageColor = texture(u_image, v_texcoord).rgb;
+  vec3 cubeSize1 = vec3(textureSize(u_colorCube1, 0));
+  vec4 color1 = texture(u_colorCube1, (imageColor * (cubeSize1 - 1.) + 0.5) / cubeSize1);
+  vec3 cubeSize2 = vec3(textureSize(u_colorCube2, 0));
+  vec4 color2 = texture(u_colorCube2, (imageColor * (cubeSize2 - 1.) + 0.5) / cubeSize2);
+  color = mix(color1, color2, u_mixAmount);
+}
+  `;
+
+  var colorAdjustments = [
+    "original",
+    "blackAndWhite",
+    "inverse",
+    "sepia",
+    "blacklightPoster",
+    "orangeToGreen",
+    "posterize",
+    "sunset",
+  ];
+
+  var nameNode = document.createTextNode("waiting for textures");
+  document.querySelector("#name").appendChild(nameNode);
+
+  var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+  var bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
+
+  var uniforms = {
+    u_image: textures.image,
+    u_colorCube1: textures.original,
+    u_colorCube2: textures.original,
+    u_worldViewProjection: m4.identity(),
+    u_mixAmount: 0,
+  };
+
+  function setTexture(uniform, colorNdx) {
+    var textureName = colorAdjustments[colorNdx % colorAdjustments.length];
+    uniforms[uniform] = textures[textureName];
+  }
+
+  function easeInOutSine(pos) {
+    return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+  }
+
+  var colorNdx = 0;
+  var timer = 0;
+  var then = 0;
+  var duration = 3;
+  var oldMix = -1;
+
+  function render(now) {
+    now *= 0.001;
+    var deltaTime = now - then;
+    then = now;
+
+    var draw = false;
+    timer -= deltaTime;
+    if (timer < 0) {
+      colorNdx = (colorNdx + 1) % colorAdjustments.length;
+      setTexture("u_colorCube1", colorNdx);
+      setTexture("u_colorCube2", colorNdx + 1);
+      nameNode.nodeValue = colorAdjustments[colorNdx];
+      timer = duration;
+      draw = true;
+    }
+
+    uniforms.u_mixAmount = 1 - easeInOutSine(Math.min(1, Math.max(0, timer)));
+    if (uniforms.u_mixAmount != oldMix) {
+      oldMix = uniforms.u_mixAmount;
+      draw = true;
+    }
+
+    draw |= twgl.resizeCanvasToDisplaySize(gl.canvas);
+
+    if (draw) {
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      var img = images.image;
+      var imgAspect = img.width / img.height;
+      var screenAspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      var aspect = 1 / (screenAspect / imgAspect);
+      var scale = aspect < 1 ? 1 : 1 / aspect;
+      m4.ortho(-scale, scale, scale * -aspect, scale * aspect, -1, 1, uniforms.u_worldViewProjection);
+
+      gl.useProgram(programInfo.program);
+
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+      twgl.setUniforms(programInfo, uniforms);
+      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+    }
+
+    requestAnimationFrame(render);
+  }
+}
+main();
+  </script>
+</html>
+
+
