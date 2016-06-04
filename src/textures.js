@@ -242,8 +242,8 @@ define([
    */
   function savePackState(gl, options) {
     if (options.colorspaceConversion !== undefined) {
-      lastPackState.colorSpaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
-      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorSpaceConversion);
+      lastPackState.colorspaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
+      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
     }
     if (options.premultiplyAlpha !== undefined) {
       lastPackState.premultiplyAlpha = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
@@ -262,7 +262,7 @@ define([
    */
   function restorePackState(gl, options) {
     if (options.colorspaceConversion !== undefined) {
-      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorSpaceConversion);
+      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
     }
     if (options.premultiplyAlpha !== undefined) {
       gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
@@ -439,8 +439,8 @@ define([
       var target = options.target || gl.TEXTURE_2D;
       var width = element.width;
       var height = element.height;
-      var internalFormat = options.internalFormat || gl.RGBA;
       var format = options.format || gl.RGBA;
+      var internalFormat = options.internalFormat || format;
       var type = options.type || gl.UNSIGNED_BYTE;
       savePackState(gl, options);
       gl.bindTexture(target, tex);
@@ -813,8 +813,8 @@ define([
     var width = options.width;
     var height = options.height;
     var depth = options.depth;
-    var internalFormat = options.internalFormat || gl.RGBA;
     var format = options.format || gl.RGBA;
+    var internalFormat = options.internalFormat || format;
     var type = options.type || getTextureTypeForArrayType(gl, src);
     var numComponents = getNumComponentsForFormat(format);
     var numElements = src.length / numComponents;
@@ -891,7 +891,7 @@ define([
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
     var format = options.format || gl.RGBA;
-    var internalFormat = options.internalFormat || gl.RGBA;
+    var internalFormat = options.internalFormat || format;
     var type = options.type || gl.UNSIGNED_BYTE;
     savePackState(gl, options);
     if (target === gl.TEXTURE_CUBE_MAP) {
@@ -903,7 +903,7 @@ define([
     } else {
       gl.texImage2D(target, 0, internalFormat, options.width, options.height, 0, format, type, null);
     }
-    restorePackState();
+    restorePackState(gl, options);
   }
 
   /**
