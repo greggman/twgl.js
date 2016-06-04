@@ -155,7 +155,7 @@ function main() {
     },
   }, (err, textures, imgs) => {
     images = imgs;
-    requestAnimationFrame(render);
+    requestAnimationFrame(render);  // eslint-disable-line
   });
 
   var vs = `
@@ -255,7 +255,7 @@ void main() {
     }
 
     uniforms.u_mixAmount = 1 - easeInOutSine(Math.min(1, Math.max(0, timer)));
-    if (uniforms.u_mixAmount != oldMix) {
+    if (uniforms.u_mixAmount !== oldMix) {
       oldMix = uniforms.u_mixAmount;
       draw = true;
     }
