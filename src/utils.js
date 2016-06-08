@@ -76,7 +76,17 @@ define([], function() {
   }
 
   /**
+   * Gets the gl version as a number
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @return {number} version of gl
+   */
+  function getVersionAsNumber(gl) {
+    return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+  }
+
+  /**
    * Check if context is WebGL 2.0
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @return {bool} true if it's WebGL 2.0
    * @memberOf module:twgl
    */
@@ -86,11 +96,13 @@ define([], function() {
 
   /**
    * Check if context is WebGL 1.0
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @return {bool} true if it's WebGL 1.0
    * @memberOf module:twgl
    */
   function isWebGL1(gl) {
-    return gl.getParameter(gl.VERSION).indexOf("WebGL 1.0") === 0;
+    var version = getVersionAsNumber(gl);
+    return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
   }
 
   var error =
