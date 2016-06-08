@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.7.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.7.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -642,7 +642,17 @@ define('twgl/utils',[], function() {
   }
 
   /**
+   * Gets the gl version as a number
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @return {number} version of gl
+   */
+  function getVersionAsNumber(gl) {
+    return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+  }
+
+  /**
    * Check if context is WebGL 2.0
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @return {bool} true if it's WebGL 2.0
    * @memberOf module:twgl
    */
@@ -652,11 +662,13 @@ define('twgl/utils',[], function() {
 
   /**
    * Check if context is WebGL 1.0
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @return {bool} true if it's WebGL 1.0
    * @memberOf module:twgl
    */
   function isWebGL1(gl) {
-    return gl.getParameter(gl.VERSION).indexOf("WebGL 1.0") === 0;
+    var version = getVersionAsNumber(gl);
+    return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
   }
 
   var error =
@@ -3621,6 +3633,9 @@ define('twgl/textures',[
   }
 
   function guessDimensions(gl, target, width, height, numElements) {
+    if (numElements % 1 !== 0) {
+      throw "can't guess dimensions";
+    }
     if (!width && !height) {
       var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
       if (size % 1 === 0) {
@@ -3633,12 +3648,12 @@ define('twgl/textures',[
     } else if (!height) {
       height = numElements / width;
       if (height % 1) {
-        throw "can't guess height";
+        throw "can't guess dimensions";
       }
     } else if (!width) {
       width = numElements / height;
       if (width % 1) {
-        throw "can't guess width";
+        throw "can't guess dimensions";
       }
     }
     return {
@@ -3687,11 +3702,11 @@ define('twgl/textures',[
         height = dimensions.width;
         depth = dimensions.height;
       } else if (height && (!width || !depth)) {
-        dimensions = guessDimensions(gl, target, width, depth, numElements / width);
+        dimensions = guessDimensions(gl, target, width, depth, numElements / height);
         width = dimensions.width;
         depth = dimensions.height;
       } else {
-        dimensions = guessDimensions(gl, target, width, height, numElements / width);
+        dimensions = guessDimensions(gl, target, width, height, numElements / depth);
         width = dimensions.width;
         height = dimensions.height;
       }
