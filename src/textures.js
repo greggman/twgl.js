@@ -770,6 +770,9 @@ define([
   }
 
   function guessDimensions(gl, target, width, height, numElements) {
+    if (numElements % 1 !== 0) {
+      throw "can't guess dimensions";
+    }
     if (!width && !height) {
       var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
       if (size % 1 === 0) {
@@ -782,12 +785,12 @@ define([
     } else if (!height) {
       height = numElements / width;
       if (height % 1) {
-        throw "can't guess height";
+        throw "can't guess dimensions";
       }
     } else if (!width) {
       width = numElements / height;
       if (width % 1) {
-        throw "can't guess width";
+        throw "can't guess dimensions";
       }
     }
     return {
@@ -836,11 +839,11 @@ define([
         height = dimensions.width;
         depth = dimensions.height;
       } else if (height && (!width || !depth)) {
-        dimensions = guessDimensions(gl, target, width, depth, numElements / width);
+        dimensions = guessDimensions(gl, target, width, depth, numElements / height);
         width = dimensions.width;
         depth = dimensions.height;
       } else {
-        dimensions = guessDimensions(gl, target, width, height, numElements / width);
+        dimensions = guessDimensions(gl, target, width, height, numElements / depth);
         width = dimensions.width;
         height = dimensions.height;
       }
