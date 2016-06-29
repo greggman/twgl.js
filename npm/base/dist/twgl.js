@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.7.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 1.7.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2818,6 +2818,7 @@ define('twgl/draw',[
       var programInfo = object.programInfo;
       var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
       var bindBuffers = false;
+      var type = object.type === undefined ? gl.TRIANGLES : object.type;
 
       if (programInfo !== lastUsedProgramInfo) {
         lastUsedProgramInfo = programInfo;
@@ -2843,7 +2844,7 @@ define('twgl/draw',[
       programs.setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo, object.count, object.offset);
+      drawBufferInfo(gl, type, bufferInfo, object.count, object.offset);
     });
 
     if (lastUsedBufferInfo.vertexArrayObject) {
