@@ -125,6 +125,7 @@ define([
       var programInfo = object.programInfo;
       var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
       var bindBuffers = false;
+      var type = object.type === undefined ? gl.TRIANGLES : object.type;
 
       if (programInfo !== lastUsedProgramInfo) {
         lastUsedProgramInfo = programInfo;
@@ -150,7 +151,7 @@ define([
       programs.setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, object.type || gl.TRIANGLES, bufferInfo, object.count, object.offset);
+      drawBufferInfo(gl, type, bufferInfo, object.count, object.offset);
     });
 
     if (lastUsedBufferInfo.vertexArrayObject) {
