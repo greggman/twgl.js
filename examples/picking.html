@@ -336,6 +336,10 @@ void main() {
     gl.canvas.addEventListener('touchstart', function(e) {
       pickObject(e.touches[0].clientX, e.touches[0].clientY);
     });
+    gl.canvas.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
 
     function render(time) {
       time *= 0.001;
