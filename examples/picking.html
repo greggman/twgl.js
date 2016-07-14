@@ -192,6 +192,15 @@ void main() {
       ],
     });
 
+    function makePickingColor(id) {
+      return [
+        ((id >>  0) & 0xFF) / 0xFF,
+        ((id >>  8) & 0xFF) / 0xFF,
+        ((id >> 16) & 0xFF) / 0xFF,
+        ((id >> 24) & 0xFF) / 0xFF,
+      ];
+    }
+
     var objects = [];
     var drawObjects = [];
     var pickDrawObjects = [];
@@ -232,23 +241,7 @@ void main() {
       });
     }
 
-    function makePickingColor(id) {
-      return [
-        ((id >>  0) & 0xFF) / 0xFF,
-        ((id >>  8) & 0xFF) / 0xFF,
-        ((id >> 16) & 0xFF) / 0xFF,
-        ((id >> 24) & 0xFF) / 0xFF,
-      ];
-    }
-
     var pickingFBI = twgl.createFramebufferInfo(gl);
-
-    gl.canvas.addEventListener('click', function(e) {
-      pickObject(e.clientX, e.clientY);
-    });
-    gl.canvas.addEventListener('touchstart', function(e) {
-      pickObject(e.touches[0].clientX, e.touches[0].clientY);
-    });
 
     // NOTE: !!
     //
@@ -318,7 +311,7 @@ void main() {
       twgl.resizeFramebufferInfo(gl, pickingFBI);
       twgl.bindFramebufferInfo(gl, pickingFBI);
 
-      gl.clearColor(1,1,1,1);
+      gl.clearColor(1, 1, 1, 1);
       gl.enable(gl.DEPTH_TEST);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
       twgl.drawObjectList(gl, pickDrawObjects);
@@ -328,8 +321,15 @@ void main() {
       pickId = (pickColor[0] <<  0) +
                (pickColor[1] <<  8) +
                (pickColor[2] << 16) +
-               (pickColor[3] << 24) ;
+               (pickColor[3] << 24);
     }
+
+    gl.canvas.addEventListener('click', function(e) {
+      pickObject(e.clientX, e.clientY);
+    });
+    gl.canvas.addEventListener('touchstart', function(e) {
+      pickObject(e.touches[0].clientX, e.touches[0].clientY);
+    });
 
     function render(time) {
       time *= 0.001;
