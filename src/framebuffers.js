@@ -91,7 +91,8 @@ define([
    * Note: For a `format` that is a texture include all the texture
    * options from {@link module:twgl.TextureOptions} for example
    * `min`, `mag`, `clamp`, etc... Note that unlike {@link module:twgl.TextureOptions}
-   * `auto` defaults to `false` for attachment textures
+   * `auto` defaults to `false` for attachment textures but `min` and `mag` default
+   * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
    *
    * @typedef {Object} AttachmentOptions
    * @property {number} [attach] The attachment point. Defaults
@@ -214,7 +215,13 @@ define([
           var textureOptions = utils.shallowCopy(attachmentOptions);
           textureOptions.width = width;
           textureOptions.height = height;
-          textureOptions.auto = attachmentOptions.auto === undefined ? false : attachmentOptions.auto;
+          if (textureOptions.auto === undefined) {
+            textureOptions.auto = false;
+            textureOptions.min = textureOptions.min || gl.LINEAR;
+            textureOptions.mag = textureOptions.mag || gl.LINEAR;
+            textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+            textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+          }
           attachment = textures.createTexture(gl, textureOptions);
         }
       }
