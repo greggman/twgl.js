@@ -31,8 +31,7 @@
 <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 </head>
 <body>
-<div id="canvas">
-</div>
+<canvas id="canvas"></canvas>
 <div id="content">
   %(content)s
 </div>

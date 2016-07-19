@@ -3,11 +3,10 @@
 (function() {
   twgl.setAttributePrefix("a_");
   var m4 = twgl.m4;
-  var gl = twgl.getWebGLContext(document.createElement("canvas"), {
+  var gl = twgl.getWebGLContext(document.getElementById("canvas"), {
     alpha: false,
     premultipliedAlpha: false,
   });
-  document.getElementById("canvas").appendChild(gl.canvas);
 
   var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
   var arrays = {

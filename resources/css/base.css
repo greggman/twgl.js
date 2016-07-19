@@ -2,21 +2,17 @@
     box-sizing: border-box;
 }
 
-#canvas, canvas {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-}
 #canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
+body {
+    margin: 0;
     font-family: Helvetica, Arial, sanf-serif;
     line-height: 1.2em;
 }
