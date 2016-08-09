@@ -730,6 +730,7 @@ define([
    * @property {Float32Array} asFloat A float view on the array buffer. This is useful
    *    inspecting the contents of the buffer in the debugger.
    * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
+   * @property {number} [offset] offset into buffer
    * @property {Object.<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
    *   each Uniform has a correctly typed `ArrayBufferView` into array at the correct offset
    *   and length of that uniform. So for example a float uniform would have a 1 float `Float32Array`
@@ -840,7 +841,7 @@ define([
     var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
     if (blockSpec) {
       var bufferBindIndex = blockSpec.index;
-      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, 0, uniformBlockInfo.array.byteLength);
+      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
       return true;
     }
     return false;
