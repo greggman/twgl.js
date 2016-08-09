@@ -240,6 +240,7 @@ module.exports = function(grunt) {
       },
     },
     clean: {
+      dist: [ 'dist' ],
       docs: [ 'docs' ],
       dist: [ 'dist' ],
     },
