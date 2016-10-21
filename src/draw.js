@@ -54,14 +54,15 @@ define([
    * data you don't have to remember to update your draw call.
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
    * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
    *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
+   * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl/draw
    */
-  function drawBufferInfo(gl, type, bufferInfo, count, offset) {
+  function drawBufferInfo(gl, bufferInfo, type, count, offset) {
+    type = type === undefined ? gl.TRIANGLES : type;
     var indices = bufferInfo.indices;
     var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
@@ -151,7 +152,7 @@ define([
       programs.setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, type, bufferInfo, object.count, object.offset);
+      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset);
     });
 
     if (lastUsedBufferInfo.vertexArrayObject) {
