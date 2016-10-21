@@ -276,7 +276,7 @@ void main() {
 
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       twgl.setUniforms(programInfo, uniforms);
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo);
     }
 
     requestAnimationFrame(render);

@@ -342,7 +342,7 @@ void main() {
         uniforms.u_lightColor = [2, 2, 2, 1];
 
         twgl.setUniforms(programInfo, uniforms);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+        twgl.drawBufferInfo(gl, bufferInfo);
       }
 
       if (useFramebuffer) {
@@ -365,7 +365,7 @@ void main() {
 
         twgl.setBuffersAndAttributes(gl, kaleidProgramInfo, screenBufferInfo);
         twgl.setUniforms(kaleidProgramInfo, screenUniforms);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, screenBufferInfo);
+        twgl.drawBufferInfo(gl, screenBufferInfo);
       }
 
       requestAnimationFrame(render);

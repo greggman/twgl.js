@@ -305,7 +305,7 @@ void main() {
         gl.useProgram(programInfo.program);
         twgl.setUniforms(programInfo, obj.uniforms);
         twgl.setBuffersAndAttributes(gl, programInfo, obj.vertexArrayInfo);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, obj.vertexArrayInfo);
+        twgl.drawBufferInfo(gl, obj.vertexArrayInfo);
       });
 
       requestAnimationFrame(render);

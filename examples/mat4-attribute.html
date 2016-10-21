@@ -118,7 +118,7 @@ void main() {
       twgl.setUniforms(programInfo, {
         u_matrix: m4.rotateZ(m4.rotateY(m4.rotationX(time), time * 0.37), time * 0.13),
       });
-      twgl.drawBufferInfo(gl, gl.POINTS, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo, gl.POINTS);
 
       requestAnimationFrame(render);
     }

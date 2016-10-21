@@ -343,7 +343,7 @@ void main() {
         uniforms.u_lightColor = [2, 2, 2, 1];
 
         twgl.setUniforms(programInfo, uniforms);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+        twgl.drawBufferInfo(gl, bufferInfo);
       }
 
       if (useFramebuffer) {
@@ -370,7 +370,7 @@ void main() {
 
         twgl.setBuffersAndAttributes(gl, texProgramInfo, cylinderBufferInfo);
         twgl.setUniforms(texProgramInfo, cylinderUniforms);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, cylinderBufferInfo);
+        twgl.drawBufferInfo(gl, cylinderBufferInfo);
       }
 
       requestAnimationFrame(render);

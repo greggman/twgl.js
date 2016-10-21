@@ -166,7 +166,7 @@ void main() {
       gl.useProgram(programInfo.program);
       twgl.setBuffersAndAttributes(gl, programInfo, plane);
       twgl.setUniforms(programInfo, uniforms);
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, plane);
+      twgl.drawBufferInfo(gl, plane);
 
       requestAnimationFrame(render);
     }

@@ -267,7 +267,7 @@ function main() {
       twgl.bindUniformBlock(gl, programInfo, o.materialUboInfo);
       twgl.bindUniformBlock(gl, programInfo, o.modelUboInfo);
 
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo);
     });
 
     requestAnimationFrame(render);

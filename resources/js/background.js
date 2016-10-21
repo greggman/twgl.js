@@ -98,7 +98,7 @@
 
       twgl.setUniforms(programInfo, uniforms);
 
-      twgl.drawBufferInfo(gl, gl.LINES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo, gl.LINES);
     }
 
     requestAnimationFrame(render);

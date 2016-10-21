@@ -112,7 +112,7 @@ void main() {
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, handMadeBufferInfo);
     twgl.setUniforms(programInfo, uniforms);
-    twgl.drawBufferInfo(gl, gl.TRIANGLES, handMadeBufferInfo);
+    twgl.drawBufferInfo(gl, handMadeBufferInfo);
 
     function makeCircleCanvas() {
       // make a texture with a circle in it
