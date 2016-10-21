@@ -231,7 +231,7 @@ void main() {
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
-      m4.multiply(view, projection, viewProjection);
+      m4.multiply(projection, view, viewProjection);
 
       objects.forEach(function(obj) {
         var uni = obj.uniforms;
@@ -242,7 +242,7 @@ void main() {
         m4.translate(world, obj.translation, world);
         m4.rotateX(world, time, world);
         m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
-        m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
+        m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
       });
 
       twgl.drawObjectList(gl, drawObjects);

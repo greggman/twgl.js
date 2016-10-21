@@ -176,7 +176,7 @@ var uniforms = {
 uniforms.u_viewInverse = camera;
 uniforms.u_world = world;
 uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
+uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 
 twgl.setUniforms(programInfo, uniforms);
 ```
@@ -204,7 +204,7 @@ gl.uniform1i(u_diffuseLoc, u_diffuse);
 gl.uniformMatrix4fv(u_viewInverseLoc, false, camera);
 gl.uniformMatrix4fv(u_worldLoc, false, world);
 gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
-gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));
+gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(viewProjection, world));
 ```
 
 ### Loading / Setting up textures

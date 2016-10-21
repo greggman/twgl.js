@@ -168,13 +168,13 @@ void main() {
 
       var camera = m4.lookAt(eye, target, up);
       var view = m4.inverse(camera);
-      var viewProjection = m4.multiply(view, projection);
+      var viewProjection = m4.multiply(projection, view);
       var world = m4.rotationY(time);
 
       uniforms.u_viewInverse = camera;
       uniforms.u_world = world;
       uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-      uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
+      uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 
       gl.useProgram(programInfo.program);
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);

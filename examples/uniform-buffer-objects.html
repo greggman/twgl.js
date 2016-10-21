@@ -255,7 +255,7 @@ function main() {
 
     var camera = m4.lookAt(eye, target, up, viewInverse);
     var view = m4.inverse(camera);
-    m4.multiply(view, projection, viewProjection);
+    m4.multiply(projection, view, viewProjection);
 
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);

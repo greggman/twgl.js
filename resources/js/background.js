@@ -74,7 +74,7 @@
     m4.perspective(fieldOfViewY, aspect, 0.1, 20, projection);
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);
-    m4.multiply(view, projection, viewProjection);
+    m4.multiply(projection, view, viewProjection);
 
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
@@ -92,7 +92,7 @@
       m4.rotateZ(world, t * 0.1 + x * 0.1, world);
       m4.rotateX(world, t * 0.07 + y * 0.1, world);
       m4.scale(world, [s, s, s], world);
-      m4.multiply(world, viewProjection, uniforms.u_matrix);
+      m4.multiply(viewProjection, world, uniforms.u_matrix);
 
       uniforms.u_color[3] = ii / num * fade;
 

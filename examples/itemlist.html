@@ -287,7 +287,7 @@ void main() {
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         var projection = m4.perspective(30 * Math.PI / 180, width / height, 0.5, 100);
-        m4.multiply(view, projection, viewProjection);
+        m4.multiply(projection, view, viewProjection);
 
         var uni = obj.uniforms;
         var world = uni.u_world;
@@ -295,7 +295,7 @@ void main() {
         m4.rotateY(world, time * obj.ySpeed, world);
         m4.rotateZ(world, time * obj.zSpeed, world);
         m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
-        m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
+        m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
 
         gl.useProgram(obj.programInfo.program);
         twgl.setBuffersAndAttributes(gl, obj.programInfo, obj.bufferInfo);

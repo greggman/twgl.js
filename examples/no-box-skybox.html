@@ -160,7 +160,7 @@ void main() {
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
       m4.setTranslation(view, [0, 0, 0], viewDirection);
-      m4.multiply(viewDirection, projection, viewDirectionProjection);
+      m4.multiply(projection, viewDirection, viewDirectionProjection);
       m4.inverse(viewDirectionProjection, viewDirectionProjectionInverse);
 
       gl.useProgram(programInfo.program);
