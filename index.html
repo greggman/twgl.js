@@ -60,7 +60,7 @@ to do stuff low-level with WebGL consider using <a href="http://github.com/gregg
 <h2 id="the-tiniest-example">The tiniest example</h2>
 <p>Not including the shaders (which is a simple quad shader) here&#39;s the entire code</p>
 <pre><code class="lang-html">&lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
-&lt;script src=&quot;../dist/twgl-full.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;../dist/2.x/twgl-full.min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
   var gl = twgl.getWebGLContext(document.getElementById(&quot;c&quot;));
   var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
@@ -572,7 +572,7 @@ void main(void)
     gl_FragColor = u_color;
 }
 </script>
-<script src="/dist/twgl-full.min.js"></script>
+<script src="/dist/2.x/twgl-full.min.js"></script>
 <script src="/3rdparty/prettify.js"></script>
 <script src="/resources/js/background.js"></script>
 <script src="/resources/js/index.js"></script>

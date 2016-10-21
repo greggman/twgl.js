@@ -2,7 +2,7 @@
   "name": "twgl-base.js",
   "version": "1.9.0",
   "description": "A Tiny WebGL helper library",
-  "main": "dist/twgl.js",
+  "main": "dist/2.x/twgl.js",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/greggman/twgl.js",
   "files": [
-    "dist/twgl.js"
+    "dist/2.x/twgl.js"
   ],
   "devDependencies": {},
   "dependencies": {}
