@@ -27,6 +27,13 @@
 </nav>
 
 <div id="main">
+    
+
+    
+
+
+
+    
 
 
 
@@ -36,19 +43,13 @@
 
 
 
-
-
-
-
-
-
-
-
+    
 
 
     <section class="readme">
         <article><h1>TWGL: A Tiny WebGL helper Library<div id="pronouce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1><p><a href="https://travis-ci.org/greggman/twgl.js"><img src="https://travis-ci.org/greggman/twgl.js.svg?branch=master" alt="Build Status"></a></p>
 <p>This library's sole purpose is to make using the WebGL API less verbose.</p>
+<h2>Note: Minor API Changes in 2.x</h2><p><a href="https://github.com/greggman/twgl.js/blob/master/CHANGELIST.md">See Changelist</a></p>
 <h2>TL;DR</h2><p>If you want to get shit done use <a href="http://threejs.org">three.js</a>. If you want<br>to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
 <h2>The tiniest example</h2><p>Not including the shaders (which is a simple quad shader) here's the entire code</p>
 <pre class="prettyprint source lang-html"><code>&lt;canvas id=&quot;c&quot;>&lt;/canvas>
@@ -74,7 +75,7 @@
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
-    twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+    twgl.drawBufferInfo(gl, bufferInfo);
 
     requestAnimationFrame(render);
   }
@@ -163,7 +164,7 @@ var uniforms = {
 uniforms.u_viewInverse = camera;
 uniforms.u_world = world;
 uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
+uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 
 twgl.setUniforms(programInfo, uniforms);</code></pre><p>WebGL</p>
 <pre class="prettyprint source lang-javascript"><code>// At Init time
@@ -186,7 +187,7 @@ gl.uniform1i(u_diffuseLoc, u_diffuse);
 gl.uniformMatrix4fv(u_viewInverseLoc, false, camera);
 gl.uniformMatrix4fv(u_worldLoc, false, world);
 gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
-gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));</code></pre><h3>Loading / Setting up textures</h3><p>TWGL</p>
+gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(viewProjection, world));</code></pre><h3>Loading / Setting up textures</h3><p>TWGL</p>
 <pre class="prettyprint source lang-javascript"><code>var textures = twgl.createTextures(gl, {
   // a power of 2 image
   hftIcon: { src: &quot;images/hft-icon-16.png&quot;, mag: gl.NEAREST },

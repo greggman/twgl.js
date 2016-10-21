@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 1.9.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2780,14 +2780,15 @@ define('twgl/draw',[
    * data you don't have to remember to update your draw call.
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
    * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
    *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
+   * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl/draw
    */
-  function drawBufferInfo(gl, type, bufferInfo, count, offset) {
+  function drawBufferInfo(gl, bufferInfo, type, count, offset) {
+    type = type === undefined ? gl.TRIANGLES : type;
     var indices = bufferInfo.indices;
     var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
@@ -2877,7 +2878,7 @@ define('twgl/draw',[
       programs.setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, type, bufferInfo, object.count, object.offset);
+      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset);
     });
 
     if (lastUsedBufferInfo.vertexArrayObject) {
@@ -5439,8 +5440,7 @@ define('twgl/m4',['./v3'], function(v3) {
   }
 
   /**
-   * Multiplies two 4-by-4 matrices; assumes that the given matrices are 4-by-4;
-   * assumes matrix entries are accessed in [row][column] fashion.
+   * Multiplies two 4-by-4 matrices with a on the left and b on the right
    * @param {module:twgl/m4.Mat4} a The matrix on the left.
    * @param {module:twgl/m4.Mat4} b The matrix on the right.
    * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
@@ -5483,22 +5483,22 @@ define('twgl/m4',['./v3'], function(v3) {
     var b32 = b[12 + 2];
     var b33 = b[12 + 3];
 
-    dst[ 0] = a00 * b00 + a01 * b10 + a02 * b20 + a03 * b30;
-    dst[ 1] = a00 * b01 + a01 * b11 + a02 * b21 + a03 * b31;
-    dst[ 2] = a00 * b02 + a01 * b12 + a02 * b22 + a03 * b32;
-    dst[ 3] = a00 * b03 + a01 * b13 + a02 * b23 + a03 * b33;
-    dst[ 4] = a10 * b00 + a11 * b10 + a12 * b20 + a13 * b30;
-    dst[ 5] = a10 * b01 + a11 * b11 + a12 * b21 + a13 * b31;
-    dst[ 6] = a10 * b02 + a11 * b12 + a12 * b22 + a13 * b32;
-    dst[ 7] = a10 * b03 + a11 * b13 + a12 * b23 + a13 * b33;
-    dst[ 8] = a20 * b00 + a21 * b10 + a22 * b20 + a23 * b30;
-    dst[ 9] = a20 * b01 + a21 * b11 + a22 * b21 + a23 * b31;
-    dst[10] = a20 * b02 + a21 * b12 + a22 * b22 + a23 * b32;
-    dst[11] = a20 * b03 + a21 * b13 + a22 * b23 + a23 * b33;
-    dst[12] = a30 * b00 + a31 * b10 + a32 * b20 + a33 * b30;
-    dst[13] = a30 * b01 + a31 * b11 + a32 * b21 + a33 * b31;
-    dst[14] = a30 * b02 + a31 * b12 + a32 * b22 + a33 * b32;
-    dst[15] = a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33;
+    dst[ 0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
+    dst[ 1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
+    dst[ 2] = a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03;
+    dst[ 3] = a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03;
+    dst[ 4] = a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13;
+    dst[ 5] = a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13;
+    dst[ 6] = a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13;
+    dst[ 7] = a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13;
+    dst[ 8] = a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23;
+    dst[ 9] = a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23;
+    dst[10] = a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23;
+    dst[11] = a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23;
+    dst[12] = a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33;
+    dst[13] = a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33;
+    dst[14] = a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33;
+    dst[15] = a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33;
 
     return dst;
   }
