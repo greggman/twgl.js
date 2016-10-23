@@ -1,5 +1,10 @@
 #Changelist
 
+*   2.1
+
+    *   Made guessing numComponents for attributes case insensitive
+        as well ask looking for "text" and "colour"
+
 *   2.0
 
     *   Changed `m4.multiply` to match most other math libraries.
