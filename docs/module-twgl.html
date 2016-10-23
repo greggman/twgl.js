@@ -2238,7 +2238,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
     
 
-    <h4 class="name" id=".drawBufferInfo"><span class="type-signature">(static) </span>drawBufferInfo<span class="signature">(gl, type, bufferInfo, count<span class="signature-attributes">opt</span>, offset<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".drawBufferInfo"><span class="type-signature">(static) </span>drawBufferInfo<span class="signature">(gl, bufferInfo, type<span class="signature-attributes">opt</span>, count<span class="signature-attributes">opt</span>, offset<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -2315,37 +2315,6 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
         <tr>
             
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">enum</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>bufferInfo</code></td>
             
 
@@ -2374,6 +2343,39 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last"><p>A BufferInfo as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> or<br>  a VertexArrayInfo as returned from <a href="module-twgl.html#.createVertexArrayInfo"><code>module:twgl.createVertexArrayInfo</code></a></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">enum</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to <code>gl.TRIANGLES</code></p></td>
         </tr>
 
     
@@ -5291,7 +5293,7 @@ Bare TypedArrays
 
 <div class="description">
     <p>The options for a framebuffer attachment.</p>
-<p>Note: For a <code>format</code> that is a texture include all the texture<br>options from <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a> for example<br><code>min</code>, <code>mag</code>, <code>clamp</code>, etc... Note that unlike <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a><br><code>auto</code> defaults to <code>false</code> for attachment textures</p>
+<p>Note: For a <code>format</code> that is a texture include all the texture<br>options from <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a> for example<br><code>min</code>, <code>mag</code>, <code>clamp</code>, etc... Note that unlike <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a><br><code>auto</code> defaults to <code>false</code> for attachment textures but <code>min</code> and <code>mag</code> default<br>to <code>gl.LINEAR</code> and <code>wrap</code> defaults to <code>CLAMP_TO_EDGE</code></p>
 </div>
 
 
@@ -9546,6 +9548,8 @@ var drawObj = {
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -9571,6 +9575,12 @@ var drawObj = {
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -9593,6 +9603,12 @@ var drawObj = {
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+                </td>
             
 
             
@@ -9617,6 +9633,12 @@ var drawObj = {
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -9640,10 +9662,47 @@ var drawObj = {
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>A WebGL buffer that will hold a copy of the uniform values for rendering.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>offset into buffer</p></td>
         </tr>
 
     
@@ -9662,6 +9721,12 @@ var drawObj = {
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+                </td>
             
 
             

@@ -321,6 +321,11 @@ define([
   typeMap[UNSIGNED_INT_SAMPLER_CUBE]     = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
   typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
 
+  var attrTypeMap = {};
+  attrTypeMap[FLOAT_MAT2] = { size:  4, count: 2, };
+  attrTypeMap[FLOAT_MAT3] = { size:  9, count: 3, };
+  attrTypeMap[FLOAT_MAT4] = { size: 16, count: 4, };
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
 
@@ -730,6 +735,7 @@ define([
    * @property {Float32Array} asFloat A float view on the array buffer. This is useful
    *    inspecting the contents of the buffer in the debugger.
    * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
+   * @property {number} [offset] offset into buffer
    * @property {Object.<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
    *   each Uniform has a correctly typed `ArrayBufferView` into array at the correct offset
    *   and length of that uniform. So for example a float uniform would have a 1 float `Float32Array`
@@ -840,7 +846,7 @@ define([
     var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
     if (blockSpec) {
       var bufferBindIndex = blockSpec.index;
-      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, 0, uniformBlockInfo.array.byteLength);
+      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
       return true;
     }
     return false;
@@ -1048,11 +1054,33 @@ define([
 
     function createAttribSetter(index) {
       return function(b) {
-          gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-          gl.enableVertexAttribArray(index);
+        gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+        gl.enableVertexAttribArray(index);
+        gl.vertexAttribPointer(
+            index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+      };
+    }
+
+    function createMatAttribSetter(index, typeInfo) {
+      var defaultSize = typeInfo.size;
+      var count = typeInfo.count;
+
+      return function(b) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+        var numComponents = b.size || b.numComponents || defaultSize;
+        var size = numComponents / count;
+        var type = b.type || gl.FLOAT;
+        var typeInfo = typeMap[type];
+        var stride = typeInfo.size * numComponents;
+        var normalize = b.normalize || false;
+        var offset = b.offset || 0;
+        var rowOffset = stride / count;
+        for (var i = 0; i < count; ++i) {
+          gl.enableVertexAttribArray(index + i);
           gl.vertexAttribPointer(
-              index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
-        };
+              index + i, size, type, normalize, stride, offset + rowOffset * i);
+        }
+      };
     }
 
     var numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
@@ -1062,7 +1090,12 @@ define([
         break;
       }
       var index = gl.getAttribLocation(program, attribInfo.name);
-      attribSetters[attribInfo.name] = createAttribSetter(index);
+      var typeInfo = attrTypeMap[attribInfo.type];
+      if (typeInfo) {
+        attribSetters[attribInfo.name] = createMatAttribSetter(index, typeInfo);
+      } else {
+        attribSetters[attribInfo.name] = createAttribSetter(index);
+      }
     }
 
     return attribSetters;

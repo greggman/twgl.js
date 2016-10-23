@@ -154,7 +154,7 @@ void main() {
 }
   </script>
   <script src="../3rdparty/chroma.min.js"></script>
-  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
   <script>
     /*eslint no-unused-vars:0*/
     "use strict";
@@ -312,7 +312,7 @@ void main() {
 
       var camera = m4.lookAt(eye, target, up);
       var view = m4.inverse(camera);
-      var viewProjection = m4.multiply(view, projection);
+      var viewProjection = m4.multiply(projection, view);
       uniforms.u_viewInverse = camera;
 
       gl.useProgram(programInfo.program);
@@ -331,7 +331,7 @@ void main() {
 
         uniforms.u_world = world;
         uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-        uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
+        uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 //        uniforms.u_lightColor[0] = x / 4;
 //        uniforms.u_lightColor[1] = y / 4;
 //        uniforms.u_lightColor[2] = 1 - (x + y) / 8;
@@ -342,7 +342,7 @@ void main() {
         uniforms.u_lightColor = [2, 2, 2, 1];
 
         twgl.setUniforms(programInfo, uniforms);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+        twgl.drawBufferInfo(gl, bufferInfo);
       }
 
       if (useFramebuffer) {
@@ -365,7 +365,7 @@ void main() {
 
         twgl.setBuffersAndAttributes(gl, kaleidProgramInfo, screenBufferInfo);
         twgl.setUniforms(kaleidProgramInfo, screenUniforms);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, screenBufferInfo);
+        twgl.drawBufferInfo(gl, screenBufferInfo);
       }
 
       requestAnimationFrame(render);

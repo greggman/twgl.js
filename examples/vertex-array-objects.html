@@ -174,7 +174,7 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
@@ -286,7 +286,7 @@ void main() {
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
-      m4.multiply(view, projection, viewProjection);
+      m4.multiply(projection, view, viewProjection);
 
       objects.forEach(function(obj) {
         var uni = obj.uniforms;
@@ -297,7 +297,7 @@ void main() {
         m4.translate(world, obj.translation, world);
         m4.rotateX(world, time, world);
         m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
-        m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
+        m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
       });
 
       drawObjects.forEach(function(obj) {
@@ -305,7 +305,7 @@ void main() {
         gl.useProgram(programInfo.program);
         twgl.setUniforms(programInfo, obj.uniforms);
         twgl.setBuffersAndAttributes(gl, programInfo, obj.vertexArrayInfo);
-        twgl.drawBufferInfo(gl, gl.TRIANGLES, obj.vertexArrayInfo);
+        twgl.drawBufferInfo(gl, obj.vertexArrayInfo);
       });
 
       requestAnimationFrame(render);

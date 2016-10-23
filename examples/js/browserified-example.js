@@ -22,7 +22,7 @@
 chroma.brewer=brewer={OrRd:["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000"],PuBu:["#fff7fb","#ece7f2","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"],BuPu:["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#810f7c","#4d004b"],Oranges:["#fff5eb","#fee6ce","#fdd0a2","#fdae6b","#fd8d3c","#f16913","#d94801","#a63603","#7f2704"],BuGn:["#f7fcfd","#e5f5f9","#ccece6","#99d8c9","#66c2a4","#41ae76","#238b45","#006d2c","#00441b"],YlOrBr:["#ffffe5","#fff7bc","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#993404","#662506"],YlGn:["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"],Reds:["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],RdPu:["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"],Greens:["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#00441b"],YlGnBu:["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],Purples:["#fcfbfd","#efedf5","#dadaeb","#bcbddc","#9e9ac8","#807dba","#6a51a3","#54278f","#3f007d"],GnBu:["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081"],Greys:["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"],YlOrRd:["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"],PuRd:["#f7f4f9","#e7e1ef","#d4b9da","#c994c7","#df65b0","#e7298a","#ce1256","#980043","#67001f"],Blues:["#f7fbff","#deebf7","#c6dbef","#9ecae1","#6baed6","#4292c6","#2171b5","#08519c","#08306b"],PuBuGn:["#fff7fb","#ece2f0","#d0d1e6","#a6bddb","#67a9cf","#3690c0","#02818a","#016c59","#014636"],Spectral:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],RdYlGn:["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"],RdBu:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"],PiYG:["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#f7f7f7","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"],PRGn:["#40004b","#762a83","#9970ab","#c2a5cf","#e7d4e8","#f7f7f7","#d9f0d3","#a6dba0","#5aae61","#1b7837","#00441b"],RdYlBu:["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"],BrBG:["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],RdGy:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],PuOr:["#7f3b08","#b35806","#e08214","#fdb863","#fee0b6","#f7f7f7","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b"],Set2:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"],Accent:["#7fc97f","#beaed4","#fdc086","#ffff99","#386cb0","#f0027f","#bf5b17","#666666"],Set1:["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"],Set3:["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"],Dark2:["#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d","#666666"],Paired:["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"],Pastel2:["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"],Pastel1:["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]};chroma.colors=colors={indigo:"#4b0082",gold:"#ffd700",hotpink:"#ff69b4",firebrick:"#b22222",indianred:"#cd5c5c",yellow:"#ffff00",mistyrose:"#ffe4e1",darkolivegreen:"#556b2f",olive:"#808000",darkseagreen:"#8fbc8f",pink:"#ffc0cb",tomato:"#ff6347",lightcoral:"#f08080",orangered:"#ff4500",navajowhite:"#ffdead",lime:"#00ff00",palegreen:"#98fb98",darkslategrey:"#2f4f4f",greenyellow:"#adff2f",burlywood:"#deb887",seashell:"#fff5ee",mediumspringgreen:"#00fa9a",fuchsia:"#ff00ff",papayawhip:"#ffefd5",blanchedalmond:"#ffebcd",chartreuse:"#7fff00",dimgray:"#696969",black:"#000000",peachpuff:"#ffdab9",springgreen:"#00ff7f",aquamarine:"#7fffd4",white:"#ffffff",orange:"#ffa500",lightsalmon:"#ffa07a",darkslategray:"#2f4f4f",brown:"#a52a2a",ivory:"#fffff0",dodgerblue:"#1e90ff",peru:"#cd853f",lawngreen:"#7cfc00",chocolate:"#d2691e",crimson:"#dc143c",forestgreen:"#228b22",darkgrey:"#a9a9a9",lightseagreen:"#20b2aa",cyan:"#00ffff",mintcream:"#f5fffa",silver:"#c0c0c0",antiquewhite:"#faebd7",mediumorchid:"#ba55d3",skyblue:"#87ceeb",gray:"#808080",darkturquoise:"#00ced1",goldenrod:"#daa520",darkgreen:"#006400",floralwhite:"#fffaf0",darkviolet:"#9400d3",darkgray:"#a9a9a9",moccasin:"#ffe4b5",saddlebrown:"#8b4513",grey:"#808080",darkslateblue:"#483d8b",lightskyblue:"#87cefa",lightpink:"#ffb6c1",mediumvioletred:"#c71585",slategrey:"#708090",red:"#ff0000",deeppink:"#ff1493",limegreen:"#32cd32",darkmagenta:"#8b008b",palegoldenrod:"#eee8aa",plum:"#dda0dd",turquoise:"#40e0d0",lightgrey:"#d3d3d3",lightgoldenrodyellow:"#fafad2",darkgoldenrod:"#b8860b",lavender:"#e6e6fa",maroon:"#800000",yellowgreen:"#9acd32",sandybrown:"#f4a460",thistle:"#d8bfd8",violet:"#ee82ee",navy:"#000080",magenta:"#ff00ff",dimgrey:"#696969",tan:"#d2b48c",rosybrown:"#bc8f8f",olivedrab:"#6b8e23",blue:"#0000ff",lightblue:"#add8e6",ghostwhite:"#f8f8ff",honeydew:"#f0fff0",cornflowerblue:"#6495ed",slateblue:"#6a5acd",linen:"#faf0e6",darkblue:"#00008b",powderblue:"#b0e0e6",seagreen:"#2e8b57",darkkhaki:"#bdb76b",snow:"#fffafa",sienna:"#a0522d",mediumblue:"#0000cd",royalblue:"#4169e1",lightcyan:"#e0ffff",green:"#008000",mediumpurple:"#9370db",midnightblue:"#191970",cornsilk:"#fff8dc",paleturquoise:"#afeeee",bisque:"#ffe4c4",slategray:"#708090",darkcyan:"#008b8b",khaki:"#f0e68c",wheat:"#f5deb3",teal:"#008080",darkorchid:"#9932cc",deepskyblue:"#00bfff",salmon:"#fa8072",darkred:"#8b0000",steelblue:"#4682b4",palevioletred:"#db7093",lightslategray:"#778899",aliceblue:"#f0f8ff",lightslategrey:"#778899",lightgreen:"#90ee90",orchid:"#da70d6",gainsboro:"#dcdcdc",mediumseagreen:"#3cb371",lightgray:"#d3d3d3",mediumturquoise:"#48d1cc",lemonchiffon:"#fffacd",cadetblue:"#5f9ea0",lightyellow:"#ffffe0",lavenderblush:"#fff0f5",coral:"#ff7f50",purple:"#800080",aqua:"#00ffff",whitesmoke:"#f5f5f5",mediumslateblue:"#7b68ee",darkorange:"#ff8c00",mediumaquamarine:"#66cdaa",darksalmon:"#e9967a",beige:"#f5f5dc",blueviolet:"#8a2be2",azure:"#f0ffff",lightsteelblue:"#b0c4de",oldlace:"#fdf5e6"};type=function(){var classToType,name,_i,_len,_ref1;classToType={};_ref1="Boolean Number String Function Array Date RegExp Undefined Null".split(" ");for(_i=0,_len=_ref1.length;_i<_len;_i++){name=_ref1[_i];classToType["[object "+name+"]"]=name.toLowerCase()}return function(obj){var strType;strType=Object.prototype.toString.call(obj);return classToType[strType]||"object"}}();limit=function(x,min,max){if(min==null){min=0}if(max==null){max=1}if(x<min){x=min}if(x>max){x=max}return x};unpack=function(args){if(args.length>=3){return args}else{return args[0]}};TWOPI=Math.PI*2;PITHIRD=Math.PI/3;cos=Math.cos;bezier=function(colors){var I,I0,I1,c,lab0,lab1,lab2,lab3,_ref1,_ref2,_ref3;colors=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(chroma(c))}return _results}();if(colors.length===2){_ref1=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref1[0],lab1=_ref1[1];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push(lab0[i]+t*(lab1[i]-lab0[i]))}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===3){_ref2=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref2[0],lab1=_ref2[1],lab2=_ref2[2];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*lab0[i]+2*(1-t)*t*lab1[i]+t*t*lab2[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===4){_ref3=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref3[0],lab1=_ref3[1],lab2=_ref3[2],lab3=_ref3[3];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*(1-t)*lab0[i]+3*(1-t)*(1-t)*t*lab1[i]+3*(1-t)*t*t*lab2[i]+t*t*t*lab3[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===5){I0=bezier(colors.slice(0,3));I1=bezier(colors.slice(2,5));I=function(t){if(t<.5){return I0(t*2)}else{return I1((t-.5)*2)}}}return I};chroma.interpolate.bezier=bezier}.call(this);
 },{}],2:[function(require,module,exports){
 /**
- * @license twgl.js 1.7.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -852,18 +852,24 @@ define('twgl/attributes',[
     return array.length ? array : array.data;
   }
 
+  var texcoordRE = /coord|texture/i;
+  var colorRE = /color|colour/i;
+
   function guessNumComponentsFromName(name, length) {
     var numComponents;
-    if (name.indexOf("coord") >= 0) {
+    if (texcoordRE.test(name)) {
       numComponents = 2;
-    } else if (name.indexOf("color") >= 0) {
+    } else if (colorRE.test(name)) {
       numComponents = 4;
     } else {
       numComponents = 3;  // position, normals, indices ...
     }
 
     if (length % numComponents > 0) {
-      throw "can not guess numComponents. You should specify it.";
+      throw "Can not guess numComponents for attribute '" + name + "'. Tried " +
+            numComponents + " but " + length +
+            " values is not evenly divisible by " + numComponents +
+            ". You should specify it.";
     }
 
     return numComponents;
@@ -890,7 +896,7 @@ define('twgl/attributes',[
 
     var Type = array.type;
     if (!Type) {
-      if (name === "indices") {
+      if (isIndices(name)) {
         Type = Uint16Array;
       } else {
         Type = Float32Array;
@@ -1726,6 +1732,11 @@ define('twgl/programs',[
   typeMap[UNSIGNED_INT_SAMPLER_CUBE]     = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
   typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
 
+  var attrTypeMap = {};
+  attrTypeMap[FLOAT_MAT2] = { size:  4, count: 2, };
+  attrTypeMap[FLOAT_MAT3] = { size:  9, count: 3, };
+  attrTypeMap[FLOAT_MAT4] = { size: 16, count: 4, };
+
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
 
@@ -2135,6 +2146,7 @@ define('twgl/programs',[
    * @property {Float32Array} asFloat A float view on the array buffer. This is useful
    *    inspecting the contents of the buffer in the debugger.
    * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
+   * @property {number} [offset] offset into buffer
    * @property {Object.<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
    *   each Uniform has a correctly typed `ArrayBufferView` into array at the correct offset
    *   and length of that uniform. So for example a float uniform would have a 1 float `Float32Array`
@@ -2245,7 +2257,7 @@ define('twgl/programs',[
     var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
     if (blockSpec) {
       var bufferBindIndex = blockSpec.index;
-      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, 0, uniformBlockInfo.array.byteLength);
+      gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
       return true;
     }
     return false;
@@ -2453,11 +2465,33 @@ define('twgl/programs',[
 
     function createAttribSetter(index) {
       return function(b) {
-          gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-          gl.enableVertexAttribArray(index);
+        gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+        gl.enableVertexAttribArray(index);
+        gl.vertexAttribPointer(
+            index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+      };
+    }
+
+    function createMatAttribSetter(index, typeInfo) {
+      var defaultSize = typeInfo.size;
+      var count = typeInfo.count;
+
+      return function(b) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+        var numComponents = b.size || b.numComponents || defaultSize;
+        var size = numComponents / count;
+        var type = b.type || gl.FLOAT;
+        var typeInfo = typeMap[type];
+        var stride = typeInfo.size * numComponents;
+        var normalize = b.normalize || false;
+        var offset = b.offset || 0;
+        var rowOffset = stride / count;
+        for (var i = 0; i < count; ++i) {
+          gl.enableVertexAttribArray(index + i);
           gl.vertexAttribPointer(
-              index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
-        };
+              index + i, size, type, normalize, stride, offset + rowOffset * i);
+        }
+      };
     }
 
     var numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
@@ -2467,7 +2501,12 @@ define('twgl/programs',[
         break;
       }
       var index = gl.getAttribLocation(program, attribInfo.name);
-      attribSetters[attribInfo.name] = createAttribSetter(index);
+      var typeInfo = attrTypeMap[attribInfo.type];
+      if (typeInfo) {
+        attribSetters[attribInfo.name] = createMatAttribSetter(index, typeInfo);
+      } else {
+        attribSetters[attribInfo.name] = createAttribSetter(index);
+      }
     }
 
     return attribSetters;
@@ -2770,14 +2809,15 @@ define('twgl/draw',[
    * data you don't have to remember to update your draw call.
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {enum} type eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...)
    * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
    *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
+   * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
    * @memberOf module:twgl/draw
    */
-  function drawBufferInfo(gl, type, bufferInfo, count, offset) {
+  function drawBufferInfo(gl, bufferInfo, type, count, offset) {
+    type = type === undefined ? gl.TRIANGLES : type;
     var indices = bufferInfo.indices;
     var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
@@ -2867,7 +2907,7 @@ define('twgl/draw',[
       programs.setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, type, bufferInfo, object.count, object.offset);
+      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset);
     });
 
     if (lastUsedBufferInfo.vertexArrayObject) {
@@ -4135,7 +4175,8 @@ define('twgl/framebuffers',[
    * Note: For a `format` that is a texture include all the texture
    * options from {@link module:twgl.TextureOptions} for example
    * `min`, `mag`, `clamp`, etc... Note that unlike {@link module:twgl.TextureOptions}
-   * `auto` defaults to `false` for attachment textures
+   * `auto` defaults to `false` for attachment textures but `min` and `mag` default
+   * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
    *
    * @typedef {Object} AttachmentOptions
    * @property {number} [attach] The attachment point. Defaults
@@ -4258,7 +4299,13 @@ define('twgl/framebuffers',[
           var textureOptions = utils.shallowCopy(attachmentOptions);
           textureOptions.width = width;
           textureOptions.height = height;
-          textureOptions.auto = attachmentOptions.auto === undefined ? false : attachmentOptions.auto;
+          if (textureOptions.auto === undefined) {
+            textureOptions.auto = false;
+            textureOptions.min = textureOptions.min || gl.LINEAR;
+            textureOptions.mag = textureOptions.mag || gl.LINEAR;
+            textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+            textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+          }
           attachment = textures.createTexture(gl, textureOptions);
         }
       }
@@ -5422,8 +5469,7 @@ define('twgl/m4',['./v3'], function(v3) {
   }
 
   /**
-   * Multiplies two 4-by-4 matrices; assumes that the given matrices are 4-by-4;
-   * assumes matrix entries are accessed in [row][column] fashion.
+   * Multiplies two 4-by-4 matrices with a on the left and b on the right
    * @param {module:twgl/m4.Mat4} a The matrix on the left.
    * @param {module:twgl/m4.Mat4} b The matrix on the right.
    * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
@@ -5466,22 +5512,22 @@ define('twgl/m4',['./v3'], function(v3) {
     var b32 = b[12 + 2];
     var b33 = b[12 + 3];
 
-    dst[ 0] = a00 * b00 + a01 * b10 + a02 * b20 + a03 * b30;
-    dst[ 1] = a00 * b01 + a01 * b11 + a02 * b21 + a03 * b31;
-    dst[ 2] = a00 * b02 + a01 * b12 + a02 * b22 + a03 * b32;
-    dst[ 3] = a00 * b03 + a01 * b13 + a02 * b23 + a03 * b33;
-    dst[ 4] = a10 * b00 + a11 * b10 + a12 * b20 + a13 * b30;
-    dst[ 5] = a10 * b01 + a11 * b11 + a12 * b21 + a13 * b31;
-    dst[ 6] = a10 * b02 + a11 * b12 + a12 * b22 + a13 * b32;
-    dst[ 7] = a10 * b03 + a11 * b13 + a12 * b23 + a13 * b33;
-    dst[ 8] = a20 * b00 + a21 * b10 + a22 * b20 + a23 * b30;
-    dst[ 9] = a20 * b01 + a21 * b11 + a22 * b21 + a23 * b31;
-    dst[10] = a20 * b02 + a21 * b12 + a22 * b22 + a23 * b32;
-    dst[11] = a20 * b03 + a21 * b13 + a22 * b23 + a23 * b33;
-    dst[12] = a30 * b00 + a31 * b10 + a32 * b20 + a33 * b30;
-    dst[13] = a30 * b01 + a31 * b11 + a32 * b21 + a33 * b31;
-    dst[14] = a30 * b02 + a31 * b12 + a32 * b22 + a33 * b32;
-    dst[15] = a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33;
+    dst[ 0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
+    dst[ 1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
+    dst[ 2] = a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03;
+    dst[ 3] = a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03;
+    dst[ 4] = a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13;
+    dst[ 5] = a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13;
+    dst[ 6] = a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13;
+    dst[ 7] = a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13;
+    dst[ 8] = a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23;
+    dst[ 9] = a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23;
+    dst[10] = a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23;
+    dst[11] = a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23;
+    dst[12] = a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33;
+    dst[13] = a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33;
+    dst[14] = a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33;
+    dst[15] = a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33;
 
     return dst;
   }
@@ -8516,7 +8562,7 @@ define("build/js/twgl-includer-full", function(){});
 },{}],3:[function(require,module,exports){
 "use strict";
 
-var twgl = require('../../dist/twgl-full');   // this would be require('twgl') in a real example
+var twgl = require('../../dist/2.x/twgl-full');   // this would be require('twgl') in a real example
 var chroma = require('../../3rdparty/chroma.min');
 var m4 = twgl.m4;
 var primitives = twgl.primitives;
@@ -8601,7 +8647,7 @@ function render(time) {
 
   m4.lookAt(eye, target, up, camera);
   m4.inverse(camera, view);
-  m4.multiply(view, projection, viewProjection);
+  m4.multiply(projection, view, viewProjection);
 
   objects.forEach(function(obj) {
     var uni = obj.uniforms;
@@ -8612,7 +8658,7 @@ function render(time) {
     m4.translate(world, obj.translation, world);
     m4.rotateX(world, time, world);
     m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
-    m4.multiply(uni.u_world, viewProjection, uni.u_worldViewProjection);
+    m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
   });
 
   twgl.drawObjectList(gl, drawObjects);
@@ -8623,4 +8669,4 @@ requestAnimationFrame(render);
 
 
 
-},{"../../3rdparty/chroma.min":1,"../../dist/twgl-full":2}]},{},[3]);
+},{"../../3rdparty/chroma.min":1,"../../dist/2.x/twgl-full":2}]},{},[3]);

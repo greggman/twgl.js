@@ -10,25 +10,31 @@
 
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta property="og:title" content="TWGL.js - primitives" />
+    <meta property="og:title" content="TWGL.js - picking" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://twgljs.org/examples/screenshots/primitives.png" />
-    <meta property="og:description" content="TWGL.js - primitives" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/picking.png" />
+    <meta property="og:description" content="TWGL.js - picking" />
     <meta property="og:url" content="http://twgljs.org" />
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@greggman">
     <meta name="twitter:creator" content="@greggman">
     <meta name="twitter:domain" content="twgljs.org">
-    <meta name="twitter:title" content="TWGL.js - primitives">
-    <meta name="twitter:url" content="http://twgljs.org/examples/primitives.html">
-    <meta name="twitter:description" content="TWGL.js - primitives">
-    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/primitives.png">
+    <meta name="twitter:title" content="TWGL.js - picking">
+    <meta name="twitter:url" content="http://twgljs.org/examples/picking.html">
+    <meta name="twitter:description" content="TWGL.js - picking">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/picking.png">
 
     <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 
-    <title>twgl.js - primitives</title>
+    <title>twgl.js - picking (bad)</title>
     <style>
+      *, *:before, *:after {
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+      }
       body {
           margin: 0;
           font-family: monospace;
@@ -49,7 +55,7 @@
   </head>
   <body>
     <canvas id="c"></canvas>
-    <div id="b"><a href="http://twgljs.org">twgl.js</a> - primitives</div>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - picking (bad)</div>
   </body>
   <script id="vs" type="notjs">
 uniform mat4 u_worldViewProjection;
@@ -88,6 +94,7 @@ varying vec3 v_surfaceToView;
 
 uniform vec4 u_lightColor;
 uniform vec4 u_diffuseMult;
+uniform vec4 u_flashColor;
 uniform sampler2D u_diffuse;
 uniform vec4 u_specular;
 uniform float u_shininess;
@@ -112,7 +119,38 @@ void main() {
   u_lightColor * (diffuseColor * litR.y +
                 u_specular * litR.z * u_specularFactor)).rgb,
       diffuseColor.a);
-  gl_FragColor = outColor;
+  gl_FragColor = outColor + u_flashColor;
+}
+  </script>
+  <script id="picking-vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+
+attribute vec4 a_position;
+attribute vec2 a_texcoord;
+
+varying vec2 v_texCoord;
+
+void main() {
+  v_texCoord = a_texcoord;
+  gl_Position = u_worldViewProjection * a_position;
+}
+  </script>
+  <script id="picking-fs" type="notjs">
+precision mediump float;
+
+varying vec2 v_texCoord;
+
+uniform float u_threshhold;
+uniform vec4 u_pickColor;
+uniform vec4 u_diffuseMult;
+uniform sampler2D u_diffuse;
+
+void main() {
+  vec4 diffuseColor = texture2D(u_diffuse, v_texCoord) * u_diffuseMult;
+  if (diffuseColor.a <= u_threshhold) {
+    discard;
+  }
+  gl_FragColor = u_pickColor;
 }
   </script>
   <script src="../dist/2.x/twgl-full.min.js"></script>
@@ -123,6 +161,7 @@ void main() {
     var m4 = twgl.m4;
     var gl = twgl.getWebGLContext(document.getElementById("c"));
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    var pickingProgramInfo = twgl.createProgramInfo(gl, ["picking-vs", "picking-fs"]);
 
     var shapes = [
       twgl.primitives.createCubeBufferInfo(gl, 2),
@@ -138,6 +177,8 @@ void main() {
     function rand(min, max) {
       return min + Math.random() * (max - min);
     }
+
+    var pickId = -1;
 
     // Shared values
     var lightWorldPosition = [1, 8, -10];
@@ -157,8 +198,18 @@ void main() {
       ],
     });
 
+    function makePickingColor(id) {
+      return [
+        ((id >>  0) & 0xFF) / 0xFF,
+        ((id >>  8) & 0xFF) / 0xFF,
+        ((id >> 16) & 0xFF) / 0xFF,
+        ((id >> 24) & 0xFF) / 0xFF,
+      ];
+    }
+
     var objects = [];
     var drawObjects = [];
+    var pickDrawObjects = [];
     var numObjects = 100;
     var baseHue = rand(0, 360);
     for (var ii = 0; ii < numObjects; ++ii) {
@@ -166,6 +217,7 @@ void main() {
         u_lightWorldPos: lightWorldPosition,
         u_lightColor: lightColor,
         u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
+        u_flashColor: [0, 0, 0, 0],
         u_specular: [1, 1, 1, 1],
         u_shininess: 50,
         u_specularFactor: 1,
@@ -174,9 +226,16 @@ void main() {
         u_world: m4.identity(),
         u_worldInverseTranspose: m4.identity(),
         u_worldViewProjection: m4.identity(),
+        u_threshhold: 0.1,
+        u_pickColor: makePickingColor(ii),
       };
       drawObjects.push({
         programInfo: programInfo,
+        bufferInfo: shapes[ii % shapes.length],
+        uniforms: uniforms,
+      });
+      pickDrawObjects.push({
+        programInfo: pickingProgramInfo,
         bufferInfo: shapes[ii % shapes.length],
         uniforms: uniforms,
       });
@@ -188,12 +247,108 @@ void main() {
       });
     }
 
+    var pickingFBI = twgl.createFramebufferInfo(gl);
+
+    // NOTE: !!
+    //
+    // Picking doesn't really make sense in TWGL. Picking requires structure
+    // There must be some kind of database or scene graph of things to pick.
+    // TWGL doesn't impose any kind of database or scene graph because it's
+    // just a set of helpers for raw WebGL. Any structure on top of TWGL is
+    // your structure.
+    //
+    // It also requires some kind of material stucture so that all objects
+    // can be rendered with both whatever shader(s) render them normally
+    // AND a shader for picking.
+    //
+    // THREE.js on the other hand has a scene graph that contains objects
+    // so it makes sense to be able to pick one of those objects. It also
+    // contains various materials and shader generators and imposes a
+    // standard structure on those, what their inputs are etc.
+    //
+    // The code in this exampele was just the quickest thing I could think
+    // of to make picking example. It's the primitives.html example
+    //
+    // It works by
+    //
+    // 1. Making the picking shader compatible with the phong shader
+    //
+    // 2. Making the 2 shaders use the same uniforms
+    //
+    //    Since they use the same uniforms then when drawing the picking
+    //    there are no matricies to set because we already set them all
+    //    last time things were drawn.
+    //
+    // 3. Adding a u_flashColor uniform to the phong shader
+    //
+    // 4. Having 2 parallel drawObjectList lists. One for drawing, one for picking
+    //
+    // Effectively it's a big hack that has nothing to do with the structure of
+    // a program that would actually be used to pick something
+    //
+    // On the other hand what it does show is
+    //
+    // 1. using `twgl.createFrameBufferInfo` to create an RGBA + Depth buffer
+    //    the same size as the canvas which is the default with no arguments
+    //
+    // 2. using `twgl.resizeFramebufferInfo` to match the new size of the canvas
+    //    again the default with no extra arguments
+    //
+    // 3. indirectly the fact that `twgl.bindFramebufferInfo` sets the viewport
+    //
+    // 4. examples of getting a relative mouse and/or touch position
+    //
+    //    NOTE: it assumes the canvas has no border, padding, margin.
+
+    function pickObject(inputX, inputY) {
+      // If something is picked restore its color
+      if (pickId >= 0 && pickId < objects.length) {
+        var object = objects[pickId];
+        object.uniforms.u_flashColor = [0, 0, 0, 0];
+      }
+
+      var rect = gl.canvas.getBoundingClientRect();
+      var w = gl.canvas.clientWidth;
+      var h = gl.canvas.clientHeight;
+      var x = (inputX - rect.left) * gl.canvas.width  / w | 0;
+      var y = gl.canvas.height - ((inputY - rect.top ) * gl.canvas.height / h | 0) - 1;
+
+      // resize pickingFBI to match canvas
+      twgl.resizeFramebufferInfo(gl, pickingFBI);
+      twgl.bindFramebufferInfo(gl, pickingFBI);
+
+      gl.clearColor(1, 1, 1, 1);
+      gl.enable(gl.DEPTH_TEST);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+      twgl.drawObjectList(gl, pickDrawObjects);
+
+      var pickColor = new Uint8Array(4);
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pickColor);
+      pickId = (pickColor[0] <<  0) +
+               (pickColor[1] <<  8) +
+               (pickColor[2] << 16) +
+               (pickColor[3] << 24);
+    }
+
+    gl.canvas.addEventListener('click', function(e) {
+      pickObject(e.clientX, e.clientY);
+    });
+    gl.canvas.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      pickObject(e.touches[0].clientX, e.touches[0].clientY);
+    });
+    gl.canvas.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
     function render(time) {
       time *= 0.001;
       twgl.resizeCanvasToDisplaySize(gl.canvas);
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      twgl.bindFramebufferInfo(gl, null);
 
       gl.enable(gl.DEPTH_TEST);
+
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
@@ -217,6 +372,12 @@ void main() {
         m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
       });
 
+      // If something is picked flash its color
+      if (pickId >= 0 && pickId < objects.length) {
+        var object = objects[pickId];
+        object.uniforms.u_flashColor = ((time * 20 | 0) % 2) ? [0.2, 0.2, 0.2, 0.2] : [1, 0, 0, 1];
+      }
+
       twgl.drawObjectList(gl, drawObjects);
 
       requestAnimationFrame(render);
@@ -225,6 +386,3 @@ void main() {
 
   </script>
 </html>
-
-
-

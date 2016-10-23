@@ -114,22 +114,22 @@ function check(Type) {
         -1, -2, -3, -4,
       ];
       var expected = [
-        m[0 * 4 + 0] * m2[0 * 4 + 0] + m[0 * 4 + 1] * m2[1 * 4 + 0] + m[0 * 4 + 2] * m2[2 * 4 + 0] + m[0 * 4 + 3] * m2[3 * 4 + 0],
-        m[0 * 4 + 0] * m2[0 * 4 + 1] + m[0 * 4 + 1] * m2[1 * 4 + 1] + m[0 * 4 + 2] * m2[2 * 4 + 1] + m[0 * 4 + 3] * m2[3 * 4 + 1],
-        m[0 * 4 + 0] * m2[0 * 4 + 2] + m[0 * 4 + 1] * m2[1 * 4 + 2] + m[0 * 4 + 2] * m2[2 * 4 + 2] + m[0 * 4 + 3] * m2[3 * 4 + 2],
-        m[0 * 4 + 0] * m2[0 * 4 + 3] + m[0 * 4 + 1] * m2[1 * 4 + 3] + m[0 * 4 + 2] * m2[2 * 4 + 3] + m[0 * 4 + 3] * m2[3 * 4 + 3],
-        m[1 * 4 + 0] * m2[0 * 4 + 0] + m[1 * 4 + 1] * m2[1 * 4 + 0] + m[1 * 4 + 2] * m2[2 * 4 + 0] + m[1 * 4 + 3] * m2[3 * 4 + 0],
-        m[1 * 4 + 0] * m2[0 * 4 + 1] + m[1 * 4 + 1] * m2[1 * 4 + 1] + m[1 * 4 + 2] * m2[2 * 4 + 1] + m[1 * 4 + 3] * m2[3 * 4 + 1],
-        m[1 * 4 + 0] * m2[0 * 4 + 2] + m[1 * 4 + 1] * m2[1 * 4 + 2] + m[1 * 4 + 2] * m2[2 * 4 + 2] + m[1 * 4 + 3] * m2[3 * 4 + 2],
-        m[1 * 4 + 0] * m2[0 * 4 + 3] + m[1 * 4 + 1] * m2[1 * 4 + 3] + m[1 * 4 + 2] * m2[2 * 4 + 3] + m[1 * 4 + 3] * m2[3 * 4 + 3],
-        m[2 * 4 + 0] * m2[0 * 4 + 0] + m[2 * 4 + 1] * m2[1 * 4 + 0] + m[2 * 4 + 2] * m2[2 * 4 + 0] + m[2 * 4 + 3] * m2[3 * 4 + 0],
-        m[2 * 4 + 0] * m2[0 * 4 + 1] + m[2 * 4 + 1] * m2[1 * 4 + 1] + m[2 * 4 + 2] * m2[2 * 4 + 1] + m[2 * 4 + 3] * m2[3 * 4 + 1],
-        m[2 * 4 + 0] * m2[0 * 4 + 2] + m[2 * 4 + 1] * m2[1 * 4 + 2] + m[2 * 4 + 2] * m2[2 * 4 + 2] + m[2 * 4 + 3] * m2[3 * 4 + 2],
-        m[2 * 4 + 0] * m2[0 * 4 + 3] + m[2 * 4 + 1] * m2[1 * 4 + 3] + m[2 * 4 + 2] * m2[2 * 4 + 3] + m[2 * 4 + 3] * m2[3 * 4 + 3],
-        m[3 * 4 + 0] * m2[0 * 4 + 0] + m[3 * 4 + 1] * m2[1 * 4 + 0] + m[3 * 4 + 2] * m2[2 * 4 + 0] + m[3 * 4 + 3] * m2[3 * 4 + 0],
-        m[3 * 4 + 0] * m2[0 * 4 + 1] + m[3 * 4 + 1] * m2[1 * 4 + 1] + m[3 * 4 + 2] * m2[2 * 4 + 1] + m[3 * 4 + 3] * m2[3 * 4 + 1],
-        m[3 * 4 + 0] * m2[0 * 4 + 2] + m[3 * 4 + 1] * m2[1 * 4 + 2] + m[3 * 4 + 2] * m2[2 * 4 + 2] + m[3 * 4 + 3] * m2[3 * 4 + 2],
-        m[3 * 4 + 0] * m2[0 * 4 + 3] + m[3 * 4 + 1] * m2[1 * 4 + 3] + m[3 * 4 + 2] * m2[2 * 4 + 3] + m[3 * 4 + 3] * m2[3 * 4 + 3],
+        m2[0 * 4 + 0] * m[0 * 4 + 0] + m2[0 * 4 + 1] * m[1 * 4 + 0] + m2[0 * 4 + 2] * m[2 * 4 + 0] + m2[0 * 4 + 3] * m[3 * 4 + 0],
+        m2[0 * 4 + 0] * m[0 * 4 + 1] + m2[0 * 4 + 1] * m[1 * 4 + 1] + m2[0 * 4 + 2] * m[2 * 4 + 1] + m2[0 * 4 + 3] * m[3 * 4 + 1],
+        m2[0 * 4 + 0] * m[0 * 4 + 2] + m2[0 * 4 + 1] * m[1 * 4 + 2] + m2[0 * 4 + 2] * m[2 * 4 + 2] + m2[0 * 4 + 3] * m[3 * 4 + 2],
+        m2[0 * 4 + 0] * m[0 * 4 + 3] + m2[0 * 4 + 1] * m[1 * 4 + 3] + m2[0 * 4 + 2] * m[2 * 4 + 3] + m2[0 * 4 + 3] * m[3 * 4 + 3],
+        m2[1 * 4 + 0] * m[0 * 4 + 0] + m2[1 * 4 + 1] * m[1 * 4 + 0] + m2[1 * 4 + 2] * m[2 * 4 + 0] + m2[1 * 4 + 3] * m[3 * 4 + 0],
+        m2[1 * 4 + 0] * m[0 * 4 + 1] + m2[1 * 4 + 1] * m[1 * 4 + 1] + m2[1 * 4 + 2] * m[2 * 4 + 1] + m2[1 * 4 + 3] * m[3 * 4 + 1],
+        m2[1 * 4 + 0] * m[0 * 4 + 2] + m2[1 * 4 + 1] * m[1 * 4 + 2] + m2[1 * 4 + 2] * m[2 * 4 + 2] + m2[1 * 4 + 3] * m[3 * 4 + 2],
+        m2[1 * 4 + 0] * m[0 * 4 + 3] + m2[1 * 4 + 1] * m[1 * 4 + 3] + m2[1 * 4 + 2] * m[2 * 4 + 3] + m2[1 * 4 + 3] * m[3 * 4 + 3],
+        m2[2 * 4 + 0] * m[0 * 4 + 0] + m2[2 * 4 + 1] * m[1 * 4 + 0] + m2[2 * 4 + 2] * m[2 * 4 + 0] + m2[2 * 4 + 3] * m[3 * 4 + 0],
+        m2[2 * 4 + 0] * m[0 * 4 + 1] + m2[2 * 4 + 1] * m[1 * 4 + 1] + m2[2 * 4 + 2] * m[2 * 4 + 1] + m2[2 * 4 + 3] * m[3 * 4 + 1],
+        m2[2 * 4 + 0] * m[0 * 4 + 2] + m2[2 * 4 + 1] * m[1 * 4 + 2] + m2[2 * 4 + 2] * m[2 * 4 + 2] + m2[2 * 4 + 3] * m[3 * 4 + 2],
+        m2[2 * 4 + 0] * m[0 * 4 + 3] + m2[2 * 4 + 1] * m[1 * 4 + 3] + m2[2 * 4 + 2] * m[2 * 4 + 3] + m2[2 * 4 + 3] * m[3 * 4 + 3],
+        m2[3 * 4 + 0] * m[0 * 4 + 0] + m2[3 * 4 + 1] * m[1 * 4 + 0] + m2[3 * 4 + 2] * m[2 * 4 + 0] + m2[3 * 4 + 3] * m[3 * 4 + 0],
+        m2[3 * 4 + 0] * m[0 * 4 + 1] + m2[3 * 4 + 1] * m[1 * 4 + 1] + m2[3 * 4 + 2] * m[2 * 4 + 1] + m2[3 * 4 + 3] * m[3 * 4 + 1],
+        m2[3 * 4 + 0] * m[0 * 4 + 2] + m2[3 * 4 + 1] * m[1 * 4 + 2] + m2[3 * 4 + 2] * m[2 * 4 + 2] + m2[3 * 4 + 3] * m[3 * 4 + 2],
+        m2[3 * 4 + 0] * m[0 * 4 + 3] + m2[3 * 4 + 1] * m[1 * 4 + 3] + m2[3 * 4 + 2] * m[2 * 4 + 3] + m2[3 * 4 + 3] * m[3 * 4 + 3],
       ];
       testM4WithAndWithoutDest(function(dst) {
         return m4.multiply(m, m2, dst);
@@ -398,7 +398,7 @@ function check(Type) {
       var angle = 1.23;
       // switch to Array type to keep precision high for expected
       var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m4.rotationX(angle), m);
+      var expected = m4.multiply(m, m4.rotationX(angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -425,7 +425,7 @@ function check(Type) {
       var angle = 1.23;
       // switch to Array type to keep precision high for expected
       var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m4.rotationY(angle), m);
+      var expected = m4.multiply(m, m4.rotationY(angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -452,7 +452,7 @@ function check(Type) {
       var angle = 1.23;
       // switch to Array type to keep precision high for expected
       var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m4.rotationZ(angle), m);
+      var expected = m4.multiply(m, m4.rotationZ(angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -504,7 +504,7 @@ function check(Type) {
       var angle = 1.23;
       // switch to Array type to keep precision high for expected
       var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m4.axisRotation(axis, angle), m);
+      var expected = m4.multiply(m, m4.axisRotation(axis, angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - mat4-attribute" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/mat4-attribute.png" />
+    <meta property="og:description" content="TWGL.js - mat4-attribute" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - mat4-attribute">
+    <meta name="twitter:url" content="http://twgljs.org/examples/mat4-attribute.html">
+    <meta name="twitter:description" content="TWGL.js - mat4-attribute">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/mat4-attribute.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - mat4-attribute</title>
+    <style>
+      * {
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+      }
+      body {
+          margin: 0;
+          font-family: monospace;
+      }
+      canvas {
+          display: block;
+          width: 100vw;
+          height: 100vh;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - mat4-attribute</div>
+  </body>
+  <script id="vs" type="notjs">
+attribute mat4 a_matrix;
+attribute vec4 a_color;
+
+uniform mat4 u_matrix;
+varying vec4 v_color;
+
+void main() {
+  gl_PointSize = 10.0;
+  gl_Position = u_matrix * a_matrix * vec4(0, 0, 0, 1);
+  v_color = a_color;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec4 v_color;
+
+void main() {
+  gl_FragColor = v_color;
+}
+  </script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
+  <script>
+    "use strict";
+    twgl.setDefaults({attribPrefix: "a_"});
+    var m4 = twgl.m4;
+    var gl = twgl.getWebGLContext(document.getElementById("c"));
+    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    function r(min, max) {
+      if (max === undefined) {
+        max = min;
+        min = 0;
+      }
+      return Math.random() * (max - min) + min;
+    }
+
+    var numPoints = 1000;
+    var matrices = [];
+    var colors = [];
+    for (var ii = 0; ii < numPoints; ++ii) {
+      matrices.push.apply(matrices, m4.translation([r(-.7, .7), r(-.7, .7), r(-.7, .7)]));
+      colors.push(r(1), r(1), r(1), 1);
+    }
+
+    // matrix gets applyied to 4 consecutive attributes
+    var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+      matrix: { numComponents: 16, data: matrices },
+      color: colors,
+    });
+
+    function render(time) {
+      time *= 0.001;
+
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      gl.useProgram(programInfo.program);
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+      twgl.setUniforms(programInfo, {
+        u_matrix: m4.rotateZ(m4.rotateY(m4.rotationX(time), time * 0.37), time * 0.13),
+      });
+      twgl.drawBufferInfo(gl, bufferInfo, gl.POINTS);
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  </script>
+</html>
+

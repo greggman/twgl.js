@@ -59,8 +59,8 @@ uniform View {
 };
 
 uniform Lights {
-  vec3 u_lightWorldPos;
-  vec4 u_lightColor;
+  mediump vec3 u_lightWorldPos;
+  mediump vec4 u_lightColor;
 } lights[2];
 
 uniform Model {
@@ -139,7 +139,7 @@ void main() {
 }
   </script>
   <script src="../3rdparty/chroma.min.js"></script>
-  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
   <script>
 "use strict";
 
@@ -255,7 +255,7 @@ function main() {
 
     var camera = m4.lookAt(eye, target, up, viewInverse);
     var view = m4.inverse(camera);
-    m4.multiply(view, projection, viewProjection);
+    m4.multiply(projection, view, viewProjection);
 
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
@@ -267,7 +267,7 @@ function main() {
       twgl.bindUniformBlock(gl, programInfo, o.materialUboInfo);
       twgl.bindUniformBlock(gl, programInfo, o.modelUboInfo);
 
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo);
     });
 
     requestAnimationFrame(render);

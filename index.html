@@ -2,7 +2,7 @@
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
 /**
- * @license twgl.js 1.7.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -41,19 +41,28 @@
 <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 </head>
 <body>
-<div id="canvas">
-</div>
-<div id="content">
-  <h1 id="twgl-a-tiny-webgl-helper-library-div-id-pronouce-style-font-size-xx-small-rhymes-with-wiggle-div-">TWGL: A Tiny WebGL helper Library<div id="pronouce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1>
+<canvas id="canvas"></canvas>
+<div id="frame">
+  <div class="nav">
+    <ul>
+      <li><a href="/docs/">Docs</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#download">Download</a></li>
+    </ul>
+  </div>
+  <div id="content">
+    <h1 id="twgl-a-tiny-webgl-helper-library-div-id-pronouce-style-font-size-xx-small-rhymes-with-wiggle-div-">TWGL: A Tiny WebGL helper Library<div id="pronouce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1>
 <p><a href="https://travis-ci.org/greggman/twgl.js"><img src="https://travis-ci.org/greggman/twgl.js.svg?branch=master" alt="Build Status"></a></p>
 <p>This library&#39;s sole purpose is to make using the WebGL API less verbose.</p>
+<h2 id="note-minor-api-changes-in-2-x">Note: Minor API Changes in 2.x</h2>
+<p><a href="https://github.com/greggman/twgl.js/blob/master/CHANGELIST.md">See Changelist</a></p>
 <h2 id="tl-dr">TL;DR</h2>
 <p>If you want to get shit done use <a href="http://threejs.org">three.js</a>. If you want
 to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
 <h2 id="the-tiniest-example">The tiniest example</h2>
 <p>Not including the shaders (which is a simple quad shader) here&#39;s the entire code</p>
 <pre><code class="lang-html">&lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
-&lt;script src=&quot;../dist/twgl-full.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;../dist/2.x/twgl-full.min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
   var gl = twgl.getWebGLContext(document.getElementById(&quot;c&quot;));
   var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
@@ -75,7 +84,7 @@ to do stuff low-level with WebGL consider using <a href="http://github.com/gregg
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
-    twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+    twgl.drawBufferInfo(gl, bufferInfo);
 
     requestAnimationFrame(render);
   }
@@ -184,7 +193,7 @@ var uniforms = {
 uniforms.u_viewInverse = camera;
 uniforms.u_world = world;
 uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-uniforms.u_worldViewProjection = m4.multiply(world, viewProjection);
+uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 
 twgl.setUniforms(programInfo, uniforms);
 </code></pre>
@@ -209,7 +218,7 @@ gl.uniform1i(u_diffuseLoc, u_diffuse);
 gl.uniformMatrix4fv(u_viewInverseLoc, false, camera);
 gl.uniformMatrix4fv(u_worldLoc, false, world);
 gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
-gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(world, viewProjection));
+gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(viewProjection, world));
 </code></pre>
 <h3 id="loading-setting-up-textures">Loading / Setting up textures</h3>
 <p>TWGL</p>
@@ -482,6 +491,7 @@ to make common WebGL operations easier and less verbose. Feel free to mix it wit
 <li>What needs to change for WebGL 2.0?</li>
 </ul>
 
+  </div>
 </div>
 <style>
 #forkongithub a {
@@ -564,7 +574,7 @@ void main(void)
     gl_FragColor = u_color;
 }
 </script>
-<script src="/dist/twgl-full.min.js"></script>
+<script src="/dist/2.x/twgl-full.min.js"></script>
 <script src="/3rdparty/prettify.js"></script>
 <script src="/resources/js/background.js"></script>
 <script src="/resources/js/index.js"></script>

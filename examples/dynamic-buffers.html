@@ -129,7 +129,7 @@ void main() {
 }
   </script>
   <script src="../3rdparty/audiostreamsource.min.js"></script>
-  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
   <script>
     "use strict";
 
@@ -175,7 +175,7 @@ void main() {
       twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.a_height, heightArray);
 
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-      twgl.drawBufferInfo(gl, gl.LINE_STRIP, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo, gl.LINE_STRIP);
 
       requestAnimationFrame(render);
     }

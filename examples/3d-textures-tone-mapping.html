@@ -60,7 +60,7 @@
         <div>style: <span id="name"></span></div>
     </div>
   </body>
-  <script src="../dist/twgl-full.min.js"></script>>
+  <script src="../dist/2.x/twgl-full.min.js"></script>>
   <script>
 "use strict";
 
@@ -276,7 +276,7 @@ void main() {
 
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       twgl.setUniforms(programInfo, uniforms);
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo);
     }
 
     requestAnimationFrame(render);

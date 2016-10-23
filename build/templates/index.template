@@ -31,10 +31,18 @@
 <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 </head>
 <body>
-<div id="canvas">
-</div>
-<div id="content">
-  %(content)s
+<canvas id="canvas"></canvas>
+<div id="frame">
+  <div class="nav">
+    <ul>
+      <li><a href="http://twgljs.org/docs/">Docs</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#download">Download</a></li>
+    </ul>
+  </div>
+  <div id="content">
+    %(content)s
+  </div>
 </div>
 <style>
 #forkongithub a {
@@ -117,7 +125,7 @@ void main(void)
     gl_FragColor = u_color;
 }
 </script>
-<script src="/dist/twgl-full.min.js"></script>
+<script src="/dist/2.x/twgl-full.min.js"></script>
 <script src="/3rdparty/prettify.js"></script>
 <script src="/resources/js/background.js"></script>
 <script src="/resources/js/index.js"></script>

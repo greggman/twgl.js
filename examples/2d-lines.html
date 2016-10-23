@@ -89,7 +89,7 @@ void main() {
   gl_FragColor = v_color;
 }
   </script>
-  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
@@ -164,7 +164,7 @@ void main() {
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       twgl.setUniforms(programInfo, uniforms);
 
-      twgl.drawBufferInfo(gl, gl.LINES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo, gl.LINES);
 
       requestAnimationFrame(render);
     }

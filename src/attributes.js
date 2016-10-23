@@ -128,18 +128,24 @@ define([
     return array.length ? array : array.data;
   }
 
+  var texcoordRE = /coord|texture/i;
+  var colorRE = /color|colour/i;
+
   function guessNumComponentsFromName(name, length) {
     var numComponents;
-    if (name.indexOf("coord") >= 0) {
+    if (texcoordRE.test(name)) {
       numComponents = 2;
-    } else if (name.indexOf("color") >= 0) {
+    } else if (colorRE.test(name)) {
       numComponents = 4;
     } else {
       numComponents = 3;  // position, normals, indices ...
     }
 
     if (length % numComponents > 0) {
-      throw "can not guess numComponents. You should specify it.";
+      throw "Can not guess numComponents for attribute '" + name + "'. Tried " +
+            numComponents + " but " + length +
+            " values is not evenly divisible by " + numComponents +
+            ". You should specify it.";
     }
 
     return numComponents;
@@ -166,7 +172,7 @@ define([
 
     var Type = array.type;
     if (!Type) {
-      if (name === "indices") {
+      if (isIndices(name)) {
         Type = Uint16Array;
       } else {
         Type = Float32Array;

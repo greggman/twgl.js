@@ -101,7 +101,7 @@ void main() {
       normalize(t.xyz / t.w));
 }
   </script>
-  <script src="../dist/twgl-full.min.js"></script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
   <script>
     "use strict";
     var $ = document.getElementById.bind(document);
@@ -160,13 +160,13 @@ void main() {
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
       m4.setTranslation(view, [0, 0, 0], viewDirection);
-      m4.multiply(viewDirection, projection, viewDirectionProjection);
+      m4.multiply(projection, viewDirection, viewDirectionProjection);
       m4.inverse(viewDirectionProjection, viewDirectionProjectionInverse);
 
       gl.useProgram(programInfo.program);
       twgl.setBuffersAndAttributes(gl, programInfo, plane);
       twgl.setUniforms(programInfo, uniforms);
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, plane);
+      twgl.drawBufferInfo(gl, plane);
 
       requestAnimationFrame(render);
     }

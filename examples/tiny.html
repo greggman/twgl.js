@@ -76,7 +76,7 @@ void main() {
   gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
 }
   </script>
-  <script src="../dist/twgl.min.js"></script>
+  <script src="../dist/2.x/twgl.min.js"></script>
   <script>
     "use strict";
     var gl = twgl.getWebGLContext(document.getElementById("c"));
@@ -99,7 +99,7 @@ void main() {
       gl.useProgram(programInfo.program);
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
       twgl.setUniforms(programInfo, uniforms);
-      twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
+      twgl.drawBufferInfo(gl, bufferInfo);
 
       requestAnimationFrame(render);
     }

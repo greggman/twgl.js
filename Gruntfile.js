@@ -146,7 +146,7 @@ module.exports = function(grunt) {
           baseUrl: "./",
           name: "node_modules/almond/almond.js",
           include: "build/js/twgl-includer-full",
-          outPath: "dist/twgl-full.js",  // used by hackForCommonJSAndBrowserify
+          outPath: "dist/2.x/twgl-full.js",  // used by hackForCommonJSAndBrowserify
           out: hackForCommonJSAndBrowserify,
           optimize: "none",
           wrap: {
@@ -163,7 +163,7 @@ module.exports = function(grunt) {
           baseUrl: "./",
           name: "node_modules/almond/almond.js",
           include: "build/js/twgl-includer",
-          outPath: "dist/twgl.js",
+          outPath: "dist/2.x/twgl.js",
           out: hackForCommonJSAndBrowserify,
           optimize: "none",
           wrap: {
@@ -185,7 +185,7 @@ module.exports = function(grunt) {
           compress: true,
         },
         files: {
-          'dist/twgl.min.js': ['dist/twgl.js'],
+          'dist/2.x/twgl.min.js': ['dist/2.x/twgl.js'],
         },
       },
       fullMin: {
@@ -196,7 +196,7 @@ module.exports = function(grunt) {
           compress: true,
         },
         files: {
-          'dist/twgl-full.min.js': ['dist/twgl-full.js'],
+          'dist/2.x/twgl-full.min.js': ['dist/2.x/twgl-full.js'],
         },
       },
     },
@@ -224,8 +224,8 @@ module.exports = function(grunt) {
     },
     copy: {
       twgl: {
-        src: 'dist/twgl.js',
-        dest: 'npm/base/dist/twgl.js',
+        src: 'dist/2.x/twgl.js',
+        dest: 'npm/base/dist/2.x/twgl.js',
       },
       readme: {
         src: 'README.md',
@@ -240,8 +240,8 @@ module.exports = function(grunt) {
       },
     },
     clean: {
+      dist: [ 'dist/2.x' ],
       docs: [ 'docs' ],
-      dist: [ 'dist' ],
     },
   });
 
@@ -289,10 +289,10 @@ module.exports = function(grunt) {
     var fs = require('fs');
     var good = true;
     [
-      { filename: 'dist/twgl.js',          fn: getHeaderVersion, },
-      { filename: 'dist/twgl-full.js',     fn: getHeaderVersion, },
-      { filename: 'dist/twgl.min.js',      fn: getHeaderVersion, },
-      { filename: 'dist/twgl-full.min.js', fn: getHeaderVersion, },
+      { filename: 'dist/2.x/twgl.js',          fn: getHeaderVersion, },
+      { filename: 'dist/2.x/twgl-full.js',     fn: getHeaderVersion, },
+      { filename: 'dist/2.x/twgl.min.js',      fn: getHeaderVersion, },
+      { filename: 'dist/2.x/twgl-full.min.js', fn: getHeaderVersion, },
       { filename: 'package.json',          fn: getPackageVersion, },
     ].forEach(function(file) {
       var version = file.fn(file.filename);
@@ -309,8 +309,8 @@ module.exports = function(grunt) {
     p.name = "twgl-base.js";
     p.scripts = {};
     p.devDependencies = {};
-    p.main = "dist/twgl.js";
-    p.files = [ 'dist/twgl.js' ];
+    p.main = "dist/2.x/twgl.js";
+    p.files = [ 'dist/2.x/twgl.js' ];
     fs.writeFileSync("npm/base/package.json", JSON.stringify(p, null, 2), {encoding: "utf8"});
   });
 
