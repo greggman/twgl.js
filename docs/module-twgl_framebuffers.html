@@ -252,7 +252,7 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
             
 
-            <td class="description last"><p>a framebufferInfo as returned from <code>module:twgl.createFramebuffer</code>.<br>  If not passed will bind the canvas.</p></td>
+            <td class="description last"><p>a framebufferInfo as returned from <code>module:twgl.createFramebufferInfo</code>.<br>  If not passed will bind the canvas.</p></td>
         </tr>
 
     
@@ -363,16 +363,16 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 <p>This returns a <a href="module-twgl.html#.FramebufferInfo"><code>module:twgl.FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.</p>
 <p>The simplest usage</p>
 <pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
-var fbi = twgl.createFramebuffer(gl);</code></pre><p>More complex usage</p>
+var fbi = twgl.createFramebufferInfo(gl);</code></pre><p>More complex usage</p>
 <pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
 var attachments = [
   { format: RGB565, mag: NEAREST },
   { format: STENCIL_INDEX8 },
 ]
-var fbi = twgl.createFramebuffer(gl, attachments);</code></pre><p>Passing in a specific size</p>
+var fbi = twgl.createFramebufferInfo(gl, attachments);</code></pre><p>Passing in a specific size</p>
 <pre class="prettyprint source"><code>var width = 256;
 var height = 256;
-var fbi = twgl.createFramebuffer(gl, attachments, width, height);</code></pre><p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br><a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL only guarantees 3 combinations of attachments work</a>.</p>
+var fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></pre><p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br><a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL only guarantees 3 combinations of attachments work</a>.</p>
 </div>
 
 
@@ -630,10 +630,10 @@ var fbi = twgl.createFramebuffer(gl, attachments, width, height);</code></pre><p
 
 <div class="description">
     <p>Resizes the attachments of a framebuffer.</p>
-<p>You need to pass in the same <code>attachments</code> as you passed in <code>module:twgl.createFramebuffer</code><br>because TWGL has no idea the format/type of each attachment.</p>
+<p>You need to pass in the same <code>attachments</code> as you passed in <code>module:twgl.createFramebufferInfo</code><br>because TWGL has no idea the format/type of each attachment.</p>
 <p>The simplest usage</p>
 <pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
-var fbi = twgl.createFramebuffer(gl);
+var fbi = twgl.createFramebufferInfo(gl);
 
 ...
 
@@ -647,7 +647,7 @@ var attachments = [
   { format: RGB565, mag: NEAREST },
   { format: STENCIL_INDEX8 },
 ]
-var fbi = twgl.createFramebuffer(gl, attachments);
+var fbi = twgl.createFramebufferInfo(gl, attachments);
 
 ...
 
@@ -748,7 +748,7 @@ function render() {
 
             
 
-            <td class="description last"><p>a framebufferInfo as returned from <code>module:twgl.createFramebuffer</code>.</p></td>
+            <td class="description last"><p>a framebufferInfo as returned from <code>module:twgl.createFramebufferInfo</code>.</p></td>
         </tr>
 
     
@@ -781,7 +781,7 @@ function render() {
 
             
 
-            <td class="description last"><p>the same attachments options as passed to <code>module:twgl.createFramebuffer</code>.</p></td>
+            <td class="description last"><p>the same attachments options as passed to <code>module:twgl.createFramebufferInfo</code>.</p></td>
         </tr>
 
     

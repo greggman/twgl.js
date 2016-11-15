@@ -4241,7 +4241,7 @@ define('twgl/framebuffers',[
    * The simplest usage
    *
    *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
-   *     var fbi = twgl.createFramebuffer(gl);
+   *     var fbi = twgl.createFramebufferInfo(gl);
    *
    * More complex usage
    *
@@ -4250,13 +4250,13 @@ define('twgl/framebuffers',[
    *       { format: RGB565, mag: NEAREST },
    *       { format: STENCIL_INDEX8 },
    *     ]
-   *     var fbi = twgl.createFramebuffer(gl, attachments);
+   *     var fbi = twgl.createFramebufferInfo(gl, attachments);
    *
    * Passing in a specific size
    *
    *     var width = 256;
    *     var height = 256;
-   *     var fbi = twgl.createFramebuffer(gl, attachments, width, height);
+   *     var fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
    *
    * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
    * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
@@ -4329,13 +4329,13 @@ define('twgl/framebuffers',[
   /**
    * Resizes the attachments of a framebuffer.
    *
-   * You need to pass in the same `attachments` as you passed in {@link module:twgl.createFramebuffer}
+   * You need to pass in the same `attachments` as you passed in {@link module:twgl.createFramebufferInfo}
    * because TWGL has no idea the format/type of each attachment.
    *
    * The simplest usage
    *
    *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
-   *     var fbi = twgl.createFramebuffer(gl);
+   *     var fbi = twgl.createFramebufferInfo(gl);
    *
    *     ...
    *
@@ -4352,7 +4352,7 @@ define('twgl/framebuffers',[
    *       { format: RGB565, mag: NEAREST },
    *       { format: STENCIL_INDEX8 },
    *     ]
-   *     var fbi = twgl.createFramebuffer(gl, attachments);
+   *     var fbi = twgl.createFramebufferInfo(gl, attachments);
    *
    *     ...
    *
@@ -4363,8 +4363,8 @@ define('twgl/framebuffers',[
    *       }
    *
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebuffer}.
-   * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebuffer}.
+   * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
+   * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebufferInfo}.
    * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
    * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
    * @memberOf module:twgl/framebuffers
@@ -4403,7 +4403,7 @@ define('twgl/framebuffers',[
    *     gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);
    *
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebuffer}.
+   * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
    *   If not passed will bind the canvas.
    * @param {number} [target] The target. If not passed `gl.FRAMEBUFFER` will be used.
    * @memberOf module:twgl/framebuffers
