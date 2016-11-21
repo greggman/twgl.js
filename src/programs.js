@@ -398,17 +398,25 @@ define([
   }
 
   /**
+   * @typedef {Object} ProgramOptions
+   * @property {function(string)} [errorCallback] callback for errors
+   * @property {Object.<string,number>} [attribLocations] a attribute name to location map
+   * @memberOf module:twgl
+   */
+
+  /**
    * Creates a program, attaches shaders, binds attrib locations, links the
    * program and calls useProgram.
    *
-   * NOTE: There are 3 signatures for this function
+   * NOTE: There are 4 signatures for this function
    *
+   *     twgl.createProgram(gl, [vs, fs], options);
    *     twgl.createProgram(gl, [vs, fs], opt_errFunc);
    *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
    *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
    *
    * @param {WebGLShader[]} shaders The shaders to attach
-   * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
@@ -424,6 +432,10 @@ define([
     if (typeof opt_attribs === 'function') {
       opt_errorCallback = opt_attribs;
       opt_attribs = undefined;
+    } else if (!Array.isArray(opt_attribs)) {
+      var optoins = opt_attribs;
+      opt_errorCallback = options.errorCallback;
+      opt_attrib = options.attribLocations;
     }
     var errFn = opt_errorCallback || error;
     var program = gl.createProgram();
@@ -431,12 +443,18 @@ define([
       gl.attachShader(program, shader);
     });
     if (opt_attribs) {
-      opt_attribs.forEach(function(attrib,  ndx) {
-        gl.bindAttribLocation(
-            program,
-            opt_locations ? opt_locations[ndx] : ndx,
-            attrib);
-      });
+      if (Array.isArray(opt_attribs)) {
+        opt_attribs.forEach(function(attrib,  ndx) {
+          gl.bindAttribLocation(
+              program,
+              opt_locations ? opt_locations[ndx] : ndx,
+              attrib);
+        });
+      } else {
+        Object.keys(opt_attribs).forEach(function(attrib) {
+          gl.bindAttribLocation(program, opt_attribs[attrib], attrib);
+        });
+      }
     }
     gl.linkProgram(program);
 
@@ -495,8 +513,9 @@ define([
   /**
    * Creates a program from 2 script tags.
    *
-   * NOTE: There are 3 signatures for this function
+   * NOTE: There are 4 signatures for this function
    *
+   *     twgl.createProgramFromScripts(gl, [vs, fs], opt_options);
    *     twgl.createProgramFromScripts(gl, [vs, fs], opt_errFunc);
    *     twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_errFunc);
    *     twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
@@ -530,8 +549,9 @@ define([
   /**
    * Creates a program from 2 sources.
    *
-   * NOTE: There are 3 signatures for this function
+   * NOTE: There are 4 signatures for this function
    *
+   *     twgl.createProgramFromSource(gl, [vs, fs], opt_options);
    *     twgl.createProgramFromSource(gl, [vs, fs], opt_errFunc);
    *     twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_errFunc);
    *     twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
