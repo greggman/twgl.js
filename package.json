@@ -1,6 +1,6 @@
 {
   "name": "twgl.js",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A Tiny WebGL helper library",
   "main": "dist/twgl-full.js",
   "scripts": {
@@ -50,6 +50,5 @@
     "semver": "^4.3.4",
     "should": "^8.1.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
