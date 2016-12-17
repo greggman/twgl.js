@@ -1066,8 +1066,9 @@ var fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></pr
    program: WebGLProgram,
    uniformSetters: object of setters as returned from createUniformSetters,
    attribSetters: object of setters as returned from createAttribSetters,
-}</code></pre><p>NOTE: There are 3 signatures for this function</p>
-<pre class="prettyprint source"><code>twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
+}</code></pre><p>NOTE: There are 4 signatures for this function</p>
+<pre class="prettyprint source"><code>twgl.createProgramInfo(gl, [vs, fs], options);
+twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
 twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
 twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
 </div>
@@ -1175,6 +1176,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             <td class="type">
             
                 
+<span class="param-type"><a href="module-twgl.html#.ProgramOptions">module:twgl.ProgramOptions</a></span>
+|
+
 <span class="param-type">Array.&lt;string></span>
 
 
@@ -1195,7 +1199,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
             
 
-            <td class="description last"><p>An array of attribs names. Locations will be assigned by index if not passed in</p></td>
+            <td class="description last"><p>Options for the program or an array of attribs names. Locations will be assigned by index if not passed in</p></td>
         </tr>
 
     
