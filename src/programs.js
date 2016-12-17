@@ -1283,8 +1283,9 @@ define([
    *        attribSetters: object of setters as returned from createAttribSetters,
    *     }
    *
-   * NOTE: There are 3 signatures for this function
+   * NOTE: There are 4 signatures for this function
    *
+   *     twgl.createProgramInfo(gl, [vs, fs], options);
    *     twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
    *     twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
    *     twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
@@ -1294,7 +1295,7 @@ define([
    * @param {string[]} shaderSourcess Array of sources for the
    *        shaders or ids. The first is assumed to be the vertex shader,
    *        the second the fragment shader.
-   * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
+   * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]} [opt_locations] The locations for the attributes. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
    *        on error. If you want something else pass an callback. It's passed an error message.
@@ -1310,6 +1311,10 @@ define([
     if (typeof opt_attribs === 'function') {
       opt_errorCallback = opt_attribs;
       opt_attribs = undefined;
+    } else if (opt_attribs && !Array.isArray(opt_attribs)) {
+      var options = opt_attribs;
+      opt_errorCallback = options.errorCallback;
+      opt_attribs = options.attribLocations;
     }
     var errFn = opt_errorCallback || error;
     var good = true;
