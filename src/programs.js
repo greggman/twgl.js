@@ -435,7 +435,7 @@ define([
     } else if (opt_attribs && !Array.isArray(opt_attribs)) {
       var options = opt_attribs;
       opt_errorCallback = options.errorCallback;
-      opt_attrib = options.attribLocations;
+      opt_attribs = options.attribLocations;
     }
     var errFn = opt_errorCallback || error;
     var program = gl.createProgram();
