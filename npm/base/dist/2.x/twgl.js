@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 2.1.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.1.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1820,7 +1820,7 @@ define('twgl/programs',[
     if (typeof opt_attribs === 'function') {
       opt_errorCallback = opt_attribs;
       opt_attribs = undefined;
-    } else if (!Array.isArray(opt_attribs)) {
+    } else if (opt_attribs && !Array.isArray(opt_attribs)) {
       var options = opt_attribs;
       opt_errorCallback = options.errorCallback;
       opt_attrib = options.attribLocations;
