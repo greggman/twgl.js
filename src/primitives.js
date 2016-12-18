@@ -1590,7 +1590,7 @@ define([
 
     startAngle = startAngle || 0;
     endAngle = endAngle || Math.PI * 2;
-    range = endAngle - startAngle;
+    var range = endAngle - startAngle;
 
     var radialParts = radialSubdivisions + 1;
     var bodyParts   = bodySubdivisions + 1;
