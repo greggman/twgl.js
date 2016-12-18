@@ -1,5 +1,5 @@
 /**
- * @license twgl.js 2.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1793,6 +1793,52 @@ define('twgl/programs',[
    */
 
   /**
+   * Gets the program options based on all these optional arguments
+   * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
+   * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
+   * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
+   *        on error. If you want something else pass an callback. It's passed an error message.
+   * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
+   */
+  function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
+    if (typeof opt_locations === 'function') {
+      opt_errorCallback = opt_locations;
+      opt_locations = undefined;
+    }
+    if (typeof opt_attribs === 'function') {
+      opt_errorCallback = opt_attribs;
+      opt_attribs = undefined;
+    } else if (opt_attribs && !Array.isArray(opt_attribs)) {
+      // If we have an errorCallback we can just return this object
+      // Otherwise we need to construct one with default errorCallback
+      if (opt_attribs.errorCallback) {
+        return opt_attribs;
+      }
+      var opt = opt_attribs;
+      opt_errorCallback = opt.errorCallback;
+      opt_attribs = opt.attribLocations;
+    }
+
+    var options = {
+      errorCallback: opt_errorCallback || error,
+    };
+
+    if (opt_attribs) {
+      var attribLocations = {};
+      if (Array.isArray(opt_attribs)) {
+        opt_attribs.forEach(function(attrib,  ndx) {
+          attribLocations[attrib] = opt_locations ? opt_locations[ndx] : ndx;
+        });
+      } else {
+        attribLocations = opt_attribs;
+      }
+      options.attribLocations = attribLocations;
+    }
+
+    return options;
+  }
+
+  /**
    * Creates a program, attaches shaders, binds attrib locations, links the
    * program and calls useProgram.
    *
@@ -1813,36 +1859,15 @@ define('twgl/programs',[
    */
   function createProgram(
       gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
-    if (typeof opt_locations === 'function') {
-      opt_errorCallback = opt_locations;
-      opt_locations = undefined;
-    }
-    if (typeof opt_attribs === 'function') {
-      opt_errorCallback = opt_attribs;
-      opt_attribs = undefined;
-    } else if (opt_attribs && !Array.isArray(opt_attribs)) {
-      var options = opt_attribs;
-      opt_errorCallback = options.errorCallback;
-      opt_attribs = options.attribLocations;
-    }
-    var errFn = opt_errorCallback || error;
+    var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
     var program = gl.createProgram();
     shaders.forEach(function(shader) {
       gl.attachShader(program, shader);
     });
-    if (opt_attribs) {
-      if (Array.isArray(opt_attribs)) {
-        opt_attribs.forEach(function(attrib,  ndx) {
-          gl.bindAttribLocation(
-              program,
-              opt_locations ? opt_locations[ndx] : ndx,
-              attrib);
-        });
-      } else {
-        Object.keys(opt_attribs).forEach(function(attrib) {
-          gl.bindAttribLocation(program, opt_attribs[attrib], attrib);
-        });
-      }
+    if (progOptions.attribLocations) {
+      Object.keys(progOptions_attribLocations).forEach(function(attrib) {
+        gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
+      });
     }
     gl.linkProgram(program);
 
@@ -1851,7 +1876,7 @@ define('twgl/programs',[
     if (!linked) {
         // something went wrong with the link
         var lastError = gl.getProgramInfoLog(program);
-        errFn("Error in program linking:" + lastError);
+        progOptions.errorCallback("Error in program linking:" + lastError);
 
         gl.deleteProgram(program);
         return null;
@@ -1922,16 +1947,17 @@ define('twgl/programs',[
    */
   function createProgramFromScripts(
       gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
+    var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
     var shaders = [];
     for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
       var shader = createShaderFromScript(
-          gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], opt_errorCallback);
+          gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
       if (!shader) {
         return null;
       }
       shaders.push(shader);
     }
-    return createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
+    return createProgram(gl, shaders, progOptions);
   }
 
   /**
@@ -1958,16 +1984,17 @@ define('twgl/programs',[
    */
   function createProgramFromSources(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
+    var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
     var shaders = [];
     for (var ii = 0; ii < shaderSources.length; ++ii) {
       var shader = loadShader(
-          gl, shaderSources[ii], gl[defaultShaderType[ii]], opt_errorCallback);
+          gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
       if (!shader) {
         return null;
       }
       shaders.push(shader);
     }
-    return createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback);
+    return createProgram(gl, shaders, progOptions);
   }
 
   /**
@@ -2692,26 +2719,14 @@ define('twgl/programs',[
    */
   function createProgramInfo(
       gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-    if (typeof opt_locations === 'function') {
-      opt_errorCallback = opt_locations;
-      opt_locations = undefined;
-    }
-    if (typeof opt_attribs === 'function') {
-      opt_errorCallback = opt_attribs;
-      opt_attribs = undefined;
-    } else if (opt_attribs && !Array.isArray(opt_attribs)) {
-      var options = opt_attribs;
-      opt_errorCallback = options.errorCallback;
-      opt_attribs = options.attribLocations;
-    }
-    var errFn = opt_errorCallback || error;
+    var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
     var good = true;
     shaderSources = shaderSources.map(function(source) {
       // Lets assume if there is no \n it's an id
       if (source.indexOf("\n") < 0) {
         var script = document.getElementById(source);
         if (!script) {
-          errFn("no element with id: " + source);
+          progOptions.errorCallback("no element with id: " + source);
           good = false;
         } else {
           source = script.text;
@@ -2722,7 +2737,7 @@ define('twgl/programs',[
     if (!good) {
       return null;
     }
-    var program = createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback);
+    var program = createProgramFromSources(gl, shaderSources, progOptions);
     if (!program) {
       return null;
     }
