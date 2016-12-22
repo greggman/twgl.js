@@ -321,10 +321,68 @@ define([
   typeMap[UNSIGNED_INT_SAMPLER_CUBE]     = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
   typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
 
+  function floatAttribSetter(gl, index) {
+    return function(b) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribPointer(
+          index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+    };
+  }
+
+  function intAttribSetter(gl, index) {
+    return function(b) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribIPointer(
+          index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+    };
+  }
+
+  function matAttribSetter(gl, index, typeInfo) {
+    var defaultSize = typeInfo.size;
+    var count = typeInfo.count;
+
+    return function(b) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      var numComponents = b.size || b.numComponents || defaultSize;
+      var size = numComponents / count;
+      var type = b.type || gl.FLOAT;
+      var typeInfo = typeMap[type];
+      var stride = typeInfo.size * numComponents;
+      var normalize = b.normalize || false;
+      var offset = b.offset || 0;
+      var rowOffset = stride / count;
+      for (var i = 0; i < count; ++i) {
+        gl.enableVertexAttribArray(index + i);
+        gl.vertexAttribPointer(
+            index + i, size, type, normalize, stride, offset + rowOffset * i);
+      }
+    };
+  }
+
+
+
   var attrTypeMap = {};
-  attrTypeMap[FLOAT_MAT2] = { size:  4, count: 2, };
-  attrTypeMap[FLOAT_MAT3] = { size:  9, count: 3, };
-  attrTypeMap[FLOAT_MAT4] = { size: 16, count: 4, };
+  attrTypeMap[FLOAT]             = { size:  4, setter: floatAttribSetter, };
+  attrTypeMap[FLOAT_VEC2]        = { size:  8, setter: floatAttribSetter, };
+  attrTypeMap[FLOAT_VEC3]        = { size: 12, setter: floatAttribSetter, };
+  attrTypeMap[FLOAT_VEC4]        = { size: 16, setter: floatAttribSetter, };
+  attrTypeMap[INT]               = { size:  4, setter: intAttribSetter,   };
+  attrTypeMap[INT_VEC2]          = { size:  8, setter: intAttribSetter,   };
+  attrTypeMap[INT_VEC3]          = { size: 12, setter: intAttribSetter,   };
+  attrTypeMap[INT_VEC4]          = { size: 16, setter: intAttribSetter,   };
+  attrTypeMap[UNSIGNED_INT]      = { size:  4, setter: intAttribSetter,   };
+  attrTypeMap[UNSIGNED_INT_VEC2] = { size:  8, setter: intAttribSetter,   };
+  attrTypeMap[UNSIGNED_INT_VEC3] = { size: 12, setter: intAttribSetter,   };
+  attrTypeMap[UNSIGNED_INT_VEC4] = { size: 16, setter: intAttribSetter,   };
+  attrTypeMap[BOOL]              = { size:  4, setter: intAttribSetter,   };
+  attrTypeMap[BOOL_VEC2]         = { size:  8, setter: intAttribSetter,   };
+  attrTypeMap[BOOL_VEC3]         = { size: 12, setter: intAttribSetter,   };
+  attrTypeMap[BOOL_VEC4]         = { size: 16, setter: intAttribSetter,   };
+  attrTypeMap[FLOAT_MAT2]        = { size:  4, setter: matAttribSetter,   count: 2, };
+  attrTypeMap[FLOAT_MAT3]        = { size:  9, setter: matAttribSetter,   count: 3, };
+  attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4, };
 
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
@@ -1099,37 +1157,6 @@ define([
     var attribSetters = {
     };
 
-    function createAttribSetter(index) {
-      return function(b) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-        gl.enableVertexAttribArray(index);
-        gl.vertexAttribPointer(
-            index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
-      };
-    }
-
-    function createMatAttribSetter(index, typeInfo) {
-      var defaultSize = typeInfo.size;
-      var count = typeInfo.count;
-
-      return function(b) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-        var numComponents = b.size || b.numComponents || defaultSize;
-        var size = numComponents / count;
-        var type = b.type || gl.FLOAT;
-        var typeInfo = typeMap[type];
-        var stride = typeInfo.size * numComponents;
-        var normalize = b.normalize || false;
-        var offset = b.offset || 0;
-        var rowOffset = stride / count;
-        for (var i = 0; i < count; ++i) {
-          gl.enableVertexAttribArray(index + i);
-          gl.vertexAttribPointer(
-              index + i, size, type, normalize, stride, offset + rowOffset * i);
-        }
-      };
-    }
-
     var numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
     for (var ii = 0; ii < numAttribs; ++ii) {
       var attribInfo = gl.getActiveAttrib(program, ii);
@@ -1138,11 +1165,7 @@ define([
       }
       var index = gl.getAttribLocation(program, attribInfo.name);
       var typeInfo = attrTypeMap[attribInfo.type];
-      if (typeInfo) {
-        attribSetters[attribInfo.name] = createMatAttribSetter(index, typeInfo);
-      } else {
-        attribSetters[attribInfo.name] = createAttribSetter(index);
-      }
+      attribSetters[attribInfo.name] = typeInfo.setter(gl, index, typeInfo);
     }
 
     return attribSetters;
