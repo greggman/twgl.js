@@ -1,5 +1,13 @@
 #Changelist
 
+*   2.4
+
+    *   Support int attributes
+
+*   2.3
+
+    *   Make all `createProgramXXX` functions take a `ProgramOptions` argument
+
 *   2.1
 
     *   Made guessing numComponents for attributes case insensitive
