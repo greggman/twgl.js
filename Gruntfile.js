@@ -1,22 +1,17 @@
 "use strict";
 
-var path   = require('path');
-var fs     = require('fs');
-var semver = require('semver');
+const path   = require('path');
+const fs     = require('fs');
+const semver = require('semver');
+const webpack = require('webpack');
 
-var license = [
-'/**                                                                                       ',
-' * @license twgl.js %(version)s Copyright (c) 2015, Gregg Tavares All Rights Reserved.    ',
-' * Available via the MIT license.                                                         ',
-' * see: http://github.com/greggman/twgl.js for details                                    ',
-' */                                                                                       ',
-'/**                                                                                       ',
-' * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.',
-' * Available via the MIT or new BSD license.                                              ',
-' * see: http://github.com/jrburke/almond for details                                      ',
-' */                                                                                       ',
-'',
-].map(function(s) { return s.replace(/\s+$/, ''); }).join("\n");
+var plugins = require('webpack-load-plugins')();
+
+const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), {encoding: 'utf8'}));
+
+var license = `@license twgl.js ${pkg.version} Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+Available via the MIT license.
+see: http://github.com/greggman/twgl.js for details`;
 
 var replaceHandlers = {};
 function registerReplaceHandler(keyword, handler) {
@@ -89,20 +84,9 @@ function hackForCommonJSAndBrowserify(text, sourceMapText) {
   fs.writeFileSync(this.outPath, text, {encoding: "utf-8"});
 }
 
-var bower = JSON.parse(fs.readFileSync('bower.json', {encoding: "utf8"}));
-
 module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
-
-  function setLicense() {
-    var s = replaceParams(license, bower);
-    grunt.config.set('uglify.min.options.banner', s);
-    grunt.config.set('uglify.fullMin.options.banner', s);
-    var start = s + fs.readFileSync('build/js/twgl-start.js', {encoding: "utf8"})
-    grunt.config.set('requirejs.full.options.wrap.start', start);
-    grunt.config.set('requirejs.small.options.wrap.start', start);
-  }
 
   var srcFiles = [
     'src/twgl.js',
@@ -140,63 +124,109 @@ module.exports = function(grunt) {
         },
       },
     },
-    requirejs: {
+    webpack: {
       full: {
-        options: {
-          baseUrl: "./",
-          name: "node_modules/almond/almond.js",
-          include: "build/js/twgl-includer-full",
-          outPath: "dist/2.x/twgl-full.js",  // used by hackForCommonJSAndBrowserify
-          out: hackForCommonJSAndBrowserify,
-          optimize: "none",
-          wrap: {
-            start: '<%= rsStart %>',
-            endFile: 'build/js/twgl-end.js',
-          },
-          paths: {
-            twgl: 'src',
-          },
+        entry: './src/twgl-full.js',
+        plugins: [
+          new webpack.BannerPlugin(license),
+        ],
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              loader: 'babel-loader',
+              query: {
+                presets: ['stage-0'],
+              },
+            },
+          ],
+        },
+        output: {
+          path: path.join(__dirname, 'dist/2.x'),
+          filename: 'twgl-full.js',
+          library: 'twgl',
+          libraryTarget: 'umd',
         },
       },
-      small: {
-        options: {
-          baseUrl: "./",
-          name: "node_modules/almond/almond.js",
-          include: "build/js/twgl-includer",
-          outPath: "dist/2.x/twgl.js",
-          out: hackForCommonJSAndBrowserify,
-          optimize: "none",
-          wrap: {
-            start: '<%= rsStart %>',
-            endFile: 'build/js/twgl-end.js',
-          },
-          paths: {
-            twgl: 'src',
-          },
+      base: {
+        entry: './src/twgl-base.js',
+        plugins: [
+          new webpack.BannerPlugin(license),
+        ],
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              loader: 'babel-loader',
+              query: {
+                presets: ['stage-0'],
+              },
+            },
+          ],
         },
-      },
-    },
-    uglify: {
-      min: {
-        options: {
-          mangle: true,
-          //screwIE8: true,
-          banner: '<%= license %>',
-          compress: true,
-        },
-        files: {
-          'dist/2.x/twgl.min.js': ['dist/2.x/twgl.js'],
+        output: {
+          path: path.join(__dirname, 'dist/2.x'),
+          filename: 'twgl.js',
+          library: 'twgl',
+          libraryTarget: 'umd',
         },
       },
       fullMin: {
-        options: {
-          mangle: true,
-          //screwIE8: true,
-          banner: '<%= license %>',
-          compress: true,
+        entry: './src/twgl-full.js',
+        plugins: [
+          new webpack.BannerPlugin(license),
+          new webpack.optimize.UglifyJsPlugin({
+            compress: {
+              warnings: false,
+            },
+            mangle: true,
+          }),
+        ],
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              loader: 'babel-loader',
+              query: {
+                presets: ['stage-0'],
+              },
+            },
+          ],
         },
-        files: {
-          'dist/2.x/twgl-full.min.js': ['dist/2.x/twgl-full.js'],
+        output: {
+          path: path.join(__dirname, 'dist/2.x'),
+          filename: 'twgl-full.min.js',
+          library: 'twgl',
+          libraryTarget: 'umd',
+        },
+      },
+      baseMin: {
+        entry: './src/twgl-base.js',
+        plugins: [
+          new webpack.BannerPlugin(license),
+          new webpack.optimize.UglifyJsPlugin({
+            compress: {
+              warnings: false,
+            },
+            mangle: true,
+          }),
+        ],
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              loader: 'babel-loader',
+              query: {
+                presets: ['stage-0'],
+              },
+            },
+          ],
+        },
+        output: {
+          path: path.join(__dirname, 'dist/2.x'),
+          filename: 'twgl.min.js',
+          library: 'twgl',
+          libraryTarget: 'umd',
         },
       },
     },
@@ -253,7 +283,7 @@ module.exports = function(grunt) {
     var template = fs.readFileSync('build/templates/index.template', {encoding: 'utf8'});
     var content = replaceParams(template, {
       content: html,
-      license: replaceParams(license, bower),
+      license: license,
       srcFileName: 'README.md',
       title: 'TWGL.js, a tiny WebGL helper library',
       version: bower.version,
@@ -278,7 +308,6 @@ module.exports = function(grunt) {
     var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
     p.version = bower.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
-    setLicense();
   }
 
   grunt.registerTask('bumppatchimpl', function() { bump('patch'); });
@@ -323,9 +352,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
       'eslint:lib',
       'clean:dist',
-      'requirejs',
-      /*'concat',*/
-      'uglify',
+      'webpack',
       'copy',
       'npmpackage',
   ]);
@@ -354,9 +381,5 @@ module.exports = function(grunt) {
       'docs',
   ]);
   grunt.registerTask('default', 'build');
-
-  setLicense();
-
-
 };
 
