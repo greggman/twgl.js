@@ -477,7 +477,7 @@ define([
       gl.attachShader(program, shader);
     });
     if (progOptions.attribLocations) {
-      Object.keys(progOptions_attribLocations).forEach(function(attrib) {
+      Object.keys(progOptions.attribLocations).forEach(function(attrib) {
         gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
       });
     }
