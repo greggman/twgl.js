@@ -9,9 +9,11 @@ var plugins = require('webpack-load-plugins')();
 
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), {encoding: 'utf8'}));
 
-var license = `@license twgl.js ${pkg.version} Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+function getLicense(pkg) {
+  return `@license twgl.js ${pkg.version} Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details`;
+}
 
 var replaceHandlers = {};
 function registerReplaceHandler(keyword, handler) {
@@ -120,7 +122,7 @@ module.exports = function(grunt) {
       full: {
         entry: './src/twgl-full.js',
         plugins: [
-          new webpack.BannerPlugin(license),
+          new webpack.BannerPlugin(getLicense(pkg)),
         ],
         module: {
           loaders: [
@@ -143,7 +145,7 @@ module.exports = function(grunt) {
       base: {
         entry: './src/twgl-base.js',
         plugins: [
-          new webpack.BannerPlugin(license),
+          new webpack.BannerPlugin(getLicense(pkg)),
         ],
         module: {
           loaders: [
@@ -166,7 +168,7 @@ module.exports = function(grunt) {
       fullMin: {
         entry: './src/twgl-full.js',
         plugins: [
-          new webpack.BannerPlugin(license),
+          new webpack.BannerPlugin(getLicense(pkg)),
           new webpack.optimize.UglifyJsPlugin({
             compress: {
               warnings: false,
@@ -195,7 +197,7 @@ module.exports = function(grunt) {
       baseMin: {
         entry: './src/twgl-base.js',
         plugins: [
-          new webpack.BannerPlugin(license),
+          new webpack.BannerPlugin(getLicense(pkg)),
           new webpack.optimize.UglifyJsPlugin({
             compress: {
               warnings: false,
@@ -275,7 +277,7 @@ module.exports = function(grunt) {
     var template = fs.readFileSync('build/templates/index.template', {encoding: 'utf8'});
     var content = replaceParams(template, {
       content: html,
-      license: license,
+      license: getLicense(pkg),
       srcFileName: 'README.md',
       title: 'TWGL.js, a tiny WebGL helper library',
       version: pkg.version,
