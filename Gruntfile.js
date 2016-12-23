@@ -75,15 +75,6 @@ var replaceParams = (function() {
   };
 }());
 
-function hackForCommonJSAndBrowserify(text, sourceMapText) {
-  var dirname = path.dirname(this.outPath);
-  if (!fs.existsSync(dirname)) {
-    fs.mkdirSync(dirname);
-  }
-  text = text.replace(/require/g, 'notrequirebecasebrowserifymessesup');
-  fs.writeFileSync(this.outPath, text, {encoding: "utf-8"});
-}
-
 module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
