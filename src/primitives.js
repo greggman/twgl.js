@@ -63,13 +63,11 @@
  */
 define([
     './attributes',
-    './twgl',
     './utils',
     './m4',
     './v3',
   ], function(
     attributes,
-    twgl,
     utils,
     m4,
     v3
@@ -1859,7 +1857,7 @@ define([
   function createBufferFunc(fn) {
     return function(gl) {
       var arrays = fn.apply(this, Array.prototype.slice.call(arguments, 1));
-      return twgl.createBuffersFromArrays(gl, arrays);
+      return attributes.createBuffersFromArrays(gl, arrays);
     };
   }
 
@@ -1870,7 +1868,7 @@ define([
   function createBufferInfoFunc(fn) {
     return function(gl) {
       var arrays = fn.apply(null,  Array.prototype.slice.call(arguments, 1));
-      return twgl.createBufferInfoFromArrays(gl, arrays);
+      return attributes.createBufferInfoFromArrays(gl, arrays);
     };
   }
 
