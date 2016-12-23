@@ -1,5 +1,9 @@
 #Changelist
 
+*   2.6
+
+    *   make createBuffersFromArrays add a numElements and elementType properties.
+
 *   2.5
 
     *   switch to webpack + babel
