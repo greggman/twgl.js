@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 2.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -993,6 +993,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Object.keys(arrays).forEach(function (key) {
 	      buffers[key] = createBufferFromArray(gl, arrays[key], key);
 	    });
+
+	    // Ugh!
+	    if (arrays.indices) {
+	      buffers.numElements = arrays.indices.length;
+	      buffers.elementType = typedArrays.getGLTypeForTypedArray(makeTypedArray(arrays.indices), 'indices');
+	    } else {
+	      buffers.numElements = getNumElementsFromNonIndexedArrays(arrays);
+	    }
 
 	    return buffers;
 	  }
@@ -4374,7 +4382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @typedef {Object} VertexArrayInfo
 	   * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
 	   * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
-	   * @property {WebGLVertexArrayObject> [vertexArrayObject] a vertex array object
+	   * @property {WebGLVertexArrayObject} [vertexArrayObject] a vertex array object
 	   * @memberOf module:twgl
 	   */
 
@@ -4436,8 +4444,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
 	   * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
-	   * @param {Object.<string, module:webgl-utils.AttribInfo>} attribs AttribInfos mapped by attribute name.
+	   * @param {Object.<string, module:twgl.AttribInfo>} attribs AttribInfos mapped by attribute name.
 	   * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+	   * @memberOf module:twgl/vertexArrays
 	   */
 	  function createVAOAndSetAttributes(gl, setters, attribs, indices) {
 	    var vao = gl.createVertexArray();
@@ -4458,9 +4467,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext
 	   *        to use.
-	   * @param {Object.<string, function>| module:webgl-utils.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
-	   * @param {module:webgl-utils:BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
+	   * @param {Object.<string, function>| module:twgl.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
+	   * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
 	   * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+	   * @memberOf module:twgl/vertexArrays
 	   */
 	  function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
 	    return createVAOAndSetAttributes(gl, programInfo.attribSetters || programInfo, bufferInfo.attribs, bufferInfo.indices);
