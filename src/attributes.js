@@ -600,6 +600,14 @@ define([
       buffers[key] = createBufferFromArray(gl, arrays[key], key);
     });
 
+    // Ugh!
+    if (arrays.indices) {
+      buffers.numElements = arrays.indices.length;
+      buffers.elementType = typedArrays.getGLTypeForTypedArray(makeTypedArray(arrays.indices), 'indices');
+    } else {
+      buffers.numElements = getNumElementsFromNonIndexedArrays(arrays);
+    }
+
     return buffers;
   }
 
