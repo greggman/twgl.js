@@ -6,7 +6,11 @@
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --recursive",
     "pre-push": "grunt eslint",
-    "build": "grunt build"
+    "build": "grunt build",
+    "bumpminor": "grunt bumpminor",
+    "bumpmajor": "grunt bumpmajor",
+    "bumppatch": "grunt bumppatch",
+    "builddocs": "grunt docs"
   },
   "repository": {
     "type": "git",
