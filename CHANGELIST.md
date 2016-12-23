@@ -1,5 +1,9 @@
 #Changelist
 
+*   2.5
+
+    *   switch to webpack + babel
+
 *   2.4
 
     *   Support int attributes
