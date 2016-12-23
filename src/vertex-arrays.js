@@ -54,7 +54,7 @@ define([
    * @typedef {Object} VertexArrayInfo
    * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
    * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
-   * @property {WebGLVertexArrayObject> [vertexArrayObject] a vertex array object
+   * @property {WebGLVertexArrayObject} [vertexArrayObject] a vertex array object
    * @memberOf module:twgl
    */
 
@@ -115,8 +115,9 @@ define([
    *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
    * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
-   * @param {Object.<string, module:webgl-utils.AttribInfo>} attribs AttribInfos mapped by attribute name.
+   * @param {Object.<string, module:twgl.AttribInfo>} attribs AttribInfos mapped by attribute name.
    * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+   * @memberOf module:twgl/vertexArrays
    */
   function createVAOAndSetAttributes(gl, setters, attribs, indices) {
     var vao = gl.createVertexArray();
@@ -137,9 +138,10 @@ define([
    *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext
    *        to use.
-   * @param {Object.<string, function>| module:webgl-utils.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
-   * @param {module:webgl-utils:BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
+   * @param {Object.<string, function>| module:twgl.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
+   * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
    * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+   * @memberOf module:twgl/vertexArrays
    */
   function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
     return createVAOAndSetAttributes(gl, programInfo.attribSetters || programInfo, bufferInfo.attribs, bufferInfo.indices);
