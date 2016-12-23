@@ -96,6 +96,7 @@ module.exports = function(grunt) {
     'src/programs.js',
     'src/textures.js',
     'src/typedarrays.js',
+    'src/vertex-arrays.js',
   ];
 
   var thirdPartyFiles = [
@@ -286,7 +287,7 @@ module.exports = function(grunt) {
       license: license,
       srcFileName: 'README.md',
       title: 'TWGL.js, a tiny WebGL helper library',
-      version: bower.version,
+      version: pkg.version,
     });
     content = content.replace(/href="http\:\/\/twgljs.org\//g, 'href="/');
     fs.writeFileSync('index.html', content);
@@ -302,11 +303,11 @@ module.exports = function(grunt) {
   }
 
   function bump(type) {
-    bower.version = semver.inc(bower.version, type);
-    fs.writeFileSync("bower.json", JSON.stringify(bower, null, 2));
-    var filename = "package.json";
+    pkg.version = semver.inc(pkg.version, type);
+    fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2));
+    var filename = "bower.json";
     var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
-    p.version = bower.version;
+    p.version = pkg.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
   }
 
@@ -325,9 +326,9 @@ module.exports = function(grunt) {
       { filename: 'package.json',          fn: getPackageVersion, },
     ].forEach(function(file) {
       var version = file.fn(file.filename);
-      if (version !== bower.version) {
+      if (version !== pkg.version) {
         good = false;
-        grunt.log.error("version mis-match in:", file.filename, " Expected:", bower.version, " Actual:", version);
+        grunt.log.error("version mis-match in:", file.filename, " Expected:", pkg.version, " Actual:", version);
       }
     });
     return good;
