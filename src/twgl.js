@@ -36,6 +36,7 @@ define([
     './programs',
     './textures',
     './typedarrays',
+    './vertex-arrays',
     './utils',
   ], function(
     attributes,
@@ -44,6 +45,7 @@ define([
     programs,
     textures,
     typedArrays,
+    vertexArrays,
     utils) {
   "use strict";
 
@@ -321,6 +323,7 @@ define([
     programs: programs,
     textures: textures,
     typedArrays: typedArrays,
+    vertexArrays: vertexArrays,
   };
   Object.keys(apis).forEach(function(name) {
     var srcApi = apis[name];

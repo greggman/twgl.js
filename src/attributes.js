@@ -431,14 +431,6 @@ define([
    */
 
   /**
-   * @typedef {Object} VertexArrayInfo
-   * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
-   * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
-   * @property {WebGLVertexArrayObject> [vertexArrayObject] a vertex array object
-   * @memberOf module:twgl
-   */
-
-  /**
    * Creates a BufferInfo from an object of arrays.
    *
    * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
@@ -611,58 +603,6 @@ define([
     return buffers;
   }
 
-  /**
-   * Creates a BufferInfo from an object of arrays.
-   *
-   * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
-   * {@link module:twgl:drawBufferInfo}.
-   *
-   * > **IMPORTANT:** Vertex Array Objects are **not** a direct analog for a BufferInfo. Vertex Array Objects
-   *   assign buffers to specific attributes at creation time. That means they can only be used with programs
-   *   who's attributes use the same attribute locations for the same purposes.
-   *
-   * > Bind your attribute locations by passing an array of attribute names to {@link module:twgl.createProgramInfo}
-   *   or use WebGL 2's GLSL ES 3's `layout(location = <num>)` to make sure locations match.
-   *
-   * also
-   *
-   * > **IMPORTANT:** After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object
-   *   that Vertex Array Object will be bound. That means **ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES**
-   *   will affect the Vertex Array Object state.
-   *
-   * > Call `gl.bindVertexArray(null)` to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.
-   *
-   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
-   *
-   *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
-   *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
-   *    for shader 1 then only attributes A, B, and C will have their attributes set because TWGL doesn't
-   *    now attribute D's location.
-   *
-   *    So, you can pass in both shader 1 and shader 2's programInfo
-   *
-   * @return {module:twgl.VertexArrayInfo} The created VertexArrayInfo
-   *
-   * @memberOf module:twgl/attributes
-   */
-  function createVertexArrayInfo(gl, programInfos, bufferInfo) {
-    var vao = gl.createVertexArray();
-    gl.bindVertexArray(vao);
-    if (!programInfos.length) {
-      programInfos = [programInfos];
-    }
-    programInfos.forEach(function(programInfo) {
-      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-    });
-    gl.bindVertexArray(null);
-    return {
-      numElements: bufferInfo.numElements,
-      elementType: bufferInfo.elementType,
-      vertexArrayObject: vao,
-    };
-  }
-
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
@@ -672,8 +612,6 @@ define([
     "createBufferFromTypedArray": createBufferFromTypedArray,
     "createBufferInfoFromArrays": createBufferInfoFromArrays,
     "setAttribInfoBufferFromArray": setAttribInfoBufferFromArray,
-
-    "createVertexArrayInfo": createVertexArrayInfo,
 
     "setAttributePrefix": setAttributePrefix,
 
