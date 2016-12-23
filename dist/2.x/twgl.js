@@ -774,7 +774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
 	    array = makeTypedArray(array);
-	    if (offset) {
+	    if (offset !== undefined) {
 	      gl.bindBuffer(gl.ARRAY_BUFFER, attribInfo.buffer);
 	      gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
 	    } else {
