@@ -1,5 +1,9 @@
 #Changelist
 
+*   2.6.1
+
+    *   allow offset=0 in setAttributeInfoBufferFromArray
+
 *   2.6
 
     *   make createBuffersFromArrays add a numElements and elementType properties.
