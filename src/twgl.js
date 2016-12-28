@@ -240,7 +240,7 @@ define([
    * @return {WebGLRenderingContext} The created context.
    */
   function createContext(canvas, opt_attribs) {
-    var names = ["webgl2", "experimental-webgl2", "webgl", "experimental-webgl"];
+    var names = ["webgl2", "webgl", "experimental-webgl"];
     var context = null;
     for (var ii = 0; ii < names.length; ++ii) {
       try {
