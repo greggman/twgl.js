@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-@license twgl.js 2.6.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+@license twgl.js 2.6.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details
 -->
@@ -56,7 +56,7 @@ to do stuff low-level with WebGL consider using <a href="http://github.com/gregg
 <pre><code class="lang-html">&lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
 &lt;script src=&quot;../dist/2.x/twgl-full.min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
-  var gl = twgl.getWebGLContext(document.getElementById(&quot;c&quot;));
+  var gl = document.getElementById(&quot;c&quot;).getContext(&quot;webgl&quot;);
   var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
 
   var arrays = {

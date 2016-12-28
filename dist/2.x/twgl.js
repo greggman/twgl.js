@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 2.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.6.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -295,7 +295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {WebGLRenderingContext} The created context.
 	   */
 	  function createContext(canvas, opt_attribs) {
-	    var names = ["webgl2", "experimental-webgl2", "webgl", "experimental-webgl"];
+	    var names = ["webgl2", "webgl", "experimental-webgl"];
 	    var context = null;
 	    for (var ii = 0; ii < names.length; ++ii) {
 	      try {

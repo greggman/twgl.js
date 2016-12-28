@@ -55,7 +55,7 @@
 <pre class="prettyprint source lang-html"><code>&lt;canvas id=&quot;c&quot;>&lt;/canvas>
 &lt;script src=&quot;../dist/2.x/twgl-full.min.js&quot;>&lt;/script>
 &lt;script>
-  var gl = twgl.getWebGLContext(document.getElementById(&quot;c&quot;));
+  var gl = document.getElementById(&quot;c&quot;).getContext(&quot;webgl&quot;);
   var programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
 
   var arrays = {

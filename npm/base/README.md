@@ -22,7 +22,7 @@ Not including the shaders (which is a simple quad shader) here's the entire code
 <canvas id="c"></canvas>
 <script src="../dist/2.x/twgl-full.min.js"></script>
 <script>
-  var gl = twgl.getWebGLContext(document.getElementById("c"));
+  var gl = document.getElementById("c").getContext("webgl");
   var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
   var arrays = {
