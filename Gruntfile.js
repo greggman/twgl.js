@@ -302,6 +302,10 @@ module.exports = function(grunt) {
     var p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
     p.version = pkg.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
+    grunt.config.set('webpack.full.plugins.0', new webpack.BannerPlugin(getLicense(pkg)));
+    grunt.config.set('webpack.base.plugins.0', new webpack.BannerPlugin(getLicense(pkg)));
+    grunt.config.set('webpack.fullMin.plugins.0', new webpack.BannerPlugin(getLicense(pkg)));
+    grunt.config.set('webpack.baseMin.plugins.0', new webpack.BannerPlugin(getLicense(pkg)));
   }
 
   grunt.registerTask('bumppatchimpl', function() { bump('patch'); });
