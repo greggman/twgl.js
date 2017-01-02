@@ -1107,6 +1107,18 @@ define([
    *     twgl.setUniforms(programInfo, uniforms);
    *     twgl.setUniforms(programInfo, moreUniforms);
    *
+   * You can also add WebGLSamplers to uniform samplers as in
+   *
+   *     var uniforms = {
+   *       u_someSampler: {
+   *         texture: someWebGLTexture,
+   *         sampler: someWebGLSampler,
+   *       },
+   *     };
+   *
+   * In which case both the sampler and texture will be bound to the
+   * same unit.
+   *
    * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
    *        `createUniformSetters`.
    * @param {Object.<string, ?>} values an object with values for the
