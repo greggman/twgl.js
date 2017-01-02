@@ -400,6 +400,7 @@ define([
    * @property {number} [min] the min filter setting (eg. `gl.LINEAR`). Defaults to `gl.NEAREST_MIPMAP_LINEAR`
    *     or if texture is not a power of 2 on both dimensions then defaults to `gl.LINEAR`.
    * @property {number} [mag] the mag filter setting (eg. `gl.LINEAR`). Defaults to `gl.LINEAR`
+   * @property {number} [minMag] both the min and mag filter settings.
    * @property {number} [internalFormat] internal format for texture. Defaults to `gl.RGBA`
    * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
    * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
@@ -517,6 +518,56 @@ define([
   }
 
   /**
+   * Sets the parameters of a texture or sampler
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {number|WebGLSampler} target texture target or sampler
+   * @param {function()} parameteriFn texParamteri or samplerParameteri fn
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
+   */
+  function setTextureSamplerParameters(gl, target, parameteriFn, options) {
+    if (options.minMag) {
+      parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.minMag);
+      parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.minMag);
+    }
+    if (options.min) {
+      parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.min);
+    }
+    if (options.mag) {
+      parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.mag);
+    }
+    if (options.wrap) {
+      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
+      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
+      if (target === gl.TEXTURE_3D) {
+        parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
+      }
+    }
+    if (options.wrapR) {
+      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrapR);
+    }
+    if (options.wrapS) {
+      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrapS);
+    }
+    if (options.wrapT) {
+      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrapT);
+    }
+    if (options.minLod) {
+      parameteriFn.call(gl, target, gl.TEXTURE_MIN_LOD, options.minLod);
+    }
+    if (options.maxLod) {
+      parameteriFn.call(gl, target, gl.TEXTURE_MAX_LOD, options.maxLod);
+    }
+    if (options.baseLevel) {
+      parameteriFn.call(gl, target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
+    }
+    if (options.maxLevel) {
+      parameteriFn.call(gl, target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
+    }
+  }
+
+  /**
    * Sets the texture parameters of a texture.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
@@ -527,40 +578,33 @@ define([
   function setTextureParameters(gl, tex, options) {
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
-    if (options.min) {
-      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, options.min);
-    }
-    if (options.mag) {
-      gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, options.mag);
-    }
-    if (options.wrap) {
-      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrap);
-      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrap);
-      if (target === gl.TEXTURE_3D) {
-        gl.texParameteri(target, gl.TEXTURE_WRAP_R, options.wrap);
-      }
-    }
-    if (options.wrapR) {
-      gl.texParameteri(target, gl.TEXTURE_WRAP_R, options.wrapR);
-    }
-    if (options.wrapS) {
-      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrapS);
-    }
-    if (options.wrapT) {
-      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrapT);
-    }
-    if (options.minLod) {
-      gl.texParameteri(target, gl.TEXTURE_MIN_LOD, options.minLod);
-    }
-    if (options.maxLod) {
-      gl.texParameteri(target, gl.TEXTURE_MAX_LOD, options.maxLod);
-    }
-    if (options.baseLevel) {
-      gl.texParameteri(target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
-    }
-    if (options.maxLevel) {
-      gl.texParameteri(target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
-    }
+    setTextureSamplerParameters(gl, target, gl.texParameteri, options);
+  }
+
+  /**
+   * Sets the texture parameters of a texture.
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+   *   This is often the same options you passed in when you created the texture.
+   * @memberOf module:twgl/textures
+   */
+  function setSamplerParameters(gl, sampler, options) {
+    setTextureSamplerParameters(gl, sampler, gl.samplerParameteri, options);
+  }
+
+  function createSampler(gl, options) {
+    const sampler = gl.createSampler();
+    setSamplerParameters(gl, sampler, options);
+    return sampler;
+  }
+
+  function createSamplers(gl, samplerOptions) {
+    const samplers = {};
+    Object.keys(samplerOptions).forEach(function(name) {
+      samplers[name] = createSampler(gl, samplerOptions[name]);
+    });
+    return samplers;
   }
 
   /**
@@ -1378,6 +1422,10 @@ define([
   // No speed diff AFAICT.
   return {
     "setDefaults_": setDefaults,
+
+    "createSampler": createSampler,
+    "createSamplers": createSamplers,
+    "setSamplerParameters": setSamplerParameters,
 
     "createTexture": createTexture,
     "setEmptyTexture": setEmptyTexture,

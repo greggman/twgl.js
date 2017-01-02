@@ -257,7 +257,14 @@ define([
 
   function samplerSetter(gl, type, unit, location) {
     var bindPoint = getBindPointForSamplerType(gl, type);
-    return function(texture) {
+    return function(textureOrPair) {
+      let texture;
+      if (textureOrPair instanceof WebGLTexture) {
+        texture = textureOrPair;
+      } else {
+        texture = textureOrPair.texture;
+        gl.bindSampler(unit, textureOrPair.sampler);
+      }
       gl.uniform1i(location, unit);
       gl.activeTexture(gl.TEXTURE0 + unit);
       gl.bindTexture(bindPoint, texture);
@@ -273,8 +280,15 @@ define([
 
     return function(textures) {
       gl.uniform1iv(location, units);
-      textures.forEach(function(texture, index) {
+      textures.forEach(function(textureOrPair, index) {
         gl.activeTexture(gl.TEXTURE0 + units[index]);
+        let texture;
+        if (textureOrPair instanceof WebGLTexture) {
+          texture = textureOrPair;
+        } else {
+          texture = textureOrPair.texture;
+          gl.bindSampler(unit, textureOrPair.sampler);
+        }
         gl.bindTexture(bindPoint, texture);
       });
     };
