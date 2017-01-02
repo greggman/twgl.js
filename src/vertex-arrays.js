@@ -81,6 +81,7 @@ define([
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
+   * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
    *
    *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
    *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
