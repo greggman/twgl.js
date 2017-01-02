@@ -53,28 +53,16 @@
   </body>
   <script id="one-point-vs" type="notjs">
 uniform mat4 u_worldViewProjection;
-uniform vec3 u_lightWorldPos;
-uniform mat4 u_world;
-uniform mat4 u_viewInverse;
-uniform mat4 u_worldInverseTranspose;
 
 attribute vec4 a_position;
-attribute vec3 a_normal;
 attribute vec2 a_texcoord;
 
 varying vec4 v_position;
 varying vec2 v_texCoord;
-varying vec3 v_normal;
-varying vec3 v_surfaceToLight;
-varying vec3 v_surfaceToView;
 
 void main() {
   v_texCoord = a_texcoord;
-  v_position = (u_worldViewProjection * a_position);
-  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
-  v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
-  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
-  gl_Position = v_position;
+  gl_Position = u_worldViewProjection * a_position;
 }
   </script>
   <script id="one-point-fs" type="notjs">
@@ -82,40 +70,16 @@ precision mediump float;
 
 varying vec4 v_position;
 varying vec2 v_texCoord;
-varying vec3 v_normal;
-varying vec3 v_surfaceToLight;
-varying vec3 v_surfaceToView;
 
-uniform vec4 u_lightColor;
 uniform vec4 u_diffuseMult;
 uniform sampler2D u_diffuse;
-uniform vec4 u_specular;
-uniform float u_shininess;
-uniform float u_specularFactor;
-
-vec4 lit(float l ,float h, float m) {
-  return vec4(1.0,
-              abs(l),//max(l, 0.0),
-              (l > 0.0) ? pow(max(0.0, h), m) : 0.0,
-              1.0);
-}
 
 void main() {
   vec4 diffuseColor = texture2D(u_diffuse, v_texCoord) * u_diffuseMult;
   if (diffuseColor.a < 0.1) {
     discard;
   }
-  vec3 a_normal = normalize(v_normal);
-  vec3 surfaceToLight = normalize(v_surfaceToLight);
-  vec3 surfaceToView = normalize(v_surfaceToView);
-  vec3 halfVector = normalize(surfaceToLight + surfaceToView);
-  vec4 litR = lit(dot(a_normal, surfaceToLight),
-                    dot(a_normal, halfVector), u_shininess);
-  vec4 outColor = vec4((
-  u_lightColor * (diffuseColor * litR.y +
-                u_specular * litR.z * u_specularFactor)).rgb,
-      diffuseColor.a);
-  gl_FragColor = outColor;
+  gl_FragColor = diffuseColor;
 }
   </script>
   <script id="env-map-vs" type="notjs">
@@ -178,8 +142,6 @@ void main() {
 
     // Shared values
     var baseHue = rand(360);
-    var lightWorldPosition = [1, 8, -10];
-    var lightColor = [1, 1, 1, 1];
     var camera = m4.identity();
     var view = m4.identity();
     var viewProjection = m4.identity();
@@ -274,14 +236,14 @@ void main() {
       // a cubemap from array
       cubemapFromArray: {
         target: gl.TEXTURE_CUBE_MAP,
-        format: gl.LUMINANCE,
+        format: gl.RGBA,
         src: [
-          0xF0,
-          0xE0,
-          0xD0,
-          0xC0,
-          0xB0,
-          0xA0,
+          0xF0, 0x80, 0x80, 0xFF,
+          0x80, 0xE0, 0x80, 0xFF,
+          0x80, 0x80, 0xD0, 0xFF,
+          0xC0, 0x80, 0x80, 0xFF,
+          0x80, 0xB0, 0x80, 0xFF,
+          0x80, 0x80, 0x00, 0xFF,
         ],
       },
       cubemapFromCanvas: { target: gl.TEXTURE_CUBE_MAP, src: cubemapCtx.canvas },
@@ -316,12 +278,7 @@ void main() {
           shape = shapes[ii % shapes.length];
           programInfo = onePointProgramInfo;
           uniforms = {
-            u_lightWorldPos: lightWorldPosition,
-            u_lightColor: lightColor,
             u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
-            u_specular: [1, 1, 1, 1],
-            u_shininess: 50,
-            u_specularFactor: 1,
             u_diffuse: twoDTextures[rand(0, twoDTextures.length) | 0],
             u_viewInverse: camera,
             u_world: m4.identity(),
