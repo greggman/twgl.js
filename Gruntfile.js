@@ -174,6 +174,12 @@ module.exports = function(grunt) {
               warnings: false,
             },
             mangle: true,
+            //mangle: {
+            //  props: {
+            //    ignore_quoted: true,
+            //    regex: /^((?!(createElement|getContext)).)*$/,
+            //  },
+            //},
           }),
         ],
         module: {
