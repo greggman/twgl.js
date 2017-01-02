@@ -1347,7 +1347,7 @@ define([
     } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
       type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
     } else {
-      type = options.type || formatType.type
+      type = options.type || formatType.type;
     }
     if (target === gl.TEXTURE_CUBE_MAP) {
       for (var ii = 0; ii < 6; ++ii) {
