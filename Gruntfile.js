@@ -130,7 +130,7 @@ module.exports = function(grunt) {
               test: /\.js$/,
               loader: 'babel-loader',
               query: {
-                presets: ['stage-0'],
+                presets: ['stage-0', 'es2015'],
               },
             },
           ],
@@ -153,7 +153,7 @@ module.exports = function(grunt) {
               test: /\.js$/,
               loader: 'babel-loader',
               query: {
-                presets: ['stage-0'],
+                presets: ['stage-0', 'es2015'],
               },
             },
           ],
@@ -182,7 +182,7 @@ module.exports = function(grunt) {
               test: /\.js$/,
               loader: 'babel-loader',
               query: {
-                presets: ['stage-0'],
+                presets: ['stage-0', 'es2015'],
               },
             },
           ],
@@ -211,7 +211,7 @@ module.exports = function(grunt) {
               test: /\.js$/,
               loader: 'babel-loader',
               query: {
-                presets: ['stage-0'],
+                presets: ['stage-0', 'es2015'],
               },
             },
           ],
