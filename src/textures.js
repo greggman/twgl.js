@@ -405,7 +405,7 @@ define([
    * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
    * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
    *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
-   * @property {number} [wrap] Texture wrapping for both S and T (and R if TEXTURE_3D). Defaults to `gl.REPEAT` for 2D unless src is WebGL1 and src not npot and `gl.CLAMP_TO_EDGE` for cube
+   * @property {number} [wrap] Texture wrapping for both S and T (and R if TEXTURE_3D or WebGLSampler). Defaults to `gl.REPEAT` for 2D unless src is WebGL1 and src not npot and `gl.CLAMP_TO_EDGE` for cube
    * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
    * @property {number} [wrapT] Texture wrapping for T. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
    * @property {number} [wrapR] Texture wrapping for R. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
@@ -540,7 +540,7 @@ define([
     if (options.wrap) {
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-      if (target === gl.TEXTURE_3D) {
+      if (target === gl.TEXTURE_3D || target instanceof WebGLSampler) {
         parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
       }
     }
@@ -582,23 +582,69 @@ define([
   }
 
   /**
-   * Sets the texture parameters of a texture.
+   * Sets the sampler parameters of a sampler.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+   * @param {WebGLSampler} sampler the WebGLSampler to set parameters for
    * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
-   *   This is often the same options you passed in when you created the texture.
    * @memberOf module:twgl/textures
    */
   function setSamplerParameters(gl, sampler, options) {
     setTextureSamplerParameters(gl, sampler, gl.samplerParameteri, options);
   }
 
+  /**
+   * Creates a new sampler object and sets parameters.
+   *
+   * Example:
+   *
+   *      const sampler = twgl.createSampler(gl, {
+   *        minMag: gl.NEAREST,         // sets both TEXTURE_MIN_FILTER and TEXTURE_MAG_FILTER
+   *        wrap: gl.CLAMP_TO_NEAREST,  // sets both TEXTURE_WRAP_S and TEXTURE_WRAP_T and TEXTURE_WRAP_R
+   *      });
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per sampler.
+   * @return {Object.<string,WebGLSampler>} the created samplers by name
+   */
   function createSampler(gl, options) {
     const sampler = gl.createSampler();
     setSamplerParameters(gl, sampler, options);
     return sampler;
   }
 
+  /**
+   * Creates a multiple sampler objects and sets parameters on each.
+   *
+   * Example:
+   *
+   *      const samplers = twgl.createSamplers(gl, {
+   *        nearest: {
+   *          minMag: gl.NEAREST,
+   *        },
+   *        nearestClampS: {
+   *          minMag: gl.NEAREST,
+   *          wrapS: gl.CLAMP_TO_NEAREST,
+   *        },
+   *        linear: {
+   *          minMag: gl.LINEAR,
+   *        },
+   *        nearestClamp: {
+   *          minMag: gl.NEAREST,
+   *          wrap: gl.CLAMP_TO_EDGE,
+   *        },
+   *        linearClamp: {
+   *          minMag: gl.LINEAR,
+   *          wrap: gl.CLAMP_TO_EDGE,
+   *        },
+   *        linearClampT: {
+   *          minMag: gl.LINEAR,
+   *          wrapT: gl.CLAMP_TO_EDGE,
+   *        },
+   *      });
+   *
+   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set on the sampler
+   */
   function createSamplers(gl, samplerOptions) {
     const samplers = {};
     Object.keys(samplerOptions).forEach(function(name) {
