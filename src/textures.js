@@ -67,6 +67,8 @@ define([
   var RGBA                           = 0x1908;
   var LUMINANCE                      = 0x1909;
   var LUMINANCE_ALPHA                = 0x190A;
+  var DEPTH_COMPONENT                = 0x1902;
+  var DEPTH_STENCIL                  = 0x84F9;
 
   /* TextureWrapMode */
   var REPEAT                         = 0x2901;  // eslint-disable-line
@@ -80,6 +82,248 @@ define([
   var LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
   var NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
   var LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
+
+  const R8                           = 0x8229;
+  const R8_SNORM                     = 0x8F94;
+  const R16F                         = 0x822D;
+  const R32F                         = 0x822E;
+  const R8UI                         = 0x8232;
+  const R8I                          = 0x8231;
+  const RG16UI                       = 0x823A;
+  const RG16I                        = 0x8239;
+  const RG32UI                       = 0x823C;
+  const RG32I                        = 0x823B;
+  const RG8                          = 0x822B;
+  const RG8_SNORM                    = 0x8F95;
+  const RG16F                        = 0x822F;
+  const RG32F                        = 0x8230;
+  const RG8UI                        = 0x8238;
+  const RG8I                         = 0x8237;
+  const R16UI                        = 0x8234;
+  const R16I                         = 0x8233;
+  const R32UI                        = 0x8236;
+  const R32I                         = 0x8235;
+  const RGB8                         = 0x8051;
+  const SRGB8                        = 0x8C41;
+  const RGB565                       = 0x8D62;
+  const RGB8_SNORM                   = 0x8F96;
+  const R11F_G11F_B10F               = 0x8C3A;
+  const RGB9_E5                      = 0x8C3D;
+  const RGB16F                       = 0x881B;
+  const RGB32F                       = 0x8815;
+  const RGB8UI                       = 0x8D7D;
+  const RGB8I                        = 0x8D8F;
+  const RGB16UI                      = 0x8D77;
+  const RGB16I                       = 0x8D89;
+  const RGB32UI                      = 0x8D71;
+  const RGB32I                       = 0x8D83;
+  const RGBA8                        = 0x8058;
+  const SRGB8_ALPHA8                 = 0x8C43;
+  const RGBA8_SNORM                  = 0x8F97;
+  const RGB5_A1                      = 0x8057;
+  const RGBA4                        = 0x8056;
+  const RGB10_A2                     = 0x8059;
+  const RGBA16F                      = 0x881A;
+  const RGBA32F                      = 0x8814;
+  const RGBA8UI                      = 0x8D7C;
+  const RGBA8I                       = 0x8D8E;
+  const RGB10_A2UI                   = 0x906F;
+  const RGBA16UI                     = 0x8D76;
+  const RGBA16I                      = 0x8D88;
+  const RGBA32I                      = 0x8D82;
+  const RGBA32UI                     = 0x8D70;
+
+  const DEPTH_COMPONENT16            = 0x81A5;
+  const DEPTH_COMPONENT24            = 0x81A6;
+  const DEPTH_COMPONENT32F           = 0x8CAC;
+  const DEPTH32F_STENCIL8            = 0x8CAD;
+  const DEPTH24_STENCIL8             = 0x88F0;
+
+  /* DataType */
+  const BYTE                         = 0x1400;
+  const UNSIGNED_BYTE                = 0x1401;
+  const SHORT                        = 0x1402;
+  const UNSIGNED_SHORT               = 0x1403;
+  const INT                          = 0x1404;
+  const UNSIGNED_INT                 = 0x1405;
+  const FLOAT                        = 0x1406;
+  const UNSIGNED_SHORT_4_4_4_4       = 0x8033;
+  const UNSIGNED_SHORT_5_5_5_1       = 0x8034;
+  const UNSIGNED_SHORT_5_6_5         = 0x8363;
+  const HALF_FLOAT                   = 0x140B;
+  const UNSIGNED_INT_2_10_10_10_REV  = 0x8368;
+  const UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+  const UNSIGNED_INT_5_9_9_9_REV     = 0x8C3E;
+  const FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+  const UNSIGNED_INT_24_8            = 0x84FA;
+
+  const RG                           = 0x8227;
+  const RG_INTEGER                   = 0x8228;
+  const RED                          = 0x1903;
+  const RED_INTEGER                  = 0x8D94;
+  const RGB_INTEGER                  = 0x8D98;
+  const RGBA_INTEGER                 = 0x8D99;
+
+  const formatInfo = {};
+  {
+    const f = formatInfo;
+    f[ALPHA]           = { numComponents: 1, };
+    f[LUMINANCE]       = { numComponents: 1, };
+    f[LUMINANCE_ALPHA] = { numComponents: 2, };
+    f[RGB]             = { numComponents: 3, };
+    f[RGBA]            = { numComponents: 4, };
+    f[RED]             = { numComponents: 1, };
+    f[RED_INTEGER]     = { numComponents: 1, };
+    f[RG]              = { numComponents: 2, };
+    f[RG_INTEGER]      = { numComponents: 2, };
+    f[RGB]             = { numComponents: 3, };
+    f[RGB_INTEGER]     = { numComponents: 3, };
+    f[RGBA]            = { numComponents: 4, };
+    f[RGBA_INTEGER]    = { numComponents: 4, };
+    f[DEPTH_COMPONENT] = { numComponents: 1, };
+    f[DEPTH_STENCIL]   = { numComponents: 2, };
+  }
+
+  const textureInternalFormatInfo = {};
+  {
+    const t = textureInternalFormatInfo;
+    // unsized formats
+    t[ALPHA]              = { format: ALPHA,           colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT], };
+    t[LUMINANCE]          = { format: LUMINANCE,       colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT], };
+    t[LUMINANCE_ALPHA]    = { format: LUMINANCE_ALPHA, colorRenderable: true,  textureFilterable: true,  bytesPerElement: [2, 4, 8],        type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT], };
+    t[RGB]                = { format: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 6, 12, 2],    type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_5_6_5], };
+    t[RGBA]               = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1], };
+
+    // sized formats
+    t[R8]                 = { format: RED,             colorRenderable: true,  textureFilterable: true,  bytesPerElement:  1,         type: UNSIGNED_BYTE, };
+    t[R8_SNORM]           = { format: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement:  1,         type: BYTE, };
+    t[R16F]               = { format: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [2, 4],     type: [HALF_FLOAT, FLOAT], };
+    t[R32F]               = { format: RED,             colorRenderable: false, textureFilterable: false, bytesPerElement:  4,         type: FLOAT, };
+    t[R8UI]               = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  1,         type: UNSIGNED_BYTE, };
+    t[R8I]                = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  1,         type: BYTE, };
+    t[R16UI]              = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  2,         type: UNSIGNED_SHORT, };
+    t[R16I]               = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  2,         type: SHORT, };
+    t[R32UI]              = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_INT, };
+    t[R32I]               = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: INT, };
+    t[RG8]                = { format: RG,              colorRenderable: true,  textureFilterable: true,  bytesPerElement:  2,         type: UNSIGNED_BYTE, };
+    t[RG8_SNORM]          = { format: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement:  2,         type: BYTE, };
+    t[RG16F]              = { format: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 8],     type: [HALF_FLOAT, FLOAT], };
+    t[RG32F]              = { format: RG,              colorRenderable: false, textureFilterable: false, bytesPerElement:  8,         type: FLOAT, };
+    t[RG8UI]              = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  2,         type: UNSIGNED_BYTE, };
+    t[RG8I]               = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  2,         type: BYTE, };
+    t[RG16UI]             = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_SHORT, };
+    t[RG16I]              = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: SHORT, };
+    t[RG32UI]             = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  8,         type: UNSIGNED_INT, };
+    t[RG32I]              = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  8,         type: INT, };
+    t[RGB8]               = { format: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement:  3,         type: UNSIGNED_BYTE, };
+    t[SRGB8]              = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement:  3,         type: UNSIGNED_BYTE, };
+    t[RGB565]             = { format: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 2],     type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5], };
+    t[RGB8_SNORM]         = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement:  3,         type: BYTE, };
+    t[R11F_G11F_B10F]     = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 6, 12], type: [UNSIGNED_INT_10F_11F_11F_REV, HALF_FLOAT, FLOAT], };
+    t[RGB9_E5]            = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 6, 12], type: [UNSIGNED_INT_5_9_9_9_REV, HALF_FLOAT, FLOAT], };
+    t[RGB16F]             = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [6, 12],    type: [HALF_FLOAT, FLOAT], };
+    t[RGB32F]             = { format: RGB,             colorRenderable: false, textureFilterable: false, bytesPerElement: 12,         type: FLOAT, };
+    t[RGB8UI]             = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement:  3,         type: UNSIGNED_BYTE, };
+    t[RGB8I]              = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement:  3,         type: BYTE, };
+    t[RGB16UI]            = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement:  6,         type: UNSIGNED_SHORT, };
+    t[RGB16I]             = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement:  6,         type: SHORT, };
+    t[RGB32UI]            = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: 12,         type: UNSIGNED_INT, };
+    t[RGB32I]             = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: 12,         type: INT, };
+    t[RGBA8]              = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement:  4,         type: UNSIGNED_BYTE, };
+    t[SRGB8_ALPHA8]       = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement:  4,         type: UNSIGNED_BYTE, };
+    t[RGBA8_SNORM]        = { format: RGBA,            colorRenderable: false, textureFilterable: true,  bytesPerElement:  4,         type: BYTE, };
+    t[RGB5_A1]            = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 2, 4],  type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV], };
+    t[RGBA4]              = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 2],     type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4], };
+    t[RGB10_A2]           = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement:  4,         type: UNSIGNED_INT_2_10_10_10_REV, };
+    t[RGBA16F]            = { format: RGBA,            colorRenderable: false, textureFilterable: true,  bytesPerElement: [8, 16],    type: [HALF_FLOAT, FLOAT], };
+    t[RGBA32F]            = { format: RGBA,            colorRenderable: false, textureFilterable: false, bytesPerElement: 16,         type: FLOAT, };
+    t[RGBA8UI]            = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_BYTE, };
+    t[RGBA8I]             = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: BYTE, };
+    t[RGB10_A2UI]         = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_INT_2_10_10_10_REV, };
+    t[RGBA16UI]           = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  8,         type: UNSIGNED_SHORT, };
+    t[RGBA16I]            = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  8,         type: SHORT, };
+    t[RGBA32I]            = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: 16,         type: INT, };
+    t[RGBA32UI]           = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: 16,         type: UNSIGNED_INT, };
+    // Sized Internal
+    t[DEPTH_COMPONENT16]  = { format: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement: [2, 4],     type: [UNSIGNED_SHORT, UNSIGNED_INT], };
+    t[DEPTH_COMPONENT24]  = { format: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_INT, };
+    t[DEPTH_COMPONENT32F] = { format: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: FLOAT, };
+    t[DEPTH24_STENCIL8]   = { format: DEPTH_STENCIL,   colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_INT_24_8, };
+    t[DEPTH32F_STENCIL8]  = { format: DEPTH_STENCIL,   colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: FLOAT_32_UNSIGNED_INT_24_8_REV, };
+
+    Object.keys(t).forEach(function(internalFormat) {
+      const info = t[internalFormat];
+      info.bytesPerElementMap = {};
+      if (Array.isArray(info.bytesPerElement)) {
+        info.bytesPerElement.forEach(function(bytesPerElement, ndx) {
+          const type = info.type[ndx];
+          info.bytesPerElementMap[type] = bytesPerElement;
+        });
+      } else {
+        const type = info.type;
+        info.bytesPerElementMap[type] = info.bytesPerElement;
+      }
+    });
+  }
+
+  /**
+   * Gets the number of bytes per element for a given internalFormat / type
+   * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
+   * @param {number} type The type parameter for texImage2D etc..
+   * @return {number} the number of bytes per element for the given internalFormat, type combo
+   * @memberOf module:twgl/textures
+   */
+  function getBytesPerElementForInternalFormat(internalFormat, type) {
+    const info = textureInternalFormatInfo[internalFormat];
+    if (!info) {
+      throw "unknown internal format";
+    }
+    const bytesPerElement = info.bytesPerElementMap[type];
+    if (bytesPerElement === undefined) {
+      throw "unknown internal format";
+    }
+    return bytesPerElement;
+  }
+
+  /**
+   * Returns true if value is power of 2
+   * @param {number} value number to check.
+   * @return true if value is power of 2
+   */
+  function isPowerOf2(value) {
+    return (value & (value - 1)) === 0;
+  }
+
+  /**
+   * Gets whether or not we can generate mips for the given format
+   * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
+   * @param {number} type The type parameter for texImage2D etc..
+   * @return {boolean} true if we can generate mips
+   */
+  function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
+    if (!utils.isWebGL2(gl)) {
+      return isPowerOf2(width) && isPowerOf2(height);
+    }
+    const info = textureInternalFormatInfo[internalFormat];
+    if (!info) {
+      throw "unknown internal format";
+    }
+    return info.colorRenderable && info.textureFilterable;
+  }
+
+  /**
+   * Gets whether or not we can generate mips for the given format
+   * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
+   * @param {number} type The type parameter for texImage2D etc..
+   * @return {boolean} true if we can generate mips
+   */
+  function canFilter(internalFormat /*, type */) {
+    const info = textureInternalFormatInfo[internalFormat];
+    if (!info) {
+      throw "unknown internal format";
+    }
+    return info.textureFilterable;
+  }
 
   /**
    * Sets the default texture color.
@@ -334,15 +578,6 @@ define([
   }
 
   /**
-   * Returns true if value is power of 2
-   * @param {number} value number to check.
-   * @return true if value is power of 2
-   */
-  function isPowerOf2(value) {
-    return (value & (value - 1)) === 0;
-  }
-
-  /**
    * Sets filtering or generates mips for texture based on width or height
    * If width or height is not passed in uses `options.width` and//or `options.height`
    *
@@ -352,20 +587,26 @@ define([
    *   This is often the same options you passed in when you created the texture.
    * @param {number} [width] width of texture
    * @param {number} [height] height of texture
+   * @param {number} [internalFormat] The internalFormat parameter from texImage2D etc..
+   * @param {number} [type] The type parameter for texImage2D etc..
    * @memberOf module:twgl/textures
    */
-  function setTextureFilteringForSize(gl, tex, options, width, height) {
+  function setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type) {
     options = options || defaults.textureOptions;
+    internalFormat = internalFormat || gl.RGBA;
+    type = type || gl.UNSIGNED_BYTE;
     var target = options.target || gl.TEXTURE_2D;
     width = width || options.width;
     height = height || options.height;
     gl.bindTexture(target, tex);
-    if (!isPowerOf2(width) || !isPowerOf2(height)) {
-      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    if (canGenerateMipmap(gl, width, height, internalFormat, type)) {
+      gl.generateMipmap(target);
+    } else {
+      const filtering = canFilter(internalFormat, type) ? gl.LINEAR : gl.NEAREST;
+      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, filtering);
+      gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, filtering);
       gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    } else {
-      gl.generateMipmap(target);
     }
   }
 
@@ -518,7 +759,7 @@ define([
       }
       restorePackState(gl, options);
       if (options.auto !== false) {
-        setTextureFilteringForSize(gl, tex, options, width, height);
+        setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
       }
       setTextureParameters(gl, tex, options);
     };
@@ -742,19 +983,11 @@ define([
    * @memberOf module:twgl/textures
    */
   function getNumComponentsForFormat(format) {
-    switch (format) {
-      case ALPHA:
-      case LUMINANCE:
-        return 1;
-      case LUMINANCE_ALPHA:
-        return 2;
-      case RGB:
-        return 3;
-      case RGBA:
-        return 4;
-      default:
-        throw "unknown type: " + format;
+    const info = formatInfo[format];
+    if (!info) {
+      throw "unknown format: " + format;
     }
+    return info.numComponents;
   }
 
   /**
@@ -819,8 +1052,16 @@ define([
     var format = options.format || gl.RGBA;
     var internalFormat = options.internalFormat || format;
     var type = options.type || getTextureTypeForArrayType(gl, src);
-    var numComponents = getNumComponentsForFormat(format);
-    var numElements = src.length / numComponents;
+    if (!isArrayBuffer(src)) {
+      var Type = typedArrays.getTypedArrayTypeForGLType(type);
+      src = new Type(src);
+    } else {
+      if (src instanceof Uint8ClampedArray) {
+        src = new Uint8Array(src.buffer);
+      }
+    }
+    var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
+    var numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
     if (numElements % 1) {
       throw "length wrong size for format: " + glEnumToString(gl, format);
     }
@@ -852,21 +1093,15 @@ define([
       width = dimensions.width;
       height = dimensions.height;
     }
-    if (!isArrayBuffer(src)) {
-      var Type = typedArrays.getTypedArrayTypeForGLType(type);
-      src = new Type(src);
-    } else {
-      if (src instanceof Uint8ClampedArray) {
-        src = new Uint8Array(src.buffer);
-      }
-    }
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
     savePackState(gl, options);
     if (target === gl.TEXTURE_CUBE_MAP) {
-      var faceSize = numElements / 6 * numComponents;
-      getCubeFacesWithNdx(gl, options).forEach(function(f) {
-        var offset = faceSize * f.ndx;
-        var data = src.subarray(offset, offset + faceSize);
+      const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
+      const faceSize = numElements / 6 * elementsPerElement;
+
+      getCubeFacesWithNdx(gl, options).forEach(f => {
+        const offset = faceSize * f.ndx;
+        const data = src.subarray(offset, offset + faceSize);
         gl.texImage2D(f.face, 0, internalFormat, width, height, 0, format, type, data);
       });
     } else if (target === gl.TEXTURE_3D) {
@@ -879,6 +1114,7 @@ define([
       width: width,
       height: height,
       depth: depth,
+      type: type,
     };
   }
 
@@ -924,6 +1160,9 @@ define([
     var target = options.target || gl.TEXTURE_2D;
     var width  = options.width  || 1;
     var height = options.height || 1;
+    var format = options.format || gl.RGBA;
+    var internalFormat = options.internalFormat || format;
+    var type = options.type || gl.UNSIGNED_BYTE;
     gl.bindTexture(target, tex);
     if (target === gl.TEXTURE_CUBE_MAP) {
       // this should have been the default for CUBEMAPS :(
@@ -947,6 +1186,7 @@ define([
         var dimensions = setTextureFromArray(gl, tex, src, options);
         width  = dimensions.width;
         height = dimensions.height;
+        type   = dimensions.type;
       } else if (Array.isArray(src) && typeof (src[0]) === 'string') {
         loadCubemapFromUrls(gl, tex, options, callback);
       } else if (src instanceof HTMLElement) {
@@ -960,7 +1200,7 @@ define([
       setEmptyTexture(gl, tex, options);
     }
     if (options.auto !== false) {
-      setTextureFilteringForSize(gl, tex, options, width, height);
+      setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
     }
     setTextureParameters(gl, tex, options);
     return tex;
@@ -1150,6 +1390,7 @@ define([
     "createTextures": createTextures,
     "resizeTexture": resizeTexture,
     "getNumComponentsForFormat": getNumComponentsForFormat,
+    "getBytesPerElementForInternalFormat": getBytesPerElementForInternalFormat,
   };
 });
 
