@@ -80,9 +80,9 @@ define([], function() {
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
    * @return {number} version of gl
    */
-  function getVersionAsNumber(gl) {
-    return parseFloat(gl.getParameter(gl.VERSION).substr(6));
-  }
+  //function getVersionAsNumber(gl) {
+  //  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+  //}
 
   /**
    * Check if context is WebGL 2.0
@@ -91,7 +91,11 @@ define([], function() {
    * @memberOf module:twgl
    */
   function isWebGL2(gl) {
-    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+    // This is the correct check but it's slow
+    //return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+    // This might also be the correct check but I'm assuming it's slow-ish
+    // return gl instanceof WebGL2RenderingContext;
+    return !!gl.texStorage2D;
   }
 
   /**
@@ -101,8 +105,12 @@ define([], function() {
    * @memberOf module:twgl
    */
   function isWebGL1(gl) {
-    var version = getVersionAsNumber(gl);
-    return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
+    // This is the correct check but it's slow
+    //var version = getVersionAsNumber(gl);
+    //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
+    // This might also be the correct check but I'm assuming it's slow-ish
+    // return gl instanceof WebGLRenderingContext;
+    return !gl.texStorage2D;
   }
 
   var error =
