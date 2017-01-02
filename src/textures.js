@@ -121,16 +121,16 @@ define([
     function init(gl) {
       if (!enums) {
         enums = {};
-        Object.keys(gl).forEach(function(key) {
+        for (var key in gl) {
           if (typeof gl[key] === 'number') {
             enums[gl[key]] = key;
           }
-        });
+        }
       }
     }
 
     return function glEnumToString(gl, value) {
-      init();
+      init(gl);
       return enums[value] || ("0x" + value.toString(16));
     };
   }());
