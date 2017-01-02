@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - webgl2 textures" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/webgl2-textures.png" />
+    <meta property="og:description" content="TWGL.js - webgl2 textures" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - webgl2 textures">
+    <meta name="twitter:url" content="http://twgljs.org/examples/webgl2-textures.html">
+    <meta name="twitter:description" content="TWGL.js - webgl2 textures">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/webgl2-textures.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - webgl2 textures</title>
+    <style>
+      body {
+          margin: 0;
+          font-family: monospace;
+      }
+      canvas {
+          display: block;
+          width: 100vw;
+          height: 100vh;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+      #no-webgl2 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: red;
+        color: white;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - webgl2 textures</div>
+    <div id="no-webgl2" style="display: none;">
+      <div>Sorry but your browser doesn't appear to support WebGL2</div>
+    </div>
+  </body>
+  <script id="one-point-vs" type="notjs">
+#version 300 es
+uniform mat4 u_worldViewProjection;
+uniform mat4 u_world;
+
+in vec4 a_position;
+in vec2 a_texcoord;
+
+out vec4 v_position;
+out vec2 v_texCoord;
+
+void main() {
+  v_texCoord = a_texcoord;
+  gl_Position = u_worldViewProjection * a_position;
+}
+  </script>
+  <script id="one-point-fs" type="notjs">
+#version 300 es
+precision mediump float;
+
+in vec4 v_position;
+in vec2 v_texCoord;
+
+uniform vec4 u_diffuseMult;
+uniform sampler2D u_diffuse;
+
+out vec4 outColor;
+
+void main() {
+  vec4 diffuseColor = texture(u_diffuse, v_texCoord) * u_diffuseMult;
+  if (diffuseColor.a < 0.1) {
+    discard;
+  }
+  outColor = diffuseColor;
+  outColor.rbg *= outColor.a;
+}
+  </script>
+  <script id="int-one-point-fs" type="notjs">
+#version 300 es
+precision mediump float;
+
+in vec4 v_position;
+in vec2 v_texCoord;
+
+uniform ivec4 u_diffuseOffset;
+uniform ivec4 u_diffuseMult;
+uniform mediump isampler2D u_diffuse;
+
+out vec4 outColor;
+
+void main() {
+  ivec4 diffuseColor = texture(u_diffuse, v_texCoord) * u_diffuseMult + u_diffuseOffset;
+  if (diffuseColor.a <= 0) {
+    discard;
+  }
+  outColor = vec4(diffuseColor) / 100. * .5 + .5;
+  outColor.rbg *= outColor.a;
+}
+  </script>
+  <script id="uint-one-point-fs" type="notjs">
+#version 300 es
+precision mediump float;
+
+in vec4 v_position;
+in vec2 v_texCoord;
+
+uniform uvec4 u_diffuseOffset;
+uniform uvec4 u_diffuseMult;
+uniform mediump usampler2D u_diffuse;
+
+out vec4 outColor;
+
+void main() {
+  uvec4 diffuseColor = texture(u_diffuse, v_texCoord) * u_diffuseMult + u_diffuseOffset;
+  if (diffuseColor.a == 0u) {
+    discard;
+  }
+  outColor = vec4(diffuseColor) / 200.;
+  outColor.rbg *= outColor.a;
+}
+  </script>
+  <script id="norm-one-point-fs" type="notjs">
+#version 300 es
+precision mediump float;
+
+in vec4 v_position;
+in vec2 v_texCoord;
+
+uniform vec4 u_diffuseMult;
+uniform sampler2D u_diffuse;
+
+out vec4 outColor;
+
+void main() {
+  vec4 diffuseColor = (texture(u_diffuse, v_texCoord) * .5 + .5) * u_diffuseMult;
+  if (diffuseColor.a < 0.1) {
+    discard;
+  }
+  outColor = diffuseColor;
+  outColor.rbg *= outColor.a;
+}
+  </script>
+  <script id="float-one-point-fs" type="notjs">
+#version 300 es
+precision mediump float;
+
+in vec4 v_position;
+in vec2 v_texCoord;
+
+uniform vec4 u_diffuseMult;
+uniform vec4 u_diffuseOffset;
+uniform sampler2D u_diffuse;
+
+out vec4 outColor;
+
+void main() {
+  vec4 diffuseColor = texture(u_diffuse, v_texCoord) / 100. * u_diffuseMult + u_diffuseOffset;
+  if (diffuseColor.a < 0.1) {
+    discard;
+  }
+  outColor = diffuseColor;
+  outColor.rbg *= outColor.a;
+}
+  </script>
+  <script src="../dist/2.x/twgl-full.min.js"></script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script>
+"use strict";
+
+var toHalf = (function() {
+
+  var floatView = new Float32Array(1);
+  var int32View = new Int32Array(floatView.buffer);
+
+  return function toHalf( fval ) {
+    floatView[0] = fval;
+    var fbits = int32View[0];
+    var sign  = (fbits >> 16) & 0x8000;          // sign only
+    var val   = ( fbits & 0x7fffffff ) + 0x1000; // rounded value
+
+    if( val >= 0x47800000 ) {             // might be or become NaN/Inf
+      if( ( fbits & 0x7fffffff ) >= 0x47800000 ) {
+                                          // is or must become NaN/Inf
+        if( val < 0x7f800000 ) {          // was value but too large
+          return sign | 0x7c00;           // make it +/-Inf
+        }
+        return sign | 0x7c00 |            // remains +/-Inf or NaN
+            ( fbits & 0x007fffff ) >> 13; // keep NaN (and Inf) bits
+      }
+      return sign | 0x7bff;               // unrounded not quite Inf
+    }
+    if( val >= 0x38800000 ) {             // remains normalized value
+      return sign | val - 0x38000000 >> 13; // exp - 127 + 15
+    }
+    if( val < 0x33000000 )  {             // too small for subnormal
+      return sign;                        // becomes +/-0
+    }
+    val = ( fbits & 0x7fffffff ) >> 23;   // tmp exp for subnormal calc
+    return sign | ( ( fbits & 0x7fffff | 0x800000 ) // add subnormal bit
+         + ( 0x800000 >>> val - 102 )     // round depending on cut off
+         >> 126 - val );                  // div by 2^(1-(exp-127+15)) and >> 13 | exp=0
+  };
+}());
+
+function main() {
+  twgl.setDefaults({attribPrefix: "a_"});
+  var m4 = twgl.m4;
+  var gl = document.getElementById("c").getContext("webgl2");
+  if (!gl) {
+    document.querySelector("#no-webgl2").style.display = "";
+    return;
+  }
+  var onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"], ["a_texcoord", "a_position"]);
+  var intProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "int-one-point-fs"], ["a_texcoord", "a_position"]);
+  var uintProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "uint-one-point-fs"], ["a_texcoord", "a_position"]);
+  var normProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "norm-one-point-fs"], ["a_texcoord", "a_position"]);
+  var floatProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "float-one-point-fs"], ["a_texcoord", "a_position"]);
+
+  var shapes = [
+    twgl.primitives.createCubeBufferInfo(gl, 2),
+    twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
+    twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
+    twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
+  ];
+
+  function rand(min, max) {
+    if (max === undefined) {
+      max = min;
+      min = 0;
+    }
+    return min + Math.random() * (max - min);
+  }
+
+  // Shared values
+  var baseHue = rand(360);
+  var camera = m4.identity();
+  var view = m4.identity();
+  var viewProjection = m4.identity();
+
+  function rgb565(r, g, b) {
+    return (((r * 31) | 0) << 11) |
+           (((g * 63) | 0) <<  6) |
+           (((b * 31) | 0) <<  0) ;
+  }
+
+  function rgba5551(r, g, b, a) {
+    return (((r * 31) | 0) << 11) |
+           (((g * 31) | 0) <<  6) |
+           (((b * 31) | 0) <<  1) |
+           (((a *  1) | 0) <<  0) ;
+  }
+
+  function rgba1010102(r, g, b, a) {
+    return (((r * 1023) | 0) <<  0) |
+           (((g * 1023) | 0) << 10) |
+           (((b * 1023) | 0) << 20) |
+           (((a *    3) | 0) << 30) ;
+  }
+
+  function rgb9e5(r, g, b) {
+    const e = 15;
+    return (((r * 511) | 0) <<  0) |
+           (((g * 511) | 0) <<  9) |
+           (((b * 511) | 0) << 18) |
+           (e               << 27) ;
+  }
+
+  function to11Bit(v) {
+    return (v) | (20 << 6);
+  }
+
+  function to10Bit(v) {
+    return (v) | (20 << 5);
+  }
+
+  function rgb101111(r, g, b) {
+    return (to11Bit(r) <<  0) |
+           (to11Bit(g) << 11) |
+           (to10Bit(b) << 22) ;
+  }
+
+  const flatten = list => list.reduce(
+      (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
+  );
+
+  const texturesSettings = {
+    R8: {   // 	8	 	 	 	 	Y	Y
+      internalFormat: gl.R8,
+      format: gl.RED,
+      type: gl.UNSIGNED_BYTE,
+      width: 4,
+      minMag: gl.NEAREST,
+      src: [ 64, 255, 128, 192 ],
+    },
+    R8_SNORM: {   // 	s8	 	 	 	 	 	Y
+      internalFormat: gl.R8_SNORM,
+      format: gl.RED,
+      type: gl.BYTE,
+      minMag: gl.NEAREST,
+      src: [ 127, 64, 32, 96 ],
+    },
+    R16F: {   // 	f16	 	 	 	 	 	Y
+      internalFormat: gl.R16F,
+      format: gl.RED,
+      type: gl.HALF_FLOAT,
+      src: new Uint16Array([toHalf(20), toHalf(40), toHalf(30), toHalf(100)]),
+      diffuseOffset: [ 0, 0, 0, 1 ],
+    },
+    R16Fb: {   // 	f16	 	 	 	 	 	Y
+      internalFormat: gl.R16F,
+      format: gl.RED,
+      type: gl.FLOAT,
+      minMag: gl.NEAREST,
+      src: [ 20, 40, 30, 100 ],
+      diffuseOffset: [ 0, 0, 1, 1 ],
+    },
+    R32F: {   // 	f32
+      internalFormat: gl.R32F,
+      format: gl.RED,
+      type: gl.FLOAT,
+      minMag: gl.NEAREST,
+      src: [ 100, 25, 50, 75 ],
+      diffuseOffset: [ 0, 1, 0, 1 ],
+    },
+    R8UI: {   // 	ui8	 	 	 	 	Y
+      internalFormat: gl.R8UI,
+      format: gl.RED_INTEGER,
+      type: gl.UNSIGNED_BYTE,
+      src: [ 50, 25, 175, 100 ],
+      diffuseOffset: [ 0, 100, 0, 200 ],
+    },
+    R8I: {    // 	i8	 	 	 	 	Y
+      internalFormat: gl.R8I,
+      format: gl.RED_INTEGER,
+      type: gl.BYTE,
+      src: [ 0x100 - 50, 25, 0x100 - 75, 100 ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    R16UI: {    // 	ui16	 	 	 	 	Y
+      internalFormat: gl.R16UI,
+      format: gl.RED_INTEGER,
+      type: gl.UNSIGNED_SHORT,
+      src: [ 50, 25, 175, 100 ],
+      diffuseOffset: [ 0, 100, 100, 200 ],
+    },
+    R16I: {   // 	i16	 	 	 	 	Y
+      internalFormat: gl.R16I,
+      format: gl.RED_INTEGER,
+      type: gl.SHORT,
+      width: 1,
+      src: [ 0x100 - 50, 25, 0x100 - 75, 100 ],
+      diffuseOffset: [ 0, 50, 100, 100 ],
+    },
+    R32UI: {    // 	ui32	 	 	 	 	Y
+      internalFormat: gl.R32UI,
+      format: gl.RED_INTEGER,
+      type: gl.UNSIGNED_INT,
+      height: 1,
+      src: [ 50, 25, 175, 100 ],
+      diffuseOffset: [ 0, 100, 200, 200 ],
+    },
+    R32I: {   // 	i32	 	 	 	 	Y
+      internalFormat: gl.R32I,
+      format: gl.RED_INTEGER,
+      type: gl.INT,
+      src: [ 0x100 - 50, 25, 0x100 - 75, 100 ],
+      diffuseOffset: [ 0, 0, 50, 100 ],
+    },
+    RG8: {    // 	8	8	 	 	 	Y	Y
+      internalFormat: gl.RG8,
+      format: gl.RG,
+      type: gl.UNSIGNED_BYTE,
+      minMag: gl.NEAREST,
+      src: [ 255, 0, 0, 255 ],
+    },
+    RG8_SNORM: {    // 	s8	s8	 	 	 	 	Y
+      internalFormat: gl.RG8_SNORM,
+      format: gl.RG,
+      type: gl.BYTE,
+      minMag: gl.NEAREST,
+      src: [ 32, 16, 64, 127],
+    },
+    RG16F: {    // 	f16	f16	 	 	 	 	Y
+      internalFormat: gl.RG16F,
+      format: gl.RG,
+      type: gl.HALF_FLOAT,
+      minMag: gl.NEAREST,
+      src: new Uint16Array([ toHalf(20), toHalf(40), toHalf(60), 0, 0, toHalf(100), 0, 0]),
+      diffuseOffset: [0, 0, 0, 1],
+    },
+    RG16Fb: {    // 	f16	f16	 	 	 	 	Y
+      internalFormat: gl.RG16F,
+      format: gl.RG,
+      type: gl.FLOAT,
+      minMag: gl.NEAREST,
+      src: [ 100, 100, 100, 50, 50, 100, 50, 70 ],
+      diffuseOffset: [0, 0, 0, 1],
+    },
+    RG32F: {    // 	f32	f32
+      internalFormat: gl.RG32F,
+      format: gl.RG,
+      type: gl.FLOAT,
+      minMag: gl.NEAREST,
+      src: [ 20, 40, 40, 66, 66, 88, 88, 100 ],
+      diffuseOffset: [0, 0, 0, 1],
+    },
+    RG8UI: {    // 	ui8	ui8	 	 	 	Y
+      internalFormat: gl.RG8UI,
+      format: gl.RG_INTEGER,
+      type: gl.UNSIGNED_BYTE,
+      width: 1,
+      src: [ 50, 75, 75, 25, 200, 175, 100, 200 ],
+      diffuseOffset: [ 0, 0, 200, 200 ],
+    },
+    RG8I: {   // 	i8	i8	 	 	 	Y
+      internalFormat: gl.RG8I,
+      format: gl.RG_INTEGER,
+      type: gl.BYTE,
+      width: 1,
+      src: [ 50, 75, 75, 25, 80, 0x100 - 75, 100, 100 ],
+      diffuseOffset: [ 0, 0, 80, 100 ],
+    },
+    RG16UI: {   // 	ui16	ui16	 	 	 	Y
+      internalFormat: gl.RG16UI,
+      format: gl.RG_INTEGER,
+      type: gl.UNSIGNED_SHORT,
+      src: [  75,50, 75, 25, 200, 175, 100, 200 ],
+      diffuseOffset: [ 0, 0, 200, 200 ],
+    },
+    RG16I: {    // 	i16	i16	 	 	 	Y
+      internalFormat: gl.RG16I,
+      format: gl.RG_INTEGER,
+      type: gl.SHORT,
+      src: [ 80, 0x100 - 75, 50, 75, 75, 25, 100, 100 ],
+      diffuseOffset: [ 0, 0, 60, 100 ],
+    },
+    RG32UI: {   // 	ui32	ui32	 	 	 	Y
+      internalFormat: gl.RG32UI,
+      format: gl.RG_INTEGER,
+      type: gl.UNSIGNED_INT,
+      src: [  75,50, 75, 25, 200, 175, 100, 200 ],
+      diffuseOffset: [ 0, 0, 100, 200 ],
+    },
+    RG32I: {    // 	i32	i32	 	 	 	Y
+      internalFormat: gl.RG32I,
+      format: gl.RG_INTEGER,
+      type: gl.INT,
+      src: [ 80, 0x100 - 75, 50, 75, 75, 25, 100, 100 ],
+      diffuseOffset: [ 0, 0, 20, 100 ],
+    },
+    RGB8: {   // 	8	8	8	 	 	Y	Y
+      internalFormat: gl.RGB8,
+      format: gl.RGB,
+      type: gl.UNSIGNED_BYTE,
+      minMag: gl.NEAREST,
+      src: [ 0, 0, 255, 255, 0, 255, 0, 255, 255, 255, 255, 255],
+    },
+    SRGB8: {    // 	8	8	8	 	 	 	Y
+      internalFormat: gl.SRGB8,
+      format: gl.RGB,
+      type: gl.UNSIGNED_BYTE,
+      width: 1,
+      minMag: gl.NEAREST,
+      src: [
+        64, 0, 0,
+        0, 96, 0,
+        0, 0, 127,
+      ],
+    },
+    RGB565: {   // 	5	6	5	 	 	Y	Y
+      internalFormat: gl.RGB565,
+      format: gl.RGB,
+      type: gl.UNSIGNED_BYTE,
+      minMag: gl.NEAREST,
+      src: [ 0xFF, 0xFF, 0x55, 0x55, 0xFF, 0xFF ],
+    },
+    RGB565b: {   // 	5	6	5	 	 	Y	Y
+      internalFormat: gl.RGB565,
+      format: gl.RGB,
+      type: gl.UNSIGNED_SHORT_5_6_5,
+      minMag: gl.NEAREST,
+      src: new Uint16Array([rgb565(0, 1, 0), rgb565(0, 1, 1)]),
+    },
+    RGB8_SNORM: {   // 	s8	s8	s8	 	 	 	Y
+      internalFormat: gl.RGB8_SNORM,
+      format: gl.RGB,
+      type: gl.BYTE,
+      src: [
+        127, 117, 107,
+        0x100 - 64, 0x100 - 32, 0x100 - 16,
+        12, 32, 64,
+      ],
+    },
+    R11F_G11F_B10F: {   // 	f11	f11	f10	 	 	 	Y
+      internalFormat: gl.R11F_G11F_B10F,
+      format: gl.RGB,
+      type: gl.UNSIGNED_INT_10F_11F_11F_REV,
+      src: [
+        rgb101111(50, 60, 100),
+        rgb101111(0, 0, 0),
+        rgb101111(70, 100, 70),
+        rgb101111(100, 0, 0),
+        rgb101111(0, 100, 0),
+        rgb101111(0, 0, 100),
+      ],
+      diffuseMult: [1, 1, 1, 100],
+    },
+    R11F_G11F_B10Fb: {   // 	f11	f11	f10	 	 	 	Y
+      internalFormat: gl.R11F_G11F_B10F,
+      format: gl.RGB,
+      type: gl.HALF_FLOAT,
+      src: [
+        toHalf(.50), toHalf( .60), toHalf(.100),
+        toHalf( .0), toHalf(  .0), toHalf(  .0),
+        toHalf(.70), toHalf(.100), toHalf(.100),
+      ],
+      diffuseOffset: [0, 0, 0, 100],
+    },
+    R11F_G11F_B10Fc: {   // 	f11	f11	f10	 	 	 	Y
+      internalFormat: gl.R11F_G11F_B10F,
+      format: gl.RGB,
+      type: gl.FLOAT,
+      src: [
+        .50,  .60, .100,
+          0,    0,    0,
+        .70, .100,  .70,
+        .70,  .30,  .70,
+      ],
+      diffuseOffset: [0, 0, 0, 100],
+    },
+    RGB9_E5: {    // 	9	9	9	 	5	 	Y
+      internalFormat: gl.RGB9_E5,
+      format: gl.RGB,
+      type: gl.UNSIGNED_INT_5_9_9_9_REV,
+      src: [
+        rgb9e5(0.5, 1, 1),
+        rgb9e5(  1, 0, 0),
+        rgb9e5(0.7, 1, 0.5),
+      ],
+    },
+    RGB9_E5b: {    // 	9	9	9	 	5	 	Y
+      internalFormat: gl.RGB9_E5,
+      format: gl.RGB,
+      type: gl.HALF_FLOAT,
+      minMag: gl.NEAREST,
+      src: new Uint16Array([
+        toHalf(0.2), toHalf(0.1), toHalf(0.1),
+        toHalf(0.4), toHalf(0.8), toHalf(0.5),
+        toHalf(0.6), toHalf(0.6), toHalf(0.9),
+        toHalf(0.8), toHalf(0.4), toHalf(0.5),
+        toHalf(0.1), toHalf(0.2), toHalf(0.1),
+      ]),
+    },
+    RGB9_E5c: {    // 	9	9	9	 	5	 	Y
+      internalFormat: gl.RGB9_E5,
+      format: gl.RGB,
+      type: gl.FLOAT,
+      width: 2,
+      src: [
+        0.1, 0.2, 1.1,
+        0.2, 0.1, 0.1,
+        0.4, 0.5, 0.8,
+        0.6, 0.9, 0.6,
+        0.8, 0.5, 0.4,
+        1.1, 0.1, 0.2,
+      ],
+    },
+    RGB16F: {   // 	f16	f16	f16	 	 	 	Y
+      internalFormat: gl.RGB16F,
+      format: gl.RGB,
+      type: gl.HALF_FLOAT,
+      minMag: gl.NEAREST,
+      src: [ toHalf(.1), toHalf(.40), toHalf(.90), toHalf(.20), toHalf(.70), toHalf(.50) ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    RGB16F: {   // 	f16	f16	f16	 	 	 	Y
+      internalFormat: gl.RGB16F,
+      format: gl.RGB,
+      type: gl.FLOAT,
+      src: [ 90, 100, 80, 70, 50, 50 ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    RGB32F: {   // 	f32	f32	f32
+      internalFormat: gl.RGB32F,
+      format: gl.RGB,
+      type: gl.FLOAT,
+      src: [
+         50, 100, 50,
+         50,  90, 50,
+         50,  80, 50,
+         50,  70, 50,
+         50,  60, 50,
+         50,  40, 50,
+         50,  30, 50,
+         50,  20, 50,
+      ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    RGB8UI: {   // 	ui8	ui8	ui8
+      internalFormat: gl.RGB8UI,
+      format: gl.RGB_INTEGER,
+      type: gl.UNSIGNED_BYTE,
+      src: [
+        200, 150, 100,
+        180, 175,  90,
+        160, 187,  80,
+      ],
+      diffuseOffset: [ 0, 0, 0, 200 ],
+    },
+    RGB8I: {    // 	i8	i8	i8
+      internalFormat: gl.RGB8I,
+      format: gl.RGB_INTEGER,
+      type: gl.BYTE,
+      src: [
+        0x100 - 50, 25,  100,
+        0x100 - 75, 100, 20,
+        0x100 - 50, 25,  100,
+        0x100 - 75, 60, 40,
+        0x100 - 50, 25,  100,
+        0x100 - 75, 20, 60,
+      ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    RGB16UI: {    // 	ui16	ui16	ui16
+      internalFormat: gl.RGB16UI,
+      format: gl.RGB_INTEGER,
+      type: gl.UNSIGNED_SHORT,
+      src: [
+        150, 100, 200,
+        175,  90, 180,
+        187,  80, 160,
+      ],
+      diffuseOffset: [ 0, 0, 0, 200 ],
+    },
+
+    RGB16I: {   // 	i16	i16	i16
+      internalFormat: gl.RGB16I,
+      format: gl.RGB_INTEGER,
+      type: gl.SHORT,
+      src: [
+         25, 100, 0x100 - 50,
+        100,  20, 0x100 - 75,
+         25, 100, 0x100 - 50,
+         60,  40, 0x100 - 75,
+         25, 100, 0x100 - 50,
+         20,  60, 0x100 - 75,
+      ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    RGB32UI: {    // 	ui32	ui32	ui32
+      internalFormat: gl.RGB32UI,
+      format: gl.RGB_INTEGER,
+      type: gl.UNSIGNED_INT,
+      src: [
+        150, 100, 200,
+        175,  90, 180,
+        187,  80, 160,
+      ],
+      diffuseOffset: [ 0, 0, 0, 200 ],
+    },
+    RGB32I: {   // 	i32	i32	i32
+      internalFormat: gl.RGB32I,
+      format: gl.RGB_INTEGER,
+      type: gl.INT,
+      src: [
+        0x100 - 50,  100,  25,
+        0x100 - 75,   20, 100,
+        0x100 - 50,  100,  25,
+        0x100 - 75,   40,  60,
+        0x100 - 50,  100,  25,
+        0x100 - 75,   60,  20,
+      ],
+      diffuseOffset: [ 0, 0, 0, 100 ],
+    },
+    RGBA8: {    // 	8	8	8	8	 	Y	Y
+      internalFormat: gl.RGBA8,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_BYTE,
+      width: 1,
+      src: [
+        0x80, 0x90, 0x80, 0x80,
+        0x80, 0xA0, 0x80, 0xA0,
+        0x80, 0xB0, 0x80, 0xC0,
+        0x80, 0xC0, 0x80, 0xFF,
+      ],
+    },
+    SRGB8_ALPHA8: {   // 	8	8	8	8	 	Y	Y
+      internalFormat: gl.SRGB8_ALPHA8,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_BYTE,
+      src: [
+        0x80, 0x80, 0x90, 0x80,
+        0x80, 0x80, 0xA0, 0xA0,
+        0x80, 0x80, 0xB0, 0xC0,
+        0x80, 0x80, 0xC0, 0xFF,
+      ],
+    },
+    RGBA8_SNORM: {    // 	s8	s8	s8	s8	 	 	Y
+      internalFormat: gl.RGBA8_SNORM,
+      format: gl.RGBA,
+      type: gl.BYTE,
+      src: [
+        0x7F, 0x60, 0x40, 0x60,
+        0x7F, 0x60, 0x40, 0x65,
+        0x7F, 0x60, 0x40, 0x70,
+        0x7F, 0x60, 0x40, 0x7F,
+      ],
+    },
+    RGB5_A1: {    // 	5	5	5	1	 	Y	Y
+      internalFormat: gl.RGB5_A1,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_BYTE,
+      minMag: gl.NEAREST,
+      src: [
+        0xFF, 0x80, 0x80, 0xFF, 0x80, 0xFF, 0x80, 0x00, 0xFF, 0x80, 0x80, 0xFF, 0x80, 0xFF, 0x80, 0x00,
+        0x80, 0xFF, 0x80, 0x00, 0x80, 0x80, 0xFF, 0xFF, 0x80, 0xFF, 0x80, 0x00, 0x80, 0x80, 0xFF, 0xFF,
+        0xFF, 0x80, 0x80, 0xFF, 0x80, 0xFF, 0x80, 0x00, 0xFF, 0x80, 0x80, 0xFF, 0x80, 0xFF, 0x80, 0x00,
+        0x80, 0xFF, 0x80, 0x00, 0x80, 0x80, 0xFF, 0xFF, 0x80, 0xFF, 0x80, 0x00, 0x80, 0x80, 0xFF, 0xFF,
+      ],
+    },
+    RGB5_A1b: {    // 	5	5	5	1	 	Y	Y
+      internalFormat: gl.RGB5_A1,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_SHORT_5_5_5_1,
+      minMag: gl.NEAREST,
+      wrap: gl.CLAMP_TO_EDGE,
+      src: [
+        rgba5551(0.75, 0.75, 1, 1),
+        rgba5551(0.75, 0.75, 1, 1),
+        rgba5551(0.75, 0.75, 1, 0),
+        rgba5551(0.75, 0.75, .8, 1),
+      ],
+    },
+    RGB5_A1c: {    // 	5	5	5	1	 	Y	Y
+      internalFormat: gl.RGB5_A1,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_INT_2_10_10_10_REV,
+      minMag: gl.NEAREST,
+      wrap: gl.CLAMP_TO_EDGE,
+      width: 1,
+      src: [
+        rgba1010102(0, .1, 1, 1),
+        rgba1010102(0, .2, 1, 1),
+        rgba1010102(0, .4, 1, 1),
+      ],
+    },
+    RGBA4: {    // 	4	4	4	4	 	Y	Y
+      internalFormat: gl.RGBA4,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_BYTE,
+      src: [
+        0xFF, 200, 100, 0xFF,
+        100, 0xFF, 100, 0xFF,
+        200, 100, 0xFF, 0xFF,
+        0xFF, 0xCF, 0xFF, 0xFF,
+      ],
+    },
+    RGBA4b: {    // 	4	4	4	4	 	Y	Y
+      internalFormat: gl.RGBA4,
+      format: gl.RGBA,
+      type: gl.UNSIGNED_SHORT_4_4_4_4,
+      minMag: gl.NEAREST,
+      src: new Uint16Array([
+          0xF00F,
+          0xF008,
+          0xFF0F,
+          0xFF08,
+          0x0F0F,
+          0x0F08,
+          0x0FFF,
+          0x0FF8,
+          0x00FF,
+          0x00F8,
+      ]),
+    },
+//    RGB10_A2: {   // 	10	10	10	2	 	Y	Y
+//      internalFormat: gl.RGB10_A2,
+//      format: gl.RGBA,
+//      type: gl.UNSIGNED_INT_2_10_10_10_REV,
+//      src: ,
+//    },
+    RGBA16F: {    // 	f16	f16	f16	f16	 	 	Y
+      internalFormat: gl.RGBA16F,
+      format: gl.RGBA,
+      type: gl.HALF_FLOAT,
+      src: new Uint16Array([
+        toHalf( 80), toHalf(100), toHalf( 50), toHalf(100),
+        toHalf( 70), toHalf( 50), toHalf(100), toHalf( 80),
+        toHalf( 50), toHalf(100), toHalf( 50), toHalf( 60),
+        toHalf( 40), toHalf( 50), toHalf(100), toHalf( 40),
+        toHalf( 30), toHalf(100), toHalf( 50), toHalf( 20),
+      ]),
+    },
+    RGBA16Fb: {    // 	f16	f16	f16	f16	 	 	Y
+      internalFormat: gl.RGBA16F,
+      format: gl.RGBA,
+      type: gl.FLOAT,
+      src: (function(w, h) {
+        const m = [];
+        for (let y = 0; y < 16; ++y) {
+          for (let x = 0; x < 16; ++x) {
+            m.push(chroma.hsv(Math.abs(Math.atan2(x / 15 - 0.5, y / 15 - 0.5)) / Math.PI * 180, .8, 1).gl().map(x => x * 100));
+          }
+        }
+        return flatten(m);
+      }(4, 4)),
+    },
+    RGBA32F: {    // 	f32	f32	f32	f32
+      internalFormat: gl.RGBA32F,
+      format: gl.RGBA,
+      type: gl.FLOAT,
+      src: [
+        100, 90, 80, 100,
+        100, 90, 80,  50,
+         90, 80, 70, 100,
+         90, 80, 70,  50,
+         80, 70, 60, 100,
+         80, 70, 60,  50,
+         70, 60, 50, 100,
+      ],
+    },
+    RGBA8UI: {    // 	ui8	ui8	ui8	ui8	 	Y
+      internalFormat: gl.RGBA8UI,
+      format: gl.RGBA_INTEGER,
+      type: gl.UNSIGNED_BYTE,
+      width: 5,
+      src: [
+        180, 160, 200, 200,
+        180, 150, 200, 100,
+        180, 140, 200, 200,
+        180, 130, 200, 100,
+        180, 120, 200, 200,
+        180, 160, 200, 100,
+        180, 150, 200, 200,
+        180, 140, 200, 100,
+        180, 130, 200, 200,
+        180, 120, 200, 100,
+      ],
+    },
+    RGBA8I: {   // 	i8	i8	i8	i8	 	Y
+      internalFormat: gl.RGBA8I,
+      format: gl.RGBA_INTEGER,
+      type: gl.BYTE,
+      src: [
+        80, 100, 60,  20,
+        80, 100, 50, 100,
+        80, 100, 40,  20,
+        80, 100, 30, 100,
+        80, 100, 20,  20,
+        80, 100, 60, 100,
+        80, 100, 50,  20,
+        80, 100, 40, 100,
+        80, 100, 30,  20,
+        80, 100, 20, 100,
+      ],
+    },
+    RGB10_A2UI: {   // 	ui10	ui10	ui10	ui2	 	Y
+      internalFormat: gl.RGB10_A2UI,
+      format: gl.RGBA_INTEGER,
+      type: gl.UNSIGNED_INT_2_10_10_10_REV,
+      src: new Uint32Array([
+        rgba1010102(0.09, 0.06, 1, 1),
+        rgba1010102(0.08, 0.06, 1, 0.75),
+        rgba1010102(0.07, 0.06, 1, 0.5),
+        rgba1010102(0.06, 0.06, 1, 0.3),
+      ]),
+      diffuseMult: [1, 1, 1, 50],
+      diffuseOffset: [0, 0, 0, 0],
+    },
+    RGBA16UI: {   // 	ui16	ui16	ui16	ui16	 	Y
+      internalFormat: gl.RGBA16UI,
+      format: gl.RGBA_INTEGER,
+      type: gl.UNSIGNED_SHORT,
+      src: [
+        120, 160, 160, 160,
+        140,  80, 140, 140,
+        120, 120,  60, 120,
+      ],
+    },
+    RGBA16I: {    // 	i16	i16	i16	i16	 	Y
+      internalFormat: gl.RGBA16I,
+      format: gl.RGBA_INTEGER,
+      type: gl.SHORT,
+      src: [
+        20, 60, 60, 100,
+        40, 80, 40,  80,
+        20, 20, 60,  60,
+      ],
+    },
+    RGBA32I: {    // 	i32	i32	i32	i32	 	Y
+      internalFormat: gl.RGBA32I,
+      format: gl.RGBA_INTEGER,
+      type: gl.INT,
+      src: [
+        100, 90, 80, 80,
+         90, 90, 80, 80,
+         80, 90, 80, 80,
+         70, 90, 80, 80,
+      ],
+    },
+    RGBA32UI: {   // 	ui32	ui32	ui32	ui32	 	Y
+      internalFormat: gl.RGBA32UI,
+      format: gl.RGBA_INTEGER,
+      type: gl.UNSIGNED_INT,
+      src: [
+        200, 90, 80, 180,
+        190, 90, 80, 180,
+        180, 90, 80, 180,
+        170, 90, 80, 180,
+      ],
+    },
+    // Sized Internal Format	Format	Type	Depth Bits	Stencil Bits
+    DEPTH_COMPONENT16: {    // 	16
+      internalFormat: gl.DEPTH_COMPONENT16,
+      format: gl.DEPTH_COMPONENT,
+      type: gl.UNSIGNED_SHORT,
+      src: [
+        0xFFFF, 0x7FFF, 0xCFFF,
+      ],
+    },
+    DEPTH_COMPONENT16b: {    // 	16
+      internalFormat: gl.DEPTH_COMPONENT16,
+      format: gl.DEPTH_COMPONENT,
+      type: gl.UNSIGNED_INT,
+      src: [
+        0xFFFFFFFF, 0xCFFFFFFF, 0x7FFFFFFF,
+      ],
+    },
+    DEPTH_COMPONENT24: {    // 	24
+      internalFormat: gl.DEPTH_COMPONENT24,
+      format: gl.DEPTH_COMPONENT,
+      type: gl.UNSIGNED_INT,
+      src: [
+         0xFFFFFFFF, 0x7FFFFFFF, 0x3FFFFFFF,
+      ],
+      diffuseOffset: [ 0, 0, 0, 1, ],
+    },
+    DEPTH_COMPONENT32F: {   // 	f32
+      internalFormat: gl.DEPTH_COMPONENT32F,
+      format: gl.DEPTH_COMPONENT,
+      type: gl.FLOAT,
+      src: [ 1, 0.7, 0.5, 0.3 ],
+      diffuseMult: [100, 100, 100, 1],
+      diffuseOffset: [ 0, 0, 0, 1,],
+    },
+    DEPTH24_STENCIL8: {   // 	24	8
+      internalFormat: gl.DEPTH24_STENCIL8,
+      format: gl.DEPTH_STENCIL,
+      type: gl.UNSIGNED_INT_24_8,
+      src: [
+         0xFFFFFFFF, 0x7FFFFFFF, 0x3FFFFFFF,
+         0x5FFFFFFF, 0xAFFFFFFF, 0xCFFFFFFF,
+      ],
+    },
+    //DEPTH32F_STENCIL8: {    // 	f32	8
+    //  internalFormat: gl.DEPTH32F_STENCIL8,
+    //  format: gl.DEPTH_STENCIL,
+    //  type: gl.FLOAT_32_UNSIGNED_INT_24_8_REV,
+    //  src: ,
+    //},
+  };
+  const textures = twgl.createTextures(gl, texturesSettings);
+
+  // This is soley to make it easy to pick textures at random
+  const twoDTextureNames = Object.keys(textures);
+
+  const objects = [];
+  const drawObjects = [];
+  const numObjects = 200;
+
+//  total / across / aspect = down
+//  200
+
+
+  for (var ii = 0; ii < numObjects; ++ii) {
+    const shape = shapes[ii % shapes.length];
+    const texName = twoDTextureNames[ii % twoDTextureNames.length];
+    const texture = textures[texName];
+    const texSettings = texturesSettings[texName];
+    let programInfo = onePointProgramInfo;
+    if (texName.endsWith("UI")) {
+      programInfo = uintProgramInfo;
+    } else if (texName.endsWith("I")) {
+      programInfo = intProgramInfo;
+    } else if (texName.indexOf("F") >= 0 ) {
+      programInfo = floatProgramInfo;
+    } else if (texName.indexOf("SNORM") >= 0) {
+      programInfo = normProgramInfo;
+    }
+    const uniforms = {
+      u_diffuseMult: texSettings.diffuseMult || [1, 1, 1, 1], //chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
+      u_diffuseOffset: texSettings.diffuseOffset || [0, 0, 0, 0],
+      u_diffuse: texture,
+      u_viewInverse: camera,
+      u_world: m4.identity(),
+      u_worldInverseTranspose: m4.identity(),
+      u_worldViewProjection: m4.identity(),
+    };
+    drawObjects.push({
+      programInfo: programInfo,
+      bufferInfo: shape,
+      uniforms: uniforms,
+    });
+    objects.push({
+      translation: [rand(-10, 10), rand(-10, 10), rand(-10, 10)],
+      ySpeed: rand(0.1, 0.3),
+      zSpeed: rand(0.1, 0.3),
+      uniforms: uniforms,
+    });
+  }
+
+  function render(time) {
+    time *= 0.001;
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    var radius = 20;
+    var orbitSpeed = time * 0.1;
+    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+    var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
+    var target = [0, 0, 0];
+    var up = [0, 1, 0];
+
+    m4.lookAt(eye, target, up, camera);
+    m4.inverse(camera, view);
+    m4.multiply(projection, view, viewProjection);
+
+    objects.forEach(function(obj) {
+      var uni = obj.uniforms;
+      var world = uni.u_world;
+      m4.identity(world);
+      m4.rotateY(world, time * obj.ySpeed, world);
+      m4.rotateZ(world, time * obj.zSpeed, world);
+      m4.translate(world, obj.translation, world);
+      m4.rotateX(world, time, world);
+      m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
+      m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
+    });
+
+    twgl.drawObjectList(gl, drawObjects);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+main();
+  </script>
+</html>
+
+
+
+
