@@ -405,6 +405,8 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 
 *   [uniform buffer objects](http://twgljs.org/examples/uniform-buffer-objects.html)
 *   [3d textures tone mapping](http://twgljs.org/examples/3d-textures-tone-mapping.html)
+*   [samplers](http://twgljs.org/examples/samplers.html)
+*   [webgl2 textures](http://twgljs.org/examples/webgl2-textures.html)
 
 ## AMD support
 
