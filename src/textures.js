@@ -197,7 +197,7 @@ define([
     // sized formats
     t[R8]                 = { format: RED,             colorRenderable: true,  textureFilterable: true,  bytesPerElement:  1,         type: UNSIGNED_BYTE, };
     t[R8_SNORM]           = { format: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement:  1,         type: BYTE, };
-    t[R16F]               = { format: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [2, 4],     type: [HALF_FLOAT, FLOAT], };
+    t[R16F]               = { format: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 2],     type: [FLOAT, HALF_FLOAT], };
     t[R32F]               = { format: RED,             colorRenderable: false, textureFilterable: false, bytesPerElement:  4,         type: FLOAT, };
     t[R8UI]               = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  1,         type: UNSIGNED_BYTE, };
     t[R8I]                = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  1,         type: BYTE, };
@@ -207,7 +207,7 @@ define([
     t[R32I]               = { format: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: INT, };
     t[RG8]                = { format: RG,              colorRenderable: true,  textureFilterable: true,  bytesPerElement:  2,         type: UNSIGNED_BYTE, };
     t[RG8_SNORM]          = { format: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement:  2,         type: BYTE, };
-    t[RG16F]              = { format: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 8],     type: [HALF_FLOAT, FLOAT], };
+    t[RG16F]              = { format: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement: [8, 4],     type: [FLOAT, HALF_FLOAT], };
     t[RG32F]              = { format: RG,              colorRenderable: false, textureFilterable: false, bytesPerElement:  8,         type: FLOAT, };
     t[RG8UI]              = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  2,         type: UNSIGNED_BYTE, };
     t[RG8I]               = { format: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement:  2,         type: BYTE, };
@@ -219,9 +219,9 @@ define([
     t[SRGB8]              = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement:  3,         type: UNSIGNED_BYTE, };
     t[RGB565]             = { format: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 2],     type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5], };
     t[RGB8_SNORM]         = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement:  3,         type: BYTE, };
-    t[R11F_G11F_B10F]     = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 6, 12], type: [UNSIGNED_INT_10F_11F_11F_REV, HALF_FLOAT, FLOAT], };
-    t[RGB9_E5]            = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 6, 12], type: [UNSIGNED_INT_5_9_9_9_REV, HALF_FLOAT, FLOAT], };
-    t[RGB16F]             = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [6, 12],    type: [HALF_FLOAT, FLOAT], };
+    t[R11F_G11F_B10F]     = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_10F_11F_11F_REV], };
+    t[RGB9_E5]            = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_5_9_9_9_REV], };
+    t[RGB16F]             = { format: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [12, 6],    type: [FLOAT, HALF_FLOAT], };
     t[RGB32F]             = { format: RGB,             colorRenderable: false, textureFilterable: false, bytesPerElement: 12,         type: FLOAT, };
     t[RGB8UI]             = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement:  3,         type: UNSIGNED_BYTE, };
     t[RGB8I]              = { format: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement:  3,         type: BYTE, };
@@ -235,7 +235,7 @@ define([
     t[RGB5_A1]            = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 2, 4],  type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV], };
     t[RGBA4]              = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 2],     type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4], };
     t[RGB10_A2]           = { format: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement:  4,         type: UNSIGNED_INT_2_10_10_10_REV, };
-    t[RGBA16F]            = { format: RGBA,            colorRenderable: false, textureFilterable: true,  bytesPerElement: [8, 16],    type: [HALF_FLOAT, FLOAT], };
+    t[RGBA16F]            = { format: RGBA,            colorRenderable: false, textureFilterable: true,  bytesPerElement: [16, 8],    type: [FLOAT, HALF_FLOAT], };
     t[RGBA32F]            = { format: RGBA,            colorRenderable: false, textureFilterable: false, bytesPerElement: 16,         type: FLOAT, };
     t[RGBA8UI]            = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: UNSIGNED_BYTE, };
     t[RGBA8I]             = { format: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement:  4,         type: BYTE, };
@@ -283,6 +283,23 @@ define([
       throw "unknown internal format";
     }
     return bytesPerElement;
+  }
+
+  /**
+   * Gets the format for a given internalFormat
+   *
+   * @param {number} internalFormat The internal format
+   * @return {{format:number, type:number}} the corresponding format and type
+   */
+  function getFormatAndTypeForInternalFormat(internalFormat) {
+    const info = textureInternalFormatInfo[internalFormat];
+    if (!info) {
+      throw "unknown internal format";
+    }
+    return {
+      format: info.format,
+      type: Array.isArray(info.type) ? info.type[0] : info.type,
+    };
   }
 
   /**
@@ -770,9 +787,10 @@ define([
       var target = options.target || gl.TEXTURE_2D;
       var width = element.width;
       var height = element.height;
-      var format = options.format || gl.RGBA;
-      var internalFormat = options.internalFormat || format;
-      var type = options.type || gl.UNSIGNED_BYTE;
+      var internalFormat = options.internalFormat || options.format || gl.RGBA;
+      var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+      var format = options.format || formatType.format;
+      var type = options.type || formatType.type;
       savePackState(gl, options);
       gl.bindTexture(target, tex);
       if (target === gl.TEXTURE_CUBE_MAP) {
@@ -1085,11 +1103,11 @@ define([
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @return {number} the gl texture type
    */
-  function getTextureTypeForArrayType(gl, src) {
+  function getTextureTypeForArrayType(gl, src, defaultType) {
     if (isArrayBuffer(src)) {
       return typedArrays.getGLTypeForTypedArray(src);
     }
-    return gl.UNSIGNED_BYTE;
+    return defaultType || gl.UNSIGNED_BYTE;
   }
 
   function guessDimensions(gl, target, width, height, numElements) {
@@ -1139,9 +1157,10 @@ define([
     var width = options.width;
     var height = options.height;
     var depth = options.depth;
-    var format = options.format || gl.RGBA;
-    var internalFormat = options.internalFormat || format;
-    var type = options.type || getTextureTypeForArrayType(gl, src);
+    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+    var format = options.format || formatType.format;
+    var type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
     if (!isArrayBuffer(src)) {
       var Type = typedArrays.getTypedArrayTypeForGLType(type);
       src = new Type(src);
@@ -1219,9 +1238,10 @@ define([
   function setEmptyTexture(gl, tex, options) {
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
-    var format = options.format || gl.RGBA;
-    var internalFormat = options.internalFormat || format;
-    var type = options.type || gl.UNSIGNED_BYTE;
+    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+    var format = options.format || formatType.format;
+    var type = options.type || formatTYpe.type;
     savePackState(gl, options);
     if (target === gl.TEXTURE_CUBE_MAP) {
       for (var ii = 0; ii < 6; ++ii) {
@@ -1250,9 +1270,9 @@ define([
     var target = options.target || gl.TEXTURE_2D;
     var width  = options.width  || 1;
     var height = options.height || 1;
-    var format = options.format || gl.RGBA;
-    var internalFormat = options.internalFormat || format;
-    var type = options.type || gl.UNSIGNED_BYTE;
+    var internalFormat = options.internalFormat || gl.RGBA;
+    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+    var type = options.type || formatType.type;
     gl.bindTexture(target, tex);
     if (target === gl.TEXTURE_CUBE_MAP) {
       // this should have been the default for CUBEMAPS :(
@@ -1317,15 +1337,17 @@ define([
     height = height || options.height;
     var target = options.target || gl.TEXTURE_2D;
     gl.bindTexture(target, tex);
-    var format = options.format || gl.RGBA;
+    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+    var format = options.format || formatType.format;
     var type;
     var src = options.src;
     if (!src) {
-      type = options.type || gl.UNSIGNED_BYTE;
+      type = options.type || formatType.type;
     } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
-      type = options.type || getTextureTypeForArrayType(gl, src);
+      type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
     } else {
-      type = options.type || gl.UNSIGNED_BYTE;
+      type = options.type || formatType.type
     }
     if (target === gl.TEXTURE_CUBE_MAP) {
       for (var ii = 0; ii < 6; ++ii) {
