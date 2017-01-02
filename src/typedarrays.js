@@ -58,6 +58,36 @@ define([], function() {
   var INT                            = 0x1404;
   var UNSIGNED_INT                   = 0x1405;
   var FLOAT                          = 0x1406;
+  const UNSIGNED_SHORT_4_4_4_4       = 0x8033;
+  const UNSIGNED_SHORT_5_5_5_1       = 0x8034;
+  const UNSIGNED_SHORT_5_6_5         = 0x8363;
+  const HALF_FLOAT                   = 0x140B;
+  const UNSIGNED_INT_2_10_10_10_REV  = 0x8368;
+  const UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+  const UNSIGNED_INT_5_9_9_9_REV     = 0x8C3E;
+  const FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+  const UNSIGNED_INT_24_8            = 0x84FA;
+
+  const glTypeToTypedArray = {};
+  {
+    const tt = glTypeToTypedArray;
+    tt[BYTE]                           = Int8Array;
+    tt[UNSIGNED_BYTE]                  = Uint8Array;
+    tt[SHORT]                          = Int16Array;
+    tt[UNSIGNED_SHORT]                 = Uint16Array;
+    tt[INT]                            = Int32Array;
+    tt[UNSIGNED_INT]                   = Uint32Array;
+    tt[FLOAT]                          = Float32Array;
+    tt[UNSIGNED_SHORT_4_4_4_4]         = Uint16Array;
+    tt[UNSIGNED_SHORT_5_5_5_1]         = Uint16Array;
+    tt[UNSIGNED_SHORT_5_6_5]           = Uint16Array;
+    tt[HALF_FLOAT]                     = Uint16Array;
+    tt[UNSIGNED_INT_2_10_10_10_REV]    = Uint32Array;
+    tt[UNSIGNED_INT_10F_11F_11F_REV]   = Uint32Array;
+    tt[UNSIGNED_INT_5_9_9_9_REV]       = Uint32Array;
+    tt[FLOAT_32_UNSIGNED_INT_24_8_REV] = Uint32Array;
+    tt[UNSIGNED_INT_24_8]              = Uint32Array;
+  }
 
   /**
    * Get the GL type for a typedArray
@@ -85,17 +115,11 @@ define([], function() {
    * @memberOf module:twgl/typedArray
    */
   function getTypedArrayTypeForGLType(type) {
-    switch (type) {
-      case BYTE:           return Int8Array;     // eslint-disable-line
-      case UNSIGNED_BYTE:  return Uint8Array;    // eslint-disable-line
-      case SHORT:          return Int16Array;    // eslint-disable-line
-      case UNSIGNED_SHORT: return Uint16Array;   // eslint-disable-line
-      case INT:            return Int32Array;    // eslint-disable-line
-      case UNSIGNED_INT:   return Uint32Array;   // eslint-disable-line
-      case FLOAT:          return Float32Array;  // eslint-disable-line
-      default:
-        throw "unknown gl type";
+    const CTOR = glTypeToTypedArray[type];
+    if (!CTOR) {
+      throw "unknown gl type";
     }
+    return CTOR;
   }
 
   function isArrayBuffer(a) {
