@@ -173,13 +173,14 @@ module.exports = function(grunt) {
             compress: {
               warnings: false,
             },
-            mangle: true,
-            //mangle: {
-            //  props: {
-            //    ignore_quoted: true,
-            //    regex: /^((?!(createElement|getContext)).)*$/,
-            //  },
-            //},
+            //mangle: true,
+            mangle: {
+              props: {
+                ignore_quoted: true,
+                //regex: /^((?!(createElement|getContext)).)*$/,
+                regex: /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/,
+              },
+            },
           }),
         ],
         module: {
@@ -208,7 +209,14 @@ module.exports = function(grunt) {
             compress: {
               warnings: false,
             },
-            mangle: true,
+            //mangle: true,
+            mangle: {
+              props: {
+                ignore_quoted: true,
+                //regex: /^((?!(createElement|getContext)).)*$/,
+                regex: /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/,
+              },
+            },
           }),
         ],
         module: {
