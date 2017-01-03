@@ -200,33 +200,33 @@ var toHalf = (function() {
   var floatView = new Float32Array(1);
   var int32View = new Int32Array(floatView.buffer);
 
-  return function toHalf( fval ) {
+  return function toHalf(fval) {
     floatView[0] = fval;
     var fbits = int32View[0];
-    var sign  = (fbits >> 16) & 0x8000;          // sign only
-    var val   = ( fbits & 0x7fffffff ) + 0x1000; // rounded value
+    var sign  = (fbits >> 16) & 0x8000;         // sign only
+    var val   = (fbits & 0x7fffffff) + 0x1000;  // rounded value
 
-    if( val >= 0x47800000 ) {             // might be or become NaN/Inf
-      if( ( fbits & 0x7fffffff ) >= 0x47800000 ) {
-                                          // is or must become NaN/Inf
-        if( val < 0x7f800000 ) {          // was value but too large
-          return sign | 0x7c00;           // make it +/-Inf
+    if (val >= 0x47800000) {                    // might be or become NaN/Inf
+      if ((fbits & 0x7fffffff) >= 0x47800000) {
+                                                // is or must become NaN/Inf
+        if (val < 0x7f800000) {                 // was value but too large
+          return sign | 0x7c00;                 // make it +/-Inf
         }
-        return sign | 0x7c00 |            // remains +/-Inf or NaN
-            ( fbits & 0x007fffff ) >> 13; // keep NaN (and Inf) bits
+        return sign | 0x7c00 |                  // remains +/-Inf or NaN
+            (fbits & 0x007fffff) >> 13;         // keep NaN (and Inf) bits
       }
-      return sign | 0x7bff;               // unrounded not quite Inf
+      return sign | 0x7bff;                     // unrounded not quite Inf
     }
-    if( val >= 0x38800000 ) {             // remains normalized value
-      return sign | val - 0x38000000 >> 13; // exp - 127 + 15
+    if (val >= 0x38800000) {                    // remains normalized value
+      return sign | val - 0x38000000 >> 13;     // exp - 127 + 15
     }
-    if( val < 0x33000000 )  {             // too small for subnormal
-      return sign;                        // becomes +/-0
+    if (val < 0x33000000)  {                    // too small for subnormal
+      return sign;                              // becomes +/-0
     }
-    val = ( fbits & 0x7fffffff ) >> 23;   // tmp exp for subnormal calc
-    return sign | ( ( fbits & 0x7fffff | 0x800000 ) // add subnormal bit
-         + ( 0x800000 >>> val - 102 )     // round depending on cut off
-         >> 126 - val );                  // div by 2^(1-(exp-127+15)) and >> 13 | exp=0
+    val = (fbits & 0x7fffffff) >> 23;            // tmp exp for subnormal calc
+    return sign | ((fbits & 0x7fffff | 0x800000) // add subnormal bit
+         + (0x800000 >>> val - 102)              // round depending on cut off
+         >> 126 - val);                          // div by 2^(1-(exp-127+15)) and >> 13 | exp=0
   };
 }());
 
@@ -260,7 +260,6 @@ function main() {
   }
 
   // Shared values
-  var baseHue = rand(360);
   var camera = m4.identity();
   var view = m4.identity();
   var viewProjection = m4.identity();
@@ -268,21 +267,21 @@ function main() {
   function rgb565(r, g, b) {
     return (((r * 31) | 0) << 11) |
            (((g * 63) | 0) <<  6) |
-           (((b * 31) | 0) <<  0) ;
+           (((b * 31) | 0) <<  0);
   }
 
   function rgba5551(r, g, b, a) {
     return (((r * 31) | 0) << 11) |
            (((g * 31) | 0) <<  6) |
            (((b * 31) | 0) <<  1) |
-           (((a *  1) | 0) <<  0) ;
+           (((a *  1) | 0) <<  0);
   }
 
   function rgba1010102(r, g, b, a) {
     return (((r * 1023) | 0) <<  0) |
            (((g * 1023) | 0) << 10) |
            (((b * 1023) | 0) << 20) |
-           (((a *    3) | 0) << 30) ;
+           (((a *    3) | 0) << 30);
   }
 
   function rgb9e5(r, g, b) {
@@ -290,7 +289,7 @@ function main() {
     return (((r * 511) | 0) <<  0) |
            (((g * 511) | 0) <<  9) |
            (((b * 511) | 0) << 18) |
-           (e               << 27) ;
+           (e               << 27);
   }
 
   function to11Bit(v) {
@@ -304,7 +303,7 @@ function main() {
   function rgb101111(r, g, b) {
     return (to11Bit(r) <<  0) |
            (to11Bit(g) << 11) |
-           (to10Bit(b) << 22) ;
+           (to10Bit(b) << 22);
   }
 
   const flatten = list => list.reduce(
@@ -452,7 +451,7 @@ function main() {
       internalFormat: gl.RG16UI,
       format: gl.RG_INTEGER,
       type: gl.UNSIGNED_SHORT,
-      src: [  75,50, 75, 25, 200, 175, 100, 200 ],
+      src: [  75, 50, 75, 25, 200, 175, 100, 200 ],
       diffuseOffset: [ 0, 0, 200, 200 ],
     },
     RG16I: {    // 	i16	i16	 	 	 	Y
@@ -466,7 +465,7 @@ function main() {
       internalFormat: gl.RG32UI,
       format: gl.RG_INTEGER,
       type: gl.UNSIGNED_INT,
-      src: [  75,50, 75, 25, 200, 175, 100, 200 ],
+      src: [ 75, 50, 75, 25, 200, 175, 100, 200 ],
       diffuseOffset: [ 0, 0, 100, 200 ],
     },
     RG32I: {    // 	i32	i32	 	 	 	Y
@@ -601,11 +600,11 @@ function main() {
       src: [ toHalf(.1), toHalf(.40), toHalf(.90), toHalf(.20), toHalf(.70), toHalf(.50) ],
       diffuseOffset: [ 0, 0, 0, 100 ],
     },
-    RGB16F: {   // 	f16	f16	f16	 	 	 	Y
+    RGB16Fb: {   // 	f16	f16	f16	 	 	 	Y
       internalFormat: gl.RGB16F,
       format: gl.RGB,
       type: gl.FLOAT,
-      src: [ 90, 100, 80, 70, 50, 50 ],
+      src: [ .90, .100, .80, .70, .50, .50 ],
       diffuseOffset: [ 0, 0, 0, 100 ],
     },
     RGB32F: {   // 	f32	f32	f32
@@ -825,13 +824,13 @@ function main() {
       type: gl.FLOAT,
       src: (function(w, h) {
         const m = [];
-        for (let y = 0; y < 16; ++y) {
-          for (let x = 0; x < 16; ++x) {
-            m.push(chroma.hsv(Math.abs(Math.atan2(x / 15 - 0.5, y / 15 - 0.5)) / Math.PI * 180, .8, 1).gl().map(x => x * 100));
+        for (let y = 0; y < w; ++y) {
+          for (let x = 0; x < h; ++x) {
+            m.push(chroma.hsv(Math.abs(Math.atan2(x / (w - 1) - 0.5, y / (h - 1) - 0.5)) / Math.PI * 180, .8, 1).gl().map(x => x * 100));
           }
         }
         return flatten(m);
-      }(4, 4)),
+      }(16, 16)),
     },
     RGBA32F: {    // 	f32	f32	f32	f32
       internalFormat: gl.RGBA32F,
@@ -968,8 +967,8 @@ function main() {
       format: gl.DEPTH_COMPONENT,
       type: gl.FLOAT,
       src: [ 1, 0.7, 0.5, 0.3 ],
-      diffuseMult: [100, 100, 100, 1],
-      diffuseOffset: [ 0, 0, 0, 1,],
+      diffuseMult: [ 100, 100, 100, 1 ],
+      diffuseOffset: [ 0, 0, 0, 1 ],
     },
     DEPTH24_STENCIL8: {   // 	24	8
       internalFormat: gl.DEPTH24_STENCIL8,
