@@ -1,5 +1,36 @@
 #Changelist
 
+*   2.7
+
+    *   mangle some property names
+
+        saves about 4k
+
+    *   add `minMag` property to `TextureOptions`
+
+        It sets both `TEXTURE_MIN_FILTER` and `TEXTURE_MAG_FILTER`
+
+    *   Change texture filtering to use internalFormat
+
+        In WebGL1 we checked power of 2 in width and height. In WebGL2
+        we check if the internal format supports filtering. This might
+        break things going from WebGL1 to WebGL2 if you expected a
+        non-power-of-2 texture to use gl.LINEAR.
+
+        Note: One issue is TWGL can't tell if you've enabled `OES_texture_float_linear`
+        so you use float textures it can't tell if it can generate mips or not
+        and you'll have to be explicit with texture settings. Currently it assumes
+        you can generate mips. Pass in `auto: false` to `createTexture(s)` if you didn't
+        enable `OES_texture_float_linear` or similarly for half float formats.
+
+    *   Support samplers
+
+    *   Support webgl2 texture formats
+
+*   2.6.2
+
+    *   remove "experimental-webgl2" which never existed
+
 *   2.6.1
 
     *   allow offset=0 in setAttributeInfoBufferFromArray
