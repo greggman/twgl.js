@@ -22,7 +22,7 @@
 chroma.brewer=brewer={OrRd:["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000"],PuBu:["#fff7fb","#ece7f2","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"],BuPu:["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#810f7c","#4d004b"],Oranges:["#fff5eb","#fee6ce","#fdd0a2","#fdae6b","#fd8d3c","#f16913","#d94801","#a63603","#7f2704"],BuGn:["#f7fcfd","#e5f5f9","#ccece6","#99d8c9","#66c2a4","#41ae76","#238b45","#006d2c","#00441b"],YlOrBr:["#ffffe5","#fff7bc","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#993404","#662506"],YlGn:["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"],Reds:["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],RdPu:["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"],Greens:["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#00441b"],YlGnBu:["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],Purples:["#fcfbfd","#efedf5","#dadaeb","#bcbddc","#9e9ac8","#807dba","#6a51a3","#54278f","#3f007d"],GnBu:["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081"],Greys:["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"],YlOrRd:["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"],PuRd:["#f7f4f9","#e7e1ef","#d4b9da","#c994c7","#df65b0","#e7298a","#ce1256","#980043","#67001f"],Blues:["#f7fbff","#deebf7","#c6dbef","#9ecae1","#6baed6","#4292c6","#2171b5","#08519c","#08306b"],PuBuGn:["#fff7fb","#ece2f0","#d0d1e6","#a6bddb","#67a9cf","#3690c0","#02818a","#016c59","#014636"],Spectral:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],RdYlGn:["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"],RdBu:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"],PiYG:["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#f7f7f7","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"],PRGn:["#40004b","#762a83","#9970ab","#c2a5cf","#e7d4e8","#f7f7f7","#d9f0d3","#a6dba0","#5aae61","#1b7837","#00441b"],RdYlBu:["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"],BrBG:["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],RdGy:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],PuOr:["#7f3b08","#b35806","#e08214","#fdb863","#fee0b6","#f7f7f7","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b"],Set2:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"],Accent:["#7fc97f","#beaed4","#fdc086","#ffff99","#386cb0","#f0027f","#bf5b17","#666666"],Set1:["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"],Set3:["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"],Dark2:["#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d","#666666"],Paired:["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"],Pastel2:["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"],Pastel1:["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]};chroma.colors=colors={indigo:"#4b0082",gold:"#ffd700",hotpink:"#ff69b4",firebrick:"#b22222",indianred:"#cd5c5c",yellow:"#ffff00",mistyrose:"#ffe4e1",darkolivegreen:"#556b2f",olive:"#808000",darkseagreen:"#8fbc8f",pink:"#ffc0cb",tomato:"#ff6347",lightcoral:"#f08080",orangered:"#ff4500",navajowhite:"#ffdead",lime:"#00ff00",palegreen:"#98fb98",darkslategrey:"#2f4f4f",greenyellow:"#adff2f",burlywood:"#deb887",seashell:"#fff5ee",mediumspringgreen:"#00fa9a",fuchsia:"#ff00ff",papayawhip:"#ffefd5",blanchedalmond:"#ffebcd",chartreuse:"#7fff00",dimgray:"#696969",black:"#000000",peachpuff:"#ffdab9",springgreen:"#00ff7f",aquamarine:"#7fffd4",white:"#ffffff",orange:"#ffa500",lightsalmon:"#ffa07a",darkslategray:"#2f4f4f",brown:"#a52a2a",ivory:"#fffff0",dodgerblue:"#1e90ff",peru:"#cd853f",lawngreen:"#7cfc00",chocolate:"#d2691e",crimson:"#dc143c",forestgreen:"#228b22",darkgrey:"#a9a9a9",lightseagreen:"#20b2aa",cyan:"#00ffff",mintcream:"#f5fffa",silver:"#c0c0c0",antiquewhite:"#faebd7",mediumorchid:"#ba55d3",skyblue:"#87ceeb",gray:"#808080",darkturquoise:"#00ced1",goldenrod:"#daa520",darkgreen:"#006400",floralwhite:"#fffaf0",darkviolet:"#9400d3",darkgray:"#a9a9a9",moccasin:"#ffe4b5",saddlebrown:"#8b4513",grey:"#808080",darkslateblue:"#483d8b",lightskyblue:"#87cefa",lightpink:"#ffb6c1",mediumvioletred:"#c71585",slategrey:"#708090",red:"#ff0000",deeppink:"#ff1493",limegreen:"#32cd32",darkmagenta:"#8b008b",palegoldenrod:"#eee8aa",plum:"#dda0dd",turquoise:"#40e0d0",lightgrey:"#d3d3d3",lightgoldenrodyellow:"#fafad2",darkgoldenrod:"#b8860b",lavender:"#e6e6fa",maroon:"#800000",yellowgreen:"#9acd32",sandybrown:"#f4a460",thistle:"#d8bfd8",violet:"#ee82ee",navy:"#000080",magenta:"#ff00ff",dimgrey:"#696969",tan:"#d2b48c",rosybrown:"#bc8f8f",olivedrab:"#6b8e23",blue:"#0000ff",lightblue:"#add8e6",ghostwhite:"#f8f8ff",honeydew:"#f0fff0",cornflowerblue:"#6495ed",slateblue:"#6a5acd",linen:"#faf0e6",darkblue:"#00008b",powderblue:"#b0e0e6",seagreen:"#2e8b57",darkkhaki:"#bdb76b",snow:"#fffafa",sienna:"#a0522d",mediumblue:"#0000cd",royalblue:"#4169e1",lightcyan:"#e0ffff",green:"#008000",mediumpurple:"#9370db",midnightblue:"#191970",cornsilk:"#fff8dc",paleturquoise:"#afeeee",bisque:"#ffe4c4",slategray:"#708090",darkcyan:"#008b8b",khaki:"#f0e68c",wheat:"#f5deb3",teal:"#008080",darkorchid:"#9932cc",deepskyblue:"#00bfff",salmon:"#fa8072",darkred:"#8b0000",steelblue:"#4682b4",palevioletred:"#db7093",lightslategray:"#778899",aliceblue:"#f0f8ff",lightslategrey:"#778899",lightgreen:"#90ee90",orchid:"#da70d6",gainsboro:"#dcdcdc",mediumseagreen:"#3cb371",lightgray:"#d3d3d3",mediumturquoise:"#48d1cc",lemonchiffon:"#fffacd",cadetblue:"#5f9ea0",lightyellow:"#ffffe0",lavenderblush:"#fff0f5",coral:"#ff7f50",purple:"#800080",aqua:"#00ffff",whitesmoke:"#f5f5f5",mediumslateblue:"#7b68ee",darkorange:"#ff8c00",mediumaquamarine:"#66cdaa",darksalmon:"#e9967a",beige:"#f5f5dc",blueviolet:"#8a2be2",azure:"#f0ffff",lightsteelblue:"#b0c4de",oldlace:"#fdf5e6"};type=function(){var classToType,name,_i,_len,_ref1;classToType={};_ref1="Boolean Number String Function Array Date RegExp Undefined Null".split(" ");for(_i=0,_len=_ref1.length;_i<_len;_i++){name=_ref1[_i];classToType["[object "+name+"]"]=name.toLowerCase()}return function(obj){var strType;strType=Object.prototype.toString.call(obj);return classToType[strType]||"object"}}();limit=function(x,min,max){if(min==null){min=0}if(max==null){max=1}if(x<min){x=min}if(x>max){x=max}return x};unpack=function(args){if(args.length>=3){return args}else{return args[0]}};TWOPI=Math.PI*2;PITHIRD=Math.PI/3;cos=Math.cos;bezier=function(colors){var I,I0,I1,c,lab0,lab1,lab2,lab3,_ref1,_ref2,_ref3;colors=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(chroma(c))}return _results}();if(colors.length===2){_ref1=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref1[0],lab1=_ref1[1];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push(lab0[i]+t*(lab1[i]-lab0[i]))}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===3){_ref2=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref2[0],lab1=_ref2[1],lab2=_ref2[2];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*lab0[i]+2*(1-t)*t*lab1[i]+t*t*lab2[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===4){_ref3=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref3[0],lab1=_ref3[1],lab2=_ref3[2],lab3=_ref3[3];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*(1-t)*lab0[i]+3*(1-t)*(1-t)*t*lab1[i]+3*(1-t)*t*t*lab2[i]+t*t*t*lab3[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===5){I0=bezier(colors.slice(0,3));I1=bezier(colors.slice(2,5));I=function(t){if(t<.5){return I0(t*2)}else{return I1((t-.5)*2)}}}return I};chroma.interpolate.bezier=bezier}.call(this);
 },{}],2:[function(require,module,exports){
 /*!
- * @license twgl.js 2.6.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.7.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -82,7 +82,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(10), __webpack_require__(11), __webpack_require__(12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (twgl, m4, v3, primitives) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(10), __webpack_require__(11), __webpack_require__(12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (twgl, m4, v3, primitives) {
 
 	  "use strict";
 
@@ -96,7 +98,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -419,7 +423,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -1050,7 +1056,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -1110,6 +1118,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var INT = 0x1404;
 	  var UNSIGNED_INT = 0x1405;
 	  var FLOAT = 0x1406;
+	  var UNSIGNED_SHORT_4_4_4_4 = 0x8033;
+	  var UNSIGNED_SHORT_5_5_5_1 = 0x8034;
+	  var UNSIGNED_SHORT_5_6_5 = 0x8363;
+	  var HALF_FLOAT = 0x140B;
+	  var UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+	  var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+	  var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
+	  var FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+	  var UNSIGNED_INT_24_8 = 0x84FA;
+
+	  var glTypeToTypedArray = {};
+	  {
+	    var tt = glTypeToTypedArray;
+	    tt[BYTE] = Int8Array;
+	    tt[UNSIGNED_BYTE] = Uint8Array;
+	    tt[SHORT] = Int16Array;
+	    tt[UNSIGNED_SHORT] = Uint16Array;
+	    tt[INT] = Int32Array;
+	    tt[UNSIGNED_INT] = Uint32Array;
+	    tt[FLOAT] = Float32Array;
+	    tt[UNSIGNED_SHORT_4_4_4_4] = Uint16Array;
+	    tt[UNSIGNED_SHORT_5_5_5_1] = Uint16Array;
+	    tt[UNSIGNED_SHORT_5_6_5] = Uint16Array;
+	    tt[HALF_FLOAT] = Uint16Array;
+	    tt[UNSIGNED_INT_2_10_10_10_REV] = Uint32Array;
+	    tt[UNSIGNED_INT_10F_11F_11F_REV] = Uint32Array;
+	    tt[UNSIGNED_INT_5_9_9_9_REV] = Uint32Array;
+	    tt[FLOAT_32_UNSIGNED_INT_24_8_REV] = Uint32Array;
+	    tt[UNSIGNED_INT_24_8] = Uint32Array;
+	  }
 
 	  /**
 	   * Get the GL type for a typedArray
@@ -1153,24 +1191,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @memberOf module:twgl/typedArray
 	   */
 	  function getTypedArrayTypeForGLType(type) {
-	    switch (type) {
-	      case BYTE:
-	        return Int8Array; // eslint-disable-line
-	      case UNSIGNED_BYTE:
-	        return Uint8Array; // eslint-disable-line
-	      case SHORT:
-	        return Int16Array; // eslint-disable-line
-	      case UNSIGNED_SHORT:
-	        return Uint16Array; // eslint-disable-line
-	      case INT:
-	        return Int32Array; // eslint-disable-line
-	      case UNSIGNED_INT:
-	        return Uint32Array; // eslint-disable-line
-	      case FLOAT:
-	        return Float32Array; // eslint-disable-line
-	      default:
-	        throw "unknown gl type";
+	    var CTOR = glTypeToTypedArray[type];
+	    if (!CTOR) {
+	      throw "unknown gl type";
 	    }
+	    return CTOR;
 	  }
 
 	  function isArrayBuffer(a) {
@@ -1189,7 +1214,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -1272,9 +1299,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
 	   * @return {number} version of gl
 	   */
-	  function getVersionAsNumber(gl) {
-	    return parseFloat(gl.getParameter(gl.VERSION).substr(6));
-	  }
+	  //function getVersionAsNumber(gl) {
+	  //  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+	  //}
 
 	  /**
 	   * Check if context is WebGL 2.0
@@ -1283,7 +1310,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @memberOf module:twgl
 	   */
 	  function isWebGL2(gl) {
-	    return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+	    // This is the correct check but it's slow
+	    //return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+	    // This might also be the correct check but I'm assuming it's slow-ish
+	    // return gl instanceof WebGL2RenderingContext;
+	    return !!gl.texStorage2D;
 	  }
 
 	  /**
@@ -1293,8 +1324,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @memberOf module:twgl
 	   */
 	  function isWebGL1(gl) {
-	    var version = getVersionAsNumber(gl);
-	    return version <= 1.0 && version > 0.0; // because as of 2016/5 Edge returns 0.96
+	    // This is the correct check but it's slow
+	    //var version = getVersionAsNumber(gl);
+	    //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
+	    // This might also be the correct check but I'm assuming it's slow-ish
+	    // return gl instanceof WebGLRenderingContext;
+	    return !gl.texStorage2D;
 	  }
 
 	  var error = window.console && window.console.error && typeof window.console.error === "function" ? window.console.error.bind(window.console) : function () {};
@@ -1316,7 +1351,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -1488,7 +1525,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -1744,7 +1783,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function samplerSetter(gl, type, unit, location) {
 	    var bindPoint = getBindPointForSamplerType(gl, type);
-	    return function (texture) {
+	    return function (textureOrPair) {
+	      var texture = void 0;
+	      if (textureOrPair instanceof WebGLTexture) {
+	        texture = textureOrPair;
+	      } else {
+	        texture = textureOrPair.texture;
+	        gl.bindSampler(unit, textureOrPair.sampler);
+	      }
 	      gl.uniform1i(location, unit);
 	      gl.activeTexture(gl.TEXTURE0 + unit);
 	      gl.bindTexture(bindPoint, texture);
@@ -1760,8 +1806,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return function (textures) {
 	      gl.uniform1iv(location, units);
-	      textures.forEach(function (texture, index) {
+	      textures.forEach(function (textureOrPair, index) {
 	        gl.activeTexture(gl.TEXTURE0 + units[index]);
+	        var texture = void 0;
+	        if (textureOrPair instanceof WebGLTexture) {
+	          texture = textureOrPair;
+	        } else {
+	          texture = textureOrPair.texture;
+	          gl.bindSampler(unit, textureOrPair.sampler);
+	        }
 	        gl.bindTexture(bindPoint, texture);
 	      });
 	    };
@@ -2560,6 +2613,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     twgl.setUniforms(programInfo, uniforms);
 	   *     twgl.setUniforms(programInfo, moreUniforms);
 	   *
+	   * You can also add WebGLSamplers to uniform samplers as in
+	   *
+	   *     var uniforms = {
+	   *       u_someSampler: {
+	   *         texture: someWebGLTexture,
+	   *         sampler: someWebGLSampler,
+	   *       },
+	   *     };
+	   *
+	   * In which case both the sampler and texture will be bound to the
+	   * same unit.
+	   *
 	   * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
 	   *        `createUniformSetters`.
 	   * @param {Object.<string, ?>} values an object with values for the
@@ -2873,7 +2938,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -3212,7 +3279,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -3277,6 +3346,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var RGBA = 0x1908;
 	  var LUMINANCE = 0x1909;
 	  var LUMINANCE_ALPHA = 0x190A;
+	  var DEPTH_COMPONENT = 0x1902;
+	  var DEPTH_STENCIL = 0x84F9;
 
 	  /* TextureWrapMode */
 	  var REPEAT = 0x2901; // eslint-disable-line
@@ -3290,6 +3361,270 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
 	  var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
 	  var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
+
+	  var R8 = 0x8229;
+	  var R8_SNORM = 0x8F94;
+	  var R16F = 0x822D;
+	  var R32F = 0x822E;
+	  var R8UI = 0x8232;
+	  var R8I = 0x8231;
+	  var RG16UI = 0x823A;
+	  var RG16I = 0x8239;
+	  var RG32UI = 0x823C;
+	  var RG32I = 0x823B;
+	  var RG8 = 0x822B;
+	  var RG8_SNORM = 0x8F95;
+	  var RG16F = 0x822F;
+	  var RG32F = 0x8230;
+	  var RG8UI = 0x8238;
+	  var RG8I = 0x8237;
+	  var R16UI = 0x8234;
+	  var R16I = 0x8233;
+	  var R32UI = 0x8236;
+	  var R32I = 0x8235;
+	  var RGB8 = 0x8051;
+	  var SRGB8 = 0x8C41;
+	  var RGB565 = 0x8D62;
+	  var RGB8_SNORM = 0x8F96;
+	  var R11F_G11F_B10F = 0x8C3A;
+	  var RGB9_E5 = 0x8C3D;
+	  var RGB16F = 0x881B;
+	  var RGB32F = 0x8815;
+	  var RGB8UI = 0x8D7D;
+	  var RGB8I = 0x8D8F;
+	  var RGB16UI = 0x8D77;
+	  var RGB16I = 0x8D89;
+	  var RGB32UI = 0x8D71;
+	  var RGB32I = 0x8D83;
+	  var RGBA8 = 0x8058;
+	  var SRGB8_ALPHA8 = 0x8C43;
+	  var RGBA8_SNORM = 0x8F97;
+	  var RGB5_A1 = 0x8057;
+	  var RGBA4 = 0x8056;
+	  var RGB10_A2 = 0x8059;
+	  var RGBA16F = 0x881A;
+	  var RGBA32F = 0x8814;
+	  var RGBA8UI = 0x8D7C;
+	  var RGBA8I = 0x8D8E;
+	  var RGB10_A2UI = 0x906F;
+	  var RGBA16UI = 0x8D76;
+	  var RGBA16I = 0x8D88;
+	  var RGBA32I = 0x8D82;
+	  var RGBA32UI = 0x8D70;
+
+	  var DEPTH_COMPONENT16 = 0x81A5;
+	  var DEPTH_COMPONENT24 = 0x81A6;
+	  var DEPTH_COMPONENT32F = 0x8CAC;
+	  var DEPTH32F_STENCIL8 = 0x8CAD;
+	  var DEPTH24_STENCIL8 = 0x88F0;
+
+	  /* DataType */
+	  var BYTE = 0x1400;
+	  var UNSIGNED_BYTE = 0x1401;
+	  var SHORT = 0x1402;
+	  var UNSIGNED_SHORT = 0x1403;
+	  var INT = 0x1404;
+	  var UNSIGNED_INT = 0x1405;
+	  var FLOAT = 0x1406;
+	  var UNSIGNED_SHORT_4_4_4_4 = 0x8033;
+	  var UNSIGNED_SHORT_5_5_5_1 = 0x8034;
+	  var UNSIGNED_SHORT_5_6_5 = 0x8363;
+	  var HALF_FLOAT = 0x140B;
+	  var UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+	  var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+	  var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
+	  var FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+	  var UNSIGNED_INT_24_8 = 0x84FA;
+
+	  var RG = 0x8227;
+	  var RG_INTEGER = 0x8228;
+	  var RED = 0x1903;
+	  var RED_INTEGER = 0x8D94;
+	  var RGB_INTEGER = 0x8D98;
+	  var RGBA_INTEGER = 0x8D99;
+
+	  var formatInfo = {};
+	  {
+	    // NOTE: this is named `numColorComponents` vs `numComponents` so we can let Uglify mangle
+	    // the name.
+	    var f = formatInfo;
+	    f[ALPHA] = { numColorComponents: 1 };
+	    f[LUMINANCE] = { numColorComponents: 1 };
+	    f[LUMINANCE_ALPHA] = { numColorComponents: 2 };
+	    f[RGB] = { numColorComponents: 3 };
+	    f[RGBA] = { numColorComponents: 4 };
+	    f[RED] = { numColorComponents: 1 };
+	    f[RED_INTEGER] = { numColorComponents: 1 };
+	    f[RG] = { numColorComponents: 2 };
+	    f[RG_INTEGER] = { numColorComponents: 2 };
+	    f[RGB] = { numColorComponents: 3 };
+	    f[RGB_INTEGER] = { numColorComponents: 3 };
+	    f[RGBA] = { numColorComponents: 4 };
+	    f[RGBA_INTEGER] = { numColorComponents: 4 };
+	    f[DEPTH_COMPONENT] = { numColorComponents: 1 };
+	    f[DEPTH_STENCIL] = { numColorComponents: 2 };
+	  }
+
+	  var textureInternalFormatInfo = {};
+	  {
+	    (function () {
+	      // NOTE: these properties need unique names so we can let Uglify mangle the name.
+	      var t = textureInternalFormatInfo;
+	      // unsized formats
+	      t[ALPHA] = { textureFormat: ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT] };
+	      t[LUMINANCE] = { textureFormat: LUMINANCE, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT] };
+	      t[LUMINANCE_ALPHA] = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [2, 4, 8], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT] };
+	      t[RGB] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: [3, 6, 12, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_5_6_5] };
+	      t[RGBA] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1] };
+
+	      // sized formats
+	      t[R8] = { textureFormat: RED, colorRenderable: true, textureFilterable: true, bytesPerElement: 1, type: UNSIGNED_BYTE };
+	      t[R8_SNORM] = { textureFormat: RED, colorRenderable: false, textureFilterable: true, bytesPerElement: 1, type: BYTE };
+	      t[R16F] = { textureFormat: RED, colorRenderable: false, textureFilterable: true, bytesPerElement: [4, 2], type: [FLOAT, HALF_FLOAT] };
+	      t[R32F] = { textureFormat: RED, colorRenderable: false, textureFilterable: false, bytesPerElement: 4, type: FLOAT };
+	      t[R8UI] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 1, type: UNSIGNED_BYTE };
+	      t[R8I] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 1, type: BYTE };
+	      t[R16UI] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: UNSIGNED_SHORT };
+	      t[R16I] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: SHORT };
+	      t[R32UI] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT };
+	      t[R32I] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: INT };
+	      t[RG8] = { textureFormat: RG, colorRenderable: true, textureFilterable: true, bytesPerElement: 2, type: UNSIGNED_BYTE };
+	      t[RG8_SNORM] = { textureFormat: RG, colorRenderable: false, textureFilterable: true, bytesPerElement: 2, type: BYTE };
+	      t[RG16F] = { textureFormat: RG, colorRenderable: false, textureFilterable: true, bytesPerElement: [8, 4], type: [FLOAT, HALF_FLOAT] };
+	      t[RG32F] = { textureFormat: RG, colorRenderable: false, textureFilterable: false, bytesPerElement: 8, type: FLOAT };
+	      t[RG8UI] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: UNSIGNED_BYTE };
+	      t[RG8I] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: BYTE };
+	      t[RG16UI] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_SHORT };
+	      t[RG16I] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: SHORT };
+	      t[RG32UI] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: UNSIGNED_INT };
+	      t[RG32I] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: INT };
+	      t[RGB8] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: 3, type: UNSIGNED_BYTE };
+	      t[SRGB8] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: 3, type: UNSIGNED_BYTE };
+	      t[RGB565] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: [3, 2], type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5] };
+	      t[RGB8_SNORM] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: 3, type: BYTE };
+	      t[R11F_G11F_B10F] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_10F_11F_11F_REV] };
+	      t[RGB9_E5] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_5_9_9_9_REV] };
+	      t[RGB16F] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: [12, 6], type: [FLOAT, HALF_FLOAT] };
+	      t[RGB32F] = { textureFormat: RGB, colorRenderable: false, textureFilterable: false, bytesPerElement: 12, type: FLOAT };
+	      t[RGB8UI] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 3, type: UNSIGNED_BYTE };
+	      t[RGB8I] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 3, type: BYTE };
+	      t[RGB16UI] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 6, type: UNSIGNED_SHORT };
+	      t[RGB16I] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 6, type: SHORT };
+	      t[RGB32UI] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 12, type: UNSIGNED_INT };
+	      t[RGB32I] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 12, type: INT };
+	      t[RGBA8] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: 4, type: UNSIGNED_BYTE };
+	      t[SRGB8_ALPHA8] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: 4, type: UNSIGNED_BYTE };
+	      t[RGBA8_SNORM] = { textureFormat: RGBA, colorRenderable: false, textureFilterable: true, bytesPerElement: 4, type: BYTE };
+	      t[RGB5_A1] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 2, 4], type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV] };
+	      t[RGBA4] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 2], type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4] };
+	      t[RGB10_A2] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: 4, type: UNSIGNED_INT_2_10_10_10_REV };
+	      t[RGBA16F] = { textureFormat: RGBA, colorRenderable: false, textureFilterable: true, bytesPerElement: [16, 8], type: [FLOAT, HALF_FLOAT] };
+	      t[RGBA32F] = { textureFormat: RGBA, colorRenderable: false, textureFilterable: false, bytesPerElement: 16, type: FLOAT };
+	      t[RGBA8UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_BYTE };
+	      t[RGBA8I] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: BYTE };
+	      t[RGB10_A2UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT_2_10_10_10_REV };
+	      t[RGBA16UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: UNSIGNED_SHORT };
+	      t[RGBA16I] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: SHORT };
+	      t[RGBA32I] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 16, type: INT };
+	      t[RGBA32UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 16, type: UNSIGNED_INT };
+	      // Sized Internal
+	      t[DEPTH_COMPONENT16] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true, textureFilterable: false, bytesPerElement: [2, 4], type: [UNSIGNED_SHORT, UNSIGNED_INT] };
+	      t[DEPTH_COMPONENT24] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT };
+	      t[DEPTH_COMPONENT32F] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: FLOAT };
+	      t[DEPTH24_STENCIL8] = { textureFormat: DEPTH_STENCIL, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT_24_8 };
+	      t[DEPTH32F_STENCIL8] = { textureFormat: DEPTH_STENCIL, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: FLOAT_32_UNSIGNED_INT_24_8_REV };
+
+	      Object.keys(t).forEach(function (internalFormat) {
+	        var info = t[internalFormat];
+	        info.bytesPerElementMap = {};
+	        if (Array.isArray(info.bytesPerElement)) {
+	          info.bytesPerElement.forEach(function (bytesPerElement, ndx) {
+	            var type = info.type[ndx];
+	            info.bytesPerElementMap[type] = bytesPerElement;
+	          });
+	        } else {
+	          var type = info.type;
+	          info.bytesPerElementMap[type] = info.bytesPerElement;
+	        }
+	      });
+	    })();
+	  }
+
+	  /**
+	   * Gets the number of bytes per element for a given internalFormat / type
+	   * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
+	   * @param {number} type The type parameter for texImage2D etc..
+	   * @return {number} the number of bytes per element for the given internalFormat, type combo
+	   * @memberOf module:twgl/textures
+	   */
+	  function getBytesPerElementForInternalFormat(internalFormat, type) {
+	    var info = textureInternalFormatInfo[internalFormat];
+	    if (!info) {
+	      throw "unknown internal format";
+	    }
+	    var bytesPerElement = info.bytesPerElementMap[type];
+	    if (bytesPerElement === undefined) {
+	      throw "unknown internal format";
+	    }
+	    return bytesPerElement;
+	  }
+
+	  /**
+	   * Gets the format for a given internalFormat
+	   *
+	   * @param {number} internalFormat The internal format
+	   * @return {{format:number, type:number}} the corresponding format and type
+	   */
+	  function getFormatAndTypeForInternalFormat(internalFormat) {
+	    var info = textureInternalFormatInfo[internalFormat];
+	    if (!info) {
+	      throw "unknown internal format";
+	    }
+	    return {
+	      format: info.textureFormat,
+	      type: Array.isArray(info.type) ? info.type[0] : info.type
+	    };
+	  }
+
+	  /**
+	   * Returns true if value is power of 2
+	   * @param {number} value number to check.
+	   * @return true if value is power of 2
+	   */
+	  function isPowerOf2(value) {
+	    return (value & value - 1) === 0;
+	  }
+
+	  /**
+	   * Gets whether or not we can generate mips for the given format
+	   * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
+	   * @param {number} type The type parameter for texImage2D etc..
+	   * @return {boolean} true if we can generate mips
+	   */
+	  function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
+	    if (!utils.isWebGL2(gl)) {
+	      return isPowerOf2(width) && isPowerOf2(height);
+	    }
+	    var info = textureInternalFormatInfo[internalFormat];
+	    if (!info) {
+	      throw "unknown internal format";
+	    }
+	    return info.colorRenderable && info.textureFilterable;
+	  }
+
+	  /**
+	   * Gets whether or not we can generate mips for the given format
+	   * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
+	   * @param {number} type The type parameter for texImage2D etc..
+	   * @return {boolean} true if we can generate mips
+	   */
+	  function canFilter(internalFormat /*, type */) {
+	    var info = textureInternalFormatInfo[internalFormat];
+	    if (!info) {
+	      throw "unknown internal format";
+	    }
+	    return info.textureFilterable;
+	  }
 
 	  /**
 	   * Sets the default texture color.
@@ -3331,16 +3666,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function init(gl) {
 	      if (!enums) {
 	        enums = {};
-	        Object.keys(gl).forEach(function (key) {
+	        for (var key in gl) {
 	          if (typeof gl[key] === 'number') {
 	            enums[gl[key]] = key;
 	          }
-	        });
+	        }
 	      }
 	    }
 
 	    return function glEnumToString(gl, value) {
-	      init();
+	      init(gl);
 	      return enums[value] || "0x" + value.toString(16);
 	    };
 	  }();
@@ -3366,11 +3701,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {number} [min] the min filter setting (eg. `gl.LINEAR`). Defaults to `gl.NEAREST_MIPMAP_LINEAR`
 	   *     or if texture is not a power of 2 on both dimensions then defaults to `gl.LINEAR`.
 	   * @property {number} [mag] the mag filter setting (eg. `gl.LINEAR`). Defaults to `gl.LINEAR`
+	   * @property {number} [minMag] both the min and mag filter settings.
 	   * @property {number} [internalFormat] internal format for texture. Defaults to `gl.RGBA`
 	   * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
 	   * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
 	   *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
-	   * @property {number} [wrap] Texture wrapping for both S and T (and R if TEXTURE_3D). Defaults to `gl.REPEAT` for 2D unless src is WebGL1 and src not npot and `gl.CLAMP_TO_EDGE` for cube
+	   * @property {number} [wrap] Texture wrapping for both S and T (and R if TEXTURE_3D or WebGLSampler). Defaults to `gl.REPEAT` for 2D unless src is WebGL1 and src not npot and `gl.CLAMP_TO_EDGE` for cube
 	   * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
 	   * @property {number} [wrapT] Texture wrapping for T. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
 	   * @property {number} [wrapR] Texture wrapping for R. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
@@ -3483,6 +3819,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
+	   * Sets the parameters of a texture or sampler
+	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+	   * @param {number|WebGLSampler} target texture target or sampler
+	   * @param {function()} parameteriFn texParamteri or samplerParameteri fn
+	   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+	   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+	   *   This is often the same options you passed in when you created the texture.
+	   */
+	  function setTextureSamplerParameters(gl, target, parameteriFn, options) {
+	    if (options.minMag) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.minMag);
+	      parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.minMag);
+	    }
+	    if (options.min) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.min);
+	    }
+	    if (options.mag) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.mag);
+	    }
+	    if (options.wrap) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
+	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
+	      if (target === gl.TEXTURE_3D || target instanceof WebGLSampler) {
+	        parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
+	      }
+	    }
+	    if (options.wrapR) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrapR);
+	    }
+	    if (options.wrapS) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrapS);
+	    }
+	    if (options.wrapT) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrapT);
+	    }
+	    if (options.minLod) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_MIN_LOD, options.minLod);
+	    }
+	    if (options.maxLod) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_MAX_LOD, options.maxLod);
+	    }
+	    if (options.baseLevel) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
+	    }
+	    if (options.maxLevel) {
+	      parameteriFn.call(gl, target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
+	    }
+	  }
+
+	  /**
 	   * Sets the texture parameters of a texture.
 	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
 	   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
@@ -3493,40 +3879,79 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function setTextureParameters(gl, tex, options) {
 	    var target = options.target || gl.TEXTURE_2D;
 	    gl.bindTexture(target, tex);
-	    if (options.min) {
-	      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, options.min);
-	    }
-	    if (options.mag) {
-	      gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, options.mag);
-	    }
-	    if (options.wrap) {
-	      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrap);
-	      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrap);
-	      if (target === gl.TEXTURE_3D) {
-	        gl.texParameteri(target, gl.TEXTURE_WRAP_R, options.wrap);
-	      }
-	    }
-	    if (options.wrapR) {
-	      gl.texParameteri(target, gl.TEXTURE_WRAP_R, options.wrapR);
-	    }
-	    if (options.wrapS) {
-	      gl.texParameteri(target, gl.TEXTURE_WRAP_S, options.wrapS);
-	    }
-	    if (options.wrapT) {
-	      gl.texParameteri(target, gl.TEXTURE_WRAP_T, options.wrapT);
-	    }
-	    if (options.minLod) {
-	      gl.texParameteri(target, gl.TEXTURE_MIN_LOD, options.minLod);
-	    }
-	    if (options.maxLod) {
-	      gl.texParameteri(target, gl.TEXTURE_MAX_LOD, options.maxLod);
-	    }
-	    if (options.baseLevel) {
-	      gl.texParameteri(target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
-	    }
-	    if (options.maxLevel) {
-	      gl.texParameteri(target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
-	    }
+	    setTextureSamplerParameters(gl, target, gl.texParameteri, options);
+	  }
+
+	  /**
+	   * Sets the sampler parameters of a sampler.
+	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+	   * @param {WebGLSampler} sampler the WebGLSampler to set parameters for
+	   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+	   * @memberOf module:twgl/textures
+	   */
+	  function setSamplerParameters(gl, sampler, options) {
+	    setTextureSamplerParameters(gl, sampler, gl.samplerParameteri, options);
+	  }
+
+	  /**
+	   * Creates a new sampler object and sets parameters.
+	   *
+	   * Example:
+	   *
+	   *      const sampler = twgl.createSampler(gl, {
+	   *        minMag: gl.NEAREST,         // sets both TEXTURE_MIN_FILTER and TEXTURE_MAG_FILTER
+	   *        wrap: gl.CLAMP_TO_NEAREST,  // sets both TEXTURE_WRAP_S and TEXTURE_WRAP_T and TEXTURE_WRAP_R
+	   *      });
+	   *
+	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+	   * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per sampler.
+	   * @return {Object.<string,WebGLSampler>} the created samplers by name
+	   */
+	  function createSampler(gl, options) {
+	    var sampler = gl.createSampler();
+	    setSamplerParameters(gl, sampler, options);
+	    return sampler;
+	  }
+
+	  /**
+	   * Creates a multiple sampler objects and sets parameters on each.
+	   *
+	   * Example:
+	   *
+	   *      const samplers = twgl.createSamplers(gl, {
+	   *        nearest: {
+	   *          minMag: gl.NEAREST,
+	   *        },
+	   *        nearestClampS: {
+	   *          minMag: gl.NEAREST,
+	   *          wrapS: gl.CLAMP_TO_NEAREST,
+	   *        },
+	   *        linear: {
+	   *          minMag: gl.LINEAR,
+	   *        },
+	   *        nearestClamp: {
+	   *          minMag: gl.NEAREST,
+	   *          wrap: gl.CLAMP_TO_EDGE,
+	   *        },
+	   *        linearClamp: {
+	   *          minMag: gl.LINEAR,
+	   *          wrap: gl.CLAMP_TO_EDGE,
+	   *        },
+	   *        linearClampT: {
+	   *          minMag: gl.LINEAR,
+	   *          wrapT: gl.CLAMP_TO_EDGE,
+	   *        },
+	   *      });
+	   *
+	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+	   * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set on the sampler
+	   */
+	  function createSamplers(gl, samplerOptions) {
+	    var samplers = {};
+	    Object.keys(samplerOptions).forEach(function (name) {
+	      samplers[name] = createSampler(gl, samplerOptions[name]);
+	    });
+	    return samplers;
 	  }
 
 	  /**
@@ -3544,15 +3969,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
-	   * Returns true if value is power of 2
-	   * @param {number} value number to check.
-	   * @return true if value is power of 2
-	   */
-	  function isPowerOf2(value) {
-	    return (value & value - 1) === 0;
-	  }
-
-	  /**
 	   * Sets filtering or generates mips for texture based on width or height
 	   * If width or height is not passed in uses `options.width` and//or `options.height`
 	   *
@@ -3562,20 +3978,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *   This is often the same options you passed in when you created the texture.
 	   * @param {number} [width] width of texture
 	   * @param {number} [height] height of texture
+	   * @param {number} [internalFormat] The internalFormat parameter from texImage2D etc..
+	   * @param {number} [type] The type parameter for texImage2D etc..
 	   * @memberOf module:twgl/textures
 	   */
-	  function setTextureFilteringForSize(gl, tex, options, width, height) {
+	  function setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type) {
 	    options = options || defaults.textureOptions;
+	    internalFormat = internalFormat || gl.RGBA;
+	    type = type || gl.UNSIGNED_BYTE;
 	    var target = options.target || gl.TEXTURE_2D;
 	    width = width || options.width;
 	    height = height || options.height;
 	    gl.bindTexture(target, tex);
-	    if (!isPowerOf2(width) || !isPowerOf2(height)) {
-	      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	    if (canGenerateMipmap(gl, width, height, internalFormat, type)) {
+	      gl.generateMipmap(target);
+	    } else {
+	      var filtering = canFilter(internalFormat, type) ? gl.LINEAR : gl.NEAREST;
+	      gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, filtering);
+	      gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, filtering);
 	      gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 	      gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	    } else {
-	      gl.generateMipmap(target);
 	    }
 	  }
 
@@ -3642,9 +4064,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var target = options.target || gl.TEXTURE_2D;
 	      var width = element.width;
 	      var height = element.height;
-	      var format = options.format || gl.RGBA;
-	      var internalFormat = options.internalFormat || format;
-	      var type = options.type || gl.UNSIGNED_BYTE;
+	      var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	      var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	      var format = options.format || formatType.format;
+	      var type = options.type || formatType.type;
 	      savePackState(gl, options);
 	      gl.bindTexture(target, tex);
 	      if (target === gl.TEXTURE_CUBE_MAP) {
@@ -3721,7 +4144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      restorePackState(gl, options);
 	      if (options.auto !== false) {
-	        setTextureFilteringForSize(gl, tex, options, width, height);
+	        setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
 	      }
 	      setTextureParameters(gl, tex, options);
 	    };
@@ -3944,19 +4367,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @memberOf module:twgl/textures
 	   */
 	  function getNumComponentsForFormat(format) {
-	    switch (format) {
-	      case ALPHA:
-	      case LUMINANCE:
-	        return 1;
-	      case LUMINANCE_ALPHA:
-	        return 2;
-	      case RGB:
-	        return 3;
-	      case RGBA:
-	        return 4;
-	      default:
-	        throw "unknown type: " + format;
+	    var info = formatInfo[format];
+	    if (!info) {
+	      throw "unknown format: " + format;
 	    }
+	    return info.numColorComponents;
 	  }
 
 	  /**
@@ -3964,11 +4379,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
 	   * @return {number} the gl texture type
 	   */
-	  function getTextureTypeForArrayType(gl, src) {
+	  function getTextureTypeForArrayType(gl, src, defaultType) {
 	    if (isArrayBuffer(src)) {
 	      return typedArrays.getGLTypeForTypedArray(src);
 	    }
-	    return gl.UNSIGNED_BYTE;
+	    return defaultType || gl.UNSIGNED_BYTE;
 	  }
 
 	  function guessDimensions(gl, target, width, height, numElements) {
@@ -4018,11 +4433,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var width = options.width;
 	    var height = options.height;
 	    var depth = options.depth;
-	    var format = options.format || gl.RGBA;
-	    var internalFormat = options.internalFormat || format;
-	    var type = options.type || getTextureTypeForArrayType(gl, src);
-	    var numComponents = getNumComponentsForFormat(format);
-	    var numElements = src.length / numComponents;
+	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var format = options.format || formatType.format;
+	    var type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
+	    if (!isArrayBuffer(src)) {
+	      var Type = typedArrays.getTypedArrayTypeForGLType(type);
+	      src = new Type(src);
+	    } else {
+	      if (src instanceof Uint8ClampedArray) {
+	        src = new Uint8Array(src.buffer);
+	      }
+	    }
+	    var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
+	    var numElements = src.byteLength / bytesPerElement; // TODO: check UNPACK_ALIGNMENT?
 	    if (numElements % 1) {
 	      throw "length wrong size for format: " + glEnumToString(gl, format);
 	    }
@@ -4054,23 +4478,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      width = dimensions.width;
 	      height = dimensions.height;
 	    }
-	    if (!isArrayBuffer(src)) {
-	      var Type = typedArrays.getTypedArrayTypeForGLType(type);
-	      src = new Type(src);
-	    } else {
-	      if (src instanceof Uint8ClampedArray) {
-	        src = new Uint8Array(src.buffer);
-	      }
-	    }
 	    gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
 	    savePackState(gl, options);
 	    if (target === gl.TEXTURE_CUBE_MAP) {
-	      var faceSize = numElements / 6 * numComponents;
-	      getCubeFacesWithNdx(gl, options).forEach(function (f) {
-	        var offset = faceSize * f.ndx;
-	        var data = src.subarray(offset, offset + faceSize);
-	        gl.texImage2D(f.face, 0, internalFormat, width, height, 0, format, type, data);
-	      });
+	      (function () {
+	        var elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
+	        var faceSize = numElements / 6 * elementsPerElement;
+
+	        getCubeFacesWithNdx(gl, options).forEach(function (f) {
+	          var offset = faceSize * f.ndx;
+	          var data = src.subarray(offset, offset + faceSize);
+	          gl.texImage2D(f.face, 0, internalFormat, width, height, 0, format, type, data);
+	        });
+	      })();
 	    } else if (target === gl.TEXTURE_3D) {
 	      gl.texImage3D(target, 0, internalFormat, width, height, depth, 0, format, type, src);
 	    } else {
@@ -4080,7 +4500,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      width: width,
 	      height: height,
-	      depth: depth
+	      depth: depth,
+	      type: type
 	    };
 	  }
 
@@ -4095,9 +4516,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function setEmptyTexture(gl, tex, options) {
 	    var target = options.target || gl.TEXTURE_2D;
 	    gl.bindTexture(target, tex);
-	    var format = options.format || gl.RGBA;
-	    var internalFormat = options.internalFormat || format;
-	    var type = options.type || gl.UNSIGNED_BYTE;
+	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var format = options.format || formatType.format;
+	    var type = options.type || formatTYpe.type;
 	    savePackState(gl, options);
 	    if (target === gl.TEXTURE_CUBE_MAP) {
 	      for (var ii = 0; ii < 6; ++ii) {
@@ -4126,6 +4548,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var target = options.target || gl.TEXTURE_2D;
 	    var width = options.width || 1;
 	    var height = options.height || 1;
+	    var internalFormat = options.internalFormat || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var type = options.type || formatType.type;
 	    gl.bindTexture(target, tex);
 	    if (target === gl.TEXTURE_CUBE_MAP) {
 	      // this should have been the default for CUBEMAPS :(
@@ -4143,6 +4568,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var dimensions = setTextureFromArray(gl, tex, src, options);
 	        width = dimensions.width;
 	        height = dimensions.height;
+	        type = dimensions.type;
 	      } else if (Array.isArray(src) && typeof src[0] === 'string') {
 	        loadCubemapFromUrls(gl, tex, options, callback);
 	      } else if (src instanceof HTMLElement) {
@@ -4156,7 +4582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      setEmptyTexture(gl, tex, options);
 	    }
 	    if (options.auto !== false) {
-	      setTextureFilteringForSize(gl, tex, options, width, height);
+	      setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
 	    }
 	    setTextureParameters(gl, tex, options);
 	    return tex;
@@ -4183,15 +4609,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    height = height || options.height;
 	    var target = options.target || gl.TEXTURE_2D;
 	    gl.bindTexture(target, tex);
-	    var format = options.format || gl.RGBA;
+	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var format = options.format || formatType.format;
 	    var type;
 	    var src = options.src;
 	    if (!src) {
-	      type = options.type || gl.UNSIGNED_BYTE;
+	      type = options.type || formatType.type;
 	    } else if (isArrayBuffer(src) || Array.isArray(src) && typeof src[0] === 'number') {
-	      type = options.type || getTextureTypeForArrayType(gl, src);
+	      type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
 	    } else {
-	      type = options.type || gl.UNSIGNED_BYTE;
+	      type = options.type || formatType.type;
 	    }
 	    if (target === gl.TEXTURE_CUBE_MAP) {
 	      for (var ii = 0; ii < 6; ++ii) {
@@ -4307,7 +4735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var options = textureOptions[name];
 	      var onLoadFn;
 	      if (isAsyncSrc(options.src)) {
-	        onLoadFn = function (err, tex, img) {
+	        onLoadFn = function onLoadFn(err, tex, img) {
 	          images[name] = img;
 	          --numDownloading;
 	          if (err) {
@@ -4334,6 +4762,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return {
 	    "setDefaults_": setDefaults,
 
+	    "createSampler": createSampler,
+	    "createSamplers": createSamplers,
+	    "setSamplerParameters": setSamplerParameters,
+
 	    "createTexture": createTexture,
 	    "setEmptyTexture": setEmptyTexture,
 	    "setTextureFromArray": setTextureFromArray,
@@ -4344,7 +4776,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "setDefaultTextureColor": setDefaultTextureColor,
 	    "createTextures": createTextures,
 	    "resizeTexture": resizeTexture,
-	    "getNumComponentsForFormat": getNumComponentsForFormat
+	    "getNumComponentsForFormat": getNumComponentsForFormat,
+	    "getBytesPerElementForInternalFormat": getBytesPerElementForInternalFormat
 	  };
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -4352,7 +4785,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -4432,6 +4867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
 	   * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
+	   * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
 	   *
 	   *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
 	   *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
@@ -4512,7 +4948,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -5810,7 +6248,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -6174,7 +6614,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	/*
 	 * Copyright 2015, Gregg Tavares.
 	 * All rights reserved.
 	 *
@@ -6269,7 +6711,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    typedArray.numComponents = numComponents;
 	    Object.defineProperty(typedArray, 'numElements', {
-	      get: function () {
+	      get: function get() {
 	        return this.length / this.numComponents | 0;
 	      }
 	    });
