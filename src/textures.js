@@ -1244,7 +1244,7 @@ define([
     var internalFormat = options.internalFormat || options.format || gl.RGBA;
     var formatType = getFormatAndTypeForInternalFormat(internalFormat);
     var format = options.format || formatType.format;
-    var type = options.type || formatTYpe.type;
+    var type = options.type || formatType.type;
     savePackState(gl, options);
     if (target === gl.TEXTURE_CUBE_MAP) {
       for (var ii = 0; ii < 6; ++ii) {
