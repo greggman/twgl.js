@@ -195,6 +195,7 @@ void main() {
   <script>
 "use strict";
 
+// adapted from http://stackoverflow.com/a/6162687/128511
 var toHalf = (function() {
 
   var floatView = new Float32Array(1);
@@ -229,6 +230,97 @@ var toHalf = (function() {
          >> 126 - val);                          // div by 2^(1-(exp-127+15)) and >> 13 | exp=0
   };
 }());
+
+// Adapted from http://gamedev.stackexchange.com/a/17329/79
+var to11uf = (function() {
+  const F11_EXPONENT_BITS = 0x1F
+  const F11_EXPONENT_SHIFT = 6
+  const F11_EXPONENT_BIAS = 15
+  const F11_MANTISSA_BITS = 0x3f
+  const F11_MANTISSA_SHIFT = (23 - F11_EXPONENT_SHIFT)
+  const F11_MAX_EXPONENT = (F11_EXPONENT_BITS << F11_EXPONENT_SHIFT)
+
+  const floatView = new Float32Array(1);
+  const int32View = new Int32Array(floatView.buffer);
+
+  return function(val) {
+    floatView[0] = val;
+    let f32 = int32View[0];
+    let f11 = 0;
+    /* Decode IEEE 754 little-endian 32-bit floating-point value */
+    if (f32 & 0x80000000) {
+      // negative values go to 0
+      return 0;
+    }
+    /* Map exponent to the range [-127,128] */
+    let exponent = ((f32 >> 23) & 0xff) - 127;
+    let mantissa = f32 & 0x007fffff;
+    if (exponent == 128) {
+      /* Infinity or NaN */
+      f11 = F11_MAX_EXPONENT;
+      if (mantissa) {
+        f11 |= (mantissa & F11_MANTISSA_BITS);
+      }
+    } else if (exponent > 15) {
+      /* Overflow - flush to Infinity */
+      f11 = F11_MAX_EXPONENT;
+    } else if (exponent > -15) {
+      /* Representable value */
+      exponent += F11_EXPONENT_BIAS;
+      mantissa >>= F11_MANTISSA_SHIFT;
+      f11 = exponent << F11_EXPONENT_SHIFT | mantissa;
+    } else {
+        f11 = 0;
+    }
+    return f11;
+  }
+}());
+
+// Adapted from http://gamedev.stackexchange.com/a/17329/79
+var to10uf = (function() {
+  const F10_EXPONENT_BITS = 0x1F
+  const F10_EXPONENT_SHIFT = 5
+  const F10_EXPONENT_BIAS = 15
+  const F10_MANTISSA_BITS = 0x1f
+  const F10_MANTISSA_SHIFT = (23 - F10_EXPONENT_SHIFT)
+  const F10_MAX_EXPONENT = (F10_EXPONENT_BITS << F10_EXPONENT_SHIFT)
+
+  const floatView = new Float32Array(1);
+  const int32View = new Int32Array(floatView.buffer);
+
+  return function(val) {
+    floatView[0] = val;
+    let f32 = int32View[0];
+    let f10 = 0;
+    /* Decode IEEE 754 little-endian 32-bit floating-point value */
+    if (f32 & 0x80000000) {
+      // negative values go to 0
+      return 0;
+    }
+    /* Map exponent to the range [-127,128] */
+    let exponent = ((f32 >> 23) & 0xff) - 127;
+    let mantissa = f32 & 0x007fffff;
+    if (exponent == 128) {
+      /* Infinity or NaN */
+      f10 = F10_MAX_EXPONENT;
+      if (mantissa) {
+        f10 |= (mantissa & F10_MANTISSA_BITS);
+      }
+    } else if (exponent > 15) {
+      /* Overflow - flush to Infinity */
+      f10 = F10_MAX_EXPONENT;
+    } else if (exponent > -15) {
+      /* Representable value */
+      exponent += F10_EXPONENT_BIAS;
+      mantissa >>= F10_MANTISSA_SHIFT;
+      f10 = exponent << F10_EXPONENT_SHIFT | mantissa;
+    } else {
+        f10 = 0;
+    }
+    return f10;
+  }
+}());
+
 
 function main() {
   twgl.setDefaults({attribPrefix: "a_"});
@@ -292,18 +384,10 @@ function main() {
            (e               << 27);
   }
 
-  function to11Bit(v) {
-    return (v) | (20 << 6);
-  }
-
-  function to10Bit(v) {
-    return (v) | (20 << 5);
-  }
-
   function rgb101111(r, g, b) {
-    return (to11Bit(r) <<  0) |
-           (to11Bit(g) << 11) |
-           (to10Bit(b) << 22);
+    return (to11uf(r) <<  0) |
+           (to11uf(g) << 11) |
+           (to10uf(b) << 22);
   }
 
   const flatten = list => list.reduce(
