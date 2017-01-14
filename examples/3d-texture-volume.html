@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - 3d-texture volume" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/3d-texture.png" />
+    <meta property="og:description" content="TWGL.js - 3d-texture volume" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - 3d-texture volume">
+    <meta name="twitter:url" content="http://twgljs.org/examples/3d-texture-volume.html">
+    <meta name="twitter:description" content="TWGL.js - 3d-texture volume">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/3d-texture-volume.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - 3d textures</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: monospace;
+        color: white;
+      }
+      canvas {
+        width: 100vw;
+        height: 100vh;
+      }
+      a {
+        color: lightblue;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 20%;
+        padding: 1em;
+        text-align: center;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.8);
+      }
+      .controls {
+          text-align: right;
+      }
+      .controls div {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+      }
+      .controls input {
+          flex: 1 1 auto;
+      }
+      .controls label {
+          width: 10em;
+          flex: 0 0 auto;
+          padding-right: 0.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b">
+        <div><a href="http://twgljs.org">twgl.js</a> - 3d-texture volume</div>
+        <hr/>
+        <div class="controls">
+          <div>
+            <label for="filter">LINEAR</label>
+            <input type="checkbox" id="filter" /></div>
+          <div>
+            <label for="alphaThreshold">Alpha Threshold</label>
+            <input type="range" min="0" max="100" id="alphaThreshold"/>
+          </div>
+          <div>
+            <label for="zoom">zoom</label>
+            <input type="range" min="0" max="100" id="zoom"/>
+          </div>
+        </div>
+    </div>
+  </body>
+  <script src="../dist/2.x/twgl-full.min.js"></script>>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script>
+"use strict";
+
+function main() {
+  const m4 = twgl.m4;
+  const v3 = twgl.v3;
+  twgl.setDefaults({attribPrefix: "a_"});
+  var gl = twgl.getContext(document.getElementById("c"));
+  console.log("using: " + gl.getParameter(gl.VERSION));  // eslint-disable-line
+  if (!twgl.isWebGL2(gl)) {
+    alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
+    return;
+  }
+
+  var size = 128;
+  var sizeMinus1 = size - 1;
+  var data = new Uint8Array(size * size * size * 4);
+  var ctx = document.createElement("canvas").getContext("2d");
+  ctx.canvas.width = size;
+  ctx.canvas.height = size;
+  var half = size / 2;
+  for (let y = 0; y < size; ++y) {
+    const v = y / (sizeMinus1);
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = chroma.hsv(v * 360, 1, 0.5).css();
+    ctx.beginPath();
+    ctx.arc(half, half, Math.abs(Math.sin(v * Math.PI * 2)) * half, 0, Math.PI * 2, false);
+    ctx.fill();
+
+    const src = ctx.getImageData(0, 0, size, size);
+    data.set(src.data, y * size * size * 4);
+  }
+
+  var texture = twgl.createTexture(gl, {
+    target: gl.TEXTURE_3D,
+    //src: new Uint8Array([255, 0, 0, 5]),
+    src: data,
+    wrap: gl.CLAMP_TO_EDGE,
+    minMag: gl.NEAREST,
+    //minMag: gl.LINEAR,
+  });
+
+  var vs = `
+#version 300 es
+
+in vec4 a_position;
+in vec3 a_texcoord;
+in vec3 a_normal;
+
+out vec3 v_texcoord;
+out vec3 v_normal;
+out vec3 v_surfaceToLight;
+out vec3 v_surfaceToView;
+
+uniform mat4 u_worldViewProjection;
+uniform mat4 u_world;
+uniform mat4 u_viewInverse;
+uniform vec3 u_lightWorldPos;
+
+void main() {
+  v_texcoord = a_texcoord;
+  v_normal = (u_world * vec4(a_normal, 0)).xyz;
+  v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
+  gl_Position = u_worldViewProjection * a_position;
+}
+`;
+
+  var fs = `
+#version 300 es
+precision mediump float;
+precision mediump sampler3D;
+
+in vec3 v_texcoord;
+in vec3 v_normal;
+in vec3 v_surfaceToLight;
+in vec3 v_surfaceToView;
+
+uniform sampler3D u_volume;
+uniform vec3 u_lightDir;
+uniform float u_shininess;
+uniform float u_specularFactor;
+uniform float u_alphaThreshold;
+
+out vec4 outColor;
+
+vec4 lit(float l ,float h, float m) {
+  return vec4(1.0,
+              mix(0.5, 1., l * .5 + .5),
+              (l > 0.0) ? pow(max(0.0, h), m) : 0.0,
+              1.0);
+}
+
+void main() {
+  vec4 color = texture(u_volume, v_texcoord);
+  if (color.a < u_alphaThreshold) {
+    discard;
+  }
+
+  vec3 a_normal = normalize(v_normal);
+  vec3 surfaceToLight = normalize(v_surfaceToLight);
+  vec3 surfaceToView = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLight + surfaceToView);
+  vec4 litR = lit(dot(a_normal, surfaceToLight),
+                    dot(a_normal, halfVector), u_shininess);
+
+  outColor = vec4((
+     (color * litR.y + vec4(1) * litR.z)).rgb,
+      color.a);
+}
+  `;
+
+
+  // generate 3d planes
+  var positions = [];
+  var texcoords = [];
+  var normals = [];
+
+  function addPoint(mapping, p, t, n) {
+    positions.push(p[mapping[0]], p[mapping[1]], p[mapping[2]]);
+    texcoords.push(t[mapping[0]], t[mapping[1]], t[mapping[2]]);
+    normals.push(n[mapping[0]], n[mapping[1]], n[mapping[2]]);
+  }
+
+  function lerp(a, b, l) {
+    return a + (b - a) * l;
+  }
+
+  //[[0, 1, 2], [1, 2, 0], [2, 0, 1]].forEach(mapping => {
+  //  for (let plane = 0; plane <= size; ++plane) {
+  //    const w = plane / size;
+  //    for (let z = 0; z < size; ++z) {
+  //      const v0 = (z + 0) / size;
+  //      const v1 = (z + 1) / size;
+  //      for (let x = 0; x < size; ++x) {
+  //        const u0 = (x + 0) / size;
+  //        const u1 = (x + 1) / size;
+  //
+  //        //const u0b = lerp(u0, u1, 0.01);
+  //        //const u1b = lerp(u0, u1, 0.98);
+  //        //const v0b = lerp(v0, v1, 0.01);
+  //        //const v1b = lerp(v0, v1, 0.98);
+  //
+  //        const u0b = u0;
+  //        const u1b = u1;
+  //        const v0b = v0;
+  //        const v1b = v1;
+  //
+  //        const wb = (plane + 0.001) / size;
+  //
+  //        addPoint(mapping, [u0 - 0.5, w - 0.5, v0 - 0.5], [u0b, wb, v0b]);   //[u0, w, v0]);
+  //        addPoint(mapping, [u1 - 0.5, w - 0.5, v0 - 0.5], [u1b, wb, v0b]);   //[u1, w, v0]);
+  //        addPoint(mapping, [u0 - 0.5, w - 0.5, v1 - 0.5], [u0b, wb, v1b]);   //[u0, w, v1]);
+  //        addPoint(mapping, [u0 - 0.5, w - 0.5, v1 - 0.5], [u0b, wb, v1b]);   //[u0, w, v1]);
+  //        addPoint(mapping, [u1 - 0.5, w - 0.5, v0 - 0.5], [u1b, wb, v0b]);   //[u1, w, v0]);
+  //        addPoint(mapping, [u1 - 0.5, w - 0.5, v1 - 0.5], [u1b, wb, v1b]);   //[u1, w, v1]);
+  //      }
+  //    }
+  //  }
+  //});
+
+  //for (let y = 0; y < size; ++y) {
+  //  const w0 = (y + 0) / size;
+  //  const w1 = (y + 1) / size;
+  //  for (let z = 0; z < size; ++z) {
+  //    const v0 = (z + 0) / size;
+  //    const v1 = (z + 1) / size;
+  //    for (let x = 0; x < size; ++x) {
+  //      const u0 = (x + 0) / size;
+  //      const u1 = (x + 1) / size;
+  //
+  //      const u0b = lerp(u0, u1, 0.01);
+  //      const u1b = lerp(u0, u1, 0.98);
+  //      const v0b = lerp(v0, v1, 0.01);
+  //      const v1b = lerp(v0, v1, 0.98);
+  //      const w0b = lerp(w0, w1, 0.01);
+  //      const w1b = lerp(w0, w1, 0.98);
+  //
+  //      [[0, 1, 2], [1, 2, 0], [2, 0, 1]].forEach(mapping => {
+  //        addPoint(mapping, [u0 - 0.5, w0 - 0.5, v0 - 0.5], [u0b, w0b, v0b], [0, -1, 0]);
+  //        addPoint(mapping, [u1 - 0.5, w0 - 0.5, v0 - 0.5], [u1b, w0b, v0b], [0, -1, 0]);
+  //        addPoint(mapping, [u0 - 0.5, w0 - 0.5, v1 - 0.5], [u0b, w0b, v1b], [0, -1, 0]);
+  //        addPoint(mapping, [u0 - 0.5, w0 - 0.5, v1 - 0.5], [u0b, w0b, v1b], [0, -1, 0]);
+  //        addPoint(mapping, [u1 - 0.5, w0 - 0.5, v0 - 0.5], [u1b, w0b, v0b], [0, -1, 0]);
+  //        addPoint(mapping, [u1 - 0.5, w0 - 0.5, v1 - 0.5], [u1b, w0b, v1b], [0, -1, 0]);
+  //
+  //        addPoint(mapping, [u0 - 0.5, w1 - 0.5, v0 - 0.5], [u0b, w1b, v0b], [0, 1, 0]);
+  //        addPoint(mapping, [u0 - 0.5, w1 - 0.5, v1 - 0.5], [u0b, w1b, v1b], [0, 1, 0]);
+  //        addPoint(mapping, [u1 - 0.5, w1 - 0.5, v0 - 0.5], [u1b, w1b, v0b], [0, 1, 0]);
+  //        addPoint(mapping, [u0 - 0.5, w1 - 0.5, v1 - 0.5], [u0b, w1b, v1b], [0, 1, 0]);
+  //        addPoint(mapping, [u1 - 0.5, w1 - 0.5, v1 - 0.5], [u1b, w1b, v1b], [0, 1, 0]);
+  //        addPoint(mapping, [u1 - 0.5, w1 - 0.5, v0 - 0.5], [u1b, w1b, v0b], [0, 1, 0]);
+  //      });
+  //    }
+  //  }
+  //}
+
+  for (let y = 0; y <= size; ++y) {
+    const w0 = (y + 0) / size;
+    const w1 = (y + 1) / size;
+
+    const u0 = 0;
+    const u1 = 1;
+    const v0 = 0;
+    const v1 = 1;
+
+    const u0b = 0;
+    const u1b = 1;
+    const v0b = 0;
+    const v1b = 1;
+    const w0b = (y + 0.01) / size;
+    const w1b = (y + 0.99) / size;
+
+    [[0, 1, 2], [1, 2, 0], [2, 0, 1]].forEach(mapping => {
+      addPoint(mapping, [u0 - 0.5, w0 - 0.5, v0 - 0.5], [u0b, w0b, v0b], [0, -1, 0]);
+      addPoint(mapping, [u1 - 0.5, w0 - 0.5, v0 - 0.5], [u1b, w0b, v0b], [0, -1, 0]);
+      addPoint(mapping, [u0 - 0.5, w0 - 0.5, v1 - 0.5], [u0b, w0b, v1b], [0, -1, 0]);
+      addPoint(mapping, [u0 - 0.5, w0 - 0.5, v1 - 0.5], [u0b, w0b, v1b], [0, -1, 0]);
+      addPoint(mapping, [u1 - 0.5, w0 - 0.5, v0 - 0.5], [u1b, w0b, v0b], [0, -1, 0]);
+      addPoint(mapping, [u1 - 0.5, w0 - 0.5, v1 - 0.5], [u1b, w0b, v1b], [0, -1, 0]);
+
+      addPoint(mapping, [u0 - 0.5, w1 - 0.5, v0 - 0.5], [u0b, w1b, v0b], [0, 1, 0]);
+      addPoint(mapping, [u0 - 0.5, w1 - 0.5, v1 - 0.5], [u0b, w1b, v1b], [0, 1, 0]);
+      addPoint(mapping, [u1 - 0.5, w1 - 0.5, v0 - 0.5], [u1b, w1b, v0b], [0, 1, 0]);
+      addPoint(mapping, [u0 - 0.5, w1 - 0.5, v1 - 0.5], [u0b, w1b, v1b], [0, 1, 0]);
+      addPoint(mapping, [u1 - 0.5, w1 - 0.5, v1 - 0.5], [u1b, w1b, v1b], [0, 1, 0]);
+      addPoint(mapping, [u1 - 0.5, w1 - 0.5, v0 - 0.5], [u1b, w1b, v0b], [0, 1, 0]);
+    });
+  }
+
+
+  var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+  var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+    position: positions,
+    normal: normals,
+    texcoord: { numComponents: 3, data: texcoords, },
+  });
+
+  var uniforms = {
+    u_volume: texture,
+    u_worldViewProjection: m4.identity(),
+    u_lightWorldPos: [0.3, 1.3, -2],
+    u_shininess: 200,
+    u_alphaThreshold: 0.9,
+  };
+
+  const ae = document.querySelector("#alphaThreshold");
+  ae.value = uniforms.u_alphaThreshold * 100;
+  ae.addEventListener('input', e => {
+    uniforms.u_alphaThreshold = e.target.value / 100;
+  });
+
+  let zoom = 0;
+  const ze = document.querySelector("#zoom");
+  ze.value = zoom * 100;
+  ze.addEventListener('input', e => {
+    zoom = e.target.value / 100;
+  });
+
+  document.querySelector("#filter").addEventListener('change', e => {
+    var mode = e.target.checked ? gl.LINEAR : gl.NEAREST;
+    gl.bindTexture(gl.TEXTURE_3D, texture);
+    gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, mode);
+    gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, mode);
+  });
+
+  let frameCount = 0;
+  function render(time) {
+    time *= 0.001;
+    frameCount++;
+
+    const zp = frameCount % (size * 2);
+    const z = (zp >= size) ? (size * 2 - zp - 1) : zp;
+    const zv = z / (size - 1);
+    const r = Math.abs(Math.sin(time) + Math.cos(time * 0.731)) * half * .5 * Math.sin(zv * Math.PI);
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = chroma.hsv(time * 30 % 360, 0.75 + Math.sin(time) * .25, 0.5).css();
+    ctx.beginPath();
+    ctx.arc(half + Math.sin(time * 0.515) * (half - r), half + Math.sin(time * 0.413) * (half - r), r, 0, Math.PI * 2, false);
+    ctx.fill();
+
+    gl.bindTexture(gl.TEXTURE_3D, texture);
+    gl.texSubImage3D(gl.TEXTURE_3D, 0, 0, 0, z, gl.RGBA, gl.UNSIGNED_BYTE, ctx.canvas)
+
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+
+    //gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    //gl.enable(gl.BLEND);
+    //gl.blendFunc(gl.ONE, gl.ONE);
+
+    const fov = 45 * Math.PI / 180;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const zNear = 0.01;
+    const zFar = 10;
+    let projection = m4.perspective(fov, aspect, zNear, zFar);
+
+    const ctime = 0; //time * 0.1;
+    const cr = 1.2 - zoom * .7;
+    const eye = [Math.sin(ctime) * cr, 1 - zoom * .9, Math.cos(ctime) * cr];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
+    const camera = m4.lookAt(eye, target, up);
+    const view = m4.inverse(camera);
+
+    let viewProjection = m4.multiply(projection, view);
+    let world = m4.rotationY(time * 0.1);
+
+    uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
+    uniforms.u_world = world;
+    uniforms.u_viewInverse = camera;
+
+    gl.useProgram(programInfo.program);
+
+    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    twgl.setUniforms(programInfo, uniforms);
+    twgl.drawBufferInfo(gl, bufferInfo);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+main();
+  </script>
+</html>
+
+
