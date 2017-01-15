@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 2.7.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.8.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3313,6 +3313,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	  var isArrayBuffer = typedArrays.isArrayBuffer;
 
+	  // Should we make this on demand?
+	  var ctx = document.createElement("canvas").getContext("2d");
+
 	  /* PixelFormat */
 	  var ALPHA = 0x1906;
 	  var RGB = 0x1907;
@@ -3597,6 +3600,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	      throw "unknown internal format";
 	    }
 	    return info.textureFilterable;
+	  }
+
+	  /**
+	   * Gets the number of compontents for a given image format.
+	   * @param {number} format the format.
+	   * @return {number} the number of components for the format.
+	   * @memberOf module:twgl/textures
+	   */
+	  function getNumComponentsForFormat(format) {
+	    var info = formatInfo[format];
+	    if (!info) {
+	      throw "unknown format: " + format;
+	    }
+	    return info.numColorComponents;
+	  }
+
+	  /**
+	   * Gets the texture type for a given array type.
+	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+	   * @return {number} the gl texture type
+	   */
+	  function getTextureTypeForArrayType(gl, src, defaultType) {
+	    if (isArrayBuffer(src)) {
+	      return typedArrays.getGLTypeForTypedArray(src);
+	    }
+	    return defaultType || gl.UNSIGNED_BYTE;
+	  }
+
+	  function guessDimensions(gl, target, width, height, numElements) {
+	    if (numElements % 1 !== 0) {
+	      throw "can't guess dimensions";
+	    }
+	    if (!width && !height) {
+	      var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
+	      if (size % 1 === 0) {
+	        width = size;
+	        height = size;
+	      } else {
+	        width = numElements;
+	        height = 1;
+	      }
+	    } else if (!height) {
+	      height = numElements / width;
+	      if (height % 1) {
+	        throw "can't guess dimensions";
+	      }
+	    } else if (!width) {
+	      width = numElements / height;
+	      if (width % 1) {
+	        throw "can't guess dimensions";
+	      }
+	    }
+	    return {
+	      width: width,
+	      height: height
+	    };
 	  }
 
 	  /**
@@ -4030,98 +4089,95 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @memberOf module:twgl/textures
 	   * @kind function
 	   */
-	  var setTextureFromElement = function () {
-	    var ctx = document.createElement("canvas").getContext("2d");
-	    return function setTextureFromElement(gl, tex, element, options) {
-	      options = options || defaults.textureOptions;
-	      var target = options.target || gl.TEXTURE_2D;
-	      var width = element.width;
-	      var height = element.height;
-	      var internalFormat = options.internalFormat || options.format || gl.RGBA;
-	      var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-	      var format = options.format || formatType.format;
-	      var type = options.type || formatType.type;
-	      savePackState(gl, options);
-	      gl.bindTexture(target, tex);
-	      if (target === gl.TEXTURE_CUBE_MAP) {
-	        // guess the parts
-	        var imgWidth = element.width;
-	        var imgHeight = element.height;
-	        var size;
-	        var slices;
-	        if (imgWidth / 6 === imgHeight) {
-	          // It's 6x1
-	          size = imgHeight;
-	          slices = [0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0];
-	        } else if (imgHeight / 6 === imgWidth) {
-	          // It's 1x6
-	          size = imgWidth;
-	          slices = [0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5];
-	        } else if (imgWidth / 3 === imgHeight / 2) {
-	          // It's 3x2
-	          size = imgWidth / 3;
-	          slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
-	        } else if (imgWidth / 2 === imgHeight / 3) {
-	          // It's 2x3
-	          size = imgWidth / 2;
-	          slices = [0, 0, 1, 0, 0, 1, 1, 1, 0, 2, 1, 2];
-	        } else {
-	          throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
-	        }
-	        ctx.canvas.width = size;
-	        ctx.canvas.height = size;
-	        width = size;
-	        height = size;
-	        getCubeFacesWithNdx(gl, options).forEach(function (f) {
-	          var xOffset = slices[f.ndx * 2 + 0] * size;
-	          var yOffset = slices[f.ndx * 2 + 1] * size;
-	          ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-	          gl.texImage2D(f.face, 0, internalFormat, format, type, ctx.canvas);
-	        });
-	        // Free up the canvas memory
-	        ctx.canvas.width = 1;
-	        ctx.canvas.height = 1;
-	      } else if (target === gl.TEXTURE_3D) {
-	        var smallest = Math.min(element.width, element.height);
-	        var largest = Math.max(element.width, element.height);
-	        var depth = largest / smallest;
-	        if (depth % 1 !== 0) {
-	          throw "can not compute 3D dimensions of element";
-	        }
-	        var xMult = element.width === largest ? 1 : 0;
-	        var yMult = element.height === largest ? 1 : 0;
-	        gl.texImage3D(target, 0, internalFormat, smallest, smallest, smallest, 0, format, type, null);
-	        // remove this is texSubImage3D gets width and height arguments
-	        ctx.canvas.width = smallest;
-	        ctx.canvas.height = smallest;
-	        for (var d = 0; d < depth; ++d) {
-	          //          gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
-	          //          gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
-	          var srcX = d * smallest * xMult;
-	          var srcY = d * smallest * yMult;
-	          var srcW = smallest;
-	          var srcH = smallest;
-	          var dstX = 0;
-	          var dstY = 0;
-	          var dstW = smallest;
-	          var dstH = smallest;
-	          ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-	          gl.texSubImage3D(target, 0, 0, 0, d, format, type, ctx.canvas);
-	        }
-	        ctx.canvas.width = 0;
-	        ctx.canvas.height = 0;
-	        // FIX (save state)
-	        //        gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+	  function setTextureFromElement(gl, tex, element, options) {
+	    options = options || defaults.textureOptions;
+	    var target = options.target || gl.TEXTURE_2D;
+	    var width = element.width;
+	    var height = element.height;
+	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var format = options.format || formatType.format;
+	    var type = options.type || formatType.type;
+	    savePackState(gl, options);
+	    gl.bindTexture(target, tex);
+	    if (target === gl.TEXTURE_CUBE_MAP) {
+	      // guess the parts
+	      var imgWidth = element.width;
+	      var imgHeight = element.height;
+	      var size;
+	      var slices;
+	      if (imgWidth / 6 === imgHeight) {
+	        // It's 6x1
+	        size = imgHeight;
+	        slices = [0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0];
+	      } else if (imgHeight / 6 === imgWidth) {
+	        // It's 1x6
+	        size = imgWidth;
+	        slices = [0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5];
+	      } else if (imgWidth / 3 === imgHeight / 2) {
+	        // It's 3x2
+	        size = imgWidth / 3;
+	        slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
+	      } else if (imgWidth / 2 === imgHeight / 3) {
+	        // It's 2x3
+	        size = imgWidth / 2;
+	        slices = [0, 0, 1, 0, 0, 1, 1, 1, 0, 2, 1, 2];
 	      } else {
-	        gl.texImage2D(target, 0, internalFormat, format, type, element);
+	        throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
 	      }
-	      restorePackState(gl, options);
-	      if (options.auto !== false) {
-	        setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
+	      ctx.canvas.width = size;
+	      ctx.canvas.height = size;
+	      width = size;
+	      height = size;
+	      getCubeFacesWithNdx(gl, options).forEach(function (f) {
+	        var xOffset = slices[f.ndx * 2 + 0] * size;
+	        var yOffset = slices[f.ndx * 2 + 1] * size;
+	        ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
+	        gl.texImage2D(f.face, 0, internalFormat, format, type, ctx.canvas);
+	      });
+	      // Free up the canvas memory
+	      ctx.canvas.width = 1;
+	      ctx.canvas.height = 1;
+	    } else if (target === gl.TEXTURE_3D) {
+	      var smallest = Math.min(element.width, element.height);
+	      var largest = Math.max(element.width, element.height);
+	      var depth = largest / smallest;
+	      if (depth % 1 !== 0) {
+	        throw "can not compute 3D dimensions of element";
 	      }
-	      setTextureParameters(gl, tex, options);
-	    };
-	  }();
+	      var xMult = element.width === largest ? 1 : 0;
+	      var yMult = element.height === largest ? 1 : 0;
+	      gl.texImage3D(target, 0, internalFormat, smallest, smallest, smallest, 0, format, type, null);
+	      // remove this is texSubImage3D gets width and height arguments
+	      ctx.canvas.width = smallest;
+	      ctx.canvas.height = smallest;
+	      for (var d = 0; d < depth; ++d) {
+	        //        gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
+	        //        gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
+	        var srcX = d * smallest * xMult;
+	        var srcY = d * smallest * yMult;
+	        var srcW = smallest;
+	        var srcH = smallest;
+	        var dstX = 0;
+	        var dstY = 0;
+	        var dstW = smallest;
+	        var dstH = smallest;
+	        ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+	        gl.texSubImage3D(target, 0, 0, 0, d, format, type, ctx.canvas);
+	      }
+	      ctx.canvas.width = 0;
+	      ctx.canvas.height = 0;
+	      // FIX (save state)
+	      //      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+	    } else {
+	      gl.texImage2D(target, 0, internalFormat, format, type, element);
+	    }
+	    restorePackState(gl, options);
+	    if (options.auto !== false) {
+	      setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
+	    }
+	    setTextureParameters(gl, tex, options);
+	  }
 
 	  function noop() {}
 
@@ -4187,7 +4243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      for (var ii = 0; ii < 6; ++ii) {
 	        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
 	      }
-	    } else if (target === gl.TEXTURE_3D) {
+	    } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
 	      gl.texImage3D(target, 0, gl.RGBA, 1, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
 	    } else {
 	      gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
@@ -4230,6 +4286,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {*} err If truthy there was an error.
 	   * @param {WebGLTexture} tex the texture.
 	   * @param {HTMLImageElement[]} imgs the images for each face.
+	   * @memberOf module:twgl
+	   */
+
+	  /**
+	   * A callback for when an image finished downloading and been uploaded into a texture
+	   * @callback ThreeDReadyCallback
+	   * @param {*} err If truthy there was an error.
+	   * @param {WebGLTexture} tex the texture.
+	   * @param {HTMLImageElement[]} imgs the images for each slice.
 	   * @memberOf module:twgl
 	   */
 
@@ -4279,7 +4344,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (urls.length !== 6) {
 	      throw "there must be 6 urls for a cubemap";
 	    }
-	    var format = options.format || gl.RGBA;
+	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var format = options.format || formatType.format;
 	    var type = options.type || gl.UNSIGNED_BYTE;
 	    var target = options.target || gl.TEXTURE_2D;
 	    if (target !== gl.TEXTURE_CUBE_MAP) {
@@ -4311,10 +4378,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	              // use the default order
 	              getCubeFaceOrder(gl).forEach(function (otherTarget) {
 	                // Should we re-use the same face or a color?
-	                gl.texImage2D(otherTarget, 0, format, format, type, img);
+	                gl.texImage2D(otherTarget, 0, internalFormat, format, type, img);
 	              });
 	            } else {
-	              gl.texImage2D(faceTarget, 0, format, format, type, img);
+	              gl.texImage2D(faceTarget, 0, internalFormat, format, type, img);
 	            }
 
 	            restorePackState(gl, options);
@@ -4334,59 +4401,92 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
-	   * Gets the number of compontents for a given image format.
-	   * @param {number} format the format.
-	   * @return {number} the number of components for the format.
+	   * Loads a 2d array or 3d texture from urls as specified in `options.src`.
+	   * Will set the texture to a 1x1 pixel color
+	   * so that it is usable immediately unless `option.color === false`.
+	   *
+	   * If the width and height is not specified the width and height of the first
+	   * image loaded will be used. Note that since images are loaded async
+	   * which image downloads first is unknown.
+	   *
+	   * If an image is not the same size as the width and height it will be scaled
+	   * to that width and height.
+	   *
+	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+	   * @param {WebGLTexture} tex the WebGLTexture to set parameters for
+	   * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+	   * @param {module:twgl.ThreeDReadyCallback} [callback] A function to be called when all the images have finished loading. err will
+	   *    be non null if there was an error.
 	   * @memberOf module:twgl/textures
 	   */
-	  function getNumComponentsForFormat(format) {
-	    var info = formatInfo[format];
-	    if (!info) {
-	      throw "unknown format: " + format;
+	  function loadSlicesFromUrls(gl, tex, options, callback) {
+	    callback = callback || noop;
+	    var urls = options.src;
+	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
+	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+	    var format = options.format || formatType.format;
+	    var type = options.type || gl.UNSIGNED_BYTE;
+	    var target = options.target || gl.TEXTURE_2D_ARRAY;
+	    if (target !== gl.TEXTURE_3D && target !== gl.TEXTURE_2D_ARRAY) {
+	      throw "target must be TEXTURE_3D or TEXTURE_2D_ARRAY";
 	    }
-	    return info.numColorComponents;
-	  }
+	    setTextureTo1PixelColor(gl, tex, options);
+	    // Because it's async we need to copy the options.
+	    options = utils.shallowCopy(options);
+	    var numToLoad = urls.length;
+	    var errors = [];
+	    var imgs;
+	    var width = options.width;
+	    var height = options.height;
+	    var depth = urls.length;
+	    var firstImage = true;
 
-	  /**
-	   * Gets the texture type for a given array type.
-	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
-	   * @return {number} the gl texture type
-	   */
-	  function getTextureTypeForArrayType(gl, src, defaultType) {
-	    if (isArrayBuffer(src)) {
-	      return typedArrays.getGLTypeForTypedArray(src);
-	    }
-	    return defaultType || gl.UNSIGNED_BYTE;
-	  }
+	    function uploadImg(slice) {
+	      return function (err, img) {
+	        --numToLoad;
+	        if (err) {
+	          errors.push(err);
+	        } else {
+	          savePackState(gl, options);
+	          gl.bindTexture(target, tex);
 
-	  function guessDimensions(gl, target, width, height, numElements) {
-	    if (numElements % 1 !== 0) {
-	      throw "can't guess dimensions";
+	          if (firstImage) {
+	            firstImage = false;
+	            width = options.width || img.width;
+	            height = options.height || img.height;
+	            gl.texImage3D(target, 0, internalFormat, width, height, depth, 0, format, type, null);
+	          }
+
+	          var src = img;
+	          if (img.width !== width || img.height !== height) {
+	            // Size the image to fix
+	            src = ctx.canvas;
+	            ctx.canvas.width = width;
+	            ctx.canvas.height = height;
+	            ctx.drawImage(img, 0, 0, width, height);
+	          }
+
+	          gl.texSubImage3D(target, 0, 0, 0, slice, format, type, src);
+
+	          // free the canvas memory
+	          if (src === ctx.canvas) {
+	            ctx.canvas.width = 0;
+	            ctx.canvas.height = 0;
+	          }
+
+	          restorePackState(gl, options);
+	          gl.generateMipmap(target);
+	        }
+
+	        if (numToLoad === 0) {
+	          callback(errors.length ? errors : undefined, imgs, tex);
+	        }
+	      };
 	    }
-	    if (!width && !height) {
-	      var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
-	      if (size % 1 === 0) {
-	        width = size;
-	        height = size;
-	      } else {
-	        width = numElements;
-	        height = 1;
-	      }
-	    } else if (!height) {
-	      height = numElements / width;
-	      if (height % 1) {
-	        throw "can't guess dimensions";
-	      }
-	    } else if (!width) {
-	      width = numElements / height;
-	      if (width % 1) {
-	        throw "can't guess dimensions";
-	      }
-	    }
-	    return {
-	      width: width,
-	      height: height
-	    };
+
+	    imgs = urls.map(function (url, ndx) {
+	      return loadImage(url, options.crossOrigin, uploadImg(ndx));
+	    });
 	  }
 
 	  /**
@@ -4543,7 +4643,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        height = dimensions.height;
 	        type = dimensions.type;
 	      } else if (Array.isArray(src) && typeof src[0] === 'string') {
-	        loadCubemapFromUrls(gl, tex, options, callback);
+	        if (target === gl.TEXTURE_CUBE_MAP) {
+	          loadCubemapFromUrls(gl, tex, options, callback);
+	        } else {
+	          loadSlicesFromUrls(gl, tex, options, callback);
+	        }
 	      } else if (src instanceof HTMLElement) {
 	        setTextureFromElement(gl, tex, src, options);
 	        width = src.width;
