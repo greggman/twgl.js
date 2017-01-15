@@ -1,5 +1,12 @@
 #Changelist
 
+*   2.8
+
+    *   Add support for TEXTURE_2D_ARRAY
+
+        You can pass a list of images to `twgl.createTexture` and it will load each
+        image into a slice of a `TEXTURE_2D_ARRAY` if the target is `TEXTURE_2D_ARRAY`
+
 *   2.7
 
     *   mangle some property names
