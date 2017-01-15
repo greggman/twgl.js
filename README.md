@@ -523,8 +523,5 @@ to make common WebGL operations easier and less verbose. Feel free to mix it wit
 
 Try [webglfundamentals.org](http://webglfundamentals.org)
 
-## Future
-
-*   What needs to change for WebGL 2.0?
 
 
