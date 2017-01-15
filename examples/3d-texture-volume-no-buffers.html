@@ -10,20 +10,20 @@
 
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta property="og:title" content="TWGL.js - 3d-texture volume" />
+    <meta property="og:title" content="TWGL.js - 3d-texture volume no buffers" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="http://twgljs.org/examples/screenshots/3d-texture.png" />
-    <meta property="og:description" content="TWGL.js - 3d-texture volume" />
+    <meta property="og:description" content="TWGL.js - 3d-texture volume no buffers" />
     <meta property="og:url" content="http://twgljs.org" />
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@greggman">
     <meta name="twitter:creator" content="@greggman">
     <meta name="twitter:domain" content="twgljs.org">
-    <meta name="twitter:title" content="TWGL.js - 3d-texture volume">
-    <meta name="twitter:url" content="http://twgljs.org/examples/3d-texture-volume.html">
-    <meta name="twitter:description" content="TWGL.js - 3d-texture volume">
-    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/3d-texture-volume.png">
+    <meta name="twitter:title" content="TWGL.js - 3d-texture volume no buffers">
+    <meta name="twitter:url" content="http://twgljs.org/examples/3d-texture-volume-no-buffers.html">
+    <meta name="twitter:description" content="TWGL.js - 3d-texture volume no buffers">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/3d-texture-volume-no-buffers.png">
 
     <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 
@@ -72,12 +72,21 @@
   <body>
     <canvas id="c"></canvas>
     <div id="b">
-        <div><a href="http://twgljs.org">twgl.js</a> - 3d-texture volume</div>
+        <div><a href="http://twgljs.org">twgl.js</a> - 3d-texture volume no buffers</div>
         <hr/>
         <div class="controls">
           <div>
+            <label for="resolution">Resolution</label>
+            <input type="range" min="3" max="150" id="resolution"/>
+          </div>
+          <div>
+            <label for="filter">Change Shape</label>
+            <input type="checkbox" id="shape" />
+          </div>
+          <div>
             <label for="filter">LINEAR</label>
-            <input type="checkbox" id="filter" /></div>
+            <input type="checkbox" id="filter" />
+          </div>
           <div>
             <label for="alphaThreshold">Alpha Threshold</label>
             <input type="range" min="0" max="100" id="alphaThreshold"/>
@@ -170,22 +179,43 @@ function main() {
   var vs = `
 #version 300 es
 
-in vec4 a_position;
-in vec3 a_texcoord;
-in vec3 a_normal;
-
 out vec3 v_texcoord;
 out vec3 v_normal;
 out vec3 v_surfaceToLight;
 out vec3 v_surfaceToView;
 
+uniform float u_resolution;
 uniform mat4 u_worldViewProjection;
 uniform mat4 u_world;
 uniform mat4 u_viewInverse;
 uniform vec3 u_lightWorldPos;
 
+void getQuadPoint(const float inId, out vec3 pos) {
+  float id = mod(inId, 6.);
+  float ux = floor(id / 6.) + mod(id, 2.);
+  float vy = mod(floor(id / 2.) + floor(id / 3.), 2.);
+  pos = vec3(ux, 0, vy);
+}
+
 void main() {
-  v_texcoord = a_texcoord;
+  float id = float(gl_VertexID);
+  vec3 tp;
+  getQuadPoint(id, tp);
+
+  float qId = floor(id / 6.);
+  float axisId = mod(qId, 3.);
+  float planeId = floor(qId / 3.0);
+
+  tp.y = planeId / (u_resolution - 1.);
+
+  vec3 position = mix(tp.xyz, mix(tp.yzx, tp.zxy, step(1.5, axisId)), step(0.5, axisId));
+  vec3 normal = mix(vec3(0,1,0), mix(vec3(1,0,0), vec3(0,0,1), step(1.5, axisId)), step(0.5, axisId));
+
+  v_texcoord = position;
+
+  vec4 a_position = vec4(position, 1);
+  vec3 a_normal = normal;
+
   v_normal = (u_world * vec4(a_normal, 0)).xyz;
   v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
   v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
@@ -237,61 +267,8 @@ void main() {
 }
   `;
 
-  // generate 3d planes
-  var positions = [];
-  var texcoords = [];
-  var normals = [];
-
-  function addPoint(mapping, p, t, n) {
-    positions.push(p[mapping[0]], p[mapping[1]], p[mapping[2]]);
-    texcoords.push(t[mapping[0]], t[mapping[1]], t[mapping[2]]);
-    normals.push(n[mapping[0]], n[mapping[1]], n[mapping[2]]);
-  }
-
-  function lerp(a, b, l) {
-    return a + (b - a) * l;
-  }
-
-  for (let y = 0; y <= size; ++y) {
-    const w0 = (y + 0) / size;
-    const w1 = (y + 1) / size;
-
-    const u0 = 0;
-    const u1 = 1;
-    const v0 = 0;
-    const v1 = 1;
-
-    const u0b = 0;
-    const u1b = 1;
-    const v0b = 0;
-    const v1b = 1;
-    const w0b = (y + 0.01) / size;
-    const w1b = (y + 0.99) / size;
-
-    [[0, 1, 2], [1, 2, 0], [2, 0, 1]].forEach(mapping => {
-      addPoint(mapping, [u0 - 0.5, w0 - 0.5, v0 - 0.5], [u0b, w0b, v0b], [0, -1, 0]);
-      addPoint(mapping, [u1 - 0.5, w0 - 0.5, v0 - 0.5], [u1b, w0b, v0b], [0, -1, 0]);
-      addPoint(mapping, [u0 - 0.5, w0 - 0.5, v1 - 0.5], [u0b, w0b, v1b], [0, -1, 0]);
-      addPoint(mapping, [u0 - 0.5, w0 - 0.5, v1 - 0.5], [u0b, w0b, v1b], [0, -1, 0]);
-      addPoint(mapping, [u1 - 0.5, w0 - 0.5, v0 - 0.5], [u1b, w0b, v0b], [0, -1, 0]);
-      addPoint(mapping, [u1 - 0.5, w0 - 0.5, v1 - 0.5], [u1b, w0b, v1b], [0, -1, 0]);
-
-      addPoint(mapping, [u0 - 0.5, w1 - 0.5, v0 - 0.5], [u0b, w1b, v0b], [0, 1, 0]);
-      addPoint(mapping, [u0 - 0.5, w1 - 0.5, v1 - 0.5], [u0b, w1b, v1b], [0, 1, 0]);
-      addPoint(mapping, [u1 - 0.5, w1 - 0.5, v0 - 0.5], [u1b, w1b, v0b], [0, 1, 0]);
-      addPoint(mapping, [u0 - 0.5, w1 - 0.5, v1 - 0.5], [u0b, w1b, v1b], [0, 1, 0]);
-      addPoint(mapping, [u1 - 0.5, w1 - 0.5, v1 - 0.5], [u1b, w1b, v1b], [0, 1, 0]);
-      addPoint(mapping, [u1 - 0.5, w1 - 0.5, v0 - 0.5], [u1b, w1b, v0b], [0, 1, 0]);
-    });
-  }
-
 
   var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
-  var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
-    position: positions,
-    normal: normals,
-    texcoord: { numComponents: 3, data: texcoords, },
-  });
 
   var uniforms = {
     u_volume: texture,
@@ -299,7 +276,14 @@ void main() {
     u_lightWorldPos: [0.3, 1.3, -2],
     u_shininess: 200,
     u_alphaThreshold: 0.9,
+    u_resolution: 128,
   };
+
+  const re = document.querySelector("#resolution");
+  re.value = uniforms.u_resolution;
+  re.addEventListener('input', e => {
+    uniforms.u_resolution = e.target.value;
+  });
 
   const ae = document.querySelector("#alphaThreshold");
   ae.value = uniforms.u_alphaThreshold * 100;
@@ -314,6 +298,11 @@ void main() {
     zoom = e.target.value / 100;
   });
 
+  let change = false;
+  document.querySelector("#shape").addEventListener('change', e => {
+    change = e.target.checked;
+  });
+
   document.querySelector("#filter").addEventListener('change', e => {
     var mode = e.target.checked ? gl.LINEAR : gl.NEAREST;
     gl.bindTexture(gl.TEXTURE_3D, texture);
@@ -326,21 +315,22 @@ void main() {
     time *= 0.001;
     frameCount++;
 
-    const zp = frameCount % (size * 2);
-    const z = (zp >= size) ? (size * 2 - zp - 1) : zp;
-    const zv = z / (size - 1);
-    const r = Math.abs(Math.sin(time) + Math.cos(time * 0.731)) * half * .5 * Math.sin(zv * Math.PI);
+    if (change) {
+      const zp = frameCount % (size * 2);
+      const z = (zp >= size) ? (size * 2 - zp - 1) : zp;
+      const zv = z / (size - 1);
+      const r = Math.abs(Math.sin(time) + Math.cos(time * 0.731)) * half * .5 * Math.sin(zv * Math.PI);
 
-    drawCircle(z, chroma.hsv(time * 30 % 360, 0.75 + Math.sin(time) * .25, 0.5).css(),
-        half + Math.sin(time * 0.515) * (half - r), half + Math.sin(time * 0.413) * (half - r),
-        r);
+      drawCircle(z, chroma.hsv(time * 30 % 360, 0.75 + Math.sin(time) * .25, 0.5).css(),
+          half + Math.sin(time * 0.515) * (half - r), half + Math.sin(time * 0.413) * (half - r),
+          r);
+    }
 
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
 
     const fov = 45 * Math.PI / 180;
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
@@ -358,6 +348,7 @@ void main() {
 
     let viewProjection = m4.multiply(projection, view);
     let world = m4.rotationY(time * 0.1);
+    world = m4.translate(world, [-0.5, -0.5, -0.5]);
 
     uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
     uniforms.u_world = world;
@@ -365,9 +356,9 @@ void main() {
 
     gl.useProgram(programInfo.program);
 
-    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
-    twgl.drawBufferInfo(gl, bufferInfo);
+
+    gl.drawArrays(gl.TRIANGLES, 0, uniforms.u_resolution * 6 * 3);
 
     requestAnimationFrame(render);
   }
