@@ -1,5 +1,11 @@
 #Changelist
 
+*   2.8.1
+
+    *   Fill out TEXTURE_2D_ARRAY with first image
+
+        This is so there is something to render in all slices
+
 *   2.8
 
     *   Add support for TEXTURE_2D_ARRAY
