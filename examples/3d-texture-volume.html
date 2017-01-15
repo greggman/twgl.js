@@ -96,7 +96,6 @@
 
 function main() {
   const m4 = twgl.m4;
-  const v3 = twgl.v3;
   twgl.setDefaults({attribPrefix: "a_"});
   var gl = twgl.getContext(document.getElementById("c"));
   console.log("using: " + gl.getParameter(gl.VERSION));  // eslint-disable-line
@@ -246,10 +245,6 @@ void main() {
     positions.push(p[mapping[0]], p[mapping[1]], p[mapping[2]]);
     texcoords.push(t[mapping[0]], t[mapping[1]], t[mapping[2]]);
     normals.push(n[mapping[0]], n[mapping[1]], n[mapping[2]]);
-  }
-
-  function lerp(a, b, l) {
-    return a + (b - a) * l;
   }
 
   for (let y = 0; y <= size; ++y) {

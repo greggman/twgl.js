@@ -95,7 +95,7 @@ void main() {
     var m4 = twgl.m4;
     var gl = document.getElementById("c").getContext("webgl2");
     if (!gl) {
-      alert("needs webgl2");
+      alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
       return;
     }
     var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
