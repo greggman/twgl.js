@@ -407,9 +407,9 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [3d textures tone mapping](http://twgljs.org/examples/3d-textures-tone-mapping.html)
 *   [samplers](http://twgljs.org/examples/samplers.html)
 *   [webgl2 textures](http://twgljs.org/examples/webgl2-textures.html)
-*   [3d textures volume](http://twgljs.org/examples/3d-textures-volume.html)
-*   [3d textures volume no buffers](http://twgljs.org/examples/3d-textures-volume-no-buffers.html)
-*   [2d texture array](http://twgljs.org/examples/2d-texture-array.html)
+*   [3d texture volume](http://twgljs.org/examples/3d-texture-volume.html)
+*   [3d texture volume no buffers](http://twgljs.org/examples/3d-texture-volume-no-buffers.html)
+*   [2d array texture](http://twgljs.org/examples/2d-array-texture.html)
 
 ## AMD support
 
@@ -523,8 +523,5 @@ to make common WebGL operations easier and less verbose. Feel free to mix it wit
 
 Try [webglfundamentals.org](http://webglfundamentals.org)
 
-## Future
-
-*   What needs to change for WebGL 2.0?
 
 

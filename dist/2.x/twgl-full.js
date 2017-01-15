@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 2.8.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.8.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4459,23 +4459,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	            width = options.width || img.width;
 	            height = options.height || img.height;
 	            gl.texImage3D(target, 0, internalFormat, width, height, depth, 0, format, type, null);
-	          }
 
-	          var src = img;
-	          if (img.width !== width || img.height !== height) {
-	            // Size the image to fix
-	            src = ctx.canvas;
-	            ctx.canvas.width = width;
-	            ctx.canvas.height = height;
-	            ctx.drawImage(img, 0, 0, width, height);
-	          }
+	            // put it in every slice otherwise some slices will be 0,0,0,0
+	            for (var s = 0; s < depth; ++s) {
+	              gl.texSubImage3D(target, 0, 0, 0, s, format, type, img);
+	            }
+	          } else {
+	            var src = img;
+	            if (img.width !== width || img.height !== height) {
+	              // Size the image to fix
+	              src = ctx.canvas;
+	              ctx.canvas.width = width;
+	              ctx.canvas.height = height;
+	              ctx.drawImage(img, 0, 0, width, height);
+	            }
 
-	          gl.texSubImage3D(target, 0, 0, 0, slice, format, type, src);
+	            gl.texSubImage3D(target, 0, 0, 0, slice, format, type, src);
 
-	          // free the canvas memory
-	          if (src === ctx.canvas) {
-	            ctx.canvas.width = 0;
-	            ctx.canvas.height = 0;
+	            // free the canvas memory
+	            if (src === ctx.canvas) {
+	              ctx.canvas.width = 0;
+	              ctx.canvas.height = 0;
+	            }
 	          }
 
 	          restorePackState(gl, options);
