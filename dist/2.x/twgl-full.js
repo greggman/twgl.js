@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 2.8.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 2.8.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4167,7 +4167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var dstW = smallest;
 	        var dstH = smallest;
 	        ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-	        gl.texSubImage3D(target, 0, 0, 0, d, format, type, ctx.canvas);
+	        gl.texSubImage3D(target, 0, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
 	      }
 	      ctx.canvas.width = 0;
 	      ctx.canvas.height = 0;
@@ -4462,7 +4462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            // put it in every slice otherwise some slices will be 0,0,0,0
 	            for (var s = 0; s < depth; ++s) {
-	              gl.texSubImage3D(target, 0, 0, 0, s, format, type, img);
+	              gl.texSubImage3D(target, 0, 0, 0, s, width, height, 1, format, type, img);
 	            }
 	          } else {
 	            var src = img;
@@ -4474,7 +4474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ctx.drawImage(img, 0, 0, width, height);
 	            }
 
-	            gl.texSubImage3D(target, 0, 0, 0, slice, format, type, src);
+	            gl.texSubImage3D(target, 0, 0, 0, slice, width, height, 1, format, type, src);
 
 	            // free the canvas memory
 	            if (src === ctx.canvas) {
