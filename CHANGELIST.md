@@ -1,5 +1,9 @@
 #Changelist
 
+*   2.8.2
+
+    *   Use spec compatible texSubImage3D parameters
+
 *   2.8.1
 
     *   Fill out TEXTURE_2D_ARRAY with first image
