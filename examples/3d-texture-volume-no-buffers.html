@@ -138,7 +138,7 @@ function main() {
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
     ctx.fill();
     gl.bindTexture(gl.TEXTURE_3D, texture);
-    gl.texSubImage3D(gl.TEXTURE_3D, 0, 0, 0, z, gl.RGBA, gl.UNSIGNED_BYTE, ctx.canvas);
+    gl.texSubImage3D(gl.TEXTURE_3D, 0, 0, 0, z, size, size, 1, gl.RGBA, gl.UNSIGNED_BYTE, ctx.canvas);
   }
 
   function drawCircle(z, color, x, y, radius) {
