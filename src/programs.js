@@ -257,14 +257,21 @@ define([
 
   function samplerSetter(gl, type, unit, location) {
     var bindPoint = getBindPointForSamplerType(gl, type);
-    return function(textureOrPair) {
+    return utils.isWebGL2(gl) ? function(textureOrPair) {
       let texture;
+      let sampler;
       if (textureOrPair instanceof WebGLTexture) {
         texture = textureOrPair;
+        sampler = null;
       } else {
         texture = textureOrPair.texture;
-        gl.bindSampler(unit, textureOrPair.sampler);
+        sampler = textureOrPair.sampler;
       }
+      gl.uniform1i(location, unit);
+      gl.activeTexture(gl.TEXTURE0 + unit);
+      gl.bindTexture(bindPoint, texture);
+      gl.bindSampler(unit, sampler);
+    } : function(texture) {
       gl.uniform1i(location, unit);
       gl.activeTexture(gl.TEXTURE0 + unit);
       gl.bindTexture(bindPoint, texture);
@@ -278,17 +285,26 @@ define([
       units[ii] = unit + ii;
     }
 
-    return function(textures) {
+    return utils.isWebGL2(gl) ? function(textures) {
       gl.uniform1iv(location, units);
       textures.forEach(function(textureOrPair, index) {
         gl.activeTexture(gl.TEXTURE0 + units[index]);
         let texture;
+        let sampler;
         if (textureOrPair instanceof WebGLTexture) {
           texture = textureOrPair;
+          sampler = null;
         } else {
           texture = textureOrPair.texture;
-          gl.bindSampler(unit, textureOrPair.sampler);
+          sampler = textureOrPair.sampler;
         }
+        gl.bindSampler(unit, sampler);
+        gl.bindTexture(bindPoint, texture);
+      });
+    } : function(textures) {
+      gl.uniform1iv(location, units);
+      textures.forEach(function(texture, index) {
+        gl.activeTexture(gl.TEXTURE0 + units[index]);
         gl.bindTexture(bindPoint, texture);
       });
     };
