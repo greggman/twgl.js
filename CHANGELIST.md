@@ -1,5 +1,14 @@
 #Changelist
 
+*   3.0.0
+
+    *   Fix package.json
+
+        It was pointing to `dist` instead of `dist/2.x`. Because
+        that means fixing it will bump users of npm 2.x from
+        1.x to 2.x I had to bump to 3.x because and a breaking
+        change.
+
 *   2.8.2
 
     *   Use spec compatible texSubImage3D parameters
