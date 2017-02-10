@@ -8,6 +8,7 @@ const webpack = require('webpack');
 var plugins = require('webpack-load-plugins')();
 
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), {encoding: 'utf8'}));
+const verDir  = /^(\d+\.)/.exec(pkg.version)[1] + 'x';
 
 function getLicense(pkg) {
   return `@license twgl.js ${pkg.version} Copyright (c) 2015, Gregg Tavares All Rights Reserved.
@@ -136,7 +137,7 @@ module.exports = function(grunt) {
           ],
         },
         output: {
-          path: path.join(__dirname, 'dist/2.x'),
+          path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl-full.js',
           library: 'twgl',
           libraryTarget: 'umd',
@@ -159,7 +160,7 @@ module.exports = function(grunt) {
           ],
         },
         output: {
-          path: path.join(__dirname, 'dist/2.x'),
+          path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl.js',
           library: 'twgl',
           libraryTarget: 'umd',
@@ -195,7 +196,7 @@ module.exports = function(grunt) {
           ],
         },
         output: {
-          path: path.join(__dirname, 'dist/2.x'),
+          path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl-full.min.js',
           library: 'twgl',
           libraryTarget: 'umd',
@@ -231,7 +232,7 @@ module.exports = function(grunt) {
           ],
         },
         output: {
-          path: path.join(__dirname, 'dist/2.x'),
+          path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl.min.js',
           library: 'twgl',
           libraryTarget: 'umd',
@@ -262,8 +263,8 @@ module.exports = function(grunt) {
     },
     copy: {
       twgl: {
-        src: 'dist/2.x/twgl.js',
-        dest: 'npm/base/dist/2.x/twgl.js',
+        src: `dist/${verDir}/twgl.js`,
+        dest: `npm/base/dist/${verDir}/twgl.js`,
       },
       readme: {
         src: 'README.md',
@@ -278,7 +279,7 @@ module.exports = function(grunt) {
       },
     },
     clean: {
-      dist: [ 'dist/2.x' ],
+      dist: [ `dist/${verDir}` ],
       docs: [ 'docs' ],
     },
   });
@@ -330,10 +331,10 @@ module.exports = function(grunt) {
     var fs = require('fs');
     var good = true;
     [
-      { filename: 'dist/2.x/twgl.js',          fn: getHeaderVersion, },
-      { filename: 'dist/2.x/twgl-full.js',     fn: getHeaderVersion, },
-      { filename: 'dist/2.x/twgl.min.js',      fn: getHeaderVersion, },
-      { filename: 'dist/2.x/twgl-full.min.js', fn: getHeaderVersion, },
+      { filename: `dist/${verDir}/twgl.js`,          fn: getHeaderVersion, },
+      { filename: `dist/${verDir}/twgl-full.js`,     fn: getHeaderVersion, },
+      { filename: `dist/${verDir}/twgl.min.js`,      fn: getHeaderVersion, },
+      { filename: `dist/${verDir}/twgl-full.min.js`, fn: getHeaderVersion, },
       { filename: 'package.json',          fn: getPackageVersion, },
     ].forEach(function(file) {
       var version = file.fn(file.filename);
@@ -350,8 +351,8 @@ module.exports = function(grunt) {
     p.name = "twgl-base.js";
     p.scripts = {};
     p.devDependencies = {};
-    p.main = "dist/2.x/twgl.js";
-    p.files = [ 'dist/2.x/twgl.js' ];
+    p.main = `dist/${verDir}/twgl.js`;
+    p.files = [ `dist/${verDir}/twgl.js` ];
     fs.writeFileSync("npm/base/package.json", JSON.stringify(p, null, 2), {encoding: "utf8"});
   });
 
