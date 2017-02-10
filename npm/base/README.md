@@ -513,7 +513,7 @@ var attribs = {
   a_texcoord: { buffer: texcoordBuffer, size: 2, },
   a_color:    { buffer: colorBuffer,    size: 4, type: gl.UNSIGNED_BYTE, normalize: true, },
 };
-setAttributes(attribSetters, attribs);
+twgl.setAttributes(attribSetters, attribs);
 ```
 
 The point of the example above is TWGL is a **thin** wrapper. All it's doing is trying
