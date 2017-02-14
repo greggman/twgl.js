@@ -596,6 +596,8 @@ define([
     }
   }
 
+  var WebGLSamplerCtor = window.WebGLSampeler || function NotWebGLSampler() {};
+
   /**
    * Sets the parameters of a texture or sampler
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -619,7 +621,7 @@ define([
     if (options.wrap) {
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-      if (target === gl.TEXTURE_3D || target instanceof WebGLSampler) {
+      if (target === gl.TEXTURE_3D || target instanceof WebGLSamplerCtor) {
         parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
       }
     }
