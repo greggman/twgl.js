@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-@license twgl.js 2.8.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+@license twgl.js 3.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details
 -->
@@ -477,7 +477,7 @@ var attribs = {
   a_texcoord: { buffer: texcoordBuffer, size: 2, },
   a_color:    { buffer: colorBuffer,    size: 4, type: gl.UNSIGNED_BYTE, normalize: true, },
 };
-setAttributes(attribSetters, attribs);
+twgl.setAttributes(attribSetters, attribs);
 </code></pre>
 <p>The point of the example above is TWGL is a <strong>thin</strong> wrapper. All it&#39;s doing is trying
 to make common WebGL operations easier and less verbose. Feel free to mix it with raw WebGL.</p>

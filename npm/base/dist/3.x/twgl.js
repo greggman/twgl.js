@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3862,6 +3862,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  var WebGLSamplerCtor = window.WebGLSampeler || function NotWebGLSampler() {};
+
 	  /**
 	   * Sets the parameters of a texture or sampler
 	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -3885,7 +3887,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options.wrap) {
 	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
 	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-	      if (target === gl.TEXTURE_3D || target instanceof WebGLSampler) {
+	      if (target === gl.TEXTURE_3D || target instanceof WebGLSamplerCtor) {
 	        parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
 	      }
 	    }
