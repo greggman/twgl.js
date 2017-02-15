@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.0.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3862,7 +3862,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  var WebGLSamplerCtor = window.WebGLSampeler || function NotWebGLSampler() {};
+	  var WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
 
 	  /**
 	   * Sets the parameters of a texture or sampler
