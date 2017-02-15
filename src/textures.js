@@ -596,7 +596,7 @@ define([
     }
   }
 
-  var WebGLSamplerCtor = window.WebGLSampeler || function NotWebGLSampler() {};
+  var WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
 
   /**
    * Sets the parameters of a texture or sampler
