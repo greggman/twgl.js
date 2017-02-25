@@ -8632,4 +8632,4 @@ requestAnimationFrame(render);
 
 
 
-},{"../../3rdparty/chroma.min":1,"../../dist/2.x/twgl-full":2}]},{},[3]);
+},{"../../3rdparty/chroma.min":1,"../../dist/3.x/twgl-full":2}]},{},[3]);

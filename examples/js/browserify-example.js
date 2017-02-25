@@ -1,6 +1,6 @@
 "use strict";
 
-var twgl = require('../../dist/2.x/twgl-full');   // this would be require('twgl') in a real example
+var twgl = require('../../dist/3.x/twgl-full');   // this would be require('twgl') in a real example
 var chroma = require('../../3rdparty/chroma.min');
 var m4 = twgl.m4;
 var primitives = twgl.primitives;

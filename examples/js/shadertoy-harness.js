@@ -142,7 +142,7 @@ window.addEventListener('load', function() {
     script.type = 'text/javascript';
     script.async = true;
     script.onload = main;
-    script.src = 'https://twgljs.org/dist/2.x/twgl.min.js';
+    script.src = 'https://twgljs.org/dist/3.x/twgl.min.js';
     d.getElementsByTagName('head')[0].appendChild(script);
   }(document));
 });

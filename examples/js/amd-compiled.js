@@ -1,7 +1,7 @@
 "use strict";
 
 require([
-    '../../dist/2.x/twgl-full.min',
+    '../../dist/3.x/twgl-full.min',
     '../../3rdparty/chroma.min',
   ], function(
     twgl,
