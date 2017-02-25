@@ -109,6 +109,25 @@ define([], function() {
   }
 
   /**
+   * Get the GL type for a typedArray type
+   * @param {ArrayBufferView constructor} typedArrayType a typedArray constructor
+   * @return {number} the GL type for type. For example pass in `Int8Array` and `gl.BYTE` will
+   *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
+   * @memberOf module:twgl/typedArray
+   */
+  function getGLTypeForTypedArrayType(typedArrayType) {
+    if (typedArrayType === Int8Array)         { return BYTE; }           // eslint-disable-line
+    if (typedArrayType === Uint8Array)        { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArrayType === Uint8ClampedArray) { return UNSIGNED_BYTE; }  // eslint-disable-line
+    if (typedArrayType === Int16Array)        { return SHORT; }          // eslint-disable-line
+    if (typedArrayType === Uint16Array)       { return UNSIGNED_SHORT; } // eslint-disable-line
+    if (typedArrayType === Int32Array)        { return INT; }            // eslint-disable-line
+    if (typedArrayType === Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
+    if (typedArrayType === Float32Array)      { return FLOAT; }          // eslint-disable-line
+    throw "unsupported typed array type";
+  }
+
+  /**
    * Get the typed array constructor for a given GL type
    * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
    * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
@@ -129,6 +148,7 @@ define([], function() {
   // Using quotes prevents Uglify from changing the names.
   return {
     "getGLTypeForTypedArray": getGLTypeForTypedArray,
+    "getGLTypeForTypedArrayType": getGLTypeForTypedArrayType,
     "getTypedArrayTypeForGLType": getTypedArrayTypeForGLType,
     "isArrayBuffer": isArrayBuffer,
   };
