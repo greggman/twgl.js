@@ -343,6 +343,7 @@ define([
         };
       }
     });
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
     return attribs;
   }
 
