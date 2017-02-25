@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.0.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -524,6 +524,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return false;
 	  }
 
+	  // This is really just a guess. Though I can't really imagine using
+	  // anything else? Maybe for some compression?
+	  function getNormalizationForTypedArrayType(typedArrayType) {
+	    if (typedArrayType === Int8Array) {
+	      return true;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint8Array) {
+	      return true;
+	    } // eslint-disable-line
+	    return false;
+	  }
+
 	  function getArray(array) {
 	    return array.length ? array : array.data;
 	  }
@@ -597,7 +609,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
 	   * @typedef {Object} FullArraySpec
-	   * @property {(number[]|ArrayBuffer)} data The data of the array.
+	   * @property {(number|number[]|ArrayBuffer)} data The data of the array. A number alone becomes the number of elements of type.
 	   * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
 	   *    If `coord` is in the name assumes `numComponents = 2`.
 	   *    If `color` is in the name assumes `numComponents = 4`.
@@ -619,9 +631,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * When passed to {@link module:twgl.createBufferInfoFromArrays} if an ArraySpec is `number[]` or `ArrayBuffer`
 	   * the types will be guessed based on the name. `indices` will be `Uint16Array`, everything else will
-	   * be `Float32Array`
+	   * be `Float32Array`. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.
 	   *
-	   * @typedef {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} ArraySpec
+	   * @typedef {(number|number[]|ArrayBuffer|module:twgl.FullArraySpec)} ArraySpec
 	   * @memberOf module:twgl
 	   */
 
@@ -727,18 +739,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!isIndices(arrayName)) {
 	        var array = arrays[arrayName];
 	        var attribName = array.attrib || array.name || array.attribName || defaults.attribPrefix + arrayName;
-	        var typedArray = makeTypedArray(array, arrayName);
+	        var buffer;
+	        var type;
+	        var normalization;
+	        var numComponents;
+	        var numValues;
+	        if (typeof array === "number" || typeof array.data === "number") {
+	          numValues = array.data || array;
+	          var arrayType = array.type || Float32Array;
+	          var numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+	          type = typedArrays.getGLTypeForTypedArrayType(arrayType);
+	          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
+	          numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
+	          buffer = gl.createBuffer();
+	          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+	          gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+	        } else {
+	          var typedArray = makeTypedArray(array, arrayName);
+	          buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
+	          type = typedArrays.getGLTypeForTypedArray(typedArray);
+	          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
+	          numComponents = getNumComponents(array, arrayName);
+	          numValues = typedArray.length;
+	        }
 	        attribs[attribName] = {
-	          buffer: createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
-	          numComponents: getNumComponents(array, arrayName),
-	          type: typedArrays.getGLTypeForTypedArray(typedArray),
-	          normalize: array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
+	          buffer: buffer,
+	          numComponents: numComponents,
+	          type: type,
+	          normalize: normalization,
 	          stride: array.stride || 0,
 	          offset: array.offset || 0,
 	          drawType: array.drawType
 	        };
 	      }
 	    });
+	    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 	    return attribs;
 	  }
 
@@ -788,34 +823,72 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  function getBytesPerValueForGLType(gl, type) {
+	    if (type === gl.BYTE) return 1; // eslint-disable-line
+	    if (type === gl.UNSIGNED_BYTE) return 1; // eslint-disable-line
+	    if (type === gl.SHORT) return 2; // eslint-disable-line
+	    if (type === gl.UNSIGNED_SHORT) return 2; // eslint-disable-line
+	    if (type === gl.INT) return 4; // eslint-disable-line
+	    if (type === gl.UNSIGNED_INT) return 4; // eslint-disable-line
+	    if (type === gl.FLOAT) return 4; // eslint-disable-line
+	    return 0;
+	  }
+
 	  /**
 	   * tries to get the number of elements from a set of arrays.
 	   */
+	  var positionKeys = ['position', 'positions', 'a_position'];
+	  function getNumElementsFromNonIndexedArrays(arrays) {
+	    var key;
+	    for (var ii = 0; ii < positionKeys.length; ++ii) {
+	      key = positionKeys[ii];
+	      if (key in arrays) {
+	        break;
+	      }
+	    }
+	    if (ii === positionKeys.length) {
+	      key = Object.keys(arrays)[0];
+	    }
+	    var array = arrays[key];
+	    var length = getArray(array).length;
+	    var numComponents = getNumComponents(array, key);
+	    var numElements = length / numComponents;
+	    if (length % numComponents > 0) {
+	      throw "numComponents " + numComponents + " not correct for length " + length;
+	    }
+	    return numElements;
+	  }
 
-	  var getNumElementsFromNonIndexedArrays = function () {
-	    var positionKeys = ['position', 'positions', 'a_position'];
+	  function getNumElementsFromAttributes(gl, attribs) {
+	    var key;
+	    for (var ii = 0; ii < positionKeys.length; ++ii) {
+	      key = positionKeys[ii];
+	      if (key in attribs) {
+	        break;
+	      }
+	      key = defaults.attribPrefix + key;
+	      if (key in attribs) {
+	        break;
+	      }
+	    }
+	    if (ii === positionKeys.length) {
+	      key = Object.keys(attribs)[0];
+	    }
+	    var attrib = attribs[key];
+	    gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
+	    var numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
+	    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-	    return function getNumElementsFromNonIndexedArrays(arrays) {
-	      var key;
-	      for (var ii = 0; ii < positionKeys.length; ++ii) {
-	        key = positionKeys[ii];
-	        if (key in arrays) {
-	          break;
-	        }
-	      }
-	      if (ii === positionKeys.length) {
-	        key = Object.keys(arrays)[0];
-	      }
-	      var array = arrays[key];
-	      var length = getArray(array).length;
-	      var numComponents = getNumComponents(array, key);
-	      var numElements = length / numComponents;
-	      if (length % numComponents > 0) {
-	        throw "numComponents " + numComponents + " not correct for length " + length;
-	      }
-	      return numElements;
-	    };
-	  }();
+	    var bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
+	    var totalElements = numBytes / bytesPerValue;
+	    var numComponents = attrib.numComponents || attrib.size;
+	    // TODO: check stride
+	    var numElements = totalElements / numComponents;
+	    if (numElements % 1 !== 0) {
+	      throw "numComponents " + numComponents + " not correct for length " + length;
+	    }
+	    return numElements;
+	  }
 
 	  /**
 	   * @typedef {Object} BufferInfo
@@ -928,7 +1001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      bufferInfo.numElements = indices.length;
 	      bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(indices);
 	    } else {
-	      bufferInfo.numElements = getNumElementsFromNonIndexedArrays(arrays);
+	      bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
 	    }
 
 	    return bufferInfo;
@@ -1158,6 +1231,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
+	   * Get the GL type for a typedArray type
+	   * @param {ArrayBufferView constructor} typedArrayType a typedArray constructor
+	   * @return {number} the GL type for type. For example pass in `Int8Array` and `gl.BYTE` will
+	   *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
+	   * @memberOf module:twgl/typedArray
+	   */
+	  function getGLTypeForTypedArrayType(typedArrayType) {
+	    if (typedArrayType === Int8Array) {
+	      return BYTE;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint8Array) {
+	      return UNSIGNED_BYTE;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint8ClampedArray) {
+	      return UNSIGNED_BYTE;
+	    } // eslint-disable-line
+	    if (typedArrayType === Int16Array) {
+	      return SHORT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint16Array) {
+	      return UNSIGNED_SHORT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Int32Array) {
+	      return INT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint32Array) {
+	      return UNSIGNED_INT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Float32Array) {
+	      return FLOAT;
+	    } // eslint-disable-line
+	    throw "unsupported typed array type";
+	  }
+
+	  /**
 	   * Get the typed array constructor for a given GL type
 	   * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
 	   * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
@@ -1178,6 +1286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Using quotes prevents Uglify from changing the names.
 	  return {
 	    "getGLTypeForTypedArray": getGLTypeForTypedArray,
+	    "getGLTypeForTypedArrayType": getGLTypeForTypedArrayType,
 	    "getTypedArrayTypeForGLType": getTypedArrayTypeForGLType,
 	    "isArrayBuffer": isArrayBuffer
 	  };
@@ -1983,6 +2092,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @typedef {Object} ProgramOptions
 	   * @property {function(string)} [errorCallback] callback for errors
 	   * @property {Object.<string,number>} [attribLocations] a attribute name to location map
+	   * @property {(module:twgl.BufferInfo|Object.<string,module:twgl.AttribInfo>|string[])} [transformFeedbackVaryings] If passed
+	   *   a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise
+	   *   you can pass an array of names.
+	   * @property {number} [transformFeedbackMode] the mode to pass `gl.transformFeedbackVaryings`. Defaults to `SEPARATE_ATTRIBS`.
 	   * @memberOf module:twgl
 	   */
 
@@ -2011,10 +2124,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var opt = opt_attribs;
 	      opt_errorCallback = opt.errorCallback;
 	      opt_attribs = opt.attribLocations;
+	      var transformFeedbackVaryings = opt.transformFeedbackVaryings;
 	    }
 
 	    var options = {
-	      errorCallback: opt_errorCallback || error
+	      errorCallback: opt_errorCallback || error,
+	      transformFeedbackVaryings: transformFeedbackVaryings
 	    };
 
 	    if (opt_attribs) {
@@ -2061,6 +2176,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      Object.keys(progOptions.attribLocations).forEach(function (attrib) {
 	        gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
 	      });
+	    }
+	    var varyings = progOptions.transformFeedbackVaryings;
+	    if (varyings) {
+	      if (varyings.attribs) {
+	        varyings = varyings.attribs;
+	      }
+	      if (!Array.isArray(varyings)) {
+	        varyings = Object.keys(varyings);
+	      }
+	      gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || gl.SEPARATE_ATTRIBS);
 	    }
 	    gl.linkProgram(program);
 
@@ -2244,6 +2369,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	      uniformSetters[name] = setter;
 	    }
 	    return uniformSetters;
+	  }
+
+	  /**
+	   * @typedef {Object} TransformFeedbackInfo
+	   * @property {number} index index of transform feedback
+	   * @property {number} type GL type
+	   * @property {number} size 1 - 4
+	   * @memberOf module:twgl
+	   */
+
+	  /**
+	   * Create TransformFeedbackInfo for passing to bind/unbindTransformFeedbackInfo.
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {WebGLProgram} program an existing WebGLProgram.
+	   * @return {Object<string, module:twgl.TransformFeedbackInfo>}
+	   * @memberOf module:twgl
+	   */
+	  function createTransformFeedbackInfo(gl, program) {
+	    var info = {};
+	    var numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+	    for (var ii = 0; ii < numVaryings; ++ii) {
+	      var varying = gl.getTransformFeedbackVarying(program, ii);
+	      info[varying.name] = {
+	        index: ii,
+	        type: varying.type,
+	        size: varying.size
+	      };
+	    }
+	    return info;
+	  }
+
+	  /**
+	   * Binds buffers for transform feedback.
+	   *
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
+	   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+	   * @memberOf module:twgl
+	   */
+	  function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
+	    if (transformFeedbackInfo.transformFeedbackInfo) {
+	      transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
+	    }
+	    if (bufferInfo.attribs) {
+	      bufferInfo = bufferInfo.attribs;
+	    }
+	    for (var name in bufferInfo) {
+	      var varying = transformFeedbackInfo[name];
+	      if (varying) {
+	        var buf = bufferInfo[name];
+	        if (buf.offset) {
+	          gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
+	        } else {
+	          gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer);
+	        }
+	      }
+	    }
+	  }
+
+	  /**
+	   * Unbinds buffers afetr transform feedback.
+	   *
+	   * Buffers can not be bound to 2 bind points so if you try to bind a buffer used
+	   * in a transform feedback as an ARRAY_BUFFER for an attribute it will fail.
+	   *
+	   * This function unbinds all buffers that were bound with {@link module:twgl.bindTransformFeedbackInfo}.
+	   *
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
+	   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+	   * @memberOf module:twgl
+	   */
+	  function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
+	    if (transformFeedbackInfo.transformFeedbackInfo) {
+	      transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
+	    }
+	    if (bufferInfo.attribs) {
+	      bufferInfo = bufferInfo.attribs;
+	    }
+	    for (var name in bufferInfo) {
+	      var varying = transformFeedbackInfo[name];
+	      if (varying) {
+	        gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
+	      }
+	    }
 	  }
 
 	  /**
@@ -2807,6 +3017,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {WebGLProgram} program A shader program
 	   * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
 	   * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
+	   * @propetty {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+	   * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
 	   * @memberOf module:twgl
 	   */
 
@@ -2838,6 +3050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (utils.isWebGL2(gl)) {
 	      programInfo.uniformBlockSpec = createUniformBlockSpecFromProgram(gl, program);
+	      programInfo.transformFeedbackInfo = createTransformFeedbackInfo(gl, program);
 	    }
 
 	    return programInfo;
@@ -2913,6 +3126,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "createUniformBlockSpecFromProgram": createUniformBlockSpecFromProgram,
 	    "createUniformBlockInfoFromProgram": createUniformBlockInfoFromProgram,
 	    "createUniformBlockInfo": createUniformBlockInfo,
+
+	    "createTransformFeedbackInfo": createTransformFeedbackInfo,
+	    "bindTransformFeedbackInfo": bindTransformFeedbackInfo,
+	    "unbindTransformFeedbackInfo": unbindTransformFeedbackInfo,
 
 	    "setAttributes": setAttributes,
 	    "setBuffersAndAttributes": setBuffersAndAttributes,

@@ -300,12 +300,11 @@ function main() {
   var objects = [];
   var drawObjects = [];
   var numObjects = 100;
-  var baseHue = rand(0, 360);
   for (var ii = 0; ii < numObjects; ++ii) {
     var uniforms = {
       u_lightWorldPos: lightWorldPosition,
       u_lightColor: lightColor,
-      u_diffuseMult: [1,1,1,1], //chroma.hsv((baseHue + rand(0, 60)) % 360, 1., 0.8).gl(),
+      u_diffuseMult: [1, 1, 1, 1],
       u_specular: [1, 1, 1, 1],
       u_shininess: 50,
       u_specularFactor: 1,

@@ -22,7 +22,7 @@
 chroma.brewer=brewer={OrRd:["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000"],PuBu:["#fff7fb","#ece7f2","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"],BuPu:["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#810f7c","#4d004b"],Oranges:["#fff5eb","#fee6ce","#fdd0a2","#fdae6b","#fd8d3c","#f16913","#d94801","#a63603","#7f2704"],BuGn:["#f7fcfd","#e5f5f9","#ccece6","#99d8c9","#66c2a4","#41ae76","#238b45","#006d2c","#00441b"],YlOrBr:["#ffffe5","#fff7bc","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#993404","#662506"],YlGn:["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"],Reds:["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],RdPu:["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"],Greens:["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#00441b"],YlGnBu:["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],Purples:["#fcfbfd","#efedf5","#dadaeb","#bcbddc","#9e9ac8","#807dba","#6a51a3","#54278f","#3f007d"],GnBu:["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081"],Greys:["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"],YlOrRd:["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"],PuRd:["#f7f4f9","#e7e1ef","#d4b9da","#c994c7","#df65b0","#e7298a","#ce1256","#980043","#67001f"],Blues:["#f7fbff","#deebf7","#c6dbef","#9ecae1","#6baed6","#4292c6","#2171b5","#08519c","#08306b"],PuBuGn:["#fff7fb","#ece2f0","#d0d1e6","#a6bddb","#67a9cf","#3690c0","#02818a","#016c59","#014636"],Spectral:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],RdYlGn:["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"],RdBu:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"],PiYG:["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#f7f7f7","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"],PRGn:["#40004b","#762a83","#9970ab","#c2a5cf","#e7d4e8","#f7f7f7","#d9f0d3","#a6dba0","#5aae61","#1b7837","#00441b"],RdYlBu:["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"],BrBG:["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],RdGy:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],PuOr:["#7f3b08","#b35806","#e08214","#fdb863","#fee0b6","#f7f7f7","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b"],Set2:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"],Accent:["#7fc97f","#beaed4","#fdc086","#ffff99","#386cb0","#f0027f","#bf5b17","#666666"],Set1:["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"],Set3:["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"],Dark2:["#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d","#666666"],Paired:["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"],Pastel2:["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"],Pastel1:["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]};chroma.colors=colors={indigo:"#4b0082",gold:"#ffd700",hotpink:"#ff69b4",firebrick:"#b22222",indianred:"#cd5c5c",yellow:"#ffff00",mistyrose:"#ffe4e1",darkolivegreen:"#556b2f",olive:"#808000",darkseagreen:"#8fbc8f",pink:"#ffc0cb",tomato:"#ff6347",lightcoral:"#f08080",orangered:"#ff4500",navajowhite:"#ffdead",lime:"#00ff00",palegreen:"#98fb98",darkslategrey:"#2f4f4f",greenyellow:"#adff2f",burlywood:"#deb887",seashell:"#fff5ee",mediumspringgreen:"#00fa9a",fuchsia:"#ff00ff",papayawhip:"#ffefd5",blanchedalmond:"#ffebcd",chartreuse:"#7fff00",dimgray:"#696969",black:"#000000",peachpuff:"#ffdab9",springgreen:"#00ff7f",aquamarine:"#7fffd4",white:"#ffffff",orange:"#ffa500",lightsalmon:"#ffa07a",darkslategray:"#2f4f4f",brown:"#a52a2a",ivory:"#fffff0",dodgerblue:"#1e90ff",peru:"#cd853f",lawngreen:"#7cfc00",chocolate:"#d2691e",crimson:"#dc143c",forestgreen:"#228b22",darkgrey:"#a9a9a9",lightseagreen:"#20b2aa",cyan:"#00ffff",mintcream:"#f5fffa",silver:"#c0c0c0",antiquewhite:"#faebd7",mediumorchid:"#ba55d3",skyblue:"#87ceeb",gray:"#808080",darkturquoise:"#00ced1",goldenrod:"#daa520",darkgreen:"#006400",floralwhite:"#fffaf0",darkviolet:"#9400d3",darkgray:"#a9a9a9",moccasin:"#ffe4b5",saddlebrown:"#8b4513",grey:"#808080",darkslateblue:"#483d8b",lightskyblue:"#87cefa",lightpink:"#ffb6c1",mediumvioletred:"#c71585",slategrey:"#708090",red:"#ff0000",deeppink:"#ff1493",limegreen:"#32cd32",darkmagenta:"#8b008b",palegoldenrod:"#eee8aa",plum:"#dda0dd",turquoise:"#40e0d0",lightgrey:"#d3d3d3",lightgoldenrodyellow:"#fafad2",darkgoldenrod:"#b8860b",lavender:"#e6e6fa",maroon:"#800000",yellowgreen:"#9acd32",sandybrown:"#f4a460",thistle:"#d8bfd8",violet:"#ee82ee",navy:"#000080",magenta:"#ff00ff",dimgrey:"#696969",tan:"#d2b48c",rosybrown:"#bc8f8f",olivedrab:"#6b8e23",blue:"#0000ff",lightblue:"#add8e6",ghostwhite:"#f8f8ff",honeydew:"#f0fff0",cornflowerblue:"#6495ed",slateblue:"#6a5acd",linen:"#faf0e6",darkblue:"#00008b",powderblue:"#b0e0e6",seagreen:"#2e8b57",darkkhaki:"#bdb76b",snow:"#fffafa",sienna:"#a0522d",mediumblue:"#0000cd",royalblue:"#4169e1",lightcyan:"#e0ffff",green:"#008000",mediumpurple:"#9370db",midnightblue:"#191970",cornsilk:"#fff8dc",paleturquoise:"#afeeee",bisque:"#ffe4c4",slategray:"#708090",darkcyan:"#008b8b",khaki:"#f0e68c",wheat:"#f5deb3",teal:"#008080",darkorchid:"#9932cc",deepskyblue:"#00bfff",salmon:"#fa8072",darkred:"#8b0000",steelblue:"#4682b4",palevioletred:"#db7093",lightslategray:"#778899",aliceblue:"#f0f8ff",lightslategrey:"#778899",lightgreen:"#90ee90",orchid:"#da70d6",gainsboro:"#dcdcdc",mediumseagreen:"#3cb371",lightgray:"#d3d3d3",mediumturquoise:"#48d1cc",lemonchiffon:"#fffacd",cadetblue:"#5f9ea0",lightyellow:"#ffffe0",lavenderblush:"#fff0f5",coral:"#ff7f50",purple:"#800080",aqua:"#00ffff",whitesmoke:"#f5f5f5",mediumslateblue:"#7b68ee",darkorange:"#ff8c00",mediumaquamarine:"#66cdaa",darksalmon:"#e9967a",beige:"#f5f5dc",blueviolet:"#8a2be2",azure:"#f0ffff",lightsteelblue:"#b0c4de",oldlace:"#fdf5e6"};type=function(){var classToType,name,_i,_len,_ref1;classToType={};_ref1="Boolean Number String Function Array Date RegExp Undefined Null".split(" ");for(_i=0,_len=_ref1.length;_i<_len;_i++){name=_ref1[_i];classToType["[object "+name+"]"]=name.toLowerCase()}return function(obj){var strType;strType=Object.prototype.toString.call(obj);return classToType[strType]||"object"}}();limit=function(x,min,max){if(min==null){min=0}if(max==null){max=1}if(x<min){x=min}if(x>max){x=max}return x};unpack=function(args){if(args.length>=3){return args}else{return args[0]}};TWOPI=Math.PI*2;PITHIRD=Math.PI/3;cos=Math.cos;bezier=function(colors){var I,I0,I1,c,lab0,lab1,lab2,lab3,_ref1,_ref2,_ref3;colors=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(chroma(c))}return _results}();if(colors.length===2){_ref1=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref1[0],lab1=_ref1[1];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push(lab0[i]+t*(lab1[i]-lab0[i]))}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===3){_ref2=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref2[0],lab1=_ref2[1],lab2=_ref2[2];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*lab0[i]+2*(1-t)*t*lab1[i]+t*t*lab2[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===4){_ref3=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref3[0],lab1=_ref3[1],lab2=_ref3[2],lab3=_ref3[3];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*(1-t)*lab0[i]+3*(1-t)*(1-t)*t*lab1[i]+3*(1-t)*t*t*lab2[i]+t*t*t*lab3[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===5){I0=bezier(colors.slice(0,3));I1=bezier(colors.slice(2,5));I=function(t){if(t<.5){return I0(t*2)}else{return I1((t-.5)*2)}}}return I};chroma.interpolate.bezier=bezier}.call(this);
 },{}],2:[function(require,module,exports){
 /*!
- * @license twgl.js 2.8.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -289,9 +289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var names = ["webgl", "experimental-webgl"];
 	    var context = null;
 	    for (var ii = 0; ii < names.length; ++ii) {
-	      try {
-	        context = canvas.getContext(names[ii], opt_attribs);
-	      } catch (e) {} // eslint-disable-line
+	      context = canvas.getContext(names[ii], opt_attribs);
 	      if (context) {
 	        break;
 	      }
@@ -329,9 +327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var names = ["webgl2", "webgl", "experimental-webgl"];
 	    var context = null;
 	    for (var ii = 0; ii < names.length; ++ii) {
-	      try {
-	        context = canvas.getContext(names[ii], opt_attribs);
-	      } catch (e) {} // eslint-disable-line
+	      context = canvas.getContext(names[ii], opt_attribs);
 	      if (context) {
 	        break;
 	      }
@@ -551,6 +547,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return false;
 	  }
 
+	  // This is really just a guess. Though I can't really imagine using
+	  // anything else? Maybe for some compression?
+	  function getNormalizationForTypedArrayType(typedArrayType) {
+	    if (typedArrayType === Int8Array) {
+	      return true;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint8Array) {
+	      return true;
+	    } // eslint-disable-line
+	    return false;
+	  }
+
 	  function getArray(array) {
 	    return array.length ? array : array.data;
 	  }
@@ -624,7 +632,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
 	   * @typedef {Object} FullArraySpec
-	   * @property {(number[]|ArrayBuffer)} data The data of the array.
+	   * @property {(number|number[]|ArrayBuffer)} data The data of the array. A number alone becomes the number of elements of type.
 	   * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
 	   *    If `coord` is in the name assumes `numComponents = 2`.
 	   *    If `color` is in the name assumes `numComponents = 4`.
@@ -646,9 +654,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * When passed to {@link module:twgl.createBufferInfoFromArrays} if an ArraySpec is `number[]` or `ArrayBuffer`
 	   * the types will be guessed based on the name. `indices` will be `Uint16Array`, everything else will
-	   * be `Float32Array`
+	   * be `Float32Array`. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.
 	   *
-	   * @typedef {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} ArraySpec
+	   * @typedef {(number|number[]|ArrayBuffer|module:twgl.FullArraySpec)} ArraySpec
 	   * @memberOf module:twgl
 	   */
 
@@ -754,18 +762,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!isIndices(arrayName)) {
 	        var array = arrays[arrayName];
 	        var attribName = array.attrib || array.name || array.attribName || defaults.attribPrefix + arrayName;
-	        var typedArray = makeTypedArray(array, arrayName);
+	        var buffer;
+	        var type;
+	        var normalization;
+	        var numComponents;
+	        var numValues;
+	        if (typeof array === "number" || typeof array.data === "number") {
+	          numValues = array.data || array;
+	          var arrayType = array.type || Float32Array;
+	          var numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+	          type = typedArrays.getGLTypeForTypedArrayType(arrayType);
+	          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
+	          numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
+	          buffer = gl.createBuffer();
+	          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+	          gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+	        } else {
+	          var typedArray = makeTypedArray(array, arrayName);
+	          buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
+	          type = typedArrays.getGLTypeForTypedArray(typedArray);
+	          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
+	          numComponents = getNumComponents(array, arrayName);
+	          numValues = typedArray.length;
+	        }
 	        attribs[attribName] = {
-	          buffer: createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
-	          numComponents: getNumComponents(array, arrayName),
-	          type: typedArrays.getGLTypeForTypedArray(typedArray),
-	          normalize: array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray),
+	          buffer: buffer,
+	          numComponents: numComponents,
+	          type: type,
+	          normalize: normalization,
 	          stride: array.stride || 0,
 	          offset: array.offset || 0,
 	          drawType: array.drawType
 	        };
 	      }
 	    });
+	    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 	    return attribs;
 	  }
 
@@ -815,34 +846,72 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  function getBytesPerValueForGLType(gl, type) {
+	    if (type === gl.BYTE) return 1; // eslint-disable-line
+	    if (type === gl.UNSIGNED_BYTE) return 1; // eslint-disable-line
+	    if (type === gl.SHORT) return 2; // eslint-disable-line
+	    if (type === gl.UNSIGNED_SHORT) return 2; // eslint-disable-line
+	    if (type === gl.INT) return 4; // eslint-disable-line
+	    if (type === gl.UNSIGNED_INT) return 4; // eslint-disable-line
+	    if (type === gl.FLOAT) return 4; // eslint-disable-line
+	    return 0;
+	  }
+
 	  /**
 	   * tries to get the number of elements from a set of arrays.
 	   */
+	  var positionKeys = ['position', 'positions', 'a_position'];
+	  function getNumElementsFromNonIndexedArrays(arrays) {
+	    var key;
+	    for (var ii = 0; ii < positionKeys.length; ++ii) {
+	      key = positionKeys[ii];
+	      if (key in arrays) {
+	        break;
+	      }
+	    }
+	    if (ii === positionKeys.length) {
+	      key = Object.keys(arrays)[0];
+	    }
+	    var array = arrays[key];
+	    var length = getArray(array).length;
+	    var numComponents = getNumComponents(array, key);
+	    var numElements = length / numComponents;
+	    if (length % numComponents > 0) {
+	      throw "numComponents " + numComponents + " not correct for length " + length;
+	    }
+	    return numElements;
+	  }
 
-	  var getNumElementsFromNonIndexedArrays = function () {
-	    var positionKeys = ['position', 'positions', 'a_position'];
+	  function getNumElementsFromAttributes(gl, attribs) {
+	    var key;
+	    for (var ii = 0; ii < positionKeys.length; ++ii) {
+	      key = positionKeys[ii];
+	      if (key in attribs) {
+	        break;
+	      }
+	      key = defaults.attribPrefix + key;
+	      if (key in attribs) {
+	        break;
+	      }
+	    }
+	    if (ii === positionKeys.length) {
+	      key = Object.keys(attribs)[0];
+	    }
+	    var attrib = attribs[key];
+	    gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
+	    var numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
+	    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-	    return function getNumElementsFromNonIndexedArrays(arrays) {
-	      var key;
-	      for (var ii = 0; ii < positionKeys.length; ++ii) {
-	        key = positionKeys[ii];
-	        if (key in arrays) {
-	          break;
-	        }
-	      }
-	      if (ii === positionKeys.length) {
-	        key = Object.keys(arrays)[0];
-	      }
-	      var array = arrays[key];
-	      var length = getArray(array).length;
-	      var numComponents = getNumComponents(array, key);
-	      var numElements = length / numComponents;
-	      if (length % numComponents > 0) {
-	        throw "numComponents " + numComponents + " not correct for length " + length;
-	      }
-	      return numElements;
-	    };
-	  }();
+	    var bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
+	    var totalElements = numBytes / bytesPerValue;
+	    var numComponents = attrib.numComponents || attrib.size;
+	    // TODO: check stride
+	    var numElements = totalElements / numComponents;
+	    if (numElements % 1 !== 0) {
+	      throw "numComponents " + numComponents + " not correct for length " + length;
+	    }
+	    return numElements;
+	  }
 
 	  /**
 	   * @typedef {Object} BufferInfo
@@ -955,7 +1024,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      bufferInfo.numElements = indices.length;
 	      bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(indices);
 	    } else {
-	      bufferInfo.numElements = getNumElementsFromNonIndexedArrays(arrays);
+	      bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
 	    }
 
 	    return bufferInfo;
@@ -1185,6 +1254,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
+	   * Get the GL type for a typedArray type
+	   * @param {ArrayBufferView constructor} typedArrayType a typedArray constructor
+	   * @return {number} the GL type for type. For example pass in `Int8Array` and `gl.BYTE` will
+	   *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
+	   * @memberOf module:twgl/typedArray
+	   */
+	  function getGLTypeForTypedArrayType(typedArrayType) {
+	    if (typedArrayType === Int8Array) {
+	      return BYTE;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint8Array) {
+	      return UNSIGNED_BYTE;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint8ClampedArray) {
+	      return UNSIGNED_BYTE;
+	    } // eslint-disable-line
+	    if (typedArrayType === Int16Array) {
+	      return SHORT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint16Array) {
+	      return UNSIGNED_SHORT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Int32Array) {
+	      return INT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Uint32Array) {
+	      return UNSIGNED_INT;
+	    } // eslint-disable-line
+	    if (typedArrayType === Float32Array) {
+	      return FLOAT;
+	    } // eslint-disable-line
+	    throw "unsupported typed array type";
+	  }
+
+	  /**
 	   * Get the typed array constructor for a given GL type
 	   * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
 	   * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
@@ -1205,6 +1309,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Using quotes prevents Uglify from changing the names.
 	  return {
 	    "getGLTypeForTypedArray": getGLTypeForTypedArray,
+	    "getGLTypeForTypedArrayType": getGLTypeForTypedArrayType,
 	    "getTypedArrayTypeForGLType": getTypedArrayTypeForGLType,
 	    "isArrayBuffer": isArrayBuffer
 	  };
@@ -1783,14 +1888,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function samplerSetter(gl, type, unit, location) {
 	    var bindPoint = getBindPointForSamplerType(gl, type);
-	    return function (textureOrPair) {
+	    return utils.isWebGL2(gl) ? function (textureOrPair) {
 	      var texture = void 0;
+	      var sampler = void 0;
 	      if (textureOrPair instanceof WebGLTexture) {
 	        texture = textureOrPair;
+	        sampler = null;
 	      } else {
 	        texture = textureOrPair.texture;
-	        gl.bindSampler(unit, textureOrPair.sampler);
+	        sampler = textureOrPair.sampler;
 	      }
+	      gl.uniform1i(location, unit);
+	      gl.activeTexture(gl.TEXTURE0 + unit);
+	      gl.bindTexture(bindPoint, texture);
+	      gl.bindSampler(unit, sampler);
+	    } : function (texture) {
 	      gl.uniform1i(location, unit);
 	      gl.activeTexture(gl.TEXTURE0 + unit);
 	      gl.bindTexture(bindPoint, texture);
@@ -1804,17 +1916,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      units[ii] = unit + ii;
 	    }
 
-	    return function (textures) {
+	    return utils.isWebGL2(gl) ? function (textures) {
 	      gl.uniform1iv(location, units);
 	      textures.forEach(function (textureOrPair, index) {
 	        gl.activeTexture(gl.TEXTURE0 + units[index]);
 	        var texture = void 0;
+	        var sampler = void 0;
 	        if (textureOrPair instanceof WebGLTexture) {
 	          texture = textureOrPair;
+	          sampler = null;
 	        } else {
 	          texture = textureOrPair.texture;
-	          gl.bindSampler(unit, textureOrPair.sampler);
+	          sampler = textureOrPair.sampler;
 	        }
+	        gl.bindSampler(unit, sampler);
+	        gl.bindTexture(bindPoint, texture);
+	      });
+	    } : function (textures) {
+	      gl.uniform1iv(location, units);
+	      textures.forEach(function (texture, index) {
+	        gl.activeTexture(gl.TEXTURE0 + units[index]);
 	        gl.bindTexture(bindPoint, texture);
 	      });
 	    };
@@ -1994,6 +2115,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @typedef {Object} ProgramOptions
 	   * @property {function(string)} [errorCallback] callback for errors
 	   * @property {Object.<string,number>} [attribLocations] a attribute name to location map
+	   * @property {(module:twgl.BufferInfo|Object.<string,module:twgl.AttribInfo>|string[])} [transformFeedbackVaryings] If passed
+	   *   a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise
+	   *   you can pass an array of names.
+	   * @property {number} [transformFeedbackMode] the mode to pass `gl.transformFeedbackVaryings`. Defaults to `SEPARATE_ATTRIBS`.
 	   * @memberOf module:twgl
 	   */
 
@@ -2022,10 +2147,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var opt = opt_attribs;
 	      opt_errorCallback = opt.errorCallback;
 	      opt_attribs = opt.attribLocations;
+	      var transformFeedbackVaryings = opt.transformFeedbackVaryings;
 	    }
 
 	    var options = {
-	      errorCallback: opt_errorCallback || error
+	      errorCallback: opt_errorCallback || error,
+	      transformFeedbackVaryings: transformFeedbackVaryings
 	    };
 
 	    if (opt_attribs) {
@@ -2072,6 +2199,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      Object.keys(progOptions.attribLocations).forEach(function (attrib) {
 	        gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
 	      });
+	    }
+	    var varyings = progOptions.transformFeedbackVaryings;
+	    if (varyings) {
+	      if (varyings.attribs) {
+	        varyings = varyings.attribs;
+	      }
+	      if (!Array.isArray(varyings)) {
+	        varyings = Object.keys(varyings);
+	      }
+	      gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || gl.SEPARATE_ATTRIBS);
 	    }
 	    gl.linkProgram(program);
 
@@ -2255,6 +2392,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	      uniformSetters[name] = setter;
 	    }
 	    return uniformSetters;
+	  }
+
+	  /**
+	   * @typedef {Object} TransformFeedbackInfo
+	   * @property {number} index index of transform feedback
+	   * @property {number} type GL type
+	   * @property {number} size 1 - 4
+	   * @memberOf module:twgl
+	   */
+
+	  /**
+	   * Create TransformFeedbackInfo for passing to bind/unbindTransformFeedbackInfo.
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {WebGLProgram} program an existing WebGLProgram.
+	   * @return {Object<string, module:twgl.TransformFeedbackInfo>}
+	   * @memberOf module:twgl
+	   */
+	  function createTransformFeedbackInfo(gl, program) {
+	    var info = {};
+	    var numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+	    for (var ii = 0; ii < numVaryings; ++ii) {
+	      var varying = gl.getTransformFeedbackVarying(program, ii);
+	      info[varying.name] = {
+	        index: ii,
+	        type: varying.type,
+	        size: varying.size
+	      };
+	    }
+	    return info;
+	  }
+
+	  /**
+	   * Binds buffers for transform feedback.
+	   *
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
+	   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+	   * @memberOf module:twgl
+	   */
+	  function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
+	    if (transformFeedbackInfo.transformFeedbackInfo) {
+	      transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
+	    }
+	    if (bufferInfo.attribs) {
+	      bufferInfo = bufferInfo.attribs;
+	    }
+	    for (var name in bufferInfo) {
+	      var varying = transformFeedbackInfo[name];
+	      if (varying) {
+	        var buf = bufferInfo[name];
+	        if (buf.offset) {
+	          gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
+	        } else {
+	          gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer);
+	        }
+	      }
+	    }
+	  }
+
+	  /**
+	   * Unbinds buffers afetr transform feedback.
+	   *
+	   * Buffers can not be bound to 2 bind points so if you try to bind a buffer used
+	   * in a transform feedback as an ARRAY_BUFFER for an attribute it will fail.
+	   *
+	   * This function unbinds all buffers that were bound with {@link module:twgl.bindTransformFeedbackInfo}.
+	   *
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
+	   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+	   * @memberOf module:twgl
+	   */
+	  function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
+	    if (transformFeedbackInfo.transformFeedbackInfo) {
+	      transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
+	    }
+	    if (bufferInfo.attribs) {
+	      bufferInfo = bufferInfo.attribs;
+	    }
+	    for (var name in bufferInfo) {
+	      var varying = transformFeedbackInfo[name];
+	      if (varying) {
+	        gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
+	      }
+	    }
 	  }
 
 	  /**
@@ -2818,6 +3040,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {WebGLProgram} program A shader program
 	   * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
 	   * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
+	   * @propetty {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+	   * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
 	   * @memberOf module:twgl
 	   */
 
@@ -2849,6 +3073,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (utils.isWebGL2(gl)) {
 	      programInfo.uniformBlockSpec = createUniformBlockSpecFromProgram(gl, program);
+	      programInfo.transformFeedbackInfo = createTransformFeedbackInfo(gl, program);
 	    }
 
 	    return programInfo;
@@ -2924,6 +3149,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "createUniformBlockSpecFromProgram": createUniformBlockSpecFromProgram,
 	    "createUniformBlockInfoFromProgram": createUniformBlockInfoFromProgram,
 	    "createUniformBlockInfo": createUniformBlockInfo,
+
+	    "createTransformFeedbackInfo": createTransformFeedbackInfo,
+	    "bindTransformFeedbackInfo": bindTransformFeedbackInfo,
+	    "unbindTransformFeedbackInfo": unbindTransformFeedbackInfo,
 
 	    "setAttributes": setAttributes,
 	    "setBuffersAndAttributes": setBuffersAndAttributes,
@@ -3877,6 +4106,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  var WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
+
 	  /**
 	   * Sets the parameters of a texture or sampler
 	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -3900,7 +4131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options.wrap) {
 	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
 	      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-	      if (target === gl.TEXTURE_3D || target instanceof WebGLSampler) {
+	      if (target === gl.TEXTURE_3D || target instanceof WebGLSamplerCtor) {
 	        parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
 	      }
 	    }
@@ -8525,7 +8756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 },{}],3:[function(require,module,exports){
 "use strict";
 
-var twgl = require('../../dist/2.x/twgl-full');   // this would be require('twgl') in a real example
+var twgl = require('../../dist/3.x/twgl-full');   // this would be require('twgl') in a real example
 var chroma = require('../../3rdparty/chroma.min');
 var m4 = twgl.m4;
 var primitives = twgl.primitives;
