@@ -110,7 +110,7 @@ define([], function() {
 
   /**
    * Get the GL type for a typedArray type
-   * @param {ArrayBufferView constructor} typedArrayType a typedArray constructor
+   * @param {ArrayBufferViewType} typedArrayType a typedArray constructor
    * @return {number} the GL type for type. For example pass in `Int8Array` and `gl.BYTE` will
    *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
    * @memberOf module:twgl/typedArray
