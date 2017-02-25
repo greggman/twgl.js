@@ -489,6 +489,10 @@ define([
    * @typedef {Object} ProgramOptions
    * @property {function(string)} [errorCallback] callback for errors
    * @property {Object.<string,number>} [attribLocations] a attribute name to location map
+   * @property {(module:twgl.BufferInfo|Object.<string,module:twgl.AttribInfo>|string[])} [transformFeedbackVaryings] If passed
+   *   a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise
+   *   you can pass an array of names.
+   * @property {number} [transformFeedbackMode] the mode to pass `gl.transformFeedbackVaryings`. Defaults to `SEPARATE_ATTRIBS`.
    * @memberOf module:twgl
    */
 
@@ -517,10 +521,12 @@ define([
       var opt = opt_attribs;
       opt_errorCallback = opt.errorCallback;
       opt_attribs = opt.attribLocations;
+      var transformFeedbackVaryings = opt.transformFeedbackVaryings;
     }
 
     var options = {
       errorCallback: opt_errorCallback || error,
+      transformFeedbackVaryings: transformFeedbackVaryings,
     };
 
     if (opt_attribs) {
@@ -568,6 +574,16 @@ define([
       Object.keys(progOptions.attribLocations).forEach(function(attrib) {
         gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
       });
+    }
+    var varyings = progOptions.transformFeedbackVaryings;
+    if (varyings) {
+      if (varyings.attribs) {
+        varyings = varyings.attribs;
+      }
+      if (!Array.isArray(varyings)) {
+        varyings = Object.keys(varyings);
+      }
+      gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || gl.SEPARATE_ATTRIBS);
     }
     gl.linkProgram(program);
 
@@ -761,6 +777,91 @@ define([
       uniformSetters[name] = setter;
     }
     return uniformSetters;
+  }
+
+  /**
+   * @typedef {Object} TransformFeedbackInfo
+   * @property {number} index index of transform feedback
+   * @property {number} type GL type
+   * @property {number} size 1 - 4
+   * @memberOf module:twgl
+   */
+
+  /**
+   * Create TransformFeedbackInfo for passing to bind/unbindTransformFeedbackInfo.
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+   * @param {WebGLProgram} program an existing WebGLProgram.
+   * @return {Object<string, module:twgl.TransformFeedbackInfo>}
+   * @memberOf module:twgl
+   */
+  function createTransformFeedbackInfo(gl, program) {
+    var info = {};
+    var numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+    for (var ii = 0; ii < numVaryings; ++ii) {
+      var varying = gl.getTransformFeedbackVarying(program, ii);
+      info[varying.name] = {
+        index: ii,
+        type: varying.type,
+        size: varying.size,
+      };
+    }
+    return info;
+  }
+
+  /**
+   * Binds buffers for transform feedback.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
+   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+   * @memberOf module:twgl
+   */
+  function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
+    if (transformFeedbackInfo.transformFeedbackInfo) {
+      transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
+    }
+    if (bufferInfo.attribs) {
+      bufferInfo = bufferInfo.attribs;
+    }
+    for (var name in bufferInfo) {
+      var varying = transformFeedbackInfo[name];
+      if (varying) {
+        var buf = bufferInfo[name];
+        if (buf.offset) {
+          gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
+        } else {
+          gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer);
+        }
+      }
+    }
+  }
+
+  /**
+   * Unbinds buffers afetr transform feedback.
+   *
+   * Buffers can not be bound to 2 bind points so if you try to bind a buffer used
+   * in a transform feedback as an ARRAY_BUFFER for an attribute it will fail.
+   *
+   * This function unbinds all buffers that were bound with {@link module:twgl.bindTransformFeedbackInfo}.
+   *
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
+   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+   * @memberOf module:twgl
+   */
+  function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
+    if (transformFeedbackInfo.transformFeedbackInfo) {
+      transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
+    }
+    if (bufferInfo.attribs) {
+      bufferInfo = bufferInfo.attribs;
+    }
+    for (var name in bufferInfo) {
+      var varying = transformFeedbackInfo[name];
+      if (varying) {
+        gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
+      }
+    }
   }
 
   /**
@@ -1328,6 +1429,8 @@ define([
    * @property {WebGLProgram} program A shader program
    * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
    * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
+   * @propetty {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+   * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
    * @memberOf module:twgl
    */
 
@@ -1359,6 +1462,7 @@ define([
 
     if (utils.isWebGL2(gl)) {
       programInfo.uniformBlockSpec = createUniformBlockSpecFromProgram(gl, program);
+      programInfo.transformFeedbackInfo = createTransformFeedbackInfo(gl, program);
     }
 
     return programInfo;
@@ -1435,6 +1539,10 @@ define([
     "createUniformBlockSpecFromProgram": createUniformBlockSpecFromProgram,
     "createUniformBlockInfoFromProgram": createUniformBlockInfoFromProgram,
     "createUniformBlockInfo": createUniformBlockInfo,
+
+    "createTransformFeedbackInfo": createTransformFeedbackInfo,
+    "bindTransformFeedbackInfo": bindTransformFeedbackInfo,
+    "unbindTransformFeedbackInfo": unbindTransformFeedbackInfo,
 
     "setAttributes": setAttributes,
     "setBuffersAndAttributes": setBuffersAndAttributes,
