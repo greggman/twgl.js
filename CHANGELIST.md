@@ -1,5 +1,12 @@
 #Changelist
 
+*   3.1.0
+
+    *   Add support for transform feedback
+
+        At least an attempt at something. I'd need more examples
+        of how it's used to see if it fits.
+
 *   3.0.0
 
     *   Fix package.json
