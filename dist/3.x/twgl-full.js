@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1232,7 +1232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the GL type for a typedArray type
-	   * @param {ArrayBufferView constructor} typedArrayType a typedArray constructor
+	   * @param {ArrayBufferViewType} typedArrayType a typedArray constructor
 	   * @return {number} the GL type for type. For example pass in `Int8Array` and `gl.BYTE` will
 	   *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
 	   * @memberOf module:twgl/typedArray
@@ -2439,7 +2439,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
 	   * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
 	   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
-	   * @memberOf module:twgl
 	   */
 	  function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
 	    if (transformFeedbackInfo.transformFeedbackInfo) {
@@ -2454,6 +2453,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
 	      }
 	    }
+	  }
+
+	  /**
+	   * Creates a transform feedback and sets the buffers
+	   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+	   * @param {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
+	   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+	   * @return {WebGLTransformFeedback} the created transform feedback
+	   * @memberOf module:twgl
+	   */
+	  function createTransformFeedback(gl, programInfo, bufferInfo) {
+	    var tf = gl.createTransformFeedback();
+	    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
+	    gl.useProgram(programInfo.program);
+	    bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
+	    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
+	    // This is only needed because of a bug in Chrome 56. Will remove
+	    // when chrome fixes it.
+	    unbindTransformFeedbackInfo(gl, programInfo, bufferInfo);
+	    return tf;
 	  }
 
 	  /**
@@ -3127,9 +3146,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "createUniformBlockInfoFromProgram": createUniformBlockInfoFromProgram,
 	    "createUniformBlockInfo": createUniformBlockInfo,
 
+	    "createTransformFeedback": createTransformFeedback,
 	    "createTransformFeedbackInfo": createTransformFeedbackInfo,
 	    "bindTransformFeedbackInfo": bindTransformFeedbackInfo,
-	    "unbindTransformFeedbackInfo": unbindTransformFeedbackInfo,
 
 	    "setAttributes": setAttributes,
 	    "setBuffersAndAttributes": setBuffersAndAttributes,
