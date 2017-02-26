@@ -205,24 +205,18 @@ function main() {
     return;
   }
 
-  var around = 40;
-  var down = 20;
-  var numQuads = around * down;
-  var numVerts = numQuads * 6;
-
-  var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
-    position: numVerts * 3,
-    normal: numVerts * 3,
-    texcoord: numVerts * 2,
-    color: { data: numVerts * 4, type: Uint8Array, },
-  });
-
   // shaders to render with
   var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
   // shaders to generate a mesh
   var feedbackProgramInfo = twgl.createProgramInfo(gl, ["tf-vs", "tf-fs"], {
-    transformFeedbackVaryings: bufferInfo,
+    // note: you can pass a bufferInfo instead of this array
+    transformFeedbackVaryings: [
+      "a_position",
+      "a_normal",
+      "a_texcoord",
+      "a_color",
+    ],
   });
 
   function generateMesh(tf, bufferInfo, numVerts, around, hue) {
@@ -244,20 +238,17 @@ function main() {
 
     gl.disable(gl.RASTERIZER_DISCARD);
   }
-  generateMesh(twgl.createTransformFeedback(gl, feedbackProgramInfo, bufferInfo),
-      bufferInfo, numVerts, around, 0);
 
-  var shapes = [
-    bufferInfo,
-  ];
+  var shapes = [ ];
 
-  // make a few more
-  var tfs = [
+  // Make shapes using transform feedback
+  [
     { around:  4, down:  3, hue: .2, },
     { around:  6, down:  4, hue: .4, },
     { around: 12, down:  6, hue: .6, },
     { around: 20, down: 10, hue: .8, },
-  ].map(e => {
+    { around: 40, down: 20, hue: .0, },
+  ].forEach(e => {
     var around = e.around;
     var down = e.down;
     var numQuads = around * down;
@@ -270,16 +261,8 @@ function main() {
       color: { data: numVerts * 4, type: Uint8Array, },
     });
     var tf = twgl.createTransformFeedback(gl, feedbackProgramInfo, bufferInfo);
-    return {
-      tf: tf,
-      bufferInfo: bufferInfo,
-      numVerts: numVerts,
-      down: down,
-      hue: e.hue,
-    };
-  }).forEach((t) => {
-    generateMesh(t.tf, t.bufferInfo, t.numVerts, t.down, t.hue);
-    shapes.push(t.bufferInfo);
+    generateMesh(tf, bufferInfo, numVerts, down, e.hue);
+    shapes.push(bufferInfo);
   });
 
   function rand(min, max) {
