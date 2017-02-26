@@ -106,7 +106,7 @@ void main() {
   a_normal = normalize(a_position);
   a_texcoord = vec2(qu, qv);
 
-  float hue = qu * .2 + u_hue;
+  float hue = sin(qu * PI) * .1 + u_hue;
   float sat = mix(0.5, 1., mod(quadId, 2.));
   float val = 1.;
   uvec4 ucolor = uvec4(vec4(hsv2rgb(vec3(hue, sat, val)), 1.) * 255.);
@@ -222,39 +222,42 @@ function main() {
 
   // shaders to generate a mesh
   var feedbackProgramInfo = twgl.createProgramInfo(gl, ["tf-vs", "tf-fs"], {
-    transformFeedbackVaryings: bufferInfo.attribs,
+    transformFeedbackVaryings: bufferInfo,
   });
 
-  function generateMesh(bufferInfo, numVerts, around, hue) {
-    // Generate a mesh using trasnform feedback
-    var tf = gl.createTransformFeedback();
-    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
+  function generateMesh(tf, bufferInfo, numVerts, around, hue) {
+    // Generate a mesh using transform feedback
+
+    gl.enable(gl.RASTERIZER_DISCARD);
+
     gl.useProgram(feedbackProgramInfo.program);
-    twgl.bindTransformFeedbackInfo(gl, feedbackProgramInfo, bufferInfo);
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
+    gl.beginTransformFeedback(gl.TRIANGLES);
     twgl.setUniforms(feedbackProgramInfo, {
       u_vertexCount: numVerts,
       u_around: around,
       u_hue: hue,
     });
-    gl.beginTransformFeedback(gl.TRIANGLES);
     twgl.drawBufferInfo(gl, bufferInfo);
     gl.endTransformFeedback();
-    twgl.unbindTransformFeedbackInfo(gl, feedbackProgramInfo, bufferInfo);
     gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
+
+    gl.disable(gl.RASTERIZER_DISCARD);
   }
-  generateMesh(bufferInfo, numVerts, around, 0);
+  generateMesh(twgl.createTransformFeedback(gl, feedbackProgramInfo, bufferInfo),
+      bufferInfo, numVerts, around, 0);
 
   var shapes = [
     bufferInfo,
   ];
 
   // make a few more
-  [
+  var tfs = [
     { around:  4, down:  3, hue: .2, },
     { around:  6, down:  4, hue: .4, },
     { around: 12, down:  6, hue: .6, },
     { around: 20, down: 10, hue: .8, },
-  ].forEach(e => {
+  ].map(e => {
     var around = e.around;
     var down = e.down;
     var numQuads = around * down;
@@ -266,8 +269,17 @@ function main() {
       texcoord: numVerts * 2,
       color: { data: numVerts * 4, type: Uint8Array, },
     });
-    generateMesh(bufferInfo, numVerts, down, e.hue);
-    shapes.push(bufferInfo);
+    var tf = twgl.createTransformFeedback(gl, feedbackProgramInfo, bufferInfo);
+    return {
+      tf: tf,
+      bufferInfo: bufferInfo,
+      numVerts: numVerts,
+      down: down,
+      hue: e.hue,
+    };
+  }).forEach((t) => {
+    generateMesh(t.tf, t.bufferInfo, t.numVerts, t.down, t.hue);
+    shapes.push(t.bufferInfo);
   });
 
   function rand(min, max) {
