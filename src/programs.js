@@ -847,7 +847,6 @@ define([
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
    * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
    * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
-   * @memberOf module:twgl
    */
   function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
     if (transformFeedbackInfo.transformFeedbackInfo) {
@@ -862,6 +861,26 @@ define([
         gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
       }
     }
+  }
+
+  /**
+   * Creates a transform feedback and sets the buffers
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+   * @param {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
+   * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+   * @return {WebGLTransformFeedback} the created transform feedback
+   * @memberOf module:twgl
+   */
+  function createTransformFeedback(gl, programInfo, bufferInfo) {
+    var tf = gl.createTransformFeedback();
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
+    gl.useProgram(programInfo.program);
+    bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
+    // This is only needed because of a bug in Chrome 56. Will remove
+    // when chrome fixes it.
+    unbindTransformFeedbackInfo(gl, programInfo, bufferInfo);
+    return tf;
   }
 
   /**
@@ -1540,9 +1559,9 @@ define([
     "createUniformBlockInfoFromProgram": createUniformBlockInfoFromProgram,
     "createUniformBlockInfo": createUniformBlockInfo,
 
+    "createTransformFeedback": createTransformFeedback,
     "createTransformFeedbackInfo": createTransformFeedbackInfo,
     "bindTransformFeedbackInfo": bindTransformFeedbackInfo,
-    "unbindTransformFeedbackInfo": unbindTransformFeedbackInfo,
 
     "setAttributes": setAttributes,
     "setBuffersAndAttributes": setBuffersAndAttributes,
