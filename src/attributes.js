@@ -197,7 +197,7 @@ define([
    * @property {number} [numComponents] the number of components for this attribute.
    * @property {number} [size] synonym for `numComponents`.
    * @property {number} [type] the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
-   * @property {boolean} [normalized] whether or not to normalize the data. Default = false
+   * @property {boolean} [normalize] whether or not to normalize the data. Default = false
    * @property {number} [offset] offset into buffer in bytes. Default = 0
    * @property {number} [stride] the stride in bytes per element. Default = 0
    * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
