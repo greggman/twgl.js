@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.2.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -598,7 +598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {number} [numComponents] the number of components for this attribute.
 	   * @property {number} [size] synonym for `numComponents`.
 	   * @property {number} [type] the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
-	   * @property {boolean} [normalized] whether or not to normalize the data. Default = false
+	   * @property {boolean} [normalize] whether or not to normalize the data. Default = false
 	   * @property {number} [offset] offset into buffer in bytes. Default = 0
 	   * @property {number} [stride] the stride in bytes per element. Default = 0
 	   * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
@@ -3658,6 +3658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var UNSIGNED_SHORT_5_5_5_1 = 0x8034;
 	  var UNSIGNED_SHORT_5_6_5 = 0x8363;
 	  var HALF_FLOAT = 0x140B;
+	  var HALF_FLOAT_OES = 0x8D61; // Thanks Khronos for making this different >:(
 	  var UNSIGNED_INT_2_10_10_10_REV = 0x8368;
 	  var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
 	  var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
@@ -3699,11 +3700,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // NOTE: these properties need unique names so we can let Uglify mangle the name.
 	      var t = textureInternalFormatInfo;
 	      // unsized formats
-	      t[ALPHA] = { textureFormat: ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT] };
-	      t[LUMINANCE] = { textureFormat: LUMINANCE, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT] };
-	      t[LUMINANCE_ALPHA] = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [2, 4, 8], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT] };
-	      t[RGB] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: [3, 6, 12, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_5_6_5] };
-	      t[RGBA] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1] };
+	      t[ALPHA] = { textureFormat: ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT] };
+	      t[LUMINANCE] = { textureFormat: LUMINANCE, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT] };
+	      t[LUMINANCE_ALPHA] = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [2, 4, 4, 8], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT] };
+	      t[RGB] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: [3, 6, 6, 12, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_5_6_5] };
+	      t[RGBA] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 8, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1] };
 
 	      // sized formats
 	      t[R8] = { textureFormat: RED, colorRenderable: true, textureFilterable: true, bytesPerElement: 1, type: UNSIGNED_BYTE };
