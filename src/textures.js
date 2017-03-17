@@ -154,6 +154,7 @@ define([
   const UNSIGNED_SHORT_5_5_5_1       = 0x8034;
   const UNSIGNED_SHORT_5_6_5         = 0x8363;
   const HALF_FLOAT                   = 0x140B;
+  const HALF_FLOAT_OES               = 0x8D61;  // Thanks Khronos for making this different >:(
   const UNSIGNED_INT_2_10_10_10_REV  = 0x8368;
   const UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
   const UNSIGNED_INT_5_9_9_9_REV     = 0x8C3E;
@@ -194,11 +195,11 @@ define([
     // NOTE: these properties need unique names so we can let Uglify mangle the name.
     const t = textureInternalFormatInfo;
     // unsized formats
-    t[ALPHA]              = { textureFormat: ALPHA,           colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT], };
-    t[LUMINANCE]          = { textureFormat: LUMINANCE,       colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT], };
-    t[LUMINANCE_ALPHA]    = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true,  textureFilterable: true,  bytesPerElement: [2, 4, 8],        type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT], };
-    t[RGB]                = { textureFormat: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 6, 12, 2],    type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_5_6_5], };
-    t[RGBA]               = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1], };
+    t[ALPHA]              = { textureFormat: ALPHA,           colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT], };
+    t[LUMINANCE]          = { textureFormat: LUMINANCE,       colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT], };
+    t[LUMINANCE_ALPHA]    = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true,  textureFilterable: true,  bytesPerElement: [2, 4, 4, 8],        type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT], };
+    t[RGB]                = { textureFormat: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 6, 6, 12, 2],    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_5_6_5], };
+    t[RGBA]               = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 8, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1], };
 
     // sized formats
     t[R8]                 = { textureFormat: RED,             colorRenderable: true,  textureFilterable: true,  bytesPerElement:  1,         type: UNSIGNED_BYTE, };
