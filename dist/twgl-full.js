@@ -1920,7 +1920,7 @@ define('twgl/programs',[
    *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext
    *        to use.
-   * @param {string[]} shaderSourcess Array of sources for the
+   * @param {string[]} shaderSources Array of sources for the
    *        shaders. The first is assumed to be the vertex shader,
    *        the second the fragment shader.
    * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
@@ -2653,7 +2653,7 @@ define('twgl/programs',[
    *
    * @param {WebGLRenderingContext} gl The WebGLRenderingContext
    *        to use.
-   * @param {string[]} shaderSourcess Array of sources for the
+   * @param {string[]} shaderSources Array of sources for the
    *        shaders or ids. The first is assumed to be the vertex shader,
    *        the second the fragment shader.
    * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
