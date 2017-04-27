@@ -240,6 +240,34 @@ define([], function() {
   }
 
   /**
+   * Computes the distance between 2 points
+   * @param {module:twgl/v3.Vec3} a vector.
+   * @param {module:twgl/v3.Vec3} b vector.
+   * @return {number} distance between a and b
+   * @memberOf module:twgl/v3
+   */
+  function distance(a, b) {
+    const dx = a[0] - b[0];
+    const dy = a[1] - b[1];
+    const dz = a[2] - b[2];
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+
+  /**
+   * Computes the square of the distance between 2 points
+   * @param {module:twgl/v3.Vec3} a vector.
+   * @param {module:twgl/v3.Vec3} b vector.
+   * @return {number} square of the distance between a and b
+   * @memberOf module:twgl/v3
+   */
+  function distanceSq(a, b) {
+    const dx = a[0] - b[0];
+    const dy = a[1] - b[1];
+    const dz = a[2] - b[2];
+    return dx * dx + dy * dy + dz * dz;
+  }
+
+  /**
    * Divides a vector by its Euclidean length and returns the quotient.
    * @param {module:twgl/v3.Vec3} a The vector.
    * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
@@ -345,6 +373,8 @@ define([], function() {
     "copy": copy,
     "create": create,
     "cross": cross,
+    "distance": distance,
+    "distanceSq": distanceSq,
     "divide": divide,
     "divScalar": divScalar,
     "dot": dot,
