@@ -544,8 +544,21 @@ define([
     return options;
   }
 
+  var defaultShaderType = [
+    "VERTEX_SHADER",
+    "FRAGMENT_SHADER",
+  ];
+
+  function getShaderTypeFromScriptType(scriptType) {
+    if (scriptType.indexOf("frag") >= 0) {
+      return gl.FRAGMENT_SHADER;
+    } else if (scriptType.indexOf("vert") >= 0) {
+      return gl.VERTEX_SHADER;
+    }
+  }
+
   /**
-   * Creates a program, attaches shaders, binds attrib locations, links the
+   * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
    * program and calls useProgram.
    *
    * NOTE: There are 4 signatures for this function
@@ -555,7 +568,7 @@ define([
    *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
    *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
    *
-   * @param {WebGLShader[]} shaders The shaders to attach
+   * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
    * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
    * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
    * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
@@ -567,7 +580,16 @@ define([
       gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
     var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
     var program = gl.createProgram();
-    shaders.forEach(function(shader) {
+    shaders.forEach(function(shader, ndx) {
+      if (typeof(shader) === 'string') {
+        const elem = document.getElementById(shader);
+        const src = elem ? elem.text : shader;
+        var type = defaultShaderType[ndx];
+        if (elem && elem.type) {
+          type = getShaderTypeFromScriptType(elem.type);
+        }
+        shader = loadShader(gl, src, type, progOptions.errorCallback);
+      }
       gl.attachShader(program, shader);
     });
     if (progOptions.attribLocations) {
@@ -612,32 +634,19 @@ define([
   function createShaderFromScript(
       gl, scriptId, opt_shaderType, opt_errorCallback) {
     var shaderSource = "";
-    var shaderType;
     var shaderScript = document.getElementById(scriptId);
     if (!shaderScript) {
       throw "*** Error: unknown script element" + scriptId;
     }
     shaderSource = shaderScript.text;
 
-    if (!opt_shaderType) {
-      if (shaderScript.type === "x-shader/x-vertex") {
-        shaderType = gl.VERTEX_SHADER;
-      } else if (shaderScript.type === "x-shader/x-fragment") {
-        shaderType = gl.FRAGMENT_SHADER;
-      } else if (shaderType !== gl.VERTEX_SHADER && shaderType !== gl.FRAGMENT_SHADER) {
-        throw "*** Error: unknown shader type";
-      }
+    var shaderType = opt_shaderType || getShaderTypeFromScriptType(shaderScript.type);
+    if (!shaderType) {
+      throw "*** Error: unknown shader type";
     }
 
-    return loadShader(
-        gl, shaderSource, opt_shaderType ? opt_shaderType : shaderType,
-        opt_errorCallback);
+    return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
   }
-
-  var defaultShaderType = [
-    "VERTEX_SHADER",
-    "FRAGMENT_SHADER",
-  ];
 
   /**
    * Creates a program from 2 script tags.
