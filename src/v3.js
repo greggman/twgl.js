@@ -198,9 +198,11 @@ define([], function() {
   function cross(a, b, dst) {
     dst = dst || new VecType(3);
 
+    var t1 = a[2] * b[0] - a[0] * b[2];
+    var t2 = a[0] * b[1] - a[1] * b[0];
     dst[0] = a[1] * b[2] - a[2] * b[1];
-    dst[1] = a[2] * b[0] - a[0] * b[2];
-    dst[2] = a[0] * b[1] - a[1] * b[0];
+    dst[1] = t1;
+    dst[2] = t2;
 
     return dst;
   }
