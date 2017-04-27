@@ -555,6 +555,7 @@ define([
     } else if (scriptType.indexOf("vert") >= 0) {
       return gl.VERTEX_SHADER;
     }
+    return undefined;
   }
 
   /**
@@ -581,7 +582,7 @@ define([
     var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
     var program = gl.createProgram();
     shaders.forEach(function(shader, ndx) {
-      if (typeof(shader) === 'string') {
+      if (typeof (shader) === 'string') {
         const elem = document.getElementById(shader);
         const src = elem ? elem.text : shader;
         var type = defaultShaderType[ndx];
