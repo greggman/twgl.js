@@ -1,5 +1,12 @@
 #Changelist
 
+*   3.3.0
+
+    *   Make `createProgram` accept ids, source, and shaders as input.
+
+        This kind of removes the need for `createProgramFromSources` and
+        `createProgramFromScripts`
+
 *   3.1.0
 
     *   Add support for transform feedback

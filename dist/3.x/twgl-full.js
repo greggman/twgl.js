@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.3.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2158,6 +2158,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return undefined;
 	  }
 
+	  function deleteShaders(gl, shaders) {
+	    shaders.forEach(function (shader) {
+	      gl.deleteShader(shader);
+	    });
+	  }
+
 	  /**
 	   * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
 	   * program and calls useProgram.
@@ -2179,17 +2185,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
 	    var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-	    var program = gl.createProgram();
-	    shaders.forEach(function (shader, ndx) {
+	    var realShaders = [];
+	    var newShaders = [];
+	    for (var ndx = 0; ndx < shaders.length; ++ndx) {
+	      var shader = shaders[ndx];
 	      if (typeof shader === 'string') {
 	        var elem = document.getElementById(shader);
 	        var src = elem ? elem.text : shader;
-	        var type = defaultShaderType[ndx];
+	        var type = gl[defaultShaderType[ndx]];
 	        if (elem && elem.type) {
-	          type = getShaderTypeFromScriptType(elem.type);
+	          type = getShaderTypeFromScriptType(elem.type) || type;
 	        }
 	        shader = loadShader(gl, src, type, progOptions.errorCallback);
+	        newShaders.push(shader);
 	      }
+	      if (shader instanceof WebGLShader) {
+	        realShaders.push(shader);
+	      }
+	    }
+
+	    if (realShaders.length !== shaders.length) {
+	      programOptions.errorCallback("not enough shaders for program");
+	      deleteShaders(gl, newShaders);
+	      return null;
+	    }
+
+	    var program = gl.createProgram();
+	    realShaders.forEach(function (shader) {
 	      gl.attachShader(program, shader);
 	    });
 	    if (progOptions.attribLocations) {
@@ -2217,6 +2239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      progOptions.errorCallback("Error in program linking:" + lastError);
 
 	      gl.deleteProgram(program);
+	      deleteShaders(gl, newShaders);
 	      return null;
 	    }
 	    return program;
@@ -2345,23 +2368,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!typeInfo) {
 	        throw "unknown type: 0x" + type.toString(16); // we should never get here.
 	      }
+	      var setter;
 	      if (typeInfo.bindPoint) {
 	        // it's a sampler
 	        var unit = textureUnit;
 	        textureUnit += uniformInfo.size;
-
 	        if (isArray) {
-	          return typeInfo.arraySetter(gl, type, unit, location, uniformInfo.size);
+	          setter = typeInfo.arraySetter(gl, type, unit, location, uniformInfo.size);
 	        } else {
-	          return typeInfo.setter(gl, type, unit, location, uniformInfo.size);
+	          setter = typeInfo.setter(gl, type, unit, location, uniformInfo.size);
 	        }
 	      } else {
 	        if (typeInfo.arraySetter && isArray) {
-	          return typeInfo.arraySetter(gl, location);
+	          setter = typeInfo.arraySetter(gl, location);
 	        } else {
-	          return typeInfo.setter(gl, location);
+	          setter = typeInfo.setter(gl, location);
 	        }
 	      }
+	      setter.location = location;
+	      return setter;
 	    }
 
 	    var uniformSetters = {};
@@ -2927,7 +2952,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      var index = gl.getAttribLocation(program, attribInfo.name);
 	      var typeInfo = attrTypeMap[attribInfo.type];
-	      attribSetters[attribInfo.name] = typeInfo.setter(gl, index, typeInfo);
+	      var setter = typeInfo.setter(gl, index, typeInfo);
+	      setter.location = index;
+	      attribSetters[attribInfo.name] = setter;
 	    }
 
 	    return attribSetters;
