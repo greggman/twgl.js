@@ -1,5 +1,9 @@
 #Changelist
 
+*   3.4.0
+
+    *   Support `minMag` for framebuffers
+
 *   3.3.0
 
     *   Make `createProgram` accept ids, source, and shaders as input.
