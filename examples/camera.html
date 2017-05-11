@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - camera" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/camera.png" />
+    <meta property="og:description" content="TWGL.js - camera" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - camera">
+    <meta name="twitter:url" content="http://twgljs.org/examples/camera.html">
+    <meta name="twitter:description" content="TWGL.js - camera">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/camera.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - camera</title>
+    <style>
+      body {
+          margin: 0;
+          font-family: monospace;
+      }
+      canvas {
+          display: block;
+          width: 100vw;
+          height: 100vh;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - camera</div>
+  </body>
+  <script id="vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+
+attribute vec4 a_position;
+attribute vec2 a_texcoord;
+
+varying vec2 v_texCoord;
+
+void main() {
+  v_texCoord = a_texcoord;
+  gl_Position = u_worldViewProjection * a_position;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec2 v_texCoord;
+
+uniform sampler2D u_diffuse;
+
+void main() {
+  gl_FragColor = texture2D(u_diffuse, v_texCoord);
+}
+  </script>
+  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script>
+    "use strict";
+
+    let playing = false;
+    const video = document.createElement("video");
+    video.autoPlay = true;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.addEventListener('playing', () => {
+              playing = true;
+            });
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
+
+    twgl.setDefaults({attribPrefix: "a_"});
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    const shapes = [
+      twgl.primitives.createCubeBufferInfo(gl, 2),
+    ];
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    // Shared values
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewProjection = m4.identity();
+    const world = m4.identity();
+
+    const tex = twgl.createTexture(gl, {
+      minMag: gl.LINEAR,
+      wrap: gl.CLAMP_TO_EDGE,
+      src: [
+        255, 255, 255, 255,
+        192, 192, 192, 255,
+        192, 192, 192, 255,
+        255, 255, 255, 255,
+      ],
+    });
+
+    const objects = [];
+    const drawObjects = [];
+    const numObjects = 100;
+    for (let ii = 0; ii < numObjects; ++ii) {
+      const uniforms = {
+        u_diffuse: tex,
+        u_worldViewProjection: m4.identity(),
+      };
+      drawObjects.push({
+        programInfo: programInfo,
+        bufferInfo: shapes[ii % shapes.length],
+        uniforms: uniforms,
+      });
+      objects.push({
+        translation: [rand(-5, 5), rand(-5, 5), rand(-5, 5)],
+        ySpeed: rand(0.1, 0.3),
+        zSpeed: rand(0.1, 0.3),
+        uniforms: uniforms,
+      });
+    }
+
+    function render(time) {
+      time *= 0.001;
+      twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+      gl.enable(gl.DEPTH_TEST);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      if (playing) {
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+      }
+
+      const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      const eye = [1, 2, -10];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
+
+      m4.lookAt(eye, target, up, camera);
+      m4.inverse(camera, view);
+      m4.multiply(projection, view, viewProjection);
+
+      objects.forEach(function(obj) {
+        var uni = obj.uniforms;
+        m4.identity(world);
+        m4.rotateY(world, time * obj.ySpeed, world);
+        m4.rotateZ(world, time * obj.zSpeed, world);
+        m4.translate(world, obj.translation, world);
+        m4.rotateX(world, time, world);
+        m4.multiply(viewProjection, world, uni.u_worldViewProjection);
+      });
+
+      twgl.drawObjectList(gl, drawObjects);
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+  </script>
+</html>
+
+
+
