@@ -217,8 +217,8 @@ define([
           textureOptions.height = height;
           if (textureOptions.auto === undefined) {
             textureOptions.auto = false;
-            textureOptions.min = textureOptions.min || gl.LINEAR;
-            textureOptions.mag = textureOptions.mag || gl.LINEAR;
+            textureOptions.min = textureOptions.min || textureOptions.minMag || gl.LINEAR;
+            textureOptions.mag = textureOptions.mag || textureOptions.minMag || gl.LINEAR;
             textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
             textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
           }
