@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.3.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -200,6 +200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *   for WebGL 2.
 	   *
 	   *   Note: According to webglstats.com 90% of devices support `OES_vertex_array_object`.
+	   *   In fact AFAICT all devices support them it's just Microsoft Edge does not.
 	   *   If you just want to count on support I suggest using [this polyfill](https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js)
 	   *   or ignoring devices that don't support them.
 	   *
@@ -271,7 +272,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
-	   * Gets a WebGL context.
+	   * Gets a WebGL1 context.
+	   *
+	   * Note: Will attempt to enable Vertex Array Objects
+	   * and add WebGL2 entry points. (unless you first set defaults with
+	   * `twgl.setDefaults({enableVertexArrayObjects: false})`;
+	   *
 	   * @param {HTMLCanvasElement} canvas a canvas element.
 	   * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
 	   * @memberOf module:twgl
@@ -316,6 +322,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    function isWebGL2(gl) {
 	   *      return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0 ") == 0;
 	   *    }
+	   *
+	   * Note: For a WebGL1 context will attempt to enable Vertex Array Objects
+	   * and add WebGL2 entry points. (unless you first set defaults with
+	   * `twgl.setDefaults({enableVertexArrayObjects: false})`;
 	   *
 	   * @param {HTMLCanvasElement} canvas a canvas element.
 	   * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
@@ -3412,8 +3422,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          textureOptions.height = height;
 	          if (textureOptions.auto === undefined) {
 	            textureOptions.auto = false;
-	            textureOptions.min = textureOptions.min || gl.LINEAR;
-	            textureOptions.mag = textureOptions.mag || gl.LINEAR;
+	            textureOptions.min = textureOptions.min || textureOptions.minMag || gl.LINEAR;
+	            textureOptions.mag = textureOptions.mag || textureOptions.minMag || gl.LINEAR;
 	            textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
 	            textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
 	          }

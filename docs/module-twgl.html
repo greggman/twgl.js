@@ -3060,6 +3060,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
     <p>Gets a WebGL context.  Will create a WebGL2 context if possible.</p>
 <p>You can check if it's WebGL2 with</p>
 <p>   function isWebGL2(gl) {<br>     return gl.getParameter(gl.VERSION).indexOf(&quot;WebGL 2.0 &quot;) == 0;<br>   }</p>
+<p>Note: For a WebGL1 context will attempt to enable Vertex Array Objects<br>and add WebGL2 entry points. (unless you first set defaults with<br><code>twgl.setDefaults({enableVertexArrayObjects: false})</code>;</p>
 </div>
 
 
@@ -3250,7 +3251,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 
 <div class="description">
-    <p>Gets a WebGL context.</p>
+    <p>Gets a WebGL1 context.</p>
+<p>Note: Will attempt to enable Vertex Array Objects<br>and add WebGL2 entry points. (unless you first set defaults with<br><code>twgl.setDefaults({enableVertexArrayObjects: false})</code>;</p>
 </div>
 
 
@@ -7117,7 +7119,7 @@ twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
             
 
             <td class="description last"><p>If true then in WebGL 1.0 will attempt to get the <code>OES_vertex_array_object</code> extension.<br>  If successful it will copy create/bind/delete/isVertexArrayOES from the extension to<br>  the WebGLRenderingContext removing the OES at the end which is the standard entry point<br>  for WebGL 2.</p>
-<p>  Note: According to webglstats.com 90% of devices support <code>OES_vertex_array_object</code>.<br>  If you just want to count on support I suggest using <a href="https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js">this polyfill</a><br>  or ignoring devices that don't support them.</p>
+<p>  Note: According to webglstats.com 90% of devices support <code>OES_vertex_array_object</code>.<br>  In fact AFAICT all devices support them it's just Microsoft Edge does not.<br>  If you just want to count on support I suggest using <a href="https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js">this polyfill</a><br>  or ignoring devices that don't support them.</p>
 <p>  Default: <code>true</code></p></td>
         </tr>
 
