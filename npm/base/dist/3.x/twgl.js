@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.4.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -348,8 +348,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function resizeCanvasToDisplaySize(canvas, multiplier) {
 	    multiplier = multiplier || 1;
 	    multiplier = Math.max(1, multiplier);
-	    var width = canvas.clientWidth * multiplier | 0;
-	    var height = canvas.clientHeight * multiplier | 0;
+	    var bounds = canvas.getBoundingClientRect();
+	    var width = Math.round(bounds.width * multiplier);
+	    var height = Math.round(bounds.height * multiplier);
 	    if (canvas.width !== width || canvas.height !== height) {
 	      canvas.width = width;
 	      canvas.height = height;
