@@ -58,9 +58,9 @@ uniform mat4 u_world;
 uniform mat4 u_viewInverse;
 uniform mat4 u_worldInverseTranspose;
 
-attribute vec4 a_position;
-attribute vec3 a_normal;
-attribute vec2 a_texcoord;
+attribute vec4 position;
+attribute vec3 normal;
+attribute vec2 texcoord;
 
 varying vec4 v_position;
 varying vec2 v_texCoord;
@@ -70,10 +70,10 @@ varying vec3 v_surfaceToView;
 
 void main() {
   v_texCoord = a_texcoord;
-  v_position = (u_worldViewProjection * a_position);
-  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
-  v_surfaceToLight = u_lightWorldPos - (u_world * a_position).xyz;
-  v_surfaceToView = (u_viewInverse[3] - (u_world * a_position)).xyz;
+  v_position = u_worldViewProjection * position;
+  v_normal = (u_worldInverseTranspose * vec4(normal, 0)).xyz;
+  v_surfaceToLight = u_lightWorldPos - (u_world * position).xyz;
+  v_surfaceToView = (u_viewInverse[3] - (u_world * position)).xyz;
   gl_Position = v_position;
 }
   </script>
@@ -118,20 +118,19 @@ void main() {
   <script src="../dist/3.x/twgl-full.min.js"></script>
   <script>
     "use strict";
-    twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var arrays = {
+    const arrays = {
       position: [1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1],
       normal:   [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
       texcoord: [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
       indices:  [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23],
     };
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: [
@@ -142,7 +141,7 @@ void main() {
       ],
     });
 
-    var uniforms = {
+    const uniforms = {
       u_lightWorldPos: [1, 8, -10],
       u_lightColor: [1, 0.8, 0.8, 1],
       u_ambient: [0, 0, 0, 1],
@@ -161,15 +160,19 @@ void main() {
       gl.enable(gl.CULL_FACE);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 10);
-      var eye = [1, 4, -6];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const fov = 30 * Math.PI / 180;
+      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      const zNear = 0.5;
+      const zFar = 10;
+      const projection = m4.perspective(fov, aspect, zNear, zFar);
+      const eye = [1, 4, -6];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
-      var camera = m4.lookAt(eye, target, up);
-      var view = m4.inverse(camera);
-      var viewProjection = m4.multiply(projection, view);
-      var world = m4.rotationY(time);
+      const camera = m4.lookAt(eye, target, up);
+      const view = m4.inverse(camera);
+      const viewProjection = m4.multiply(projection, view);
+      const world = m4.rotationY(time);
 
       uniforms.u_viewInverse = camera;
       uniforms.u_world = world;
