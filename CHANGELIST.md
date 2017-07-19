@@ -1,5 +1,13 @@
 #Changelist
 
+*   3.4.1
+
+    *   use `getBoundingClientRect` for `resizeCanvasToDisplaySize`
+
+        unlike `clientWidth` and `clientHeight`, `getBoundingClientRect`
+        returns fractional dimensions. This is important when passing in devicePixelRatio
+        to calculate and actual native size.
+
 *   3.4.0
 
     *   Support `minMag` for framebuffers
