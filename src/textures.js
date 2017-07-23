@@ -530,7 +530,7 @@ define([
    *    `HTMLCanvasElement`, `HTMLVideoElement`.
    *
    *    If `number[]` or `ArrayBuffer` it's assumed to be data for a texture. If `width` or `height` is
-   *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponets`
+   *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponents`
    *    where `numComponents` is derived from `format`. If `target` is `gl.TEXTURE_CUBE_MAP` then `numElements` is divided
    *    by 6. Then
    *
