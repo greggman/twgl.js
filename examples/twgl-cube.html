@@ -69,7 +69,7 @@ varying vec3 v_surfaceToLight;
 varying vec3 v_surfaceToView;
 
 void main() {
-  v_texCoord = a_texcoord;
+  v_texCoord = texcoord;
   v_position = u_worldViewProjection * position;
   v_normal = (u_worldInverseTranspose * vec4(normal, 0)).xyz;
   v_surfaceToLight = u_lightWorldPos - (u_world * position).xyz;
