@@ -8938,6 +8938,37 @@ var drawObj = {
 
         <tr>
             
+                <td class="name"><code>level</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the mip level to affect. Defaults to 0. Note, if set auto will be considered false unless explicitly set to true.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>width</code></td>
             
 
@@ -9645,7 +9676,7 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>If not <code>false</code> then texture working filtering is set automatically for non-power of 2 images and<br>   mips are generated for power of 2 images.</p></td>
+            <td class="description last"><p>If <code>undefined</code> or <code>true</code>, in WebGL1, texture filtering is set automatically for non-power of 2 images and<br>   mips are generated for power of 2 images. In WebGL2 mips are generated if they can be. Note: if <code>level</code> is set above<br>   then then <code>auto</code> is assumed to be <code>false</code> unless explicity set to <code>true</code>.</p></td>
         </tr>
 
     
@@ -9738,7 +9769,7 @@ var drawObj = {
 <p>   If <code>string</code> then it's assumed to be a URL to an image. The image will be downloaded async. A usable<br>   1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.<br>   If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.<br>   The pieces will be uploaded in <code>cubeFaceOrder</code></p>
 <p>   If <code>string[]</code> then it must have 6 entries, one for each face of a cube map. Target must be <code>gl.TEXTURE_CUBE_MAP</code>.</p>
 <p>   If <code>HTMLElement</code> then it wil be used immediately to create the contents of the texture. Examples <code>HTMLImageElement</code>,<br>   <code>HTMLCanvasElement</code>, <code>HTMLVideoElement</code>.</p>
-<p>   If <code>number[]</code> or <code>ArrayBuffer</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>   not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponets</code><br>   where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>   by 6. Then</p>
+<p>   If <code>number[]</code> or <code>ArrayBuffer</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>   not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponents</code><br>   where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>   by 6. Then</p>
 <ul>
 <li><p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer then width and height<br>are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
 </li>

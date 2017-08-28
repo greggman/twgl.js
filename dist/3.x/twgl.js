@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.4.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.5.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4026,6 +4026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @typedef {Object} TextureOptions
 	   * @property {number} [target] the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
+	   * @property {number} [level] the mip level to affect. Defaults to 0. Note, if set auto will be considered false unless explicitly set to true.
 	   * @property {number} [width] the width of the texture. Only used if src is an array or typed array or null.
 	   * @property {number} [height] the height of a texture. Only used if src is an array or typed array or null.
 	   * @property {number} [depth] the depth of a texture. Only used if src is an array or type array or null and target is `TEXTURE_3D` .
@@ -4058,8 +4059,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {(number[]|ArrayBuffer)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
 	   *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in `[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0`.
 	   *    Defaults to `[0.5, 0.75, 1, 1]`. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
-	   * @property {boolean} [auto] If not `false` then texture working filtering is set automatically for non-power of 2 images and
-	   *    mips are generated for power of 2 images.
+	   * @property {boolean} [auto] If `undefined` or `true`, in WebGL1, texture filtering is set automatically for non-power of 2 images and
+	   *    mips are generated for power of 2 images. In WebGL2 mips are generated if they can be. Note: if `level` is set above
+	   *    then then `auto` is assumed to be `false` unless explicity set to `true`.
 	   * @property {number[]} [cubeFaceOrder] The order that cube faces are pulled out of an img or set of images. The default is
 	   *
 	   *     [gl.TEXTURE_CUBE_MAP_POSITIVE_X,
@@ -4082,7 +4084,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    `HTMLCanvasElement`, `HTMLVideoElement`.
 	   *
 	   *    If `number[]` or `ArrayBuffer` it's assumed to be data for a texture. If `width` or `height` is
-	   *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponets`
+	   *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponents`
 	   *    where `numComponents` is derived from `format`. If `target` is `gl.TEXTURE_CUBE_MAP` then `numElements` is divided
 	   *    by 6. Then
 	   *
@@ -4334,6 +4336,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  function shouldAutomaticallySetTextureFilteringForSize(options) {
+	    return options.auto === true || options.auto === undefined && options.level === undefined;
+	  }
+
 	  /**
 	   * Gets an array of cubemap face enums
 	   * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -4393,6 +4399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function setTextureFromElement(gl, tex, element, options) {
 	    options = options || defaults.textureOptions;
 	    var target = options.target || gl.TEXTURE_2D;
+	    var level = options.level || 0;
 	    var width = element.width;
 	    var height = element.height;
 	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
@@ -4434,7 +4441,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var xOffset = slices[f.ndx * 2 + 0] * size;
 	        var yOffset = slices[f.ndx * 2 + 1] * size;
 	        ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-	        gl.texImage2D(f.face, 0, internalFormat, format, type, ctx.canvas);
+	        gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
 	      });
 	      // Free up the canvas memory
 	      ctx.canvas.width = 1;
@@ -4448,7 +4455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      var xMult = element.width === largest ? 1 : 0;
 	      var yMult = element.height === largest ? 1 : 0;
-	      gl.texImage3D(target, 0, internalFormat, smallest, smallest, smallest, 0, format, type, null);
+	      gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
 	      // remove this is texSubImage3D gets width and height arguments
 	      ctx.canvas.width = smallest;
 	      ctx.canvas.height = smallest;
@@ -4464,17 +4471,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var dstW = smallest;
 	        var dstH = smallest;
 	        ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-	        gl.texSubImage3D(target, 0, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
+	        gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
 	      }
 	      ctx.canvas.width = 0;
 	      ctx.canvas.height = 0;
 	      // FIX (save state)
 	      //      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
 	    } else {
-	      gl.texImage2D(target, 0, internalFormat, format, type, element);
+	      gl.texImage2D(target, level, internalFormat, format, type, element);
 	    }
 	    restorePackState(gl, options);
-	    if (options.auto !== false) {
+	    if (shouldAutomaticallySetTextureFilteringForSize(options)) {
 	      setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
 	    }
 	    setTextureParameters(gl, tex, options);
@@ -4645,6 +4652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (urls.length !== 6) {
 	      throw "there must be 6 urls for a cubemap";
 	    }
+	    var level = options.level || 0;
 	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
 	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
 	    var format = options.format || formatType.format;
@@ -4679,14 +4687,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	              // use the default order
 	              getCubeFaceOrder(gl).forEach(function (otherTarget) {
 	                // Should we re-use the same face or a color?
-	                gl.texImage2D(otherTarget, 0, internalFormat, format, type, img);
+	                gl.texImage2D(otherTarget, level, internalFormat, format, type, img);
 	              });
 	            } else {
-	              gl.texImage2D(faceTarget, 0, internalFormat, format, type, img);
+	              gl.texImage2D(faceTarget, level, internalFormat, format, type, img);
 	            }
 
 	            restorePackState(gl, options);
-	            gl.generateMipmap(target);
+	            if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+	              gl.generateMipmap(target);
+	            }
 	          }
 	        }
 
@@ -4737,6 +4747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var numToLoad = urls.length;
 	    var errors = [];
 	    var imgs;
+	    var level = options.level || 0;
 	    var width = options.width;
 	    var height = options.height;
 	    var depth = urls.length;
@@ -4755,11 +4766,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            firstImage = false;
 	            width = options.width || img.width;
 	            height = options.height || img.height;
-	            gl.texImage3D(target, 0, internalFormat, width, height, depth, 0, format, type, null);
+	            gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
 
 	            // put it in every slice otherwise some slices will be 0,0,0,0
 	            for (var s = 0; s < depth; ++s) {
-	              gl.texSubImage3D(target, 0, 0, 0, s, width, height, 1, format, type, img);
+	              gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
 	            }
 	          } else {
 	            var src = img;
@@ -4771,7 +4782,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ctx.drawImage(img, 0, 0, width, height);
 	            }
 
-	            gl.texSubImage3D(target, 0, 0, 0, slice, width, height, 1, format, type, src);
+	            gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
 
 	            // free the canvas memory
 	            if (src === ctx.canvas) {
@@ -4781,7 +4792,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 
 	          restorePackState(gl, options);
-	          gl.generateMipmap(target);
+	          if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+	            gl.generateMipmap(target);
+	          }
 	        }
 
 	        if (numToLoad === 0) {
@@ -4812,6 +4825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var width = options.width;
 	    var height = options.height;
 	    var depth = options.depth;
+	    var level = options.level || 0;
 	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
 	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
 	    var format = options.format || formatType.format;
@@ -4867,13 +4881,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        getCubeFacesWithNdx(gl, options).forEach(function (f) {
 	          var offset = faceSize * f.ndx;
 	          var data = src.subarray(offset, offset + faceSize);
-	          gl.texImage2D(f.face, 0, internalFormat, width, height, 0, format, type, data);
+	          gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
 	        });
 	      })();
 	    } else if (target === gl.TEXTURE_3D) {
-	      gl.texImage3D(target, 0, internalFormat, width, height, depth, 0, format, type, src);
+	      gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
 	    } else {
-	      gl.texImage2D(target, 0, internalFormat, width, height, 0, format, type, src);
+	      gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
 	    }
 	    restorePackState(gl, options);
 	    return {
@@ -4895,6 +4909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function setEmptyTexture(gl, tex, options) {
 	    var target = options.target || gl.TEXTURE_2D;
 	    gl.bindTexture(target, tex);
+	    var level = options.level || 0;
 	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
 	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
 	    var format = options.format || formatType.format;
@@ -4902,12 +4917,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    savePackState(gl, options);
 	    if (target === gl.TEXTURE_CUBE_MAP) {
 	      for (var ii = 0; ii < 6; ++ii) {
-	        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, internalFormat, options.width, options.height, 0, format, type, null);
+	        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
 	      }
 	    } else if (target === gl.TEXTURE_3D) {
-	      gl.texImage3D(target, 0, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
+	      gl.texImage3D(target, level, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
 	    } else {
-	      gl.texImage2D(target, 0, internalFormat, options.width, options.height, 0, format, type, null);
+	      gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
 	    }
 	    restorePackState(gl, options);
 	  }
@@ -4964,7 +4979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	      setEmptyTexture(gl, tex, options);
 	    }
-	    if (options.auto !== false) {
+	    if (shouldAutomaticallySetTextureFilteringForSize(options)) {
 	      setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
 	    }
 	    setTextureParameters(gl, tex, options);
@@ -4992,6 +5007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    height = height || options.height;
 	    var target = options.target || gl.TEXTURE_2D;
 	    gl.bindTexture(target, tex);
+	    var level = options.level || 0;
 	    var internalFormat = options.internalFormat || options.format || gl.RGBA;
 	    var formatType = getFormatAndTypeForInternalFormat(internalFormat);
 	    var format = options.format || formatType.format;
@@ -5006,10 +5022,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    if (target === gl.TEXTURE_CUBE_MAP) {
 	      for (var ii = 0; ii < 6; ++ii) {
-	        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, format, width, height, 0, format, type, null);
+	        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, format, width, height, 0, format, type, null);
 	      }
 	    } else {
-	      gl.texImage2D(target, 0, format, width, height, 0, format, type, null);
+	      gl.texImage2D(target, level, format, width, height, 0, format, type, null);
 	    }
 	  }
 
