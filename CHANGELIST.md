@@ -1,5 +1,9 @@
 #Changelist
 
+*   3.5.0
+
+    *   Added `level` to `TextureOptions`
+
 *   3.4.1
 
     *   use `getBoundingClientRect` for `resizeCanvasToDisplaySize`
