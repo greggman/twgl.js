@@ -1,5 +1,19 @@
 #Changelist
 
+*   3.6.0
+
+    *   Added `twgl.addExtensionsToContext`
+
+        Adds most extensions directly on the context so they have the same API
+        as WebGL2 or OpenGL ES 3.0
+
+    *   Added instancing support
+
+        Added `divisor` to `AttribInfo` and `FullArraySpec` and calls to
+        `gl.vertexAttribDivisor`. NOTE: It's up to you to clear the divisor.
+        You can either use vertex array objects (recommended) OR set
+        `divisor` to 0 other `AttribInfo`s etc. (not recommended)
+
 *   3.5.0
 
     *   Added `level` to `TextureOptions`
