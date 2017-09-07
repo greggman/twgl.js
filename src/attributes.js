@@ -200,6 +200,8 @@ define([
    * @property {boolean} [normalize] whether or not to normalize the data. Default = false
    * @property {number} [offset] offset into buffer in bytes. Default = 0
    * @property {number} [stride] the stride in bytes per element. Default = 0
+   * @property {number} [divisor] the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
+   *    where as anything else = do call it with this value
    * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
    * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
    * @memberOf module:twgl
@@ -219,6 +221,8 @@ define([
    * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
    * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
    * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
+   * @property {number} [divisor] divisor for `vertexAttribDivisor`. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
+   *    where as anything else = do call it with this value
    * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
    * @property {string} [name] synonym for `attrib`.
    * @property {string} [attribName] synonym for `attrib`.
@@ -369,6 +373,7 @@ define([
           normalize:     normalization,
           stride:        array.stride || 0,
           offset:        array.offset || 0,
+          divisor:       array.divisor === undefined ? undefined : array.divisor,
           drawType:      array.drawType,
         };
       }

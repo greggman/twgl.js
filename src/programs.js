@@ -357,6 +357,9 @@ define([
       gl.enableVertexAttribArray(index);
       gl.vertexAttribPointer(
           index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
     };
   }
 
@@ -366,6 +369,9 @@ define([
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(
           index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
     };
   }
 
@@ -387,6 +393,9 @@ define([
         gl.enableVertexAttribArray(index + i);
         gl.vertexAttribPointer(
             index + i, size, type, normalize, stride, offset + rowOffset * i);
+        if (b.divisor !== undefined) {
+          gl.vertexAttribDivisor(index + i, b.divisor);
+        }
       }
     };
   }
@@ -1402,6 +1411,7 @@ define([
    * *   normalize: whether or not to normalize the data. Default = false
    * *   stride: the stride. Default = 0
    * *   offset: offset into the buffer. Default = 0
+   * *   divisor: the divisor for instances. Default = undefined
    *
    * For example if you had 3 value float positions, 2 value
    * float texcoord and 4 value uint8 colors you'd setup your
