@@ -125,10 +125,18 @@ void main() {
       const gl = document.getElementById("c").getContext("webgl");
       twgl.addExtensionsToContext(gl);
       if (!gl.drawArraysInstanced || !gl.createVertexArray) {
-        alert("need drawArraysInstanced and createVertexArray");
+        alert("need drawArraysInstanced and createVertexArray"); // eslint-disable-line
         return;
       }
       const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+      function rand(min, max) {
+        if (max === undefined) {
+          max = min;
+          min = 0;
+        }
+        return min + Math.random() * (max - min);
+      }
 
       const numInstances = 1000;
       const instancePositions = [];
@@ -161,14 +169,6 @@ void main() {
         u_shininess: 50,
         u_specularFactor: 1,
       };
-
-      function rand(min, max) {
-        if (max === undefined) {
-          max = min;
-          min = 0;
-        }
-        return min + Math.random() * (max - min);
-      }
 
       function render(time) {
         time *= 0.001;
