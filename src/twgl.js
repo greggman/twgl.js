@@ -80,7 +80,7 @@ define([
   // make sure we don't see a global gl
   var gl = undefined;  // eslint-disable-line
   var defaults = {
-    enableVertexArrayObjects: true,
+    addExtensionsToContext: true,
   };
 
   /**
@@ -133,19 +133,14 @@ define([
    *
    *   Also see {@link module:twgl.TextureOptions}.
    *
-   * @property {bool} enableVertexArrayObjects
+   * @property {bool} addExtensionsToContext
    *
-   *   If true then in WebGL 1.0 will attempt to get the `OES_vertex_array_object` extension.
-   *   If successful it will copy create/bind/delete/isVertexArrayOES from the extension to
-   *   the WebGLRenderingContext removing the OES at the end which is the standard entry point
-   *   for WebGL 2.
-   *
-   *   Note: According to webglstats.com 90% of devices support `OES_vertex_array_object`.
-   *   In fact AFAICT all devices support them it's just Microsoft Edge does not.
-   *   If you just want to count on support I suggest using [this polyfill](https://github.com/KhronosGroup/WebGL/blob/master/sdk/demos/google/resources/OESVertexArrayObject.js)
-   *   or ignoring devices that don't support them.
-   *
-   *   Default: `true`
+   *   If true, then, when twgl will try to add any supported WebGL extensions
+   *   directly to the context under their normal GL names. For example
+   *   if ANGLE_instances_arrays exists then twgl would enable it,
+   *   add the functions `vertexAttribDivisor`, `drawArraysInstanced`,
+   *   `drawElementsInstanced`, and the constant `VERTEX_ATTRIB_ARRAY_DIVISOR`
+   *   to the `WebGLRenderingContext`.
    *
    * @memberOf module:twgl
    */
@@ -165,31 +160,115 @@ define([
     textures.setDefaults_(newDefaults);  // eslint-disable-line
   }
 
-  /**
-   * Adds Vertex Array Objects to WebGL 1 GL contexts if available
-   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   */
-  function addVertexArrayObjectSupport(gl) {
-    if (!gl || !defaults.enableVertexArrayObjects) {
-      return;
-    }
-    if (utils.isWebGL1(gl)) {
-      var ext = gl.getExtension("OES_vertex_array_object");
-      if (ext) {
-        gl.createVertexArray = function() {
-          return ext.createVertexArrayOES();
-        };
-        gl.deleteVertexArray = function(v) {
-          ext.deleteVertexArrayOES(v);
-        };
-        gl.isVertexArray = function(v) {
-          return ext.isVertexArrayOES(v);
-        };
-        gl.bindVertexArray = function(v) {
-          ext.bindVertexArrayOES(v);
-        };
-        gl.VERTEX_ARRAY_BINDING = ext.VERTEX_ARRAY_BINDING_OES;
+  const prefixRE = /^(.*?)_/;
+  function addExtensionToContext(gl, extensionName) {
+    const ext = gl.getExtension(extensionName);
+    if (ext) {
+      const fnSuffix = prefixRE.exec(extensionName)[1];
+      const enumSuffix = '_' + fnSuffix;
+      for (var key in ext) {
+        const value = ext[key];
+        const isFunc = typeof (value) === 'function';
+        const suffix = isFunc ? fnSuffix : enumSuffix;
+        var name = key;
+        // examples of where this is not true are WEBGL_compressed_texture_s3tc
+        // and WEBGL_compressed_texture_pvrtc
+        if (key.endsWith(suffix)) {
+          name = key.substring(0, key.length - suffix.length);
+        }
+        if (gl[name] !== undefined) {
+          if (!isFunc && gl[name] !== value) {
+            console.warn(name, gl[name], value, key); // eslint-disable-line
+          }
+        } else {
+          if (isFunc) {
+            gl[name] = function(origFn) {
+              return function() {
+                return origFn.apply(ext, arguments);
+              };
+            }(value);
+          } else {
+            gl[name] = value;
+          }
+        }
       }
+    }
+    return ext;
+  }
+
+  const supportedExtensions = [
+    'ANGLE_instanced_arrays',
+    'EXT_blend_minmax',
+    'EXT_color_buffer_half_float',
+    'EXT_disjoint_timer_query',
+    'EXT_frag_depth',
+    'EXT_sRGB',
+    'EXT_shader_texture_lod',
+    'EXT_texture_filter_anisotropic',
+    'OES_element_index_uint',
+    'OES_standard_derivatives',
+    'OES_texture_float',
+    'OES_texture_float_linear',
+    'OES_texture_half_float',
+    'OES_texture_half_float_linear',
+    'OES_vertex_array_object',
+    'WEBGL_color_buffer_float',
+    'WEBGL_compressed_texture_atc',
+    'WEBGL_compressed_texture_etc1',
+    'WEBGL_compressed_texture_pvrtc',
+    'WEBGL_compressed_texture_s3tc',
+    'WEBGL_depth_texture',
+    'WEBGL_draw_buffers',
+  ];
+
+  /**
+   * Attempts to enable all of the following extensions
+   * and add their functions and constants to the
+   * `WebGLRenderingContext` using their normal non-extension like names.
+   *
+   *      ANGLE_instanced_arrays
+   *      EXT_blend_minmax
+   *      EXT_color_buffer_half_float
+   *      EXT_disjoint_timer_query
+   *      EXT_frag_depth
+   *      EXT_sRGB
+   *      EXT_shader_texture_lod
+   *      EXT_texture_filter_anisotropic
+   *      OES_element_index_uint
+   *      OES_standard_derivatives
+   *      OES_texture_float
+   *      OES_texture_float_linear
+   *      OES_texture_half_float
+   *      OES_texture_half_float_linear
+   *      OES_vertex_array_object
+   *      WEBGL_color_buffer_float
+   *      WEBGL_compressed_texture_atc
+   *      WEBGL_compressed_texture_etc1
+   *      WEBGL_compressed_texture_pvrtc
+   *      WEBGL_compressed_texture_s3tc
+   *      WEBGL_depth_texture
+   *      WEBGL_draw_buffers
+   *
+   * For example if `ANGLE_instanced_arrays` exists then the functions
+   * `drawArraysInstanced`, `drawElementsInstanced`, `vertexAttribDivisor`
+   * and the constant `VERTEX_ATTRIB_ARRAY_DIVISOR` are added to the
+   * `WebGLRenderingContext`.
+   *
+   * Note that if you want to know if the extension exists you should
+   * probably call `gl.getExtension` for each extension. Alternatively
+   * you can check for the existance of the functions or constants that
+   * are expected to be added. For example
+   *
+   *    if (gl.drawBuffers) {
+   *      // Either WEBGL_draw_buffers was enabled OR you're running in WebGL2
+   *      ....
+   *
+   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+   * @memberOf module:twgl
+   */
+  function addExtensionsToContext(gl) {
+    for (var ii = 0; ii < supportedExtensions.length; ++ii) {
+      addExtensionToContext(gl, supportedExtensions[ii]);
     }
   }
 
@@ -206,6 +285,9 @@ define([
     for (var ii = 0; ii < names.length; ++ii) {
       context = canvas.getContext(names[ii], opt_attribs);
       if (context) {
+        if (defaults.addExtensionsToContext) {
+          addExtensionsToContext(context);
+        }
         break;
       }
     }
@@ -225,7 +307,6 @@ define([
    */
   function getWebGLContext(canvas, opt_attribs) {
     var gl = create3DContext(canvas, opt_attribs);
-    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -249,6 +330,9 @@ define([
     for (var ii = 0; ii < names.length; ++ii) {
       context = canvas.getContext(names[ii], opt_attribs);
       if (context) {
+        if (defaults.addExtensionsToContext) {
+          addExtensionsToContext(context);
+        }
         break;
       }
     }
@@ -275,7 +359,6 @@ define([
    */
   function getContext(canvas, opt_attribs) {
     var gl = createContext(canvas, opt_attribs);
-    addVertexArrayObjectSupport(gl);
     return gl;
   }
 
@@ -303,6 +386,7 @@ define([
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   var api = {
+    "addExtensionsToContext": addExtensionsToContext,
     "getContext": getContext,
     "getWebGLContext": getWebGLContext,
     "isWebGL1": utils.isWebGL1,
