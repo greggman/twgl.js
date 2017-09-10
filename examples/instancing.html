@@ -52,14 +52,12 @@
     <div id="b"><a href="http://twgljs.org">twgl.js</a> - instancing</div>
   </body>
   <script id="vs" type="notjs">
-uniform mat4 u_worldViewProjection;
+uniform mat4 u_viewProjection;
 uniform vec3 u_lightWorldPos;
-uniform mat4 u_world;
 uniform mat4 u_viewInverse;
-uniform mat4 u_worldInverseTranspose;
 
 attribute vec4 instanceColor;
-attribute vec4 instancePosition;
+attribute mat4 instanceWorld;
 attribute vec4 position;
 attribute vec3 normal;
 
@@ -71,12 +69,33 @@ varying vec3 v_surfaceToView;
 varying vec4 v_color;
 
 void main() {
-  vec4 pos = position + instancePosition;
   v_color = instanceColor;
-  v_position = u_worldViewProjection * pos;
-  v_normal = (u_worldInverseTranspose * vec4(normal, 0)).xyz;
-  v_surfaceToLight = u_lightWorldPos - (u_world * pos).xyz;
-  v_surfaceToView = (u_viewInverse[3] - (u_world * pos)).xyz;
+
+
+
+  vec4 worldPosition = instanceWorld * position;
+
+
+
+  v_position = u_viewProjection * worldPosition;
+
+
+
+
+  v_normal = (instanceWorld * vec4(normal, 0)).xyz;
+
+
+
+
+  v_surfaceToLight = u_lightWorldPos - worldPosition.xyz;
+
+
+
+
+  v_surfaceToView = u_viewInverse[3].xyz - worldPosition.xyz;
+
+
+
   gl_Position = v_position;
 }
   </script>
@@ -138,18 +157,22 @@ void main() {
         return min + Math.random() * (max - min);
       }
 
-      const numInstances = 1000;
-      const instancePositions = [];
+      const numInstances = 100000;
+      const instanceWorlds = new Float32Array(numInstances * 16);
       const instanceColors = [];
+      const r = 100;
       for (let i = 0; i < numInstances; ++i) {
-        instancePositions.push(rand(-25, 25), rand(-25, 25), rand(-25, 25));
+        const mat = new Float32Array(instanceWorlds.buffer, i * 16 * 4, 16);
+        m4.translation([rand(-r, r), rand(-r, r), rand(-r, r)], mat);
+        m4.rotateZ(mat, rand(0, Math.PI * 2), mat);
+        m4.rotateX(mat, rand(0, Math.PI * 2), mat);
         instanceColors.push(rand(1), rand(1), rand(1));
       }
       const arrays = twgl.primitives.createCubeVertices();
       Object.assign(arrays, {
-        instancePosition: {
-          numComponents: 3,
-          data: instancePositions,
+        instanceWorld: {
+          numComponents: 16,
+          data: instanceWorlds,
           divisor: 1,
         },
         instanceColor: {
@@ -184,19 +207,16 @@ void main() {
         const zNear = 0.5;
         const zFar = 500;
         const projection = m4.perspective(fov, aspect, zNear, zFar);
-        const eye = [5, 10, -25];
+        const radius = 25;
+        const speed = time * .1;
+        const eye = [Math.sin(speed) * radius, Math.sin(speed * .7) * 10, Math.cos(speed) * radius];
         const target = [0, 0, 0];
         const up = [0, 1, 0];
 
         const camera = m4.lookAt(eye, target, up);
         const view = m4.inverse(camera);
-        const viewProjection = m4.multiply(projection, view);
-        const world = m4.rotationY(time);
-
+        uniforms.u_viewProjection = m4.multiply(projection, view);
         uniforms.u_viewInverse = camera;
-        uniforms.u_world = world;
-        uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-        uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 
         gl.useProgram(programInfo.program);
         twgl.setBuffersAndAttributes(gl, programInfo, vertexArrayInfo);
