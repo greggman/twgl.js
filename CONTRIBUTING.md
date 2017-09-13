@@ -28,7 +28,7 @@
 
    The simple way to do this is open a shell or terminal and type
 
-       sudo npm -g grunt-cli
+       sudo npm install -g grunt-cli
 
    On windows remove the `sudo`.
 
