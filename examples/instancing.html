@@ -136,7 +136,7 @@ void main() {
         return min + Math.random() * (max - min);
       }
 
-      const numInstances = 50000;
+      const numInstances = 100000;
       const instanceWorlds = new Float32Array(numInstances * 16);
       const instanceColors = [];
       const r = 70;
@@ -203,12 +203,14 @@ void main() {
         twgl.drawBufferInfo(gl, vertexArrayInfo, gl.TRIANGLES, vertexArrayInfo.numelements, 0, numInstances);
 
         // do it with drawObjectList (not you'd probably make/update the list outside the render loop
-        twgl.drawObjectList(gl, [{
-          programInfo: programInfo,
-          vertexArrayInfo: vertexArrayInfo,
-          uniforms: uniforms,
-          instanceCount: numInstances,
-        }]);
+        // twgl.drawObjectList(gl, [
+        //   {
+        //     programInfo: programInfo,
+        //     vertexArrayInfo: vertexArrayInfo,
+        //     uniforms: uniforms,
+        //     instanceCount: numInstances,
+        //   },
+        // ]);
 
         requestAnimationFrame(render);
       }
