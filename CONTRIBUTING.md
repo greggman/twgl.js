@@ -24,25 +24,22 @@
 ## Building
 
 1.  install [node.js](http://nodejs.org)
-2.  install [grunt](http://gruntjs.com)
 
-   The simple way to do this is open a shell or terminal and type
-
-       sudo npm -g grunt-cli
-
-   On windows remove the `sudo`.
-
-3.  cd into the TWGL folder and type
+2.  cd into the TWGL folder and type
 
        npm install
 
-4.  You should now be able to build TWGL by typing
+3.  You should now be able to build TWGL by typing
 
-       grunt
+       npm run build
 
-5.  You can build the docs by typing
+4.  You can build just the docs by typing
 
-       grunt docs
+       npm run builddocs
+       
+5.  You can also lint the examples by typing
+
+       npm run pre-push
 
 ## Developing
 
@@ -69,14 +66,7 @@ If you're trying to debug something you added to TWGL there are 2 common ways
 
 The easiest way to run TWGL locally is to run a webserver. Type
 
-    sudo npm install http-server -g
-
-Remove the `sudo` if on Windows.
-
-Now anytime you want to run TWGL examples locally cd to the TWGL folder
-and type
-
-    http-server
+    npm run serve
 
 Then in your browser go to `http://localhost:8080`
 
