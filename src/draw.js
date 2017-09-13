@@ -59,18 +59,27 @@ define([
    * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
    * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
    * @param {number} [offset] An optional offset. Defaults to 0.
+   * @param {number} [instanceCount] An optional instanceCount. if set then `drawArraysInstanced` or `drawElementsInstanced` will be called
    * @memberOf module:twgl/draw
    */
-  function drawBufferInfo(gl, bufferInfo, type, count, offset) {
+  function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
     type = type === undefined ? gl.TRIANGLES : type;
     var indices = bufferInfo.indices;
     var elementType = bufferInfo.elementType;
     var numElements = count === undefined ? bufferInfo.numElements : count;
     offset = offset === undefined ? 0 : offset;
     if (elementType || indices) {
-      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+      if (instanceCount !== undefined) {
+        gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
+      } else {
+        gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+      }
     } else {
-      gl.drawArrays(type, offset, numElements);
+      if (instanceCount !== undefined) {
+        gl.drawArraysInstanced(type, offset, numElements, instanceCount);
+      } else {
+        gl.drawArrays(type, offset, numElements);
+      }
     }
   }
 
@@ -106,6 +115,7 @@ define([
    *
    * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
    * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
+   * @property {number} [instanceCount] the number of instances. Defaults to undefined.
    * @memberOf module:twgl
    */
 
@@ -152,7 +162,7 @@ define([
       programs.setUniforms(programInfo, object.uniforms);
 
       // Draw
-      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset);
+      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
     });
 
     if (lastUsedBufferInfo.vertexArrayObject) {
