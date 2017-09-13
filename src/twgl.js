@@ -365,16 +365,15 @@ define([
   /**
    * Resize a canvas to match the size it's displayed.
    * @param {HTMLCanvasElement} canvas The canvas to resize.
-   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` if you want to.
+   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` or other scale value if you want to.
    * @return {boolean} true if the canvas was resized.
    * @memberOf module:twgl
    */
   function resizeCanvasToDisplaySize(canvas, multiplier) {
     multiplier = multiplier || 1;
-    multiplier = Math.max(1, multiplier);
-    var bounds = canvas.getBoundingClientRect();
-    var width  = Math.round(bounds.width  * multiplier);
-    var height = Math.round(bounds.height * multiplier);
+    multiplier = Math.max(0, multiplier);
+    var width  = canvas.clientWidth  * multiplier | 0;
+    var height = canvas.clientHeight * multiplier | 0;
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
       canvas.height = height;
