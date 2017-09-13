@@ -422,23 +422,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  function getContext(canvas, opt_attribs) {
 	    var gl = createContext(canvas, opt_attribs);
-	    addVertexArrayObjectSupport(gl);
 	    return gl;
 	  }
 
 	  /**
 	   * Resize a canvas to match the size it's displayed.
 	   * @param {HTMLCanvasElement} canvas The canvas to resize.
-	   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` if you want to.
+	   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` or other scale value if you want to.
 	   * @return {boolean} true if the canvas was resized.
 	   * @memberOf module:twgl
 	   */
 	  function resizeCanvasToDisplaySize(canvas, multiplier) {
 	    multiplier = multiplier || 1;
-	    multiplier = Math.max(1, multiplier);
-	    var bounds = canvas.getBoundingClientRect();
-	    var width = Math.round(bounds.width * multiplier);
-	    var height = Math.round(bounds.height * multiplier);
+	    multiplier = Math.max(0, multiplier);
+	    var width = canvas.clientWidth * multiplier | 0;
+	    var height = canvas.clientHeight * multiplier | 0;
 	    if (canvas.width !== width || canvas.height !== height) {
 	      canvas.width = width;
 	      canvas.height = height;
@@ -697,6 +695,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {boolean} [normalize] whether or not to normalize the data. Default = false
 	   * @property {number} [offset] offset into buffer in bytes. Default = 0
 	   * @property {number} [stride] the stride in bytes per element. Default = 0
+	   * @property {number} [divisor] the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
+	   *    where as anything else = do call it with this value
 	   * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
 	   * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
 	   * @memberOf module:twgl
@@ -716,6 +716,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
 	   * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
 	   * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
+	   * @property {number} [divisor] divisor for `vertexAttribDivisor`. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
+	   *    where as anything else = do call it with this value
 	   * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
 	   * @property {string} [name] synonym for `attrib`.
 	   * @property {string} [attribName] synonym for `attrib`.
@@ -865,6 +867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          normalize: normalization,
 	          stride: array.stride || 0,
 	          offset: array.offset || 0,
+	          divisor: array.divisor === undefined ? undefined : array.divisor,
 	          drawType: array.drawType
 	        };
 	      }
@@ -1589,19 +1592,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
 	   * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
 	   * @param {number} [offset] An optional offset. Defaults to 0.
+	   * @param {number} [instanceCount] An optional instanceCount. if set then `drawArraysInstanced` or `drawElementsInstanced` will be called
 	   * @memberOf module:twgl/draw
 	   */
 
-	  function drawBufferInfo(gl, bufferInfo, type, count, offset) {
+	  function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
 	    type = type === undefined ? gl.TRIANGLES : type;
 	    var indices = bufferInfo.indices;
 	    var elementType = bufferInfo.elementType;
 	    var numElements = count === undefined ? bufferInfo.numElements : count;
 	    offset = offset === undefined ? 0 : offset;
 	    if (elementType || indices) {
-	      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+	      if (instanceCount !== undefined) {
+	        gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
+	      } else {
+	        gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+	      }
 	    } else {
-	      gl.drawArrays(type, offset, numElements);
+	      if (instanceCount !== undefined) {
+	        gl.drawArraysInstanced(type, offset, numElements, instanceCount);
+	      } else {
+	        gl.drawArrays(type, offset, numElements);
+	      }
 	    }
 	  }
 
@@ -1637,6 +1649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
 	   * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
+	   * @property {number} [instanceCount] the number of instances. Defaults to undefined.
 	   * @memberOf module:twgl
 	   */
 
@@ -1683,7 +1696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      programs.setUniforms(programInfo, object.uniforms);
 
 	      // Draw
-	      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset);
+	      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
 	    });
 
 	    if (lastUsedBufferInfo.vertexArrayObject) {
@@ -2060,6 +2073,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
 	      gl.enableVertexAttribArray(index);
 	      gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+	      if (b.divisor !== undefined) {
+	        gl.vertexAttribDivisor(index, b.divisor);
+	      }
 	    };
 	  }
 
@@ -2068,6 +2084,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
 	      gl.enableVertexAttribArray(index);
 	      gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+	      if (b.divisor !== undefined) {
+	        gl.vertexAttribDivisor(index, b.divisor);
+	      }
 	    };
 	  }
 
@@ -2088,6 +2107,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      for (var i = 0; i < count; ++i) {
 	        gl.enableVertexAttribArray(index + i);
 	        gl.vertexAttribPointer(index + i, size, type, normalize, stride, offset + rowOffset * i);
+	        if (b.divisor !== undefined) {
+	          gl.vertexAttribDivisor(index + i, b.divisor);
+	        }
 	      }
 	    };
 	  }
@@ -3088,6 +3110,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * *   normalize: whether or not to normalize the data. Default = false
 	   * *   stride: the stride. Default = 0
 	   * *   offset: offset into the buffer. Default = 0
+	   * *   divisor: the divisor for instances. Default = undefined
 	   *
 	   * For example if you had 3 value float positions, 2 value
 	   * float texcoord and 4 value uint8 colors you'd setup your

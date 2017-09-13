@@ -146,7 +146,7 @@
 
     
 
-    <h4 class="name" id=".drawBufferInfo"><span class="type-signature">(static) </span>drawBufferInfo<span class="signature">(gl, bufferInfo, type<span class="signature-attributes">opt</span>, count<span class="signature-attributes">opt</span>, offset<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".drawBufferInfo"><span class="type-signature">(static) </span>drawBufferInfo<span class="signature">(gl, bufferInfo, type<span class="signature-attributes">opt</span>, count<span class="signature-attributes">opt</span>, offset<span class="signature-attributes">opt</span>, instanceCount<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -350,6 +350,39 @@
             
 
             <td class="description last"><p>An optional offset. Defaults to 0.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instanceCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An optional instanceCount. if set then <code>drawArraysInstanced</code> or <code>drawElementsInstanced</code> will be called</p></td>
         </tr>
 
     

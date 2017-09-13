@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 3.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 3.7.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -401,16 +401,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Resize a canvas to match the size it's displayed.
 	   * @param {HTMLCanvasElement} canvas The canvas to resize.
-	   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` if you want to.
+	   * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` or other scale value if you want to.
 	   * @return {boolean} true if the canvas was resized.
 	   * @memberOf module:twgl
 	   */
 	  function resizeCanvasToDisplaySize(canvas, multiplier) {
 	    multiplier = multiplier || 1;
-	    multiplier = Math.max(1, multiplier);
-	    var bounds = canvas.getBoundingClientRect();
-	    var width = Math.round(bounds.width * multiplier);
-	    var height = Math.round(bounds.height * multiplier);
+	    multiplier = Math.max(0, multiplier);
+	    var width = canvas.clientWidth * multiplier | 0;
+	    var height = canvas.clientHeight * multiplier | 0;
 	    if (canvas.width !== width || canvas.height !== height) {
 	      canvas.width = width;
 	      canvas.height = height;
@@ -1566,19 +1565,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
 	   * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
 	   * @param {number} [offset] An optional offset. Defaults to 0.
+	   * @param {number} [instanceCount] An optional instanceCount. if set then `drawArraysInstanced` or `drawElementsInstanced` will be called
 	   * @memberOf module:twgl/draw
 	   */
 
-	  function drawBufferInfo(gl, bufferInfo, type, count, offset) {
+	  function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
 	    type = type === undefined ? gl.TRIANGLES : type;
 	    var indices = bufferInfo.indices;
 	    var elementType = bufferInfo.elementType;
 	    var numElements = count === undefined ? bufferInfo.numElements : count;
 	    offset = offset === undefined ? 0 : offset;
 	    if (elementType || indices) {
-	      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+	      if (instanceCount !== undefined) {
+	        gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
+	      } else {
+	        gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+	      }
 	    } else {
-	      gl.drawArrays(type, offset, numElements);
+	      if (instanceCount !== undefined) {
+	        gl.drawArraysInstanced(type, offset, numElements, instanceCount);
+	      } else {
+	        gl.drawArrays(type, offset, numElements);
+	      }
 	    }
 	  }
 
@@ -1614,6 +1622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
 	   * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
+	   * @property {number} [instanceCount] the number of instances. Defaults to undefined.
 	   * @memberOf module:twgl
 	   */
 
@@ -1660,7 +1669,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      programs.setUniforms(programInfo, object.uniforms);
 
 	      // Draw
-	      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset);
+	      drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
 	    });
 
 	    if (lastUsedBufferInfo.vertexArrayObject) {

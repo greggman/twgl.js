@@ -2595,6 +2595,7 @@ gl.useProgram(program);</code></pre><p>This will automatically bind the buffers 
 <li>normalize: whether or not to normalize the data. Default = false</li>
 <li>stride: the stride. Default = 0</li>
 <li>offset: offset into the buffer. Default = 0</li>
+<li>divisor: the divisor for instances. Default = undefined</li>
 </ul>
 <p>For example if you had 3 value float positions, 2 value<br>float texcoord and 4 value uint8 colors you'd setup your<br>attribs like this</p>
 <pre class="prettyprint source"><code>var attribs = {

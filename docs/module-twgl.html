@@ -2804,7 +2804,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
     
 
-    <h4 class="name" id=".drawBufferInfo"><span class="type-signature">(static) </span>drawBufferInfo<span class="signature">(gl, bufferInfo, type<span class="signature-attributes">opt</span>, count<span class="signature-attributes">opt</span>, offset<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".drawBufferInfo"><span class="type-signature">(static) </span>drawBufferInfo<span class="signature">(gl, bufferInfo, type<span class="signature-attributes">opt</span>, count<span class="signature-attributes">opt</span>, offset<span class="signature-attributes">opt</span>, instanceCount<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -3008,6 +3008,39 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last"><p>An optional offset. Defaults to 0.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instanceCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An optional instanceCount. if set then <code>drawArraysInstanced</code> or <code>drawElementsInstanced</code> will be called</p></td>
         </tr>
 
     
@@ -3666,7 +3699,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
             
 
-            <td class="description last"><p>So you can pass in <code>window.devicePixelRatio</code> if you want to.</p></td>
+            <td class="description last"><p>So you can pass in <code>window.devicePixelRatio</code> or other scale value if you want to.</p></td>
         </tr>
 
     
@@ -6387,6 +6420,37 @@ Bare TypedArrays
 
         <tr>
             
+                <td class="name"><code>divisor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>   where as anything else = do call it with this value</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>buffer</code></td>
             
 
@@ -7630,6 +7694,37 @@ var drawObj = {
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>instanceCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the number of instances. Defaults to undefined.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -8251,6 +8346,37 @@ var drawObj = {
             
 
             <td class="description last"><p>offset for <code>vertexAttribPointer</code>. Default = 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>divisor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>divisor for <code>vertexAttribDivisor</code>. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>   where as anything else = do call it with this value</p></td>
         </tr>
 
     
