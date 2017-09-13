@@ -70,32 +70,11 @@ varying vec4 v_color;
 
 void main() {
   v_color = instanceColor;
-
-
-
   vec4 worldPosition = instanceWorld * position;
-
-
-
   v_position = u_viewProjection * worldPosition;
-
-
-
-
   v_normal = (instanceWorld * vec4(normal, 0)).xyz;
-
-
-
-
   v_surfaceToLight = u_lightWorldPos - worldPosition.xyz;
-
-
-
-
   v_surfaceToView = u_viewInverse[3].xyz - worldPosition.xyz;
-
-
-
   gl_Position = v_position;
 }
   </script>
@@ -157,10 +136,10 @@ void main() {
         return min + Math.random() * (max - min);
       }
 
-      const numInstances = 100000;
+      const numInstances = 50000;
       const instanceWorlds = new Float32Array(numInstances * 16);
       const instanceColors = [];
-      const r = 100;
+      const r = 70;
       for (let i = 0; i < numInstances; ++i) {
         const mat = new Float32Array(instanceWorlds.buffer, i * 16 * 4, 16);
         m4.translation([rand(-r, r), rand(-r, r), rand(-r, r)], mat);
@@ -221,7 +200,15 @@ void main() {
         gl.useProgram(programInfo.program);
         twgl.setBuffersAndAttributes(gl, programInfo, vertexArrayInfo);
         twgl.setUniforms(programInfo, uniforms);
-        gl.drawElementsInstanced(gl.TRIANGLES, vertexArrayInfo.numElements, gl.UNSIGNED_SHORT, 0, numInstances);
+        twgl.drawBufferInfo(gl, vertexArrayInfo, gl.TRIANGLES, vertexArrayInfo.numelements, 0, numInstances);
+
+        // do it with drawObjectList (not you'd probably make/update the list outside the render loop
+        twgl.drawObjectList(gl, [{
+          programInfo: programInfo,
+          vertexArrayInfo: vertexArrayInfo,
+          uniforms: uniforms,
+          instanceCount: numInstances,
+        }]);
 
         requestAnimationFrame(render);
       }
