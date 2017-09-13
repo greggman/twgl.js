@@ -10,7 +10,8 @@
     "bumpminor": "grunt bumpminor",
     "bumpmajor": "grunt bumpmajor",
     "bumppatch": "grunt bumppatch",
-    "builddocs": "grunt docs"
+    "builddocs": "grunt docs",
+    "serve": "http-server"
   },
   "repository": {
     "type": "git",
@@ -51,6 +52,7 @@
     "grunt-eslint": "^18.0.0",
     "grunt-jsdoc": "^1.1.0",
     "grunt-webpack-without-server": "^1.0.8",
+    "http-server": "^0.10.0",
     "load-grunt-tasks": "^3.4.1",
     "marked": "^0.3.3",
     "minami": "^1.1.1",
