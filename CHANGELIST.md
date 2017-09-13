@@ -1,5 +1,11 @@
 #Changelist
 
+*   3.7.0
+
+    *   Support instances with `drawBufferInfo` and `drawObjectList`.
+
+    *   Support passing a multiplier smaller than 1 to `resizeCanvasToDisplaySize`.
+
 *   3.6.0
 
     *   Added `twgl.addExtensionsToContext`
