@@ -11,7 +11,7 @@ This library's sole purpose is to make using the WebGL API less verbose.
 
 ## TL;DR
 
-If you want to get shit done use [three.js](http://threejs.org). If you want
+If you want to get stuff done use [three.js](http://threejs.org). If you want
 to do stuff low-level with WebGL consider using [TWGL](http://github.com/greggman/twgl.js/).
 
 ## The tiniest example
