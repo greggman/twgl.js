@@ -569,12 +569,12 @@ define(['./v3'], function(v3) {
 
     dst[8]  = 0;
     dst[9]  = 0;
-    dst[10] = -1 / (far - near);
+    dst[10] = 2 / (near - far);
     dst[11] = 0;
 
     dst[12] = (right + left) / (left - right);
     dst[13] = (top + bottom) / (bottom - top);
-    dst[14] = -near / (near - far);
+    dst[14] = (far + near) / (near - far);
     dst[15] = 1;
 
     return dst;
