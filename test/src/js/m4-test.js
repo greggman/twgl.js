@@ -61,6 +61,15 @@ function check(Type) {
       testV3WithDest(func, expected);
     }
 
+    function shouldBeCloseArray(a, b) {
+      const l = a.length;
+      l.should.be.equal(b.length);
+      for (let i = 0; i < l; ++i) {
+        const v = a[i];
+        v.should.be.approximately(b[i], 0.000001);
+      }
+    }
+
     it('should negate', function() {
       var expected = [
         -0,  -1,  -2,  -3,
@@ -277,17 +286,29 @@ function check(Type) {
 
         0,
         0,
-        -1 / (far - near),
+        2 / (near - far),
         0,
 
         (right + left) / (left - right),
         (top + bottom) / (bottom - top),
-        -near / (near - far),
+        (far + near) / (near - far),
         1,
       ];
       testM4WithAndWithoutDest(function(dst) {
         return m4.ortho(left, right, bottom, top, near, far, dst);
       }, expected);
+    });
+
+    it('should compute correct ortho', function() {
+      var left = -2;
+      var right = 4;
+      var top = 10;
+      var bottom = 30;
+      var near = 15;
+      var far = 25;
+      const m = m4.ortho(left, right, bottom, top, near, far);
+      shouldBeCloseArray(m4.transformPoint(m, [left, bottom, -near]), [-1, -1, -1]);
+      shouldBeCloseArray(m4.transformPoint(m, [right, top, -far]), [1, 1, 1]);
     });
 
     it('should compute frustum', function() {
