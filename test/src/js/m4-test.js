@@ -64,7 +64,7 @@ function check(Type) {
     function shouldBeCloseArray(a, b) {
       const l = a.length;
       l.should.be.equal(b.length);
-      for (let i = 0; i < l; ++i) {
+      for (var i = 0; i < l; ++i) {
         const v = a[i];
         v.should.be.approximately(b[i], 0.000001);
       }
