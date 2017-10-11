@@ -484,8 +484,8 @@ define([
    * @property {number} [minMag] both the min and mag filter settings.
    * @property {number} [internalFormat] internal format for texture. Defaults to `gl.RGBA`
    * @property {number} [format] format for texture. Defaults to `gl.RGBA`.
-   * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBuffer. If `src`
-   *     is ArrayBuffer defaults to type that matches ArrayBuffer type.
+   * @property {number} [type] type for texture. Defaults to `gl.UNSIGNED_BYTE` unless `src` is ArrayBufferView. If `src`
+   *     is ArrayBufferView defaults to type that matches ArrayBufferView type.
    * @property {number} [wrap] Texture wrapping for both S and T (and R if TEXTURE_3D or WebGLSampler). Defaults to `gl.REPEAT` for 2D unless src is WebGL1 and src not npot and `gl.CLAMP_TO_EDGE` for cube
    * @property {number} [wrapS] Texture wrapping for S. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
    * @property {number} [wrapT] Texture wrapping for T. Defaults to `gl.REPEAT` and `gl.CLAMP_TO_EDGE` for cube. If set takes precedence over `wrap`.
@@ -504,7 +504,7 @@ define([
    * @property {number} [colorspaceConversion] Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.
    *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
    *     the current setting for specific textures.
-   * @property {(number[]|ArrayBuffer)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
+   * @property {(number[]|ArrayBufferView)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
    *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in `[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0`.
    *    Defaults to `[0.5, 0.75, 1, 1]`. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
    * @property {boolean} [auto] If `undefined` or `true`, in WebGL1, texture filtering is set automatically for non-power of 2 images and
@@ -519,7 +519,7 @@ define([
    *      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
    *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
    *
-   * @property {(number[]|ArrayBuffer|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|module:twgl.TextureFunc)} [src] source for texture
+   * @property {(number[]|ArrayBufferView|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|module:twgl.TextureFunc)} [src] source for texture
    *
    *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
    *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
@@ -531,7 +531,7 @@ define([
    *    If `HTMLElement` then it wil be used immediately to create the contents of the texture. Examples `HTMLImageElement`,
    *    `HTMLCanvasElement`, `HTMLVideoElement`.
    *
-   *    If `number[]` or `ArrayBuffer` it's assumed to be data for a texture. If `width` or `height` is
+   *    If `number[]` or `ArrayBufferView` it's assumed to be data for a texture. If `width` or `height` is
    *    not specified it is guessed as follows. First the number of elements is computed by `src.length / numComponents`
    *    where `numComponents` is derived from `format`. If `target` is `gl.TEXTURE_CUBE_MAP` then `numElements` is divided
    *    by 6. Then
@@ -740,7 +740,7 @@ define([
   /**
    * Makes a 1x1 pixel
    * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
-   * @param {(number[]|ArrayBuffer)} [color] The color using 0-1 values
+   * @param {(number[]|ArrayBufferView)} [color] The color using 0-1 values
    * @return {Uint8Array} Unit8Array with color.
    */
   function make1Pixel(color) {
@@ -1269,7 +1269,7 @@ define([
    * guess the size. See {@link module:twgl.TextureOptions}.
    * @param {WebGLRenderingContext} gl the WebGLRenderingContext
    * @param {WebGLTexture} tex the WebGLTexture to set parameters for
-   * @param {(number[]|ArrayBuffer)} src An array or typed arry with texture data.
+   * @param {(number[]|ArrayBufferView)} src An array or typed arry with texture data.
    * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
    *   This is often the same options you passed in when you created the texture.
    * @memberOf module:twgl/textures

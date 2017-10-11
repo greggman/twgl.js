@@ -96,7 +96,7 @@ define([
    * into it.
    *
    * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @param {ArrayBuffer|ArrayBufferView|WebGLBuffer} typedArray the typed array. Note: If a WebGLBuffer is passed in it will just be returned. No action will be taken
+   * @param {ArrayBuffer|SharedArrayBuffer|ArrayBufferView|WebGLBuffer} typedArray the typed array. Note: If a WebGLBuffer is passed in it will just be returned. No action will be taken
    * @param {number} [type] the GL bind type for the buffer. Default = `gl.ARRAY_BUFFER`.
    * @param {number} [drawType] the GL draw type for the buffer. Default = 'gl.STATIC_DRAW`.
    * @return {WebGLBuffer} the created WebGLBuffer
@@ -210,7 +210,7 @@ define([
   /**
    * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
    * @typedef {Object} FullArraySpec
-   * @property {(number|number[]|ArrayBuffer)} data The data of the array. A number alone becomes the number of elements of type.
+   * @property {(number|number[]|ArrayBufferView)} data The data of the array. A number alone becomes the number of elements of type.
    * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
    *    If `coord` is in the name assumes `numComponents = 2`.
    *    If `color` is in the name assumes `numComponents = 4`.
@@ -232,11 +232,11 @@ define([
   /**
    * An individual array in {@link module:twgl.Arrays}
    *
-   * When passed to {@link module:twgl.createBufferInfoFromArrays} if an ArraySpec is `number[]` or `ArrayBuffer`
+   * When passed to {@link module:twgl.createBufferInfoFromArrays} if an ArraySpec is `number[]` or `ArrayBufferView`
    * the types will be guessed based on the name. `indices` will be `Uint16Array`, everything else will
    * be `Float32Array`. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.
    *
-   * @typedef {(number|number[]|ArrayBuffer|module:twgl.FullArraySpec)} ArraySpec
+   * @typedef {(number|number[]|ArrayBufferView|module:twgl.FullArraySpec)} ArraySpec
    * @memberOf module:twgl
    */
 
