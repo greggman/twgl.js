@@ -92,7 +92,7 @@ define([], function() {
    */
   function isWebGL2(gl) {
     // This is the correct check but it's slow
-    //return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+    //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
     // This might also be the correct check but I'm assuming it's slow-ish
     // return gl instanceof WebGL2RenderingContext;
     return !!gl.texStorage2D;
