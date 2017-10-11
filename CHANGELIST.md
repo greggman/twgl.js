@@ -1,5 +1,9 @@
 #Changelist
 
+*   3.8.0
+
+    *   Add `SharedArrayBuffer` support
+
 *   3.7.1
 
     *   Fix `ortho`
