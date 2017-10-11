@@ -64,14 +64,15 @@
 define([
     './attributes',
     './utils',
+    './typedarrays',
     './m4',
     './v3',
   ], function(
     attributes,
     utils,
+    typedArrays,
     m4,
-    v3
-  ) {
+    v3) {
   "use strict";
 
   var getArray = attributes.getArray_;  // eslint-disable-line
@@ -89,7 +90,7 @@ define([
     typedArray.push = function() {
       for (var ii = 0; ii < arguments.length; ++ii) {
         var value = arguments[ii];
-        if (value instanceof Array || (value.buffer && value.buffer instanceof ArrayBuffer)) {
+        if (value instanceof Array || typedArrays.isArrayBuffer(value)) {
           for (var jj = 0; jj < value.length; ++jj) {
             typedArray[cursor++] = value[jj];
           }
@@ -129,7 +130,7 @@ define([
    * @param {number} numComponents number of components
    * @param {number} numElements number of elements. The total size of the array will be `numComponents * numElements`.
    * @param {constructor} opt_type A constructor for the type. Default = `Float32Array`.
-   * @return {ArrayBuffer} A typed array.
+   * @return {ArrayBufferView} A typed array.
    * @memberOf module:twgl/primitives
    */
   function createAugmentedTypedArray(numComponents, numElements, opt_type) {
@@ -1903,9 +1904,9 @@ define([
   /**
    * Creates an array of the same time
    *
-   * @param {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} srcArray array who's type to copy
+   * @param {(number[]|ArrayBufferView|module:twgl.FullArraySpec)} srcArray array who's type to copy
    * @param {number} length size of new array
-   * @return {(number[]|ArrayBuffer|module:twgl.FullArraySpec)} array with same type as srcArray
+   * @return {(number[]|ArrayBufferView|module:twgl.FullArraySpec)} array with same type as srcArray
    */
   function createArrayOfSameType(srcArray, length) {
     var arraySrc = getArray(srcArray);
