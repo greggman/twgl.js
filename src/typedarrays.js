@@ -141,9 +141,13 @@ define([], function() {
     return CTOR;
   }
 
-  function isArrayBuffer(a) {
-    return a && a.buffer && a.buffer instanceof ArrayBuffer;
-  }
+  const isArrayBuffer = window.SharedArrayBuffer
+    ? function isArrayBufferOrSharedArrayBuffer(a) {
+      return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof window.SharedArrayBuffer);
+    }
+    : function isArrayBuffer(a) {
+      return a && a.buffer && a.buffer instanceof ArrayBuffer;
+    };
 
   // Using quotes prevents Uglify from changing the names.
   return {
