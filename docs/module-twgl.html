@@ -5499,7 +5499,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 <span class="param-type"><code>Array.&lt;number></code></span>
 |
 
-<span class="param-type"><code>ArrayBuffer</code></span>
+<span class="param-type"><code>ArrayBufferView</code></span>
 
 
             
@@ -6121,7 +6121,7 @@ Bare TypedArrays
 
 <div class="description">
     <p>An individual array in <a href="module-twgl.html#.Arrays"><code>module:twgl.Arrays</code></a></p>
-<p>When passed to <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> if an ArraySpec is <code>number[]</code> or <code>ArrayBuffer</code><br>the types will be guessed based on the name. <code>indices</code> will be <code>Uint16Array</code>, everything else will<br>be <code>Float32Array</code>. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.</p>
+<p>When passed to <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> if an ArraySpec is <code>number[]</code> or <code>ArrayBufferView</code><br>the types will be guessed based on the name. <code>indices</code> will be <code>Uint16Array</code>, everything else will<br>be <code>Float32Array</code>. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.</p>
 </div>
 
 
@@ -6175,7 +6175,7 @@ Bare TypedArrays
 <span class="param-type"><code>Array.&lt;number></code></span>
 |
 
-<span class="param-type"><code>ArrayBuffer</code></span>
+<span class="param-type"><code>ArrayBufferView</code></span>
 |
 
 <span class="param-type"><code><a href="module-twgl.html#.FullArraySpec">module:twgl.FullArraySpec</a></code></span>
@@ -8541,7 +8541,7 @@ var drawObj = {
 <span class="param-type"><code>Array.&lt;number></code></span>
 |
 
-<span class="param-type"><code>ArrayBuffer</code></span>
+<span class="param-type"><code>ArrayBufferView</code></span>
 
 
             
@@ -9985,7 +9985,7 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>type for texture. Defaults to <code>gl.UNSIGNED_BYTE</code> unless <code>src</code> is ArrayBuffer. If <code>src</code><br>    is ArrayBuffer defaults to type that matches ArrayBuffer type.</p></td>
+            <td class="description last"><p>type for texture. Defaults to <code>gl.UNSIGNED_BYTE</code> unless <code>src</code> is ArrayBufferView. If <code>src</code><br>    is ArrayBufferView defaults to type that matches ArrayBufferView type.</p></td>
         </tr>
 
         
@@ -10399,7 +10399,7 @@ var drawObj = {
 <span class="param-type"><code>Array.&lt;number></code></span>
 |
 
-<span class="param-type"><code>ArrayBuffer</code></span>
+<span class="param-type"><code>ArrayBufferView</code></span>
 
 
             
@@ -10505,7 +10505,7 @@ var drawObj = {
 <span class="param-type"><code>Array.&lt;number></code></span>
 |
 
-<span class="param-type"><code>ArrayBuffer</code></span>
+<span class="param-type"><code>ArrayBufferView</code></span>
 |
 
 <span class="param-type"><code>HTMLCanvasElement</code></span>
@@ -10545,7 +10545,7 @@ var drawObj = {
 <p>   If <code>string</code> then it's assumed to be a URL to an image. The image will be downloaded async. A usable<br>   1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.<br>   If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.<br>   The pieces will be uploaded in <code>cubeFaceOrder</code></p>
 <p>   If <code>string[]</code> then it must have 6 entries, one for each face of a cube map. Target must be <code>gl.TEXTURE_CUBE_MAP</code>.</p>
 <p>   If <code>HTMLElement</code> then it wil be used immediately to create the contents of the texture. Examples <code>HTMLImageElement</code>,<br>   <code>HTMLCanvasElement</code>, <code>HTMLVideoElement</code>.</p>
-<p>   If <code>number[]</code> or <code>ArrayBuffer</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>   not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponents</code><br>   where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>   by 6. Then</p>
+<p>   If <code>number[]</code> or <code>ArrayBufferView</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>   not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponents</code><br>   where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>   by 6. Then</p>
 <ul>
 <li><p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer then width and height<br>are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
 </li>
