@@ -113,7 +113,6 @@ module.exports = function(grunt) {
         options: {
           destination: 'docs',
           configure: 'build/jsdoc.conf.json',
-//          template: 'build/jsdoc-template/template',
           template: './node_modules/minami',
           outputSourceFiles: false,
         },
