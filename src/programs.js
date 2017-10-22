@@ -615,7 +615,7 @@ define([
     }
 
     if (realShaders.length !== shaders.length) {
-      programOptions.errorCallback("not enough shaders for program");
+      progOptions.errorCallback("not enough shaders for program");
       deleteShaders(gl, newShaders);
       return null;
     }
