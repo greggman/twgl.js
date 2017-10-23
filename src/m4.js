@@ -1270,6 +1270,58 @@ define(['./v3'], function(v3) {
     return dst;
   }
 
+   /**
+    * Creates and returns a 4-by-4 rotation matrix from a parsed quaternion.
+    * Code is curtesy of three.js, specificially:
+    * https://github.com/mrdoob/three.js/blob/master/src/math/Matrix4.js
+    * @param {[number]} q The quaternion, an array of four floats for x, y, z and q.
+    * @param {module:twgl/m4.Mat4} [dst] matrix to hold result.
+    * @memberOf module:twgl/m4
+   */
+  function makeRotationFromQuaternion(q, dst) {
+    dst = dst || new MatType(16);
+
+    var x = q[0];
+    var y = q[1];
+    var z = q[2];
+    var w = q[3];
+    var x2 = x + x;
+    var y2 = y + y;
+    var z2 = z + z;
+    var xx = x * x2;
+    var xy = x * y2;
+    var xz = x * z2;
+    var yy = y * y2;
+    var yz = y * z2;
+    var zz = z * z2;
+    var wx = w * x2;
+    var wy = w * y2;
+    var wz = w * z2;
+
+    dst[0] = 1 - (yy + zz);
+    dst[4] = xy - wz;
+    dst[8] = xz + wy;
+
+    dst[1] = xy + wz;
+    dst[5] = 1 - (xx + zz);
+    dst[9] = yz - wx;
+
+    dst[2] = xz - wy;
+    dst[6] = yz + wx;
+    dst[10] = 1 - (xx + yy);
+
+    dst[3] = 0;
+    dst[7] = 0;
+    dst[11] = 0;
+
+    dst[12] = 0;
+    dst[13] = 0;
+    dst[14] = 0;
+    dst[15] = 1;
+
+    return dst;
+  }
+
   // Using quotes prevents Uglify from changing the names.
   // No speed diff AFAICT.
   return {
@@ -1283,6 +1335,7 @@ define(['./v3'], function(v3) {
     "identity": identity,
     "inverse": inverse,
     "lookAt": lookAt,
+    "makeRotationFromQuaternion": makeRotationFromQuaternion,
     "multiply": multiply,
     "negate": negate,
     "ortho": ortho,
