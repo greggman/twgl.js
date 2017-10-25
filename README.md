@@ -20,21 +20,21 @@ Not including the shaders (which is a simple quad shader) here's the entire code
 
 ```html
 <canvas id="c"></canvas>
-<script src="../dist/3.x/twgl-full.min.js"></script>
+<script src="../dist/4.x/twgl-full.min.js"></script>
 <script>
-  var gl = document.getElementById("c").getContext("webgl");
-  var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+  const gl = document.getElementById("c").getContext("webgl");
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-  var arrays = {
+  const arrays = {
     position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
   };
-  var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
   function render(time) {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    var uniforms = {
+    const uniforms = {
       time: time * 0.001,
       resolution: [gl.canvas.width, gl.canvas.height],
     };
@@ -75,7 +75,7 @@ Compare the TWGL vs WebGL code for a point lit cube.
 TWGL
 
 ```javascript
-var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 ```
 
 WebGL
@@ -83,23 +83,23 @@ WebGL
 ```javascript
 // Note: I'm conceding that you'll likely already have the 30 lines of
 // code for compiling GLSL
-var program = twgl.createProgramFromScripts(gl, ["vs", "fs"]);
+const program = twgl.createProgramFromScripts(gl, ["vs", "fs"]);
 
-var u_lightWorldPosLoc = gl.getUniformLocation(program, "u_lightWorldPos");
-var u_lightColorLoc = gl.getUniformLocation(program, "u_lightColor");
-var u_ambientLoc = gl.getUniformLocation(program, "u_ambient");
-var u_specularLoc = gl.getUniformLocation(program, "u_specular");
-var u_shininessLoc = gl.getUniformLocation(program, "u_shininess");
-var u_specularFactorLoc = gl.getUniformLocation(program, "u_specularFactor");
-var u_diffuseLoc = gl.getUniformLocation(program, "u_diffuse");
-var u_worldLoc = gl.getUniformLocation(program, "u_world");
-var u_worldInverseTransposeLoc = gl.getUniformLocation(program, "u_worldInverseTranspose");
-var u_worldViewProjectionLoc = gl.getUniformLocation(program, "u_worldViewProjection");
-var u_viewInverseLoc = gl.getUniformLocation(program, "u_viewInverse");
+const u_lightWorldPosLoc = gl.getUniformLocation(program, "u_lightWorldPos");
+const u_lightColorLoc = gl.getUniformLocation(program, "u_lightColor");
+const u_ambientLoc = gl.getUniformLocation(program, "u_ambient");
+const u_specularLoc = gl.getUniformLocation(program, "u_specular");
+const u_shininessLoc = gl.getUniformLocation(program, "u_shininess");
+const u_specularFactorLoc = gl.getUniformLocation(program, "u_specularFactor");
+const u_diffuseLoc = gl.getUniformLocation(program, "u_diffuse");
+const u_worldLoc = gl.getUniformLocation(program, "u_world");
+const u_worldInverseTransposeLoc = gl.getUniformLocation(program, "u_worldInverseTranspose");
+const u_worldViewProjectionLoc = gl.getUniformLocation(program, "u_worldViewProjection");
+const u_viewInverseLoc = gl.getUniformLocation(program, "u_viewInverse");
 
-var positionLoc = gl.getAttribLocation(program, "a_position");
-var normalLoc = gl.getAttribLocation(program, "a_normal");
-var texcoordLoc = gl.getAttribLocation(program, "a_texcoord");
+const positionLoc = gl.getAttribLocation(program, "a_position");
+const normalLoc = gl.getAttribLocation(program, "a_normal");
+const texcoordLoc = gl.getAttribLocation(program, "a_texcoord");
 ```
 
 ### Creating Buffers for a Cube
@@ -107,32 +107,32 @@ var texcoordLoc = gl.getAttribLocation(program, "a_texcoord");
 TWGL
 
 ```javascript
-var arrays = {
+const arrays = {
   position: [1,1,-1,1,1,1,1,-1,1,1,-1,-1,-1,1,1,-1,1,-1,-1,-1,-1,-1,-1,1,-1,1,1,1,1,1,1,1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,1,-1,1,-1,1,1,-1,1,-1,-1,-1,-1,-1],
   normal:   [1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1],
   texcoord: [1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1],
   indices:  [0,1,2,0,2,3,4,5,6,4,6,7,8,9,10,8,10,11,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23],
 };
-var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 ```
 
 WebGL
 ```javascript
-var positions = [1,1,-1,1,1,1,1,-1,1,1,-1,-1,-1,1,1,-1,1,-1,-1,-1,-1,-1,-1,1,-1,1,1,1,1,1,1,1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,1,-1,1,-1,1,1,-1,1,-1,-1,-1,-1,-1];
-var normals   = [1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1];
-var texcoords = [1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1];
-var indices   = [0,1,2,0,2,3,4,5,6,4,6,7,8,9,10,8,10,11,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23];
+const positions = [1,1,-1,1,1,1,1,-1,1,1,-1,-1,-1,1,1,-1,1,-1,-1,-1,-1,-1,-1,1,-1,1,1,1,1,1,1,1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,1,-1,1,-1,1,1,-1,1,-1,-1,-1,-1,-1];
+const normals   = [1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1];
+const texcoords = [1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1];
+const indices   = [0,1,2,0,2,3,4,5,6,4,6,7,8,9,10,8,10,11,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23];
 
-var positionBuffer = gl.createBuffer();
+const positionBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-var normalBuffer = gl.createBuffer();
+const normalBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
-var texcoordBuffer = gl.createBuffer();
+const texcoordBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
-var indicesBuffer = gl.createBuffer();
+const indicesBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 ```
@@ -166,7 +166,7 @@ TWGL
 
 ```javascript
 // At Init time
-var uniforms = {
+const uniforms = {
   u_lightWorldPos: [1, 8, -10],
   u_lightColor: [1, 0.8, 0.8, 1],
   u_ambient: [0, 0, 0, 1],
@@ -189,13 +189,13 @@ WebGL
 
 ```javascript
 // At Init time
-var u_lightWorldPos = [1, 8, -10];
-var u_lightColor = [1, 0.8, 0.8, 1];
-var u_ambient = [0, 0, 0, 1];
-var u_specular = [1, 1, 1, 1];
-var u_shininess = 50;
-var u_specularFactor = 1;
-var u_diffuse = 0;
+const u_lightWorldPos = [1, 8, -10];
+const u_lightColor = [1, 0.8, 0.8, 1];
+const u_ambient = [0, 0, 0, 1];
+const u_specular = [1, 1, 1, 1];
+const u_shininess = 50;
+const u_specularFactor = 1;
+const u_diffuse = 0;
 
 // At render time
 gl.uniform3fv(u_lightWorldPosLoc, u_lightWorldPos);
@@ -216,7 +216,7 @@ gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(viewProjection,
 TWGL
 
 ```javascript
-var textures = twgl.createTextures(gl, {
+const textures = twgl.createTextures(gl, {
   // a power of 2 image
   hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
   // a non-power of 2 image
@@ -277,25 +277,25 @@ WebGL
 // Let's assume I already loaded all the images
 
 // a power of 2 image
-var hftIconTex = gl.createTexture();
+const hftIconTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, hftIconImg);
 gl.generateMipmaps(gl.TEXTURE_2D);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 // a non-power of 2 image
-var cloverTex = gl.createTexture();
+const cloverTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, hftIconImg);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 // From a canvas
-var cloverTex = gl.createTexture();
+const cloverTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, ctx.canvas);
 gl.generateMipmaps(gl.TEXTURE_2D);
 // A cubemap from 6 images
-var yokohamaTex = gl.createTexture();
+const yokohamaTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_CUBE_MAP, tex);
 gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, posXImg);
 gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, negXImg);
@@ -305,22 +305,22 @@ gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_B
 gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, negZImg);
 gl.generateMipmaps(gl.TEXTURE_CUBE_MAP);
 // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
-var goldengateTex = gl.createTexture();
+const goldengateTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_CUBE_MAP, tex);
-var size = goldengate.width / 3;  // assume it's a 3x2 texture
-var slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
-var tempCtx = document.createElement("canvas").getContext("2d");
+const size = goldengate.width / 3;  // assume it's a 3x2 texture
+const slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
+const tempCtx = document.createElement("canvas").getContext("2d");
 tempCtx.canvas.width = size;
 tempCtx.canvas.height = size;
-for (var ii = 0; ii < 6; ++ii) {
-  var xOffset = slices[ii * 2 + 0] * size;
-  var yOffset = slices[ii * 2 + 1] * size;
+for (let ii = 0; ii < 6; ++ii) {
+  const xOffset = slices[ii * 2 + 0] * size;
+  const yOffset = slices[ii * 2 + 1] * size;
   tempCtx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
   gl.texImage2D(faces[ii], 0, format, format, type, tempCtx.canvas);
 }
 gl.generateMipmaps(gl.TEXTURE_CUBE_MAP);
 // A 2x2 pixel texture from a JavaScript array
-var checkerTex = gl.createTexture();
+const checkerTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
     255,255,255,255,
@@ -332,7 +332,7 @@ gl.generateMipmaps(gl.TEXTURE_2D);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 // a 1x8 pixel texture from a typed array.
-var stripeTex = gl.createTexture();
+const stripeTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, gl.LUMINANCE, gl.UNSIGNED_BYTE, new Uint8Array([
@@ -355,26 +355,26 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 TWGL
 
 ```javascript
-var attachments = [
+const attachments = [
   { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE },
   { format: DEPTH_STENCIL, },
 ];
-var fbi = twgl.createFramebufferInfo(gl, attachments);
+const fbi = twgl.createFramebufferInfo(gl, attachments);
 ```
 
 WebGL
 
 ```javascript
-var fb = gl.createFramebuffer(gl.FRAMEBUFFER);
+const fb = gl.createFramebuffer(gl.FRAMEBUFFER);
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-var tex = gl.createTexture();
+const tex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.drawingBufferWidth, gl.drawingBufferHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
-var rb = gl.createRenderbuffer();
+const rb = gl.createRenderbuffer();
 gl.bindRenderbuffer(gl.RENDERBUFFER, rb);
 gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, gl.drawingBufferWidth, gl.drawingBufferHeight);
 gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb);
@@ -413,10 +413,13 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [2d array texture](http://twgljs.org/examples/2d-array-texture.html)
 *   [transform feedback](http://twgljs.org/examples/transform-feedback.html)
 
+## ES6 module support
+
+*   [modules](http://twgljs.org/examples/modules.html)
+
 ## AMD support
 
-*   [amd](http://twgljs.org/examples/amd.html)
-*   [amd-compiled](http://twgljs.org/examples/amd-compiled.html)
+*   [amd](http://twgljs.org/examples/amd-compiled.html)
 
 ## CommonJS / Browserify support
 
@@ -509,7 +512,7 @@ gl.enableVertexAttribArray(colorLoc);
 
 ```javascript
 // make attributes for TWGL manually
-var attribs = {
+const attribs = {
   a_position: { buffer: positionBuffer, size: 3, },
   a_normal:   { buffer: normalBuffer,   size: 3, },
   a_texcoord: { buffer: texcoordBuffer, size: 2, },
