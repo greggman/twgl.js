@@ -114,7 +114,7 @@ void main() {
     "use strict";
     const m4 = twgl.m4;
     twgl.setDefaults({attribPrefix: "a_"});
-    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     function createSphere(

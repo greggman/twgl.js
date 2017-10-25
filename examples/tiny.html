@@ -79,7 +79,7 @@ void main() {
   <script src="../dist/4.x/twgl.min.js"></script>
   <script>
     "use strict";
-    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     const arrays = {

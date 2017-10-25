@@ -157,7 +157,7 @@ void main() {
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
     const m4 = twgl.m4;
-    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const gl = document.querySelector("#c").getContext("webgl");
     const onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"]);
 
     // The point of this example is to test using Uint8ClampedArray

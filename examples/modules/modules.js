@@ -3,7 +3,7 @@ import * as m4 from '../../src/m4.js';
 import * as primitives from '../../src/primitives.js';
 
 twgl.setDefaults({attribPrefix: "a_"});
-var gl = twgl.getWebGLContext(document.getElementById("c"));
+var gl = document.querySelector("#c").getContext("webgl");
 var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
 var shapes = [

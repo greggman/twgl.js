@@ -119,7 +119,7 @@ void main() {
   <script>
     "use strict";
     const m4 = twgl.m4;
-    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     function makeShared(data, Type) {

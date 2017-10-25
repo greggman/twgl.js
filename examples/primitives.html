@@ -121,7 +121,7 @@ void main() {
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
     const m4 = twgl.m4;
-    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     const shapes = [

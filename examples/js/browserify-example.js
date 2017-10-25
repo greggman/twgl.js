@@ -6,7 +6,7 @@ const m4 = twgl.m4;
 const primitives = twgl.primitives;
 
 twgl.setDefaults({attribPrefix: "a_"});
-const gl = twgl.getWebGLContext(document.getElementById("c"));
+const gl = document.querySelector("#c").getContext("webgl");
 const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
 const shapes = [

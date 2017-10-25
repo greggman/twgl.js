@@ -122,7 +122,7 @@ void main() {
     twgl.setDefaults({attribPrefix: "a_"});
     const m4 = twgl.m4;
     const v3 = twgl.v3;
-    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     const shapes = [
