@@ -1,5 +1,11 @@
 #Changelist
 
+*   4.0.0
+
+    *   Switch to es6 modules for source
+
+        Webpack still builds UMD version
+
 *   3.8.0
 
     *   Add `SharedArrayBuffer` support
