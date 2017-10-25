@@ -29,114 +29,110 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-define([], function() {
-  "use strict";
+/**
+ * Copy an object 1 level deep
+ * @param {object} src object to copy
+ * @return {object} the copy
+ */
+function shallowCopy(src) {
+  var dst = {};
+  Object.keys(src).forEach(function(key) {
+    dst[key] = src[key];
+  });
+  return dst;
+}
 
-  /**
-   * Copy an object 1 level deep
-   * @param {object} src object to copy
-   * @return {object} the copy
-   */
-  function shallowCopy(src) {
-    var dst = {};
-    Object.keys(src).forEach(function(key) {
+/**
+ * Copy named properties
+ *
+ * @param {string[]} names names of properties to copy
+ * @param {object} src object to copy properties from
+ * @param {object} dst object to copy properties to
+ */
+function copyNamedProperties(names, src, dst) {
+  names.forEach(function(name) {
+    var value = src[name];
+    if (value !== undefined) {
+      dst[name] = value;
+    }
+  });
+}
+
+/**
+ * Copies properties from source to dest only if a matching key is in dest
+ *
+ * @param {Object.<string, ?>} src the source
+ * @param {Object.<string, ?>} dst the dest
+ */
+function copyExistingProperties(src, dst) {
+  Object.keys(dst).forEach(function(key) {
+    if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
       dst[key] = src[key];
-    });
-    return dst;
-  }
+    }
+  });
+}
 
-  /**
-   * Copy named properties
-   *
-   * @param {string[]} names names of properties to copy
-   * @param {object} src object to copy properties from
-   * @param {object} dst object to copy properties to
-   */
-  function copyNamedProperties(names, src, dst) {
-    names.forEach(function(name) {
-      var value = src[name];
-      if (value !== undefined) {
-        dst[name] = value;
-      }
-    });
-  }
+/**
+ * Gets the gl version as a number
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {number} version of gl
+ */
+//function getVersionAsNumber(gl) {
+//  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+//}
 
-  /**
-   * Copies properties from source to dest only if a matching key is in dest
-   *
-   * @param {Object.<string, ?>} src the source
-   * @param {Object.<string, ?>} dst the dest
-   */
-  function copyExistingProperties(src, dst) {
-    Object.keys(dst).forEach(function(key) {
-      if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
-        dst[key] = src[key];
-      }
-    });
-  }
+/**
+ * Check if context is WebGL 2.0
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {bool} true if it's WebGL 2.0
+ * @memberOf module:twgl
+ */
+function isWebGL2(gl) {
+  // This is the correct check but it's slow
+  //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  // This might also be the correct check but I'm assuming it's slow-ish
+  // return gl instanceof WebGL2RenderingContext;
+  return !!gl.texStorage2D;
+}
 
-  /**
-   * Gets the gl version as a number
-   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @return {number} version of gl
-   */
-  //function getVersionAsNumber(gl) {
-  //  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
-  //}
+/**
+ * Check if context is WebGL 1.0
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {bool} true if it's WebGL 1.0
+ * @memberOf module:twgl
+ */
+function isWebGL1(gl) {
+  // This is the correct check but it's slow
+  //var version = getVersionAsNumber(gl);
+  //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
+  // This might also be the correct check but I'm assuming it's slow-ish
+  // return gl instanceof WebGLRenderingContext;
+  return !gl.texStorage2D;
+}
 
-  /**
-   * Check if context is WebGL 2.0
-   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @return {bool} true if it's WebGL 2.0
-   * @memberOf module:twgl
-   */
-  function isWebGL2(gl) {
-    // This is the correct check but it's slow
-    //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
-    // This might also be the correct check but I'm assuming it's slow-ish
-    // return gl instanceof WebGL2RenderingContext;
-    return !!gl.texStorage2D;
-  }
+var error =
+    (    window.console
+      && window.console.error
+      && typeof window.console.error === "function"
+    )
+    ? window.console.error.bind(window.console)
+    : function() { };
 
-  /**
-   * Check if context is WebGL 1.0
-   * @param {WebGLRenderingContext} gl A WebGLRenderingContext
-   * @return {bool} true if it's WebGL 1.0
-   * @memberOf module:twgl
-   */
-  function isWebGL1(gl) {
-    // This is the correct check but it's slow
-    //var version = getVersionAsNumber(gl);
-    //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
-    // This might also be the correct check but I'm assuming it's slow-ish
-    // return gl instanceof WebGLRenderingContext;
-    return !gl.texStorage2D;
-  }
+var warn =
+    (    window.console
+      && window.console.warn
+      && typeof window.console.warn === "function"
+    )
+    ? window.console.warn.bind(window.console)
+    : function() { };
 
-  var error =
-      (    window.console
-        && window.console.error
-        && typeof window.console.error === "function"
-      )
-      ? window.console.error.bind(window.console)
-      : function() { };
-
-  var warn =
-      (    window.console
-        && window.console.warn
-        && typeof window.console.warn === "function"
-      )
-      ? window.console.warn.bind(window.console)
-      : function() { };
-
-  return {
-    copyExistingProperties: copyExistingProperties,
-    copyNamedProperties: copyNamedProperties,
-    shallowCopy: shallowCopy,
-    isWebGL1: isWebGL1,
-    isWebGL2: isWebGL2,
-    error: error,
-    warn: warn,
-  };
-});
+export {
+  copyExistingProperties,
+  copyNamedProperties,
+  shallowCopy,
+  isWebGL1,
+  isWebGL2,
+  error,
+  warn,
+};
 

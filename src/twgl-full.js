@@ -1,22 +1,14 @@
-define([
-    './twgl',
-    './m4',
-    './v3',
-    './primitives',
-  ], function(
-    twgl,
-    m4,
-    v3,
-    primitives
-  ) {
+import * as m4 from './m4.js';
+import * as v3 from './v3.js';
+import * as primitives from './primitives.js';
 
-    "use strict";
+export * from './twgl.js';
+export {
+  m4,
+  v3,
+  primitives,
+};
 
-    twgl.m4 = m4;
-    twgl.v3 = v3;
-    twgl.primitives = primitives;
-    return twgl;
-});
 
 
 

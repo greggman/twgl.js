@@ -1,12 +1,4 @@
-define('main', [
-    './twgl',
-  ], function(
-    twgl
-  ) {
-    "use strict";
-
-    return twgl;
-});
+export * from './twgl.js';
 
 
 
