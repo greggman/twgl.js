@@ -35,7 +35,7 @@
  * @return {object} the copy
  */
 function shallowCopy(src) {
-  var dst = {};
+  const dst = {};
   Object.keys(src).forEach(function(key) {
     dst[key] = src[key];
   });
@@ -51,7 +51,7 @@ function shallowCopy(src) {
  */
 function copyNamedProperties(names, src, dst) {
   names.forEach(function(name) {
-    var value = src[name];
+    const value = src[name];
     if (value !== undefined) {
       dst[name] = value;
     }
@@ -103,14 +103,14 @@ function isWebGL2(gl) {
  */
 function isWebGL1(gl) {
   // This is the correct check but it's slow
-  //var version = getVersionAsNumber(gl);
+  //const version = getVersionAsNumber(gl);
   //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
   // This might also be the correct check but I'm assuming it's slow-ish
   // return gl instanceof WebGLRenderingContext;
   return !gl.texStorage2D;
 }
 
-var error =
+const error =
     (    window.console
       && window.console.error
       && typeof window.console.error === "function"
@@ -118,7 +118,7 @@ var error =
     ? window.console.error.bind(window.console)
     : function() { };
 
-var warn =
+const warn =
     (    window.console
       && window.console.warn
       && typeof window.console.warn === "function"

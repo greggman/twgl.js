@@ -2,14 +2,14 @@
 
 (function() {
   twgl.setAttributePrefix("a_");
-  var m4 = twgl.m4;
-  var gl = twgl.getWebGLContext(document.getElementById("canvas"), {
+  const m4 = twgl.m4;
+  const gl = twgl.getWebGLContext(document.getElementById("canvas"), {
     alpha: false,
     premultipliedAlpha: false,
   });
 
-  var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-  var arrays = {
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+  const arrays = {
     position: [
       -1, -1, -1,
        1, -1, -1,
@@ -29,29 +29,29 @@
       ],
     },
   };
-  var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
-  var uniforms = {
+  const uniforms = {
     u_matrix: m4.identity(),
     u_color: [0.3, 0.5, 1, 1],
   };
 
-  var camera = m4.identity();
-  var view = m4.identity();
-  var world = m4.identity();
-  var projection = m4.identity();
-  var viewProjection = m4.identity();
-  var eye = [0, 0, -6];
-  var target = [0, 0, 0];
-  var up = [0.2, 0.8, 0];
-  var clearColor = [0.2, 0.4, 0.8, 1];
+  const camera = m4.identity();
+  const view = m4.identity();
+  const world = m4.identity();
+  const projection = m4.identity();
+  const viewProjection = m4.identity();
+  const eye = [0, 0, -6];
+  const target = [0, 0, 0];
+  const up = [0.2, 0.8, 0];
+  const clearColor = [0.2, 0.4, 0.8, 1];
 
   function render(time) {
     time *= 0.001;
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
-    var fadeTime = time;
-    var fade = Math.min(1, fadeTime / 6);
+    const fadeTime = time;
+    const fade = Math.min(1, fadeTime / 6);
 
     gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -59,12 +59,12 @@
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    var maxFieldOfViewX = 50 * Math.PI / 180;
-    var fieldOfViewY = 30 * Math.PI / 180;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const maxFieldOfViewX = 50 * Math.PI / 180;
+    let fieldOfViewY = 30 * Math.PI / 180;
 
     // Compute the field of view for X
-    var fieldOfViewX = 2 * Math.atan(Math.tan(fieldOfViewY * 0.5) * aspect);
+    const fieldOfViewX = 2 * Math.atan(Math.tan(fieldOfViewY * 0.5) * aspect);
 
     // If it's too wide then use our maxFieldOfViewX to compute a fieldOfViewY
     if (fieldOfViewX > maxFieldOfViewX) {
@@ -79,12 +79,12 @@
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
 
-    var num = 100;
-    for (var ii = 0; ii < num; ++ii) {
-      var t = time + Math.sin(ii / num) * 0.01;
-      var s = 0.19;
-      var x = ii % 10 - 5;
-      var y = ((ii / 10) | 0) - 5;
+    const num = 100;
+    for (let ii = 0; ii < num; ++ii) {
+      const t = time + Math.sin(ii / num) * 0.01;
+      const s = 0.19;
+      const x = ii % 10 - 5;
+      const y = ((ii / 10) | 0) - 5;
 
       m4.identity(world);
       m4.rotateZ(world, time * 0.02, world);

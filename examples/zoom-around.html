@@ -115,17 +115,17 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var v3 = twgl.v3;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const m4 = twgl.m4;
+    const v3 = twgl.v3;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var shapes = [
+    const shapes = [
       twgl.primitives.createCubeBufferInfo(gl, 2),
       twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
       twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
@@ -136,7 +136,7 @@ void main() {
     }
 
     function easeInOut(t, start, end) {
-      var c = end - start;
+      const c = end - start;
       if ((t /= 0.5) < 1) {
         return c / 2 * t * t + start;
       } else {
@@ -145,26 +145,26 @@ void main() {
     }
 
     // Shared values
-    var lightWorldPosition = [1, 8, -10];
-    var lightColor = [1, 1, 1, 1];
-    var camera = m4.identity();
-    var view = m4.identity();
-    var viewProjection = m4.identity();
-    var targetNdx = 0;
-    var targetTimer = 0;
-    var zoomTimer = 0;
-    var eye = v3.copy([1, 4, -60]);
-    var target = v3.copy([0, 0, 0]);
-    var up = [0, 1, 0];
-    var zoomScale = 1.4;
-    var zoomDuration = 2;
-    var targetChangeInterval = 3;
-    var oldEye;
-    var oldTarget;
-    var newEye;
-    var newTarget;
+    const lightWorldPosition = [1, 8, -10];
+    const lightColor = [1, 1, 1, 1];
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewProjection = m4.identity();
+    let targetNdx = 0;
+    let targetTimer = 0;
+    let zoomTimer = 0;
+    let eye = v3.copy([1, 4, -60]);
+    let target = v3.copy([0, 0, 0]);
+    const up = [0, 1, 0];
+    const zoomScale = 1.4;
+    const zoomDuration = 2;
+    const targetChangeInterval = 3;
+    let oldEye;
+    let oldTarget;
+    let newEye;
+    let newTarget;
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: [
@@ -175,12 +175,12 @@ void main() {
       ],
     });
 
-    var objects = [];
-    var drawObjects = [];
-    var numObjects = 100;
-    var baseHue = rand(0, 360);
-    for (var ii = 0; ii < numObjects; ++ii) {
-      var uniforms = {
+    const objects = [];
+    const drawObjects = [];
+    const numObjects = 100;
+    const baseHue = rand(0, 360);
+    for (let ii = 0; ii < numObjects; ++ii) {
+      const uniforms = {
         u_lightWorldPos: lightWorldPosition,
         u_lightColor: lightColor,
         u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
@@ -208,11 +208,11 @@ void main() {
       });
     }
 
-    var then = 0;
+    let then = 0;
 
     function render(time) {
       time *= 0.001;
-      var elapsed = time - then;
+      const elapsed = time - then;
       then = time;
 
       twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -222,8 +222,8 @@ void main() {
       gl.enable(gl.CULL_FACE);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var fovy = 30 * Math.PI / 180;
-      var projection = m4.perspective(fovy, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 200);
+      const fovy = 30 * Math.PI / 180;
+      const projection = m4.perspective(fovy, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 200);
 
       targetTimer -= elapsed;
       if (targetTimer <= 0) {
@@ -232,16 +232,16 @@ void main() {
         targetNdx = (targetNdx + 1) % objects.length;
         oldEye = v3.copy(eye);
         oldTarget = v3.copy(target);
-        var targetObj = objects[targetNdx];
+        const targetObj = objects[targetNdx];
         newTarget = targetObj.translation;
-        var halfSize = targetObj.size * targetObj.scale * zoomScale * 0.5;
-        var distance = halfSize / Math.tan(fovy * 0.5);
-        var direction = v3.normalize(v3.subtract(eye, newTarget));
+        const halfSize = targetObj.size * targetObj.scale * zoomScale * 0.5;
+        const distance = halfSize / Math.tan(fovy * 0.5);
+        const direction = v3.normalize(v3.subtract(eye, newTarget));
         newEye = v3.add(newTarget, v3.mulScalar(direction, distance));
       }
 
       zoomTimer += elapsed;
-      var lerp = easeInOut(Math.min(1, zoomTimer / zoomDuration), 0, 1);
+      const lerp = easeInOut(Math.min(1, zoomTimer / zoomDuration), 0, 1);
       eye = v3.lerp(oldEye, newEye, lerp);
       target = v3.lerp(oldTarget, newTarget, lerp);
 
@@ -250,8 +250,8 @@ void main() {
       m4.multiply(projection, view, viewProjection);
 
       objects.forEach(function(obj) {
-        var uni = obj.uniforms;
-        var world = uni.u_world;
+        const uni = obj.uniforms;
+        const world = uni.u_world;
         m4.identity(world);
         m4.translate(world, obj.translation, world);
         m4.rotateX(world, time * obj.xSpeed, world);

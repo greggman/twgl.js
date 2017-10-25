@@ -102,22 +102,22 @@ void main() {
   outColor = diffuseColor;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
 "use strict";
 
 function main() {
   twgl.setDefaults({attribPrefix: "a_"});
-  var m4 = twgl.m4;
-  var gl = document.getElementById("c").getContext("webgl2");
+  const m4 = twgl.m4;
+  const gl = document.getElementById("c").getContext("webgl2");
   if (!gl) {
     document.querySelector("#no-webgl2").style.display = "";
     return;
   }
-  var onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"], ["a_texcoord", "a_position"]);
+  const onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"], ["a_texcoord", "a_position"]);
 
-  var shapes = [
+  const shapes = [
     twgl.primitives.createCubeBufferInfo(gl, 2),
 //    twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
 //    twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
@@ -133,12 +133,12 @@ function main() {
   }
 
   // Shared values
-  var baseHue = rand(360);
-  var camera = m4.identity();
-  var view = m4.identity();
-  var viewProjection = m4.identity();
+  const baseHue = rand(360);
+  const camera = m4.identity();
+  const view = m4.identity();
+  const viewProjection = m4.identity();
 
-  var ctx = document.createElement("canvas").getContext("2d");
+  const ctx = document.createElement("canvas").getContext("2d");
   ctx.canvas.width  = 8;
   ctx.canvas.height = 8;
 
@@ -188,13 +188,13 @@ function main() {
   const drawObjects = [];
   const numObjects = 200;
 
-  for (var ii = 0; ii < numObjects; ++ii) {
+  for (let ii = 0; ii < numObjects; ++ii) {
     const shape = shapes[ii % shapes.length];
     const texName = twoDTextureNames[ii % twoDTextureNames.length];
     const texture = textures[texName];
     const sampler = allSamplers[(ii / 2) % allSamplers.length | 0];
     const programInfo = onePointProgramInfo;
-    var tx = m4.identity();
+    let tx = m4.identity();
     tx = m4.translate(tx, [-.5, -.5, 0]);
     tx = m4.scale(tx, [2, 2, 0]);
     const uniforms = {
@@ -233,20 +233,20 @@ function main() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var radius = 20;
-    var orbitSpeed = time * 0.1;
-    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-    var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
-    var target = [0, 0, 0];
-    var up = [0, 1, 0];
+    const radius = 20;
+    const orbitSpeed = time * 0.1;
+    const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+    const eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
 
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);
     m4.multiply(projection, view, viewProjection);
 
     objects.forEach(function(obj) {
-      var uni = obj.uniforms;
-      var world = uni.u_world;
+      const uni = obj.uniforms;
+      const world = uni.u_world;
       m4.identity(world);
       m4.rotateY(world, time * obj.ySpeed, world);
       m4.rotateZ(world, time * obj.zSpeed, world);

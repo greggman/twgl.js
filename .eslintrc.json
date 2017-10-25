@@ -3,6 +3,9 @@
     "browser": true,
     "es6": true
   },
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "plugins": [
     "eslint-plugin-html",
     "eslint-plugin-optional-comma-spacing",
@@ -57,6 +60,8 @@
     "space-unary-ops": [2, { "words": true, "nonwords": false }],
     "strict": [2, "function"],
     "yoda": [2, "never"],
+    "prefer-const": 2,
+    "no-var": 2,
 
     "brace-style": [2, "1tbs", { "allowSingleLine": false }],
     "camelcase": [0],

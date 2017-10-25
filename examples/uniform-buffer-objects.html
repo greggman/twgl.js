@@ -139,25 +139,25 @@ void main() {
 }
   </script>
   <script src="../3rdparty/chroma.min.js"></script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script>
 "use strict";
 
 function main() {
-  var m4 = twgl.m4;
+  const m4 = twgl.m4;
   twgl.setDefaults({attribPrefix: "a_"});
-  var gl = twgl.getContext(document.getElementById("c"));
+  const gl = twgl.getContext(document.getElementById("c"));
   console.log("using:" + gl.getParameter(gl.VERSION));  // eslint-disable-line
   if (!twgl.isWebGL2(gl)) {
     alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
     return;
   }
 
-  var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-  var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
+  const bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
 
-  var tex = twgl.createTexture(gl, {
+  const tex = twgl.createTexture(gl, {
     min: gl.NEAREST,
     mag: gl.NEAREST,
     src: [
@@ -180,7 +180,7 @@ function main() {
     return array[rand(array.length) | 0];
   }
 
-  var uniforms = {
+  const uniforms = {
     u_diffuse: tex,
   };
 
@@ -189,13 +189,13 @@ function main() {
   // get optimized away. So, the `|| Float32Array` basically just makes a dummy in that case
   // so the rest of the code doesn't have to check for existence.
 
-  var viewUboInfo = twgl.createUniformBlockInfo(gl, programInfo, "View");
-  var viewProjection = viewUboInfo.uniforms.u_viewProjection || new Float32Array(16);
-  var viewInverse = viewUboInfo.uniforms.u_viewInverse || new Float32Array(16);
+  const viewUboInfo = twgl.createUniformBlockInfo(gl, programInfo, "View");
+  const viewProjection = viewUboInfo.uniforms.u_viewProjection || new Float32Array(16);
+  const viewInverse = viewUboInfo.uniforms.u_viewInverse || new Float32Array(16);
 
-  var lightUboInfos = [];
-  for (var ii = 0; ii < 10; ++ii) {
-    var lightUbo = twgl.createUniformBlockInfo(gl, programInfo, "Lights[0]");
+  const lightUboInfos = [];
+  for (let ii = 0; ii < 10; ++ii) {
+    const lightUbo = twgl.createUniformBlockInfo(gl, programInfo, "Lights[0]");
     twgl.setBlockUniforms(lightUbo, {
       u_lightColor: chroma.hsv(rand(360), 0.6, 0.8).gl(),
       u_lightWorldPos: [rand(-100, 100), rand(-100, 100), rand(-100, 100)],
@@ -204,9 +204,9 @@ function main() {
     lightUboInfos.push(lightUbo);
   }
 
-  var materialUboInfos = [];
-  for (ii = 0; ii < 4; ++ii) {
-    var materialUbo = twgl.createUniformBlockInfo(gl, programInfo, "Material");
+  const materialUboInfos = [];
+  for (let ii = 0; ii < 4; ++ii) {
+    const materialUbo = twgl.createUniformBlockInfo(gl, programInfo, "Material");
     twgl.setBlockUniforms(materialUbo, {
       u_ambient: [0, 0, 0, 1],
       u_specular: chroma.hsv(rand(360), 1, 0.5).gl(),
@@ -218,10 +218,10 @@ function main() {
     materialUboInfos.push(materialUbo);
   }
 
-  var objects = [];
-  for (ii = 0; ii < 300; ++ii) {
-    var modelUbo = twgl.createUniformBlockInfo(gl, programInfo, "Model");
-    var world = m4.rotateY(m4.rotateX(m4.translation([rand(-30, 30), rand(-30, 30), rand(-30, 30)]), rand(Math.PI * 2)), rand(Math.PI));
+  const objects = [];
+  for (let ii = 0; ii < 300; ++ii) {
+    const modelUbo = twgl.createUniformBlockInfo(gl, programInfo, "Model");
+    const world = m4.rotateY(m4.rotateX(m4.translation([rand(-30, 30), rand(-30, 30), rand(-30, 30)]), rand(Math.PI * 2)), rand(Math.PI));
 
     twgl.setBlockUniforms(modelUbo, {
       u_world: world,
@@ -229,7 +229,7 @@ function main() {
     });
     twgl.setUniformBlock(gl, programInfo, modelUbo);
 
-    var o = {
+    const o = {
       modelUboInfo: modelUbo,
       materialUboInfo: randElement(materialUboInfos),
       lightUboInfo: randElement(lightUboInfos),
@@ -247,14 +247,14 @@ function main() {
     gl.enable(gl.CULL_FACE);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 250);
-    var radius = 70;
-    var eye = [Math.sin(time) * radius, Math.sin(time * 0.3) * radius * 0.6, Math.cos(time) * radius];
-    var target = [0, 0, 0];
-    var up = [0, 1, 0];
+    const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 250);
+    const radius = 70;
+    const eye = [Math.sin(time) * radius, Math.sin(time * 0.3) * radius * 0.6, Math.cos(time) * radius];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
 
-    var camera = m4.lookAt(eye, target, up, viewInverse);
-    var view = m4.inverse(camera);
+    const camera = m4.lookAt(eye, target, up, viewInverse);
+    const view = m4.inverse(camera);
     m4.multiply(projection, view, viewProjection);
 
     gl.useProgram(programInfo.program);

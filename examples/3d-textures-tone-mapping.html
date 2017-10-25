@@ -60,32 +60,32 @@
         <div>style: <span id="name"></span></div>
     </div>
   </body>
-  <script src="../dist/3.x/twgl-full.min.js"></script>>
+  <script src="../dist/4.x/twgl-full.min.js"></script>>
   <script>
 "use strict";
 
 function main() {
-  var m4 = twgl.m4;
+  const m4 = twgl.m4;
   twgl.setDefaults({attribPrefix: "a_"});
-  var gl = twgl.getContext(document.getElementById("c"));
+  const gl = twgl.getContext(document.getElementById("c"));
   console.log("using: " + gl.getParameter(gl.VERSION));  // eslint-disable-line
   if (!twgl.isWebGL2(gl)) {
     alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
     return;
   }
 
-  var size = 64;
-  var sizeMinus1 = size - 1;
-  var original = new Uint8Array(size * size * size * 4);
-  var inverse = new Uint8Array(size * size * size * 4);
-  var bw = new Uint8Array(size * size * size * 4);
-  var offset = 0;
+  const size = 64;
+  const sizeMinus1 = size - 1;
+  const original = new Uint8Array(size * size * size * 4);
+  const inverse = new Uint8Array(size * size * size * 4);
+  const bw = new Uint8Array(size * size * size * 4);
+  let offset = 0;
   for (let z = 0; z < size; ++z) {
-    let zv = z * 255 / sizeMinus1;
+    const zv = z * 255 / sizeMinus1;
     for (let y = 0; y < size; ++y) {
-      let yv = y * 255 / sizeMinus1;
+      const yv = y * 255 / sizeMinus1;
       for (let x = 0; x < size; ++x) {
-        let xv = x * 255 / sizeMinus1;
+        const xv = x * 255 / sizeMinus1;
 
         original[offset + 0] = xv;
         original[offset + 1] = yv;
@@ -97,7 +97,7 @@ function main() {
         inverse[offset + 2] = 255 - zv;
         inverse[offset + 3] = 255;
 
-        let m = Math.max(xv, yv, zv);
+        const m = Math.max(xv, yv, zv);
         bw[offset + 0] = m;
         bw[offset + 1] = m;
         bw[offset + 2] = m;
@@ -108,8 +108,8 @@ function main() {
     }
   }
 
-  var images;
-  var textures = twgl.createTextures(gl, {
+  let images;
+  const textures = twgl.createTextures(gl, {
     image: {
       src: "images/tokufuji.jpg",
       flipY: true,
@@ -158,7 +158,7 @@ function main() {
     requestAnimationFrame(render);  // eslint-disable-line
   });
 
-  var vs = `
+  const vs = `
 #version 300 es
 
 in vec4 a_position;
@@ -174,7 +174,7 @@ void main() {
 }
 `;
 
-  var fs = `
+  const fs = `
 #version 300 es
 precision mediump float;
 precision mediump sampler3D;
@@ -198,7 +198,7 @@ void main() {
 }
   `;
 
-  var colorAdjustments = [
+  const colorAdjustments = [
     "original",
     "blackAndWhite",
     "inverse",
@@ -209,13 +209,13 @@ void main() {
     "sunset",
   ];
 
-  var nameNode = document.createTextNode("waiting for textures");
+  const nameNode = document.createTextNode("waiting for textures");
   document.querySelector("#name").appendChild(nameNode);
 
-  var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
-  var bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
+  const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+  const bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
 
-  var uniforms = {
+  const uniforms = {
     u_image: textures.image,
     u_colorCube1: textures.original,
     u_colorCube2: textures.original,
@@ -224,7 +224,7 @@ void main() {
   };
 
   function setTexture(uniform, colorNdx) {
-    var textureName = colorAdjustments[colorNdx % colorAdjustments.length];
+    const textureName = colorAdjustments[colorNdx % colorAdjustments.length];
     uniforms[uniform] = textures[textureName];
   }
 
@@ -232,18 +232,18 @@ void main() {
     return (-0.5 * (Math.cos(Math.PI * pos) - 1));
   }
 
-  var colorNdx = 0;
-  var timer = 0;
-  var then = 0;
-  var duration = 3;
-  var oldMix = -1;
+  let colorNdx = 0;
+  let timer = 0;
+  let then = 0;
+  const duration = 3;
+  let oldMix = -1;
 
   function render(now) {
     now *= 0.001;
-    var deltaTime = now - then;
+    const deltaTime = now - then;
     then = now;
 
-    var draw = false;
+    let draw = false;
     timer -= deltaTime;
     if (timer < 0) {
       colorNdx = (colorNdx + 1) % colorAdjustments.length;
@@ -265,11 +265,11 @@ void main() {
     if (draw) {
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-      var img = images.image;
-      var imgAspect = img.width / img.height;
-      var screenAspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-      var aspect = 1 / (screenAspect / imgAspect);
-      var scale = aspect < 1 ? 1 : 1 / aspect;
+      const img = images.image;
+      const imgAspect = img.width / img.height;
+      const screenAspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      const aspect = 1 / (screenAspect / imgAspect);
+      const scale = aspect < 1 ? 1 : 1 / aspect;
       m4.ortho(-scale, scale, scale * -aspect, scale * aspect, -1, 1, uniforms.u_worldViewProjection);
 
       gl.useProgram(programInfo.program);

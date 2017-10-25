@@ -108,14 +108,14 @@ void main() {
     gl_FragColor = u_color;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
-    var m4 = twgl.m4;
+    const m4 = twgl.m4;
     twgl.setDefaults({attribPrefix: "a_"});
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     function createSphere(
         gl,
@@ -137,43 +137,43 @@ void main() {
       startLongitudeInRadians = startLongitudeInRadians || 0;
       endLongitudeInRadians   = endLongitudeInRadians   || Math.PI * 2;
 
-      var latRange = endLatitudeInRadians - startLatitudeInRadians;
-      var longRange = endLongitudeInRadians - startLongitudeInRadians;
+      const latRange = endLatitudeInRadians - startLatitudeInRadians;
+      const longRange = endLongitudeInRadians - startLongitudeInRadians;
 
       // We are going to generate our sphere by iterating through its
       // spherical coordinates and generating 2 lines for each quad on a
       // ring of the sphere.
-      var numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
-      var positions = twgl.primitives.createAugmentedTypedArray(3, numVertices);
-      var normals   = twgl.primitives.createAugmentedTypedArray(3, numVertices);
-      var texCoords = twgl.primitives.createAugmentedTypedArray(2 , numVertices);
+      const numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
+      const positions = twgl.primitives.createAugmentedTypedArray(3, numVertices);
+      const normals   = twgl.primitives.createAugmentedTypedArray(3, numVertices);
+      const texCoords = twgl.primitives.createAugmentedTypedArray(2 , numVertices);
 
       // Generate the individual vertices in our vertex buffer.
-      for (var y = 0; y <= subdivisionsHeight; y++) {
-        for (var x = 0; x <= subdivisionsAxis; x++) {
+      for (let y = 0; y <= subdivisionsHeight; y++) {
+        for (let x = 0; x <= subdivisionsAxis; x++) {
           // Generate a vertex based on its spherical coordinates
-          var u = x / subdivisionsAxis;
-          var v = y / subdivisionsHeight;
-          var theta = startLongitudeInRadians + longRange * u;
-          var phi =   startLatitudeInRadians + latRange * v;
-          var sinTheta = Math.sin(theta);
-          var cosTheta = Math.cos(theta);
-          var sinPhi = Math.sin(phi);
-          var cosPhi = Math.cos(phi);
-          var ux = cosTheta * sinPhi;
-          var uy = cosPhi;
-          var uz = sinTheta * sinPhi;
+          const u = x / subdivisionsAxis;
+          const v = y / subdivisionsHeight;
+          const theta = startLongitudeInRadians + longRange * u;
+          const phi =   startLatitudeInRadians + latRange * v;
+          const sinTheta = Math.sin(theta);
+          const cosTheta = Math.cos(theta);
+          const sinPhi = Math.sin(phi);
+          const cosPhi = Math.cos(phi);
+          const ux = cosTheta * sinPhi;
+          const uy = cosPhi;
+          const uz = sinTheta * sinPhi;
           positions.push(radius * ux, radius * uy, radius * uz);
           normals.push(ux, uy, uz);
           texCoords.push(1 - u, v);
         }
       }
 
-      var numVertsAround = subdivisionsAxis + 1;
-      var linesPerQuad = (hConnect ? 1 : 0) + (vConnect ? 1 : 0);
-      var indices = twgl.primitives.createAugmentedTypedArray(2, subdivisionsAxis * subdivisionsHeight * linesPerQuad, Uint16Array);
-      for (var x = 0; x < subdivisionsAxis; x++) {  // eslint-disable-line
-        for (var y = 0; y < subdivisionsHeight; y++) {  // eslint-disable-line
+      const numVertsAround = subdivisionsAxis + 1;
+      const linesPerQuad = (hConnect ? 1 : 0) + (vConnect ? 1 : 0);
+      const indices = twgl.primitives.createAugmentedTypedArray(2, subdivisionsAxis * subdivisionsHeight * linesPerQuad, Uint16Array);
+      for (let x = 0; x < subdivisionsAxis; x++) {  // eslint-disable-line
+        for (let y = 0; y < subdivisionsHeight; y++) {  // eslint-disable-line
           // Make hline of quad.
           if (hConnect) {
             indices.push(
@@ -206,18 +206,18 @@ void main() {
       return r * 180 / Math.PI;
     }
 
-    var radius = 10;
-    var a = Math.PI * 1.5;
-    var b = Math.PI * 0.5;
-    var c = 0.01;
-    var vMarksSphere = createSphere(gl, radius, 2, 180, true, false, 0, Math.PI, a - c, a + c);
-    var hMarksSphere = createSphere(gl, radius, 360, 2, false, true, b - c, b + c, 0, Math.PI * 2);
-    var highDetailSphere = createSphere(gl, radius, 36 * 2, 18 * 2);
-    var detailSphere = createSphere(gl, radius, 36, 18);
-    var v3rdsSphere = createSphere(gl, radius, 12, 36, false, true);
-    var h3rdsSphere = createSphere(gl, radius, 36, 6, true, false);
-    var vQuadSphere = createSphere(gl, radius, 4, 36, false, true);
-    var hQuadSphere = createSphere(gl, radius, 36, 2, true, false);
+    const radius = 10;
+    const a = Math.PI * 1.5;
+    const b = Math.PI * 0.5;
+    const c = 0.01;
+    const vMarksSphere = createSphere(gl, radius, 2, 180, true, false, 0, Math.PI, a - c, a + c);
+    const hMarksSphere = createSphere(gl, radius, 360, 2, false, true, b - c, b + c, 0, Math.PI * 2);
+    const highDetailSphere = createSphere(gl, radius, 36 * 2, 18 * 2);
+    const detailSphere = createSphere(gl, radius, 36, 18);
+    const v3rdsSphere = createSphere(gl, radius, 12, 36, false, true);
+    const h3rdsSphere = createSphere(gl, radius, 36, 6, true, false);
+    const vQuadSphere = createSphere(gl, radius, 4, 36, false, true);
+    const hQuadSphere = createSphere(gl, radius, 36, 2, true, false);
 
     /**
      *   0---1
@@ -226,13 +226,13 @@ void main() {
      *   |   |
      *   4---5
      */
-    var numberPositions = [
+    const numberPositions = [
       -1,  1,  1,  1,
       -1,  0,  1,  0,
       -1, -1,  1, -1,
     ];
 
-    var numberIndices = [
+    const numberIndices = [
       [ 0, 1, 1, 5, 5, 4, 4, 0 ], // 0
       [ 1, 5 ],  // 1
       [ 0, 1, 1, 3, 3, 2, 2, 4, 4, 5 ], // 2
@@ -245,10 +245,10 @@ void main() {
       [ 3, 2, 2, 0, 0, 1, 1, 5 ],       // 9
     ];
 
-    var total = 0;
-    var numberInfos = numberIndices.map(function(indices) {
-      var offset = total;
-      var count  = indices.length;
+    let total = 0;
+    const numberInfos = numberIndices.map(function(indices) {
+      const offset = total;
+      const count  = indices.length;
       total += count;
       return {
         offset: offset * 2,
@@ -256,15 +256,15 @@ void main() {
       };
     });
 
-    var numberBufferInfo = twgl.createBufferInfoFromArrays(gl, {
+    const numberBufferInfo = twgl.createBufferInfoFromArrays(gl, {
       position: { numComponents: 2, data: numberPositions },
       indices:  { numComponents: 2, data: Array.prototype.concat.apply([], numberIndices) },
     });
 
-    var fieldOfViewY = deg2Rad(30);
-    var viewProjection = m4.identity();
+    let fieldOfViewY = deg2Rad(30);
+    const viewProjection = m4.identity();
 
-    var drawObjects = [
+    const drawObjects = [
       { programInfo: programInfo,
         bufferInfo: vMarksSphere,
         type: gl.LINES,
@@ -340,19 +340,19 @@ void main() {
     ];
 
     function addNumber(value, world) {
-      var str = value.toString();
-      var length = str.length;
-      var letterSize = 2.0;
-      var padding = 0.6;
-      var scale = [0.2, 0.2, 1];
-      var spacing = letterSize + padding;
-      var xOffset = (length - 1) * (spacing) * -0.5;
+      const str = value.toString();
+      const length = str.length;
+      const letterSize = 2.0;
+      const padding = 0.6;
+      const scale = [0.2, 0.2, 1];
+      const spacing = letterSize + padding;
+      const xOffset = (length - 1) * (spacing) * -0.5;
       Array.prototype.forEach.call(str, function(digit, ndx) {
-        var mat = m4.copy(world);
+        const mat = m4.copy(world);
         m4.scale(mat, scale, mat);
         m4.translate(mat, [xOffset + ndx * spacing, 0, 0], mat);
-        var digitNdx = parseInt(digit);
-        var numberInfo = numberInfos[digitNdx];
+        const digitNdx = parseInt(digit);
+        const numberInfo = numberInfos[digitNdx];
         drawObjects.push({
           programInfo: programInfo,
           bufferInfo: numberBufferInfo,
@@ -369,8 +369,8 @@ void main() {
     }
 
     // Add numbers around sphere
-    for (var ii = -180; ii < 180; ii += 10) {
-      var world = m4.identity();
+    for (let ii = -180; ii < 180; ii += 10) {
+      let world = m4.identity();
       m4.rotateY(world, deg2Rad(ii), world);
       m4.translate(world, [0, 0, -radius], world);
       addNumber(Math.abs(ii), world);
@@ -390,9 +390,9 @@ void main() {
 
       gl.lineWidth(2);
 
-      var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-      var zNear  = 0.1;
-      var zFar   = 50;
+      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      const zNear  = 0.1;
+      const zFar   = 50;
       m4.perspective(fieldOfViewY, aspect, zNear, zFar, viewProjection);
       //m4.translate(matrix, [0, 0, -40], matrix);
 
@@ -401,28 +401,28 @@ void main() {
     }
 
     function createTextNodeInElement(id) {
-      var elem = document.getElementById(id);
-      var node = document.createTextNode("");
+      const elem = document.getElementById(id);
+      const node = document.createTextNode("");
       elem.appendChild(node);
       return node;
     }
 
     function makeNodes(ids) {
-      var nodes = {};
+      const nodes = {};
       ids.forEach(function(id) {
         nodes[id] = createTextNodeInElement(id);
       });
       return nodes;
     }
 
-    var rangeElem = document.getElementById("fov");
-    var nodes = makeNodes(["fovy", "fovx", "width", "height", "aspect", "badfovx"]);
+    const rangeElem = document.getElementById("fov");
+    const nodes = makeNodes(["fovy", "fovx", "width", "height", "aspect", "badfovx"]);
     rangeElem.value = 30;
 
     function updateNodes() {
-      var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-      var fieldOfViewX = 2 * Math.atan(Math.tan(fieldOfViewY * 0.5) * aspect);
-      var badFieldOfViewX = fieldOfViewY * aspect;
+      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      const fieldOfViewX = 2 * Math.atan(Math.tan(fieldOfViewY * 0.5) * aspect);
+      const badFieldOfViewX = fieldOfViewY * aspect;
 
       nodes.fovy.nodeValue    = rad2Deg(fieldOfViewY).toFixed(2);
       nodes.fovx.nodeValue    = rad2Deg(fieldOfViewX).toFixed(2);

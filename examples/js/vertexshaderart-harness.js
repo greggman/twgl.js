@@ -3,7 +3,7 @@
 window.addEventListener('load', function() {
 
  function main() {
-   var canvas = document.querySelector("canvas");
+   let canvas = document.querySelector("canvas");
    if (!canvas) {
      console.log("no canvas found, inserting full page canvas");  // eslint-disable-line
      canvas = document.createElement("canvas");
@@ -13,40 +13,40 @@ window.addEventListener('load', function() {
      canvas.style.width = "100vw";
      canvas.style.height = "100vh";
    }
-   var gl = canvas.getContext("webgl");
-   var glslElem = document.querySelector("#vs");
-   var glsl = glslElem.text;
-   var vs = `
+   const gl = canvas.getContext("webgl");
+   const glslElem = document.querySelector("#vs");
+   const glsl = glslElem.text;
+   const vs = `
      attribute float vertexId;
      uniform float time;
      uniform float vertexCount;
      uniform vec2 resolution;
 
-     varying vec4 v_color;
+     constying vec4 v_color;
 
      ${glsl}
    `;
-   var fs = `
+   const fs = `
      precision mediump float;
-     varying vec4 v_color;
+     constying vec4 v_color;
      void main() {
        gl_FragColor = v_color;
      }
    `;
-   var vertexCount = Math.min(parseInt(glslElem.dataset.vertexCount), 100000);
-   var ids = new Float32Array(vertexCount);
-   for (var i = 0; i < ids.length; ++i) {
+   const vertexCount = Math.min(parseInt(glslElem.dataset.vertexCount), 100000);
+   const ids = new Float32Array(vertexCount);
+   for (let i = 0; i < ids.length; ++i) {
      ids[i] = i;
    }
-   var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
-   var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+   const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+   const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
      vertexId: {
        numComponents: 1,
        data: ids,
      },
    });
 
-   var uniforms = {
+   const uniforms = {
      time: 0,
      vertexCount: ids.length,
      resolution: [0, 0],
@@ -81,7 +81,7 @@ window.addEventListener('load', function() {
     script.type = 'text/javascript';
     script.async = true;
     script.onload = main;
-    script.src = 'https://twgljs.org/dist/3.x/twgl.min.js';
+    script.src = 'https://twgljs.org/dist/4.x/twgl.min.js';
     d.getElementsByTagName('head')[0].appendChild(script);
   }(document));
 });

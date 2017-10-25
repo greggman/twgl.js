@@ -91,7 +91,7 @@ import * as programs from './programs.js';
  * @memberOf module:twgl/vertexArrays
  */
 function createVertexArrayInfo(gl, programInfos, bufferInfo) {
-  var vao = gl.createVertexArray();
+  const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
   if (!programInfos.length) {
     programInfos = [programInfos];
@@ -117,7 +117,7 @@ function createVertexArrayInfo(gl, programInfos, bufferInfo) {
  * @memberOf module:twgl/vertexArrays
  */
 function createVAOAndSetAttributes(gl, setters, attribs, indices) {
-  var vao = gl.createVertexArray();
+  const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
   programs.setAttributes(setters, attribs);
   if (indices) {

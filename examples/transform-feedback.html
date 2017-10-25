@@ -192,24 +192,24 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
 "use strict";
 function main() {
   twgl.setDefaults({attribPrefix: "a_"});
-  var m4 = twgl.m4;
-  var gl = document.getElementById("c").getContext("webgl2");
+  const m4 = twgl.m4;
+  const gl = document.getElementById("c").getContext("webgl2");
   if (!gl) {
     document.querySelector("#no-webgl2").style.display = "";
     return;
   }
 
   // shaders to render with
-  var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
   // shaders to generate a mesh
-  var feedbackProgramInfo = twgl.createProgramInfo(gl, ["tf-vs", "tf-fs"], {
+  const feedbackProgramInfo = twgl.createProgramInfo(gl, ["tf-vs", "tf-fs"], {
     // note: you can pass a bufferInfo instead of this array
     transformFeedbackVaryings: [
       "a_position",
@@ -239,7 +239,7 @@ function main() {
     gl.disable(gl.RASTERIZER_DISCARD);
   }
 
-  var shapes = [ ];
+  const shapes = [ ];
 
   // Make shapes using transform feedback
   [
@@ -249,18 +249,18 @@ function main() {
     { around: 20, down: 10, hue: .8, },
     { around: 40, down: 20, hue: .0, },
   ].forEach(e => {
-    var around = e.around;
-    var down = e.down;
-    var numQuads = around * down;
-    var numVerts = numQuads * 6;
+    const around = e.around;
+    const down = e.down;
+    const numQuads = around * down;
+    const numVerts = numQuads * 6;
 
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
       position: numVerts * 3,
       normal: numVerts * 3,
       texcoord: numVerts * 2,
       color: { data: numVerts * 4, type: Uint8Array, },
     });
-    var tf = twgl.createTransformFeedback(gl, feedbackProgramInfo, bufferInfo);
+    const tf = twgl.createTransformFeedback(gl, feedbackProgramInfo, bufferInfo);
     generateMesh(tf, bufferInfo, numVerts, down, e.hue);
     shapes.push(bufferInfo);
   });
@@ -270,13 +270,13 @@ function main() {
   }
 
   // Shared values
-  var lightWorldPosition = [1, 8, -10];
-  var lightColor = [1, 1, 1, 1];
-  var camera = m4.identity();
-  var view = m4.identity();
-  var viewProjection = m4.identity();
+  const lightWorldPosition = [1, 8, -10];
+  const lightColor = [1, 1, 1, 1];
+  const camera = m4.identity();
+  const view = m4.identity();
+  const viewProjection = m4.identity();
 
-  var tex = twgl.createTexture(gl, {
+  const tex = twgl.createTexture(gl, {
     min: gl.NEAREST,
     mag: gl.NEAREST,
     format: gl.LUMINANCE,
@@ -292,11 +292,11 @@ function main() {
     ],
   });
 
-  var objects = [];
-  var drawObjects = [];
-  var numObjects = 100;
-  for (var ii = 0; ii < numObjects; ++ii) {
-    var uniforms = {
+  const objects = [];
+  const drawObjects = [];
+  const numObjects = 100;
+  for (let ii = 0; ii < numObjects; ++ii) {
+    const uniforms = {
       u_lightWorldPos: lightWorldPosition,
       u_lightColor: lightColor,
       u_diffuseMult: [1, 1, 1, 1],
@@ -330,18 +330,18 @@ function main() {
     gl.enable(gl.DEPTH_TEST);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-    var eye = [1, 4, -20];
-    var target = [0, 0, 0];
-    var up = [0, 1, 0];
+    const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+    const eye = [1, 4, -20];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
 
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);
     m4.multiply(projection, view, viewProjection);
 
     objects.forEach(function(obj) {
-      var uni = obj.uniforms;
-      var world = uni.u_world;
+      const uni = obj.uniforms;
+      const world = uni.u_world;
       m4.identity(world);
       m4.rotateY(world, time * obj.ySpeed, world);
       m4.rotateZ(world, time * obj.zSpeed, world);

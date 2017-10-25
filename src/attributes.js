@@ -48,8 +48,8 @@ import * as utils from './utils.js';
  */
 
 // make sure we don't see a global gl
-var gl = undefined;  // eslint-disable-line
-var defaults = {
+const gl = undefined;  // eslint-disable-line
+const defaults = {
   attribPrefix: "",
 };
 
@@ -102,7 +102,7 @@ function createBufferFromTypedArray(gl, typedArray, type, drawType) {
     return typedArray;
   }
   type = type || gl.ARRAY_BUFFER;
-  var buffer = gl.createBuffer();
+  const buffer = gl.createBuffer();
   setBufferFromTypedArray(gl, type, buffer, typedArray, drawType);
   return buffer;
 }
@@ -131,11 +131,11 @@ function getArray(array) {
   return array.length ? array : array.data;
 }
 
-var texcoordRE = /coord|texture/i;
-var colorRE = /color|colour/i;
+const texcoordRE = /coord|texture/i;
+const colorRE = /color|colour/i;
 
 function guessNumComponentsFromName(name, length) {
-  var numComponents;
+  let numComponents;
   if (texcoordRE.test(name)) {
     numComponents = 2;
   } else if (colorRE.test(name)) {
@@ -173,7 +173,7 @@ function makeTypedArray(array, name) {
     };
   }
 
-  var Type = array.type;
+  let Type = array.type;
   if (!Type) {
     if (isIndices(name)) {
       Type = Uint16Array;
@@ -333,20 +333,20 @@ function makeTypedArray(array, name) {
  * @memberOf module:twgl/attributes
  */
 function createAttribsFromArrays(gl, arrays) {
-  var attribs = {};
+  const attribs = {};
   Object.keys(arrays).forEach(function(arrayName) {
     if (!isIndices(arrayName)) {
-      var array = arrays[arrayName];
-      var attribName = array.attrib || array.name || array.attribName || (defaults.attribPrefix + arrayName);
-      var buffer;
-      var type;
-      var normalization;
-      var numComponents;
-      var numValues;
+      const array = arrays[arrayName];
+      const attribName = array.attrib || array.name || array.attribName || (defaults.attribPrefix + arrayName);
+      let buffer;
+      let type;
+      let normalization;
+      let numComponents;
+      let numValues;
       if (typeof array === "number" || typeof array.data === "number") {
         numValues = array.data || array;
-        var arrayType = array.type || Float32Array;
-        var numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+        const arrayType = array.type || Float32Array;
+        const numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
         type = typedArrays.getGLTypeForTypedArrayType(arrayType);
         normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
         numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
@@ -354,7 +354,7 @@ function createAttribsFromArrays(gl, arrays) {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
       } else {
-        var typedArray = makeTypedArray(array, arrayName);
+        const typedArray = makeTypedArray(array, arrayName);
         buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
         type = typedArrays.getGLTypeForTypedArray(typedArray);
         normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
@@ -437,10 +437,10 @@ function getBytesPerValueForGLType(gl, type) {
 /**
  * tries to get the number of elements from a set of arrays.
  */
-var positionKeys = ['position', 'positions', 'a_position'];
+const positionKeys = ['position', 'positions', 'a_position'];
 function getNumElementsFromNonIndexedArrays(arrays) {
-  var key;
-  for (var ii = 0; ii < positionKeys.length; ++ii) {
+  let key;
+  for (let ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
     if (key in arrays) {
       break;
@@ -449,10 +449,10 @@ function getNumElementsFromNonIndexedArrays(arrays) {
   if (ii === positionKeys.length) {
     key = Object.keys(arrays)[0];
   }
-  var array = arrays[key];
-  var length = getArray(array).length;
-  var numComponents = getNumComponents(array, key);
-  var numElements = length / numComponents;
+  const array = arrays[key];
+  const length = getArray(array).length;
+  const numComponents = getNumComponents(array, key);
+  const numElements = length / numComponents;
   if (length % numComponents > 0) {
     throw "numComponents " + numComponents + " not correct for length " + length;
   }
@@ -460,8 +460,9 @@ function getNumElementsFromNonIndexedArrays(arrays) {
 }
 
 function getNumElementsFromAttributes(gl, attribs) {
-  var key;
-  for (var ii = 0; ii < positionKeys.length; ++ii) {
+  let key;
+  let ii;
+  for (ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
     if (key in attribs) {
       break;
@@ -474,16 +475,16 @@ function getNumElementsFromAttributes(gl, attribs) {
   if (ii === positionKeys.length) {
     key = Object.keys(attribs)[0];
   }
-  var attrib = attribs[key];
+  const attrib = attribs[key];
   gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
-  var numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
+  const numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  var bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
-  var totalElements = numBytes / bytesPerValue;
-  var numComponents = attrib.numComponents || attrib.size;
+  const bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
+  const totalElements = numBytes / bytesPerValue;
+  const numComponents = attrib.numComponents || attrib.size;
   // TODO: check stride
-  var numElements = totalElements / numComponents;
+  const numElements = totalElements / numComponents;
   if (numElements % 1 !== 0) {
     throw "numComponents " + numComponents + " not correct for length " + length;
   }
@@ -591,15 +592,15 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @memberOf module:twgl/attributes
  */
 function createBufferInfoFromArrays(gl, arrays) {
-  var bufferInfo = {
+  const bufferInfo = {
     attribs: createAttribsFromArrays(gl, arrays),
   };
-  var indices = arrays.indices;
+  const indices = arrays.indices;
   if (indices) {
-    indices = makeTypedArray(indices, "indices");
-    bufferInfo.indices = createBufferFromTypedArray(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
-    bufferInfo.numElements = indices.length;
-    bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(indices);
+    const newIndices = makeTypedArray(indices, "indices");
+    bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
+    bufferInfo.numElements = newIndices.length;
+    bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(newIndices);
   } else {
     bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
   }
@@ -634,8 +635,8 @@ function createBufferInfoFromArrays(gl, arrays) {
  * @memberOf module:twgl/attributes
  */
 function createBufferFromArray(gl, array, arrayName) {
-  var type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
-  var typedArray = makeTypedArray(array, arrayName);
+  const type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+  const typedArray = makeTypedArray(array, arrayName);
   return createBufferFromTypedArray(gl, typedArray, type);
 }
 
@@ -664,7 +665,7 @@ function createBufferFromArray(gl, array, arrayName) {
  * @memberOf module:twgl/attributes
  */
 function createBuffersFromArrays(gl, arrays) {
-  var buffers = { };
+  const buffers = { };
   Object.keys(arrays).forEach(function(key) {
     buffers[key] = createBufferFromArray(gl, arrays[key], key);
   });

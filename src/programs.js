@@ -46,56 +46,56 @@ import * as utils from './utils.js';
  * @module twgl/programs
  */
 
-var error = utils.error;
-var warn = utils.warn;
+const error = utils.error;
+const warn = utils.warn;
 
-var FLOAT                         = 0x1406;
-var FLOAT_VEC2                    = 0x8B50;
-var FLOAT_VEC3                    = 0x8B51;
-var FLOAT_VEC4                    = 0x8B52;
-var INT                           = 0x1404;
-var INT_VEC2                      = 0x8B53;
-var INT_VEC3                      = 0x8B54;
-var INT_VEC4                      = 0x8B55;
-var BOOL                          = 0x8B56;
-var BOOL_VEC2                     = 0x8B57;
-var BOOL_VEC3                     = 0x8B58;
-var BOOL_VEC4                     = 0x8B59;
-var FLOAT_MAT2                    = 0x8B5A;
-var FLOAT_MAT3                    = 0x8B5B;
-var FLOAT_MAT4                    = 0x8B5C;
-var SAMPLER_2D                    = 0x8B5E;
-var SAMPLER_CUBE                  = 0x8B60;
-var SAMPLER_3D                    = 0x8B5F;
-var SAMPLER_2D_SHADOW             = 0x8B62;
-var FLOAT_MAT2x3                  = 0x8B65;
-var FLOAT_MAT2x4                  = 0x8B66;
-var FLOAT_MAT3x2                  = 0x8B67;
-var FLOAT_MAT3x4                  = 0x8B68;
-var FLOAT_MAT4x2                  = 0x8B69;
-var FLOAT_MAT4x3                  = 0x8B6A;
-var SAMPLER_2D_ARRAY              = 0x8DC1;
-var SAMPLER_2D_ARRAY_SHADOW       = 0x8DC4;
-var SAMPLER_CUBE_SHADOW           = 0x8DC5;
-var UNSIGNED_INT                  = 0x1405;
-var UNSIGNED_INT_VEC2             = 0x8DC6;
-var UNSIGNED_INT_VEC3             = 0x8DC7;
-var UNSIGNED_INT_VEC4             = 0x8DC8;
-var INT_SAMPLER_2D                = 0x8DCA;
-var INT_SAMPLER_3D                = 0x8DCB;
-var INT_SAMPLER_CUBE              = 0x8DCC;
-var INT_SAMPLER_2D_ARRAY          = 0x8DCF;
-var UNSIGNED_INT_SAMPLER_2D       = 0x8DD2;
-var UNSIGNED_INT_SAMPLER_3D       = 0x8DD3;
-var UNSIGNED_INT_SAMPLER_CUBE     = 0x8DD4;
-var UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
+const FLOAT                         = 0x1406;
+const FLOAT_VEC2                    = 0x8B50;
+const FLOAT_VEC3                    = 0x8B51;
+const FLOAT_VEC4                    = 0x8B52;
+const INT                           = 0x1404;
+const INT_VEC2                      = 0x8B53;
+const INT_VEC3                      = 0x8B54;
+const INT_VEC4                      = 0x8B55;
+const BOOL                          = 0x8B56;
+const BOOL_VEC2                     = 0x8B57;
+const BOOL_VEC3                     = 0x8B58;
+const BOOL_VEC4                     = 0x8B59;
+const FLOAT_MAT2                    = 0x8B5A;
+const FLOAT_MAT3                    = 0x8B5B;
+const FLOAT_MAT4                    = 0x8B5C;
+const SAMPLER_2D                    = 0x8B5E;
+const SAMPLER_CUBE                  = 0x8B60;
+const SAMPLER_3D                    = 0x8B5F;
+const SAMPLER_2D_SHADOW             = 0x8B62;
+const FLOAT_MAT2x3                  = 0x8B65;
+const FLOAT_MAT2x4                  = 0x8B66;
+const FLOAT_MAT3x2                  = 0x8B67;
+const FLOAT_MAT3x4                  = 0x8B68;
+const FLOAT_MAT4x2                  = 0x8B69;
+const FLOAT_MAT4x3                  = 0x8B6A;
+const SAMPLER_2D_ARRAY              = 0x8DC1;
+const SAMPLER_2D_ARRAY_SHADOW       = 0x8DC4;
+const SAMPLER_CUBE_SHADOW           = 0x8DC5;
+const UNSIGNED_INT                  = 0x1405;
+const UNSIGNED_INT_VEC2             = 0x8DC6;
+const UNSIGNED_INT_VEC3             = 0x8DC7;
+const UNSIGNED_INT_VEC4             = 0x8DC8;
+const INT_SAMPLER_2D                = 0x8DCA;
+const INT_SAMPLER_3D                = 0x8DCB;
+const INT_SAMPLER_CUBE              = 0x8DCC;
+const INT_SAMPLER_2D_ARRAY          = 0x8DCF;
+const UNSIGNED_INT_SAMPLER_2D       = 0x8DD2;
+const UNSIGNED_INT_SAMPLER_3D       = 0x8DD3;
+const UNSIGNED_INT_SAMPLER_CUBE     = 0x8DD4;
+const UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
 
-var TEXTURE_2D                    = 0x0DE1;
-var TEXTURE_CUBE_MAP              = 0x8513;
-var TEXTURE_3D                    = 0x806F;
-var TEXTURE_2D_ARRAY              = 0x8C1A;
+const TEXTURE_2D                    = 0x0DE1;
+const TEXTURE_CUBE_MAP              = 0x8513;
+const TEXTURE_3D                    = 0x806F;
+const TEXTURE_2D_ARRAY              = 0x8C1A;
 
-var typeMap = {};
+const typeMap = {};
 
 /**
  * Returns the corresponding bind point for a given sampler type
@@ -252,7 +252,7 @@ function floatMat43Setter(gl, location) {
 }
 
 function samplerSetter(gl, type, unit, location) {
-  var bindPoint = getBindPointForSamplerType(gl, type);
+  const bindPoint = getBindPointForSamplerType(gl, type);
   return utils.isWebGL2(gl) ? function(textureOrPair) {
     let texture;
     let sampler;
@@ -275,9 +275,9 @@ function samplerSetter(gl, type, unit, location) {
 }
 
 function samplerArraySetter(gl, type, unit, location, size) {
-  var bindPoint = getBindPointForSamplerType(gl, type);
-  var units = new Int32Array(size);
-  for (var ii = 0; ii < size; ++ii) {
+  const bindPoint = getBindPointForSamplerType(gl, type);
+  const units = new Int32Array(size);
+  for (let ii = 0; ii < size; ++ii) {
     units[ii] = unit + ii;
   }
 
@@ -372,20 +372,20 @@ function intAttribSetter(gl, index) {
 }
 
 function matAttribSetter(gl, index, typeInfo) {
-  var defaultSize = typeInfo.size;
-  var count = typeInfo.count;
+  const defaultSize = typeInfo.size;
+  const count = typeInfo.count;
 
   return function(b) {
     gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-    var numComponents = b.size || b.numComponents || defaultSize;
-    var size = numComponents / count;
-    var type = b.type || gl.FLOAT;
-    var typeInfo = typeMap[type];
-    var stride = typeInfo.size * numComponents;
-    var normalize = b.normalize || false;
-    var offset = b.offset || 0;
-    var rowOffset = stride / count;
-    for (var i = 0; i < count; ++i) {
+    const numComponents = b.size || b.numComponents || defaultSize;
+    const size = numComponents / count;
+    const type = b.type || gl.FLOAT;
+    const typeInfo = typeMap[type];
+    const stride = typeInfo.size * numComponents;
+    const normalize = b.normalize || false;
+    const offset = b.offset || 0;
+    const rowOffset = stride / count;
+    for (let i = 0; i < count; ++i) {
       gl.enableVertexAttribArray(index + i);
       gl.vertexAttribPointer(
           index + i, size, type, normalize, stride, offset + rowOffset * i);
@@ -398,7 +398,7 @@ function matAttribSetter(gl, index, typeInfo) {
 
 
 
-var attrTypeMap = {};
+const attrTypeMap = {};
 attrTypeMap[FLOAT]             = { size:  4, setter: floatAttribSetter, };
 attrTypeMap[FLOAT_VEC2]        = { size:  8, setter: floatAttribSetter, };
 attrTypeMap[FLOAT_VEC3]        = { size: 12, setter: floatAttribSetter, };
@@ -420,7 +420,7 @@ attrTypeMap[FLOAT_MAT3]        = { size:  9, setter: matAttribSetter,   count: 3
 attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4, };
 
 // make sure we don't see a global gl
-var gl = undefined;  // eslint-disable-line
+const gl = undefined;  // eslint-disable-line
 
 /**
  * Error Callback
@@ -439,7 +439,7 @@ function addLineNumbers(src, lineOffset) {
   }).join("\n");
 }
 
-var spaceRE = /^[ \t]*\n/;
+const spaceRE = /^[ \t]*\n/;
 
 /**
  * Loads a shader.
@@ -450,9 +450,9 @@ var spaceRE = /^[ \t]*\n/;
  * @return {WebGLShader} The created shader.
  */
 function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
-  var errFn = opt_errorCallback || error;
+  const errFn = opt_errorCallback || error;
   // Create the shader object
-  var shader = gl.createShader(shaderType);
+  const shader = gl.createShader(shaderType);
 
   // Remove the first end of line because WebGL 2.0 requires
   // #version 300 es
@@ -465,7 +465,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   //
   // Has one line before it which is invalid according to GLSL ES 3.00
   //
-  var lineOffset = 0;
+  let lineOffset = 0;
   if (spaceRE.test(shaderSource)) {
     lineOffset = 1;
     shaderSource = shaderSource.replace(spaceRE, '');
@@ -478,10 +478,10 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   gl.compileShader(shader);
 
   // Check the compile status
-  var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
   if (!compiled) {
     // Something went wrong during compilation; get the error
-    var lastError = gl.getShaderInfoLog(shader);
+    const lastError = gl.getShaderInfoLog(shader);
     errFn(addLineNumbers(shaderSource, lineOffset) + "\n*** Error compiling shader: " + lastError);
     gl.deleteShader(shader);
     return null;
@@ -510,6 +510,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
  */
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
+  let transformFeedbackVaryings;
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
     opt_locations = undefined;
@@ -523,19 +524,19 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     if (opt_attribs.errorCallback) {
       return opt_attribs;
     }
-    var opt = opt_attribs;
+    const opt = opt_attribs;
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
-    var transformFeedbackVaryings = opt.transformFeedbackVaryings;
+    transformFeedbackVaryings = opt.transformFeedbackVaryings;
   }
 
-  var options = {
+  const options = {
     errorCallback: opt_errorCallback || error,
     transformFeedbackVaryings: transformFeedbackVaryings,
   };
 
   if (opt_attribs) {
-    var attribLocations = {};
+    let attribLocations = {};
     if (Array.isArray(opt_attribs)) {
       opt_attribs.forEach(function(attrib,  ndx) {
         attribLocations[attrib] = opt_locations ? opt_locations[ndx] : ndx;
@@ -549,7 +550,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   return options;
 }
 
-var defaultShaderType = [
+const defaultShaderType = [
   "VERTEX_SHADER",
   "FRAGMENT_SHADER",
 ];
@@ -590,15 +591,15 @@ function deleteShaders(gl, shaders) {
  */
 function createProgram(
     gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
-  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var realShaders = [];
-  var newShaders = [];
-  for (var ndx = 0; ndx < shaders.length; ++ndx) {
-    var shader = shaders[ndx];
+  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  const realShaders = [];
+  const newShaders = [];
+  for (let ndx = 0; ndx < shaders.length; ++ndx) {
+    let shader = shaders[ndx];
     if (typeof (shader) === 'string') {
       const elem = document.getElementById(shader);
       const src = elem ? elem.text : shader;
-      var type = gl[defaultShaderType[ndx]];
+      let type = gl[defaultShaderType[ndx]];
       if (elem && elem.type) {
         type = getShaderTypeFromScriptType(elem.type) || type;
       }
@@ -616,7 +617,7 @@ function createProgram(
     return null;
   }
 
-  var program = gl.createProgram();
+  const program = gl.createProgram();
   realShaders.forEach(function(shader) {
     gl.attachShader(program, shader);
   });
@@ -625,7 +626,7 @@ function createProgram(
       gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
     });
   }
-  var varyings = progOptions.transformFeedbackVaryings;
+  let varyings = progOptions.transformFeedbackVaryings;
   if (varyings) {
     if (varyings.attribs) {
       varyings = varyings.attribs;
@@ -638,10 +639,10 @@ function createProgram(
   gl.linkProgram(program);
 
   // Check the link status
-  var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+  const linked = gl.getProgramParameter(program, gl.LINK_STATUS);
   if (!linked) {
     // something went wrong with the link
-    var lastError = gl.getProgramInfoLog(program);
+    const lastError = gl.getProgramInfoLog(program);
     progOptions.errorCallback("Error in program linking:" + lastError);
 
     gl.deleteProgram(program);
@@ -662,14 +663,14 @@ function createProgram(
  */
 function createShaderFromScript(
     gl, scriptId, opt_shaderType, opt_errorCallback) {
-  var shaderSource = "";
-  var shaderScript = document.getElementById(scriptId);
+  let shaderSource = "";
+  const shaderScript = document.getElementById(scriptId);
   if (!shaderScript) {
     throw "*** Error: unknown script element" + scriptId;
   }
   shaderSource = shaderScript.text;
 
-  var shaderType = opt_shaderType || getShaderTypeFromScriptType(shaderScript.type);
+  const shaderType = opt_shaderType || getShaderTypeFromScriptType(shaderScript.type);
   if (!shaderType) {
     throw "*** Error: unknown shader type";
   }
@@ -701,10 +702,10 @@ function createShaderFromScript(
  */
 function createProgramFromScripts(
     gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
-  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var shaders = [];
-  for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
-    var shader = createShaderFromScript(
+  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  const shaders = [];
+  for (let ii = 0; ii < shaderScriptIds.length; ++ii) {
+    const shader = createShaderFromScript(
         gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
     if (!shader) {
       return null;
@@ -738,10 +739,10 @@ function createProgramFromScripts(
  */
 function createProgramFromSources(
     gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var shaders = [];
-  for (var ii = 0; ii < shaderSources.length; ++ii) {
-    var shader = loadShader(
+  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  const shaders = [];
+  for (let ii = 0; ii < shaderSources.length; ++ii) {
+    const shader = loadShader(
         gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
     if (!shader) {
       return null;
@@ -762,7 +763,7 @@ function createProgramFromSources(
  * @memberOf module:twgl/programs
  */
 function createUniformSetters(gl, program) {
-  var textureUnit = 0;
+  let textureUnit = 0;
 
   /**
    * Creates a setter for a uniform of the given program with it's
@@ -772,17 +773,17 @@ function createUniformSetters(gl, program) {
    * @returns {function} the created setter.
    */
   function createUniformSetter(program, uniformInfo) {
-    var location = gl.getUniformLocation(program, uniformInfo.name);
-    var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
-    var type = uniformInfo.type;
-    var typeInfo = typeMap[type];
+    const location = gl.getUniformLocation(program, uniformInfo.name);
+    const isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
+    const type = uniformInfo.type;
+    const typeInfo = typeMap[type];
     if (!typeInfo) {
       throw ("unknown type: 0x" + type.toString(16)); // we should never get here.
     }
-    var setter;
+    let setter;
     if (typeInfo.bindPoint) {
       // it's a sampler
-      var unit = textureUnit;
+      const unit = textureUnit;
       textureUnit += uniformInfo.size;
       if (isArray) {
         setter = typeInfo.arraySetter(gl, type, unit, location, uniformInfo.size);
@@ -800,20 +801,20 @@ function createUniformSetters(gl, program) {
     return setter;
   }
 
-  var uniformSetters = { };
-  var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  const uniformSetters = { };
+  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
-  for (var ii = 0; ii < numUniforms; ++ii) {
-    var uniformInfo = gl.getActiveUniform(program, ii);
+  for (let ii = 0; ii < numUniforms; ++ii) {
+    const uniformInfo = gl.getActiveUniform(program, ii);
     if (!uniformInfo) {
       break;
     }
-    var name = uniformInfo.name;
+    let name = uniformInfo.name;
     // remove the array suffix.
     if (name.substr(-3) === "[0]") {
       name = name.substr(0, name.length - 3);
     }
-    var setter = createUniformSetter(program, uniformInfo);
+    const setter = createUniformSetter(program, uniformInfo);
     uniformSetters[name] = setter;
   }
   return uniformSetters;
@@ -835,10 +836,10 @@ function createUniformSetters(gl, program) {
  * @memberOf module:twgl
  */
 function createTransformFeedbackInfo(gl, program) {
-  var info = {};
-  var numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
-  for (var ii = 0; ii < numVaryings; ++ii) {
-    var varying = gl.getTransformFeedbackVarying(program, ii);
+  const info = {};
+  const numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+  for (let ii = 0; ii < numVaryings; ++ii) {
+    const varying = gl.getTransformFeedbackVarying(program, ii);
     info[varying.name] = {
       index: ii,
       type: varying.type,
@@ -863,10 +864,10 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (bufferInfo.attribs) {
     bufferInfo = bufferInfo.attribs;
   }
-  for (var name in bufferInfo) {
-    var varying = transformFeedbackInfo[name];
+  for (const name in bufferInfo) {
+    const varying = transformFeedbackInfo[name];
     if (varying) {
-      var buf = bufferInfo[name];
+      const buf = bufferInfo[name];
       if (buf.offset) {
         gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
       } else {
@@ -895,8 +896,8 @@ function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (bufferInfo.attribs) {
     bufferInfo = bufferInfo.attribs;
   }
-  for (var name in bufferInfo) {
-    var varying = transformFeedbackInfo[name];
+  for (const name in bufferInfo) {
+    const varying = transformFeedbackInfo[name];
     if (varying) {
       gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
     }
@@ -912,7 +913,7 @@ function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @memberOf module:twgl
  */
 function createTransformFeedback(gl, programInfo, bufferInfo) {
-  var tf = gl.createTransformFeedback();
+  const tf = gl.createTransformFeedback();
   gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
   gl.useProgram(programInfo.program);
   bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
@@ -968,14 +969,14 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * @memberOf module:twgl/programs
  */
 function createUniformBlockSpecFromProgram(gl, program) {
-  var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-  var uniformData = [];
-  var uniformIndices = [];
+  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  const uniformData = [];
+  const uniformIndices = [];
 
-  for (var ii = 0; ii < numUniforms; ++ii) {
+  for (let ii = 0; ii < numUniforms; ++ii) {
     uniformIndices.push(ii);
     uniformData.push({});
-    var uniformInfo = gl.getActiveUniform(program, ii);
+    const uniformInfo = gl.getActiveUniform(program, ii);
     if (!uniformInfo) {
       break;
     }
@@ -989,19 +990,19 @@ function createUniformBlockSpecFromProgram(gl, program) {
     [ "UNIFORM_BLOCK_INDEX", "blockNdx" ],
     [ "UNIFORM_OFFSET", "offset", ],
   ].forEach(function(pair) {
-    var pname = pair[0];
-    var key = pair[1];
+    const pname = pair[0];
+    const key = pair[1];
     gl.getActiveUniforms(program, uniformIndices, gl[pname]).forEach(function(value, ndx) {
       uniformData[ndx][key] = value;
     });
   });
 
-  var blockSpecs = {};
+  const blockSpecs = {};
 
-  var numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
-  for (ii = 0; ii < numUniformBlocks; ++ii) {
-    var name = gl.getActiveUniformBlockName(program, ii);
-    var blockSpec = {
+  const numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
+  for (let ii = 0; ii < numUniformBlocks; ++ii) {
+    const name = gl.getActiveUniformBlockName(program, ii);
+    const blockSpec = {
       index: ii,
       usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
       usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
@@ -1018,7 +1019,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
   };
 }
 
-var arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
+const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
 
 /**
  * Represents a UniformBlockObject including an ArrayBuffer with all the uniform values
@@ -1057,9 +1058,9 @@ var arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
  * @memberOf module:twgl/programs
  */
 function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
-  var blockSpecs = uniformBlockSpec.blockSpecs;
-  var uniformData = uniformBlockSpec.uniformData;
-  var blockSpec = blockSpecs[blockName];
+  const blockSpecs = uniformBlockSpec.blockSpecs;
+  const uniformData = uniformBlockSpec.uniformData;
+  const blockSpec = blockSpecs[blockName];
   if (!blockSpec) {
     warn("no uniform block object named:", blockName);
     return {
@@ -1067,23 +1068,23 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
       uniforms: {},
     };
   }
-  var array = new ArrayBuffer(blockSpec.size);
-  var buffer = gl.createBuffer();
-  var uniformBufferIndex = blockSpec.index;
+  const array = new ArrayBuffer(blockSpec.size);
+  const buffer = gl.createBuffer();
+  const uniformBufferIndex = blockSpec.index;
   gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
   gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
 
-  var prefix = blockName + ".";
+  let prefix = blockName + ".";
   if (arraySuffixRE.test(prefix)) {
     prefix = prefix.replace(arraySuffixRE, ".");
   }
-  var uniforms = {};
+  const uniforms = {};
   blockSpec.uniformIndices.forEach(function(uniformNdx) {
-    var data = uniformData[uniformNdx];
-    var typeInfo = typeMap[data.type];
-    var Type = typeInfo.Type;
-    var length = data.size * typeInfo.size;
-    var name = data.name;
+    const data = uniformData[uniformNdx];
+    const typeInfo = typeMap[data.type];
+    const Type = typeInfo.Type;
+    const length = data.size * typeInfo.size;
+    let name = data.name;
     if (name.substr(0, prefix.length) === prefix) {
       name = name.substr(prefix.length);
     }
@@ -1137,10 +1138,10 @@ function createUniformBlockInfo(gl, programInfo, blockName) {
  * @memberOf module:twgl/programs
  */
 function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
-  var uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
-  var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
+  const uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
+  const blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
   if (blockSpec) {
-    var bufferBindIndex = blockSpec.index;
+    const bufferBindIndex = blockSpec.index;
     gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
     return true;
   }
@@ -1197,11 +1198,11 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  * @memberOf module:twgl/programs
  */
 function setBlockUniforms(uniformBlockInfo, values) {
-  var uniforms = uniformBlockInfo.uniforms;
-  for (var name in values) {
-    var array = uniforms[name];
+  const uniforms = uniformBlockInfo.uniforms;
+  for (const name in values) {
+    const array = uniforms[name];
     if (array) {
-      var value = values[name];
+      const value = values[name];
       if (value.length) {
         array.set(value);
       } else {
@@ -1216,15 +1217,15 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * example:
  *
- *     var programInfo = createProgramInfo(
+ *     const programInfo = createProgramInfo(
  *         gl, ["some-vs", "some-fs"]);
  *
- *     var tex1 = gl.createTexture();
- *     var tex2 = gl.createTexture();
+ *     const tex1 = gl.createTexture();
+ *     const tex2 = gl.createTexture();
  *
  *     ... assume we setup the textures with data ...
  *
- *     var uniforms = {
+ *     const uniforms = {
  *       u_someSampler: tex1,
  *       u_someOtherSampler: tex2,
  *       u_someColor: [1,0,0,1],
@@ -1264,12 +1265,12 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * Note it is perfectly reasonable to call `setUniforms` multiple times. For example
  *
- *     var uniforms = {
+ *     const uniforms = {
  *       u_someSampler: tex1,
  *       u_someOtherSampler: tex2,
  *     };
  *
- *     var moreUniforms {
+ *     const moreUniforms {
  *       u_someColor: [1,0,0,1],
  *       u_somePosition: [0,1,1],
  *       u_someMatrix: [
@@ -1285,7 +1286,7 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * You can also add WebGLSamplers to uniform samplers as in
  *
- *     var uniforms = {
+ *     const uniforms = {
  *       u_someSampler: {
  *         texture: someWebGLTexture,
  *         sampler: someWebGLSampler,
@@ -1301,13 +1302,13 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *        uniforms.
  *   You can pass multiple objects by putting them in an array or by calling with more arguments.For example
  *
- *     var sharedUniforms = {
+ *     const sharedUniforms = {
  *       u_fogNear: 10,
  *       u_projection: ...
  *       ...
  *     };
  *
- *     var localUniforms = {
+ *     const localUniforms = {
  *       u_world: ...
  *       u_diffuseColor: ...
  *     };
@@ -1326,18 +1327,18 @@ function setBlockUniforms(uniformBlockInfo, values) {
  * @memberOf module:twgl/programs
  */
 function setUniforms(setters, values) {  // eslint-disable-line
-  var actualSetters = setters.uniformSetters || setters;
-  var numArgs = arguments.length;
-  for (var andx = 1; andx < numArgs; ++andx) {
-    var vals = arguments[andx];
+  const actualSetters = setters.uniformSetters || setters;
+  const numArgs = arguments.length;
+  for (let andx = 1; andx < numArgs; ++andx) {
+    const vals = arguments[andx];
     if (Array.isArray(vals)) {
-      var numValues = vals.length;
-      for (var ii = 0; ii < numValues; ++ii) {
+      const numValues = vals.length;
+      for (let ii = 0; ii < numValues; ++ii) {
         setUniforms(actualSetters, vals[ii]);
       }
     } else {
-      for (var name in vals) {
-        var setter = actualSetters[name];
+      for (const name in vals) {
+        const setter = actualSetters[name];
         if (setter) {
           setter(vals[name]);
         }
@@ -1356,18 +1357,18 @@ function setUniforms(setters, values) {  // eslint-disable-line
  * @memberOf module:twgl/programs
  */
 function createAttributeSetters(gl, program) {
-  var attribSetters = {
+  const attribSetters = {
   };
 
-  var numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-  for (var ii = 0; ii < numAttribs; ++ii) {
-    var attribInfo = gl.getActiveAttrib(program, ii);
+  const numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+  for (let ii = 0; ii < numAttribs; ++ii) {
+    const attribInfo = gl.getActiveAttrib(program, ii);
     if (!attribInfo) {
       break;
     }
-    var index = gl.getAttribLocation(program, attribInfo.name);
-    var typeInfo = attrTypeMap[attribInfo.type];
-    var setter = typeInfo.setter(gl, index, typeInfo);
+    const index = gl.getAttribLocation(program, attribInfo.name);
+    const typeInfo = attrTypeMap[attribInfo.type];
+    const setter = typeInfo.setter(gl, index, typeInfo);
     setter.location = index;
     attribSetters[attribInfo.name] = setter;
   }
@@ -1380,15 +1381,15 @@ function createAttributeSetters(gl, program) {
  *
  * Example:
  *
- *     var program = createProgramFromScripts(
+ *     const program = createProgramFromScripts(
  *         gl, ["some-vs", "some-fs");
  *
- *     var attribSetters = createAttributeSetters(program);
+ *     const attribSetters = createAttributeSetters(program);
  *
- *     var positionBuffer = gl.createBuffer();
- *     var texcoordBuffer = gl.createBuffer();
+ *     const positionBuffer = gl.createBuffer();
+ *     const texcoordBuffer = gl.createBuffer();
  *
- *     var attribs = {
+ *     const attribs = {
  *       a_position: {buffer: positionBuffer, numComponents: 3},
  *       a_texcoord: {buffer: texcoordBuffer, numComponents: 2},
  *     };
@@ -1413,7 +1414,7 @@ function createAttributeSetters(gl, program) {
  * float texcoord and 4 value uint8 colors you'd setup your
  * attribs like this
  *
- *     var attribs = {
+ *     const attribs = {
  *       a_position: {buffer: positionBuffer, numComponents: 3},
  *       a_texcoord: {buffer: texcoordBuffer, numComponents: 2},
  *       a_color: {
@@ -1430,8 +1431,8 @@ function createAttributeSetters(gl, program) {
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
  */
 function setAttributes(setters, buffers) {
-  for (var name in buffers) {
-    var setter = setters[name];
+  for (const name in buffers) {
+    const setter = setters[name];
     if (setter) {
       setter(buffers[name]);
     }
@@ -1443,15 +1444,15 @@ function setAttributes(setters, buffers) {
  *
  * Example:
  *
- *     var programInfo = createProgramInfo(
+ *     const programInfo = createProgramInfo(
  *         gl, ["some-vs", "some-fs");
  *
- *     var arrays = {
+ *     const arrays = {
  *       position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
  *       texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
  *     };
  *
- *     var bufferInfo = createBufferInfoFromArrays(gl, arrays);
+ *     const bufferInfo = createBufferInfoFromArrays(gl, arrays);
  *
  *     gl.useProgram(programInfo.program);
  *
@@ -1514,9 +1515,9 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @memberOf module:twgl/programs
  */
 function createProgramInfoFromProgram(gl, program) {
-  var uniformSetters = createUniformSetters(gl, program);
-  var attribSetters = createAttributeSetters(gl, program);
-  var programInfo = {
+  const uniformSetters = createUniformSetters(gl, program);
+  const attribSetters = createAttributeSetters(gl, program);
+  const programInfo = {
     program: program,
     uniformSetters: uniformSetters,
     attribSetters: attribSetters,
@@ -1562,12 +1563,12 @@ function createProgramInfoFromProgram(gl, program) {
  */
 function createProgramInfo(
     gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var good = true;
+  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  let good = true;
   shaderSources = shaderSources.map(function(source) {
     // Lets assume if there is no \n it's an id
     if (source.indexOf("\n") < 0) {
-      var script = document.getElementById(source);
+      const script = document.getElementById(source);
       if (!script) {
         progOptions.errorCallback("no element with id: " + source);
         good = false;
@@ -1580,7 +1581,7 @@ function createProgramInfo(
   if (!good) {
     return null;
   }
-  var program = createProgramFromSources(gl, shaderSources, progOptions);
+  const program = createProgramFromSources(gl, shaderSources, progOptions);
   if (!program) {
     return null;
   }

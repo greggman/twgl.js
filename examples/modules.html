@@ -10,24 +10,24 @@
 
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta property="og:title" content="TWGL.js - amd" />
+    <meta property="og:title" content="TWGL.js - modules" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://twgljs.org/examples/screenshots/amd.png" />
-    <meta property="og:description" content="TWGL.js - amd" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/modules.png" />
+    <meta property="og:description" content="TWGL.js - modules" />
     <meta property="og:url" content="http://twgljs.org" />
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@greggman">
     <meta name="twitter:creator" content="@greggman">
     <meta name="twitter:domain" content="twgljs.org">
-    <meta name="twitter:title" content="TWGL.js - amd">
-    <meta name="twitter:url" content="http://twgljs.org/examples/amd.html">
-    <meta name="twitter:description" content="TWGL.js - amd">
-    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/amd.png">
+    <meta name="twitter:title" content="TWGL.js - modules">
+    <meta name="twitter:url" content="http://twgljs.org/examples/modules.html">
+    <meta name="twitter:description" content="TWGL.js - modules">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/modules.png">
 
     <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 
-    <title>twgl.js - amd</title>
+    <title>twgl.js - modules</title>
     <style>
       body {
           margin: 0;
@@ -49,7 +49,7 @@
   </head>
   <body>
     <canvas id="c"></canvas>
-    <div id="b"><a href="http://twgljs.org">twgl.js</a> - <a href="http://requirejs.org">amd</a></div>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - <a href="http://requirejs.org">modules</a></div>
   </body>
   <script id="vs" type="notjs">
 uniform mat4 u_worldViewProjection;
@@ -115,7 +115,8 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script data-main="js/amd.js" src="/3rdparty/require.js"></script>
+  <script src="../3rdparty/chroma.min.js"></script>
+  <script type="module" src="./modules/modules.js"></script>
 </html>
 
 

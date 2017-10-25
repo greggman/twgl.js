@@ -75,23 +75,23 @@ void main() {
   gl_FragColor = texture2D(u_texture, v_texcoord) * v_color;
 }
  </script>
-  <script src="../dist/3.x/twgl.min.js"></script>
+  <script src="../dist/4.x/twgl.min.js"></script>
   <script>
     "use strict";
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var typedArrayWithPackedData = makePackedData();  // eslint-disable-line
+    const typedArrayWithPackedData = makePackedData();  // eslint-disable-line
 
-    var packedBuffer = twgl.createBufferFromTypedArray(
+    const packedBuffer = twgl.createBufferFromTypedArray(
         gl, typedArrayWithPackedData);
 
-    var typedArrayWithIndices = new Uint16Array([0, 1, 2, 2, 1, 3]);
-    var indexBuffer = twgl.createBufferFromTypedArray(
+    const typedArrayWithIndices = new Uint16Array([0, 1, 2, 2, 1, 3]);
+    const indexBuffer = twgl.createBufferFromTypedArray(
         gl, typedArrayWithIndices, gl.ELEMENT_ARRAY_BUFFER);
 
-    var stride = 24;
-    var handMadeBufferInfo = {
+    const stride = 24;
+    const handMadeBufferInfo = {
       numElements: 6, // or whatever
       indices: indexBuffer,            // remove if no indices
       elementType: gl.UNSIGNED_SHORT,  // remove if no indices
@@ -102,7 +102,7 @@ void main() {
       },
     };
 
-    var uniforms = {
+    const uniforms = {
       u_texture: twgl.createTexture(gl, { src: makeCircleCanvas }),  // eslint-disable-line
     };
 
@@ -116,10 +116,10 @@ void main() {
 
     function makeCircleCanvas() {
       // make a texture with a circle in it
-      var canvas2d = document.createElement("canvas");
+      const canvas2d = document.createElement("canvas");
       canvas2d.width = 64;
       canvas2d.height = 64;
-      var ctx = canvas2d.getContext("2d");
+      const ctx = canvas2d.getContext("2d");
       ctx.fillStyle = "#fff";
       ctx.beginPath();
       ctx.arc(32, 32, 30, 0, Math.PI * 2, false);
@@ -131,38 +131,38 @@ void main() {
     function makePackedData() {
       // there's no easy way to interleave the data unless we use pure binary so
       // lets do it manually.
-      var position = [
+      const position = [
         -1, -1, 0,
          1, -1, 0,
         -1,  1, 0,
          1,  1, 0,
       ];
-      var texcoord = [
+      const texcoord = [
          0,  0,
          1,  0,
          0,  1,
          1,  1,
       ];
-      var color = [
+      const color = [
          255, 0, 0, 255,
          0, 255, 0, 255,
          0, 0, 255, 255,
          255, 255, 255, 255,
       ];
 
-      var stride = 24; // position + texcoord + rgba8
+      const stride = 24; // position + texcoord + rgba8
 
-      var typedArrayWithPackedData = new ArrayBuffer(stride * 4);
-      var floatView = new Float32Array(typedArrayWithPackedData);
-      var uint8View = new Uint8Array(typedArrayWithPackedData);
-      var floatAdd = 1;
-      var uint8Add = stride - 4;
-      var floatOffset = 0;
-      var uint8Offset = stride - 4;
-      var positionOffset = 0;
-      var texcoordOffset = 0;
-      var colorOffset = 0;
-      for (var ii = 0; ii < 4; ++ii) {
+      const typedArrayWithPackedData = new ArrayBuffer(stride * 4);
+      const floatView = new Float32Array(typedArrayWithPackedData);
+      const uint8View = new Uint8Array(typedArrayWithPackedData);
+      const floatAdd = 1;
+      const uint8Add = stride - 4;
+      let floatOffset = 0;
+      let uint8Offset = stride - 4;
+      let positionOffset = 0;
+      let texcoordOffset = 0;
+      let colorOffset = 0;
+      for (let ii = 0; ii < 4; ++ii) {
         floatView[floatOffset++] = position[positionOffset++];
         floatView[floatOffset++] = position[positionOffset++];
         floatView[floatOffset++] = position[positionOffset++];

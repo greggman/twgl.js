@@ -89,17 +89,17 @@ void main() {
   gl_FragColor = v_color;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
-    var m4 = twgl.m4;
+    const m4 = twgl.m4;
     twgl.setDefaults({attribPrefix: "a_"});
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const gl = document.getElementById("c").getContext("webgl");
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var numLines = 100;
-    var arrays = {
+    const numLines = 100;
+    const arrays = {
       position: twgl.primitives.createAugmentedTypedArray(2, numLines * 2),
       color: twgl.primitives.createAugmentedTypedArray(3, numLines * 2, Uint8Array),
     };
@@ -108,31 +108,33 @@ void main() {
       return min + Math.random() * (max - min);
     }
 
-    var hue = rand(0, 360);
-    for (var ii = 0; ii < numLines; ++ii) {
-      var u = ii / numLines;
-      var h = (360 + hue + (Math.abs(u - 0.5) * 100)) % 360;
-      var s = Math.sin(u * Math.PI * 2) * 0.25 + 0.75;
-      var v = 1;
-      var color = chroma.hsv(h, s, v);
+    const hue = rand(0, 360);
+    for (let ii = 0; ii < numLines; ++ii) {
+      const u = ii / numLines;
+      const h = (360 + hue + (Math.abs(u - 0.5) * 100)) % 360;
+      const s = Math.sin(u * Math.PI * 2) * 0.25 + 0.75;
+      const v = 1;
+      const color = chroma.hsv(h, s, v);
       arrays.position.push(u, 1);
       arrays.color.push(color.rgb());
       arrays.position.push(u, 0);
       arrays.color.push(color.brighten().desaturate().rgb());
     }
 
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
-    var offsets = [0, 0, 0, 1];
-    var centers = [0, 0, 0, 0];
-    var mult =    [1, 2, 0, 0];
-    var uniforms = {
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    const offsets = [0, 0, 0, 1];
+    const centers = [0, 0, 0, 0];
+    const mult =    [1, 2, 0, 0];
+    const uniforms = {
       u_matrix: m4.identity(),
       u_offsets: offsets,
       u_centers: centers,
       u_mult: mult,
     };
 
-    function render() {
+    function render(time) {
+      time *= 0.001;
+
       twgl.resizeCanvasToDisplaySize(gl.canvas);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
@@ -140,8 +142,6 @@ void main() {
       gl.enable(gl.CULL_FACE);
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-      var time = Date.now() * 0.001;
 
       offsets[0] = Math.sin(time);
       offsets[1] = Math.sin(time * 0.13) * Math.PI * 2;
@@ -157,7 +157,7 @@ void main() {
 
       gl.lineWidth(2);
 
-      var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
       m4.ortho(-aspect, aspect, 1, -1, -1, 1, uniforms.u_matrix);
 
       gl.useProgram(programInfo.program);
@@ -168,7 +168,7 @@ void main() {
 
       requestAnimationFrame(render);
     }
-    render();
+    requestAnimationFrame(render);
 
   </script>
 </html>

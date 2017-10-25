@@ -53,7 +53,7 @@
  * @module twgl/v3
  */
 
-var VecType = Float32Array;
+let VecType = Float32Array;
 
 /**
  * A JavaScript array with 3 values or a Float32Array with 3 values.
@@ -69,7 +69,7 @@ var VecType = Float32Array;
  * @return {constructor} previous constructor for Vec3
  */
 function setDefaultType(ctor) {
-  var oldType = VecType;
+  const oldType = VecType;
   VecType = ctor;
   return oldType;
 }
@@ -80,7 +80,7 @@ function setDefaultType(ctor) {
  * @memberOf module:twgl/v3
  */
 function create(x, y, z) {
-  var dst = new VecType(3);
+  const dst = new VecType(3);
   if (x) {
     dst[0] = x;
   }
@@ -195,8 +195,8 @@ function divScalar(v, k, dst) {
 function cross(a, b, dst) {
   dst = dst || new VecType(3);
 
-  var t1 = a[2] * b[0] - a[0] * b[2];
-  var t2 = a[0] * b[1] - a[1] * b[0];
+  const t1 = a[2] * b[0] - a[0] * b[2];
+  const t2 = a[0] * b[1] - a[1] * b[0];
   dst[0] = a[1] * b[2] - a[2] * b[1];
   dst[1] = t1;
   dst[2] = t2;
@@ -274,8 +274,8 @@ function distanceSq(a, b) {
 function normalize(a, dst) {
   dst = dst || new VecType(3);
 
-  var lenSq = a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
-  var len = Math.sqrt(lenSq);
+  const lenSq = a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
+  const len = Math.sqrt(lenSq);
   if (len > 0.00001) {
     dst[0] = a[0] / len;
     dst[1] = a[1] / len;

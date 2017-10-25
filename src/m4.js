@@ -37,11 +37,11 @@ import * as v3 from './v3.js';
  * Almost all functions take an optional `dst` argument. If it is not passed in the
  * functions will create a new matrix. In other words you can do this
  *
- *     var mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
+ *     const mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
  *
  * or
  *
- *     var mat = m4.create();
+ *     const mat = m4.create();
  *     m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.
  *
  * The first style is often easier but depending on where it's used it generates garbage where
@@ -49,17 +49,17 @@ import * as v3 from './v3.js';
  *
  * It is always save to pass any matrix as the destination. So for example
  *
- *     var mat = m4.identity();
- *     var trans = m4.translation([1, 2, 3]);
+ *     const mat = m4.identity();
+ *     const trans = m4.translation([1, 2, 3]);
  *     m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
  *
  * @module twgl/m4
  */
-var MatType = Float32Array;
+let MatType = Float32Array;
 
-var tempV3a = v3.create();
-var tempV3b = v3.create();
-var tempV3c = v3.create();
+const tempV3a = v3.create();
+const tempV3b = v3.create();
+const tempV3c = v3.create();
 
 /**
  * A JavaScript array with 16 values or a Float32Array with 16 values.
@@ -75,7 +75,7 @@ var tempV3c = v3.create();
  * @return {constructor} previous constructor for Mat4
  */
 function setDefaultType(ctor) {
-  var oldType = MatType;
+  const oldType = MatType;
   MatType = ctor;
   return oldType;
 }
@@ -180,7 +180,7 @@ function identity(dst) {
  function transpose(m, dst) {
   dst = dst || new MatType(16);
   if (dst === m) {
-    var t;
+    let t;
 
     t = m[1];
     m[1] = m[4];
@@ -208,22 +208,22 @@ function identity(dst) {
     return dst;
   }
 
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var m30 = m[3 * 4 + 0];
-  var m31 = m[3 * 4 + 1];
-  var m32 = m[3 * 4 + 2];
-  var m33 = m[3 * 4 + 3];
+  const m00 = m[0 * 4 + 0];
+  const m01 = m[0 * 4 + 1];
+  const m02 = m[0 * 4 + 2];
+  const m03 = m[0 * 4 + 3];
+  const m10 = m[1 * 4 + 0];
+  const m11 = m[1 * 4 + 1];
+  const m12 = m[1 * 4 + 2];
+  const m13 = m[1 * 4 + 3];
+  const m20 = m[2 * 4 + 0];
+  const m21 = m[2 * 4 + 1];
+  const m22 = m[2 * 4 + 2];
+  const m23 = m[2 * 4 + 3];
+  const m30 = m[3 * 4 + 0];
+  const m31 = m[3 * 4 + 1];
+  const m32 = m[3 * 4 + 2];
+  const m33 = m[3 * 4 + 3];
 
   dst[ 0] = m00;
   dst[ 1] = m10;
@@ -255,57 +255,57 @@ function identity(dst) {
 function inverse(m, dst) {
   dst = dst || new MatType(16);
 
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var m30 = m[3 * 4 + 0];
-  var m31 = m[3 * 4 + 1];
-  var m32 = m[3 * 4 + 2];
-  var m33 = m[3 * 4 + 3];
-  var tmp_0  = m22 * m33;
-  var tmp_1  = m32 * m23;
-  var tmp_2  = m12 * m33;
-  var tmp_3  = m32 * m13;
-  var tmp_4  = m12 * m23;
-  var tmp_5  = m22 * m13;
-  var tmp_6  = m02 * m33;
-  var tmp_7  = m32 * m03;
-  var tmp_8  = m02 * m23;
-  var tmp_9  = m22 * m03;
-  var tmp_10 = m02 * m13;
-  var tmp_11 = m12 * m03;
-  var tmp_12 = m20 * m31;
-  var tmp_13 = m30 * m21;
-  var tmp_14 = m10 * m31;
-  var tmp_15 = m30 * m11;
-  var tmp_16 = m10 * m21;
-  var tmp_17 = m20 * m11;
-  var tmp_18 = m00 * m31;
-  var tmp_19 = m30 * m01;
-  var tmp_20 = m00 * m21;
-  var tmp_21 = m20 * m01;
-  var tmp_22 = m00 * m11;
-  var tmp_23 = m10 * m01;
+  const m00 = m[0 * 4 + 0];
+  const m01 = m[0 * 4 + 1];
+  const m02 = m[0 * 4 + 2];
+  const m03 = m[0 * 4 + 3];
+  const m10 = m[1 * 4 + 0];
+  const m11 = m[1 * 4 + 1];
+  const m12 = m[1 * 4 + 2];
+  const m13 = m[1 * 4 + 3];
+  const m20 = m[2 * 4 + 0];
+  const m21 = m[2 * 4 + 1];
+  const m22 = m[2 * 4 + 2];
+  const m23 = m[2 * 4 + 3];
+  const m30 = m[3 * 4 + 0];
+  const m31 = m[3 * 4 + 1];
+  const m32 = m[3 * 4 + 2];
+  const m33 = m[3 * 4 + 3];
+  const tmp_0  = m22 * m33;
+  const tmp_1  = m32 * m23;
+  const tmp_2  = m12 * m33;
+  const tmp_3  = m32 * m13;
+  const tmp_4  = m12 * m23;
+  const tmp_5  = m22 * m13;
+  const tmp_6  = m02 * m33;
+  const tmp_7  = m32 * m03;
+  const tmp_8  = m02 * m23;
+  const tmp_9  = m22 * m03;
+  const tmp_10 = m02 * m13;
+  const tmp_11 = m12 * m03;
+  const tmp_12 = m20 * m31;
+  const tmp_13 = m30 * m21;
+  const tmp_14 = m10 * m31;
+  const tmp_15 = m30 * m11;
+  const tmp_16 = m10 * m21;
+  const tmp_17 = m20 * m11;
+  const tmp_18 = m00 * m31;
+  const tmp_19 = m30 * m01;
+  const tmp_20 = m00 * m21;
+  const tmp_21 = m20 * m01;
+  const tmp_22 = m00 * m11;
+  const tmp_23 = m10 * m01;
 
-  var t0 = (tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31) -
+  const t0 = (tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31) -
       (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
-  var t1 = (tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31) -
+  const t1 = (tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31) -
       (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
-  var t2 = (tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31) -
+  const t2 = (tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31) -
       (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
-  var t3 = (tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21) -
+  const t3 = (tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21) -
       (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
 
-  var d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
+  const d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
 
   dst[ 0] = d * t0;
   dst[ 1] = d * t1;
@@ -350,38 +350,38 @@ function inverse(m, dst) {
 function multiply(a, b, dst) {
   dst = dst || new MatType(16);
 
-  var a00 = a[0];
-  var a01 = a[1];
-  var a02 = a[2];
-  var a03 = a[3];
-  var a10 = a[ 4 + 0];
-  var a11 = a[ 4 + 1];
-  var a12 = a[ 4 + 2];
-  var a13 = a[ 4 + 3];
-  var a20 = a[ 8 + 0];
-  var a21 = a[ 8 + 1];
-  var a22 = a[ 8 + 2];
-  var a23 = a[ 8 + 3];
-  var a30 = a[12 + 0];
-  var a31 = a[12 + 1];
-  var a32 = a[12 + 2];
-  var a33 = a[12 + 3];
-  var b00 = b[0];
-  var b01 = b[1];
-  var b02 = b[2];
-  var b03 = b[3];
-  var b10 = b[ 4 + 0];
-  var b11 = b[ 4 + 1];
-  var b12 = b[ 4 + 2];
-  var b13 = b[ 4 + 3];
-  var b20 = b[ 8 + 0];
-  var b21 = b[ 8 + 1];
-  var b22 = b[ 8 + 2];
-  var b23 = b[ 8 + 3];
-  var b30 = b[12 + 0];
-  var b31 = b[12 + 1];
-  var b32 = b[12 + 2];
-  var b33 = b[12 + 3];
+  const a00 = a[0];
+  const a01 = a[1];
+  const a02 = a[2];
+  const a03 = a[3];
+  const a10 = a[ 4 + 0];
+  const a11 = a[ 4 + 1];
+  const a12 = a[ 4 + 2];
+  const a13 = a[ 4 + 3];
+  const a20 = a[ 8 + 0];
+  const a21 = a[ 8 + 1];
+  const a22 = a[ 8 + 2];
+  const a23 = a[ 8 + 3];
+  const a30 = a[12 + 0];
+  const a31 = a[12 + 1];
+  const a32 = a[12 + 2];
+  const a33 = a[12 + 3];
+  const b00 = b[0];
+  const b01 = b[1];
+  const b02 = b[2];
+  const b03 = b[3];
+  const b10 = b[ 4 + 0];
+  const b11 = b[ 4 + 1];
+  const b12 = b[ 4 + 2];
+  const b13 = b[ 4 + 3];
+  const b20 = b[ 8 + 0];
+  const b21 = b[ 8 + 1];
+  const b22 = b[ 8 + 2];
+  const b23 = b[ 8 + 3];
+  const b30 = b[12 + 0];
+  const b31 = b[12 + 1];
+  const b32 = b[12 + 2];
+  const b33 = b[12 + 3];
 
   dst[ 0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
   dst[ 1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
@@ -461,7 +461,7 @@ function getTranslation(m, dst) {
  */
 function getAxis(m, axis, dst) {
   dst = dst || v3.create();
-  var off = axis * 4;
+  const off = axis * 4;
   dst[0] = m[off + 0];
   dst[1] = m[off + 1];
   dst[2] = m[off + 2];
@@ -480,7 +480,7 @@ function setAxis(a, v, axis, dst) {
   if (dst !== a) {
     dst = copy(a, dst);
   }
-  var off = axis * 4;
+  const off = axis * 4;
   dst[off + 0] = v[0];
   dst[off + 1] = v[1];
   dst[off + 2] = v[2];
@@ -511,8 +511,8 @@ function setAxis(a, v, axis, dst) {
 function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
   dst = dst || new MatType(16);
 
-  var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
-  var rangeInv = 1.0 / (zNear - zFar);
+  const f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
+  const rangeInv = 1.0 / (zNear - zFar);
 
   dst[0]  = f / aspect;
   dst[1]  = 0;
@@ -601,9 +601,9 @@ function ortho(left, right, bottom, top, near, far, dst) {
 function frustum(left, right, bottom, top, near, far, dst) {
   dst = dst || new MatType(16);
 
-  var dx = (right - left);
-  var dy = (top - bottom);
-  var dz = (near - far);
+  const dx = (right - left);
+  const dy = (top - bottom);
+  const dz = (near - far);
 
   dst[ 0] = 2 * near / dx;
   dst[ 1] = 0;
@@ -642,9 +642,9 @@ function frustum(left, right, bottom, top, near, far, dst) {
 function lookAt(eye, target, up, dst) {
   dst = dst || new MatType(16);
 
-  var xAxis = tempV3a;
-  var yAxis = tempV3b;
-  var zAxis = tempV3c;
+  const xAxis = tempV3a;
+  const yAxis = tempV3b;
+  const zAxis = tempV3c;
 
   v3.normalize(
       v3.subtract(eye, target, zAxis), zAxis);
@@ -713,25 +713,25 @@ function translation(v, dst) {
 function translate(m, v, dst) {
   dst = dst || new MatType(16);
 
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var m00 = m[0];
-  var m01 = m[1];
-  var m02 = m[2];
-  var m03 = m[3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var m30 = m[3 * 4 + 0];
-  var m31 = m[3 * 4 + 1];
-  var m32 = m[3 * 4 + 2];
-  var m33 = m[3 * 4 + 3];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const m00 = m[0];
+  const m01 = m[1];
+  const m02 = m[2];
+  const m03 = m[3];
+  const m10 = m[1 * 4 + 0];
+  const m11 = m[1 * 4 + 1];
+  const m12 = m[1 * 4 + 2];
+  const m13 = m[1 * 4 + 3];
+  const m20 = m[2 * 4 + 0];
+  const m21 = m[2 * 4 + 1];
+  const m22 = m[2 * 4 + 2];
+  const m23 = m[2 * 4 + 3];
+  const m30 = m[3 * 4 + 0];
+  const m31 = m[3 * 4 + 1];
+  const m32 = m[3 * 4 + 2];
+  const m33 = m[3 * 4 + 3];
 
   if (m !== dst) {
     dst[ 0] = m00;
@@ -766,8 +766,8 @@ function translate(m, v, dst) {
 function rotationX(angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
 
   dst[ 0] = 1;
   dst[ 1] = 0;
@@ -801,16 +801,16 @@ function rotationX(angleInRadians, dst) {
 function rotateX(m, angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var m10 = m[4];
-  var m11 = m[5];
-  var m12 = m[6];
-  var m13 = m[7];
-  var m20 = m[8];
-  var m21 = m[9];
-  var m22 = m[10];
-  var m23 = m[11];
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
+  const m10 = m[4];
+  const m11 = m[5];
+  const m12 = m[6];
+  const m13 = m[7];
+  const m20 = m[8];
+  const m21 = m[9];
+  const m22 = m[10];
+  const m23 = m[11];
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
 
   dst[4]  = c * m10 + s * m20;
   dst[5]  = c * m11 + s * m21;
@@ -845,8 +845,8 @@ function rotateX(m, angleInRadians, dst) {
 function rotationY(angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
 
   dst[ 0] = c;
   dst[ 1] = 0;
@@ -880,16 +880,16 @@ function rotationY(angleInRadians, dst) {
 function rotateY(m, angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
+  const m00 = m[0 * 4 + 0];
+  const m01 = m[0 * 4 + 1];
+  const m02 = m[0 * 4 + 2];
+  const m03 = m[0 * 4 + 3];
+  const m20 = m[2 * 4 + 0];
+  const m21 = m[2 * 4 + 1];
+  const m22 = m[2 * 4 + 2];
+  const m23 = m[2 * 4 + 3];
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
 
   dst[ 0] = c * m00 - s * m20;
   dst[ 1] = c * m01 - s * m21;
@@ -924,8 +924,8 @@ function rotateY(m, angleInRadians, dst) {
 function rotationZ(angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
 
   dst[ 0] = c;
   dst[ 1] = s;
@@ -959,16 +959,16 @@ function rotationZ(angleInRadians, dst) {
 function rotateZ(m, angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
+  const m00 = m[0 * 4 + 0];
+  const m01 = m[0 * 4 + 1];
+  const m02 = m[0 * 4 + 2];
+  const m03 = m[0 * 4 + 3];
+  const m10 = m[1 * 4 + 0];
+  const m11 = m[1 * 4 + 1];
+  const m12 = m[1 * 4 + 2];
+  const m13 = m[1 * 4 + 3];
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
 
   dst[ 0] = c * m00 + s * m10;
   dst[ 1] = c * m01 + s * m11;
@@ -1007,19 +1007,19 @@ function rotateZ(m, angleInRadians, dst) {
 function axisRotation(axis, angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var x = axis[0];
-  var y = axis[1];
-  var z = axis[2];
-  var n = Math.sqrt(x * x + y * y + z * z);
+  let x = axis[0];
+  let y = axis[1];
+  let z = axis[2];
+  const n = Math.sqrt(x * x + y * y + z * z);
   x /= n;
   y /= n;
   z /= n;
-  var xx = x * x;
-  var yy = y * y;
-  var zz = z * z;
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-  var oneMinusCosine = 1 - c;
+  const xx = x * x;
+  const yy = y * y;
+  const zz = z * z;
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
+  const oneMinusCosine = 1 - c;
 
   dst[ 0] = xx + (1 - xx) * c;
   dst[ 1] = x * y * oneMinusCosine + z * s;
@@ -1055,42 +1055,42 @@ function axisRotation(axis, angleInRadians, dst) {
 function axisRotate(m, axis, angleInRadians, dst) {
   dst = dst || new MatType(16);
 
-  var x = axis[0];
-  var y = axis[1];
-  var z = axis[2];
-  var n = Math.sqrt(x * x + y * y + z * z);
+  let x = axis[0];
+  let y = axis[1];
+  let z = axis[2];
+  const n = Math.sqrt(x * x + y * y + z * z);
   x /= n;
   y /= n;
   z /= n;
-  var xx = x * x;
-  var yy = y * y;
-  var zz = z * z;
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-  var oneMinusCosine = 1 - c;
+  const xx = x * x;
+  const yy = y * y;
+  const zz = z * z;
+  const c = Math.cos(angleInRadians);
+  const s = Math.sin(angleInRadians);
+  const oneMinusCosine = 1 - c;
 
-  var r00 = xx + (1 - xx) * c;
-  var r01 = x * y * oneMinusCosine + z * s;
-  var r02 = x * z * oneMinusCosine - y * s;
-  var r10 = x * y * oneMinusCosine - z * s;
-  var r11 = yy + (1 - yy) * c;
-  var r12 = y * z * oneMinusCosine + x * s;
-  var r20 = x * z * oneMinusCosine + y * s;
-  var r21 = y * z * oneMinusCosine - x * s;
-  var r22 = zz + (1 - zz) * c;
+  const r00 = xx + (1 - xx) * c;
+  const r01 = x * y * oneMinusCosine + z * s;
+  const r02 = x * z * oneMinusCosine - y * s;
+  const r10 = x * y * oneMinusCosine - z * s;
+  const r11 = yy + (1 - yy) * c;
+  const r12 = y * z * oneMinusCosine + x * s;
+  const r20 = x * z * oneMinusCosine + y * s;
+  const r21 = y * z * oneMinusCosine - x * s;
+  const r22 = zz + (1 - zz) * c;
 
-  var m00 = m[0];
-  var m01 = m[1];
-  var m02 = m[2];
-  var m03 = m[3];
-  var m10 = m[4];
-  var m11 = m[5];
-  var m12 = m[6];
-  var m13 = m[7];
-  var m20 = m[8];
-  var m21 = m[9];
-  var m22 = m[10];
-  var m23 = m[11];
+  const m00 = m[0];
+  const m01 = m[1];
+  const m02 = m[2];
+  const m03 = m[3];
+  const m10 = m[4];
+  const m11 = m[5];
+  const m12 = m[6];
+  const m13 = m[7];
+  const m20 = m[8];
+  const m21 = m[9];
+  const m22 = m[10];
+  const m23 = m[11];
 
   dst[ 0] = r00 * m00 + r01 * m10 + r02 * m20;
   dst[ 1] = r00 * m01 + r01 * m11 + r02 * m21;
@@ -1162,9 +1162,9 @@ function scaling(v, dst) {
 function scale(m, v, dst) {
   dst = dst || new MatType(16);
 
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
 
   dst[ 0] = v0 * m[0 * 4 + 0];
   dst[ 1] = v0 * m[0 * 4 + 1];
@@ -1201,10 +1201,10 @@ function scale(m, v, dst) {
  */
 function transformPoint(m, v, dst) {
   dst = dst || v3.create();
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
 
   dst[0] = (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d;
   dst[1] = (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d;
@@ -1229,9 +1229,9 @@ function transformPoint(m, v, dst) {
 function transformDirection(m, v, dst) {
   dst = dst || v3.create();
 
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
 
   dst[0] = v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0];
   dst[1] = v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1];
@@ -1257,10 +1257,10 @@ function transformDirection(m, v, dst) {
  */
 function transformNormal(m, v, dst) {
   dst = dst || v3.create();
-  var mi = inverse(m);
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
+  const mi = inverse(m);
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
 
   dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
   dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];

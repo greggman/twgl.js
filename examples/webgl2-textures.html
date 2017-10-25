@@ -190,22 +190,22 @@ void main() {
   outColor.rbg *= outColor.a;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
 "use strict";
 
 // adapted from http://stackoverflow.com/a/6162687/128511
-var toHalf = (function() {
+const toHalf = (function() {
 
-  var floatView = new Float32Array(1);
-  var int32View = new Int32Array(floatView.buffer);
+  const floatView = new Float32Array(1);
+  const int32View = new Int32Array(floatView.buffer);
 
   return function toHalf(fval) {
     floatView[0] = fval;
-    var fbits = int32View[0];
-    var sign  = (fbits >> 16) & 0x8000;         // sign only
-    var val   = (fbits & 0x7fffffff) + 0x1000;  // rounded value
+    const fbits = int32View[0];
+    const sign  = (fbits >> 16) & 0x8000;         // sign only
+    let val     = (fbits & 0x7fffffff) + 0x1000;  // rounded value
 
     if (val >= 0x47800000) {                    // might be or become NaN/Inf
       if ((fbits & 0x7fffffff) >= 0x47800000) {
@@ -232,7 +232,7 @@ var toHalf = (function() {
 }());
 
 // Adapted from http://gamedev.stackexchange.com/a/17329/79
-var to11uf = (function() {
+const to11uf = (function() {
   const F11_EXPONENT_BITS = 0x1F;
   const F11_EXPONENT_SHIFT = 6;
   const F11_EXPONENT_BIAS = 15;
@@ -245,7 +245,7 @@ var to11uf = (function() {
 
   return function(val) {
     floatView[0] = val;
-    let f32 = int32View[0];
+    const f32 = int32View[0];
     let f11 = 0;
     /* Decode IEEE 754 little-endian 32-bit floating-point value */
     if (f32 & 0x80000000) {
@@ -277,7 +277,7 @@ var to11uf = (function() {
 }());
 
 // Adapted from http://gamedev.stackexchange.com/a/17329/79
-var to10uf = (function() {
+const to10uf = (function() {
   const F10_EXPONENT_BITS = 0x1F;
   const F10_EXPONENT_SHIFT = 5;
   const F10_EXPONENT_BIAS = 15;
@@ -290,7 +290,7 @@ var to10uf = (function() {
 
   return function(val) {
     floatView[0] = val;
-    let f32 = int32View[0];
+    const f32 = int32View[0];
     let f10 = 0;
     /* Decode IEEE 754 little-endian 32-bit floating-point value */
     if (f32 & 0x80000000) {
@@ -324,19 +324,19 @@ var to10uf = (function() {
 
 function main() {
   twgl.setDefaults({attribPrefix: "a_"});
-  var m4 = twgl.m4;
-  var gl = document.getElementById("c").getContext("webgl2");
+  const m4 = twgl.m4;
+  const gl = document.getElementById("c").getContext("webgl2");
   if (!gl) {
     document.querySelector("#no-webgl2").style.display = "";
     return;
   }
-  var onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"], ["a_texcoord", "a_position"]);
-  var intProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "int-one-point-fs"], ["a_texcoord", "a_position"]);
-  var uintProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "uint-one-point-fs"], ["a_texcoord", "a_position"]);
-  var normProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "norm-one-point-fs"], ["a_texcoord", "a_position"]);
-  var floatProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "float-one-point-fs"], ["a_texcoord", "a_position"]);
+  const onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"], ["a_texcoord", "a_position"]);
+  const intProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "int-one-point-fs"], ["a_texcoord", "a_position"]);
+  const uintProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "uint-one-point-fs"], ["a_texcoord", "a_position"]);
+  const normProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "norm-one-point-fs"], ["a_texcoord", "a_position"]);
+  const floatProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "float-one-point-fs"], ["a_texcoord", "a_position"]);
 
-  var shapes = [
+  const shapes = [
     twgl.primitives.createCubeBufferInfo(gl, 2),
     twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
     twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
@@ -352,9 +352,9 @@ function main() {
   }
 
   // Shared values
-  var camera = m4.identity();
-  var view = m4.identity();
-  var viewProjection = m4.identity();
+  const camera = m4.identity();
+  const view = m4.identity();
+  const viewProjection = m4.identity();
 
   function rgb565(r, g, b) {
     return (((r * 31) | 0) << 11) |
@@ -1083,7 +1083,7 @@ function main() {
 //  200
 
 
-  for (var ii = 0; ii < numObjects; ++ii) {
+  for (let ii = 0; ii < numObjects; ++ii) {
     const shape = shapes[ii % shapes.length];
     const texName = twoDTextureNames[ii % twoDTextureNames.length];
     const texture = textures[texName];
@@ -1130,20 +1130,20 @@ function main() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var radius = 20;
-    var orbitSpeed = time * 0.1;
-    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-    var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
-    var target = [0, 0, 0];
-    var up = [0, 1, 0];
+    const radius = 20;
+    const orbitSpeed = time * 0.1;
+    const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+    const eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
 
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);
     m4.multiply(projection, view, viewProjection);
 
     objects.forEach(function(obj) {
-      var uni = obj.uniforms;
-      var world = uni.u_world;
+      const uni = obj.uniforms;
+      const world = uni.u_world;
       m4.identity(world);
       m4.rotateY(world, time * obj.ySpeed, world);
       m4.rotateZ(world, time * obj.zSpeed, world);

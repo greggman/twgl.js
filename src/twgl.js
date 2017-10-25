@@ -62,8 +62,8 @@ import * as utils from './utils.js';
  */
 
 // make sure we don't see a global gl
-var gl = undefined;  // eslint-disable-line
-var defaults = {
+const gl = undefined;  // eslint-disable-line
+const defaults = {
   addExtensionsToContext: true,
 };
 
@@ -90,7 +90,7 @@ var defaults = {
  *
  *   In otherwords I'll create arrays of geometry like this
  *
- *       var arrays = {
+ *       const arrays = {
  *         position: ...
  *         normal: ...
  *         texcoord: ...
@@ -150,11 +150,11 @@ function addExtensionToContext(gl, extensionName) {
   if (ext) {
     const fnSuffix = prefixRE.exec(extensionName)[1];
     const enumSuffix = '_' + fnSuffix;
-    for (var key in ext) {
+    for (const key in ext) {
       const value = ext[key];
       const isFunc = typeof (value) === 'function';
       const suffix = isFunc ? fnSuffix : enumSuffix;
-      var name = key;
+      let name = key;
       // examples of where this is not true are WEBGL_compressed_texture_s3tc
       // and WEBGL_compressed_texture_pvrtc
       if (key.endsWith(suffix)) {
@@ -251,7 +251,7 @@ const supportedExtensions = [
  * @memberOf module:twgl
  */
 function addExtensionsToContext(gl) {
-  for (var ii = 0; ii < supportedExtensions.length; ++ii) {
+  for (let ii = 0; ii < supportedExtensions.length; ++ii) {
     addExtensionToContext(gl, supportedExtensions[ii]);
   }
 }
@@ -264,9 +264,9 @@ function addExtensionsToContext(gl) {
  * @return {WebGLRenderingContext} The created context.
  */
 function create3DContext(canvas, opt_attribs) {
-  var names = ["webgl", "experimental-webgl"];
-  var context = null;
-  for (var ii = 0; ii < names.length; ++ii) {
+  const names = ["webgl", "experimental-webgl"];
+  let context = null;
+  for (let ii = 0; ii < names.length; ++ii) {
     context = canvas.getContext(names[ii], opt_attribs);
     if (context) {
       if (defaults.addExtensionsToContext) {
@@ -290,7 +290,7 @@ function create3DContext(canvas, opt_attribs) {
  * @memberOf module:twgl
  */
 function getWebGLContext(canvas, opt_attribs) {
-  var gl = create3DContext(canvas, opt_attribs);
+  const gl = create3DContext(canvas, opt_attribs);
   return gl;
 }
 
@@ -309,9 +309,9 @@ function getWebGLContext(canvas, opt_attribs) {
  * @return {WebGLRenderingContext} The created context.
  */
 function createContext(canvas, opt_attribs) {
-  var names = ["webgl2", "webgl", "experimental-webgl"];
-  var context = null;
-  for (var ii = 0; ii < names.length; ++ii) {
+  const names = ["webgl2", "webgl", "experimental-webgl"];
+  let context = null;
+  for (let ii = 0; ii < names.length; ++ii) {
     context = canvas.getContext(names[ii], opt_attribs);
     if (context) {
       if (defaults.addExtensionsToContext) {
@@ -342,7 +342,7 @@ function createContext(canvas, opt_attribs) {
  * @memberOf module:twgl
  */
 function getContext(canvas, opt_attribs) {
-  var gl = createContext(canvas, opt_attribs);
+  const gl = createContext(canvas, opt_attribs);
   return gl;
 }
 
@@ -356,8 +356,8 @@ function getContext(canvas, opt_attribs) {
 function resizeCanvasToDisplaySize(canvas, multiplier) {
   multiplier = multiplier || 1;
   multiplier = Math.max(0, multiplier);
-  var width  = canvas.clientWidth  * multiplier | 0;
-  var height = canvas.clientHeight * multiplier | 0;
+  const width  = canvas.clientWidth  * multiplier | 0;
+  const height = canvas.clientHeight * multiplier | 0;
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width;
     canvas.height = height;

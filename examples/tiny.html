@@ -76,22 +76,22 @@ void main() {
   gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
 }
   </script>
-  <script src="../dist/3.x/twgl.min.js"></script>
+  <script src="../dist/4.x/twgl.min.js"></script>
   <script>
     "use strict";
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var arrays = {
+    const arrays = {
       position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
     };
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
     function render(time) {
       twgl.resizeCanvasToDisplaySize(gl.canvas);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-      var uniforms = {
+      const uniforms = {
         time: time * 0.001,
         resolution: [gl.canvas.width, gl.canvas.height],
       };

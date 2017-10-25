@@ -98,7 +98,7 @@
         </div>
     </div>
   </body>
-  <script src="../dist/3.x/twgl-full.min.js"></script>>
+  <script src="../dist/4.x/twgl-full.min.js"></script>>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
 "use strict";
@@ -106,18 +106,18 @@
 function main() {
   const m4 = twgl.m4;
   twgl.setDefaults({attribPrefix: "a_"});
-  var gl = twgl.getContext(document.getElementById("c"));
+  const gl = twgl.getContext(document.getElementById("c"));
   console.log("using: " + gl.getParameter(gl.VERSION));  // eslint-disable-line
   if (!twgl.isWebGL2(gl)) {
     alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
     return;
   }
 
-  var size = 128;
-  var sizeMinus1 = size - 1;
-  var half = size / 2;
+  const size = 128;
+  const sizeMinus1 = size - 1;
+  const half = size / 2;
 
-  var texture = twgl.createTexture(gl, {
+  const texture = twgl.createTexture(gl, {
     target: gl.TEXTURE_3D,
     width: size,
     height: size,
@@ -167,7 +167,7 @@ function main() {
   for (let y = 0; y < size; ++y) {
     const v = y / (sizeMinus1);
 
-    var ctx = document.createElement("canvas").getContext("2d");
+    const ctx = document.createElement("canvas").getContext("2d");
     ctx.canvas.width = size;
     ctx.canvas.height = size;
     ctxs.push(ctx);
@@ -175,7 +175,7 @@ function main() {
     drawCircle(y, chroma.hsv(v * 360, 1, 0.5).css(), half, half, Math.abs(Math.sin(v * Math.PI * 2)) * half);
   }
 
-  var vs = `
+  const vs = `
 #version 300 es
 
 out vec3 v_texcoord;
@@ -222,7 +222,7 @@ void main() {
 }
 `;
 
-  var fs = `
+  const fs = `
 #version 300 es
 precision mediump float;
 precision mediump sampler3D;
@@ -267,9 +267,9 @@ void main() {
   `;
 
 
-  var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+  const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
-  var uniforms = {
+  const uniforms = {
     u_volume: texture,
     u_worldViewProjection: m4.identity(),
     u_lightWorldPos: [0.3, 1.3, -2],
@@ -303,7 +303,7 @@ void main() {
   });
 
   document.querySelector("#filter").addEventListener('change', e => {
-    var mode = e.target.checked ? gl.LINEAR : gl.NEAREST;
+    const mode = e.target.checked ? gl.LINEAR : gl.NEAREST;
     gl.bindTexture(gl.TEXTURE_3D, texture);
     gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, mode);
     gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, mode);
@@ -335,7 +335,7 @@ void main() {
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const zNear = 0.01;
     const zFar = 10;
-    let projection = m4.perspective(fov, aspect, zNear, zFar);
+    const projection = m4.perspective(fov, aspect, zNear, zFar);
 
     const ctime = 0; //time * 0.1;
     const cr = 1.2 - zoom * .7;
@@ -345,7 +345,7 @@ void main() {
     const camera = m4.lookAt(eye, target, up);
     const view = m4.inverse(camera);
 
-    let viewProjection = m4.multiply(projection, view);
+    const viewProjection = m4.multiply(projection, view);
     let world = m4.rotationY(time * 0.1);
     world = m4.translate(world, [-0.5, -0.5, -0.5]);
 

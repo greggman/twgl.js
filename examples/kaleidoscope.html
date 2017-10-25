@@ -154,35 +154,35 @@ void main() {
 }
   </script>
   <script src="../3rdparty/chroma.min.js"></script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script>
     /*eslint no-unused-vars:0*/
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-    var kaleidProgramInfo = twgl.createProgramInfo(gl, ["kaleid-vs", "kaleid-fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const kaleidProgramInfo = twgl.createProgramInfo(gl, ["kaleid-vs", "kaleid-fs"]);
 
     function createUnitQuadsBufferInfo(gl, across, down) {
-      var numQuads    = across * down;
-      var numVertices = 4 * numQuads;
-      var numIndices  = 6 * numQuads;
+      const numQuads    = across * down;
+      const numVertices = 4 * numQuads;
+      const numIndices  = 6 * numQuads;
 
-      var positions = twgl.primitives.createAugmentedTypedArray(3, numVertices);
-      var ids       = twgl.primitives.createAugmentedTypedArray(2, numVertices, Uint16Array);
-      var indices   = twgl.primitives.createAugmentedTypedArray(3, numIndices, Uint16Array);
+      const positions = twgl.primitives.createAugmentedTypedArray(3, numVertices);
+      const ids       = twgl.primitives.createAugmentedTypedArray(2, numVertices, Uint16Array);
+      const indices   = twgl.primitives.createAugmentedTypedArray(3, numIndices, Uint16Array);
 
-      var verts = [
+      const verts = [
         -1, -1, -1,
          1, -1,  0,
         -1,  1,  0,
          1,  1,  1,
       ];
 
-      var ndx = 0;
-      for (var yy = 0; yy < down; ++yy) {
-        for (var xx = 0; xx < across; ++xx) {
+      let ndx = 0;
+      for (let yy = 0; yy < down; ++yy) {
+        for (let xx = 0; xx < across; ++xx) {
           positions.push(verts);
           ids.push(xx, yy, xx, yy, xx, yy, xx, yy);
           indices.push(ndx + 0, ndx + 1, ndx + 2, ndx + 2, ndx + 1, ndx + 3);
@@ -198,16 +198,16 @@ void main() {
     }
 
 
-    var segments = 20;
-    var cyAcross = 12;
-    var cyDown = 25;
-    var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
-    var screenBufferInfo = createUnitQuadsBufferInfo(gl, segments, 1);
+    const segments = 20;
+    const cyAcross = 12;
+    const cyDown = 25;
+    const bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
+    const screenBufferInfo = createUnitQuadsBufferInfo(gl, segments, 1);
 
-    var fbSize = 1024;
-    var framebufferInfo = twgl.createFramebufferInfo(gl, undefined, fbSize, fbSize);
+    const fbSize = 1024;
+    const framebufferInfo = twgl.createFramebufferInfo(gl, undefined, fbSize, fbSize);
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: [
@@ -218,7 +218,7 @@ void main() {
       ],
     });
 
-    var uniforms = {
+    const uniforms = {
       u_lightWorldPos: [1, 8, -10],
       u_lightColor: [0.2, 0.5, 1.0, 1],
       u_ambient: [0, 0, 0, 1],
@@ -232,7 +232,7 @@ void main() {
       u_world: m4.identity(),
     };
 
-    var screenUniforms = {
+    const screenUniforms = {
       u_texture: framebufferInfo.attachments[0],
       u_matrix: m4.translation([1, 1, 0]),
       u_projection: m4.identity(),
@@ -244,7 +244,7 @@ void main() {
       return a + (b - a) * t;
     }
 
-    var useFramebuffer = true;
+    let useFramebuffer = true;
 
     function switchMode() {
       useFramebuffer = !useFramebuffer;
@@ -254,13 +254,13 @@ void main() {
     window.addEventListener('click', switchMode, false);
     window.addEventListener('touchstart', switchMode, false);
 
-    var currentBaseColor;
-    var targetBaseColor;
-    var baseColorScale;
-    var colorFadeDuration = 5;
-    var colorChangeDuration = 10;
-    var colorFadeTimer;
-    var colorChangeTimer;
+    let currentBaseColor;
+    let targetBaseColor;
+    let baseColorScale;
+    const colorFadeDuration = 5;
+    const colorChangeDuration = 10;
+    let colorFadeTimer;
+    let colorChangeTimer;
 
     function pickNewColor() {
       currentBaseColor = targetBaseColor || chroma.hsv(Math.random() * 360, 1, 1);
@@ -271,15 +271,15 @@ void main() {
     }
     pickNewColor();
 
-    var then = 0;
+    let then = 0;
     function render(time) {
       time *= 0.001;
-      var deltaTime = time - then;
+      const deltaTime = time - then;
       then = time;
 
       twgl.resizeCanvasToDisplaySize(gl.canvas);
 
-      var aspect;
+      let aspect;
       if (useFramebuffer) {
         twgl.bindFramebufferInfo(gl, framebufferInfo);
         aspect = 1;
@@ -294,10 +294,10 @@ void main() {
         pickNewColor();
       }
 
-      var colorLerp = 1 - Math.max(0, colorFadeTimer / colorFadeDuration);
-      var fadeColor = baseColorScale(colorLerp);
+      const colorLerp = 1 - Math.max(0, colorFadeTimer / colorFadeDuration);
+      const fadeColor = baseColorScale(colorLerp);
       uniforms.u_fogColor = fadeColor.gl();
-      var fc = uniforms.u_fogColor;
+      const fc = uniforms.u_fogColor;
 
       gl.cullFace(gl.BACK);
       gl.enable(gl.CULL_FACE);
@@ -305,22 +305,22 @@ void main() {
       gl.clearColor(fc[0], fc[1], fc[2], fc[3]);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var projection = m4.perspective(30 * Math.PI / 180, aspect, 0.5, 30);
-      var eye = [1, 0, -16];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const projection = m4.perspective(30 * Math.PI / 180, aspect, 0.5, 30);
+      const eye = [1, 0, -16];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
-      var camera = m4.lookAt(eye, target, up);
-      var view = m4.inverse(camera);
-      var viewProjection = m4.multiply(projection, view);
+      const camera = m4.lookAt(eye, target, up);
+      const view = m4.inverse(camera);
+      const viewProjection = m4.multiply(projection, view);
       uniforms.u_viewInverse = camera;
 
       gl.useProgram(programInfo.program);
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-      for (var ii = 0; ii < 25; ++ii) {
-        var x = ii % 5;
-        var y = ii / 5 | 0;
-        var world = uniforms.u_world;
+      for (let ii = 0; ii < 25; ++ii) {
+        const x = ii % 5;
+        const y = ii / 5 | 0;
+        const world = uniforms.u_world;
         m4.identity(world);
         m4.translate(world, [0, 0, 0], world);
         m4.rotateY(world, time * 0.43, world);
@@ -352,9 +352,9 @@ void main() {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.useProgram(kaleidProgramInfo.program);
 
-        var maxScale = Math.PI * 2 / 6;
-        var minScale = Math.PI * 2 / segments;
-        var s = 0.7;
+        const maxScale = Math.PI * 2 / 6;
+        const minScale = Math.PI * 2 / segments;
+        const s = 0.7;
         aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
         m4.ortho(-aspect * s, aspect * s, -1 * s, 1 * s, -1, 1, screenUniforms.u_projection);
         screenUniforms.u_angleTime = time * 0.1;

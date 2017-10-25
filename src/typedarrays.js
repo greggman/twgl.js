@@ -46,16 +46,16 @@
 
 
 // make sure we don't see a global gl
-var gl = undefined;  // eslint-disable-line
+const gl = undefined;  // eslint-disable-line
 
 /* DataType */
-var BYTE                           = 0x1400;
-var UNSIGNED_BYTE                  = 0x1401;
-var SHORT                          = 0x1402;
-var UNSIGNED_SHORT                 = 0x1403;
-var INT                            = 0x1404;
-var UNSIGNED_INT                   = 0x1405;
-var FLOAT                          = 0x1406;
+const BYTE                           = 0x1400;
+const UNSIGNED_BYTE                  = 0x1401;
+const SHORT                          = 0x1402;
+const UNSIGNED_SHORT                 = 0x1403;
+const INT                            = 0x1404;
+const UNSIGNED_INT                   = 0x1405;
+const FLOAT                          = 0x1406;
 const UNSIGNED_SHORT_4_4_4_4       = 0x8033;
 const UNSIGNED_SHORT_5_5_5_1       = 0x8034;
 const UNSIGNED_SHORT_5_6_5         = 0x8363;

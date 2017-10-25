@@ -153,17 +153,17 @@ void main() {
   gl_FragColor = u_pickColor;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-    var pickingProgramInfo = twgl.createProgramInfo(gl, ["picking-vs", "picking-fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const pickingProgramInfo = twgl.createProgramInfo(gl, ["picking-vs", "picking-fs"]);
 
-    var shapes = [
+    const shapes = [
       twgl.primitives.createCubeBufferInfo(gl, 2),
       twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
       twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
@@ -178,16 +178,16 @@ void main() {
       return min + Math.random() * (max - min);
     }
 
-    var pickId = -1;
+    let pickId = -1;
 
     // Shared values
-    var lightWorldPosition = [1, 8, -10];
-    var lightColor = [1, 1, 1, 1];
-    var camera = m4.identity();
-    var view = m4.identity();
-    var viewProjection = m4.identity();
+    const lightWorldPosition = [1, 8, -10];
+    const lightColor = [1, 1, 1, 1];
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewProjection = m4.identity();
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: [
@@ -207,13 +207,13 @@ void main() {
       ];
     }
 
-    var objects = [];
-    var drawObjects = [];
-    var pickDrawObjects = [];
-    var numObjects = 100;
-    var baseHue = rand(0, 360);
-    for (var ii = 0; ii < numObjects; ++ii) {
-      var uniforms = {
+    const objects = [];
+    const drawObjects = [];
+    const pickDrawObjects = [];
+    const numObjects = 100;
+    const baseHue = rand(0, 360);
+    for (let ii = 0; ii < numObjects; ++ii) {
+      const uniforms = {
         u_lightWorldPos: lightWorldPosition,
         u_lightColor: lightColor,
         u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
@@ -247,7 +247,7 @@ void main() {
       });
     }
 
-    var pickingFBI = twgl.createFramebufferInfo(gl);
+    const pickingFBI = twgl.createFramebufferInfo(gl);
 
     // NOTE: !!
     //
@@ -303,15 +303,15 @@ void main() {
     function pickObject(inputX, inputY) {
       // If something is picked restore its color
       if (pickId >= 0 && pickId < objects.length) {
-        var object = objects[pickId];
+        const object = objects[pickId];
         object.uniforms.u_flashColor = [0, 0, 0, 0];
       }
 
-      var rect = gl.canvas.getBoundingClientRect();
-      var w = gl.canvas.clientWidth;
-      var h = gl.canvas.clientHeight;
-      var x = (inputX - rect.left) * gl.canvas.width  / w | 0;
-      var y = gl.canvas.height - ((inputY - rect.top ) * gl.canvas.height / h | 0) - 1;
+      const rect = gl.canvas.getBoundingClientRect();
+      const w = gl.canvas.clientWidth;
+      const h = gl.canvas.clientHeight;
+      const x = (inputX - rect.left) * gl.canvas.width  / w | 0;
+      const y = gl.canvas.height - ((inputY - rect.top ) * gl.canvas.height / h | 0) - 1;
 
       // resize pickingFBI to match canvas
       twgl.resizeFramebufferInfo(gl, pickingFBI);
@@ -322,7 +322,7 @@ void main() {
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
       twgl.drawObjectList(gl, pickDrawObjects);
 
-      var pickColor = new Uint8Array(4);
+      const pickColor = new Uint8Array(4);
       gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pickColor);
       pickId = (pickColor[0] <<  0) +
                (pickColor[1] <<  8) +
@@ -351,18 +351,18 @@ void main() {
 
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-      var eye = [1, 4, -20];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      const eye = [1, 4, -20];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
       m4.multiply(projection, view, viewProjection);
 
       objects.forEach(function(obj) {
-        var uni = obj.uniforms;
-        var world = uni.u_world;
+        const uni = obj.uniforms;
+        const world = uni.u_world;
         m4.identity(world);
         m4.rotateY(world, time * obj.ySpeed, world);
         m4.rotateZ(world, time * obj.zSpeed, world);
@@ -374,7 +374,7 @@ void main() {
 
       // If something is picked flash its color
       if (pickId >= 0 && pickId < objects.length) {
-        var object = objects[pickId];
+        const object = objects[pickId];
         object.uniforms.u_flashColor = ((time * 20 | 0) % 2) ? [0.2, 0.2, 0.2, 0.2] : [1, 0, 0, 1];
       }
 

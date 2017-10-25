@@ -77,13 +77,13 @@ void main() {
   gl_FragColor = v_color;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script>
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     function r(min, max) {
       if (max === undefined) {
@@ -93,16 +93,16 @@ void main() {
       return Math.random() * (max - min) + min;
     }
 
-    var numPoints = 1000;
-    var matrices = [];
-    var colors = [];
-    for (var ii = 0; ii < numPoints; ++ii) {
+    const numPoints = 1000;
+    const matrices = [];
+    const colors = [];
+    for (let ii = 0; ii < numPoints; ++ii) {
       matrices.push.apply(matrices, m4.translation([r(-.7, .7), r(-.7, .7), r(-.7, .7)]));
       colors.push(r(1), r(1), r(1), 1);
     }
 
     // matrix gets applyied to 4 consecutive attributes
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
       matrix: { numComponents: 16, data: matrices },
       color: colors,
     });

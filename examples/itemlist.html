@@ -174,16 +174,16 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var shapes = [
+    const shapes = [
       twgl.primitives.createCubeBufferInfo(gl, 2),
       twgl.primitives.createSphereBufferInfo(gl, 1, 24, 12),
       twgl.primitives.createPlaneBufferInfo(gl, 2, 2),
@@ -199,13 +199,13 @@ void main() {
     }
 
     // Shared values
-    var lightWorldPosition = [1, 8, -10];
-    var lightColor = [1, 1, 1, 1];
-    var camera = m4.identity();
-    var view = m4.identity();
-    var viewProjection = m4.identity();
+    const lightWorldPosition = [1, 8, -10];
+    const lightColor = [1, 1, 1, 1];
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewProjection = m4.identity();
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: [
@@ -216,16 +216,16 @@ void main() {
       ],
     });
 
-    var objects = [];
-    var numObjects = 100;
-    var list = document.getElementById("list");
-    var listItemTemplate = document.getElementById("list-item-template").text;
-    for (var ii = 0; ii < numObjects; ++ii) {
-      var listElement = document.createElement("div");
+    const objects = [];
+    const numObjects = 100;
+    const list = document.getElementById("list");
+    const listItemTemplate = document.getElementById("list-item-template").text;
+    for (let ii = 0; ii < numObjects; ++ii) {
+      const listElement = document.createElement("div");
       listElement.innerHTML = listItemTemplate;
       listElement.className = "list-item";
-      var viewElement = listElement.querySelector(".view");
-      var uniforms = {
+      const viewElement = listElement.querySelector(".view");
+      const uniforms = {
         u_lightWorldPos: lightWorldPosition,
         u_lightColor: lightColor,
         u_diffuseMult: chroma.hsv(rand(0, 360), 0.4, 0.8).gl(),
@@ -261,36 +261,36 @@ void main() {
       gl.enable(gl.SCISSOR_TEST);
       gl.clearColor(0.8, 0.8, 0.8, 1);
 
-      var eye = [0, 0, -8];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const eye = [0, 0, -8];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
 
       objects.forEach(function(obj) {
-        var viewElement = obj.viewElement;
+        const viewElement = obj.viewElement;
         // get viewElement's position
-        var rect = viewElement.getBoundingClientRect();
+        const rect = viewElement.getBoundingClientRect();
         if (rect.bottom < 0 || rect.top  > gl.canvas.clientHeight ||
             rect.right  < 0 || rect.left > gl.canvas.clientWidth) {
           return;  // it's off screen
         }
 
-        var width  = rect.right - rect.left;
-        var height = rect.bottom - rect.top;
-        var left   = rect.left;
-        var bottom = gl.canvas.clientHeight - rect.bottom - 1;
+        const width  = rect.right - rect.left;
+        const height = rect.bottom - rect.top;
+        const left   = rect.left;
+        const bottom = gl.canvas.clientHeight - rect.bottom - 1;
 
         gl.viewport(left, bottom, width, height);
         gl.scissor(left, bottom, width, height);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        var projection = m4.perspective(30 * Math.PI / 180, width / height, 0.5, 100);
+        const projection = m4.perspective(30 * Math.PI / 180, width / height, 0.5, 100);
         m4.multiply(projection, view, viewProjection);
 
-        var uni = obj.uniforms;
-        var world = uni.u_world;
+        const uni = obj.uniforms;
+        const world = uni.u_world;
         m4.identity(world);
         m4.rotateY(world, time * obj.ySpeed, world);
         m4.rotateZ(world, time * obj.zSpeed, world);
@@ -304,21 +304,21 @@ void main() {
       });
     }
 
-    var animated = true;
+    const animated = true;
+    let requestId;
     if (animated) {
-        var renderContinuously = function(time) {
+        const renderContinuously = function(time) {
             render(time);
             requestAnimationFrame(renderContinuously);
         };
         requestAnimationFrame(renderContinuously);
     } else {
-        var requestId;
-        var renderRequest = function(time) {
+        const renderRequest = function(time) {
             render(time);
             requestId = undefined;
         };
         // If animated
-        var queueRender = function() {
+        const queueRender = function() {
             if (!requestId) {
               requestId = requestAnimationFrame(renderRequest);
             }

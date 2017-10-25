@@ -44,41 +44,41 @@ import * as utils from './utils.js';
  */
 
 // make sure we don't see a global gl
-var gl = undefined;  // eslint-disable-line
+const gl = undefined;  // eslint-disable-line
 
-var UNSIGNED_BYTE                  = 0x1401;
+const UNSIGNED_BYTE                  = 0x1401;
 
 /* PixelFormat */
-var DEPTH_COMPONENT                = 0x1902;
-var RGBA                           = 0x1908;
+const DEPTH_COMPONENT                = 0x1902;
+const RGBA                           = 0x1908;
 
 /* Framebuffer Object. */
-var RGBA4                          = 0x8056;
-var RGB5_A1                        = 0x8057;
-var RGB565                         = 0x8D62;
-var DEPTH_COMPONENT16              = 0x81A5;
-var STENCIL_INDEX                  = 0x1901;
-var STENCIL_INDEX8                 = 0x8D48;
-var DEPTH_STENCIL                  = 0x84F9;
-var COLOR_ATTACHMENT0              = 0x8CE0;
-var DEPTH_ATTACHMENT               = 0x8D00;
-var STENCIL_ATTACHMENT             = 0x8D20;
-var DEPTH_STENCIL_ATTACHMENT       = 0x821A;
+const RGBA4                          = 0x8056;
+const RGB5_A1                        = 0x8057;
+const RGB565                         = 0x8D62;
+const DEPTH_COMPONENT16              = 0x81A5;
+const STENCIL_INDEX                  = 0x1901;
+const STENCIL_INDEX8                 = 0x8D48;
+const DEPTH_STENCIL                  = 0x84F9;
+const COLOR_ATTACHMENT0              = 0x8CE0;
+const DEPTH_ATTACHMENT               = 0x8D00;
+const STENCIL_ATTACHMENT             = 0x8D20;
+const DEPTH_STENCIL_ATTACHMENT       = 0x821A;
 
 /* TextureWrapMode */
-var REPEAT                         = 0x2901;  // eslint-disable-line
-var CLAMP_TO_EDGE                  = 0x812F;
-var MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
+const REPEAT                         = 0x2901;  // eslint-disable-line
+const CLAMP_TO_EDGE                  = 0x812F;
+const MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
 
 /* TextureMagFilter */
-var NEAREST                        = 0x2600;  // eslint-disable-line
-var LINEAR                         = 0x2601;
+const NEAREST                        = 0x2600;  // eslint-disable-line
+const LINEAR                         = 0x2601;
 
 /* TextureMinFilter */
-var NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
-var LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
-var NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
-var LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
+const NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
+const LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
+const NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
+const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
 
 /**
  * The options for a framebuffer attachment.
@@ -108,12 +108,12 @@ var LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
  * @memberOf module:twgl
  */
 
-var defaultAttachments = [
+const defaultAttachments = [
   { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, },
   { format: DEPTH_STENCIL, },
 ];
 
-var attachmentsByFormat = {};
+const attachmentsByFormat = {};
 attachmentsByFormat[DEPTH_STENCIL] = DEPTH_STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
@@ -124,7 +124,7 @@ function getAttachmentPointForFormat(format) {
   return attachmentsByFormat[format];
 }
 
-var renderbufferFormats = {};
+const renderbufferFormats = {};
 renderbufferFormats[RGBA4] = true;
 renderbufferFormats[RGB5_A1] = true;
 renderbufferFormats[RGB565] = true;
@@ -152,22 +152,22 @@ function isRenderbufferFormat(format) {
  * The simplest usage
  *
  *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
- *     var fbi = twgl.createFramebufferInfo(gl);
+ *     const fbi = twgl.createFramebufferInfo(gl);
  *
  * More complex usage
  *
  *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
- *     var attachments = [
+ *     const attachments = [
  *       { format: RGB565, mag: NEAREST },
  *       { format: STENCIL_INDEX8 },
  *     ]
- *     var fbi = twgl.createFramebufferInfo(gl, attachments);
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments);
  *
  * Passing in a specific size
  *
- *     var width = 256;
- *     var height = 256;
- *     var fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
+ *     const width = 256;
+ *     const height = 256;
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
  *
  * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
  * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
@@ -181,23 +181,23 @@ function isRenderbufferFormat(format) {
  * @memberOf module:twgl/framebuffers
  */
 function createFramebufferInfo(gl, attachments, width, height) {
-  var target = gl.FRAMEBUFFER;
-  var fb = gl.createFramebuffer();
+  const target = gl.FRAMEBUFFER;
+  const fb = gl.createFramebuffer();
   gl.bindFramebuffer(target, fb);
   width  = width  || gl.drawingBufferWidth;
   height = height || gl.drawingBufferHeight;
   attachments = attachments || defaultAttachments;
-  var colorAttachmentCount = 0;
-  var framebufferInfo = {
+  let colorAttachmentCount = 0;
+  const framebufferInfo = {
     framebuffer: fb,
     attachments: [],
     width: width,
     height: height,
   };
   attachments.forEach(function(attachmentOptions) {
-    var attachment = attachmentOptions.attachment;
-    var format = attachmentOptions.format;
-    var attachmentPoint = getAttachmentPointForFormat(format);
+    let attachment = attachmentOptions.attachment;
+    const format = attachmentOptions.format;
+    let attachmentPoint = getAttachmentPointForFormat(format);
     if (!attachmentPoint) {
       attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
     }
@@ -207,7 +207,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
         gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
         gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
       } else {
-        var textureOptions = utils.shallowCopy(attachmentOptions);
+        const textureOptions = utils.shallowCopy(attachmentOptions);
         textureOptions.width = width;
         textureOptions.height = height;
         if (textureOptions.auto === undefined) {
@@ -246,7 +246,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * The simplest usage
  *
  *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
- *     var fbi = twgl.createFramebufferInfo(gl);
+ *     const fbi = twgl.createFramebufferInfo(gl);
  *
  *     ...
  *
@@ -259,11 +259,11 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * More complex usage
  *
  *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
- *     var attachments = [
+ *     const attachments = [
  *       { format: RGB565, mag: NEAREST },
  *       { format: STENCIL_INDEX8 },
  *     ]
- *     var fbi = twgl.createFramebufferInfo(gl, attachments);
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments);
  *
  *     ...
  *
@@ -287,8 +287,8 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
   framebufferInfo.height = height;
   attachments = attachments || defaultAttachments;
   attachments.forEach(function(attachmentOptions, ndx) {
-    var attachment = framebufferInfo.attachments[ndx];
-    var format = attachmentOptions.format;
+    const attachment = framebufferInfo.attachments[ndx];
+    const format = attachmentOptions.format;
     if (attachment instanceof WebGLRenderbuffer) {
       gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
       gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);

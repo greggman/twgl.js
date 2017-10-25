@@ -115,27 +115,27 @@ void main() {
   gl_FragColor = outColor;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var cubeVertices = twgl.primitives.createCubeVertices(2);
-    var sphereVertices = twgl.primitives.createSphereVertices(1, 10, 10);
+    const cubeVertices = twgl.primitives.createCubeVertices(2);
+    const sphereVertices = twgl.primitives.createSphereVertices(1, 10, 10);
     // move the sphere 2 units up
     twgl.primitives.reorientVertices(
         sphereVertices, twgl.m4.translation([0, 2, 0]));
     // merge the sphere with the cube
-    var cubeSphereVertices = twgl.primitives.concatVertices(
+    const cubeSphereVertices = twgl.primitives.concatVertices(
         [cubeVertices, sphereVertices]);
     // turn them into WebGL buffers and attrib data
-    var cubeSphereBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeSphereVertices);
+    const cubeSphereBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeSphereVertices);
 
-    var cubeArrays = {
+    const cubeArrays = {
       position: [1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1],
       normal:   [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
       texcoord: {
@@ -146,19 +146,19 @@ void main() {
       indices:  [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23],
     };
 
-    var cubes = [];
-    for (var zz = 0; zz < 2; ++zz) {
-      for (var yy = 0; yy < 2; ++yy) {
-        for (var xx = 0; xx < 2; ++xx) {
+    const cubes = [];
+    for (let zz = 0; zz < 2; ++zz) {
+      for (let yy = 0; yy < 2; ++yy) {
+        for (let xx = 0; xx < 2; ++xx) {
           cubes.push(twgl.primitives.reorientVertices(
               twgl.primitives.duplicateVertices(cubeArrays), twgl.m4.translation([xx * 2.5, yy * 2.5, zz * 2.5])));
         }
       }
     }
-    var cubeCubeVertices = twgl.primitives.concatVertices(cubes);
-    var cubeCubeBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeCubeVertices);
+    const cubeCubeVertices = twgl.primitives.concatVertices(cubes);
+    const cubeCubeBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeCubeVertices);
 
-    var shapes = [
+    const shapes = [
       cubeSphereBufferInfo,
       cubeCubeBufferInfo,
     ];
@@ -168,13 +168,13 @@ void main() {
     }
 
     // Shared values
-    var lightWorldPosition = [1, 8, -10];
-    var lightColor = [1, 1, 1, 1];
-    var camera = m4.identity();
-    var view = m4.identity();
-    var viewProjection = m4.identity();
+    const lightWorldPosition = [1, 8, -10];
+    const lightColor = [1, 1, 1, 1];
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewProjection = m4.identity();
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: [
@@ -185,12 +185,12 @@ void main() {
       ],
     });
 
-    var objects = [];
-    var drawObjects = [];
-    var numObjects = 100;
-    var baseHue = rand(0, 360);
-    for (var ii = 0; ii < numObjects; ++ii) {
-      var uniforms = {
+    const objects = [];
+    const drawObjects = [];
+    const numObjects = 100;
+    const baseHue = rand(0, 360);
+    for (let ii = 0; ii < numObjects; ++ii) {
+      const uniforms = {
         u_lightWorldPos: lightWorldPosition,
         u_lightColor: lightColor,
         u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
@@ -224,18 +224,18 @@ void main() {
       gl.enable(gl.DEPTH_TEST);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-      var eye = [1, 4, -20];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      const eye = [1, 4, -20];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
       m4.multiply(projection, view, viewProjection);
 
       objects.forEach(function(obj) {
-        var uni = obj.uniforms;
-        var world = uni.u_world;
+        const uni = obj.uniforms;
+        const world = uni.u_world;
         m4.identity(world);
         m4.rotateY(world, time * obj.ySpeed, world);
         m4.rotateZ(world, time * obj.zSpeed, world);

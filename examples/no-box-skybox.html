@@ -101,24 +101,24 @@ void main() {
       normalize(t.xyz / t.w));
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script>
     "use strict";
-    var $ = document.getElementById.bind(document);
+    const $ = document.getElementById.bind(document);
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-    var plane = twgl.primitives.createXYQuadBufferInfo(gl);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const plane = twgl.primitives.createXYQuadBufferInfo(gl);
 
     // Shared values
-    var camera = m4.identity();
-    var view = m4.identity();
-    var viewDirection = m4.identity();
-    var viewDirectionProjection = m4.identity();
-    var viewDirectionProjectionInverse = m4.identity();
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewDirection = m4.identity();
+    const viewDirectionProjection = m4.identity();
+    const viewDirectionProjectionInverse = m4.identity();
 
-    var uniforms = {
+    const uniforms = {
       u_skybox: twgl.createTexture(gl, {
         target: gl.TEXTURE_CUBE_MAP,
         src: [
@@ -133,10 +133,10 @@ void main() {
       u_viewDirectionProjectionInverse: viewDirectionProjectionInverse,
     };
 
-    var fov = 90;
-    var fovElem = $("fov");
-    var fovNode = document.createTextNode(fov);
-    var fovInput = $("fov-input");
+    let fov = 90;
+    const fovElem = $("fov");
+    const fovNode = document.createTextNode(fov);
+    const fovInput = $("fov-input");
     fovInput.value = fov;
     fovElem.appendChild(fovNode);
 
@@ -150,12 +150,12 @@ void main() {
       twgl.resizeCanvasToDisplaySize(gl.canvas);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-      var orbitSpeed = time * 0.1;
-      var radius = 20;
-      var projection = m4.perspective(fov * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-      var eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const orbitSpeed = time * 0.1;
+      const radius = 20;
+      const projection = m4.perspective(fov * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      const eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);

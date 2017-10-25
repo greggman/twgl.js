@@ -60,9 +60,9 @@ import * as programs from './programs.js';
  */
 function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
   type = type === undefined ? gl.TRIANGLES : type;
-  var indices = bufferInfo.indices;
-  var elementType = bufferInfo.elementType;
-  var numElements = count === undefined ? bufferInfo.numElements : count;
+  const indices = bufferInfo.indices;
+  const elementType = bufferInfo.elementType;
+  const numElements = count === undefined ? bufferInfo.numElements : count;
   offset = offset === undefined ? 0 : offset;
   if (elementType || indices) {
     if (instanceCount !== undefined) {
@@ -121,18 +121,18 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
  * @memberOf module:twgl/draw
  */
 function drawObjectList(gl, objectsToDraw) {
-  var lastUsedProgramInfo = null;
-  var lastUsedBufferInfo = null;
+  let lastUsedProgramInfo = null;
+  let lastUsedBufferInfo = null;
 
   objectsToDraw.forEach(function(object) {
     if (object.active === false) {
       return;
     }
 
-    var programInfo = object.programInfo;
-    var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
-    var bindBuffers = false;
-    var type = object.type === undefined ? gl.TRIANGLES : object.type;
+    const programInfo = object.programInfo;
+    const bufferInfo = object.vertexArrayInfo || object.bufferInfo;
+    let bindBuffers = false;
+    const type = object.type === undefined ? gl.TRIANGLES : object.type;
 
     if (programInfo !== lastUsedProgramInfo) {
       lastUsedProgramInfo = programInfo;

@@ -86,30 +86,30 @@ void main() {
   outColor = texture(u_diffuse, vec3(v_texCoord, u_faceIndex[v_faceId]));
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script>
   "use strict";
 
   function main() {
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = document.getElementById("c").getContext("webgl2");
+    const m4 = twgl.m4;
+    const gl = document.getElementById("c").getContext("webgl2");
     if (!gl) {
       alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
       return;
     }
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var arrays = {
+    const arrays = {
       position: [1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1],
       normal:   [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
       texcoord: [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
       faceId:   { numComponents: 1, data: new Uint8Array([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6]), },
       indices:  [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23],
     };
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
-    var slices = [
+    const slices = [
       "images/array/balloons.jpg",
       "images/array/biggrub.jpg",
       "images/array/curtain.jpg",
@@ -124,7 +124,7 @@ void main() {
       "images/array/肉寿司.jpg",
     ];
 
-    var tex = twgl.createTexture(gl, {
+    const tex = twgl.createTexture(gl, {
       target: gl.TEXTURE_2D_ARRAY,
       src: slices,
     });
@@ -137,12 +137,12 @@ void main() {
       return Math.random() * (max - min) + min | 0;
     }
 
-    var uniforms = {
+    const uniforms = {
       u_diffuse: tex,
       u_faceIndex: [0, 1, 2, 3, 4, 5],
     };
 
-    var oldTime = 0;
+    let oldTime = 0;
     function render(time) {
       time *= 0.001;
       twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -158,15 +158,15 @@ void main() {
       gl.enable(gl.CULL_FACE);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 10);
-      var eye = [1, 4, -6];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 10);
+      const eye = [1, 4, -6];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
-      var camera = m4.lookAt(eye, target, up);
-      var view = m4.inverse(camera);
-      var viewProjection = m4.multiply(projection, view);
-      var world = m4.rotationY(time);
+      const camera = m4.lookAt(eye, target, up);
+      const view = m4.inverse(camera);
+      const viewProjection = m4.multiply(projection, view);
+      const world = m4.rotationY(time);
 
       uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
 

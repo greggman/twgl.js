@@ -3,7 +3,7 @@
 window.addEventListener('load', function() {
 
  function main() {
-   var canvas = document.querySelector("canvas");
+   let canvas = document.querySelector("canvas");
    if (!canvas) {
      console.log("no canvas found, inserting full page canvas");  // eslint-disable-line
      canvas = document.createElement("canvas");
@@ -13,17 +13,17 @@ window.addEventListener('load', function() {
      canvas.style.width = "100vw";
      canvas.style.height = "100vh";
    }
-   var gl = canvas.getContext("webgl");
+   const gl = canvas.getContext("webgl");
    gl.getExtension("OES_standard_derivatives");
-   var glslElem = document.querySelector("#fs");
-   var glsl = glslElem.text;
-   var vs = `
+   const glslElem = document.querySelector("#fs");
+   const glsl = glslElem.text;
+   const vs = `
      attribute vec4 position;
      void main() {
        gl_Position = position;
      }
    `;
-   var fs = `
+   const fs = `
      #extension GL_OES_standard_derivatives : enable
      precision mediump float;
      uniform vec3       iResolution;           // The viewport resolution (z is pixel aspect ratio, usually 1.0)
@@ -67,12 +67,12 @@ window.addEventListener('load', function() {
        gl_FragColor.a = 1.0;
      }
    `;
-   var ids = new Float32Array(10030);
-   for (var i = 0; i < ids.length; ++i) {
+   const ids = new Float32Array(10030);
+   for (let i = 0; i < ids.length; ++i) {
      ids[i] = i;
    }
-   var programInfo = twgl.createProgramInfo(gl, [vs, fs]);
-   var bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+   const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+   const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
      position: {
        numComponents: 2,
        data: [
@@ -86,7 +86,7 @@ window.addEventListener('load', function() {
      },
    });
 
-   var uniforms = {
+   const uniforms = {
      iGlobalTime: 0,
      iTimeDelta: 0,
      iFrame: 0,
@@ -106,7 +106,7 @@ window.addEventListener('load', function() {
      uniforms.iMouse[3] = event.clientY;
    });
 
-   var then = 0;
+   let then = 0;
    function render(now) {
      uniforms.iGlobalTime = now * 0.001;
      uniforms.iTimeDelta = then - now;
@@ -114,7 +114,7 @@ window.addEventListener('load', function() {
      ++uniforms.iFrame;
      then = now;
 
-     var d = new Date();
+     const d = new Date();
      uniforms.iDate[0] = d.getFullYear();
      uniforms.iDate[1] = d.getMonth();
      uniforms.iDate[2] = d.getDay();
@@ -142,7 +142,7 @@ window.addEventListener('load', function() {
     script.type = 'text/javascript';
     script.async = true;
     script.onload = main;
-    script.src = 'https://twgljs.org/dist/3.x/twgl.min.js';
+    script.src = 'https://twgljs.org/dist/4.x/twgl.min.js';
     d.getElementsByTagName('head')[0].appendChild(script);
   }(document));
 });

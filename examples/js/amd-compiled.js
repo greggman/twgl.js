@@ -1,19 +1,19 @@
 "use strict";
 
 require([
-    '../../dist/3.x/twgl-full.min',
+    '../../dist/4.x/twgl-full.min',
     '../../3rdparty/chroma.min',
   ], function(
     twgl,
     chroma) {
-  var m4 = twgl.m4;
-  var primitives = twgl.primitives;
+  const m4 = twgl.m4;
+  const primitives = twgl.primitives;
 
   twgl.setDefaults({attribPrefix: "a_"});
-  var gl = twgl.getWebGLContext(document.getElementById("c"));
-  var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+  const gl = twgl.getWebGLContext(document.getElementById("c"));
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-  var shapes = [
+  const shapes = [
     primitives.createCubeBufferInfo(gl, 2),
     primitives.createSphereBufferInfo(gl, 1, 24, 12),
     primitives.createPlaneBufferInfo(gl, 2, 2),
@@ -25,13 +25,13 @@ require([
   }
 
   // Shared values
-  var lightWorldPosition = [1, 8, -10];
-  var lightColor = [1, 1, 1, 1];
-  var camera = m4.identity();
-  var view = m4.identity();
-  var viewProjection = m4.identity();
+  const lightWorldPosition = [1, 8, -10];
+  const lightColor = [1, 1, 1, 1];
+  const camera = m4.identity();
+  const view = m4.identity();
+  const viewProjection = m4.identity();
 
-  var tex = twgl.createTexture(gl, {
+  const tex = twgl.createTexture(gl, {
     min: gl.NEAREST,
     mag: gl.NEAREST,
     src: [
@@ -42,12 +42,12 @@ require([
     ],
   });
 
-  var objects = [];
-  var drawObjects = [];
-  var numObjects = 100;
-  var baseHue = rand(0, 360);
-  for (var ii = 0; ii < numObjects; ++ii) {
-    var uniforms = {
+  const objects = [];
+  const drawObjects = [];
+  const numObjects = 100;
+  const baseHue = rand(0, 360);
+  for (let ii = 0; ii < numObjects; ++ii) {
+    const uniforms = {
       u_lightWorldPos: lightWorldPosition,
       u_lightColor: lightColor,
       u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
@@ -82,18 +82,18 @@ require([
     gl.enable(gl.CULL_FACE);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-    var eye = [1, 4, -20];
-    var target = [0, 0, 0];
-    var up = [0, 1, 0];
+    const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+    const eye = [1, 4, -20];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
 
     m4.lookAt(eye, target, up, camera);
     m4.inverse(camera, view);
     m4.multiply(projection, view, viewProjection);
 
     objects.forEach(function(obj) {
-      var uni = obj.uniforms;
-      var world = uni.u_world;
+      const uni = obj.uniforms;
+      const world = uni.u_world;
       m4.identity(world);
       m4.rotateY(world, time * obj.ySpeed, world);
       m4.rotateZ(world, time * obj.zSpeed, world);

@@ -129,7 +129,7 @@ void main() {
 }
   </script>
   <script src="../3rdparty/audiostreamsource.min.js"></script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script>
     "use strict";
 
@@ -137,28 +137,28 @@ void main() {
     // Right now Safari doesn't expose AudioContext (it's still webkitAudioContext)
     // so my hope is whenever they get around to actually supporting the 3+ year old
     // standard that things will actually work.
-    var shittyBrowser = window.AudioContext === undefined && /iPhone|iPad|iPod/.test(navigator.userAgent);
-    var isMobile = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i);
-    var context = new (window.AudioContext || window.webkitAudioContext)();
-    var analyser = context.createAnalyser();
+    const shittyBrowser = window.AudioContext === undefined && /iPhone|iPad|iPod/.test(navigator.userAgent);
+    const isMobile = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i);
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = context.createAnalyser();
 
     twgl.setDefaults({attribPrefix: "a_"});
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
     // If it's a shitty browser (like Safari) then we can't stream so we load
     // a very lo-fi version of the song that has no frequences above 11.5k
-    var numPoints = analyser.frequencyBinCount * (shittyBrowser ? 0.25 : 1) | 0;
-    var spreadArray = new Float32Array(numPoints);
-    var heightArray = new Uint8Array(numPoints);
-    for (var ii = 0; ii < numPoints; ++ii) {
+    const numPoints = analyser.frequencyBinCount * (shittyBrowser ? 0.25 : 1) | 0;
+    const spreadArray = new Float32Array(numPoints);
+    const heightArray = new Uint8Array(numPoints);
+    for (let ii = 0; ii < numPoints; ++ii) {
       spreadArray[ii] = ii / numPoints * 2 - 1;  // make clipspace positions
     }
-    var arrays = {
+    const arrays = {
       spread: { data: spreadArray, numComponents: 1 },
       height: { data: heightArray, numComponents: 1, drawType: gl.DYNAMIC_DRAW },
     };
-    var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
     function render() {
       twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -181,10 +181,10 @@ void main() {
     }
     requestAnimationFrame(render);
 
-    var clickElem = document.querySelector("#click");
-    var loadElem = document.querySelector("#load");
+    const clickElem = document.querySelector("#click");
+    const loadElem = document.querySelector("#load");
 
-    var streamSource = audioStreamSource.create({
+    const streamSource = audioStreamSource.create({
       context: context,
       loop: true,
     });

@@ -48,38 +48,38 @@ import * as utils from './utils.js';
  */
 
 // make sure we don't see a global gl
-var gl = undefined;  // eslint-disable-line
-var defaults = {
+const gl = undefined;  // eslint-disable-line
+const defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
   crossOrigin: undefined,
 };
-var isArrayBuffer = typedArrays.isArrayBuffer;
+const isArrayBuffer = typedArrays.isArrayBuffer;
 
 // Should we make this on demand?
-var ctx = document.createElement("canvas").getContext("2d");
+const ctx = document.createElement("canvas").getContext("2d");
 
 /* PixelFormat */
-var ALPHA                          = 0x1906;
-var RGB                            = 0x1907;
-var RGBA                           = 0x1908;
-var LUMINANCE                      = 0x1909;
-var LUMINANCE_ALPHA                = 0x190A;
-var DEPTH_COMPONENT                = 0x1902;
-var DEPTH_STENCIL                  = 0x84F9;
+const ALPHA                          = 0x1906;
+const RGB                            = 0x1907;
+const RGBA                           = 0x1908;
+const LUMINANCE                      = 0x1909;
+const LUMINANCE_ALPHA                = 0x190A;
+const DEPTH_COMPONENT                = 0x1902;
+const DEPTH_STENCIL                  = 0x84F9;
 
 /* TextureWrapMode */
-var REPEAT                         = 0x2901;  // eslint-disable-line
-var MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
+const REPEAT                         = 0x2901;  // eslint-disable-line
+const MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
 
 /* TextureMagFilter */
-var NEAREST                        = 0x2600;  // eslint-disable-line
+const NEAREST                        = 0x2600;  // eslint-disable-line
 
 /* TextureMinFilter */
-var NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
-var LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
-var NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
-var LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
+const NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
+const LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
+const NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
+const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
 
 const R8                           = 0x8229;
 const R8_SNORM                     = 0x8F94;
@@ -375,7 +375,7 @@ function guessDimensions(gl, target, width, height, numElements) {
     throw "can't guess dimensions";
   }
   if (!width && !height) {
-    var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
+    const size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
     if (size % 1 === 0) {
       width = size;
       height = size;
@@ -434,13 +434,13 @@ function setDefaults(newDefaults) {
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {number} value the value of the enum you want to look up.
  */
-var glEnumToString = (function() {
-  var enums;
+const glEnumToString = (function() {
+  let enums;
 
   function init(gl) {
     if (!enums) {
       enums = {};
-      for (var key in gl) {
+      for (const key in gl) {
         if (typeof gl[key] === 'number') {
           enums[gl[key]] = key;
         }
@@ -555,7 +555,7 @@ var glEnumToString = (function() {
 // a perf critical loop. Even if upload a texture every frame that's unlikely
 // to be more than 1 or 2 textures a frame. In other words, the benefits of
 // making the API easy to use outweigh any supposed perf benefits
-var lastPackState = {};
+const lastPackState = {};
 
 /**
  * Saves any packing state that will be set based on the options.
@@ -594,7 +594,7 @@ function restorePackState(gl, options) {
   }
 }
 
-var WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
+const WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
 
 /**
  * Sets the parameters of a texture or sampler
@@ -655,7 +655,7 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
  * @memberOf module:twgl/textures
  */
 function setTextureParameters(gl, tex, options) {
-  var target = options.target || gl.TEXTURE_2D;
+  const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
   setTextureSamplerParameters(gl, target, gl.texParameteri, options);
 }
@@ -764,7 +764,7 @@ function setTextureFilteringForSize(gl, tex, options, width, height, internalFor
   options = options || defaults.textureOptions;
   internalFormat = internalFormat || gl.RGBA;
   type = type || gl.UNSIGNED_BYTE;
-  var target = options.target || gl.TEXTURE_2D;
+  const target = options.target || gl.TEXTURE_2D;
   width = width || options.width;
   height = height || options.height;
   gl.bindTexture(target, tex);
@@ -822,9 +822,9 @@ function getCubeFaceOrder(gl, options) {
  *    it's needed internally to sort the array of `ndx` properties by `face`.
  */
 function getCubeFacesWithNdx(gl, options) {
-  var faces = getCubeFaceOrder(gl, options);
+  const faces = getCubeFaceOrder(gl, options);
   // work around bug in NVidia drivers. We have to upload the first face first else the driver crashes :(
-  var facesWithNdx = faces.map(function(face, ndx) {
+  const facesWithNdx = faces.map(function(face, ndx) {
     return { face: face, ndx: ndx };
   });
   facesWithNdx.sort(function(a, b) {
@@ -848,22 +848,22 @@ function getCubeFacesWithNdx(gl, options) {
  */
 function setTextureFromElement(gl, tex, element, options) {
   options = options || defaults.textureOptions;
-  var target = options.target || gl.TEXTURE_2D;
-  var level = options.level || 0;
-  var width = element.width;
-  var height = element.height;
-  var internalFormat = options.internalFormat || options.format || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var format = options.format || formatType.format;
-  var type = options.type || formatType.type;
+  const target = options.target || gl.TEXTURE_2D;
+  const level = options.level || 0;
+  let width = element.width;
+  let height = element.height;
+  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  const format = options.format || formatType.format;
+  const type = options.type || formatType.type;
   savePackState(gl, options);
   gl.bindTexture(target, tex);
   if (target === gl.TEXTURE_CUBE_MAP) {
     // guess the parts
-    var imgWidth  = element.width;
-    var imgHeight = element.height;
-    var size;
-    var slices;
+    const imgWidth  = element.width;
+    const imgHeight = element.height;
+    let size;
+    let slices;
     if (imgWidth / 6 === imgHeight) {
       // It's 6x1
       size = imgHeight;
@@ -888,8 +888,8 @@ function setTextureFromElement(gl, tex, element, options) {
     width = size;
     height = size;
     getCubeFacesWithNdx(gl, options).forEach(function(f) {
-      var xOffset = slices[f.ndx * 2 + 0] * size;
-      var yOffset = slices[f.ndx * 2 + 1] * size;
+      const xOffset = slices[f.ndx * 2 + 0] * size;
+      const yOffset = slices[f.ndx * 2 + 1] * size;
       ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
       gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
     });
@@ -897,29 +897,29 @@ function setTextureFromElement(gl, tex, element, options) {
     ctx.canvas.width = 1;
     ctx.canvas.height = 1;
   } else if (target === gl.TEXTURE_3D) {
-    var smallest = Math.min(element.width, element.height);
-    var largest = Math.max(element.width, element.height);
-    var depth = largest / smallest;
+    const smallest = Math.min(element.width, element.height);
+    const largest = Math.max(element.width, element.height);
+    const depth = largest / smallest;
     if (depth % 1 !== 0) {
       throw "can not compute 3D dimensions of element";
     }
-    var xMult = element.width  === largest ? 1 : 0;
-    var yMult = element.height === largest ? 1 : 0;
+    const xMult = element.width  === largest ? 1 : 0;
+    const yMult = element.height === largest ? 1 : 0;
     gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
     // remove this is texSubImage3D gets width and height arguments
     ctx.canvas.width = smallest;
     ctx.canvas.height = smallest;
-    for (var d = 0; d < depth; ++d) {
-        gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
-        gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
-        var srcX = d * smallest * xMult;
-        var srcY = d * smallest * yMult;
-        var srcW = smallest;
-        var srcH = smallest;
-        var dstX = 0;
-        var dstY = 0;
-        var dstW = smallest;
-        var dstH = smallest;
+    for (let d = 0; d < depth; ++d) {
+        //gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
+        //gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
+        const srcX = d * smallest * xMult;
+        const srcY = d * smallest * yMult;
+        const srcW = smallest;
+        const srcH = smallest;
+        const dstX = 0;
+        const dstY = 0;
+        const dstW = smallest;
+        const dstH = smallest;
         ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
         gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
     }
@@ -949,7 +949,7 @@ function noop() {
  */
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
-  var img = new Image();
+  let img = new Image();
   crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
   if (crossOrigin !== undefined) {
     img.crossOrigin = crossOrigin;
@@ -962,7 +962,7 @@ function loadImage(url, crossOrigin, callback) {
   }
 
   function onError() {
-    var msg = "couldn't load image: " + url;
+    const msg = "couldn't load image: " + url;
     utils.error(msg);
     callback(msg, img);
     clearEventHandlers();
@@ -990,16 +990,16 @@ function loadImage(url, crossOrigin, callback) {
  */
 function setTextureTo1PixelColor(gl, tex, options) {
   options = options || defaults.textureOptions;
-  var target = options.target || gl.TEXTURE_2D;
+  const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
   if (options.color === false) {
     return;
   }
   // Assume it's a URL
   // Put 1x1 pixels in texture. That makes it renderable immediately regardless of filtering.
-  var color = make1Pixel(options.color);
+  const color = make1Pixel(options.color);
   if (target === gl.TEXTURE_CUBE_MAP) {
-    for (var ii = 0; ii < 6; ++ii) {
+    for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
     }
   } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
@@ -1076,7 +1076,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
   options = utils.shallowCopy(options);
-  var img = loadImage(options.src, options.crossOrigin, function(err, img) {
+  const img = loadImage(options.src, options.crossOrigin, function(err, img) {
     if (err) {
       callback(err, tex, img);
     } else {
@@ -1099,26 +1099,26 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  */
 function loadCubemapFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
-  var urls = options.src;
+  const urls = options.src;
   if (urls.length !== 6) {
     throw "there must be 6 urls for a cubemap";
   }
-  var level = options.level || 0;
-  var internalFormat = options.internalFormat || options.format || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var format = options.format || formatType.format;
-  var type = options.type || gl.UNSIGNED_BYTE;
-  var target = options.target || gl.TEXTURE_2D;
+  const level = options.level || 0;
+  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  const format = options.format || formatType.format;
+  const type = options.type || gl.UNSIGNED_BYTE;
+  const target = options.target || gl.TEXTURE_2D;
   if (target !== gl.TEXTURE_CUBE_MAP) {
     throw "target must be TEXTURE_CUBE_MAP";
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
   options = utils.shallowCopy(options);
-  var numToLoad = 6;
-  var errors = [];
-  var imgs;
-  var faces = getCubeFaceOrder(gl, options);
+  let numToLoad = 6;
+  const errors = [];
+  const faces = getCubeFaceOrder(gl, options);
+  let imgs;  // eslint-disable-line
 
   function uploadImg(faceTarget) {
     return function(err, img) {
@@ -1183,26 +1183,26 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  */
 function loadSlicesFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
-  var urls = options.src;
-  var internalFormat = options.internalFormat || options.format || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var format = options.format || formatType.format;
-  var type = options.type || gl.UNSIGNED_BYTE;
-  var target = options.target || gl.TEXTURE_2D_ARRAY;
+  const urls = options.src;
+  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  const format = options.format || formatType.format;
+  const type = options.type || gl.UNSIGNED_BYTE;
+  const target = options.target || gl.TEXTURE_2D_ARRAY;
   if (target !== gl.TEXTURE_3D && target !== gl.TEXTURE_2D_ARRAY) {
     throw "target must be TEXTURE_3D or TEXTURE_2D_ARRAY";
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
   options = utils.shallowCopy(options);
-  var numToLoad = urls.length;
-  var errors = [];
-  var imgs;
-  var level = options.level || 0;
-  var width = options.width;
-  var height = options.height;
-  var depth = urls.length;
-  var firstImage = true;
+  let numToLoad = urls.length;
+  const errors = [];
+  let imgs;  // eslint-disable-line
+  const level = options.level || 0;
+  let width = options.width;
+  let height = options.height;
+  const depth = urls.length;
+  let firstImage = true;
 
   function uploadImg(slice) {
     return function(err, img) {
@@ -1220,11 +1220,11 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
           gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
 
           // put it in every slice otherwise some slices will be 0,0,0,0
-          for (var s = 0; s < depth; ++s) {
+          for (let s = 0; s < depth; ++s) {
             gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
           }
         } else {
-          var src = img;
+          let src = img;
           if (img.width !== width || img.height !== height) {
             // Size the image to fix
             src = ctx.canvas;
@@ -1271,33 +1271,33 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
  */
 function setTextureFromArray(gl, tex, src, options) {
   options = options || defaults.textureOptions;
-  var target = options.target || gl.TEXTURE_2D;
+  const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
-  var width = options.width;
-  var height = options.height;
-  var depth = options.depth;
-  var level = options.level || 0;
-  var internalFormat = options.internalFormat || options.format || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var format = options.format || formatType.format;
-  var type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
+  let width = options.width;
+  let height = options.height;
+  let depth = options.depth;
+  const level = options.level || 0;
+  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  const format = options.format || formatType.format;
+  const type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
   if (!isArrayBuffer(src)) {
-    var Type = typedArrays.getTypedArrayTypeForGLType(type);
+    const Type = typedArrays.getTypedArrayTypeForGLType(type);
     src = new Type(src);
   } else {
     if (src instanceof Uint8ClampedArray) {
       src = new Uint8Array(src.buffer);
     }
   }
-  var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
-  var numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
+  const bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
+  const numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
   if (numElements % 1) {
     throw "length wrong size for format: " + glEnumToString(gl, format);
   }
-  var dimensions;
+  let dimensions;
   if (target === gl.TEXTURE_3D) {
     if (!width && !height && !depth) {
-      var size = Math.cbrt(numElements);
+      const size = Math.cbrt(numElements);
       if (size % 1 !== 0) {
         throw "can't guess cube size of array of numElements: " + numElements;
       }
@@ -1356,16 +1356,16 @@ function setTextureFromArray(gl, tex, src, options) {
  * @memberOf module:twgl/textures
  */
 function setEmptyTexture(gl, tex, options) {
-  var target = options.target || gl.TEXTURE_2D;
+  const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
-  var level = options.level || 0;
-  var internalFormat = options.internalFormat || options.format || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var format = options.format || formatType.format;
-  var type = options.type || formatType.type;
+  const level = options.level || 0;
+  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  const format = options.format || formatType.format;
+  const type = options.type || formatType.type;
   savePackState(gl, options);
   if (target === gl.TEXTURE_CUBE_MAP) {
-    for (var ii = 0; ii < 6; ++ii) {
+    for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
     }
   } else if (target === gl.TEXTURE_3D) {
@@ -1387,20 +1387,20 @@ function setEmptyTexture(gl, tex, options) {
 function createTexture(gl, options, callback) {
   callback = callback || noop;
   options = options || defaults.textureOptions;
-  var tex = gl.createTexture();
-  var target = options.target || gl.TEXTURE_2D;
-  var width  = options.width  || 1;
-  var height = options.height || 1;
-  var internalFormat = options.internalFormat || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var type = options.type || formatType.type;
+  const tex = gl.createTexture();
+  const target = options.target || gl.TEXTURE_2D;
+  let width  = options.width  || 1;
+  let height = options.height || 1;
+  const internalFormat = options.internalFormat || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  let type = options.type || formatType.type;
   gl.bindTexture(target, tex);
   if (target === gl.TEXTURE_CUBE_MAP) {
     // this should have been the default for CUBEMAPS :(
     gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
-  var src = options.src;
+  let src = options.src;
   if (src) {
     if (typeof src === "function") {
       src = src(gl, options);
@@ -1414,7 +1414,7 @@ function createTexture(gl, options, callback) {
                     isArrayBuffer(src[0]))
                )
               ) {
-      var dimensions = setTextureFromArray(gl, tex, src, options);
+      const dimensions = setTextureFromArray(gl, tex, src, options);
       width  = dimensions.width;
       height = dimensions.height;
       type   = dimensions.type;
@@ -1460,14 +1460,14 @@ function createTexture(gl, options, callback) {
 function resizeTexture(gl, tex, options, width, height) {
   width = width || options.width;
   height = height || options.height;
-  var target = options.target || gl.TEXTURE_2D;
+  const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
-  var level = options.level || 0;
-  var internalFormat = options.internalFormat || options.format || gl.RGBA;
-  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  var format = options.format || formatType.format;
-  var type;
-  var src = options.src;
+  const level = options.level || 0;
+  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  const format = options.format || formatType.format;
+  let type;
+  const src = options.src;
   if (!src) {
     type = options.type || formatType.type;
   } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
@@ -1476,7 +1476,7 @@ function resizeTexture(gl, tex, options, width, height) {
     type = options.type || formatType.type;
   }
   if (target === gl.TEXTURE_CUBE_MAP) {
-    for (var ii = 0; ii < 6; ++ii) {
+    for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, format, width, height, 0, format, type, null);
     }
   } else {
@@ -1501,7 +1501,7 @@ function isAsyncSrc(src) {
  *
  * Example:
  *
- *     var textures = twgl.createTextures(gl, {
+ *     const textures = twgl.createTextures(gl, {
  *       // a power of 2 image
  *       hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
  *       // a non-power of 2 image
@@ -1573,10 +1573,10 @@ function isAsyncSrc(src) {
  */
 function createTextures(gl, textureOptions, callback) {
   callback = callback || noop;
-  var numDownloading = 0;
-  var errors = [];
-  var textures = {};
-  var images = {};
+  let numDownloading = 0;
+  const errors = [];
+  const textures = {};
+  const images = {};
 
   function callCallbackIfReady() {
     if (numDownloading === 0) {
@@ -1587,8 +1587,8 @@ function createTextures(gl, textureOptions, callback) {
   }
 
   Object.keys(textureOptions).forEach(function(name) {
-    var options = textureOptions[name];
-    var onLoadFn;
+    const options = textureOptions[name];
+    let onLoadFn;
     if (isAsyncSrc(options.src)) {
       onLoadFn = function(err, tex, img) {
         images[name] = img;

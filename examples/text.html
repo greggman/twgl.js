@@ -79,31 +79,31 @@ void main() {
   gl_FragColor = color;
 }
   </script>
-  <script src="../dist/3.x/twgl-full.min.js"></script>
+  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script>
     "use strict";
     twgl.setDefaults({attribPrefix: "a_"});
-    var m4 = twgl.m4;
-    var gl = twgl.getWebGLContext(document.getElementById("c"));
-    var programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const m4 = twgl.m4;
+    const gl = twgl.getWebGLContext(document.getElementById("c"));
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    var bufferInfo = twgl.primitives.createPlaneBufferInfo(gl, 1, 1, 1, 1, m4.rotationX(Math.PI * 0.5));
+    const bufferInfo = twgl.primitives.createPlaneBufferInfo(gl, 1, 1, 1, 1, m4.rotationX(Math.PI * 0.5));
 
     function rand(min, max) {
       return min + Math.random() * (max - min);
     }
 
     // Shared values
-    var camera = m4.identity();
-    var view = m4.identity();
-    var viewProjection = m4.identity();
-    var world = m4.identity();
+    const camera = m4.identity();
+    const view = m4.identity();
+    const viewProjection = m4.identity();
+    const world = m4.identity();
 
-    var ctx = document.createElement("canvas").getContext("2d");
+    const ctx = document.createElement("canvas").getContext("2d");
     function makeText(text) {
       ctx.font = "20px monospace";
-      var t = ctx.measureText(text);
+      const t = ctx.measureText(text);
       ctx.canvas.width  = Math.ceil(t.width) + 2;
       ctx.canvas.height = 24;
       ctx.font = "20px monospace";
@@ -114,7 +114,7 @@ void main() {
       return ctx.canvas;
     }
 
-    var msgs = [
+    const msgs = [
       "al",
       "joe",
       "jill",
@@ -126,23 +126,23 @@ void main() {
     ];
 
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-    var textTextures = msgs.map(function(msg) {
-      var canvas = makeText(msg);
-      var scale = 0.01;
+    const textTextures = msgs.map(function(msg) {
+      const canvas = makeText(msg);
+      const scale = 0.01;
       return {
         tex: twgl.createTexture(gl, { src: canvas }),
         scale: [canvas.width * scale, canvas.height * scale, 1],
       };
     });
 
-    var objects = [];
-    var drawObjects = [];
-    var numObjects = 500;
-    var baseHue = rand(0, 360);
-    for (var ii = 0; ii < numObjects; ++ii) {
-      var texNdx = rand(0, textTextures.length) | 0;
-      var text   = textTextures[texNdx];
-      var uniforms = {
+    const objects = [];
+    const drawObjects = [];
+    const numObjects = 500;
+    const baseHue = rand(0, 360);
+    for (let ii = 0; ii < numObjects; ++ii) {
+      const texNdx = rand(0, textTextures.length) | 0;
+      const text   = textTextures[texNdx];
+      const uniforms = {
         u_texture: text.tex,
         u_worldViewProjection: m4.identity(),
         u_color: chroma.hsv((baseHue + rand(0, 60)) % 360, 1, 1).gl(),
@@ -160,7 +160,7 @@ void main() {
         texInfo: text,
       });
     }
-    var clearColor = chroma.hsv((baseHue + 30) % 360, 0.5, 0.5).gl();
+    const clearColor = chroma.hsv((baseHue + 30) % 360, 0.5, 0.5).gl();
 
     function render(time) {
       time *= 0.001;
@@ -173,18 +173,18 @@ void main() {
       gl.clearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      var projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-      var eye = [1, 4, -20];
-      var target = [0, 0, 0];
-      var up = [0, 1, 0];
+      const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+      const eye = [1, 4, -20];
+      const target = [0, 0, 0];
+      const up = [0, 1, 0];
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
       m4.multiply(projection, view, viewProjection);
 
       objects.forEach(function(obj) {
-        var uni = obj.uniforms;
-        var texInfo = obj.texInfo;
+        const uni = obj.uniforms;
+        const texInfo = obj.texInfo;
         m4.identity(world);
         m4.rotateY(world, time * obj.ySpeed, world);
         m4.rotateZ(world, time * obj.zSpeed, world);
