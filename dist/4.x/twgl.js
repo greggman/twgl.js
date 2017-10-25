@@ -193,7 +193,7 @@ function isWebGL2(gl) {
  */
 function isWebGL1(gl) {
   // This is the correct check but it's slow
-  //var version = getVersionAsNumber(gl);
+  //const version = getVersionAsNumber(gl);
   //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
   // This might also be the correct check but I'm assuming it's slow-ish
   // return gl instanceof WebGLRenderingContext;
@@ -927,6 +927,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
  */
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
+  var transformFeedbackVaryings = void 0;
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
     opt_locations = undefined;
@@ -943,7 +944,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     var opt = opt_attribs;
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
-    var transformFeedbackVaryings = opt.transformFeedbackVaryings;
+    transformFeedbackVaryings = opt.transformFeedbackVaryings;
   }
 
   var options = {
@@ -1187,7 +1188,7 @@ function createUniformSetters(gl, program) {
     if (!typeInfo) {
       throw "unknown type: 0x" + type.toString(16); // we should never get here.
     }
-    var setter;
+    var setter = void 0;
     if (typeInfo.bindPoint) {
       // it's a sampler
       var unit = textureUnit;
@@ -1403,14 +1404,14 @@ function createUniformBlockSpecFromProgram(gl, program) {
   var blockSpecs = {};
 
   var numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
-  for (ii = 0; ii < numUniformBlocks; ++ii) {
-    var name = gl.getActiveUniformBlockName(program, ii);
+  for (var _ii = 0; _ii < numUniformBlocks; ++_ii) {
+    var name = gl.getActiveUniformBlockName(program, _ii);
     var blockSpec = {
-      index: ii,
-      usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
-      usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
-      size: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_DATA_SIZE),
-      uniformIndices: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES)
+      index: _ii,
+      usedByVertexShader: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
+      usedByFragmentShader: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
+      size: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_DATA_SIZE),
+      uniformIndices: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES)
     };
     blockSpec.used = blockSpec.usedByVertexSahder || blockSpec.usedByFragmentShader;
     blockSpecs[name] = blockSpec;
@@ -1620,15 +1621,15 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * example:
  *
- *     var programInfo = createProgramInfo(
+ *     const programInfo = createProgramInfo(
  *         gl, ["some-vs", "some-fs"]);
  *
- *     var tex1 = gl.createTexture();
- *     var tex2 = gl.createTexture();
+ *     const tex1 = gl.createTexture();
+ *     const tex2 = gl.createTexture();
  *
  *     ... assume we setup the textures with data ...
  *
- *     var uniforms = {
+ *     const uniforms = {
  *       u_someSampler: tex1,
  *       u_someOtherSampler: tex2,
  *       u_someColor: [1,0,0,1],
@@ -1668,12 +1669,12 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * Note it is perfectly reasonable to call `setUniforms` multiple times. For example
  *
- *     var uniforms = {
+ *     const uniforms = {
  *       u_someSampler: tex1,
  *       u_someOtherSampler: tex2,
  *     };
  *
- *     var moreUniforms {
+ *     const moreUniforms {
  *       u_someColor: [1,0,0,1],
  *       u_somePosition: [0,1,1],
  *       u_someMatrix: [
@@ -1689,7 +1690,7 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * You can also add WebGLSamplers to uniform samplers as in
  *
- *     var uniforms = {
+ *     const uniforms = {
  *       u_someSampler: {
  *         texture: someWebGLTexture,
  *         sampler: someWebGLSampler,
@@ -1705,13 +1706,13 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *        uniforms.
  *   You can pass multiple objects by putting them in an array or by calling with more arguments.For example
  *
- *     var sharedUniforms = {
+ *     const sharedUniforms = {
  *       u_fogNear: 10,
  *       u_projection: ...
  *       ...
  *     };
  *
- *     var localUniforms = {
+ *     const localUniforms = {
  *       u_world: ...
  *       u_diffuseColor: ...
  *     };
@@ -1784,15 +1785,15 @@ function createAttributeSetters(gl, program) {
  *
  * Example:
  *
- *     var program = createProgramFromScripts(
+ *     const program = createProgramFromScripts(
  *         gl, ["some-vs", "some-fs");
  *
- *     var attribSetters = createAttributeSetters(program);
+ *     const attribSetters = createAttributeSetters(program);
  *
- *     var positionBuffer = gl.createBuffer();
- *     var texcoordBuffer = gl.createBuffer();
+ *     const positionBuffer = gl.createBuffer();
+ *     const texcoordBuffer = gl.createBuffer();
  *
- *     var attribs = {
+ *     const attribs = {
  *       a_position: {buffer: positionBuffer, numComponents: 3},
  *       a_texcoord: {buffer: texcoordBuffer, numComponents: 2},
  *     };
@@ -1817,7 +1818,7 @@ function createAttributeSetters(gl, program) {
  * float texcoord and 4 value uint8 colors you'd setup your
  * attribs like this
  *
- *     var attribs = {
+ *     const attribs = {
  *       a_position: {buffer: positionBuffer, numComponents: 3},
  *       a_texcoord: {buffer: texcoordBuffer, numComponents: 2},
  *       a_color: {
@@ -1847,15 +1848,15 @@ function setAttributes(setters, buffers) {
  *
  * Example:
  *
- *     var programInfo = createProgramInfo(
+ *     const programInfo = createProgramInfo(
  *         gl, ["some-vs", "some-fs");
  *
- *     var arrays = {
+ *     const arrays = {
  *       position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
  *       texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
  *     };
  *
- *     var bufferInfo = createBufferInfoFromArrays(gl, arrays);
+ *     const bufferInfo = createBufferInfoFromArrays(gl, arrays);
  *
  *     gl.useProgram(programInfo.program);
  *
@@ -2466,7 +2467,7 @@ function setDefaults(newDefaults) {
  * @param {number} value the value of the enum you want to look up.
  */
 var glEnumToString = function () {
-  var enums;
+  var enums = void 0;
 
   function init(gl) {
     if (!enums) {
@@ -2886,8 +2887,8 @@ function setTextureFromElement(gl, tex, element, options) {
     // guess the parts
     var imgWidth = element.width;
     var imgHeight = element.height;
-    var size;
-    var slices;
+    var size = void 0;
+    var slices = void 0;
     if (imgWidth / 6 === imgHeight) {
       // It's 6x1
       size = imgHeight;
@@ -2934,8 +2935,8 @@ function setTextureFromElement(gl, tex, element, options) {
     ctx.canvas.width = smallest;
     ctx.canvas.height = smallest;
     for (var d = 0; d < depth; ++d) {
-      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
-      gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
+      //gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
+      //gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
       var srcX = d * smallest * xMult;
       var srcY = d * smallest * yMult;
       var srcW = smallest;
@@ -3140,8 +3141,8 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
   options = utils.shallowCopy(options);
   var numToLoad = 6;
   var errors = [];
-  var imgs;
   var faces = getCubeFaceOrder(gl, options);
+  var imgs = void 0; // eslint-disable-line
 
   function uploadImg(faceTarget) {
     return function (err, img) {
@@ -3220,7 +3221,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   options = utils.shallowCopy(options);
   var numToLoad = urls.length;
   var errors = [];
-  var imgs;
+  var imgs = void 0; // eslint-disable-line
   var level = options.level || 0;
   var width = options.width;
   var height = options.height;
@@ -3317,7 +3318,7 @@ function setTextureFromArray(gl, tex, src, options) {
   if (numElements % 1) {
     throw "length wrong size for format: " + glEnumToString(gl, format);
   }
-  var dimensions;
+  var dimensions = void 0;
   if (target === gl.TEXTURE_3D) {
     if (!width && !height && !depth) {
       var size = Math.cbrt(numElements);
@@ -3483,7 +3484,7 @@ function resizeTexture(gl, tex, options, width, height) {
   var internalFormat = options.internalFormat || options.format || gl.RGBA;
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var format = options.format || formatType.format;
-  var type;
+  var type = void 0;
   var src = options.src;
   if (!src) {
     type = options.type || formatType.type;
@@ -3517,7 +3518,7 @@ function isAsyncSrc(src) {
  *
  * Example:
  *
- *     var textures = twgl.createTextures(gl, {
+ *     const textures = twgl.createTextures(gl, {
  *       // a power of 2 image
  *       hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
  *       // a non-power of 2 image
@@ -3604,7 +3605,7 @@ function createTextures(gl, textureOptions, callback) {
 
   Object.keys(textureOptions).forEach(function (name) {
     var options = textureOptions[name];
-    var onLoadFn;
+    var onLoadFn = void 0;
     if (isAsyncSrc(options.src)) {
       onLoadFn = function onLoadFn(err, tex, img) {
         images[name] = img;
@@ -3864,7 +3865,7 @@ var defaults = {
  *
  *   In otherwords I'll create arrays of geometry like this
  *
- *       var arrays = {
+ *       const arrays = {
  *         position: ...
  *         normal: ...
  *         texcoord: ...
@@ -4303,7 +4304,7 @@ var texcoordRE = /coord|texture/i;
 var colorRE = /color|colour/i;
 
 function guessNumComponentsFromName(name, length) {
-  var numComponents;
+  var numComponents = void 0;
   if (texcoordRE.test(name)) {
     numComponents = 2;
   } else if (colorRE.test(name)) {
@@ -4502,11 +4503,11 @@ function createAttribsFromArrays(gl, arrays) {
     if (!isIndices(arrayName)) {
       var array = arrays[arrayName];
       var attribName = array.attrib || array.name || array.attribName || defaults.attribPrefix + arrayName;
-      var buffer;
-      var type;
-      var normalization;
-      var numComponents;
-      var numValues;
+      var buffer = void 0;
+      var type = void 0;
+      var normalization = void 0;
+      var numComponents = void 0;
+      var numValues = void 0;
       if (typeof array === "number" || typeof array.data === "number") {
         numValues = array.data || array;
         var arrayType = array.type || Float32Array;
@@ -4603,9 +4604,9 @@ function getBytesPerValueForGLType(gl, type) {
  */
 var positionKeys = ['position', 'positions', 'a_position'];
 function getNumElementsFromNonIndexedArrays(arrays) {
-  var key;
-  for (var ii = 0; ii < positionKeys.length; ++ii) {
-    key = positionKeys[ii];
+  var key = void 0;
+  for (var _ii = 0; _ii < positionKeys.length; ++_ii) {
+    key = positionKeys[_ii];
     if (key in arrays) {
       break;
     }
@@ -4624,8 +4625,9 @@ function getNumElementsFromNonIndexedArrays(arrays) {
 }
 
 function getNumElementsFromAttributes(gl, attribs) {
-  var key;
-  for (var ii = 0; ii < positionKeys.length; ++ii) {
+  var key = void 0;
+  var ii = void 0;
+  for (ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
     if (key in attribs) {
       break;
@@ -4760,10 +4762,10 @@ function createBufferInfoFromArrays(gl, arrays) {
   };
   var indices = arrays.indices;
   if (indices) {
-    indices = makeTypedArray(indices, "indices");
-    bufferInfo.indices = createBufferFromTypedArray(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
-    bufferInfo.numElements = indices.length;
-    bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(indices);
+    var newIndices = makeTypedArray(indices, "indices");
+    bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
+    bufferInfo.numElements = newIndices.length;
+    bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(newIndices);
   } else {
     bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
   }
@@ -5212,22 +5214,22 @@ function isRenderbufferFormat(format) {
  * The simplest usage
  *
  *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
- *     var fbi = twgl.createFramebufferInfo(gl);
+ *     const fbi = twgl.createFramebufferInfo(gl);
  *
  * More complex usage
  *
  *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
- *     var attachments = [
+ *     const attachments = [
  *       { format: RGB565, mag: NEAREST },
  *       { format: STENCIL_INDEX8 },
  *     ]
- *     var fbi = twgl.createFramebufferInfo(gl, attachments);
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments);
  *
  * Passing in a specific size
  *
- *     var width = 256;
- *     var height = 256;
- *     var fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
+ *     const width = 256;
+ *     const height = 256;
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
  *
  * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
  * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
@@ -5301,7 +5303,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * The simplest usage
  *
  *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
- *     var fbi = twgl.createFramebufferInfo(gl);
+ *     const fbi = twgl.createFramebufferInfo(gl);
  *
  *     ...
  *
@@ -5314,11 +5316,11 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * More complex usage
  *
  *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
- *     var attachments = [
+ *     const attachments = [
  *       { format: RGB565, mag: NEAREST },
  *       { format: STENCIL_INDEX8 },
  *     ]
- *     var fbi = twgl.createFramebufferInfo(gl, attachments);
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments);
  *
  *     ...
  *
