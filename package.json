@@ -4,7 +4,7 @@
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl-full.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --recursive",
+    "test": "node node_modules/mocha/bin/mocha --recursive 'test/**/*-harness.js'",
     "pre-push": "grunt eslint",
     "build": "grunt build",
     "bumpminor": "grunt bumpminor",
@@ -33,6 +33,7 @@
     "dist/4.x/twgl.js"
   ],
   "devDependencies": {
+    "@std/esm": "^0.12.4",
     "almond": "^0.3.3",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",

@@ -1,13 +1,4 @@
-var path      = require('path');
-var requirejs = require('requirejs');
-var should    = require('should');
-
-requirejs.config({
-  nodeRequire: require,
-  baseUrl: path.normalize(path.join(__dirname, '../../../src')),
-});
-
-var m4 = requirejs('./m4');
+import * as m4 from '../../../src/m4.js';
 
 function check(Type) {
   describe('using ' + Type, function() {

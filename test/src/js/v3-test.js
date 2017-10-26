@@ -1,13 +1,4 @@
-var path      = require('path');
-var requirejs = require('requirejs');
-var should    = require('should');
-
-requirejs.config({
-  nodeRequire: require,
-  baseUrl: path.normalize(path.join(__dirname, '../../../src')),
-});
-
-var v3 = requirejs('./v3');
+import * as v3 from '../../../src/v3.js';
 
 function check(Type) {
   describe('using ' + Type, function() {
