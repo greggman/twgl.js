@@ -753,6 +753,27 @@ function createProgramFromSources(
 }
 
 /**
+ * Returns true if attribute/uniform is a reserved/built in
+ *
+ * It makes no sense to me why GL returns these because it's
+ * illegal to call `gl.getUniformLocation` and `gl.getAttribLocation`
+ * with names that start with `gl_` (and `webgl_` in WebGL)
+ *
+ * I can only assume they are there because they might count
+ * when computing the number of uniforms/attributes used when you want to
+ * know if you are near the limit. That doesn't really make sense
+ * to me but the fact that these get returned are in the spec.
+ *
+ * @param {WebGLActiveInfo} info As returned from `gl.getActiveUniform` or
+ *    `gl.getActiveAttrib`.
+ * @return {bool} true if it's reserved
+ */
+function isBuiltIn(info) {
+  const name = info.name;
+  return name.startsWith("gl_") || name.startsWith("webgl_");
+}
+
+/**
  * Creates setter functions for all uniforms of a shader
  * program.
  *
@@ -806,8 +827,8 @@ function createUniformSetters(gl, program) {
 
   for (let ii = 0; ii < numUniforms; ++ii) {
     const uniformInfo = gl.getActiveUniform(program, ii);
-    if (!uniformInfo) {
-      break;
+    if (isBuiltIn(uniformInfo)) {
+        continue;
     }
     let name = uniformInfo.name;
     // remove the array suffix.
@@ -977,7 +998,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
     uniformIndices.push(ii);
     uniformData.push({});
     const uniformInfo = gl.getActiveUniform(program, ii);
-    if (!uniformInfo) {
+    if (isBuiltIn(uniformInfo)) {
       break;
     }
     // REMOVE [0]?
@@ -1363,8 +1384,8 @@ function createAttributeSetters(gl, program) {
   const numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
   for (let ii = 0; ii < numAttribs; ++ii) {
     const attribInfo = gl.getActiveAttrib(program, ii);
-    if (!attribInfo) {
-      break;
+    if (isBuiltIn(attribInfo)) {
+        continue;
     }
     const index = gl.getAttribLocation(program, attribInfo.name);
     const typeInfo = attrTypeMap[attribInfo.type];
