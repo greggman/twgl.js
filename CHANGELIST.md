@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.0.1
+
+    *   Add check for built in uniforms and attributes
+
 *   4.0.0
 
     *   Switch to es6 modules for source
