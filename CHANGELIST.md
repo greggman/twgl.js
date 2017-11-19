@@ -1,8 +1,16 @@
 #Changelist
 
+*   4.1.0
+
+    *   Added `twgl.glEnumToString`
+
+        This was an internal function used to make a few error
+        messages more useful but might as well
+        export it.
+
 *   4.0.1
 
-    *   Add check for built in uniforms and attributes
+    *   Added check for built in uniforms and attributes
 
 *   4.0.0
 
