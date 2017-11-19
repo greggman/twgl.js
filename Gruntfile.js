@@ -90,6 +90,7 @@ module.exports = function(grunt) {
     'src/programs.js',
     'src/textures.js',
     'src/typedarrays.js',
+    'src/utils.js',
     'src/vertex-arrays.js',
   ];
 

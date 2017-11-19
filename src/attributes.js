@@ -30,7 +30,7 @@
  */
 
 import * as typedArrays from './typedarrays.js';
-import * as utils from './utils.js';
+import * as helper from './helper.js';
 
 /**
  * Low level attribute and buffer related functions
@@ -78,7 +78,7 @@ function setAttributePrefix(prefix) {
 }
 
 function setDefaults(newDefaults) {
-  utils.copyExistingProperties(newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
 }
 
 function setBufferFromTypedArray(gl, type, buffer, array, drawType) {

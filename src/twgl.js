@@ -31,7 +31,7 @@
 
 import * as attributes from './attributes.js';
 import * as textures from './textures.js';
-import * as utils from './utils.js';
+import * as helper from './helper.js';
 
 /**
  * The main TWGL module.
@@ -139,7 +139,7 @@ const defaults = {
  * @memberOf module:twgl
  */
 function setDefaults(newDefaults) {
-  utils.copyExistingProperties(newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
   attributes.setAttributeDefaults_(newDefaults);  // eslint-disable-line
   textures.setTextureDefaults_(newDefaults);  // eslint-disable-line
 }
@@ -366,15 +366,10 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
   return false;
 }
 
-const isWebGL1 = utils.isWebGL1;
-const isWebGL2 = utils.isWebGL2;
-
 export {
   addExtensionsToContext,
   getContext,
   getWebGLContext,
-  isWebGL1,
-  isWebGL2,
   resizeCanvasToDisplaySize,
   setDefaults,
 };
@@ -396,6 +391,7 @@ export * from './framebuffers.js';
 export * from './programs.js';
 export * from './textures.js';
 export * from './typedarrays.js';
+export * from './utils.js';
 export * from './vertex-arrays.js';
 
 

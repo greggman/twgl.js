@@ -62,7 +62,7 @@
  * @module twgl/primitives
  */
 import * as attributes from './attributes.js';
-import * as utils from './utils.js';
+import * as helper from './helper.js';
 import * as typedArrays from './typedarrays.js';
 import * as m4 from './m4.js';
 import * as v3 from './v3.js';
@@ -1913,7 +1913,7 @@ function createArrayOfSameType(srcArray, length) {
     newArraySpec = {
       data: newArray,
     };
-    utils.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
+    helper.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
   }
   return newArraySpec;
 }

@@ -30,6 +30,7 @@
  */
 
 import * as utils from './utils.js';
+import * as helper from './helper.js';
 
 /**
  * Low level shader program related functions
@@ -46,8 +47,8 @@ import * as utils from './utils.js';
  * @module twgl/programs
  */
 
-const error = utils.error;
-const warn = utils.warn;
+const error = helper.error;
+const warn = helper.warn;
 
 const FLOAT                         = 0x1406;
 const FLOAT_VEC2                    = 0x8B50;

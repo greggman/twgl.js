@@ -30,7 +30,6 @@
  */
 
 import * as textures from './textures.js';
-import * as utils from './utils.js';
 
 /**
  * Framebuffer related functions
@@ -207,7 +206,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
         gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
         gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
       } else {
-        const textureOptions = utils.shallowCopy(attachmentOptions);
+        const textureOptions = Object.assign({}, attachmentOptions);
         textureOptions.width = width;
         textureOptions.height = height;
         if (textureOptions.auto === undefined) {

@@ -29,8 +29,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import * as typedArrays from './typedarrays.js';
 import * as utils from './utils.js';
+import * as typedArrays from './typedarrays.js';
+import * as helper from './helper.js';
 
 /**
  * Low level texture related functions
@@ -418,41 +419,11 @@ function setDefaultTextureColor(color) {
 }
 
 function setDefaults(newDefaults) {
-  utils.copyExistingProperties(newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
   if (newDefaults.textureColor) {
     setDefaultTextureColor(newDefaults.textureColor);
   }
 }
-
-/**
- * Gets a string for gl enum
- *
- * Note: Several enums are the same. Without more
- * context (which function) it's impossible to always
- * give the correct enum.
- *
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @param {number} value the value of the enum you want to look up.
- */
-const glEnumToString = (function() {
-  let enums;
-
-  function init(gl) {
-    if (!enums) {
-      enums = {};
-      for (const key in gl) {
-        if (typeof gl[key] === 'number') {
-          enums[gl[key]] = key;
-        }
-      }
-    }
-  }
-
-  return function glEnumToString(gl, value) {
-    init(gl);
-    return enums[value] || ("0x" + value.toString(16));
-  };
-}());
 
 /**
  * A function to generate the source for a texture.
@@ -963,7 +934,7 @@ function loadImage(url, crossOrigin, callback) {
 
   function onError() {
     const msg = "couldn't load image: " + url;
-    utils.error(msg);
+    helper.error(msg);
     callback(msg, img);
     clearEventHandlers();
   }
@@ -1075,7 +1046,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   options = options || defaults.textureOptions;
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = utils.shallowCopy(options);
+  options = Object.assign({}, options);
   const img = loadImage(options.src, options.crossOrigin, function(err, img) {
     if (err) {
       callback(err, tex, img);
@@ -1114,7 +1085,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = utils.shallowCopy(options);
+  options = Object.assign({}, options);
   let numToLoad = 6;
   const errors = [];
   const faces = getCubeFaceOrder(gl, options);
@@ -1194,7 +1165,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = utils.shallowCopy(options);
+  options = Object.assign({}, options);
   let numToLoad = urls.length;
   const errors = [];
   let imgs;  // eslint-disable-line
@@ -1292,7 +1263,7 @@ function setTextureFromArray(gl, tex, src, options) {
   const bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
   const numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
   if (numElements % 1) {
-    throw "length wrong size for format: " + glEnumToString(gl, format);
+    throw "length wrong size for format: " + utils.glEnumToString(gl, format);
   }
   let dimensions;
   if (target === gl.TEXTURE_3D) {
