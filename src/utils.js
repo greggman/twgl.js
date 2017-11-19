@@ -72,7 +72,22 @@ function isWebGL1(gl) {
  *
  * Note: Several enums are the same. Without more
  * context (which function) it's impossible to always
- * give the correct enum.
+ * give the correct enum. As it is, for matching values
+ * it gives all enums. Checking the WebGL2RenderingContext
+ * that means
+ *
+ *      0     = ZERO | POINT | NONE | NO_ERROR
+ *      1     = ONE | LINES | SYNC_FLUSH_COMMANDS_BIT
+ *      32777 = BLEND_EQUATION_RGB | BLEND_EQUATION_RGB
+ *      36662 = COPY_READ_BUFFER | COPY_READ_BUFFER_BINDING
+ *      36663 = COPY_WRITE_BUFFER | COPY_WRITE_BUFFER_BINDING
+ *      36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING
+ *
+ * It's also not useful for bits really unless you pass in individual bits.
+ * In other words
+ *
+ *     const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
+ *     twgl.glEnumToString(gl, bits);  // not going to work
  *
  * Note that some enums only exist on extensions. If you
  * want them to show up you need to pass the extension at least
@@ -80,7 +95,7 @@ function isWebGL1(gl) {
  *
  *     const ext = gl.getExtension('WEBGL_compressed_texture_s3tc`);
  *     if (ext) {
- *        twgl.glEnumToString(ext, 0);  // just prime the functio
+ *        twgl.glEnumToString(ext, 0);  // just prime the function
  *
  *        ..later..
  *
@@ -89,6 +104,10 @@ function isWebGL1(gl) {
  *
  * Notice I didn't have to pass the extension the second time. This means
  * you can have place that generically gets an enum for texture formats for example.
+ * and as long as you primed the function with the extensions
+ *
+ * If you're using `twgl.addExtensionsToContext` to enable your extensions
+ * then twgl will automatically get the extension's enums.
  *
  * @param {WebGLRenderingContext|Extension} gl A WebGLRenderingContext or any extension object
  * @param {number} value the value of the enum you want to look up.

@@ -32,6 +32,7 @@
 import * as attributes from './attributes.js';
 import * as textures from './textures.js';
 import * as helper from './helper.js';
+import * as utils from './utils.js';
 
 /**
  * The main TWGL module.
@@ -146,8 +147,10 @@ function setDefaults(newDefaults) {
 
 const prefixRE = /^(.*?)_/;
 function addExtensionToContext(gl, extensionName) {
+  utils.glEnumToString(gl, 0);
   const ext = gl.getExtension(extensionName);
   if (ext) {
+    const enums = {};
     const fnSuffix = prefixRE.exec(extensionName)[1];
     const enumSuffix = '_' + fnSuffix;
     for (const key in ext) {
@@ -162,7 +165,7 @@ function addExtensionToContext(gl, extensionName) {
       }
       if (gl[name] !== undefined) {
         if (!isFunc && gl[name] !== value) {
-          console.warn(name, gl[name], value, key); // eslint-disable-line
+          helper.warn(name, gl[name], value, key);
         }
       } else {
         if (isFunc) {
@@ -173,9 +176,15 @@ function addExtensionToContext(gl, extensionName) {
           }(value);
         } else {
           gl[name] = value;
+          enums[name] = value;
         }
       }
     }
+    // pass the modified enums to glEnumToString
+    enums.constructor = {
+      name: ext.constructor.name,
+    };
+    utils.glEnumToString(enums, 0);
   }
   return ext;
 }
