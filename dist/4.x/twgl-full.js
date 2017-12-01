@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -120,19 +120,6 @@ Object.defineProperty(exports, "__esModule", {
  */
 
 /**
- * Copy an object 1 level deep
- * @param {object} src object to copy
- * @return {object} the copy
- */
-function shallowCopy(src) {
-  var dst = {};
-  Object.keys(src).forEach(function (key) {
-    dst[key] = src[key];
-  });
-  return dst;
-}
-
-/**
  * Copy named properties
  *
  * @param {string[]} names names of properties to copy
@@ -162,53 +149,12 @@ function copyExistingProperties(src, dst) {
   });
 }
 
-/**
- * Gets the gl version as a number
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @return {number} version of gl
- */
-//function getVersionAsNumber(gl) {
-//  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
-//}
-
-/**
- * Check if context is WebGL 2.0
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @return {bool} true if it's WebGL 2.0
- * @memberOf module:twgl
- */
-function isWebGL2(gl) {
-  // This is the correct check but it's slow
-  //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
-  // This might also be the correct check but I'm assuming it's slow-ish
-  // return gl instanceof WebGL2RenderingContext;
-  return !!gl.texStorage2D;
-}
-
-/**
- * Check if context is WebGL 1.0
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @return {bool} true if it's WebGL 1.0
- * @memberOf module:twgl
- */
-function isWebGL1(gl) {
-  // This is the correct check but it's slow
-  //const version = getVersionAsNumber(gl);
-  //return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
-  // This might also be the correct check but I'm assuming it's slow-ish
-  // return gl instanceof WebGLRenderingContext;
-  return !gl.texStorage2D;
-}
-
 var error = window.console && window.console.error && typeof window.console.error === "function" ? window.console.error.bind(window.console) : function () {};
 
 var warn = window.console && window.console.warn && typeof window.console.warn === "function" ? window.console.warn.bind(window.console) : function () {};
 
 exports.copyExistingProperties = copyExistingProperties;
 exports.copyNamedProperties = copyNamedProperties;
-exports.shallowCopy = shallowCopy;
-exports.isWebGL1 = isWebGL1;
-exports.isWebGL2 = isWebGL2;
 exports.error = error;
 exports.warn = warn;
 
@@ -417,9 +363,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.bindUniformBlock = exports.setBlockUniforms = exports.setUniformBlock = exports.setUniforms = exports.setBuffersAndAttributes = exports.setAttributes = exports.bindTransformFeedbackInfo = exports.createTransformFeedbackInfo = exports.createTransformFeedback = exports.createUniformBlockInfo = exports.createUniformBlockInfoFromProgram = exports.createUniformBlockSpecFromProgram = exports.createUniformSetters = exports.createProgramInfoFromProgram = exports.createProgramInfo = exports.createProgramFromSources = exports.createProgramFromScripts = exports.createProgram = exports.createAttributeSetters = undefined;
 
-var _utils = __webpack_require__(0);
+var _utils = __webpack_require__(3);
 
 var utils = _interopRequireWildcard(_utils);
+
+var _helper = __webpack_require__(0);
+
+var helper = _interopRequireWildcard(_helper);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -438,38 +388,39 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * @module twgl/programs
  */
 
-var error = utils.error; /*
-                          * Copyright 2015, Gregg Tavares.
-                          * All rights reserved.
-                          *
-                          * Redistribution and use in source and binary forms, with or without
-                          * modification, are permitted provided that the following conditions are
-                          * met:
-                          *
-                          *     * Redistributions of source code must retain the above copyright
-                          * notice, this list of conditions and the following disclaimer.
-                          *     * Redistributions in binary form must reproduce the above
-                          * copyright notice, this list of conditions and the following disclaimer
-                          * in the documentation and/or other materials provided with the
-                          * distribution.
-                          *     * Neither the name of Gregg Tavares. nor the names of his
-                          * contributors may be used to endorse or promote products derived from
-                          * this software without specific prior written permission.
-                          *
-                          * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-                          * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-                          * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-                          * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-                          * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-                          * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-                          * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-                          * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-                          * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-                          * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-                          * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-                          */
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-var warn = utils.warn;
+var error = helper.error;
+var warn = helper.warn;
 
 var FLOAT = 0x1406;
 var FLOAT_VEC2 = 0x8B50;
@@ -2043,6 +1994,158 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 /*
+ * Copyright 2017, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Gets the gl version as a number
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {number} version of gl
+ */
+//function getVersionAsNumber(gl) {
+//  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+//}
+
+/**
+ * Check if context is WebGL 2.0
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {bool} true if it's WebGL 2.0
+ * @memberOf module:twgl
+ */
+function isWebGL2(gl) {
+  // This is the correct check but it's slow
+  //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  // This might also be the correct check but I'm assuming it's slow-ish
+  // return gl instanceof WebGL2RenderingContext;
+  return !!gl.texStorage2D;
+}
+
+/**
+ * Check if context is WebGL 1.0
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {bool} true if it's WebGL 1.0
+ * @memberOf module:twgl
+ */
+function isWebGL1(gl) {
+  // This is the correct check but it's slow
+  // const version = getVersionAsNumber(gl);
+  // return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
+  // This might also be the correct check but I'm assuming it's slow-ish
+  // return gl instanceof WebGLRenderingContext;
+  return !gl.texStorage2D;
+}
+
+/**
+ * Gets a string for WebGL enum
+ *
+ * Note: Several enums are the same. Without more
+ * context (which function) it's impossible to always
+ * give the correct enum. As it is, for matching values
+ * it gives all enums. Checking the WebGL2RenderingContext
+ * that means
+ *
+ *      0     = ZERO | POINT | NONE | NO_ERROR
+ *      1     = ONE | LINES | SYNC_FLUSH_COMMANDS_BIT
+ *      32777 = BLEND_EQUATION_RGB | BLEND_EQUATION_RGB
+ *      36662 = COPY_READ_BUFFER | COPY_READ_BUFFER_BINDING
+ *      36663 = COPY_WRITE_BUFFER | COPY_WRITE_BUFFER_BINDING
+ *      36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING
+ *
+ * It's also not useful for bits really unless you pass in individual bits.
+ * In other words
+ *
+ *     const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
+ *     twgl.glEnumToString(gl, bits);  // not going to work
+ *
+ * Note that some enums only exist on extensions. If you
+ * want them to show up you need to pass the extension at least
+ * once. For example
+ *
+ *     const ext = gl.getExtension('WEBGL_compressed_texture_s3tc`);
+ *     if (ext) {
+ *        twgl.glEnumToString(ext, 0);  // just prime the function
+ *
+ *        ..later..
+ *
+ *        const internalFormat = ext.COMPRESSED_RGB_S3TC_DXT1_EXT;
+ *        console.log(twgl.glEnumToString(gl, internalFormat));
+ *
+ * Notice I didn't have to pass the extension the second time. This means
+ * you can have place that generically gets an enum for texture formats for example.
+ * and as long as you primed the function with the extensions
+ *
+ * If you're using `twgl.addExtensionsToContext` to enable your extensions
+ * then twgl will automatically get the extension's enums.
+ *
+ * @param {WebGLRenderingContext|Extension} gl A WebGLRenderingContext or any extension object
+ * @param {number} value the value of the enum you want to look up.
+ * @memberOf module:twgl
+ */
+var glEnumToString = function () {
+  var haveEnumsForType = {};
+  var enums = {};
+
+  function addEnums(gl) {
+    var type = gl.constructor.name;
+    if (!haveEnumsForType[type]) {
+      for (var key in gl) {
+        if (typeof gl[key] === 'number') {
+          var existing = enums[gl[key]];
+          enums[gl[key]] = existing ? existing + " | " + key : key;
+        }
+      }
+      haveEnumsForType[type] = true;
+    }
+  }
+
+  return function glEnumToString(gl, value) {
+    addEnums(gl);
+    return enums[value] || "0x" + value.toString(16);
+  };
+}();
+
+exports.glEnumToString = glEnumToString;
+exports.isWebGL1 = isWebGL1;
+exports.isWebGL2 = isWebGL2;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
  *
@@ -2427,7 +2530,7 @@ exports.setDefaultType = setDefaultType;
 exports.subtract = subtract;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2442,9 +2545,9 @@ var _typedarrays = __webpack_require__(1);
 
 var typedArrays = _interopRequireWildcard(_typedarrays);
 
-var _utils = __webpack_require__(0);
+var _helper = __webpack_require__(0);
 
-var utils = _interopRequireWildcard(_utils);
+var helper = _interopRequireWildcard(_helper);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2525,7 +2628,7 @@ function setAttributePrefix(prefix) {
 }
 
 function setDefaults(newDefaults) {
-  utils.copyExistingProperties(newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
 }
 
 function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
@@ -3144,7 +3247,7 @@ exports.getNumComponents_ = getNumComponents;
 exports.getArray_ = getArray;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3155,13 +3258,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getBytesPerElementForInternalFormat = exports.getNumComponentsForFormat = exports.resizeTexture = exports.createTextures = exports.setDefaultTextureColor = exports.setTextureParameters = exports.setTextureFilteringForSize = exports.setTextureFromElement = exports.loadTextureFromUrl = exports.setTextureFromArray = exports.setEmptyTexture = exports.createTexture = exports.setSamplerParameters = exports.createSamplers = exports.createSampler = exports.setTextureDefaults_ = undefined;
 
+var _utils = __webpack_require__(3);
+
+var utils = _interopRequireWildcard(_utils);
+
 var _typedarrays = __webpack_require__(1);
 
 var typedArrays = _interopRequireWildcard(_typedarrays);
 
-var _utils = __webpack_require__(0);
+var _helper = __webpack_require__(0);
 
-var utils = _interopRequireWildcard(_utils);
+var helper = _interopRequireWildcard(_helper);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -3181,6 +3288,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  */
 
 // make sure we don't see a global gl
+var gl = undefined; // eslint-disable-line
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -3212,7 +3320,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var gl = undefined; // eslint-disable-line
 var defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
@@ -3582,41 +3689,11 @@ function setDefaultTextureColor(color) {
 }
 
 function setDefaults(newDefaults) {
-  utils.copyExistingProperties(newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
   if (newDefaults.textureColor) {
     setDefaultTextureColor(newDefaults.textureColor);
   }
 }
-
-/**
- * Gets a string for gl enum
- *
- * Note: Several enums are the same. Without more
- * context (which function) it's impossible to always
- * give the correct enum.
- *
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @param {number} value the value of the enum you want to look up.
- */
-var glEnumToString = function () {
-  var enums = void 0;
-
-  function init(gl) {
-    if (!enums) {
-      enums = {};
-      for (var key in gl) {
-        if (typeof gl[key] === 'number') {
-          enums[gl[key]] = key;
-        }
-      }
-    }
-  }
-
-  return function glEnumToString(gl, value) {
-    init(gl);
-    return enums[value] || "0x" + value.toString(16);
-  };
-}();
 
 /**
  * A function to generate the source for a texture.
@@ -4119,7 +4196,7 @@ function loadImage(url, crossOrigin, callback) {
 
   function onError() {
     var msg = "couldn't load image: " + url;
-    utils.error(msg);
+    helper.error(msg);
     callback(msg, img);
     clearEventHandlers();
   }
@@ -4231,7 +4308,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   options = options || defaults.textureOptions;
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = utils.shallowCopy(options);
+  options = Object.assign({}, options);
   var img = loadImage(options.src, options.crossOrigin, function (err, img) {
     if (err) {
       callback(err, tex, img);
@@ -4270,7 +4347,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = utils.shallowCopy(options);
+  options = Object.assign({}, options);
   var numToLoad = 6;
   var errors = [];
   var faces = getCubeFaceOrder(gl, options);
@@ -4350,7 +4427,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = utils.shallowCopy(options);
+  options = Object.assign({}, options);
   var numToLoad = urls.length;
   var errors = [];
   var imgs = void 0; // eslint-disable-line
@@ -4448,7 +4525,7 @@ function setTextureFromArray(gl, tex, src, options) {
   var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
   var numElements = src.byteLength / bytesPerElement; // TODO: check UNPACK_ALIGNMENT?
   if (numElements % 1) {
-    throw "length wrong size for format: " + glEnumToString(gl, format);
+    throw "length wrong size for format: " + utils.glEnumToString(gl, format);
   }
   var dimensions = void 0;
   if (target === gl.TEXTURE_3D) {
@@ -4627,10 +4704,10 @@ function resizeTexture(gl, tex, options, width, height) {
   }
   if (target === gl.TEXTURE_CUBE_MAP) {
     for (var ii = 0; ii < 6; ++ii) {
-      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, format, width, height, 0, format, type, null);
+      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
     }
   } else {
-    gl.texImage2D(target, level, format, width, height, 0, format, type, null);
+    gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
   }
 }
 
@@ -4781,7 +4858,7 @@ exports.getNumComponentsForFormat = getNumComponentsForFormat;
 exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4792,7 +4869,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.transpose = exports.translation = exports.translate = exports.transformPoint = exports.transformNormal = exports.transformDirection = exports.setTranslation = exports.setDefaultType = exports.setAxis = exports.scaling = exports.scale = exports.rotationZ = exports.rotationY = exports.rotationX = exports.rotateZ = exports.rotateY = exports.rotateX = exports.perspective = exports.ortho = exports.negate = exports.multiply = exports.lookAt = exports.inverse = exports.identity = exports.getTranslation = exports.getAxis = exports.frustum = exports.copy = exports.axisRotation = exports.axisRotate = undefined;
 
-var _v = __webpack_require__(3);
+var _v = __webpack_require__(4);
 
 var v3 = _interopRequireWildcard(_v);
 
@@ -6080,7 +6157,7 @@ exports.translation = translation;
 exports.transpose = transpose;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6091,7 +6168,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.primitives = exports.v3 = exports.m4 = undefined;
 
-var _twgl = __webpack_require__(8);
+var _twgl = __webpack_require__(9);
 
 Object.keys(_twgl).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6103,15 +6180,15 @@ Object.keys(_twgl).forEach(function (key) {
   });
 });
 
-var _m = __webpack_require__(6);
+var _m = __webpack_require__(7);
 
 var m4 = _interopRequireWildcard(_m);
 
-var _v = __webpack_require__(3);
+var _v = __webpack_require__(4);
 
 var v3 = _interopRequireWildcard(_v);
 
-var _primitives = __webpack_require__(12);
+var _primitives = __webpack_require__(13);
 
 var primitives = _interopRequireWildcard(_primitives);
 
@@ -6122,7 +6199,7 @@ exports.v3 = v3;
 exports.primitives = primitives;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6131,9 +6208,9 @@ exports.primitives = primitives;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setDefaults = exports.resizeCanvasToDisplaySize = exports.isWebGL2 = exports.isWebGL1 = exports.getWebGLContext = exports.getContext = exports.addExtensionsToContext = undefined;
+exports.setDefaults = exports.resizeCanvasToDisplaySize = exports.getWebGLContext = exports.getContext = exports.addExtensionsToContext = undefined;
 
-var _attributes = __webpack_require__(4);
+var _attributes = __webpack_require__(5);
 
 Object.keys(_attributes).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6145,7 +6222,7 @@ Object.keys(_attributes).forEach(function (key) {
   });
 });
 
-var _draw = __webpack_require__(9);
+var _draw = __webpack_require__(10);
 
 Object.keys(_draw).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6157,7 +6234,7 @@ Object.keys(_draw).forEach(function (key) {
   });
 });
 
-var _framebuffers = __webpack_require__(10);
+var _framebuffers = __webpack_require__(11);
 
 Object.keys(_framebuffers).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6181,7 +6258,7 @@ Object.keys(_programs).forEach(function (key) {
   });
 });
 
-var _textures = __webpack_require__(5);
+var _textures = __webpack_require__(6);
 
 Object.keys(_textures).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6205,7 +6282,19 @@ Object.keys(_typedarrays).forEach(function (key) {
   });
 });
 
-var _vertexArrays = __webpack_require__(11);
+var _utils = __webpack_require__(3);
+
+Object.keys(_utils).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _utils[key];
+    }
+  });
+});
+
+var _vertexArrays = __webpack_require__(12);
 
 Object.keys(_vertexArrays).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -6221,7 +6310,9 @@ var attributes = _interopRequireWildcard(_attributes);
 
 var textures = _interopRequireWildcard(_textures);
 
-var _utils = __webpack_require__(0);
+var _helper = __webpack_require__(0);
+
+var helper = _interopRequireWildcard(_helper);
 
 var utils = _interopRequireWildcard(_utils);
 
@@ -6256,7 +6347,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  */
 
 // make sure we don't see a global gl
-var gl = undefined; // eslint-disable-line
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -6288,6 +6378,7 @@ var gl = undefined; // eslint-disable-line
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+var gl = undefined; // eslint-disable-line
 var defaults = {
   addExtensionsToContext: true
 };
@@ -6364,15 +6455,17 @@ var defaults = {
  * @memberOf module:twgl
  */
 function setDefaults(newDefaults) {
-  utils.copyExistingProperties(newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
   attributes.setAttributeDefaults_(newDefaults); // eslint-disable-line
   textures.setTextureDefaults_(newDefaults); // eslint-disable-line
 }
 
 var prefixRE = /^(.*?)_/;
 function addExtensionToContext(gl, extensionName) {
+  utils.glEnumToString(gl, 0);
   var ext = gl.getExtension(extensionName);
   if (ext) {
+    var enums = {};
     var fnSuffix = prefixRE.exec(extensionName)[1];
     var enumSuffix = '_' + fnSuffix;
     for (var key in ext) {
@@ -6387,7 +6480,7 @@ function addExtensionToContext(gl, extensionName) {
       }
       if (gl[name] !== undefined) {
         if (!isFunc && gl[name] !== value) {
-          console.warn(name, gl[name], value, key); // eslint-disable-line
+          helper.warn(name, gl[name], value, key);
         }
       } else {
         if (isFunc) {
@@ -6398,9 +6491,15 @@ function addExtensionToContext(gl, extensionName) {
           }(value);
         } else {
           gl[name] = value;
+          enums[name] = value;
         }
       }
     }
+    // pass the modified enums to glEnumToString
+    enums.constructor = {
+      name: ext.constructor.name
+    };
+    utils.glEnumToString(enums, 0);
   }
   return ext;
 }
@@ -6568,14 +6667,9 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
   return false;
 }
 
-var isWebGL1 = utils.isWebGL1;
-var isWebGL2 = utils.isWebGL2;
-
 exports.addExtensionsToContext = addExtensionsToContext;
 exports.getContext = getContext;
 exports.getWebGLContext = getWebGLContext;
-exports.isWebGL1 = isWebGL1;
-exports.isWebGL2 = isWebGL2;
 exports.resizeCanvasToDisplaySize = resizeCanvasToDisplaySize;
 exports.setDefaults = setDefaults;
 
@@ -6591,7 +6685,7 @@ exports.setDefaults = setDefaults;
 // }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6778,7 +6872,7 @@ exports.drawBufferInfo = drawBufferInfo;
 exports.drawObjectList = drawObjectList;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6789,13 +6883,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.resizeFramebufferInfo = exports.createFramebufferInfo = exports.bindFramebufferInfo = undefined;
 
-var _textures = __webpack_require__(5);
+var _textures = __webpack_require__(6);
 
 var textures = _interopRequireWildcard(_textures);
-
-var _utils = __webpack_require__(0);
-
-var utils = _interopRequireWildcard(_utils);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -6811,6 +6901,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  */
 
 // make sure we don't see a global gl
+var gl = undefined; // eslint-disable-line
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -6841,8 +6933,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-var gl = undefined; // eslint-disable-line
 
 var UNSIGNED_BYTE = 0x1401;
 
@@ -7002,7 +7092,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
         gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
         gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
       } else {
-        var textureOptions = utils.shallowCopy(attachmentOptions);
+        var textureOptions = Object.assign({}, attachmentOptions);
         textureOptions.width = width;
         textureOptions.height = height;
         if (textureOptions.auto === undefined) {
@@ -7126,7 +7216,7 @@ exports.createFramebufferInfo = createFramebufferInfo;
 exports.resizeFramebufferInfo = resizeFramebufferInfo;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7292,7 +7382,7 @@ exports.createVAOAndSetAttributes = createVAOAndSetAttributes;
 exports.createVAOFromBufferInfo = createVAOFromBufferInfo;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7303,23 +7393,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.duplicateVertices = exports.concatVertices = exports.reorientVertices = exports.reorientPositions = exports.reorientNormals = exports.reorientDirections = exports.makeRandomVertexColors = exports.flattenNormals = exports.deindexVertices = exports.createDiscVertices = exports.createDiscBuffers = exports.createDiscBufferInfo = exports.createTorusVertices = exports.createTorusBuffers = exports.createTorusBufferInfo = exports.createCylinderVertices = exports.createCylinderBuffers = exports.createCylinderBufferInfo = exports.createCresentVertices = exports.createCresentBuffers = exports.createCresentBufferInfo = exports.createXYQuadVertices = exports.createXYQuadBuffers = exports.createXYQuadBufferInfo = exports.createTruncatedConeVertices = exports.createTruncatedConeBuffers = exports.createTruncatedConeBufferInfo = exports.createSphereVertices = exports.createSphereBuffers = exports.createSphereBufferInfo = exports.createPlaneVertices = exports.createPlaneBuffers = exports.createPlaneBufferInfo = exports.createCubeVertices = exports.createCubeBuffers = exports.createCubeBufferInfo = exports.createAugmentedTypedArray = exports.create3DFVertices = exports.create3DFBuffers = exports.create3DFBufferInfo = undefined;
 
-var _attributes = __webpack_require__(4);
+var _attributes = __webpack_require__(5);
 
 var attributes = _interopRequireWildcard(_attributes);
 
-var _utils = __webpack_require__(0);
+var _helper = __webpack_require__(0);
 
-var utils = _interopRequireWildcard(_utils);
+var helper = _interopRequireWildcard(_helper);
 
 var _typedarrays = __webpack_require__(1);
 
 var typedArrays = _interopRequireWildcard(_typedarrays);
 
-var _m = __webpack_require__(6);
+var _m = __webpack_require__(7);
 
 var m4 = _interopRequireWildcard(_m);
 
-var _v = __webpack_require__(3);
+var _v = __webpack_require__(4);
 
 var v3 = _interopRequireWildcard(_v);
 
@@ -8945,7 +9035,7 @@ function createArrayOfSameType(srcArray, length) {
     newArraySpec = {
       data: newArray
     };
-    utils.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
+    helper.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
   }
   return newArraySpec;
 }
