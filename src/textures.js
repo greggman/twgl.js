@@ -1448,10 +1448,10 @@ function resizeTexture(gl, tex, options, width, height) {
   }
   if (target === gl.TEXTURE_CUBE_MAP) {
     for (let ii = 0; ii < 6; ++ii) {
-      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, format, width, height, 0, format, type, null);
+      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
     }
   } else {
-    gl.texImage2D(target, level, format, width, height, 0, format, type, null);
+    gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
   }
 }
 
