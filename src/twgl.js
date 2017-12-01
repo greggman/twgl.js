@@ -192,8 +192,10 @@ function addExtensionToContext(gl, extensionName) {
 const supportedExtensions = [
   'ANGLE_instanced_arrays',
   'EXT_blend_minmax',
+  'EXT_color_buffer_float',
   'EXT_color_buffer_half_float',
   'EXT_disjoint_timer_query',
+  'EXT_disjoint_timer_query_webgl2',
   'EXT_frag_depth',
   'EXT_sRGB',
   'EXT_shader_texture_lod',
@@ -210,6 +212,7 @@ const supportedExtensions = [
   'WEBGL_compressed_texture_etc1',
   'WEBGL_compressed_texture_pvrtc',
   'WEBGL_compressed_texture_s3tc',
+  'WEBGL_compressed_texture_s3tc_srgb',
   'WEBGL_depth_texture',
   'WEBGL_draw_buffers',
 ];
@@ -221,8 +224,10 @@ const supportedExtensions = [
  *
  *      ANGLE_instanced_arrays
  *      EXT_blend_minmax
+ *      EXT_color_buffer_float
  *      EXT_color_buffer_half_float
  *      EXT_disjoint_timer_query
+ *      EXT_disjoint_timer_query_webgl2
  *      EXT_frag_depth
  *      EXT_sRGB
  *      EXT_shader_texture_lod
@@ -239,6 +244,7 @@ const supportedExtensions = [
  *      WEBGL_compressed_texture_etc1
  *      WEBGL_compressed_texture_pvrtc
  *      WEBGL_compressed_texture_s3tc
+ *      WEBGL_compressed_texture_s3tc_srgb
  *      WEBGL_depth_texture
  *      WEBGL_draw_buffers
  *
