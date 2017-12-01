@@ -8,6 +8,8 @@
         messages more useful but might as well
         export it.
 
+    *   Fix bug in `resizeTexture` for WebGL2.
+
 *   4.0.1
 
     *   Added check for built in uniforms and attributes
