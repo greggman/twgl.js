@@ -1,5 +1,10 @@
 #Changelist
 
+*   4.2.0
+
+    *   add `EXT_color_buffer_float`, `WEBGL_compressed_texture_s3tc_srgb`, and
+        `EXT_disjoint_timer_query_webgl2` to `twgl.addExtensionsToContext`.
+
 *   4.1.0
 
     *   Added `twgl.glEnumToString`
