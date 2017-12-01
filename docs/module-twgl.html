@@ -239,8 +239,10 @@ if (ext) {
     <p>Attempts to enable all of the following extensions<br>and add their functions and constants to the<br><code>WebGLRenderingContext</code> using their normal non-extension like names.</p>
 <pre class="prettyprint source"><code> ANGLE_instanced_arrays
  EXT_blend_minmax
+ EXT_color_buffer_float
  EXT_color_buffer_half_float
  EXT_disjoint_timer_query
+ EXT_disjoint_timer_query_webgl2
  EXT_frag_depth
  EXT_sRGB
  EXT_shader_texture_lod
@@ -257,6 +259,7 @@ if (ext) {
  WEBGL_compressed_texture_etc1
  WEBGL_compressed_texture_pvrtc
  WEBGL_compressed_texture_s3tc
+ WEBGL_compressed_texture_s3tc_srgb
  WEBGL_depth_texture
  WEBGL_draw_buffers</code></pre><p>For example if <code>ANGLE_instanced_arrays</code> exists then the functions<br><code>drawArraysInstanced</code>, <code>drawElementsInstanced</code>, <code>vertexAttribDivisor</code><br>and the constant <code>VERTEX_ATTRIB_ARRAY_DIVISOR</code> are added to the<br><code>WebGLRenderingContext</code>.</p>
 <p>Note that if you want to know if the extension exists you should<br>probably call <code>gl.getExtension</code> for each extension. Alternatively<br>you can check for the existance of the functions or constants that<br>are expected to be added. For example</p>
