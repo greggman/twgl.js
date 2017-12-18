@@ -1255,11 +1255,10 @@ function setTextureFromArray(gl, tex, src, options) {
   if (!isArrayBuffer(src)) {
     const Type = typedArrays.getTypedArrayTypeForGLType(type);
     src = new Type(src);
-  } else {
-    if (src instanceof Uint8ClampedArray) {
-      src = new Uint8Array(src.buffer);
-    }
+  } else if (src instanceof Uint8ClampedArray) {
+    src = new Uint8Array(src.buffer);
   }
+
   const bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
   const numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
   if (numElements % 1) {
