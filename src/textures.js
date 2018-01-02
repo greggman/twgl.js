@@ -32,6 +32,7 @@
 import * as utils from './utils.js';
 import * as typedArrays from './typedarrays.js';
 import * as helper from './helper.js';
+import global from './global-object.js';
 
 /**
  * Low level texture related functions
@@ -565,7 +566,7 @@ function restorePackState(gl, options) {
   }
 }
 
-const WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
+const WebGLSamplerCtor = global.WebGLSampler || function NotWebGLSampler() {};
 
 /**
  * Sets the parameters of a texture or sampler

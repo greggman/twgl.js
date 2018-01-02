@@ -29,6 +29,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import global from './global-object.js';
+
 /**
  * Copy named properties
  *
@@ -60,19 +62,19 @@ function copyExistingProperties(src, dst) {
 }
 
 const error =
-    (    window.console
-      && window.console.error
-      && typeof window.console.error === "function"
+    (    global.console
+      && global.console.error
+      && typeof global.console.error === "function"
     )
-    ? window.console.error.bind(window.console)
+    ? global.console.error.bind(global.console)
     : function() { };
 
 const warn =
-    (    window.console
-      && window.console.warn
-      && typeof window.console.warn === "function"
+    (    global.console
+      && global.console.warn
+      && typeof global.console.warn === "function"
     )
-    ? window.console.warn.bind(window.console)
+    ? global.console.warn.bind(global.console)
     : function() { };
 
 export {
