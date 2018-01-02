@@ -59,7 +59,7 @@ const defaults = {
 const isArrayBuffer = typedArrays.isArrayBuffer;
 
 // Should we make this on demand?
-const ctx = document.createElement("canvas").getContext("2d");
+const ctx = typeof document !== 'undefined'  ? document.createElement("canvas").getContext("2d") : undefined;
 
 /* PixelFormat */
 const ALPHA                          = 0x1906;
@@ -819,94 +819,96 @@ function getCubeFacesWithNdx(gl, options) {
  * @kind function
  */
 function setTextureFromElement(gl, tex, element, options) {
-  options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
-  const level = options.level || 0;
-  let width = element.width;
-  let height = element.height;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  const type = options.type || formatType.type;
-  savePackState(gl, options);
-  gl.bindTexture(target, tex);
-  if (target === gl.TEXTURE_CUBE_MAP) {
-    // guess the parts
-    const imgWidth  = element.width;
-    const imgHeight = element.height;
-    let size;
-    let slices;
-    if (imgWidth / 6 === imgHeight) {
-      // It's 6x1
-      size = imgHeight;
-      slices = [0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0];
-    } else if (imgHeight / 6 === imgWidth) {
-      // It's 1x6
-      size = imgWidth;
-      slices = [0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5];
-    } else if (imgWidth / 3 === imgHeight / 2) {
-      // It's 3x2
-      size = imgWidth / 3;
-      slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
-    } else if (imgWidth / 2 === imgHeight / 3) {
-      // It's 2x3
-      size = imgWidth / 2;
-      slices = [0, 0, 1, 0, 0, 1, 1, 1, 0, 2, 1, 2];
+  if (ctx !== undefined){
+    options = options || defaults.textureOptions;
+    const target = options.target || gl.TEXTURE_2D;
+    const level = options.level || 0;
+    let width = element.width;
+    let height = element.height;
+    const internalFormat = options.internalFormat || options.format || gl.RGBA;
+    const formatType = getFormatAndTypeForInternalFormat(internalFormat);
+    const format = options.format || formatType.format;
+    const type = options.type || formatType.type;
+    savePackState(gl, options);
+    gl.bindTexture(target, tex);
+    if (target === gl.TEXTURE_CUBE_MAP) {
+      // guess the parts
+      const imgWidth  = element.width;
+      const imgHeight = element.height;
+      let size;
+      let slices;
+      if (imgWidth / 6 === imgHeight) {
+        // It's 6x1
+        size = imgHeight;
+        slices = [0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0];
+      } else if (imgHeight / 6 === imgWidth) {
+        // It's 1x6
+        size = imgWidth;
+        slices = [0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5];
+      } else if (imgWidth / 3 === imgHeight / 2) {
+        // It's 3x2
+        size = imgWidth / 3;
+        slices = [0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 2, 1];
+      } else if (imgWidth / 2 === imgHeight / 3) {
+        // It's 2x3
+        size = imgWidth / 2;
+        slices = [0, 0, 1, 0, 0, 1, 1, 1, 0, 2, 1, 2];
+      } else {
+        throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
+      }
+      ctx.canvas.width = size;
+      ctx.canvas.height = size;
+      width = size;
+      height = size;
+      getCubeFacesWithNdx(gl, options).forEach(function(f) {
+        const xOffset = slices[f.ndx * 2 + 0] * size;
+        const yOffset = slices[f.ndx * 2 + 1] * size;
+        ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
+        gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
+      });
+      // Free up the canvas memory
+      ctx.canvas.width = 1;
+      ctx.canvas.height = 1;
+    } else if (target === gl.TEXTURE_3D) {
+      const smallest = Math.min(element.width, element.height);
+      const largest = Math.max(element.width, element.height);
+      const depth = largest / smallest;
+      if (depth % 1 !== 0) {
+        throw "can not compute 3D dimensions of element";
+      }
+      const xMult = element.width  === largest ? 1 : 0;
+      const yMult = element.height === largest ? 1 : 0;
+      gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
+      // remove this is texSubImage3D gets width and height arguments
+      ctx.canvas.width = smallest;
+      ctx.canvas.height = smallest;
+      for (let d = 0; d < depth; ++d) {
+          //gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
+          //gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
+          const srcX = d * smallest * xMult;
+          const srcY = d * smallest * yMult;
+          const srcW = smallest;
+          const srcH = smallest;
+          const dstX = 0;
+          const dstY = 0;
+          const dstW = smallest;
+          const dstH = smallest;
+          ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+          gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
+      }
+      ctx.canvas.width = 0;
+      ctx.canvas.height = 0;
+    //FIX (save state)
+        gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
     } else {
-      throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
+      gl.texImage2D(target, level, internalFormat, format, type, element);
     }
-    ctx.canvas.width = size;
-    ctx.canvas.height = size;
-    width = size;
-    height = size;
-    getCubeFacesWithNdx(gl, options).forEach(function(f) {
-      const xOffset = slices[f.ndx * 2 + 0] * size;
-      const yOffset = slices[f.ndx * 2 + 1] * size;
-      ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-      gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
-    });
-    // Free up the canvas memory
-    ctx.canvas.width = 1;
-    ctx.canvas.height = 1;
-  } else if (target === gl.TEXTURE_3D) {
-    const smallest = Math.min(element.width, element.height);
-    const largest = Math.max(element.width, element.height);
-    const depth = largest / smallest;
-    if (depth % 1 !== 0) {
-      throw "can not compute 3D dimensions of element";
+    restorePackState(gl, options);
+    if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+      setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
     }
-    const xMult = element.width  === largest ? 1 : 0;
-    const yMult = element.height === largest ? 1 : 0;
-    gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
-    // remove this is texSubImage3D gets width and height arguments
-    ctx.canvas.width = smallest;
-    ctx.canvas.height = smallest;
-    for (let d = 0; d < depth; ++d) {
-        //gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
-        //gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
-        const srcX = d * smallest * xMult;
-        const srcY = d * smallest * yMult;
-        const srcW = smallest;
-        const srcH = smallest;
-        const dstX = 0;
-        const dstY = 0;
-        const dstW = smallest;
-        const dstH = smallest;
-        ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-        gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
-    }
-    ctx.canvas.width = 0;
-    ctx.canvas.height = 0;
-  //FIX (save state)
-      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
-  } else {
-    gl.texImage2D(target, level, internalFormat, format, type, element);
+    setTextureParameters(gl, tex, options);
   }
-  restorePackState(gl, options);
-  if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-    setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
-  }
-  setTextureParameters(gl, tex, options);
 }
 
 function noop() {
@@ -1179,49 +1181,51 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   function uploadImg(slice) {
     return function(err, img) {
       --numToLoad;
-      if (err) {
-        errors.push(err);
-      } else {
-        savePackState(gl, options);
-        gl.bindTexture(target, tex);
-
-        if (firstImage) {
-          firstImage = false;
-          width = options.width || img.width;
-          height = options.height || img.height;
-          gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
-
-          // put it in every slice otherwise some slices will be 0,0,0,0
-          for (let s = 0; s < depth; ++s) {
-            gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
-          }
+      if (ctx !== undefined){
+          if (err) {
+          errors.push(err);
         } else {
-          let src = img;
-          if (img.width !== width || img.height !== height) {
-            // Size the image to fix
-            src = ctx.canvas;
-            ctx.canvas.width = width;
-            ctx.canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
+          savePackState(gl, options);
+          gl.bindTexture(target, tex);
+
+          if (firstImage) {
+            firstImage = false;
+            width = options.width || img.width;
+            height = options.height || img.height;
+            gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
+
+            // put it in every slice otherwise some slices will be 0,0,0,0
+            for (let s = 0; s < depth; ++s) {
+              gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
+            }
+          } else {
+            let src = img;
+            if (img.width !== width || img.height !== height) {
+              // Size the image to fix
+              src = ctx.canvas;
+              ctx.canvas.width = width;
+              ctx.canvas.height = height;
+              ctx.drawImage(img, 0, 0, width, height);
+            }
+
+            gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
+
+            // free the canvas memory
+            if (src === ctx.canvas) {
+              ctx.canvas.width = 0;
+              ctx.canvas.height = 0;
+            }
           }
 
-          gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
-
-          // free the canvas memory
-          if (src === ctx.canvas) {
-            ctx.canvas.width = 0;
-            ctx.canvas.height = 0;
+          restorePackState(gl, options);
+          if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+            gl.generateMipmap(target);
           }
         }
 
-        restorePackState(gl, options);
-        if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-          gl.generateMipmap(target);
+        if (numToLoad === 0) {
+          callback(errors.length ? errors : undefined, imgs, tex);
         }
-      }
-
-      if (numToLoad === 0) {
-        callback(errors.length ? errors : undefined, imgs, tex);
       }
     };
   }
@@ -1605,4 +1609,3 @@ export {
   getNumComponentsForFormat,
   getBytesPerElementForInternalFormat,
 };
-

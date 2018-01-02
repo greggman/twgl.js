@@ -598,7 +598,7 @@ function createProgram(
   for (let ndx = 0; ndx < shaders.length; ++ndx) {
     let shader = shaders[ndx];
     if (typeof (shader) === 'string') {
-      const elem = document.getElementById(shader);
+      const elem = typeof document !== 'undefined' ? document.getElementById(shader) : null;
       const src = elem ? elem.text : shader;
       let type = gl[defaultShaderType[ndx]];
       if (elem && elem.type) {
@@ -665,7 +665,7 @@ function createProgram(
 function createShaderFromScript(
     gl, scriptId, opt_shaderType, opt_errorCallback) {
   let shaderSource = "";
-  const shaderScript = document.getElementById(scriptId);
+  const shaderScript = typeof document !== 'undefined'  ? document.getElementById(scriptId) : null;
   if (!shaderScript) {
     throw "*** Error: unknown script element" + scriptId;
   }
@@ -1590,7 +1590,7 @@ function createProgramInfo(
   shaderSources = shaderSources.map(function(source) {
     // Lets assume if there is no \n it's an id
     if (source.indexOf("\n") < 0) {
-      const script = document.getElementById(source);
+      const script = typeof document !== 'undefined'  ? document.getElementById(source) : null;
       if (!script) {
         progOptions.errorCallback("no element with id: " + source);
         good = false;
@@ -1634,4 +1634,3 @@ export {
   setBlockUniforms,
   bindUniformBlock,
 };
-
