@@ -107,6 +107,27 @@ module.exports = function(grunt) {
   var libFiles = srcFiles.concat(thirdPartyFiles);
   var fullLibFiles = [].concat(srcFiles, extraFiles, thirdPartyFiles);
 
+  const idRegex = /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/
+
+  const noIdeaWhatThisIs = {
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['@babel/preset-env'],
+          plugins: [
+            //['transform-es2015-modules-commonjs', {loose: true}],
+            // ['babel-helper-module-transforms', {loose: true}],
+            // ['babel-plugin-transform-modules-amd', {loose: true}],
+             ['@babel/plugin-transform-modules-commonjs', {loose: true}],
+            // ['babel-plugin-transform-modules-umd', {loose: true}],
+          ],
+        },
+      },
+    ],
+  };
+
   grunt.initConfig({
     jsdoc: {
       docs: {
@@ -125,17 +146,7 @@ module.exports = function(grunt) {
         plugins: [
           new webpack.BannerPlugin(getLicense(pkg)),
         ],
-        module: {
-          loaders: [
-            {
-              test: /\.js$/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['stage-0', 'es2015'],
-              },
-            },
-          ],
-        },
+        module: noIdeaWhatThisIs,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl-full.js',
@@ -148,17 +159,7 @@ module.exports = function(grunt) {
         plugins: [
           new webpack.BannerPlugin(getLicense(pkg)),
         ],
-        module: {
-          loaders: [
-            {
-              test: /\.js$/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['stage-0', 'es2015'],
-              },
-            },
-          ],
-        },
+        module: noIdeaWhatThisIs,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl.js',
@@ -178,23 +179,12 @@ module.exports = function(grunt) {
             mangle: {
               props: {
                 ignore_quoted: true,
-                //regex: /^((?!(createElement|getContext)).)*$/,
-                regex: /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/,
+                regex: idRegex,
               },
             },
           }),
         ],
-        module: {
-          loaders: [
-            {
-              test: /\.js$/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['stage-0', 'es2015'],
-              },
-            },
-          ],
-        },
+        module: noIdeaWhatThisIs,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl-full.min.js',
@@ -214,23 +204,12 @@ module.exports = function(grunt) {
             mangle: {
               props: {
                 ignore_quoted: true,
-                //regex: /^((?!(createElement|getContext)).)*$/,
-                regex: /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/,
+                regex: idRegex,
               },
             },
           }),
         ],
-        module: {
-          loaders: [
-            {
-              test: /\.js$/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['stage-0', 'es2015'],
-              },
-            },
-          ],
-        },
+        module: noIdeaWhatThisIs,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl.min.js',
