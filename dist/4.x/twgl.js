@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.3.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -88,9 +88,14 @@ return /******/ (function(modules) { // webpackBootstrap
 exports.__esModule = true;
 exports.copyExistingProperties = copyExistingProperties;
 exports.copyNamedProperties = copyNamedProperties;
+exports.isBuffer = isBuffer;
+exports.isRenderbuffer = isRenderbuffer;
+exports.isShader = isShader;
+exports.isTexture = isTexture;
+exports.isSampler = isSampler;
 exports.warn = exports.error = void 0;
 
-var _globalObject = _interopRequireDefault(__webpack_require__(2));
+var _globalObject = _interopRequireDefault(__webpack_require__(1));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -161,9 +166,76 @@ var error = _globalObject.default.console && _globalObject.default.console.error
 exports.error = error;
 var warn = _globalObject.default.console && _globalObject.default.console.warn && typeof _globalObject.default.console.warn === "function" ? _globalObject.default.console.warn.bind(_globalObject.default.console) : function () {};
 exports.warn = warn;
+var repBuffer;
+
+function isBuffer(gl, t) {
+  if (!repBuffer) {
+    repBuffer = gl.createBuffer();
+  }
+
+  return t instanceof repBuffer.constructor;
+}
+
+var repRenderbuffer;
+
+function isRenderbuffer(gl, t) {
+  if (!repRenderbuffer) {
+    repRenderbuffer = gl.createRenderbuffer();
+  }
+
+  return t instanceof repRenderbuffer.constructor;
+}
+
+var repShader;
+
+function isShader(gl, t) {
+  if (!repShader) {
+    repShader = gl.createShader(gl.VERTEX_SHADER);
+  }
+
+  return t instanceof repShader.constructor;
+}
+
+var repTexture;
+
+function isTexture(gl, t) {
+  if (!repTexture) {
+    repTexture = gl.createTexture();
+  }
+
+  return t instanceof repTexture.constructor;
+}
+
+var repSampler;
+
+function isSampler(gl, t) {
+  if (!repSampler) {
+    if (gl.createSampler) {
+      repSampler = gl.createSampler();
+    } else {
+      return false; // it can't be a sampler if this is not WebGL2
+    }
+  }
+
+  return t instanceof repSampler.constructor;
+}
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = void 0;
+var global = typeof global !== 'undefined' // eslint-disable-line
+? global // eslint-disable-line
+: typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {};
+exports.default = global;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +247,7 @@ exports.getGLTypeForTypedArrayType = getGLTypeForTypedArrayType;
 exports.getTypedArrayTypeForGLType = getTypedArrayTypeForGLType;
 exports.isArrayBuffer = void 0;
 
-var _globalObject = _interopRequireDefault(__webpack_require__(2));
+var _globalObject = _interopRequireDefault(__webpack_require__(1));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -394,20 +466,6 @@ var isArrayBuffer = _globalObject.default.SharedArrayBuffer ? function isArrayBu
 exports.isArrayBuffer = isArrayBuffer;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.default = void 0;
-var global = typeof global !== 'undefined' // eslint-disable-line
-? global // eslint-disable-line
-: typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {};
-exports.default = global;
-
-/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -595,6 +653,10 @@ var utils = _interopRequireWildcard(__webpack_require__(3));
 
 var helper = _interopRequireWildcard(__webpack_require__(0));
 
+var _globalObject = _interopRequireDefault(__webpack_require__(1));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 /*
@@ -644,6 +706,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  */
 var error = helper.error;
 var warn = helper.warn;
+var getElementById = _globalObject.default && _globalObject.default.document && _globalObject.default.document.getElementById ? _globalObject.default.document.getElementById.bind(_globalObject.default.document) : function () {
+  return null;
+};
 var FLOAT = 0x1406;
 var FLOAT_VEC2 = 0x8B50;
 var FLOAT_VEC3 = 0x8B51;
@@ -849,7 +914,7 @@ function samplerSetter(gl, type, unit, location) {
     var texture;
     var sampler;
 
-    if (textureOrPair instanceof WebGLTexture) {
+    if (helper.isTexture(gl, textureOrPair)) {
       texture = textureOrPair;
       sampler = null;
     } else {
@@ -883,7 +948,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
       var texture;
       var sampler;
 
-      if (textureOrPair instanceof WebGLTexture) {
+      if (helper.isTexture(gl, textureOrPair)) {
         texture = textureOrPair;
         sampler = null;
       } else {
@@ -1449,7 +1514,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
     var shader = shaders[ndx];
 
     if (typeof shader === 'string') {
-      var elem = document.getElementById(shader);
+      var elem = getElementById(shader);
       var src = elem ? elem.text : shader;
       var type = gl[defaultShaderType[ndx]];
 
@@ -1461,7 +1526,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
       newShaders.push(shader);
     }
 
-    if (shader instanceof WebGLShader) {
+    if (helper.isShader(gl, shader)) {
       realShaders.push(shader);
     }
   }
@@ -1525,7 +1590,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
 
 function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback) {
   var shaderSource = "";
-  var shaderScript = document.getElementById(scriptId);
+  var shaderScript = getElementById(scriptId);
 
   if (!shaderScript) {
     throw "*** Error: unknown script element" + scriptId;
@@ -2509,7 +2574,7 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
   shaderSources = shaderSources.map(function (source) {
     // Lets assume if there is no \n it's an id
     if (source.indexOf("\n") < 0) {
-      var script = document.getElementById(source);
+      var script = getElementById(source);
 
       if (!script) {
         progOptions.errorCallback("no element with id: " + source);
@@ -2562,11 +2627,11 @@ exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalForma
 
 var utils = _interopRequireWildcard(__webpack_require__(3));
 
-var typedArrays = _interopRequireWildcard(__webpack_require__(1));
+var typedArrays = _interopRequireWildcard(__webpack_require__(2));
 
 var helper = _interopRequireWildcard(__webpack_require__(0));
 
-var _globalObject = _interopRequireDefault(__webpack_require__(2));
+var _globalObject = _interopRequireDefault(__webpack_require__(1));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2627,7 +2692,17 @@ var defaults = {
 };
 var isArrayBuffer = typedArrays.isArrayBuffer; // Should we make this on demand?
 
-var ctx = document.createElement("canvas").getContext("2d");
+var ctx = _globalObject.default.document && _globalObject.default.document.createElement ? _globalObject.default.document.createElement("canvas").getContext("2d") : {}; // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
+//       not only does Firefox NOT support it but Firefox freezes immediately
+//       if you try to create one instead of just returning null and continuing.
+//  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
+// NOTE: We can maybe remove some of the need for the 2d canvas. In WebGL2
+// we can use the various unpack settings. Otherwise we could try using
+// the ability of an imagebitmap to be cut. Unfortunately cutting an imagebitmap
+// is async and the current TWGL code expects a non-Async result though that
+// might not be a problem. ImageBitmap though is not available in Edge or Safari
+// as of 2018-01-02
+
 /* PixelFormat */
 
 var ALPHA = 0x1906;
@@ -3555,8 +3630,6 @@ function restorePackState(gl, options) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
   }
 }
-
-var WebGLSamplerCtor = _globalObject.default.WebGLSampler || function NotWebGLSampler() {};
 /**
  * Sets the parameters of a texture or sampler
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -3586,7 +3659,7 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
 
-    if (target === gl.TEXTURE_3D || target instanceof WebGLSamplerCtor) {
+    if (target === gl.TEXTURE_3D || helper.isSampler(gl, target)) {
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
     }
   }
@@ -3941,36 +4014,79 @@ function noop() {}
 
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
-  var img = new Image();
-  crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+  var img;
 
-  if (crossOrigin !== undefined) {
-    img.crossOrigin = crossOrigin;
-  }
+  if (_globalObject.default.Image) {
+    img = new _globalObject.default.Image();
+    crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
 
-  function clearEventHandlers() {
-    img.removeEventListener('error', onError); // eslint-disable-line
+    if (crossOrigin !== undefined) {
+      img.crossOrigin = crossOrigin;
+    }
 
-    img.removeEventListener('load', onLoad); // eslint-disable-line
+    var clearEventHandlers = function clearEventHandlers() {
+      img.removeEventListener('error', onError); // eslint-disable-line
 
+      img.removeEventListener('load', onLoad); // eslint-disable-line
+
+      img = null;
+    };
+
+    var onError = function onError() {
+      var msg = "couldn't load image: " + url;
+      helper.error(msg);
+      callback(msg, img);
+      clearEventHandlers();
+    };
+
+    var onLoad = function onLoad() {
+      callback(null, img);
+      clearEventHandlers();
+    };
+
+    img.addEventListener('error', onError);
+    img.addEventListener('load', onLoad);
+    img.src = url;
+    return img;
+  } else if (_globalObject.default.ImageBitmap) {
+    var err;
+    var bm;
+
+    var cb = function cb() {
+      callback(err, bm);
+    };
+
+    var options = {};
+
+    if (crossOrigin) {
+      options.mode = 'cors'; // TODO: not sure how to translate image.crossOrigin
+    }
+
+    fetch(url, options).then(function (response) {
+      if (!response.ok) {
+        throw response;
+      }
+
+      return response.blob();
+    }).then(function (blob) {
+      return _globalObject.default.createImageBitmap(blob, {
+        premultiplyAlpha: 'none',
+        colorSpaceConversion: 'none'
+      });
+    }).then(function (bitmap) {
+      // not sure if this works. We don't want
+      // to catch the user's error. So, call
+      // the callback in a timeout so we're
+      // not in this scope inside the promise.
+      bm = bitmap;
+      setTimeout(cb);
+    }).catch(function (e) {
+      err = e;
+      setTimeout(cb);
+    });
     img = null;
   }
 
-  function onError() {
-    var msg = "couldn't load image: " + url;
-    helper.error(msg);
-    callback(msg, img);
-    clearEventHandlers();
-  }
-
-  function onLoad() {
-    callback(null, img);
-    clearEventHandlers();
-  }
-
-  img.addEventListener('error', onError);
-  img.addEventListener('load', onLoad);
-  img.src = url;
   return img;
 }
 /**
@@ -4297,10 +4413,8 @@ function setTextureFromArray(gl, tex, src, options) {
   if (!isArrayBuffer(src)) {
     var Type = typedArrays.getTypedArrayTypeForGLType(type);
     src = new Type(src);
-  } else {
-    if (src instanceof Uint8ClampedArray) {
-      src = new Uint8Array(src.buffer);
-    }
+  } else if (src instanceof Uint8ClampedArray) {
+    src = new Uint8Array(src.buffer);
   }
 
   var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
@@ -4447,7 +4561,7 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (src instanceof HTMLElement) {
+    } else if (_globalObject.default.HTMLElement && src instanceof _globalObject.default.HTMLElement) {
       setTextureFromElement(gl, tex, src, options);
       width = src.width;
       height = src.height;
@@ -4732,7 +4846,7 @@ Object.keys(_programs).forEach(function (key) {
   exports[key] = _programs[key];
 });
 
-var _typedarrays = __webpack_require__(1);
+var _typedarrays = __webpack_require__(2);
 
 Object.keys(_typedarrays).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -5152,7 +5266,7 @@ exports.setAttributeDefaults_ = setDefaults;
 exports.getNumComponents_ = getNumComponents;
 exports.getArray_ = getArray;
 
-var typedArrays = _interopRequireWildcard(__webpack_require__(1));
+var typedArrays = _interopRequireWildcard(__webpack_require__(2));
 
 var helper = _interopRequireWildcard(__webpack_require__(0));
 
@@ -5256,7 +5370,7 @@ function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
 
 
 function createBufferFromTypedArray(gl, typedArray, type, drawType) {
-  if (typedArray instanceof WebGLBuffer) {
+  if (helper.isBuffer(gl, typedArray)) {
     return typedArray;
   }
 
@@ -6080,6 +6194,8 @@ exports.resizeFramebufferInfo = resizeFramebufferInfo;
 
 var textures = _interopRequireWildcard(__webpack_require__(5));
 
+var helper = _interopRequireWildcard(__webpack_require__(0));
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 /*
@@ -6315,9 +6431,9 @@ function createFramebufferInfo(gl, attachments, width, height) {
       }
     }
 
-    if (attachment instanceof WebGLRenderbuffer) {
+    if (helper.isRenderbuffer(gl, attachment)) {
       gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
-    } else if (attachment instanceof WebGLTexture) {
+    } else if (helper.isTexture(gl, attachment)) {
       gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
     } else {
       throw "unknown attachment type";
@@ -6382,10 +6498,10 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
     var attachment = framebufferInfo.attachments[ndx];
     var format = attachmentOptions.format;
 
-    if (attachment instanceof WebGLRenderbuffer) {
+    if (helper.isRenderbuffer(gl, attachment)) {
       gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
       gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
-    } else if (attachment instanceof WebGLTexture) {
+    } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
       throw "unknown attachment type";
