@@ -413,6 +413,10 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 *   [2d array texture](http://twgljs.org/examples/2d-array-texture.html)
 *   [transform feedback](http://twgljs.org/examples/transform-feedback.html)
 
+### OffscreenCanvas Example
+
+*   [OffscreenCanvas](http://twgljs.org/examples/offscreencanvas.html)
+
 ## ES6 module support
 
 *   [modules](http://twgljs.org/examples/modules.html)

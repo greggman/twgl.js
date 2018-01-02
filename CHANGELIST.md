@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.3.1
+
+    *   Make TWGL work in workers.
+
 *   4.3.0
 
     *   Remove references to `window` so twgl can be used in workers
