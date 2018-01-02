@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -12,7 +12,7 @@
 		exports["twgl"] = factory();
 	else
 		root["twgl"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,9 +85,15 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.__esModule = true;
+exports.copyExistingProperties = copyExistingProperties;
+exports.copyNamedProperties = copyNamedProperties;
+exports.warn = exports.error = void 0;
+
+var _globalObject = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -129,18 +135,20 @@ Object.defineProperty(exports, "__esModule", {
 function copyNamedProperties(names, src, dst) {
   names.forEach(function (name) {
     var value = src[name];
+
     if (value !== undefined) {
       dst[name] = value;
     }
   });
 }
-
 /**
  * Copies properties from source to dest only if a matching key is in dest
  *
  * @param {Object.<string, ?>} src the source
  * @param {Object.<string, ?>} dst the dest
  */
+
+
 function copyExistingProperties(src, dst) {
   Object.keys(dst).forEach(function (key) {
     if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
@@ -149,13 +157,9 @@ function copyExistingProperties(src, dst) {
   });
 }
 
-var error = window.console && window.console.error && typeof window.console.error === "function" ? window.console.error.bind(window.console) : function () {};
-
-var warn = window.console && window.console.warn && typeof window.console.warn === "function" ? window.console.warn.bind(window.console) : function () {};
-
-exports.copyExistingProperties = copyExistingProperties;
-exports.copyNamedProperties = copyNamedProperties;
+var error = _globalObject.default.console && _globalObject.default.console.error && typeof _globalObject.default.console.error === "function" ? _globalObject.default.console.error.bind(_globalObject.default.console) : function () {};
 exports.error = error;
+var warn = _globalObject.default.console && _globalObject.default.console.warn && typeof _globalObject.default.console.warn === "function" ? _globalObject.default.console.warn.bind(_globalObject.default.console) : function () {};
 exports.warn = warn;
 
 /***/ }),
@@ -165,9 +169,16 @@ exports.warn = warn;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+exports.__esModule = true;
+exports.getGLTypeForTypedArray = getGLTypeForTypedArray;
+exports.getGLTypeForTypedArrayType = getGLTypeForTypedArrayType;
+exports.getTypedArrayTypeForGLType = getTypedArrayTypeForGLType;
+exports.isArrayBuffer = void 0;
+
+var _globalObject = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -213,11 +224,11 @@ Object.defineProperty(exports, "__esModule", {
  *
  * @module twgl/typedArray
  */
-
 // make sure we don't see a global gl
 var gl = undefined; // eslint-disable-line
 
 /* DataType */
+
 var BYTE = 0x1400;
 var UNSIGNED_BYTE = 0x1401;
 var SHORT = 0x1402;
@@ -234,7 +245,6 @@ var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
 var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
 var FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
 var UNSIGNED_INT_24_8 = 0x84FA;
-
 var glTypeToTypedArray = {};
 {
   var tt = glTypeToTypedArray;
@@ -255,7 +265,6 @@ var glTypeToTypedArray = {};
   tt[FLOAT_32_UNSIGNED_INT_24_8_REV] = Uint32Array;
   tt[UNSIGNED_INT_24_8] = Uint32Array;
 }
-
 /**
  * Get the GL type for a typedArray
  * @param {ArrayBuffer|ArrayBufferView} typedArray a typedArray
@@ -263,34 +272,50 @@ var glTypeToTypedArray = {};
  *   be returned. Pass in a `Uint32Array` and `gl.UNSIGNED_INT` will be returned
  * @memberOf module:twgl/typedArray
  */
+
 function getGLTypeForTypedArray(typedArray) {
   if (typedArray instanceof Int8Array) {
     return BYTE;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Uint8Array) {
     return UNSIGNED_BYTE;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Uint8ClampedArray) {
     return UNSIGNED_BYTE;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Int16Array) {
     return SHORT;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Uint16Array) {
     return UNSIGNED_SHORT;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Int32Array) {
     return INT;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Uint32Array) {
     return UNSIGNED_INT;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Float32Array) {
     return FLOAT;
   } // eslint-disable-line
+
+
   throw "unsupported typed array type";
 }
-
 /**
  * Get the GL type for a typedArray type
  * @param {ArrayBufferViewType} typedArrayType a typedArray constructor
@@ -298,57 +323,74 @@ function getGLTypeForTypedArray(typedArray) {
  *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
  * @memberOf module:twgl/typedArray
  */
+
+
 function getGLTypeForTypedArrayType(typedArrayType) {
   if (typedArrayType === Int8Array) {
     return BYTE;
   } // eslint-disable-line
+
+
   if (typedArrayType === Uint8Array) {
     return UNSIGNED_BYTE;
   } // eslint-disable-line
+
+
   if (typedArrayType === Uint8ClampedArray) {
     return UNSIGNED_BYTE;
   } // eslint-disable-line
+
+
   if (typedArrayType === Int16Array) {
     return SHORT;
   } // eslint-disable-line
+
+
   if (typedArrayType === Uint16Array) {
     return UNSIGNED_SHORT;
   } // eslint-disable-line
+
+
   if (typedArrayType === Int32Array) {
     return INT;
   } // eslint-disable-line
+
+
   if (typedArrayType === Uint32Array) {
     return UNSIGNED_INT;
   } // eslint-disable-line
+
+
   if (typedArrayType === Float32Array) {
     return FLOAT;
   } // eslint-disable-line
+
+
   throw "unsupported typed array type";
 }
-
 /**
  * Get the typed array constructor for a given GL type
  * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
  * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
  * @memberOf module:twgl/typedArray
  */
+
+
 function getTypedArrayTypeForGLType(type) {
   var CTOR = glTypeToTypedArray[type];
+
   if (!CTOR) {
     throw "unknown gl type";
   }
+
   return CTOR;
 }
 
-var isArrayBuffer = window.SharedArrayBuffer ? function isArrayBufferOrSharedArrayBuffer(a) {
-  return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof window.SharedArrayBuffer);
+var isArrayBuffer = _globalObject.default.SharedArrayBuffer ? function isArrayBufferOrSharedArrayBuffer(a) {
+  return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof _globalObject.default.SharedArrayBuffer);
 } : function isArrayBuffer(a) {
   return a && a.buffer && a.buffer instanceof ArrayBuffer;
 };
-
-exports.getGLTypeForTypedArray = getGLTypeForTypedArray;
-exports.getGLTypeForTypedArrayType = getGLTypeForTypedArrayType;
-exports.getTypedArrayTypeForGLType = getTypedArrayTypeForGLType;
 exports.isArrayBuffer = isArrayBuffer;
 
 /***/ }),
@@ -358,35 +400,25 @@ exports.isArrayBuffer = isArrayBuffer;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.bindUniformBlock = exports.setBlockUniforms = exports.setUniformBlock = exports.setUniforms = exports.setBuffersAndAttributes = exports.setAttributes = exports.bindTransformFeedbackInfo = exports.createTransformFeedbackInfo = exports.createTransformFeedback = exports.createUniformBlockInfo = exports.createUniformBlockInfoFromProgram = exports.createUniformBlockSpecFromProgram = exports.createUniformSetters = exports.createProgramInfoFromProgram = exports.createProgramInfo = exports.createProgramFromSources = exports.createProgramFromScripts = exports.createProgram = exports.createAttributeSetters = undefined;
-
-var _utils = __webpack_require__(3);
-
-var utils = _interopRequireWildcard(_utils);
-
-var _helper = __webpack_require__(0);
-
-var helper = _interopRequireWildcard(_helper);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * Low level shader program related functions
- *
- * You should generally not need to use these functions. They are provided
- * for those cases where you're doing something out of the ordinary
- * and you need lower level access.
- *
- * For backward compatibily they are available at both `twgl.programs` and `twgl`
- * itself
- *
- * See {@link module:twgl} for core functions
- *
- * @module twgl/programs
- */
+exports.__esModule = true;
+exports.add = add;
+exports.copy = copy;
+exports.create = create;
+exports.cross = cross;
+exports.distance = distance;
+exports.distanceSq = distanceSq;
+exports.divide = divide;
+exports.divScalar = divScalar;
+exports.dot = dot;
+exports.lerp = lerp;
+exports.length = length;
+exports.lengthSq = lengthSq;
+exports.mulScalar = mulScalar;
+exports.multiply = multiply;
+exports.negate = negate;
+exports.normalize = normalize;
+exports.setDefaultType = setDefaultType;
+exports.subtract = subtract;
 
 /*
  * Copyright 2015, Gregg Tavares.
@@ -419,9 +451,591 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ *
+ * Vec3 math math functions.
+ *
+ * Almost all functions take an optional `dst` argument. If it is not passed in the
+ * functions will create a new Vec3. In other words you can do this
+ *
+ *     var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.
+ *
+ * or
+ *
+ *     var v3 = v3.create();
+ *     v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v
+ *
+ * The first style is often easier but depending on where it's used it generates garbage where
+ * as there is almost never allocation with the second style.
+ *
+ * It is always save to pass any vector as the destination. So for example
+ *
+ *     v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1
+ *
+ * @module twgl/v3
+ */
+var VecType = Float32Array;
+/**
+ * A JavaScript array with 3 values or a Float32Array with 3 values.
+ * When created by the library will create the default type which is `Float32Array`
+ * but can be set by calling {@link module:twgl/v3.setDefaultType}.
+ * @typedef {(number[]|Float32Array)} Vec3
+ * @memberOf module:twgl/v3
+ */
+
+/**
+ * Sets the type this library creates for a Vec3
+ * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
+ * @return {constructor} previous constructor for Vec3
+ */
+
+function setDefaultType(ctor) {
+  var oldType = VecType;
+  VecType = ctor;
+  return oldType;
+}
+/**
+ * Creates a vec3; may be called with x, y, z to set initial values.
+ * @return {Vec3} the created vector
+ * @memberOf module:twgl/v3
+ */
+
+
+function create(x, y, z) {
+  var dst = new VecType(3);
+
+  if (x) {
+    dst[0] = x;
+  }
+
+  if (y) {
+    dst[1] = y;
+  }
+
+  if (z) {
+    dst[2] = z;
+  }
+
+  return dst;
+}
+/**
+ * Adds two vectors; assumes a and b have the same dimension.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @memberOf module:twgl/v3
+ */
+
+
+function add(a, b, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = a[0] + b[0];
+  dst[1] = a[1] + b[1];
+  dst[2] = a[2] + b[2];
+  return dst;
+}
+/**
+ * Subtracts two vectors.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @memberOf module:twgl/v3
+ */
+
+
+function subtract(a, b, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = a[0] - b[0];
+  dst[1] = a[1] - b[1];
+  dst[2] = a[2] - b[2];
+  return dst;
+}
+/**
+ * Performs linear interpolation on two vectors.
+ * Given vectors a and b and interpolation coefficient t, returns
+ * (1 - t) * a + t * b.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {number} t Interpolation coefficient.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @memberOf module:twgl/v3
+ */
+
+
+function lerp(a, b, t, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = (1 - t) * a[0] + t * b[0];
+  dst[1] = (1 - t) * a[1] + t * b[1];
+  dst[2] = (1 - t) * a[2] + t * b[2];
+  return dst;
+}
+/**
+ * Mutiplies a vector by a scalar.
+ * @param {module:twgl/v3.Vec3} v The vector.
+ * @param {number} k The scalar.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} dst.
+ * @memberOf module:twgl/v3
+ */
+
+
+function mulScalar(v, k, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = v[0] * k;
+  dst[1] = v[1] * k;
+  dst[2] = v[2] * k;
+  return dst;
+}
+/**
+ * Divides a vector by a scalar.
+ * @param {module:twgl/v3.Vec3} v The vector.
+ * @param {number} k The scalar.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} dst.
+ * @memberOf module:twgl/v3
+ */
+
+
+function divScalar(v, k, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = v[0] / k;
+  dst[1] = v[1] / k;
+  dst[2] = v[2] / k;
+  return dst;
+}
+/**
+ * Computes the cross product of two vectors; assumes both vectors have
+ * three entries.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} The vector a cross b.
+ * @memberOf module:twgl/v3
+ */
+
+
+function cross(a, b, dst) {
+  dst = dst || new VecType(3);
+  var t1 = a[2] * b[0] - a[0] * b[2];
+  var t2 = a[0] * b[1] - a[1] * b[0];
+  dst[0] = a[1] * b[2] - a[2] * b[1];
+  dst[1] = t1;
+  dst[2] = t2;
+  return dst;
+}
+/**
+ * Computes the dot product of two vectors; assumes both vectors have
+ * three entries.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @return {number} dot product
+ * @memberOf module:twgl/v3
+ */
+
+
+function dot(a, b) {
+  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+}
+/**
+ * Computes the length of vector
+ * @param {module:twgl/v3.Vec3} v vector.
+ * @return {number} length of vector.
+ * @memberOf module:twgl/v3
+ */
+
+
+function length(v) {
+  return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+}
+/**
+ * Computes the square of the length of vector
+ * @param {module:twgl/v3.Vec3} v vector.
+ * @return {number} square of the length of vector.
+ * @memberOf module:twgl/v3
+ */
+
+
+function lengthSq(v) {
+  return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+}
+/**
+ * Computes the distance between 2 points
+ * @param {module:twgl/v3.Vec3} a vector.
+ * @param {module:twgl/v3.Vec3} b vector.
+ * @return {number} distance between a and b
+ * @memberOf module:twgl/v3
+ */
+
+
+function distance(a, b) {
+  var dx = a[0] - b[0];
+  var dy = a[1] - b[1];
+  var dz = a[2] - b[2];
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}
+/**
+ * Computes the square of the distance between 2 points
+ * @param {module:twgl/v3.Vec3} a vector.
+ * @param {module:twgl/v3.Vec3} b vector.
+ * @return {number} square of the distance between a and b
+ * @memberOf module:twgl/v3
+ */
+
+
+function distanceSq(a, b) {
+  var dx = a[0] - b[0];
+  var dy = a[1] - b[1];
+  var dz = a[2] - b[2];
+  return dx * dx + dy * dy + dz * dz;
+}
+/**
+ * Divides a vector by its Euclidean length and returns the quotient.
+ * @param {module:twgl/v3.Vec3} a The vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} The normalized vector.
+ * @memberOf module:twgl/v3
+ */
+
+
+function normalize(a, dst) {
+  dst = dst || new VecType(3);
+  var lenSq = a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
+  var len = Math.sqrt(lenSq);
+
+  if (len > 0.00001) {
+    dst[0] = a[0] / len;
+    dst[1] = a[1] / len;
+    dst[2] = a[2] / len;
+  } else {
+    dst[0] = 0;
+    dst[1] = 0;
+    dst[2] = 0;
+  }
+
+  return dst;
+}
+/**
+ * Negates a vector.
+ * @param {module:twgl/v3.Vec3} v The vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} -v.
+ * @memberOf module:twgl/v3
+ */
+
+
+function negate(v, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = -v[0];
+  dst[1] = -v[1];
+  dst[2] = -v[2];
+  return dst;
+}
+/**
+ * Copies a vector.
+ * @param {module:twgl/v3.Vec3} v The vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} A copy of v.
+ * @memberOf module:twgl/v3
+ */
+
+
+function copy(v, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = v[0];
+  dst[1] = v[1];
+  dst[2] = v[2];
+  return dst;
+}
+/**
+ * Multiplies a vector by another vector (component-wise); assumes a and
+ * b have the same length.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} The vector of products of entries of a and
+ *     b.
+ * @memberOf module:twgl/v3
+ */
+
+
+function multiply(a, b, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = a[0] * b[0];
+  dst[1] = a[1] * b[1];
+  dst[2] = a[2] * b[2];
+  return dst;
+}
+/**
+ * Divides a vector by another vector (component-wise); assumes a and
+ * b have the same length.
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} The vector of quotients of entries of a and
+ *     b.
+ * @memberOf module:twgl/v3
+ */
+
+
+function divide(a, b, dst) {
+  dst = dst || new VecType(3);
+  dst[0] = a[0] / b[0];
+  dst[1] = a[1] / b[1];
+  dst[2] = a[2] / b[2];
+  return dst;
+}
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = void 0;
+var global = typeof global !== 'undefined' // eslint-disable-line
+? global // eslint-disable-line
+: typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {};
+exports.default = global;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.isWebGL1 = isWebGL1;
+exports.isWebGL2 = isWebGL2;
+exports.glEnumToString = void 0;
+
+/*
+ * Copyright 2017, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Gets the gl version as a number
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {number} version of gl
+ */
+//function getVersionAsNumber(gl) {
+//  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
+//}
+
+/**
+ * Check if context is WebGL 2.0
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {bool} true if it's WebGL 2.0
+ * @memberOf module:twgl
+ */
+function isWebGL2(gl) {
+  // This is the correct check but it's slow
+  //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
+  // This might also be the correct check but I'm assuming it's slow-ish
+  // return gl instanceof WebGL2RenderingContext;
+  return !!gl.texStorage2D;
+}
+/**
+ * Check if context is WebGL 1.0
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @return {bool} true if it's WebGL 1.0
+ * @memberOf module:twgl
+ */
+
+
+function isWebGL1(gl) {
+  // This is the correct check but it's slow
+  // const version = getVersionAsNumber(gl);
+  // return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
+  // This might also be the correct check but I'm assuming it's slow-ish
+  // return gl instanceof WebGLRenderingContext;
+  return !gl.texStorage2D;
+}
+/**
+ * Gets a string for WebGL enum
+ *
+ * Note: Several enums are the same. Without more
+ * context (which function) it's impossible to always
+ * give the correct enum. As it is, for matching values
+ * it gives all enums. Checking the WebGL2RenderingContext
+ * that means
+ *
+ *      0     = ZERO | POINT | NONE | NO_ERROR
+ *      1     = ONE | LINES | SYNC_FLUSH_COMMANDS_BIT
+ *      32777 = BLEND_EQUATION_RGB | BLEND_EQUATION_RGB
+ *      36662 = COPY_READ_BUFFER | COPY_READ_BUFFER_BINDING
+ *      36663 = COPY_WRITE_BUFFER | COPY_WRITE_BUFFER_BINDING
+ *      36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING
+ *
+ * It's also not useful for bits really unless you pass in individual bits.
+ * In other words
+ *
+ *     const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
+ *     twgl.glEnumToString(gl, bits);  // not going to work
+ *
+ * Note that some enums only exist on extensions. If you
+ * want them to show up you need to pass the extension at least
+ * once. For example
+ *
+ *     const ext = gl.getExtension('WEBGL_compressed_texture_s3tc`);
+ *     if (ext) {
+ *        twgl.glEnumToString(ext, 0);  // just prime the function
+ *
+ *        ..later..
+ *
+ *        const internalFormat = ext.COMPRESSED_RGB_S3TC_DXT1_EXT;
+ *        console.log(twgl.glEnumToString(gl, internalFormat));
+ *
+ * Notice I didn't have to pass the extension the second time. This means
+ * you can have place that generically gets an enum for texture formats for example.
+ * and as long as you primed the function with the extensions
+ *
+ * If you're using `twgl.addExtensionsToContext` to enable your extensions
+ * then twgl will automatically get the extension's enums.
+ *
+ * @param {WebGLRenderingContext|Extension} gl A WebGLRenderingContext or any extension object
+ * @param {number} value the value of the enum you want to look up.
+ * @memberOf module:twgl
+ */
+
+
+var glEnumToString = function () {
+  var haveEnumsForType = {};
+  var enums = {};
+
+  function addEnums(gl) {
+    var type = gl.constructor.name;
+
+    if (!haveEnumsForType[type]) {
+      for (var key in gl) {
+        if (typeof gl[key] === 'number') {
+          var existing = enums[gl[key]];
+          enums[gl[key]] = existing ? "".concat(existing, " | ").concat(key) : key;
+        }
+      }
+
+      haveEnumsForType[type] = true;
+    }
+  }
+
+  return function glEnumToString(gl, value) {
+    addEnums(gl);
+    return enums[value] || "0x" + value.toString(16);
+  };
+}();
+
+exports.glEnumToString = glEnumToString;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.createAttributeSetters = createAttributeSetters;
+exports.createProgram = createProgram;
+exports.createProgramFromScripts = createProgramFromScripts;
+exports.createProgramFromSources = createProgramFromSources;
+exports.createProgramInfo = createProgramInfo;
+exports.createProgramInfoFromProgram = createProgramInfoFromProgram;
+exports.createUniformSetters = createUniformSetters;
+exports.createUniformBlockSpecFromProgram = createUniformBlockSpecFromProgram;
+exports.createUniformBlockInfoFromProgram = createUniformBlockInfoFromProgram;
+exports.createUniformBlockInfo = createUniformBlockInfo;
+exports.createTransformFeedback = createTransformFeedback;
+exports.createTransformFeedbackInfo = createTransformFeedbackInfo;
+exports.bindTransformFeedbackInfo = bindTransformFeedbackInfo;
+exports.setAttributes = setAttributes;
+exports.setBuffersAndAttributes = setBuffersAndAttributes;
+exports.setUniforms = setUniforms;
+exports.setUniformBlock = setUniformBlock;
+exports.setBlockUniforms = setBlockUniforms;
+exports.bindUniformBlock = bindUniformBlock;
+
+var utils = _interopRequireWildcard(__webpack_require__(4));
+
+var helper = _interopRequireWildcard(__webpack_require__(0));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Low level shader program related functions
+ *
+ * You should generally not need to use these functions. They are provided
+ * for those cases where you're doing something out of the ordinary
+ * and you need lower level access.
+ *
+ * For backward compatibily they are available at both `twgl.programs` and `twgl`
+ * itself
+ *
+ * See {@link module:twgl} for core functions
+ *
+ * @module twgl/programs
+ */
 var error = helper.error;
 var warn = helper.warn;
-
 var FLOAT = 0x1406;
 var FLOAT_VEC2 = 0x8B50;
 var FLOAT_VEC3 = 0x8B51;
@@ -462,23 +1076,20 @@ var UNSIGNED_INT_SAMPLER_2D = 0x8DD2;
 var UNSIGNED_INT_SAMPLER_3D = 0x8DD3;
 var UNSIGNED_INT_SAMPLER_CUBE = 0x8DD4;
 var UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
-
 var TEXTURE_2D = 0x0DE1;
 var TEXTURE_CUBE_MAP = 0x8513;
 var TEXTURE_3D = 0x806F;
 var TEXTURE_2D_ARRAY = 0x8C1A;
-
 var typeMap = {};
-
 /**
  * Returns the corresponding bind point for a given sampler type
  */
+
 function getBindPointForSamplerType(gl, type) {
   return typeMap[type].bindPoint;
-}
-
-// This kind of sucks! If you could compose functions as in `var fn = gl[name];`
+} // This kind of sucks! If you could compose functions as in `var fn = gl[name];`
 // this code could be a lot smaller but that is sadly really slow (T_T)
+
 
 function floatSetter(gl, location) {
   return function (v) {
@@ -627,8 +1238,9 @@ function floatMat43Setter(gl, location) {
 function samplerSetter(gl, type, unit, location) {
   var bindPoint = getBindPointForSamplerType(gl, type);
   return utils.isWebGL2(gl) ? function (textureOrPair) {
-    var texture = void 0;
-    var sampler = void 0;
+    var texture;
+    var sampler;
+
     if (textureOrPair instanceof WebGLTexture) {
       texture = textureOrPair;
       sampler = null;
@@ -636,6 +1248,7 @@ function samplerSetter(gl, type, unit, location) {
       texture = textureOrPair.texture;
       sampler = textureOrPair.sampler;
     }
+
     gl.uniform1i(location, unit);
     gl.activeTexture(gl.TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
@@ -650,6 +1263,7 @@ function samplerSetter(gl, type, unit, location) {
 function samplerArraySetter(gl, type, unit, location, size) {
   var bindPoint = getBindPointForSamplerType(gl, type);
   var units = new Int32Array(size);
+
   for (var ii = 0; ii < size; ++ii) {
     units[ii] = unit + ii;
   }
@@ -658,8 +1272,9 @@ function samplerArraySetter(gl, type, unit, location, size) {
     gl.uniform1iv(location, units);
     textures.forEach(function (textureOrPair, index) {
       gl.activeTexture(gl.TEXTURE0 + units[index]);
-      var texture = void 0;
-      var sampler = void 0;
+      var texture;
+      var sampler;
+
       if (textureOrPair instanceof WebGLTexture) {
         texture = textureOrPair;
         sampler = null;
@@ -667,6 +1282,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
         texture = textureOrPair.texture;
         sampler = textureOrPair.sampler;
       }
+
       gl.bindSampler(unit, sampler);
       gl.bindTexture(bindPoint, texture);
     });
@@ -679,52 +1295,247 @@ function samplerArraySetter(gl, type, unit, location, size) {
   };
 }
 
-typeMap[FLOAT] = { Type: Float32Array, size: 4, setter: floatSetter, arraySetter: floatArraySetter };
-typeMap[FLOAT_VEC2] = { Type: Float32Array, size: 8, setter: floatVec2Setter };
-typeMap[FLOAT_VEC3] = { Type: Float32Array, size: 12, setter: floatVec3Setter };
-typeMap[FLOAT_VEC4] = { Type: Float32Array, size: 16, setter: floatVec4Setter };
-typeMap[INT] = { Type: Int32Array, size: 4, setter: intSetter, arraySetter: intArraySetter };
-typeMap[INT_VEC2] = { Type: Int32Array, size: 8, setter: intVec2Setter };
-typeMap[INT_VEC3] = { Type: Int32Array, size: 12, setter: intVec3Setter };
-typeMap[INT_VEC4] = { Type: Int32Array, size: 16, setter: intVec4Setter };
-typeMap[UNSIGNED_INT] = { Type: Uint32Array, size: 4, setter: uintSetter, arraySetter: uintArraySetter };
-typeMap[UNSIGNED_INT_VEC2] = { Type: Uint32Array, size: 8, setter: uintVec2Setter };
-typeMap[UNSIGNED_INT_VEC3] = { Type: Uint32Array, size: 12, setter: uintVec3Setter };
-typeMap[UNSIGNED_INT_VEC4] = { Type: Uint32Array, size: 16, setter: uintVec4Setter };
-typeMap[BOOL] = { Type: Uint32Array, size: 4, setter: intSetter, arraySetter: intArraySetter };
-typeMap[BOOL_VEC2] = { Type: Uint32Array, size: 8, setter: intVec2Setter };
-typeMap[BOOL_VEC3] = { Type: Uint32Array, size: 12, setter: intVec3Setter };
-typeMap[BOOL_VEC4] = { Type: Uint32Array, size: 16, setter: intVec4Setter };
-typeMap[FLOAT_MAT2] = { Type: Float32Array, size: 16, setter: floatMat2Setter };
-typeMap[FLOAT_MAT3] = { Type: Float32Array, size: 36, setter: floatMat3Setter };
-typeMap[FLOAT_MAT4] = { Type: Float32Array, size: 64, setter: floatMat4Setter };
-typeMap[FLOAT_MAT2x3] = { Type: Float32Array, size: 24, setter: floatMat23Setter };
-typeMap[FLOAT_MAT2x4] = { Type: Float32Array, size: 32, setter: floatMat24Setter };
-typeMap[FLOAT_MAT3x2] = { Type: Float32Array, size: 24, setter: floatMat32Setter };
-typeMap[FLOAT_MAT3x4] = { Type: Float32Array, size: 48, setter: floatMat34Setter };
-typeMap[FLOAT_MAT4x2] = { Type: Float32Array, size: 32, setter: floatMat42Setter };
-typeMap[FLOAT_MAT4x3] = { Type: Float32Array, size: 48, setter: floatMat43Setter };
-typeMap[SAMPLER_2D] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D };
-typeMap[SAMPLER_CUBE] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP };
-typeMap[SAMPLER_3D] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D };
-typeMap[SAMPLER_2D_SHADOW] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D };
-typeMap[SAMPLER_2D_ARRAY] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY };
-typeMap[SAMPLER_2D_ARRAY_SHADOW] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY };
-typeMap[SAMPLER_CUBE_SHADOW] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP };
-typeMap[INT_SAMPLER_2D] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D };
-typeMap[INT_SAMPLER_3D] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D };
-typeMap[INT_SAMPLER_CUBE] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP };
-typeMap[INT_SAMPLER_2D_ARRAY] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY };
-typeMap[UNSIGNED_INT_SAMPLER_2D] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D };
-typeMap[UNSIGNED_INT_SAMPLER_3D] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D };
-typeMap[UNSIGNED_INT_SAMPLER_CUBE] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP };
-typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null, size: 0, setter: samplerSetter, arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY };
+typeMap[FLOAT] = {
+  Type: Float32Array,
+  size: 4,
+  setter: floatSetter,
+  arraySetter: floatArraySetter
+};
+typeMap[FLOAT_VEC2] = {
+  Type: Float32Array,
+  size: 8,
+  setter: floatVec2Setter
+};
+typeMap[FLOAT_VEC3] = {
+  Type: Float32Array,
+  size: 12,
+  setter: floatVec3Setter
+};
+typeMap[FLOAT_VEC4] = {
+  Type: Float32Array,
+  size: 16,
+  setter: floatVec4Setter
+};
+typeMap[INT] = {
+  Type: Int32Array,
+  size: 4,
+  setter: intSetter,
+  arraySetter: intArraySetter
+};
+typeMap[INT_VEC2] = {
+  Type: Int32Array,
+  size: 8,
+  setter: intVec2Setter
+};
+typeMap[INT_VEC3] = {
+  Type: Int32Array,
+  size: 12,
+  setter: intVec3Setter
+};
+typeMap[INT_VEC4] = {
+  Type: Int32Array,
+  size: 16,
+  setter: intVec4Setter
+};
+typeMap[UNSIGNED_INT] = {
+  Type: Uint32Array,
+  size: 4,
+  setter: uintSetter,
+  arraySetter: uintArraySetter
+};
+typeMap[UNSIGNED_INT_VEC2] = {
+  Type: Uint32Array,
+  size: 8,
+  setter: uintVec2Setter
+};
+typeMap[UNSIGNED_INT_VEC3] = {
+  Type: Uint32Array,
+  size: 12,
+  setter: uintVec3Setter
+};
+typeMap[UNSIGNED_INT_VEC4] = {
+  Type: Uint32Array,
+  size: 16,
+  setter: uintVec4Setter
+};
+typeMap[BOOL] = {
+  Type: Uint32Array,
+  size: 4,
+  setter: intSetter,
+  arraySetter: intArraySetter
+};
+typeMap[BOOL_VEC2] = {
+  Type: Uint32Array,
+  size: 8,
+  setter: intVec2Setter
+};
+typeMap[BOOL_VEC3] = {
+  Type: Uint32Array,
+  size: 12,
+  setter: intVec3Setter
+};
+typeMap[BOOL_VEC4] = {
+  Type: Uint32Array,
+  size: 16,
+  setter: intVec4Setter
+};
+typeMap[FLOAT_MAT2] = {
+  Type: Float32Array,
+  size: 16,
+  setter: floatMat2Setter
+};
+typeMap[FLOAT_MAT3] = {
+  Type: Float32Array,
+  size: 36,
+  setter: floatMat3Setter
+};
+typeMap[FLOAT_MAT4] = {
+  Type: Float32Array,
+  size: 64,
+  setter: floatMat4Setter
+};
+typeMap[FLOAT_MAT2x3] = {
+  Type: Float32Array,
+  size: 24,
+  setter: floatMat23Setter
+};
+typeMap[FLOAT_MAT2x4] = {
+  Type: Float32Array,
+  size: 32,
+  setter: floatMat24Setter
+};
+typeMap[FLOAT_MAT3x2] = {
+  Type: Float32Array,
+  size: 24,
+  setter: floatMat32Setter
+};
+typeMap[FLOAT_MAT3x4] = {
+  Type: Float32Array,
+  size: 48,
+  setter: floatMat34Setter
+};
+typeMap[FLOAT_MAT4x2] = {
+  Type: Float32Array,
+  size: 32,
+  setter: floatMat42Setter
+};
+typeMap[FLOAT_MAT4x3] = {
+  Type: Float32Array,
+  size: 48,
+  setter: floatMat43Setter
+};
+typeMap[SAMPLER_2D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[SAMPLER_CUBE] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[SAMPLER_3D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_3D
+};
+typeMap[SAMPLER_2D_SHADOW] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[SAMPLER_2D_ARRAY] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
+typeMap[SAMPLER_2D_ARRAY_SHADOW] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
+typeMap[SAMPLER_CUBE_SHADOW] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[INT_SAMPLER_2D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[INT_SAMPLER_3D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_3D
+};
+typeMap[INT_SAMPLER_CUBE] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[INT_SAMPLER_2D_ARRAY] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
+typeMap[UNSIGNED_INT_SAMPLER_2D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[UNSIGNED_INT_SAMPLER_3D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_3D
+};
+typeMap[UNSIGNED_INT_SAMPLER_CUBE] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
 
 function floatAttribSetter(gl, index) {
   return function (b) {
     gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
     gl.enableVertexAttribArray(index);
     gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+
     if (b.divisor !== undefined) {
       gl.vertexAttribDivisor(index, b.divisor);
     }
@@ -736,6 +1547,7 @@ function intAttribSetter(gl, index) {
     gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
     gl.enableVertexAttribArray(index);
     gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+
     if (b.divisor !== undefined) {
       gl.vertexAttribDivisor(index, b.divisor);
     }
@@ -745,7 +1557,6 @@ function intAttribSetter(gl, index) {
 function matAttribSetter(gl, index, typeInfo) {
   var defaultSize = typeInfo.size;
   var count = typeInfo.count;
-
   return function (b) {
     gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
     var numComponents = b.size || b.numComponents || defaultSize;
@@ -756,9 +1567,11 @@ function matAttribSetter(gl, index, typeInfo) {
     var normalize = b.normalize || false;
     var offset = b.offset || 0;
     var rowOffset = stride / count;
+
     for (var i = 0; i < count; ++i) {
       gl.enableVertexAttribArray(index + i);
       gl.vertexAttribPointer(index + i, size, type, normalize, stride, offset + rowOffset * i);
+
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index + i, b.divisor);
       }
@@ -767,27 +1580,86 @@ function matAttribSetter(gl, index, typeInfo) {
 }
 
 var attrTypeMap = {};
-attrTypeMap[FLOAT] = { size: 4, setter: floatAttribSetter };
-attrTypeMap[FLOAT_VEC2] = { size: 8, setter: floatAttribSetter };
-attrTypeMap[FLOAT_VEC3] = { size: 12, setter: floatAttribSetter };
-attrTypeMap[FLOAT_VEC4] = { size: 16, setter: floatAttribSetter };
-attrTypeMap[INT] = { size: 4, setter: intAttribSetter };
-attrTypeMap[INT_VEC2] = { size: 8, setter: intAttribSetter };
-attrTypeMap[INT_VEC3] = { size: 12, setter: intAttribSetter };
-attrTypeMap[INT_VEC4] = { size: 16, setter: intAttribSetter };
-attrTypeMap[UNSIGNED_INT] = { size: 4, setter: intAttribSetter };
-attrTypeMap[UNSIGNED_INT_VEC2] = { size: 8, setter: intAttribSetter };
-attrTypeMap[UNSIGNED_INT_VEC3] = { size: 12, setter: intAttribSetter };
-attrTypeMap[UNSIGNED_INT_VEC4] = { size: 16, setter: intAttribSetter };
-attrTypeMap[BOOL] = { size: 4, setter: intAttribSetter };
-attrTypeMap[BOOL_VEC2] = { size: 8, setter: intAttribSetter };
-attrTypeMap[BOOL_VEC3] = { size: 12, setter: intAttribSetter };
-attrTypeMap[BOOL_VEC4] = { size: 16, setter: intAttribSetter };
-attrTypeMap[FLOAT_MAT2] = { size: 4, setter: matAttribSetter, count: 2 };
-attrTypeMap[FLOAT_MAT3] = { size: 9, setter: matAttribSetter, count: 3 };
-attrTypeMap[FLOAT_MAT4] = { size: 16, setter: matAttribSetter, count: 4 };
+attrTypeMap[FLOAT] = {
+  size: 4,
+  setter: floatAttribSetter
+};
+attrTypeMap[FLOAT_VEC2] = {
+  size: 8,
+  setter: floatAttribSetter
+};
+attrTypeMap[FLOAT_VEC3] = {
+  size: 12,
+  setter: floatAttribSetter
+};
+attrTypeMap[FLOAT_VEC4] = {
+  size: 16,
+  setter: floatAttribSetter
+};
+attrTypeMap[INT] = {
+  size: 4,
+  setter: intAttribSetter
+};
+attrTypeMap[INT_VEC2] = {
+  size: 8,
+  setter: intAttribSetter
+};
+attrTypeMap[INT_VEC3] = {
+  size: 12,
+  setter: intAttribSetter
+};
+attrTypeMap[INT_VEC4] = {
+  size: 16,
+  setter: intAttribSetter
+};
+attrTypeMap[UNSIGNED_INT] = {
+  size: 4,
+  setter: intAttribSetter
+};
+attrTypeMap[UNSIGNED_INT_VEC2] = {
+  size: 8,
+  setter: intAttribSetter
+};
+attrTypeMap[UNSIGNED_INT_VEC3] = {
+  size: 12,
+  setter: intAttribSetter
+};
+attrTypeMap[UNSIGNED_INT_VEC4] = {
+  size: 16,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL] = {
+  size: 4,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL_VEC2] = {
+  size: 8,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL_VEC3] = {
+  size: 12,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL_VEC4] = {
+  size: 16,
+  setter: intAttribSetter
+};
+attrTypeMap[FLOAT_MAT2] = {
+  size: 4,
+  setter: matAttribSetter,
+  count: 2
+};
+attrTypeMap[FLOAT_MAT3] = {
+  size: 9,
+  setter: matAttribSetter,
+  count: 3
+};
+attrTypeMap[FLOAT_MAT4] = {
+  size: 16,
+  setter: matAttribSetter,
+  count: 4
+}; // make sure we don't see a global gl
 
-// make sure we don't see a global gl
 var gl = undefined; // eslint-disable-line
 
 /**
@@ -801,14 +1673,12 @@ var gl = undefined; // eslint-disable-line
 function addLineNumbers(src, lineOffset) {
   lineOffset = lineOffset || 0;
   ++lineOffset;
-
   return src.split("\n").map(function (line, ndx) {
     return ndx + lineOffset + ": " + line;
   }).join("\n");
 }
 
 var spaceRE = /^[ \t]*\n/;
-
 /**
  * Loads a shader.
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
@@ -817,12 +1687,11 @@ var spaceRE = /^[ \t]*\n/;
  * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
  * @return {WebGLShader} The created shader.
  */
-function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
-  var errFn = opt_errorCallback || error;
-  // Create the shader object
-  var shader = gl.createShader(shaderType);
 
-  // Remove the first end of line because WebGL 2.0 requires
+function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
+  var errFn = opt_errorCallback || error; // Create the shader object
+
+  var shader = gl.createShader(shaderType); // Remove the first end of line because WebGL 2.0 requires
   // #version 300 es
   // as the first line. No whitespace allowed before that line
   // so
@@ -833,20 +1702,21 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   //
   // Has one line before it which is invalid according to GLSL ES 3.00
   //
+
   var lineOffset = 0;
+
   if (spaceRE.test(shaderSource)) {
     lineOffset = 1;
     shaderSource = shaderSource.replace(spaceRE, '');
-  }
+  } // Load the shader source
 
-  // Load the shader source
-  gl.shaderSource(shader, shaderSource);
 
-  // Compile the shader
-  gl.compileShader(shader);
+  gl.shaderSource(shader, shaderSource); // Compile the shader
 
-  // Check the compile status
+  gl.compileShader(shader); // Check the compile status
+
   var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+
   if (!compiled) {
     // Something went wrong during compilation; get the error
     var lastError = gl.getShaderInfoLog(shader);
@@ -857,7 +1727,6 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
 
   return shader;
 }
-
 /**
  * @typedef {Object} ProgramOptions
  * @property {function(string)} [errorCallback] callback for errors
@@ -877,12 +1746,16 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
  */
+
+
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
-  var transformFeedbackVaryings = void 0;
+  var transformFeedbackVaryings;
+
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
     opt_locations = undefined;
   }
+
   if (typeof opt_attribs === 'function') {
     opt_errorCallback = opt_attribs;
     opt_attribs = undefined;
@@ -892,6 +1765,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     if (opt_attribs.errorCallback) {
       return opt_attribs;
     }
+
     var opt = opt_attribs;
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
@@ -905,6 +1779,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
 
   if (opt_attribs) {
     var attribLocations = {};
+
     if (Array.isArray(opt_attribs)) {
       opt_attribs.forEach(function (attrib, ndx) {
         attribLocations[attrib] = opt_locations ? opt_locations[ndx] : ndx;
@@ -912,6 +1787,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     } else {
       attribLocations = opt_attribs;
     }
+
     options.attribLocations = attribLocations;
   }
 
@@ -926,6 +1802,7 @@ function getShaderTypeFromScriptType(scriptType) {
   } else if (scriptType.indexOf("vert") >= 0) {
     return gl.VERTEX_SHADER;
   }
+
   return undefined;
 }
 
@@ -934,7 +1811,6 @@ function deleteShaders(gl, shaders) {
     gl.deleteShader(shader);
   });
 }
-
 /**
  * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
  * program and calls useProgram.
@@ -954,22 +1830,29 @@ function deleteShaders(gl, shaders) {
  * @return {WebGLProgram?} the created program or null if error.
  * @memberOf module:twgl/programs
  */
+
+
 function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   var realShaders = [];
   var newShaders = [];
+
   for (var ndx = 0; ndx < shaders.length; ++ndx) {
     var shader = shaders[ndx];
+
     if (typeof shader === 'string') {
       var elem = document.getElementById(shader);
       var src = elem ? elem.text : shader;
       var type = gl[defaultShaderType[ndx]];
+
       if (elem && elem.type) {
         type = getShaderTypeFromScriptType(elem.type) || type;
       }
+
       shader = loadShader(gl, src, type, progOptions.errorCallback);
       newShaders.push(shader);
     }
+
     if (shader instanceof WebGLShader) {
       realShaders.push(shader);
     }
@@ -985,37 +1868,42 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
   realShaders.forEach(function (shader) {
     gl.attachShader(program, shader);
   });
+
   if (progOptions.attribLocations) {
     Object.keys(progOptions.attribLocations).forEach(function (attrib) {
       gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
     });
   }
+
   var varyings = progOptions.transformFeedbackVaryings;
+
   if (varyings) {
     if (varyings.attribs) {
       varyings = varyings.attribs;
     }
+
     if (!Array.isArray(varyings)) {
       varyings = Object.keys(varyings);
     }
+
     gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || gl.SEPARATE_ATTRIBS);
   }
-  gl.linkProgram(program);
 
-  // Check the link status
+  gl.linkProgram(program); // Check the link status
+
   var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+
   if (!linked) {
     // something went wrong with the link
     var lastError = gl.getProgramInfoLog(program);
     progOptions.errorCallback("Error in program linking:" + lastError);
-
     gl.deleteProgram(program);
     deleteShaders(gl, newShaders);
     return null;
   }
+
   return program;
 }
-
 /**
  * Loads a shader from a script tag.
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
@@ -1025,22 +1913,25 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors.
  * @return {WebGLShader?} The created shader or null if error.
  */
+
+
 function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback) {
   var shaderSource = "";
   var shaderScript = document.getElementById(scriptId);
+
   if (!shaderScript) {
     throw "*** Error: unknown script element" + scriptId;
   }
-  shaderSource = shaderScript.text;
 
+  shaderSource = shaderScript.text;
   var shaderType = opt_shaderType || getShaderTypeFromScriptType(shaderScript.type);
+
   if (!shaderType) {
     throw "*** Error: unknown shader type";
   }
 
   return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
 }
-
 /**
  * Creates a program from 2 script tags.
  *
@@ -1063,19 +1954,24 @@ function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback)
  * @return {WebGLProgram} The created program.
  * @memberOf module:twgl/programs
  */
+
+
 function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   var shaders = [];
+
   for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
     var shader = createShaderFromScript(gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+
     if (!shader) {
       return null;
     }
+
     shaders.push(shader);
   }
+
   return createProgram(gl, shaders, progOptions);
 }
-
 /**
  * Creates a program from 2 sources.
  *
@@ -1098,19 +1994,24 @@ function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_location
  * @return {WebGLProgram} The created program.
  * @memberOf module:twgl/programs
  */
+
+
 function createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   var shaders = [];
+
   for (var ii = 0; ii < shaderSources.length; ++ii) {
     var shader = loadShader(gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+
     if (!shader) {
       return null;
     }
+
     shaders.push(shader);
   }
+
   return createProgram(gl, shaders, progOptions);
 }
-
 /**
  * Returns true if attribute/uniform is a reserved/built in
  *
@@ -1127,11 +2028,12 @@ function createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations,
  *    `gl.getActiveAttrib`.
  * @return {bool} true if it's reserved
  */
+
+
 function isBuiltIn(info) {
   var name = info.name;
   return name.startsWith("gl_") || name.startsWith("webgl_");
 }
-
 /**
  * Creates setter functions for all uniforms of a shader
  * program.
@@ -1142,9 +2044,10 @@ function isBuiltIn(info) {
  * @returns {Object.<string, function>} an object with a setter by name for each uniform
  * @memberOf module:twgl/programs
  */
+
+
 function createUniformSetters(gl, program) {
   var textureUnit = 0;
-
   /**
    * Creates a setter for a uniform of the given program with it's
    * location embedded in the setter.
@@ -1152,19 +2055,24 @@ function createUniformSetters(gl, program) {
    * @param {WebGLUniformInfo} uniformInfo
    * @returns {function} the created setter.
    */
+
   function createUniformSetter(program, uniformInfo) {
     var location = gl.getUniformLocation(program, uniformInfo.name);
     var isArray = uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]";
     var type = uniformInfo.type;
     var typeInfo = typeMap[type];
+
     if (!typeInfo) {
       throw "unknown type: 0x" + type.toString(16); // we should never get here.
     }
-    var setter = void 0;
+
+    var setter;
+
     if (typeInfo.bindPoint) {
       // it's a sampler
       var unit = textureUnit;
       textureUnit += uniformInfo.size;
+
       if (isArray) {
         setter = typeInfo.arraySetter(gl, type, unit, location, uniformInfo.size);
       } else {
@@ -1177,6 +2085,7 @@ function createUniformSetters(gl, program) {
         setter = typeInfo.setter(gl, location);
       }
     }
+
     setter.location = location;
     return setter;
   }
@@ -1186,20 +2095,23 @@ function createUniformSetters(gl, program) {
 
   for (var ii = 0; ii < numUniforms; ++ii) {
     var uniformInfo = gl.getActiveUniform(program, ii);
+
     if (isBuiltIn(uniformInfo)) {
       continue;
     }
-    var name = uniformInfo.name;
-    // remove the array suffix.
+
+    var name = uniformInfo.name; // remove the array suffix.
+
     if (name.substr(-3) === "[0]") {
       name = name.substr(0, name.length - 3);
     }
+
     var setter = createUniformSetter(program, uniformInfo);
     uniformSetters[name] = setter;
   }
+
   return uniformSetters;
 }
-
 /**
  * @typedef {Object} TransformFeedbackInfo
  * @property {number} index index of transform feedback
@@ -1215,9 +2127,12 @@ function createUniformSetters(gl, program) {
  * @return {Object<string, module:twgl.TransformFeedbackInfo>}
  * @memberOf module:twgl
  */
+
+
 function createTransformFeedbackInfo(gl, program) {
   var info = {};
   var numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+
   for (var ii = 0; ii < numVaryings; ++ii) {
     var varying = gl.getTransformFeedbackVarying(program, ii);
     info[varying.name] = {
@@ -1226,9 +2141,9 @@ function createTransformFeedbackInfo(gl, program) {
       size: varying.size
     };
   }
+
   return info;
 }
-
 /**
  * Binds buffers for transform feedback.
  *
@@ -1237,17 +2152,23 @@ function createTransformFeedbackInfo(gl, program) {
  * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
  * @memberOf module:twgl
  */
+
+
 function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (transformFeedbackInfo.transformFeedbackInfo) {
     transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
   }
+
   if (bufferInfo.attribs) {
     bufferInfo = bufferInfo.attribs;
   }
+
   for (var name in bufferInfo) {
     var varying = transformFeedbackInfo[name];
+
     if (varying) {
       var buf = bufferInfo[name];
+
       if (buf.offset) {
         gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
       } else {
@@ -1256,7 +2177,6 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
     }
   }
 }
-
 /**
  * Unbinds buffers afetr transform feedback.
  *
@@ -1269,21 +2189,25 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
  * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
  */
+
+
 function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (transformFeedbackInfo.transformFeedbackInfo) {
     transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
   }
+
   if (bufferInfo.attribs) {
     bufferInfo = bufferInfo.attribs;
   }
+
   for (var name in bufferInfo) {
     var varying = transformFeedbackInfo[name];
+
     if (varying) {
       gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
     }
   }
 }
-
 /**
  * Creates a transform feedback and sets the buffers
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
@@ -1292,18 +2216,19 @@ function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @return {WebGLTransformFeedback} the created transform feedback
  * @memberOf module:twgl
  */
+
+
 function createTransformFeedback(gl, programInfo, bufferInfo) {
   var tf = gl.createTransformFeedback();
   gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
   gl.useProgram(programInfo.program);
   bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
-  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
-  // This is only needed because of a bug in Chrome 56. Will remove
+  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null); // This is only needed because of a bug in Chrome 56. Will remove
   // when chrome fixes it.
+
   unbindTransformFeedbackInfo(gl, programInfo, bufferInfo);
   return tf;
 }
-
 /**
  * @typedef {Object} UniformData
  * @property {number} type The WebGL type enum for this uniform
@@ -1348,6 +2273,8 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * @return {module:twgl.UniformBlockSpec} The created UniformBlockSpec
  * @memberOf module:twgl/programs
  */
+
+
 function createUniformBlockSpecFromProgram(gl, program) {
   var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
   var uniformData = [];
@@ -1357,10 +2284,12 @@ function createUniformBlockSpecFromProgram(gl, program) {
     uniformIndices.push(ii);
     uniformData.push({});
     var uniformInfo = gl.getActiveUniform(program, ii);
+
     if (isBuiltIn(uniformInfo)) {
       break;
-    }
-    // REMOVE [0]?
+    } // REMOVE [0]?
+
+
     uniformData[ii].name = uniformInfo.name;
   }
 
@@ -1372,10 +2301,9 @@ function createUniformBlockSpecFromProgram(gl, program) {
       uniformData[ndx][key] = value;
     });
   });
-
   var blockSpecs = {};
-
   var numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
+
   for (var _ii = 0; _ii < numUniformBlocks; ++_ii) {
     var name = gl.getActiveUniformBlockName(program, _ii);
     var blockSpec = {
@@ -1433,10 +2361,12 @@ var arraySuffixRE = /\[\d+\]\.$/; // better way to check?
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
+
 function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
   var blockSpecs = uniformBlockSpec.blockSpecs;
   var uniformData = uniformBlockSpec.uniformData;
   var blockSpec = blockSpecs[blockName];
+
   if (!blockSpec) {
     warn("no uniform block object named:", blockName);
     return {
@@ -1444,16 +2374,18 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
       uniforms: {}
     };
   }
+
   var array = new ArrayBuffer(blockSpec.size);
   var buffer = gl.createBuffer();
   var uniformBufferIndex = blockSpec.index;
   gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
   gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
-
   var prefix = blockName + ".";
+
   if (arraySuffixRE.test(prefix)) {
     prefix = prefix.replace(arraySuffixRE, ".");
   }
+
   var uniforms = {};
   blockSpec.uniformIndices.forEach(function (uniformNdx) {
     var data = uniformData[uniformNdx];
@@ -1461,20 +2393,22 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     var Type = typeInfo.Type;
     var length = data.size * typeInfo.size;
     var name = data.name;
+
     if (name.substr(0, prefix.length) === prefix) {
       name = name.substr(prefix.length);
     }
+
     uniforms[name] = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
   });
   return {
     name: blockName,
     array: array,
-    asFloat: new Float32Array(array), // for debugging
+    asFloat: new Float32Array(array),
+    // for debugging
     buffer: buffer,
     uniforms: uniforms
   };
 }
-
 /**
  * Creates a `UniformBlockInfo` for the specified block
  *
@@ -1491,10 +2425,11 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
+
+
 function createUniformBlockInfo(gl, programInfo, blockName) {
   return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
 }
-
 /**
  * Binds a unform block to the matching uniform block point.
  * Matches by blocks by name so blocks must have the same name not just the same
@@ -1513,17 +2448,20 @@ function createUniformBlockInfo(gl, programInfo, blockName) {
  *     no buffer is bound.
  * @memberOf module:twgl/programs
  */
+
+
 function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
   var uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
   var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
+
   if (blockSpec) {
     var bufferBindIndex = blockSpec.index;
     gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
     return true;
   }
+
   return false;
 }
-
 /**
  * Uploads the current uniform values to the corresponding WebGLBuffer
  * and binds that buffer to the program's corresponding bind point for the uniform block object.
@@ -1539,12 +2477,13 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
  *     {@link module:twgl.createUniformBlockInfo}.
  * @memberOf module:twgl/programs
  */
+
+
 function setUniformBlock(gl, programInfo, uniformBlockInfo) {
   if (bindUniformBlock(gl, programInfo, uniformBlockInfo)) {
     gl.bufferData(gl.UNIFORM_BUFFER, uniformBlockInfo.array, gl.DYNAMIC_DRAW);
   }
 }
-
 /**
  * Sets values of a uniform block object
  *
@@ -1573,12 +2512,17 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  *  Any name that doesn't match will be ignored
  * @memberOf module:twgl/programs
  */
+
+
 function setBlockUniforms(uniformBlockInfo, values) {
   var uniforms = uniformBlockInfo.uniforms;
+
   for (var name in values) {
     var array = uniforms[name];
+
     if (array) {
       var value = values[name];
+
       if (value.length) {
         array.set(value);
       } else {
@@ -1587,7 +2531,6 @@ function setBlockUniforms(uniformBlockInfo, values) {
     }
   }
 }
-
 /**
  * Set uniforms and binds related textures.
  *
@@ -1702,20 +2645,26 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * @memberOf module:twgl/programs
  */
+
+
 function setUniforms(setters, values) {
   // eslint-disable-line
   var actualSetters = setters.uniformSetters || setters;
   var numArgs = arguments.length;
+
   for (var andx = 1; andx < numArgs; ++andx) {
     var vals = arguments[andx];
+
     if (Array.isArray(vals)) {
       var numValues = vals.length;
+
       for (var ii = 0; ii < numValues; ++ii) {
         setUniforms(actualSetters, vals[ii]);
       }
     } else {
       for (var name in vals) {
         var setter = actualSetters[name];
+
         if (setter) {
           setter(vals[name]);
         }
@@ -1723,7 +2672,6 @@ function setUniforms(setters, values) {
     }
   }
 }
-
 /**
  * Creates setter functions for all attributes of a shader
  * program. You can pass this to {@link module:twgl.setBuffersAndAttributes} to set all your buffers and attributes.
@@ -1733,15 +2681,19 @@ function setUniforms(setters, values) {
  * @return {Object.<string, function>} an object with a setter for each attribute by name.
  * @memberOf module:twgl/programs
  */
+
+
 function createAttributeSetters(gl, program) {
   var attribSetters = {};
-
   var numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+
   for (var ii = 0; ii < numAttribs; ++ii) {
     var attribInfo = gl.getActiveAttrib(program, ii);
+
     if (isBuiltIn(attribInfo)) {
       continue;
     }
+
     var index = gl.getAttribLocation(program, attribInfo.name);
     var typeInfo = attrTypeMap[attribInfo.type];
     var setter = typeInfo.setter(gl, index, typeInfo);
@@ -1751,7 +2703,6 @@ function createAttributeSetters(gl, program) {
 
   return attribSetters;
 }
-
 /**
  * Sets attributes and binds buffers (deprecated... use {@link module:twgl.setBuffersAndAttributes})
  *
@@ -1806,15 +2757,17 @@ function createAttributeSetters(gl, program) {
  * @memberOf module:twgl/programs
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
  */
+
+
 function setAttributes(setters, buffers) {
   for (var name in buffers) {
     var setter = setters[name];
+
     if (setter) {
       setter(buffers[name]);
     }
   }
 }
-
 /**
  * Sets attributes and buffers including the `ELEMENT_ARRAY_BUFFER` if appropriate
  *
@@ -1852,17 +2805,19 @@ function setAttributes(setters, buffers) {
  *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
  * @memberOf module:twgl/programs
  */
+
+
 function setBuffersAndAttributes(gl, programInfo, buffers) {
   if (buffers.vertexArrayObject) {
     gl.bindVertexArray(buffers.vertexArrayObject);
   } else {
     setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
+
     if (buffers.indices) {
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     }
   }
 }
-
 /**
  * @typedef {Object} ProgramInfo
  * @property {WebGLProgram} program A shader program
@@ -1890,6 +2845,8 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @return {module:twgl.ProgramInfo} The created ProgramInfo.
  * @memberOf module:twgl/programs
  */
+
+
 function createProgramInfoFromProgram(gl, program) {
   var uniformSetters = createUniformSetters(gl, program);
   var attribSetters = createAttributeSetters(gl, program);
@@ -1906,7 +2863,6 @@ function createProgramInfoFromProgram(gl, program) {
 
   return programInfo;
 }
-
 /**
  * Creates a ProgramInfo from 2 sources.
  *
@@ -1937,6 +2893,8 @@ function createProgramInfoFromProgram(gl, program) {
  * @return {module:twgl.ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
  * @memberOf module:twgl/programs
  */
+
+
 function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   var good = true;
@@ -1944,6 +2902,7 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
     // Lets assume if there is no \n it's an id
     if (source.indexOf("\n") < 0) {
       var script = document.getElementById(source);
+
       if (!script) {
         progOptions.errorCallback("no element with id: " + source);
         good = false;
@@ -1951,200 +2910,66 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
         source = script.text;
       }
     }
+
     return source;
   });
+
   if (!good) {
     return null;
   }
+
   var program = createProgramFromSources(gl, shaderSources, progOptions);
+
   if (!program) {
     return null;
   }
+
   return createProgramInfoFromProgram(gl, program);
 }
 
-exports.createAttributeSetters = createAttributeSetters;
-exports.createProgram = createProgram;
-exports.createProgramFromScripts = createProgramFromScripts;
-exports.createProgramFromSources = createProgramFromSources;
-exports.createProgramInfo = createProgramInfo;
-exports.createProgramInfoFromProgram = createProgramInfoFromProgram;
-exports.createUniformSetters = createUniformSetters;
-exports.createUniformBlockSpecFromProgram = createUniformBlockSpecFromProgram;
-exports.createUniformBlockInfoFromProgram = createUniformBlockInfoFromProgram;
-exports.createUniformBlockInfo = createUniformBlockInfo;
-exports.createTransformFeedback = createTransformFeedback;
-exports.createTransformFeedbackInfo = createTransformFeedbackInfo;
-exports.bindTransformFeedbackInfo = bindTransformFeedbackInfo;
-exports.setAttributes = setAttributes;
-exports.setBuffersAndAttributes = setBuffersAndAttributes;
-exports.setUniforms = setUniforms;
-exports.setUniformBlock = setUniformBlock;
-exports.setBlockUniforms = setBlockUniforms;
-exports.bindUniformBlock = bindUniformBlock;
-
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/*
- * Copyright 2017, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+exports.__esModule = true;
+exports.axisRotate = axisRotate;
+exports.axisRotation = axisRotation;
+exports.copy = copy;
+exports.frustum = frustum;
+exports.getAxis = getAxis;
+exports.getTranslation = getTranslation;
+exports.identity = identity;
+exports.inverse = inverse;
+exports.lookAt = lookAt;
+exports.multiply = multiply;
+exports.negate = negate;
+exports.ortho = ortho;
+exports.perspective = perspective;
+exports.rotateX = rotateX;
+exports.rotateY = rotateY;
+exports.rotateZ = rotateZ;
+exports.rotationX = rotationX;
+exports.rotationY = rotationY;
+exports.rotationZ = rotationZ;
+exports.scale = scale;
+exports.scaling = scaling;
+exports.setAxis = setAxis;
+exports.setDefaultType = setDefaultType;
+exports.setTranslation = setTranslation;
+exports.transformDirection = transformDirection;
+exports.transformNormal = transformNormal;
+exports.transformPoint = transformPoint;
+exports.translate = translate;
+exports.translation = translation;
+exports.transpose = transpose;
 
-/**
- * Gets the gl version as a number
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @return {number} version of gl
- */
-//function getVersionAsNumber(gl) {
-//  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
-//}
+var v3 = _interopRequireWildcard(__webpack_require__(2));
 
-/**
- * Check if context is WebGL 2.0
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @return {bool} true if it's WebGL 2.0
- * @memberOf module:twgl
- */
-function isWebGL2(gl) {
-  // This is the correct check but it's slow
-  //  return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0") === 0;
-  // This might also be the correct check but I'm assuming it's slow-ish
-  // return gl instanceof WebGL2RenderingContext;
-  return !!gl.texStorage2D;
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-/**
- * Check if context is WebGL 1.0
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @return {bool} true if it's WebGL 1.0
- * @memberOf module:twgl
- */
-function isWebGL1(gl) {
-  // This is the correct check but it's slow
-  // const version = getVersionAsNumber(gl);
-  // return version <= 1.0 && version > 0.0;  // because as of 2016/5 Edge returns 0.96
-  // This might also be the correct check but I'm assuming it's slow-ish
-  // return gl instanceof WebGLRenderingContext;
-  return !gl.texStorage2D;
-}
-
-/**
- * Gets a string for WebGL enum
- *
- * Note: Several enums are the same. Without more
- * context (which function) it's impossible to always
- * give the correct enum. As it is, for matching values
- * it gives all enums. Checking the WebGL2RenderingContext
- * that means
- *
- *      0     = ZERO | POINT | NONE | NO_ERROR
- *      1     = ONE | LINES | SYNC_FLUSH_COMMANDS_BIT
- *      32777 = BLEND_EQUATION_RGB | BLEND_EQUATION_RGB
- *      36662 = COPY_READ_BUFFER | COPY_READ_BUFFER_BINDING
- *      36663 = COPY_WRITE_BUFFER | COPY_WRITE_BUFFER_BINDING
- *      36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING
- *
- * It's also not useful for bits really unless you pass in individual bits.
- * In other words
- *
- *     const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
- *     twgl.glEnumToString(gl, bits);  // not going to work
- *
- * Note that some enums only exist on extensions. If you
- * want them to show up you need to pass the extension at least
- * once. For example
- *
- *     const ext = gl.getExtension('WEBGL_compressed_texture_s3tc`);
- *     if (ext) {
- *        twgl.glEnumToString(ext, 0);  // just prime the function
- *
- *        ..later..
- *
- *        const internalFormat = ext.COMPRESSED_RGB_S3TC_DXT1_EXT;
- *        console.log(twgl.glEnumToString(gl, internalFormat));
- *
- * Notice I didn't have to pass the extension the second time. This means
- * you can have place that generically gets an enum for texture formats for example.
- * and as long as you primed the function with the extensions
- *
- * If you're using `twgl.addExtensionsToContext` to enable your extensions
- * then twgl will automatically get the extension's enums.
- *
- * @param {WebGLRenderingContext|Extension} gl A WebGLRenderingContext or any extension object
- * @param {number} value the value of the enum you want to look up.
- * @memberOf module:twgl
- */
-var glEnumToString = function () {
-  var haveEnumsForType = {};
-  var enums = {};
-
-  function addEnums(gl) {
-    var type = gl.constructor.name;
-    if (!haveEnumsForType[type]) {
-      for (var key in gl) {
-        if (typeof gl[key] === 'number') {
-          var existing = enums[gl[key]];
-          enums[gl[key]] = existing ? existing + " | " + key : key;
-        }
-      }
-      haveEnumsForType[type] = true;
-    }
-  }
-
-  return function glEnumToString(gl, value) {
-    addEnums(gl);
-    return enums[value] || "0x" + value.toString(16);
-  };
-}();
-
-exports.glEnumToString = glEnumToString;
-exports.isWebGL1 = isWebGL1;
-exports.isWebGL2 = isWebGL2;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -2177,379 +3002,1237 @@ Object.defineProperty(exports, "__esModule", {
  */
 
 /**
- *
- * Vec3 math math functions.
+ * 4x4 Matrix math math functions.
  *
  * Almost all functions take an optional `dst` argument. If it is not passed in the
- * functions will create a new Vec3. In other words you can do this
+ * functions will create a new matrix. In other words you can do this
  *
- *     var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.
+ *     const mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
  *
  * or
  *
- *     var v3 = v3.create();
- *     v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v
+ *     const mat = m4.create();
+ *     m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.
  *
  * The first style is often easier but depending on where it's used it generates garbage where
  * as there is almost never allocation with the second style.
  *
- * It is always save to pass any vector as the destination. So for example
+ * It is always save to pass any matrix as the destination. So for example
  *
- *     v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1
+ *     const mat = m4.identity();
+ *     const trans = m4.translation([1, 2, 3]);
+ *     m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
  *
- * @module twgl/v3
+ * @module twgl/m4
  */
-
-var VecType = Float32Array;
-
+var MatType = Float32Array;
+var tempV3a = v3.create();
+var tempV3b = v3.create();
+var tempV3c = v3.create();
 /**
- * A JavaScript array with 3 values or a Float32Array with 3 values.
+ * A JavaScript array with 16 values or a Float32Array with 16 values.
  * When created by the library will create the default type which is `Float32Array`
- * but can be set by calling {@link module:twgl/v3.setDefaultType}.
- * @typedef {(number[]|Float32Array)} Vec3
- * @memberOf module:twgl/v3
+ * but can be set by calling {@link module:twgl/m4.setDefaultType}.
+ * @typedef {(number[]|Float32Array)} Mat4
+ * @memberOf module:twgl/m4
  */
 
 /**
- * Sets the type this library creates for a Vec3
+ * Sets the type this library creates for a Mat4
  * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
- * @return {constructor} previous constructor for Vec3
+ * @return {constructor} previous constructor for Mat4
  */
+
 function setDefaultType(ctor) {
-  var oldType = VecType;
-  VecType = ctor;
+  var oldType = MatType;
+  MatType = ctor;
   return oldType;
 }
-
 /**
- * Creates a vec3; may be called with x, y, z to set initial values.
- * @return {Vec3} the created vector
- * @memberOf module:twgl/v3
+ * Negates a matrix.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} -m.
+ * @memberOf module:twgl/m4
  */
-function create(x, y, z) {
-  var dst = new VecType(3);
-  if (x) {
-    dst[0] = x;
-  }
-  if (y) {
-    dst[1] = y;
-  }
-  if (z) {
-    dst[2] = z;
-  }
+
+
+function negate(m, dst) {
+  dst = dst || new MatType(16);
+  dst[0] = -m[0];
+  dst[1] = -m[1];
+  dst[2] = -m[2];
+  dst[3] = -m[3];
+  dst[4] = -m[4];
+  dst[5] = -m[5];
+  dst[6] = -m[6];
+  dst[7] = -m[7];
+  dst[8] = -m[8];
+  dst[9] = -m[9];
+  dst[10] = -m[10];
+  dst[11] = -m[11];
+  dst[12] = -m[12];
+  dst[13] = -m[13];
+  dst[14] = -m[14];
+  dst[15] = -m[15];
   return dst;
 }
-
 /**
- * Adds two vectors; assumes a and b have the same dimension.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @memberOf module:twgl/v3
+ * Copies a matrix.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {module:twgl/m4.Mat4} [dst] The matrix.
+ * @return {module:twgl/m4.Mat4} A copy of m.
+ * @memberOf module:twgl/m4
  */
-function add(a, b, dst) {
-  dst = dst || new VecType(3);
 
-  dst[0] = a[0] + b[0];
-  dst[1] = a[1] + b[1];
-  dst[2] = a[2] + b[2];
 
+function copy(m, dst) {
+  dst = dst || new MatType(16);
+  dst[0] = m[0];
+  dst[1] = m[1];
+  dst[2] = m[2];
+  dst[3] = m[3];
+  dst[4] = m[4];
+  dst[5] = m[5];
+  dst[6] = m[6];
+  dst[7] = m[7];
+  dst[8] = m[8];
+  dst[9] = m[9];
+  dst[10] = m[10];
+  dst[11] = m[11];
+  dst[12] = m[12];
+  dst[13] = m[13];
+  dst[14] = m[14];
+  dst[15] = m[15];
   return dst;
 }
-
 /**
- * Subtracts two vectors.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @memberOf module:twgl/v3
+ * Creates an n-by-n identity matrix.
+ *
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} An n-by-n identity matrix.
+ * @memberOf module:twgl/m4
  */
-function subtract(a, b, dst) {
-  dst = dst || new VecType(3);
 
-  dst[0] = a[0] - b[0];
-  dst[1] = a[1] - b[1];
-  dst[2] = a[2] - b[2];
 
+function identity(dst) {
+  dst = dst || new MatType(16);
+  dst[0] = 1;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 1;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
+  dst[10] = 1;
+  dst[11] = 0;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = 0;
+  dst[15] = 1;
   return dst;
 }
-
 /**
- * Performs linear interpolation on two vectors.
- * Given vectors a and b and interpolation coefficient t, returns
- * (1 - t) * a + t * b.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {number} t Interpolation coefficient.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @memberOf module:twgl/v3
+ * Takes the transpose of a matrix.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The transpose of m.
+ * @memberOf module:twgl/m4
  */
-function lerp(a, b, t, dst) {
-  dst = dst || new VecType(3);
 
-  dst[0] = (1 - t) * a[0] + t * b[0];
-  dst[1] = (1 - t) * a[1] + t * b[1];
-  dst[2] = (1 - t) * a[2] + t * b[2];
 
-  return dst;
-}
+function transpose(m, dst) {
+  dst = dst || new MatType(16);
 
-/**
- * Mutiplies a vector by a scalar.
- * @param {module:twgl/v3.Vec3} v The vector.
- * @param {number} k The scalar.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} dst.
- * @memberOf module:twgl/v3
- */
-function mulScalar(v, k, dst) {
-  dst = dst || new VecType(3);
-
-  dst[0] = v[0] * k;
-  dst[1] = v[1] * k;
-  dst[2] = v[2] * k;
-
-  return dst;
-}
-
-/**
- * Divides a vector by a scalar.
- * @param {module:twgl/v3.Vec3} v The vector.
- * @param {number} k The scalar.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} dst.
- * @memberOf module:twgl/v3
- */
-function divScalar(v, k, dst) {
-  dst = dst || new VecType(3);
-
-  dst[0] = v[0] / k;
-  dst[1] = v[1] / k;
-  dst[2] = v[2] / k;
-
-  return dst;
-}
-
-/**
- * Computes the cross product of two vectors; assumes both vectors have
- * three entries.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} The vector a cross b.
- * @memberOf module:twgl/v3
- */
-function cross(a, b, dst) {
-  dst = dst || new VecType(3);
-
-  var t1 = a[2] * b[0] - a[0] * b[2];
-  var t2 = a[0] * b[1] - a[1] * b[0];
-  dst[0] = a[1] * b[2] - a[2] * b[1];
-  dst[1] = t1;
-  dst[2] = t2;
-
-  return dst;
-}
-
-/**
- * Computes the dot product of two vectors; assumes both vectors have
- * three entries.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @return {number} dot product
- * @memberOf module:twgl/v3
- */
-function dot(a, b) {
-  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-}
-
-/**
- * Computes the length of vector
- * @param {module:twgl/v3.Vec3} v vector.
- * @return {number} length of vector.
- * @memberOf module:twgl/v3
- */
-function length(v) {
-  return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-}
-
-/**
- * Computes the square of the length of vector
- * @param {module:twgl/v3.Vec3} v vector.
- * @return {number} square of the length of vector.
- * @memberOf module:twgl/v3
- */
-function lengthSq(v) {
-  return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-}
-
-/**
- * Computes the distance between 2 points
- * @param {module:twgl/v3.Vec3} a vector.
- * @param {module:twgl/v3.Vec3} b vector.
- * @return {number} distance between a and b
- * @memberOf module:twgl/v3
- */
-function distance(a, b) {
-  var dx = a[0] - b[0];
-  var dy = a[1] - b[1];
-  var dz = a[2] - b[2];
-  return Math.sqrt(dx * dx + dy * dy + dz * dz);
-}
-
-/**
- * Computes the square of the distance between 2 points
- * @param {module:twgl/v3.Vec3} a vector.
- * @param {module:twgl/v3.Vec3} b vector.
- * @return {number} square of the distance between a and b
- * @memberOf module:twgl/v3
- */
-function distanceSq(a, b) {
-  var dx = a[0] - b[0];
-  var dy = a[1] - b[1];
-  var dz = a[2] - b[2];
-  return dx * dx + dy * dy + dz * dz;
-}
-
-/**
- * Divides a vector by its Euclidean length and returns the quotient.
- * @param {module:twgl/v3.Vec3} a The vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} The normalized vector.
- * @memberOf module:twgl/v3
- */
-function normalize(a, dst) {
-  dst = dst || new VecType(3);
-
-  var lenSq = a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
-  var len = Math.sqrt(lenSq);
-  if (len > 0.00001) {
-    dst[0] = a[0] / len;
-    dst[1] = a[1] / len;
-    dst[2] = a[2] / len;
-  } else {
-    dst[0] = 0;
-    dst[1] = 0;
-    dst[2] = 0;
+  if (dst === m) {
+    var t;
+    t = m[1];
+    m[1] = m[4];
+    m[4] = t;
+    t = m[2];
+    m[2] = m[8];
+    m[8] = t;
+    t = m[3];
+    m[3] = m[12];
+    m[12] = t;
+    t = m[6];
+    m[6] = m[9];
+    m[9] = t;
+    t = m[7];
+    m[7] = m[13];
+    m[13] = t;
+    t = m[11];
+    m[11] = m[14];
+    m[14] = t;
+    return dst;
   }
 
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var m30 = m[3 * 4 + 0];
+  var m31 = m[3 * 4 + 1];
+  var m32 = m[3 * 4 + 2];
+  var m33 = m[3 * 4 + 3];
+  dst[0] = m00;
+  dst[1] = m10;
+  dst[2] = m20;
+  dst[3] = m30;
+  dst[4] = m01;
+  dst[5] = m11;
+  dst[6] = m21;
+  dst[7] = m31;
+  dst[8] = m02;
+  dst[9] = m12;
+  dst[10] = m22;
+  dst[11] = m32;
+  dst[12] = m03;
+  dst[13] = m13;
+  dst[14] = m23;
+  dst[15] = m33;
   return dst;
 }
-
 /**
- * Negates a vector.
- * @param {module:twgl/v3.Vec3} v The vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} -v.
- * @memberOf module:twgl/v3
+ * Computes the inverse of a 4-by-4 matrix.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The inverse of m.
+ * @memberOf module:twgl/m4
  */
-function negate(v, dst) {
-  dst = dst || new VecType(3);
 
-  dst[0] = -v[0];
-  dst[1] = -v[1];
-  dst[2] = -v[2];
 
+function inverse(m, dst) {
+  dst = dst || new MatType(16);
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var m30 = m[3 * 4 + 0];
+  var m31 = m[3 * 4 + 1];
+  var m32 = m[3 * 4 + 2];
+  var m33 = m[3 * 4 + 3];
+  var tmp_0 = m22 * m33;
+  var tmp_1 = m32 * m23;
+  var tmp_2 = m12 * m33;
+  var tmp_3 = m32 * m13;
+  var tmp_4 = m12 * m23;
+  var tmp_5 = m22 * m13;
+  var tmp_6 = m02 * m33;
+  var tmp_7 = m32 * m03;
+  var tmp_8 = m02 * m23;
+  var tmp_9 = m22 * m03;
+  var tmp_10 = m02 * m13;
+  var tmp_11 = m12 * m03;
+  var tmp_12 = m20 * m31;
+  var tmp_13 = m30 * m21;
+  var tmp_14 = m10 * m31;
+  var tmp_15 = m30 * m11;
+  var tmp_16 = m10 * m21;
+  var tmp_17 = m20 * m11;
+  var tmp_18 = m00 * m31;
+  var tmp_19 = m30 * m01;
+  var tmp_20 = m00 * m21;
+  var tmp_21 = m20 * m01;
+  var tmp_22 = m00 * m11;
+  var tmp_23 = m10 * m01;
+  var t0 = tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31 - (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
+  var t1 = tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31 - (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
+  var t2 = tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31 - (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
+  var t3 = tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21 - (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
+  var d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
+  dst[0] = d * t0;
+  dst[1] = d * t1;
+  dst[2] = d * t2;
+  dst[3] = d * t3;
+  dst[4] = d * (tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30 - (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
+  dst[5] = d * (tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30 - (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
+  dst[6] = d * (tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30 - (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
+  dst[7] = d * (tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20 - (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
+  dst[8] = d * (tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33 - (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
+  dst[9] = d * (tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33 - (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
+  dst[10] = d * (tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33 - (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
+  dst[11] = d * (tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23 - (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
+  dst[12] = d * (tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12 - (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
+  dst[13] = d * (tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22 - (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
+  dst[14] = d * (tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02 - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
+  dst[15] = d * (tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12 - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
   return dst;
 }
-
 /**
- * Copies a vector.
- * @param {module:twgl/v3.Vec3} v The vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} A copy of v.
- * @memberOf module:twgl/v3
+ * Multiplies two 4-by-4 matrices with a on the left and b on the right
+ * @param {module:twgl/m4.Mat4} a The matrix on the left.
+ * @param {module:twgl/m4.Mat4} b The matrix on the right.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The matrix product of a and b.
+ * @memberOf module:twgl/m4
  */
-function copy(v, dst) {
-  dst = dst || new VecType(3);
 
-  dst[0] = v[0];
-  dst[1] = v[1];
-  dst[2] = v[2];
 
-  return dst;
-}
-
-/**
- * Multiplies a vector by another vector (component-wise); assumes a and
- * b have the same length.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} The vector of products of entries of a and
- *     b.
- * @memberOf module:twgl/v3
- */
 function multiply(a, b, dst) {
-  dst = dst || new VecType(3);
-
-  dst[0] = a[0] * b[0];
-  dst[1] = a[1] * b[1];
-  dst[2] = a[2] * b[2];
-
+  dst = dst || new MatType(16);
+  var a00 = a[0];
+  var a01 = a[1];
+  var a02 = a[2];
+  var a03 = a[3];
+  var a10 = a[4 + 0];
+  var a11 = a[4 + 1];
+  var a12 = a[4 + 2];
+  var a13 = a[4 + 3];
+  var a20 = a[8 + 0];
+  var a21 = a[8 + 1];
+  var a22 = a[8 + 2];
+  var a23 = a[8 + 3];
+  var a30 = a[12 + 0];
+  var a31 = a[12 + 1];
+  var a32 = a[12 + 2];
+  var a33 = a[12 + 3];
+  var b00 = b[0];
+  var b01 = b[1];
+  var b02 = b[2];
+  var b03 = b[3];
+  var b10 = b[4 + 0];
+  var b11 = b[4 + 1];
+  var b12 = b[4 + 2];
+  var b13 = b[4 + 3];
+  var b20 = b[8 + 0];
+  var b21 = b[8 + 1];
+  var b22 = b[8 + 2];
+  var b23 = b[8 + 3];
+  var b30 = b[12 + 0];
+  var b31 = b[12 + 1];
+  var b32 = b[12 + 2];
+  var b33 = b[12 + 3];
+  dst[0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
+  dst[1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
+  dst[2] = a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03;
+  dst[3] = a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03;
+  dst[4] = a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13;
+  dst[5] = a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13;
+  dst[6] = a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13;
+  dst[7] = a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13;
+  dst[8] = a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23;
+  dst[9] = a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23;
+  dst[10] = a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23;
+  dst[11] = a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23;
+  dst[12] = a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33;
+  dst[13] = a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33;
+  dst[14] = a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33;
+  dst[15] = a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33;
   return dst;
 }
-
 /**
- * Divides a vector by another vector (component-wise); assumes a and
- * b have the same length.
- * @param {module:twgl/v3.Vec3} a Operand vector.
- * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} The vector of quotients of entries of a and
- *     b.
- * @memberOf module:twgl/v3
+ * Sets the translation component of a 4-by-4 matrix to the given
+ * vector.
+ * @param {module:twgl/m4.Mat4} a The matrix.
+ * @param {Vec3} v The vector.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} a once modified.
+ * @memberOf module:twgl/m4
  */
-function divide(a, b, dst) {
-  dst = dst || new VecType(3);
 
-  dst[0] = a[0] / b[0];
-  dst[1] = a[1] / b[1];
-  dst[2] = a[2] / b[2];
+
+function setTranslation(a, v, dst) {
+  dst = dst || identity();
+
+  if (a !== dst) {
+    dst[0] = a[0];
+    dst[1] = a[1];
+    dst[2] = a[2];
+    dst[3] = a[3];
+    dst[4] = a[4];
+    dst[5] = a[5];
+    dst[6] = a[6];
+    dst[7] = a[7];
+    dst[8] = a[8];
+    dst[9] = a[9];
+    dst[10] = a[10];
+    dst[11] = a[11];
+  }
+
+  dst[12] = v[0];
+  dst[13] = v[1];
+  dst[14] = v[2];
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Returns the translation component of a 4-by-4 matrix as a vector with 3
+ * entries.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {Vec3} [dst] vector..
+ * @return {Vec3} The translation component of m.
+ * @memberOf module:twgl/m4
+ */
+
+
+function getTranslation(m, dst) {
+  dst = dst || v3.create();
+  dst[0] = m[12];
+  dst[1] = m[13];
+  dst[2] = m[14];
+  return dst;
+}
+/**
+ * Returns an axis of a 4x4 matrix as a vector with 3 entries
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {number} axis The axis 0 = x, 1 = y, 2 = z;
+ * @return {Vec3} [dst] vector.
+ * @return {Vec3} The axis component of m.
+ * @memberOf module:twgl/m4
+ */
+
+
+function getAxis(m, axis, dst) {
+  dst = dst || v3.create();
+  var off = axis * 4;
+  dst[0] = m[off + 0];
+  dst[1] = m[off + 1];
+  dst[2] = m[off + 2];
+  return dst;
+}
+/**
+ * Sets an axis of a 4x4 matrix as a vector with 3 entries
+ * @param {Vec3} v the axis vector
+ * @param {number} axis The axis  0 = x, 1 = y, 2 = z;
+ * @param {module:twgl/m4.Mat4} [dst] The matrix to set. If none a new one is created
+ * @return {module:twgl/m4.Mat4} dst
+ * @memberOf module:twgl/m4
+ */
+
+
+function setAxis(a, v, axis, dst) {
+  if (dst !== a) {
+    dst = copy(a, dst);
+  }
+
+  var off = axis * 4;
+  dst[off + 0] = v[0];
+  dst[off + 1] = v[1];
+  dst[off + 2] = v[2];
+  return dst;
+}
+/**
+ * Computes a 4-by-4 perspective transformation matrix given the angular height
+ * of the frustum, the aspect ratio, and the near and far clipping planes.  The
+ * arguments define a frustum extending in the negative z direction.  The given
+ * angle is the vertical angle of the frustum, and the horizontal angle is
+ * determined to produce the given aspect ratio.  The arguments near and far are
+ * the distances to the near and far clipping planes.  Note that near and far
+ * are not z coordinates, but rather they are distances along the negative
+ * z-axis.  The matrix generated sends the viewing frustum to the unit box.
+ * We assume a unit box extending from -1 to 1 in the x and y dimensions and
+ * from 0 to 1 in the z dimension.
+ * @param {number} fieldOfViewYInRadians The camera angle from top to bottom (in radians).
+ * @param {number} aspect The aspect ratio width / height.
+ * @param {number} zNear The depth (negative z coordinate)
+ *     of the near clipping plane.
+ * @param {number} zFar The depth (negative z coordinate)
+ *     of the far clipping plane.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The perspective matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
+  dst = dst || new MatType(16);
+  var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
+  var rangeInv = 1.0 / (zNear - zFar);
+  dst[0] = f / aspect;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = f;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
+  dst[10] = (zNear + zFar) * rangeInv;
+  dst[11] = -1;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = zNear * zFar * rangeInv * 2;
+  dst[15] = 0;
+  return dst;
+}
+/**
+ * Computes a 4-by-4 othogonal transformation matrix given the left, right,
+ * bottom, and top dimensions of the near clipping plane as well as the
+ * near and far clipping plane distances.
+ * @param {number} left Left side of the near clipping plane viewport.
+ * @param {number} right Right side of the near clipping plane viewport.
+ * @param {number} top Top of the near clipping plane viewport.
+ * @param {number} bottom Bottom of the near clipping plane viewport.
+ * @param {number} near The depth (negative z coordinate)
+ *     of the near clipping plane.
+ * @param {number} far The depth (negative z coordinate)
+ *     of the far clipping plane.
+ * @param {module:twgl/m4.Mat4} [dst] Output matrix.
+ * @return {module:twgl/m4.Mat4} The perspective matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function ortho(left, right, bottom, top, near, far, dst) {
+  dst = dst || new MatType(16);
+  dst[0] = 2 / (right - left);
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 2 / (top - bottom);
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
+  dst[10] = 2 / (near - far);
+  dst[11] = 0;
+  dst[12] = (right + left) / (left - right);
+  dst[13] = (top + bottom) / (bottom - top);
+  dst[14] = (far + near) / (near - far);
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Computes a 4-by-4 perspective transformation matrix given the left, right,
+ * top, bottom, near and far clipping planes. The arguments define a frustum
+ * extending in the negative z direction. The arguments near and far are the
+ * distances to the near and far clipping planes. Note that near and far are not
+ * z coordinates, but rather they are distances along the negative z-axis. The
+ * matrix generated sends the viewing frustum to the unit box. We assume a unit
+ * box extending from -1 to 1 in the x and y dimensions and from 0 to 1 in the z
+ * dimension.
+ * @param {number} left The x coordinate of the left plane of the box.
+ * @param {number} right The x coordinate of the right plane of the box.
+ * @param {number} bottom The y coordinate of the bottom plane of the box.
+ * @param {number} top The y coordinate of the right plane of the box.
+ * @param {number} near The negative z coordinate of the near plane of the box.
+ * @param {number} far The negative z coordinate of the far plane of the box.
+ * @param {module:twgl/m4.Mat4} [dst] Output matrix.
+ * @return {module:twgl/m4.Mat4} The perspective projection matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function frustum(left, right, bottom, top, near, far, dst) {
+  dst = dst || new MatType(16);
+  var dx = right - left;
+  var dy = top - bottom;
+  var dz = near - far;
+  dst[0] = 2 * near / dx;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 2 * near / dy;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = (left + right) / dx;
+  dst[9] = (top + bottom) / dy;
+  dst[10] = far / dz;
+  dst[11] = -1;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = near * far / dz;
+  dst[15] = 0;
+  return dst;
+}
+/**
+ * Computes a 4-by-4 look-at transformation.
+ *
+ * This is a matrix which positions the camera itself. If you want
+ * a view matrix (a matrix which moves things in front of the camera)
+ * take the inverse of this.
+ *
+ * @param {Vec3} eye The position of the eye.
+ * @param {Vec3} target The position meant to be viewed.
+ * @param {Vec3} up A vector pointing up.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The look-at matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function lookAt(eye, target, up, dst) {
+  dst = dst || new MatType(16);
+  var xAxis = tempV3a;
+  var yAxis = tempV3b;
+  var zAxis = tempV3c;
+  v3.normalize(v3.subtract(eye, target, zAxis), zAxis);
+  v3.normalize(v3.cross(up, zAxis, xAxis), xAxis);
+  v3.normalize(v3.cross(zAxis, xAxis, yAxis), yAxis);
+  dst[0] = xAxis[0];
+  dst[1] = xAxis[1];
+  dst[2] = xAxis[2];
+  dst[3] = 0;
+  dst[4] = yAxis[0];
+  dst[5] = yAxis[1];
+  dst[6] = yAxis[2];
+  dst[7] = 0;
+  dst[8] = zAxis[0];
+  dst[9] = zAxis[1];
+  dst[10] = zAxis[2];
+  dst[11] = 0;
+  dst[12] = eye[0];
+  dst[13] = eye[1];
+  dst[14] = eye[2];
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Creates a 4-by-4 matrix which translates by the given vector v.
+ * @param {Vec3} v The vector by
+ *     which to translate.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The translation matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function translation(v, dst) {
+  dst = dst || new MatType(16);
+  dst[0] = 1;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 1;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
+  dst[10] = 1;
+  dst[11] = 0;
+  dst[12] = v[0];
+  dst[13] = v[1];
+  dst[14] = v[2];
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Modifies the given 4-by-4 matrix by translation by the given vector v.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {Vec3} v The vector by
+ *     which to translate.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} m once modified.
+ * @memberOf module:twgl/m4
+ */
+
+
+function translate(m, v, dst) {
+  dst = dst || new MatType(16);
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  var m00 = m[0];
+  var m01 = m[1];
+  var m02 = m[2];
+  var m03 = m[3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var m30 = m[3 * 4 + 0];
+  var m31 = m[3 * 4 + 1];
+  var m32 = m[3 * 4 + 2];
+  var m33 = m[3 * 4 + 3];
+
+  if (m !== dst) {
+    dst[0] = m00;
+    dst[1] = m01;
+    dst[2] = m02;
+    dst[3] = m03;
+    dst[4] = m10;
+    dst[5] = m11;
+    dst[6] = m12;
+    dst[7] = m13;
+    dst[8] = m20;
+    dst[9] = m21;
+    dst[10] = m22;
+    dst[11] = m23;
+  }
+
+  dst[12] = m00 * v0 + m10 * v1 + m20 * v2 + m30;
+  dst[13] = m01 * v0 + m11 * v1 + m21 * v2 + m31;
+  dst[14] = m02 * v0 + m12 * v1 + m22 * v2 + m32;
+  dst[15] = m03 * v0 + m13 * v1 + m23 * v2 + m33;
+  return dst;
+}
+/**
+ * Creates a 4-by-4 matrix which rotates around the x-axis by the given angle.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The rotation matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function rotationX(angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = 1;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = c;
+  dst[6] = s;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = -s;
+  dst[10] = c;
+  dst[11] = 0;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = 0;
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given
+ * angle.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} m once modified.
+ * @memberOf module:twgl/m4
+ */
+
+
+function rotateX(m, angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var m10 = m[4];
+  var m11 = m[5];
+  var m12 = m[6];
+  var m13 = m[7];
+  var m20 = m[8];
+  var m21 = m[9];
+  var m22 = m[10];
+  var m23 = m[11];
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[4] = c * m10 + s * m20;
+  dst[5] = c * m11 + s * m21;
+  dst[6] = c * m12 + s * m22;
+  dst[7] = c * m13 + s * m23;
+  dst[8] = c * m20 - s * m10;
+  dst[9] = c * m21 - s * m11;
+  dst[10] = c * m22 - s * m12;
+  dst[11] = c * m23 - s * m13;
+
+  if (m !== dst) {
+    dst[0] = m[0];
+    dst[1] = m[1];
+    dst[2] = m[2];
+    dst[3] = m[3];
+    dst[12] = m[12];
+    dst[13] = m[13];
+    dst[14] = m[14];
+    dst[15] = m[15];
+  }
 
   return dst;
 }
+/**
+ * Creates a 4-by-4 matrix which rotates around the y-axis by the given angle.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The rotation matrix.
+ * @memberOf module:twgl/m4
+ */
 
-exports.add = add;
-exports.copy = copy;
-exports.create = create;
-exports.cross = cross;
-exports.distance = distance;
-exports.distanceSq = distanceSq;
-exports.divide = divide;
-exports.divScalar = divScalar;
-exports.dot = dot;
-exports.lerp = lerp;
-exports.length = length;
-exports.lengthSq = lengthSq;
-exports.mulScalar = mulScalar;
-exports.multiply = multiply;
-exports.negate = negate;
-exports.normalize = normalize;
-exports.setDefaultType = setDefaultType;
-exports.subtract = subtract;
+
+function rotationY(angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c;
+  dst[1] = 0;
+  dst[2] = -s;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 1;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = s;
+  dst[9] = 0;
+  dst[10] = c;
+  dst[11] = 0;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = 0;
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given
+ * angle.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} m once modified.
+ * @memberOf module:twgl/m4
+ */
+
+
+function rotateY(m, angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c * m00 - s * m20;
+  dst[1] = c * m01 - s * m21;
+  dst[2] = c * m02 - s * m22;
+  dst[3] = c * m03 - s * m23;
+  dst[8] = c * m20 + s * m00;
+  dst[9] = c * m21 + s * m01;
+  dst[10] = c * m22 + s * m02;
+  dst[11] = c * m23 + s * m03;
+
+  if (m !== dst) {
+    dst[4] = m[4];
+    dst[5] = m[5];
+    dst[6] = m[6];
+    dst[7] = m[7];
+    dst[12] = m[12];
+    dst[13] = m[13];
+    dst[14] = m[14];
+    dst[15] = m[15];
+  }
+
+  return dst;
+}
+/**
+ * Creates a 4-by-4 matrix which rotates around the z-axis by the given angle.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The rotation matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function rotationZ(angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c;
+  dst[1] = s;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = -s;
+  dst[5] = c;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
+  dst[10] = 1;
+  dst[11] = 0;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = 0;
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given
+ * angle.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} m once modified.
+ * @memberOf module:twgl/m4
+ */
+
+
+function rotateZ(m, angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c * m00 + s * m10;
+  dst[1] = c * m01 + s * m11;
+  dst[2] = c * m02 + s * m12;
+  dst[3] = c * m03 + s * m13;
+  dst[4] = c * m10 - s * m00;
+  dst[5] = c * m11 - s * m01;
+  dst[6] = c * m12 - s * m02;
+  dst[7] = c * m13 - s * m03;
+
+  if (m !== dst) {
+    dst[8] = m[8];
+    dst[9] = m[9];
+    dst[10] = m[10];
+    dst[11] = m[11];
+    dst[12] = m[12];
+    dst[13] = m[13];
+    dst[14] = m[14];
+    dst[15] = m[15];
+  }
+
+  return dst;
+}
+/**
+ * Creates a 4-by-4 matrix which rotates around the given axis by the given
+ * angle.
+ * @param {Vec3} axis The axis
+ *     about which to rotate.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} A matrix which rotates angle radians
+ *     around the axis.
+ * @memberOf module:twgl/m4
+ */
+
+
+function axisRotation(axis, angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var x = axis[0];
+  var y = axis[1];
+  var z = axis[2];
+  var n = Math.sqrt(x * x + y * y + z * z);
+  x /= n;
+  y /= n;
+  z /= n;
+  var xx = x * x;
+  var yy = y * y;
+  var zz = z * z;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  var oneMinusCosine = 1 - c;
+  dst[0] = xx + (1 - xx) * c;
+  dst[1] = x * y * oneMinusCosine + z * s;
+  dst[2] = x * z * oneMinusCosine - y * s;
+  dst[3] = 0;
+  dst[4] = x * y * oneMinusCosine - z * s;
+  dst[5] = yy + (1 - yy) * c;
+  dst[6] = y * z * oneMinusCosine + x * s;
+  dst[7] = 0;
+  dst[8] = x * z * oneMinusCosine + y * s;
+  dst[9] = y * z * oneMinusCosine - x * s;
+  dst[10] = zz + (1 - zz) * c;
+  dst[11] = 0;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = 0;
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Modifies the given 4-by-4 matrix by rotation around the given axis by the
+ * given angle.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {Vec3} axis The axis
+ *     about which to rotate.
+ * @param {number} angleInRadians The angle by which to rotate (in radians).
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} m once modified.
+ * @memberOf module:twgl/m4
+ */
+
+
+function axisRotate(m, axis, angleInRadians, dst) {
+  dst = dst || new MatType(16);
+  var x = axis[0];
+  var y = axis[1];
+  var z = axis[2];
+  var n = Math.sqrt(x * x + y * y + z * z);
+  x /= n;
+  y /= n;
+  z /= n;
+  var xx = x * x;
+  var yy = y * y;
+  var zz = z * z;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  var oneMinusCosine = 1 - c;
+  var r00 = xx + (1 - xx) * c;
+  var r01 = x * y * oneMinusCosine + z * s;
+  var r02 = x * z * oneMinusCosine - y * s;
+  var r10 = x * y * oneMinusCosine - z * s;
+  var r11 = yy + (1 - yy) * c;
+  var r12 = y * z * oneMinusCosine + x * s;
+  var r20 = x * z * oneMinusCosine + y * s;
+  var r21 = y * z * oneMinusCosine - x * s;
+  var r22 = zz + (1 - zz) * c;
+  var m00 = m[0];
+  var m01 = m[1];
+  var m02 = m[2];
+  var m03 = m[3];
+  var m10 = m[4];
+  var m11 = m[5];
+  var m12 = m[6];
+  var m13 = m[7];
+  var m20 = m[8];
+  var m21 = m[9];
+  var m22 = m[10];
+  var m23 = m[11];
+  dst[0] = r00 * m00 + r01 * m10 + r02 * m20;
+  dst[1] = r00 * m01 + r01 * m11 + r02 * m21;
+  dst[2] = r00 * m02 + r01 * m12 + r02 * m22;
+  dst[3] = r00 * m03 + r01 * m13 + r02 * m23;
+  dst[4] = r10 * m00 + r11 * m10 + r12 * m20;
+  dst[5] = r10 * m01 + r11 * m11 + r12 * m21;
+  dst[6] = r10 * m02 + r11 * m12 + r12 * m22;
+  dst[7] = r10 * m03 + r11 * m13 + r12 * m23;
+  dst[8] = r20 * m00 + r21 * m10 + r22 * m20;
+  dst[9] = r20 * m01 + r21 * m11 + r22 * m21;
+  dst[10] = r20 * m02 + r21 * m12 + r22 * m22;
+  dst[11] = r20 * m03 + r21 * m13 + r22 * m23;
+
+  if (m !== dst) {
+    dst[12] = m[12];
+    dst[13] = m[13];
+    dst[14] = m[14];
+    dst[15] = m[15];
+  }
+
+  return dst;
+}
+/**
+ * Creates a 4-by-4 matrix which scales in each dimension by an amount given by
+ * the corresponding entry in the given vector; assumes the vector has three
+ * entries.
+ * @param {Vec3} v A vector of
+ *     three entries specifying the factor by which to scale in each dimension.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} The scaling matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function scaling(v, dst) {
+  dst = dst || new MatType(16);
+  dst[0] = v[0];
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = v[1];
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
+  dst[10] = v[2];
+  dst[11] = 0;
+  dst[12] = 0;
+  dst[13] = 0;
+  dst[14] = 0;
+  dst[15] = 1;
+  return dst;
+}
+/**
+ * Modifies the given 4-by-4 matrix, scaling in each dimension by an amount
+ * given by the corresponding entry in the given vector; assumes the vector has
+ * three entries.
+ * @param {module:twgl/m4.Mat4} m The matrix to be modified.
+ * @param {Vec3} v A vector of three entries specifying the
+ *     factor by which to scale in each dimension.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @return {module:twgl/m4.Mat4} m once modified.
+ * @memberOf module:twgl/m4
+ */
+
+
+function scale(m, v, dst) {
+  dst = dst || new MatType(16);
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  dst[0] = v0 * m[0 * 4 + 0];
+  dst[1] = v0 * m[0 * 4 + 1];
+  dst[2] = v0 * m[0 * 4 + 2];
+  dst[3] = v0 * m[0 * 4 + 3];
+  dst[4] = v1 * m[1 * 4 + 0];
+  dst[5] = v1 * m[1 * 4 + 1];
+  dst[6] = v1 * m[1 * 4 + 2];
+  dst[7] = v1 * m[1 * 4 + 3];
+  dst[8] = v2 * m[2 * 4 + 0];
+  dst[9] = v2 * m[2 * 4 + 1];
+  dst[10] = v2 * m[2 * 4 + 2];
+  dst[11] = v2 * m[2 * 4 + 3];
+
+  if (m !== dst) {
+    dst[12] = m[12];
+    dst[13] = m[13];
+    dst[14] = m[14];
+    dst[15] = m[15];
+  }
+
+  return dst;
+}
+/**
+ * Takes a 4-by-4 matrix and a vector with 3 entries,
+ * interprets the vector as a point, transforms that point by the matrix, and
+ * returns the result as a vector with 3 entries.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {Vec3} v The point.
+ * @param {Vec3} dst optional vec3 to store result
+ * @return {Vec3} dst or new vec3 if not provided
+ * @memberOf module:twgl/m4
+ */
+
+
+function transformPoint(m, v, dst) {
+  dst = dst || v3.create();
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
+  dst[0] = (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d;
+  dst[1] = (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d;
+  dst[2] = (v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2] + m[3 * 4 + 2]) / d;
+  return dst;
+}
+/**
+ * Takes a 4-by-4 matrix and a vector with 3 entries, interprets the vector as a
+ * direction, transforms that direction by the matrix, and returns the result;
+ * assumes the transformation of 3-dimensional space represented by the matrix
+ * is parallel-preserving, i.e. any combination of rotation, scaling and
+ * translation, but not a perspective distortion. Returns a vector with 3
+ * entries.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {Vec3} v The direction.
+ * @param {Vec3} dst optional Vec3 to store result
+ * @return {Vec3} dst or new Vec3 if not provided
+ * @memberOf module:twgl/m4
+ */
+
+
+function transformDirection(m, v, dst) {
+  dst = dst || v3.create();
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  dst[0] = v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0];
+  dst[1] = v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1];
+  dst[2] = v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2];
+  return dst;
+}
+/**
+ * Takes a 4-by-4 matrix m and a vector v with 3 entries, interprets the vector
+ * as a normal to a surface, and computes a vector which is normal upon
+ * transforming that surface by the matrix. The effect of this function is the
+ * same as transforming v (as a direction) by the inverse-transpose of m.  This
+ * function assumes the transformation of 3-dimensional space represented by the
+ * matrix is parallel-preserving, i.e. any combination of rotation, scaling and
+ * translation, but not a perspective distortion.  Returns a vector with 3
+ * entries.
+ * @param {module:twgl/m4.Mat4} m The matrix.
+ * @param {Vec3} v The normal.
+ * @param {Vec3} [dst] The direction.
+ * @return {Vec3} The transformed direction.
+ * @memberOf module:twgl/m4
+ */
+
+
+function transformNormal(m, v, dst) {
+  dst = dst || v3.create();
+  var mi = inverse(m);
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
+  dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
+  dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
+  return dst;
+}
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getArray_ = exports.getNumComponents_ = exports.setAttributeDefaults_ = exports.setAttributePrefix = exports.setAttribInfoBufferFromArray = exports.createBufferInfoFromArrays = exports.createBufferFromTypedArray = exports.createBufferFromArray = exports.createBuffersFromArrays = exports.createAttribsFromArrays = undefined;
+exports.__esModule = true;
+exports.createAttribsFromArrays = createAttribsFromArrays;
+exports.createBuffersFromArrays = createBuffersFromArrays;
+exports.createBufferFromArray = createBufferFromArray;
+exports.createBufferFromTypedArray = createBufferFromTypedArray;
+exports.createBufferInfoFromArrays = createBufferInfoFromArrays;
+exports.setAttribInfoBufferFromArray = setAttribInfoBufferFromArray;
+exports.setAttributePrefix = setAttributePrefix;
+exports.setAttributeDefaults_ = setDefaults;
+exports.getNumComponents_ = getNumComponents;
+exports.getArray_ = getArray;
 
-var _typedarrays = __webpack_require__(1);
+var typedArrays = _interopRequireWildcard(__webpack_require__(1));
 
-var typedArrays = _interopRequireWildcard(_typedarrays);
+var helper = _interopRequireWildcard(__webpack_require__(0));
 
-var _helper = __webpack_require__(0);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var helper = _interopRequireWildcard(_helper);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 /**
  * Low level attribute and buffer related functions
@@ -2565,44 +4248,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  *
  * @module twgl/attributes
  */
-
 // make sure we don't see a global gl
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 var gl = undefined; // eslint-disable-line
+
 var defaults = {
   attribPrefix: ""
 };
-
 /**
  * Sets the default attrib prefix
  *
@@ -2623,6 +4274,7 @@ var defaults = {
  * @param {string} prefix prefix for attribs
  * @memberOf module:twgl/attributes
  */
+
 function setAttributePrefix(prefix) {
   defaults.attribPrefix = prefix;
 }
@@ -2635,7 +4287,6 @@ function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
   gl.bindBuffer(type, buffer);
   gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
 }
-
 /**
  * Given typed array creates a WebGLBuffer and copies the typed array
  * into it.
@@ -2647,10 +4298,13 @@ function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
  * @return {WebGLBuffer} the created WebGLBuffer
  * @memberOf module:twgl/attributes
  */
+
+
 function createBufferFromTypedArray(gl, typedArray, type, drawType) {
   if (typedArray instanceof WebGLBuffer) {
     return typedArray;
   }
+
   type = type || gl.ARRAY_BUFFER;
   var buffer = gl.createBuffer();
   setBufferFromTypedArray(gl, type, buffer, typedArray, drawType);
@@ -2659,29 +4313,37 @@ function createBufferFromTypedArray(gl, typedArray, type, drawType) {
 
 function isIndices(name) {
   return name === "indices";
-}
-
-// This is really just a guess. Though I can't really imagine using
+} // This is really just a guess. Though I can't really imagine using
 // anything else? Maybe for some compression?
+
+
 function getNormalizationForTypedArray(typedArray) {
   if (typedArray instanceof Int8Array) {
     return true;
   } // eslint-disable-line
+
+
   if (typedArray instanceof Uint8Array) {
     return true;
   } // eslint-disable-line
-  return false;
-}
 
-// This is really just a guess. Though I can't really imagine using
+
+  return false;
+} // This is really just a guess. Though I can't really imagine using
 // anything else? Maybe for some compression?
+
+
 function getNormalizationForTypedArrayType(typedArrayType) {
   if (typedArrayType === Int8Array) {
     return true;
   } // eslint-disable-line
+
+
   if (typedArrayType === Uint8Array) {
     return true;
   } // eslint-disable-line
+
+
   return false;
 }
 
@@ -2693,7 +4355,8 @@ var texcoordRE = /coord|texture/i;
 var colorRE = /color|colour/i;
 
 function guessNumComponentsFromName(name, length) {
-  var numComponents = void 0;
+  var numComponents;
+
   if (texcoordRE.test(name)) {
     numComponents = 2;
   } else if (colorRE.test(name)) {
@@ -2729,6 +4392,7 @@ function makeTypedArray(array, name) {
   }
 
   var Type = array.type;
+
   if (!Type) {
     if (isIndices(name)) {
       Type = Uint16Array;
@@ -2736,9 +4400,9 @@ function makeTypedArray(array, name) {
       Type = Float32Array;
     }
   }
+
   return new Type(array.data);
 }
-
 /**
  * The info for an attribute. This is effectively just the arguments to `gl.vertexAttribPointer` plus the WebGLBuffer
  * for the attribute.
@@ -2886,17 +4550,20 @@ function makeTypedArray(array, name) {
  * @return {Object.<string, module:twgl.AttribInfo>} the attribs
  * @memberOf module:twgl/attributes
  */
+
+
 function createAttribsFromArrays(gl, arrays) {
   var attribs = {};
   Object.keys(arrays).forEach(function (arrayName) {
     if (!isIndices(arrayName)) {
       var array = arrays[arrayName];
       var attribName = array.attrib || array.name || array.attribName || defaults.attribPrefix + arrayName;
-      var buffer = void 0;
-      var type = void 0;
-      var normalization = void 0;
-      var numComponents = void 0;
-      var numValues = void 0;
+      var buffer;
+      var type;
+      var normalization;
+      var numComponents;
+      var numValues;
+
       if (typeof array === "number" || typeof array.data === "number") {
         numValues = array.data || array;
         var arrayType = array.type || Float32Array;
@@ -2915,6 +4582,7 @@ function createAttribsFromArrays(gl, arrays) {
         numComponents = getNumComponents(array, arrayName);
         numValues = typedArray.length;
       }
+
       attribs[attribName] = {
         buffer: buffer,
         numComponents: numComponents,
@@ -2930,7 +4598,6 @@ function createAttribsFromArrays(gl, arrays) {
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
   return attribs;
 }
-
 /**
  * Sets the contents of a buffer attached to an attribInfo
  *
@@ -2967,8 +4634,11 @@ function createAttribsFromArrays(gl, arrays) {
  *    Now you can pass `someSubArray` into setAttribInfoBufferFromArray`
  * @memberOf module:twgl/attributes
  */
+
+
 function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
   array = makeTypedArray(array);
+
   if (offset !== undefined) {
     gl.bindBuffer(gl.ARRAY_BUFFER, attribInfo.buffer);
     gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
@@ -2979,72 +4649,93 @@ function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
 
 function getBytesPerValueForGLType(gl, type) {
   if (type === gl.BYTE) return 1; // eslint-disable-line
+
   if (type === gl.UNSIGNED_BYTE) return 1; // eslint-disable-line
+
   if (type === gl.SHORT) return 2; // eslint-disable-line
+
   if (type === gl.UNSIGNED_SHORT) return 2; // eslint-disable-line
+
   if (type === gl.INT) return 4; // eslint-disable-line
+
   if (type === gl.UNSIGNED_INT) return 4; // eslint-disable-line
+
   if (type === gl.FLOAT) return 4; // eslint-disable-line
+
   return 0;
 }
-
 /**
  * tries to get the number of elements from a set of arrays.
  */
+
+
 var positionKeys = ['position', 'positions', 'a_position'];
+
 function getNumElementsFromNonIndexedArrays(arrays) {
-  var key = void 0;
+  var key;
+
   for (var _ii = 0; _ii < positionKeys.length; ++_ii) {
     key = positionKeys[_ii];
+
     if (key in arrays) {
       break;
     }
   }
+
   if (ii === positionKeys.length) {
     key = Object.keys(arrays)[0];
   }
+
   var array = arrays[key];
   var length = getArray(array).length;
   var numComponents = getNumComponents(array, key);
   var numElements = length / numComponents;
+
   if (length % numComponents > 0) {
     throw "numComponents " + numComponents + " not correct for length " + length;
   }
+
   return numElements;
 }
 
 function getNumElementsFromAttributes(gl, attribs) {
-  var key = void 0;
-  var ii = void 0;
+  var key;
+  var ii;
+
   for (ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
+
     if (key in attribs) {
       break;
     }
+
     key = defaults.attribPrefix + key;
+
     if (key in attribs) {
       break;
     }
   }
+
   if (ii === positionKeys.length) {
     key = Object.keys(attribs)[0];
   }
+
   var attrib = attribs[key];
   gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
   var numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
   var bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
   var totalElements = numBytes / bytesPerValue;
-  var numComponents = attrib.numComponents || attrib.size;
-  // TODO: check stride
+  var numComponents = attrib.numComponents || attrib.size; // TODO: check stride
+
   var numElements = totalElements / numComponents;
+
   if (numElements % 1 !== 0) {
     throw "numComponents " + numComponents + " not correct for length " + length;
   }
+
   return numElements;
 }
-
 /**
  * @typedef {Object} BufferInfo
  * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
@@ -3145,11 +4836,14 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
  */
+
+
 function createBufferInfoFromArrays(gl, arrays) {
   var bufferInfo = {
     attribs: createAttribsFromArrays(gl, arrays)
   };
   var indices = arrays.indices;
+
   if (indices) {
     var newIndices = makeTypedArray(indices, "indices");
     bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
@@ -3161,7 +4855,6 @@ function createBufferInfoFromArrays(gl, arrays) {
 
   return bufferInfo;
 }
-
 /**
  * Creates a buffer from an array, typed array, or array spec
  *
@@ -3188,12 +4881,13 @@ function createBufferInfoFromArrays(gl, arrays) {
  * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
  * @memberOf module:twgl/attributes
  */
+
+
 function createBufferFromArray(gl, array, arrayName) {
   var type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
   var typedArray = makeTypedArray(array, arrayName);
   return createBufferFromTypedArray(gl, typedArray, type);
 }
-
 /**
  * Creates buffers from arrays or typed arrays
  *
@@ -3218,13 +4912,14 @@ function createBufferFromArray(gl, array, arrayName) {
  * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
  * @memberOf module:twgl/attributes
  */
+
+
 function createBuffersFromArrays(gl, arrays) {
   var buffers = {};
   Object.keys(arrays).forEach(function (key) {
     buffers[key] = createBufferFromArray(gl, arrays[key], key);
-  });
+  }); // Ugh!
 
-  // Ugh!
   if (arrays.indices) {
     buffers.numElements = arrays.indices.length;
     buffers.elementType = typedArrays.getGLTypeForTypedArray(makeTypedArray(arrays.indices), 'indices');
@@ -3235,60 +4930,43 @@ function createBuffersFromArrays(gl, arrays) {
   return buffers;
 }
 
-exports.createAttribsFromArrays = createAttribsFromArrays;
-exports.createBuffersFromArrays = createBuffersFromArrays;
-exports.createBufferFromArray = createBufferFromArray;
-exports.createBufferFromTypedArray = createBufferFromTypedArray;
-exports.createBufferInfoFromArrays = createBufferInfoFromArrays;
-exports.setAttribInfoBufferFromArray = setAttribInfoBufferFromArray;
-exports.setAttributePrefix = setAttributePrefix;
-exports.setAttributeDefaults_ = setDefaults;
-exports.getNumComponents_ = getNumComponents;
-exports.getArray_ = getArray;
-
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getBytesPerElementForInternalFormat = exports.getNumComponentsForFormat = exports.resizeTexture = exports.createTextures = exports.setDefaultTextureColor = exports.setTextureParameters = exports.setTextureFilteringForSize = exports.setTextureFromElement = exports.loadTextureFromUrl = exports.setTextureFromArray = exports.setEmptyTexture = exports.createTexture = exports.setSamplerParameters = exports.createSamplers = exports.createSampler = exports.setTextureDefaults_ = undefined;
+exports.__esModule = true;
+exports.setTextureDefaults_ = setDefaults;
+exports.createSampler = createSampler;
+exports.createSamplers = createSamplers;
+exports.setSamplerParameters = setSamplerParameters;
+exports.createTexture = createTexture;
+exports.setEmptyTexture = setEmptyTexture;
+exports.setTextureFromArray = setTextureFromArray;
+exports.loadTextureFromUrl = loadTextureFromUrl;
+exports.setTextureFromElement = setTextureFromElement;
+exports.setTextureFilteringForSize = setTextureFilteringForSize;
+exports.setTextureParameters = setTextureParameters;
+exports.setDefaultTextureColor = setDefaultTextureColor;
+exports.createTextures = createTextures;
+exports.resizeTexture = resizeTexture;
+exports.getNumComponentsForFormat = getNumComponentsForFormat;
+exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
 
-var _utils = __webpack_require__(3);
+var utils = _interopRequireWildcard(__webpack_require__(4));
 
-var utils = _interopRequireWildcard(_utils);
+var typedArrays = _interopRequireWildcard(__webpack_require__(1));
 
-var _typedarrays = __webpack_require__(1);
+var helper = _interopRequireWildcard(__webpack_require__(0));
 
-var typedArrays = _interopRequireWildcard(_typedarrays);
+var _globalObject = _interopRequireDefault(__webpack_require__(3));
 
-var _helper = __webpack_require__(0);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var helper = _interopRequireWildcard(_helper);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * Low level texture related functions
- *
- * You should generally not need to use these functions. They are provided
- * for those cases where you're doing something out of the ordinary
- * and you need lower level access.
- *
- * For backward compatibily they are available at both `twgl.textures` and `twgl`
- * itself
- *
- * See {@link module:twgl} for core functions
- *
- * @module twgl/textures
- */
-
-// make sure we don't see a global gl
-var gl = undefined; // eslint-disable-line
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -3320,17 +4998,33 @@ var gl = undefined; // eslint-disable-line
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * Low level texture related functions
+ *
+ * You should generally not need to use these functions. They are provided
+ * for those cases where you're doing something out of the ordinary
+ * and you need lower level access.
+ *
+ * For backward compatibily they are available at both `twgl.textures` and `twgl`
+ * itself
+ *
+ * See {@link module:twgl} for core functions
+ *
+ * @module twgl/textures
+ */
+// make sure we don't see a global gl
+var gl = undefined; // eslint-disable-line
+
 var defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
   crossOrigin: undefined
 };
-var isArrayBuffer = typedArrays.isArrayBuffer;
+var isArrayBuffer = typedArrays.isArrayBuffer; // Should we make this on demand?
 
-// Should we make this on demand?
 var ctx = document.createElement("canvas").getContext("2d");
-
 /* PixelFormat */
+
 var ALPHA = 0x1906;
 var RGB = 0x1907;
 var RGBA = 0x1908;
@@ -3338,18 +5032,24 @@ var LUMINANCE = 0x1909;
 var LUMINANCE_ALPHA = 0x190A;
 var DEPTH_COMPONENT = 0x1902;
 var DEPTH_STENCIL = 0x84F9;
-
 /* TextureWrapMode */
+
 var REPEAT = 0x2901; // eslint-disable-line
+
 var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
 
 /* TextureMagFilter */
+
 var NEAREST = 0x2600; // eslint-disable-line
 
 /* TextureMinFilter */
+
 var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
+
 var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
+
 var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
+
 var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
 
 var R8 = 0x8229;
@@ -3401,14 +5101,13 @@ var RGBA16UI = 0x8D76;
 var RGBA16I = 0x8D88;
 var RGBA32I = 0x8D82;
 var RGBA32UI = 0x8D70;
-
 var DEPTH_COMPONENT16 = 0x81A5;
 var DEPTH_COMPONENT24 = 0x81A6;
 var DEPTH_COMPONENT32F = 0x8CAC;
 var DEPTH32F_STENCIL8 = 0x8CAD;
 var DEPTH24_STENCIL8 = 0x88F0;
-
 /* DataType */
+
 var BYTE = 0x1400;
 var UNSIGNED_BYTE = 0x1401;
 var SHORT = 0x1402;
@@ -3421,112 +5120,493 @@ var UNSIGNED_SHORT_5_5_5_1 = 0x8034;
 var UNSIGNED_SHORT_5_6_5 = 0x8363;
 var HALF_FLOAT = 0x140B;
 var HALF_FLOAT_OES = 0x8D61; // Thanks Khronos for making this different >:(
+
 var UNSIGNED_INT_2_10_10_10_REV = 0x8368;
 var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
 var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
 var FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
 var UNSIGNED_INT_24_8 = 0x84FA;
-
 var RG = 0x8227;
 var RG_INTEGER = 0x8228;
 var RED = 0x1903;
 var RED_INTEGER = 0x8D94;
 var RGB_INTEGER = 0x8D98;
 var RGBA_INTEGER = 0x8D99;
-
 var formatInfo = {};
 {
   // NOTE: this is named `numColorComponents` vs `numComponents` so we can let Uglify mangle
   // the name.
   var f = formatInfo;
-  f[ALPHA] = { numColorComponents: 1 };
-  f[LUMINANCE] = { numColorComponents: 1 };
-  f[LUMINANCE_ALPHA] = { numColorComponents: 2 };
-  f[RGB] = { numColorComponents: 3 };
-  f[RGBA] = { numColorComponents: 4 };
-  f[RED] = { numColorComponents: 1 };
-  f[RED_INTEGER] = { numColorComponents: 1 };
-  f[RG] = { numColorComponents: 2 };
-  f[RG_INTEGER] = { numColorComponents: 2 };
-  f[RGB] = { numColorComponents: 3 };
-  f[RGB_INTEGER] = { numColorComponents: 3 };
-  f[RGBA] = { numColorComponents: 4 };
-  f[RGBA_INTEGER] = { numColorComponents: 4 };
-  f[DEPTH_COMPONENT] = { numColorComponents: 1 };
-  f[DEPTH_STENCIL] = { numColorComponents: 2 };
+  f[ALPHA] = {
+    numColorComponents: 1
+  };
+  f[LUMINANCE] = {
+    numColorComponents: 1
+  };
+  f[LUMINANCE_ALPHA] = {
+    numColorComponents: 2
+  };
+  f[RGB] = {
+    numColorComponents: 3
+  };
+  f[RGBA] = {
+    numColorComponents: 4
+  };
+  f[RED] = {
+    numColorComponents: 1
+  };
+  f[RED_INTEGER] = {
+    numColorComponents: 1
+  };
+  f[RG] = {
+    numColorComponents: 2
+  };
+  f[RG_INTEGER] = {
+    numColorComponents: 2
+  };
+  f[RGB] = {
+    numColorComponents: 3
+  };
+  f[RGB_INTEGER] = {
+    numColorComponents: 3
+  };
+  f[RGBA] = {
+    numColorComponents: 4
+  };
+  f[RGBA_INTEGER] = {
+    numColorComponents: 4
+  };
+  f[DEPTH_COMPONENT] = {
+    numColorComponents: 1
+  };
+  f[DEPTH_STENCIL] = {
+    numColorComponents: 2
+  };
 }
-
 var textureInternalFormatInfo = {};
 {
   // NOTE: these properties need unique names so we can let Uglify mangle the name.
-  var t = textureInternalFormatInfo;
-  // unsized formats
-  t[ALPHA] = { textureFormat: ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT] };
-  t[LUMINANCE] = { textureFormat: LUMINANCE, colorRenderable: true, textureFilterable: true, bytesPerElement: [1, 2, 2, 4], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT] };
-  t[LUMINANCE_ALPHA] = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true, textureFilterable: true, bytesPerElement: [2, 4, 4, 8], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT] };
-  t[RGB] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: [3, 6, 6, 12, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_5_6_5] };
-  t[RGBA] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 8, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1] };
+  var t = textureInternalFormatInfo; // unsized formats
 
-  // sized formats
-  t[R8] = { textureFormat: RED, colorRenderable: true, textureFilterable: true, bytesPerElement: 1, type: UNSIGNED_BYTE };
-  t[R8_SNORM] = { textureFormat: RED, colorRenderable: false, textureFilterable: true, bytesPerElement: 1, type: BYTE };
-  t[R16F] = { textureFormat: RED, colorRenderable: false, textureFilterable: true, bytesPerElement: [4, 2], type: [FLOAT, HALF_FLOAT] };
-  t[R32F] = { textureFormat: RED, colorRenderable: false, textureFilterable: false, bytesPerElement: 4, type: FLOAT };
-  t[R8UI] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 1, type: UNSIGNED_BYTE };
-  t[R8I] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 1, type: BYTE };
-  t[R16UI] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: UNSIGNED_SHORT };
-  t[R16I] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: SHORT };
-  t[R32UI] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT };
-  t[R32I] = { textureFormat: RED_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: INT };
-  t[RG8] = { textureFormat: RG, colorRenderable: true, textureFilterable: true, bytesPerElement: 2, type: UNSIGNED_BYTE };
-  t[RG8_SNORM] = { textureFormat: RG, colorRenderable: false, textureFilterable: true, bytesPerElement: 2, type: BYTE };
-  t[RG16F] = { textureFormat: RG, colorRenderable: false, textureFilterable: true, bytesPerElement: [8, 4], type: [FLOAT, HALF_FLOAT] };
-  t[RG32F] = { textureFormat: RG, colorRenderable: false, textureFilterable: false, bytesPerElement: 8, type: FLOAT };
-  t[RG8UI] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: UNSIGNED_BYTE };
-  t[RG8I] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 2, type: BYTE };
-  t[RG16UI] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_SHORT };
-  t[RG16I] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: SHORT };
-  t[RG32UI] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: UNSIGNED_INT };
-  t[RG32I] = { textureFormat: RG_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: INT };
-  t[RGB8] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: 3, type: UNSIGNED_BYTE };
-  t[SRGB8] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: 3, type: UNSIGNED_BYTE };
-  t[RGB565] = { textureFormat: RGB, colorRenderable: true, textureFilterable: true, bytesPerElement: [3, 2], type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5] };
-  t[RGB8_SNORM] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: 3, type: BYTE };
-  t[R11F_G11F_B10F] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_10F_11F_11F_REV] };
-  t[RGB9_E5] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_5_9_9_9_REV] };
-  t[RGB16F] = { textureFormat: RGB, colorRenderable: false, textureFilterable: true, bytesPerElement: [12, 6], type: [FLOAT, HALF_FLOAT] };
-  t[RGB32F] = { textureFormat: RGB, colorRenderable: false, textureFilterable: false, bytesPerElement: 12, type: FLOAT };
-  t[RGB8UI] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 3, type: UNSIGNED_BYTE };
-  t[RGB8I] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 3, type: BYTE };
-  t[RGB16UI] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 6, type: UNSIGNED_SHORT };
-  t[RGB16I] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 6, type: SHORT };
-  t[RGB32UI] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 12, type: UNSIGNED_INT };
-  t[RGB32I] = { textureFormat: RGB_INTEGER, colorRenderable: false, textureFilterable: false, bytesPerElement: 12, type: INT };
-  t[RGBA8] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: 4, type: UNSIGNED_BYTE };
-  t[SRGB8_ALPHA8] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: 4, type: UNSIGNED_BYTE };
-  t[RGBA8_SNORM] = { textureFormat: RGBA, colorRenderable: false, textureFilterable: true, bytesPerElement: 4, type: BYTE };
-  t[RGB5_A1] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 2, 4], type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV] };
-  t[RGBA4] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: [4, 2], type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4] };
-  t[RGB10_A2] = { textureFormat: RGBA, colorRenderable: true, textureFilterable: true, bytesPerElement: 4, type: UNSIGNED_INT_2_10_10_10_REV };
-  t[RGBA16F] = { textureFormat: RGBA, colorRenderable: false, textureFilterable: true, bytesPerElement: [16, 8], type: [FLOAT, HALF_FLOAT] };
-  t[RGBA32F] = { textureFormat: RGBA, colorRenderable: false, textureFilterable: false, bytesPerElement: 16, type: FLOAT };
-  t[RGBA8UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_BYTE };
-  t[RGBA8I] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: BYTE };
-  t[RGB10_A2UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT_2_10_10_10_REV };
-  t[RGBA16UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: UNSIGNED_SHORT };
-  t[RGBA16I] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 8, type: SHORT };
-  t[RGBA32I] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 16, type: INT };
-  t[RGBA32UI] = { textureFormat: RGBA_INTEGER, colorRenderable: true, textureFilterable: false, bytesPerElement: 16, type: UNSIGNED_INT };
-  // Sized Internal
-  t[DEPTH_COMPONENT16] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true, textureFilterable: false, bytesPerElement: [2, 4], type: [UNSIGNED_SHORT, UNSIGNED_INT] };
-  t[DEPTH_COMPONENT24] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT };
-  t[DEPTH_COMPONENT32F] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: FLOAT };
-  t[DEPTH24_STENCIL8] = { textureFormat: DEPTH_STENCIL, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: UNSIGNED_INT_24_8 };
-  t[DEPTH32F_STENCIL8] = { textureFormat: DEPTH_STENCIL, colorRenderable: true, textureFilterable: false, bytesPerElement: 4, type: FLOAT_32_UNSIGNED_INT_24_8_REV };
+  t[ALPHA] = {
+    textureFormat: ALPHA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [1, 2, 2, 4],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT]
+  };
+  t[LUMINANCE] = {
+    textureFormat: LUMINANCE,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [1, 2, 2, 4],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT]
+  };
+  t[LUMINANCE_ALPHA] = {
+    textureFormat: LUMINANCE_ALPHA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [2, 4, 4, 8],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT]
+  };
+  t[RGB] = {
+    textureFormat: RGB,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [3, 6, 6, 12, 2],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_5_6_5]
+  };
+  t[RGBA] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4, 8, 8, 16, 2, 2],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1]
+  }; // sized formats
 
+  t[R8] = {
+    textureFormat: RED,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: 1,
+    type: UNSIGNED_BYTE
+  };
+  t[R8_SNORM] = {
+    textureFormat: RED,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: 1,
+    type: BYTE
+  };
+  t[R16F] = {
+    textureFormat: RED,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [4, 2],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[R32F] = {
+    textureFormat: RED,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: FLOAT
+  };
+  t[R8UI] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 1,
+    type: UNSIGNED_BYTE
+  };
+  t[R8I] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 1,
+    type: BYTE
+  };
+  t[R16UI] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 2,
+    type: UNSIGNED_SHORT
+  };
+  t[R16I] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 2,
+    type: SHORT
+  };
+  t[R32UI] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: UNSIGNED_INT
+  };
+  t[R32I] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: INT
+  };
+  t[RG8] = {
+    textureFormat: RG,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: 2,
+    type: UNSIGNED_BYTE
+  };
+  t[RG8_SNORM] = {
+    textureFormat: RG,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: 2,
+    type: BYTE
+  };
+  t[RG16F] = {
+    textureFormat: RG,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [8, 4],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[RG32F] = {
+    textureFormat: RG,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 8,
+    type: FLOAT
+  };
+  t[RG8UI] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 2,
+    type: UNSIGNED_BYTE
+  };
+  t[RG8I] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 2,
+    type: BYTE
+  };
+  t[RG16UI] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: UNSIGNED_SHORT
+  };
+  t[RG16I] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: SHORT
+  };
+  t[RG32UI] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 8,
+    type: UNSIGNED_INT
+  };
+  t[RG32I] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 8,
+    type: INT
+  };
+  t[RGB8] = {
+    textureFormat: RGB,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: 3,
+    type: UNSIGNED_BYTE
+  };
+  t[SRGB8] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: 3,
+    type: UNSIGNED_BYTE
+  };
+  t[RGB565] = {
+    textureFormat: RGB,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [3, 2],
+    type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5]
+  };
+  t[RGB8_SNORM] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: 3,
+    type: BYTE
+  };
+  t[R11F_G11F_B10F] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [12, 6, 4],
+    type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_10F_11F_11F_REV]
+  };
+  t[RGB9_E5] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [12, 6, 4],
+    type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_5_9_9_9_REV]
+  };
+  t[RGB16F] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [12, 6],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[RGB32F] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 12,
+    type: FLOAT
+  };
+  t[RGB8UI] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 3,
+    type: UNSIGNED_BYTE
+  };
+  t[RGB8I] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 3,
+    type: BYTE
+  };
+  t[RGB16UI] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 6,
+    type: UNSIGNED_SHORT
+  };
+  t[RGB16I] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 6,
+    type: SHORT
+  };
+  t[RGB32UI] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 12,
+    type: UNSIGNED_INT
+  };
+  t[RGB32I] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 12,
+    type: INT
+  };
+  t[RGBA8] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: 4,
+    type: UNSIGNED_BYTE
+  };
+  t[SRGB8_ALPHA8] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: 4,
+    type: UNSIGNED_BYTE
+  };
+  t[RGBA8_SNORM] = {
+    textureFormat: RGBA,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: 4,
+    type: BYTE
+  };
+  t[RGB5_A1] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4, 2, 4],
+    type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV]
+  };
+  t[RGBA4] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4, 2],
+    type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4]
+  };
+  t[RGB10_A2] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: 4,
+    type: UNSIGNED_INT_2_10_10_10_REV
+  };
+  t[RGBA16F] = {
+    textureFormat: RGBA,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [16, 8],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[RGBA32F] = {
+    textureFormat: RGBA,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: 16,
+    type: FLOAT
+  };
+  t[RGBA8UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: UNSIGNED_BYTE
+  };
+  t[RGBA8I] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: BYTE
+  };
+  t[RGB10_A2UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: UNSIGNED_INT_2_10_10_10_REV
+  };
+  t[RGBA16UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 8,
+    type: UNSIGNED_SHORT
+  };
+  t[RGBA16I] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 8,
+    type: SHORT
+  };
+  t[RGBA32I] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 16,
+    type: INT
+  };
+  t[RGBA32UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 16,
+    type: UNSIGNED_INT
+  }; // Sized Internal
+
+  t[DEPTH_COMPONENT16] = {
+    textureFormat: DEPTH_COMPONENT,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [2, 4],
+    type: [UNSIGNED_SHORT, UNSIGNED_INT]
+  };
+  t[DEPTH_COMPONENT24] = {
+    textureFormat: DEPTH_COMPONENT,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: UNSIGNED_INT
+  };
+  t[DEPTH_COMPONENT32F] = {
+    textureFormat: DEPTH_COMPONENT,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: FLOAT
+  };
+  t[DEPTH24_STENCIL8] = {
+    textureFormat: DEPTH_STENCIL,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: UNSIGNED_INT_24_8
+  };
+  t[DEPTH32F_STENCIL8] = {
+    textureFormat: DEPTH_STENCIL,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: 4,
+    type: FLOAT_32_UNSIGNED_INT_24_8_REV
+  };
   Object.keys(t).forEach(function (internalFormat) {
     var info = t[internalFormat];
     info.bytesPerElementMap = {};
+
     if (Array.isArray(info.bytesPerElement)) {
       info.bytesPerElement.forEach(function (bytesPerElement, ndx) {
         var type = info.type[ndx];
@@ -3538,7 +5618,6 @@ var textureInternalFormatInfo = {};
     }
   });
 }
-
 /**
  * Gets the number of bytes per element for a given internalFormat / type
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
@@ -3546,98 +5625,123 @@ var textureInternalFormatInfo = {};
  * @return {number} the number of bytes per element for the given internalFormat, type combo
  * @memberOf module:twgl/textures
  */
+
 function getBytesPerElementForInternalFormat(internalFormat, type) {
   var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   var bytesPerElement = info.bytesPerElementMap[type];
+
   if (bytesPerElement === undefined) {
     throw "unknown internal format";
   }
+
   return bytesPerElement;
 }
-
 /**
  * Gets the format for a given internalFormat
  *
  * @param {number} internalFormat The internal format
  * @return {{format:number, type:number}} the corresponding format and type
  */
+
+
 function getFormatAndTypeForInternalFormat(internalFormat) {
   var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   return {
     format: info.textureFormat,
     type: Array.isArray(info.type) ? info.type[0] : info.type
   };
 }
-
 /**
  * Returns true if value is power of 2
  * @param {number} value number to check.
  * @return true if value is power of 2
  */
+
+
 function isPowerOf2(value) {
   return (value & value - 1) === 0;
 }
-
 /**
  * Gets whether or not we can generate mips for the given format
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
  * @param {number} type The type parameter for texImage2D etc..
  * @return {boolean} true if we can generate mips
  */
-function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
+
+
+function canGenerateMipmap(gl, width, height, internalFormat
+/*, type */
+) {
   if (!utils.isWebGL2(gl)) {
     return isPowerOf2(width) && isPowerOf2(height);
   }
+
   var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   return info.colorRenderable && info.textureFilterable;
 }
-
 /**
  * Gets whether or not we can generate mips for the given format
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
  * @param {number} type The type parameter for texImage2D etc..
  * @return {boolean} true if we can generate mips
  */
-function canFilter(internalFormat /*, type */) {
+
+
+function canFilter(internalFormat
+/*, type */
+) {
   var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   return info.textureFilterable;
 }
-
 /**
  * Gets the number of compontents for a given image format.
  * @param {number} format the format.
  * @return {number} the number of components for the format.
  * @memberOf module:twgl/textures
  */
+
+
 function getNumComponentsForFormat(format) {
   var info = formatInfo[format];
+
   if (!info) {
     throw "unknown format: " + format;
   }
+
   return info.numColorComponents;
 }
-
 /**
  * Gets the texture type for a given array type.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @return {number} the gl texture type
  */
+
+
 function getTextureTypeForArrayType(gl, src, defaultType) {
   if (isArrayBuffer(src)) {
     return typedArrays.getGLTypeForTypedArray(src);
   }
+
   return defaultType || gl.UNSIGNED_BYTE;
 }
 
@@ -3645,8 +5749,10 @@ function guessDimensions(gl, target, width, height, numElements) {
   if (numElements % 1 !== 0) {
     throw "can't guess dimensions";
   }
+
   if (!width && !height) {
     var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
+
     if (size % 1 === 0) {
       width = size;
       height = size;
@@ -3656,21 +5762,23 @@ function guessDimensions(gl, target, width, height, numElements) {
     }
   } else if (!height) {
     height = numElements / width;
+
     if (height % 1) {
       throw "can't guess dimensions";
     }
   } else if (!width) {
     width = numElements / height;
+
     if (width % 1) {
       throw "can't guess dimensions";
     }
   }
+
   return {
     width: width,
     height: height
   };
 }
-
 /**
  * Sets the default texture color.
  *
@@ -3684,17 +5792,19 @@ function guessDimensions(gl, target, width, height, numElements) {
  * @deprecated see {@link module:twgl.setDefaults}
  * @memberOf module:twgl/textures
  */
+
+
 function setDefaultTextureColor(color) {
   defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
 }
 
 function setDefaults(newDefaults) {
   helper.copyExistingProperties(newDefaults, defaults);
+
   if (newDefaults.textureColor) {
     setDefaultTextureColor(newDefaults.textureColor);
   }
 }
-
 /**
  * A function to generate the source for a texture.
  * @callback TextureFunc
@@ -3790,53 +5900,58 @@ function setDefaults(newDefaults) {
  *
  * @memberOf module:twgl
  */
-
 // NOTE: While querying GL is considered slow it's not remotely as slow
 // as uploading a texture. On top of that you're unlikely to call this in
 // a perf critical loop. Even if upload a texture every frame that's unlikely
 // to be more than 1 or 2 textures a frame. In other words, the benefits of
 // making the API easy to use outweigh any supposed perf benefits
-var lastPackState = {};
 
+
+var lastPackState = {};
 /**
  * Saves any packing state that will be set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  */
+
 function savePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
     lastPackState.colorspaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
     gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
   }
+
   if (options.premultiplyAlpha !== undefined) {
     lastPackState.premultiplyAlpha = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
   }
+
   if (options.flipY !== undefined) {
     lastPackState.flipY = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, options.flipY);
   }
 }
-
 /**
  * Restores any packing state that was set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  */
+
+
 function restorePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
     gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
   }
+
   if (options.premultiplyAlpha !== undefined) {
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
   }
+
   if (options.flipY !== undefined) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
   }
 }
 
-var WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
-
+var WebGLSamplerCtor = _globalObject.default.WebGLSampler || function NotWebGLSampler() {};
 /**
  * Sets the parameters of a texture or sampler
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -3846,47 +5961,59 @@ var WebGLSamplerCtor = window.WebGLSampler || function NotWebGLSampler() {};
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  */
+
+
 function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.minMag) {
     parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.minMag);
     parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.minMag);
   }
+
   if (options.min) {
     parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.min);
   }
+
   if (options.mag) {
     parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.mag);
   }
+
   if (options.wrap) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
+
     if (target === gl.TEXTURE_3D || target instanceof WebGLSamplerCtor) {
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
     }
   }
+
   if (options.wrapR) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrapR);
   }
+
   if (options.wrapS) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrapS);
   }
+
   if (options.wrapT) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrapT);
   }
+
   if (options.minLod) {
     parameteriFn.call(gl, target, gl.TEXTURE_MIN_LOD, options.minLod);
   }
+
   if (options.maxLod) {
     parameteriFn.call(gl, target, gl.TEXTURE_MAX_LOD, options.maxLod);
   }
+
   if (options.baseLevel) {
     parameteriFn.call(gl, target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
   }
+
   if (options.maxLevel) {
     parameteriFn.call(gl, target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
   }
 }
-
 /**
  * Sets the texture parameters of a texture.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -3895,12 +6022,13 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureParameters(gl, tex, options) {
   var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
   setTextureSamplerParameters(gl, target, gl.texParameteri, options);
 }
-
 /**
  * Sets the sampler parameters of a sampler.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -3908,10 +6036,11 @@ function setTextureParameters(gl, tex, options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @memberOf module:twgl/textures
  */
+
+
 function setSamplerParameters(gl, sampler, options) {
   setTextureSamplerParameters(gl, sampler, gl.samplerParameteri, options);
 }
-
 /**
  * Creates a new sampler object and sets parameters.
  *
@@ -3926,12 +6055,13 @@ function setSamplerParameters(gl, sampler, options) {
  * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per sampler.
  * @return {Object.<string,WebGLSampler>} the created samplers by name
  */
+
+
 function createSampler(gl, options) {
   var sampler = gl.createSampler();
   setSamplerParameters(gl, sampler, options);
   return sampler;
 }
-
 /**
  * Creates a multiple sampler objects and sets parameters on each.
  *
@@ -3965,6 +6095,8 @@ function createSampler(gl, options) {
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set on the sampler
  */
+
+
 function createSamplers(gl, samplerOptions) {
   var samplers = {};
   Object.keys(samplerOptions).forEach(function (name) {
@@ -3972,21 +6104,23 @@ function createSamplers(gl, samplerOptions) {
   });
   return samplers;
 }
-
 /**
  * Makes a 1x1 pixel
  * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
  * @param {(number[]|ArrayBufferView)} [color] The color using 0-1 values
  * @return {Uint8Array} Unit8Array with color.
  */
+
+
 function make1Pixel(color) {
   color = color || defaults.textureColor;
+
   if (isArrayBuffer(color)) {
     return color;
   }
+
   return new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
 }
-
 /**
  * Sets filtering or generates mips for texture based on width or height
  * If width or height is not passed in uses `options.width` and//or `options.height`
@@ -4001,6 +6135,8 @@ function make1Pixel(color) {
  * @param {number} [type] The type parameter for texImage2D etc..
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type) {
   options = options || defaults.textureOptions;
   internalFormat = internalFormat || gl.RGBA;
@@ -4009,6 +6145,7 @@ function setTextureFilteringForSize(gl, tex, options, width, height, internalFor
   width = width || options.width;
   height = height || options.height;
   gl.bindTexture(target, tex);
+
   if (canGenerateMipmap(gl, width, height, internalFormat, type)) {
     gl.generateMipmap(target);
   } else {
@@ -4023,7 +6160,6 @@ function setTextureFilteringForSize(gl, tex, options, width, height, internalFor
 function shouldAutomaticallySetTextureFilteringForSize(options) {
   return options.auto === true || options.auto === undefined && options.level === undefined;
 }
-
 /**
  * Gets an array of cubemap face enums
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -4031,11 +6167,12 @@ function shouldAutomaticallySetTextureFilteringForSize(options) {
  *   This is often the same options you passed in when you created the texture.
  * @return {number[]} cubemap face enums
  */
+
+
 function getCubeFaceOrder(gl, options) {
   options = options || {};
   return options.cubeFaceOrder || [gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z];
 }
-
 /**
  * @typedef {Object} FaceInfo
  * @property {number} face gl enum for texImage2D
@@ -4055,18 +6192,22 @@ function getCubeFaceOrder(gl, options) {
  * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundent but
  *    it's needed internally to sort the array of `ndx` properties by `face`.
  */
+
+
 function getCubeFacesWithNdx(gl, options) {
-  var faces = getCubeFaceOrder(gl, options);
-  // work around bug in NVidia drivers. We have to upload the first face first else the driver crashes :(
+  var faces = getCubeFaceOrder(gl, options); // work around bug in NVidia drivers. We have to upload the first face first else the driver crashes :(
+
   var facesWithNdx = faces.map(function (face, ndx) {
-    return { face: face, ndx: ndx };
+    return {
+      face: face,
+      ndx: ndx
+    };
   });
   facesWithNdx.sort(function (a, b) {
     return a.face - b.face;
   });
   return facesWithNdx;
 }
-
 /**
  * Set a texture from the contents of an element. Will also set
  * texture filtering or generate mips based on the dimensions of the element
@@ -4080,6 +6221,8 @@ function getCubeFacesWithNdx(gl, options) {
  * @memberOf module:twgl/textures
  * @kind function
  */
+
+
 function setTextureFromElement(gl, tex, element, options) {
   options = options || defaults.textureOptions;
   var target = options.target || gl.TEXTURE_2D;
@@ -4092,12 +6235,14 @@ function setTextureFromElement(gl, tex, element, options) {
   var type = options.type || formatType.type;
   savePackState(gl, options);
   gl.bindTexture(target, tex);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     // guess the parts
     var imgWidth = element.width;
     var imgHeight = element.height;
-    var size = void 0;
-    var slices = void 0;
+    var size;
+    var slices;
+
     if (imgWidth / 6 === imgHeight) {
       // It's 6x1
       size = imgHeight;
@@ -4117,6 +6262,7 @@ function setTextureFromElement(gl, tex, element, options) {
     } else {
       throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
     }
+
     ctx.canvas.width = size;
     ctx.canvas.height = size;
     width = size;
@@ -4126,23 +6272,26 @@ function setTextureFromElement(gl, tex, element, options) {
       var yOffset = slices[f.ndx * 2 + 1] * size;
       ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
       gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
-    });
-    // Free up the canvas memory
+    }); // Free up the canvas memory
+
     ctx.canvas.width = 1;
     ctx.canvas.height = 1;
   } else if (target === gl.TEXTURE_3D) {
     var smallest = Math.min(element.width, element.height);
     var largest = Math.max(element.width, element.height);
     var depth = largest / smallest;
+
     if (depth % 1 !== 0) {
       throw "can not compute 3D dimensions of element";
     }
+
     var xMult = element.width === largest ? 1 : 0;
     var yMult = element.height === largest ? 1 : 0;
-    gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
-    // remove this is texSubImage3D gets width and height arguments
+    gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null); // remove this is texSubImage3D gets width and height arguments
+
     ctx.canvas.width = smallest;
     ctx.canvas.height = smallest;
+
     for (var d = 0; d < depth; ++d) {
       //gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
       //gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
@@ -4157,22 +6306,25 @@ function setTextureFromElement(gl, tex, element, options) {
       ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
       gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
     }
+
     ctx.canvas.width = 0;
-    ctx.canvas.height = 0;
-    //FIX (save state)
+    ctx.canvas.height = 0; //FIX (save state)
+
     gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
   } else {
     gl.texImage2D(target, level, internalFormat, format, type, element);
   }
+
   restorePackState(gl, options);
+
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
   }
+
   setTextureParameters(gl, tex, options);
 }
 
 function noop() {}
-
 /**
  * Loads an image
  * @param {string} url url to image
@@ -4180,17 +6332,22 @@ function noop() {}
  *     if there was an error
  * @return {HTMLImageElement} the image being loaded.
  */
+
+
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
   var img = new Image();
   crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+
   if (crossOrigin !== undefined) {
     img.crossOrigin = crossOrigin;
   }
 
   function clearEventHandlers() {
     img.removeEventListener('error', onError); // eslint-disable-line
+
     img.removeEventListener('load', onLoad); // eslint-disable-line
+
     img = null;
   }
 
@@ -4211,7 +6368,6 @@ function loadImage(url, crossOrigin, callback) {
   img.src = url;
   return img;
 }
-
 /**
  * Sets a texture to a 1x1 pixel color. If `options.color === false` is nothing happens. If it's not set
  * the default texture color is used which can be set by calling `setDefaultTextureColor`.
@@ -4221,16 +6377,21 @@ function loadImage(url, crossOrigin, callback) {
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureTo1PixelColor(gl, tex, options) {
   options = options || defaults.textureOptions;
   var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
+
   if (options.color === false) {
     return;
-  }
-  // Assume it's a URL
+  } // Assume it's a URL
   // Put 1x1 pixels in texture. That makes it renderable immediately regardless of filtering.
+
+
   var color = make1Pixel(options.color);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
@@ -4241,7 +6402,6 @@ function setTextureTo1PixelColor(gl, tex, options) {
     gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
   }
 }
-
 /**
  * The src image(s) used to create a texture.
  *
@@ -4303,11 +6463,13 @@ function setTextureTo1PixelColor(gl, tex, options) {
  * @return {HTMLImageElement} the image being downloaded.
  * @memberOf module:twgl/textures
  */
+
+
 function loadTextureFromUrl(gl, tex, options, callback) {
   callback = callback || noop;
   options = options || defaults.textureOptions;
-  setTextureTo1PixelColor(gl, tex, options);
-  // Because it's async we need to copy the options.
+  setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
+
   options = Object.assign({}, options);
   var img = loadImage(options.src, options.crossOrigin, function (err, img) {
     if (err) {
@@ -4319,7 +6481,6 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   });
   return img;
 }
-
 /**
  * Loads a cubemap from 6 urls as specified in `options.src`. Will set the cubemap to a 1x1 pixel color
  * so that it is usable immediately unless `option.color === false`.
@@ -4330,32 +6491,39 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
  */
+
+
 function loadCubemapFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
   var urls = options.src;
+
   if (urls.length !== 6) {
     throw "there must be 6 urls for a cubemap";
   }
+
   var level = options.level || 0;
   var internalFormat = options.internalFormat || options.format || gl.RGBA;
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var format = options.format || formatType.format;
   var type = options.type || gl.UNSIGNED_BYTE;
   var target = options.target || gl.TEXTURE_2D;
+
   if (target !== gl.TEXTURE_CUBE_MAP) {
     throw "target must be TEXTURE_CUBE_MAP";
   }
-  setTextureTo1PixelColor(gl, tex, options);
-  // Because it's async we need to copy the options.
+
+  setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
+
   options = Object.assign({}, options);
   var numToLoad = 6;
   var errors = [];
   var faces = getCubeFaceOrder(gl, options);
-  var imgs = void 0; // eslint-disable-line
+  var imgs; // eslint-disable-line
 
   function uploadImg(faceTarget) {
     return function (err, img) {
       --numToLoad;
+
       if (err) {
         errors.push(err);
       } else {
@@ -4363,10 +6531,9 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
           errors.push("cubemap face img is not a square: " + img.src);
         } else {
           savePackState(gl, options);
-          gl.bindTexture(target, tex);
-
-          // So assuming this is the first image we now have one face that's img sized
+          gl.bindTexture(target, tex); // So assuming this is the first image we now have one face that's img sized
           // and 5 faces that are 1x1 pixel so size the other faces
+
           if (numToLoad === 5) {
             // use the default order
             getCubeFaceOrder(gl).forEach(function (otherTarget) {
@@ -4378,6 +6545,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
           }
 
           restorePackState(gl, options);
+
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             gl.generateMipmap(target);
           }
@@ -4394,7 +6562,6 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
     return loadImage(url, options.crossOrigin, uploadImg(faces[ndx]));
   });
 }
-
 /**
  * Loads a 2d array or 3d texture from urls as specified in `options.src`.
  * Will set the texture to a 1x1 pixel color
@@ -4414,6 +6581,8 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
  */
+
+
 function loadSlicesFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
   var urls = options.src;
@@ -4422,15 +6591,18 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   var format = options.format || formatType.format;
   var type = options.type || gl.UNSIGNED_BYTE;
   var target = options.target || gl.TEXTURE_2D_ARRAY;
+
   if (target !== gl.TEXTURE_3D && target !== gl.TEXTURE_2D_ARRAY) {
     throw "target must be TEXTURE_3D or TEXTURE_2D_ARRAY";
   }
-  setTextureTo1PixelColor(gl, tex, options);
-  // Because it's async we need to copy the options.
+
+  setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
+
   options = Object.assign({}, options);
   var numToLoad = urls.length;
   var errors = [];
-  var imgs = void 0; // eslint-disable-line
+  var imgs; // eslint-disable-line
+
   var level = options.level || 0;
   var width = options.width;
   var height = options.height;
@@ -4440,6 +6612,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   function uploadImg(slice) {
     return function (err, img) {
       --numToLoad;
+
       if (err) {
         errors.push(err);
       } else {
@@ -4450,14 +6623,14 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
           firstImage = false;
           width = options.width || img.width;
           height = options.height || img.height;
-          gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
+          gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null); // put it in every slice otherwise some slices will be 0,0,0,0
 
-          // put it in every slice otherwise some slices will be 0,0,0,0
           for (var s = 0; s < depth; ++s) {
             gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
           }
         } else {
           var src = img;
+
           if (img.width !== width || img.height !== height) {
             // Size the image to fix
             src = ctx.canvas;
@@ -4466,9 +6639,8 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
             ctx.drawImage(img, 0, 0, width, height);
           }
 
-          gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
+          gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src); // free the canvas memory
 
-          // free the canvas memory
           if (src === ctx.canvas) {
             ctx.canvas.width = 0;
             ctx.canvas.height = 0;
@@ -4476,6 +6648,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
         }
 
         restorePackState(gl, options);
+
         if (shouldAutomaticallySetTextureFilteringForSize(options)) {
           gl.generateMipmap(target);
         }
@@ -4491,7 +6664,6 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
     return loadImage(url, options.crossOrigin, uploadImg(ndx));
   });
 }
-
 /**
  * Sets a texture from an array or typed array. If the width or height is not provided will attempt to
  * guess the size. See {@link module:twgl.TextureOptions}.
@@ -4502,6 +6674,8 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureFromArray(gl, tex, src, options) {
   options = options || defaults.textureOptions;
   var target = options.target || gl.TEXTURE_2D;
@@ -4514,6 +6688,7 @@ function setTextureFromArray(gl, tex, src, options) {
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var format = options.format || formatType.format;
   var type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
+
   if (!isArrayBuffer(src)) {
     var Type = typedArrays.getTypedArrayTypeForGLType(type);
     src = new Type(src);
@@ -4522,18 +6697,24 @@ function setTextureFromArray(gl, tex, src, options) {
       src = new Uint8Array(src.buffer);
     }
   }
+
   var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
   var numElements = src.byteLength / bytesPerElement; // TODO: check UNPACK_ALIGNMENT?
+
   if (numElements % 1) {
     throw "length wrong size for format: " + utils.glEnumToString(gl, format);
   }
-  var dimensions = void 0;
+
+  var dimensions;
+
   if (target === gl.TEXTURE_3D) {
     if (!width && !height && !depth) {
       var size = Math.cbrt(numElements);
+
       if (size % 1 !== 0) {
         throw "can't guess cube size of array of numElements: " + numElements;
       }
+
       width = size;
       height = size;
       depth = size;
@@ -4555,12 +6736,13 @@ function setTextureFromArray(gl, tex, src, options) {
     width = dimensions.width;
     height = dimensions.height;
   }
+
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
   savePackState(gl, options);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     var elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
     var faceSize = numElements / 6 * elementsPerElement;
-
     getCubeFacesWithNdx(gl, options).forEach(function (f) {
       var offset = faceSize * f.ndx;
       var data = src.subarray(offset, offset + faceSize);
@@ -4571,6 +6753,7 @@ function setTextureFromArray(gl, tex, src, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
   }
+
   restorePackState(gl, options);
   return {
     width: width,
@@ -4579,7 +6762,6 @@ function setTextureFromArray(gl, tex, src, options) {
     type: type
   };
 }
-
 /**
  * Sets a texture with no contents of a certain size. In other words calls `gl.texImage2D` with `null`.
  * You must set `options.width` and `options.height`.
@@ -4588,6 +6770,8 @@ function setTextureFromArray(gl, tex, src, options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @memberOf module:twgl/textures
  */
+
+
 function setEmptyTexture(gl, tex, options) {
   var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
@@ -4597,6 +6781,7 @@ function setEmptyTexture(gl, tex, options) {
   var format = options.format || formatType.format;
   var type = options.type || formatType.type;
   savePackState(gl, options);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
@@ -4606,9 +6791,9 @@ function setEmptyTexture(gl, tex, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
   }
+
   restorePackState(gl, options);
 }
-
 /**
  * Creates a texture based on the options passed in.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -4617,6 +6802,8 @@ function setEmptyTexture(gl, tex, options) {
  * @return {WebGLTexture} the created texture.
  * @memberOf module:twgl/textures
  */
+
+
 function createTexture(gl, options, callback) {
   callback = callback || noop;
   options = options || defaults.textureOptions;
@@ -4628,16 +6815,20 @@ function createTexture(gl, options, callback) {
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var type = options.type || formatType.type;
   gl.bindTexture(target, tex);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     // this should have been the default for CUBEMAPS :(
     gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
+
   var src = options.src;
+
   if (src) {
     if (typeof src === "function") {
       src = src(gl, options);
     }
+
     if (typeof src === "string") {
       loadTextureFromUrl(gl, tex, options, callback);
     } else if (isArrayBuffer(src) || Array.isArray(src) && (typeof src[0] === 'number' || Array.isArray(src[0]) || isArrayBuffer(src[0]))) {
@@ -4661,13 +6852,14 @@ function createTexture(gl, options, callback) {
   } else {
     setEmptyTexture(gl, tex, options);
   }
+
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
   }
+
   setTextureParameters(gl, tex, options);
   return tex;
 }
-
 /**
  * Resizes a texture based on the options passed in.
  *
@@ -4684,6 +6876,8 @@ function createTexture(gl, options, callback) {
  * @param {number} [height] the new height. If not passed in will use `options.height`
  * @memberOf module:twgl/textures
  */
+
+
 function resizeTexture(gl, tex, options, width, height) {
   width = width || options.width;
   height = height || options.height;
@@ -4693,8 +6887,9 @@ function resizeTexture(gl, tex, options, width, height) {
   var internalFormat = options.internalFormat || options.format || gl.RGBA;
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var format = options.format || formatType.format;
-  var type = void 0;
+  var type;
   var src = options.src;
+
   if (!src) {
     type = options.type || formatType.type;
   } else if (isArrayBuffer(src) || Array.isArray(src) && typeof src[0] === 'number') {
@@ -4702,6 +6897,7 @@ function resizeTexture(gl, tex, options, width, height) {
   } else {
     type = options.type || formatType.type;
   }
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
@@ -4710,7 +6906,6 @@ function resizeTexture(gl, tex, options, width, height) {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
   }
 }
-
 /**
  * Check if a src is an async request.
  * if src is a string we're going to download an image
@@ -4718,10 +6913,11 @@ function resizeTexture(gl, tex, options, width, height) {
  * @param {*} src The src from a TextureOptions
  * @returns {bool} true if src is async.
  */
+
+
 function isAsyncSrc(src) {
   return typeof src === 'string' || Array.isArray(src) && typeof src[0] === 'string';
 }
-
 /**
  * Creates a bunch of textures based on the passed in options.
  *
@@ -4797,6 +6993,8 @@ function isAsyncSrc(src) {
  * @return {Object.<string,WebGLTexture>} the created textures by name
  * @memberOf module:twgl/textures
  */
+
+
 function createTextures(gl, textureOptions, callback) {
   callback = callback || noop;
   var numDownloading = 0;
@@ -4814,1389 +7012,33 @@ function createTextures(gl, textureOptions, callback) {
 
   Object.keys(textureOptions).forEach(function (name) {
     var options = textureOptions[name];
-    var onLoadFn = void 0;
+    var onLoadFn;
+
     if (isAsyncSrc(options.src)) {
       onLoadFn = function onLoadFn(err, tex, img) {
         images[name] = img;
         --numDownloading;
+
         if (err) {
           errors.push(err);
         }
+
         callCallbackIfReady();
       };
+
       ++numDownloading;
     }
-    textures[name] = createTexture(gl, options, onLoadFn);
-  });
 
-  // queue the callback if there are no images to download.
+    textures[name] = createTexture(gl, options, onLoadFn);
+  }); // queue the callback if there are no images to download.
   // We do this because if your code is structured to wait for
   // images to download but then you comment out all the async
   // images your code would break.
+
   callCallbackIfReady();
-
   return textures;
-}
-
-// Using quotes prevents Uglify from changing the names.
+} // Using quotes prevents Uglify from changing the names.
 // No speed diff AFAICT.
-exports.setTextureDefaults_ = setDefaults;
-exports.createSampler = createSampler;
-exports.createSamplers = createSamplers;
-exports.setSamplerParameters = setSamplerParameters;
-exports.createTexture = createTexture;
-exports.setEmptyTexture = setEmptyTexture;
-exports.setTextureFromArray = setTextureFromArray;
-exports.loadTextureFromUrl = loadTextureFromUrl;
-exports.setTextureFromElement = setTextureFromElement;
-exports.setTextureFilteringForSize = setTextureFilteringForSize;
-exports.setTextureParameters = setTextureParameters;
-exports.setDefaultTextureColor = setDefaultTextureColor;
-exports.createTextures = createTextures;
-exports.resizeTexture = resizeTexture;
-exports.getNumComponentsForFormat = getNumComponentsForFormat;
-exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.transpose = exports.translation = exports.translate = exports.transformPoint = exports.transformNormal = exports.transformDirection = exports.setTranslation = exports.setDefaultType = exports.setAxis = exports.scaling = exports.scale = exports.rotationZ = exports.rotationY = exports.rotationX = exports.rotateZ = exports.rotateY = exports.rotateX = exports.perspective = exports.ortho = exports.negate = exports.multiply = exports.lookAt = exports.inverse = exports.identity = exports.getTranslation = exports.getAxis = exports.frustum = exports.copy = exports.axisRotation = exports.axisRotate = undefined;
-
-var _v = __webpack_require__(4);
-
-var v3 = _interopRequireWildcard(_v);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * 4x4 Matrix math math functions.
- *
- * Almost all functions take an optional `dst` argument. If it is not passed in the
- * functions will create a new matrix. In other words you can do this
- *
- *     const mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
- *
- * or
- *
- *     const mat = m4.create();
- *     m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.
- *
- * The first style is often easier but depending on where it's used it generates garbage where
- * as there is almost never allocation with the second style.
- *
- * It is always save to pass any matrix as the destination. So for example
- *
- *     const mat = m4.identity();
- *     const trans = m4.translation([1, 2, 3]);
- *     m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
- *
- * @module twgl/m4
- */
-var MatType = Float32Array; /*
-                             * Copyright 2015, Gregg Tavares.
-                             * All rights reserved.
-                             *
-                             * Redistribution and use in source and binary forms, with or without
-                             * modification, are permitted provided that the following conditions are
-                             * met:
-                             *
-                             *     * Redistributions of source code must retain the above copyright
-                             * notice, this list of conditions and the following disclaimer.
-                             *     * Redistributions in binary form must reproduce the above
-                             * copyright notice, this list of conditions and the following disclaimer
-                             * in the documentation and/or other materials provided with the
-                             * distribution.
-                             *     * Neither the name of Gregg Tavares. nor the names of his
-                             * contributors may be used to endorse or promote products derived from
-                             * this software without specific prior written permission.
-                             *
-                             * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-                             * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-                             * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-                             * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-                             * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-                             * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-                             * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-                             * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-                             * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-                             * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-                             * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-                             */
-
-var tempV3a = v3.create();
-var tempV3b = v3.create();
-var tempV3c = v3.create();
-
-/**
- * A JavaScript array with 16 values or a Float32Array with 16 values.
- * When created by the library will create the default type which is `Float32Array`
- * but can be set by calling {@link module:twgl/m4.setDefaultType}.
- * @typedef {(number[]|Float32Array)} Mat4
- * @memberOf module:twgl/m4
- */
-
-/**
- * Sets the type this library creates for a Mat4
- * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
- * @return {constructor} previous constructor for Mat4
- */
-function setDefaultType(ctor) {
-  var oldType = MatType;
-  MatType = ctor;
-  return oldType;
-}
-
-/**
- * Negates a matrix.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} -m.
- * @memberOf module:twgl/m4
- */
-function negate(m, dst) {
-  dst = dst || new MatType(16);
-
-  dst[0] = -m[0];
-  dst[1] = -m[1];
-  dst[2] = -m[2];
-  dst[3] = -m[3];
-  dst[4] = -m[4];
-  dst[5] = -m[5];
-  dst[6] = -m[6];
-  dst[7] = -m[7];
-  dst[8] = -m[8];
-  dst[9] = -m[9];
-  dst[10] = -m[10];
-  dst[11] = -m[11];
-  dst[12] = -m[12];
-  dst[13] = -m[13];
-  dst[14] = -m[14];
-  dst[15] = -m[15];
-
-  return dst;
-}
-
-/**
- * Copies a matrix.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] The matrix.
- * @return {module:twgl/m4.Mat4} A copy of m.
- * @memberOf module:twgl/m4
- */
-function copy(m, dst) {
-  dst = dst || new MatType(16);
-
-  dst[0] = m[0];
-  dst[1] = m[1];
-  dst[2] = m[2];
-  dst[3] = m[3];
-  dst[4] = m[4];
-  dst[5] = m[5];
-  dst[6] = m[6];
-  dst[7] = m[7];
-  dst[8] = m[8];
-  dst[9] = m[9];
-  dst[10] = m[10];
-  dst[11] = m[11];
-  dst[12] = m[12];
-  dst[13] = m[13];
-  dst[14] = m[14];
-  dst[15] = m[15];
-
-  return dst;
-}
-
-/**
- * Creates an n-by-n identity matrix.
- *
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} An n-by-n identity matrix.
- * @memberOf module:twgl/m4
- */
-function identity(dst) {
-  dst = dst || new MatType(16);
-
-  dst[0] = 1;
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-  dst[4] = 0;
-  dst[5] = 1;
-  dst[6] = 0;
-  dst[7] = 0;
-  dst[8] = 0;
-  dst[9] = 0;
-  dst[10] = 1;
-  dst[11] = 0;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = 0;
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Takes the transpose of a matrix.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The transpose of m.
- * @memberOf module:twgl/m4
- */
-function transpose(m, dst) {
-  dst = dst || new MatType(16);
-  if (dst === m) {
-    var t = void 0;
-
-    t = m[1];
-    m[1] = m[4];
-    m[4] = t;
-
-    t = m[2];
-    m[2] = m[8];
-    m[8] = t;
-
-    t = m[3];
-    m[3] = m[12];
-    m[12] = t;
-
-    t = m[6];
-    m[6] = m[9];
-    m[9] = t;
-
-    t = m[7];
-    m[7] = m[13];
-    m[13] = t;
-
-    t = m[11];
-    m[11] = m[14];
-    m[14] = t;
-    return dst;
-  }
-
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var m30 = m[3 * 4 + 0];
-  var m31 = m[3 * 4 + 1];
-  var m32 = m[3 * 4 + 2];
-  var m33 = m[3 * 4 + 3];
-
-  dst[0] = m00;
-  dst[1] = m10;
-  dst[2] = m20;
-  dst[3] = m30;
-  dst[4] = m01;
-  dst[5] = m11;
-  dst[6] = m21;
-  dst[7] = m31;
-  dst[8] = m02;
-  dst[9] = m12;
-  dst[10] = m22;
-  dst[11] = m32;
-  dst[12] = m03;
-  dst[13] = m13;
-  dst[14] = m23;
-  dst[15] = m33;
-
-  return dst;
-}
-
-/**
- * Computes the inverse of a 4-by-4 matrix.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The inverse of m.
- * @memberOf module:twgl/m4
- */
-function inverse(m, dst) {
-  dst = dst || new MatType(16);
-
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var m30 = m[3 * 4 + 0];
-  var m31 = m[3 * 4 + 1];
-  var m32 = m[3 * 4 + 2];
-  var m33 = m[3 * 4 + 3];
-  var tmp_0 = m22 * m33;
-  var tmp_1 = m32 * m23;
-  var tmp_2 = m12 * m33;
-  var tmp_3 = m32 * m13;
-  var tmp_4 = m12 * m23;
-  var tmp_5 = m22 * m13;
-  var tmp_6 = m02 * m33;
-  var tmp_7 = m32 * m03;
-  var tmp_8 = m02 * m23;
-  var tmp_9 = m22 * m03;
-  var tmp_10 = m02 * m13;
-  var tmp_11 = m12 * m03;
-  var tmp_12 = m20 * m31;
-  var tmp_13 = m30 * m21;
-  var tmp_14 = m10 * m31;
-  var tmp_15 = m30 * m11;
-  var tmp_16 = m10 * m21;
-  var tmp_17 = m20 * m11;
-  var tmp_18 = m00 * m31;
-  var tmp_19 = m30 * m01;
-  var tmp_20 = m00 * m21;
-  var tmp_21 = m20 * m01;
-  var tmp_22 = m00 * m11;
-  var tmp_23 = m10 * m01;
-
-  var t0 = tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31 - (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
-  var t1 = tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31 - (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
-  var t2 = tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31 - (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
-  var t3 = tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21 - (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
-
-  var d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
-
-  dst[0] = d * t0;
-  dst[1] = d * t1;
-  dst[2] = d * t2;
-  dst[3] = d * t3;
-  dst[4] = d * (tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30 - (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
-  dst[5] = d * (tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30 - (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
-  dst[6] = d * (tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30 - (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
-  dst[7] = d * (tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20 - (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
-  dst[8] = d * (tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33 - (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
-  dst[9] = d * (tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33 - (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
-  dst[10] = d * (tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33 - (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
-  dst[11] = d * (tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23 - (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
-  dst[12] = d * (tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12 - (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
-  dst[13] = d * (tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22 - (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
-  dst[14] = d * (tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02 - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
-  dst[15] = d * (tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12 - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
-
-  return dst;
-}
-
-/**
- * Multiplies two 4-by-4 matrices with a on the left and b on the right
- * @param {module:twgl/m4.Mat4} a The matrix on the left.
- * @param {module:twgl/m4.Mat4} b The matrix on the right.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The matrix product of a and b.
- * @memberOf module:twgl/m4
- */
-function multiply(a, b, dst) {
-  dst = dst || new MatType(16);
-
-  var a00 = a[0];
-  var a01 = a[1];
-  var a02 = a[2];
-  var a03 = a[3];
-  var a10 = a[4 + 0];
-  var a11 = a[4 + 1];
-  var a12 = a[4 + 2];
-  var a13 = a[4 + 3];
-  var a20 = a[8 + 0];
-  var a21 = a[8 + 1];
-  var a22 = a[8 + 2];
-  var a23 = a[8 + 3];
-  var a30 = a[12 + 0];
-  var a31 = a[12 + 1];
-  var a32 = a[12 + 2];
-  var a33 = a[12 + 3];
-  var b00 = b[0];
-  var b01 = b[1];
-  var b02 = b[2];
-  var b03 = b[3];
-  var b10 = b[4 + 0];
-  var b11 = b[4 + 1];
-  var b12 = b[4 + 2];
-  var b13 = b[4 + 3];
-  var b20 = b[8 + 0];
-  var b21 = b[8 + 1];
-  var b22 = b[8 + 2];
-  var b23 = b[8 + 3];
-  var b30 = b[12 + 0];
-  var b31 = b[12 + 1];
-  var b32 = b[12 + 2];
-  var b33 = b[12 + 3];
-
-  dst[0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
-  dst[1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
-  dst[2] = a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03;
-  dst[3] = a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03;
-  dst[4] = a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13;
-  dst[5] = a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13;
-  dst[6] = a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13;
-  dst[7] = a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13;
-  dst[8] = a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23;
-  dst[9] = a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23;
-  dst[10] = a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23;
-  dst[11] = a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23;
-  dst[12] = a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33;
-  dst[13] = a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33;
-  dst[14] = a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33;
-  dst[15] = a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33;
-
-  return dst;
-}
-
-/**
- * Sets the translation component of a 4-by-4 matrix to the given
- * vector.
- * @param {module:twgl/m4.Mat4} a The matrix.
- * @param {Vec3} v The vector.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} a once modified.
- * @memberOf module:twgl/m4
- */
-function setTranslation(a, v, dst) {
-  dst = dst || identity();
-  if (a !== dst) {
-    dst[0] = a[0];
-    dst[1] = a[1];
-    dst[2] = a[2];
-    dst[3] = a[3];
-    dst[4] = a[4];
-    dst[5] = a[5];
-    dst[6] = a[6];
-    dst[7] = a[7];
-    dst[8] = a[8];
-    dst[9] = a[9];
-    dst[10] = a[10];
-    dst[11] = a[11];
-  }
-  dst[12] = v[0];
-  dst[13] = v[1];
-  dst[14] = v[2];
-  dst[15] = 1;
-  return dst;
-}
-
-/**
- * Returns the translation component of a 4-by-4 matrix as a vector with 3
- * entries.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {Vec3} [dst] vector..
- * @return {Vec3} The translation component of m.
- * @memberOf module:twgl/m4
- */
-function getTranslation(m, dst) {
-  dst = dst || v3.create();
-  dst[0] = m[12];
-  dst[1] = m[13];
-  dst[2] = m[14];
-  return dst;
-}
-
-/**
- * Returns an axis of a 4x4 matrix as a vector with 3 entries
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {number} axis The axis 0 = x, 1 = y, 2 = z;
- * @return {Vec3} [dst] vector.
- * @return {Vec3} The axis component of m.
- * @memberOf module:twgl/m4
- */
-function getAxis(m, axis, dst) {
-  dst = dst || v3.create();
-  var off = axis * 4;
-  dst[0] = m[off + 0];
-  dst[1] = m[off + 1];
-  dst[2] = m[off + 2];
-  return dst;
-}
-
-/**
- * Sets an axis of a 4x4 matrix as a vector with 3 entries
- * @param {Vec3} v the axis vector
- * @param {number} axis The axis  0 = x, 1 = y, 2 = z;
- * @param {module:twgl/m4.Mat4} [dst] The matrix to set. If none a new one is created
- * @return {module:twgl/m4.Mat4} dst
- * @memberOf module:twgl/m4
- */
-function setAxis(a, v, axis, dst) {
-  if (dst !== a) {
-    dst = copy(a, dst);
-  }
-  var off = axis * 4;
-  dst[off + 0] = v[0];
-  dst[off + 1] = v[1];
-  dst[off + 2] = v[2];
-  return dst;
-}
-
-/**
- * Computes a 4-by-4 perspective transformation matrix given the angular height
- * of the frustum, the aspect ratio, and the near and far clipping planes.  The
- * arguments define a frustum extending in the negative z direction.  The given
- * angle is the vertical angle of the frustum, and the horizontal angle is
- * determined to produce the given aspect ratio.  The arguments near and far are
- * the distances to the near and far clipping planes.  Note that near and far
- * are not z coordinates, but rather they are distances along the negative
- * z-axis.  The matrix generated sends the viewing frustum to the unit box.
- * We assume a unit box extending from -1 to 1 in the x and y dimensions and
- * from 0 to 1 in the z dimension.
- * @param {number} fieldOfViewYInRadians The camera angle from top to bottom (in radians).
- * @param {number} aspect The aspect ratio width / height.
- * @param {number} zNear The depth (negative z coordinate)
- *     of the near clipping plane.
- * @param {number} zFar The depth (negative z coordinate)
- *     of the far clipping plane.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The perspective matrix.
- * @memberOf module:twgl/m4
- */
-function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
-  dst = dst || new MatType(16);
-
-  var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
-  var rangeInv = 1.0 / (zNear - zFar);
-
-  dst[0] = f / aspect;
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-
-  dst[4] = 0;
-  dst[5] = f;
-  dst[6] = 0;
-  dst[7] = 0;
-
-  dst[8] = 0;
-  dst[9] = 0;
-  dst[10] = (zNear + zFar) * rangeInv;
-  dst[11] = -1;
-
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = zNear * zFar * rangeInv * 2;
-  dst[15] = 0;
-
-  return dst;
-}
-
-/**
- * Computes a 4-by-4 othogonal transformation matrix given the left, right,
- * bottom, and top dimensions of the near clipping plane as well as the
- * near and far clipping plane distances.
- * @param {number} left Left side of the near clipping plane viewport.
- * @param {number} right Right side of the near clipping plane viewport.
- * @param {number} top Top of the near clipping plane viewport.
- * @param {number} bottom Bottom of the near clipping plane viewport.
- * @param {number} near The depth (negative z coordinate)
- *     of the near clipping plane.
- * @param {number} far The depth (negative z coordinate)
- *     of the far clipping plane.
- * @param {module:twgl/m4.Mat4} [dst] Output matrix.
- * @return {module:twgl/m4.Mat4} The perspective matrix.
- * @memberOf module:twgl/m4
- */
-function ortho(left, right, bottom, top, near, far, dst) {
-  dst = dst || new MatType(16);
-
-  dst[0] = 2 / (right - left);
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-
-  dst[4] = 0;
-  dst[5] = 2 / (top - bottom);
-  dst[6] = 0;
-  dst[7] = 0;
-
-  dst[8] = 0;
-  dst[9] = 0;
-  dst[10] = 2 / (near - far);
-  dst[11] = 0;
-
-  dst[12] = (right + left) / (left - right);
-  dst[13] = (top + bottom) / (bottom - top);
-  dst[14] = (far + near) / (near - far);
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Computes a 4-by-4 perspective transformation matrix given the left, right,
- * top, bottom, near and far clipping planes. The arguments define a frustum
- * extending in the negative z direction. The arguments near and far are the
- * distances to the near and far clipping planes. Note that near and far are not
- * z coordinates, but rather they are distances along the negative z-axis. The
- * matrix generated sends the viewing frustum to the unit box. We assume a unit
- * box extending from -1 to 1 in the x and y dimensions and from 0 to 1 in the z
- * dimension.
- * @param {number} left The x coordinate of the left plane of the box.
- * @param {number} right The x coordinate of the right plane of the box.
- * @param {number} bottom The y coordinate of the bottom plane of the box.
- * @param {number} top The y coordinate of the right plane of the box.
- * @param {number} near The negative z coordinate of the near plane of the box.
- * @param {number} far The negative z coordinate of the far plane of the box.
- * @param {module:twgl/m4.Mat4} [dst] Output matrix.
- * @return {module:twgl/m4.Mat4} The perspective projection matrix.
- * @memberOf module:twgl/m4
- */
-function frustum(left, right, bottom, top, near, far, dst) {
-  dst = dst || new MatType(16);
-
-  var dx = right - left;
-  var dy = top - bottom;
-  var dz = near - far;
-
-  dst[0] = 2 * near / dx;
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-  dst[4] = 0;
-  dst[5] = 2 * near / dy;
-  dst[6] = 0;
-  dst[7] = 0;
-  dst[8] = (left + right) / dx;
-  dst[9] = (top + bottom) / dy;
-  dst[10] = far / dz;
-  dst[11] = -1;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = near * far / dz;
-  dst[15] = 0;
-
-  return dst;
-}
-
-/**
- * Computes a 4-by-4 look-at transformation.
- *
- * This is a matrix which positions the camera itself. If you want
- * a view matrix (a matrix which moves things in front of the camera)
- * take the inverse of this.
- *
- * @param {Vec3} eye The position of the eye.
- * @param {Vec3} target The position meant to be viewed.
- * @param {Vec3} up A vector pointing up.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The look-at matrix.
- * @memberOf module:twgl/m4
- */
-function lookAt(eye, target, up, dst) {
-  dst = dst || new MatType(16);
-
-  var xAxis = tempV3a;
-  var yAxis = tempV3b;
-  var zAxis = tempV3c;
-
-  v3.normalize(v3.subtract(eye, target, zAxis), zAxis);
-  v3.normalize(v3.cross(up, zAxis, xAxis), xAxis);
-  v3.normalize(v3.cross(zAxis, xAxis, yAxis), yAxis);
-
-  dst[0] = xAxis[0];
-  dst[1] = xAxis[1];
-  dst[2] = xAxis[2];
-  dst[3] = 0;
-  dst[4] = yAxis[0];
-  dst[5] = yAxis[1];
-  dst[6] = yAxis[2];
-  dst[7] = 0;
-  dst[8] = zAxis[0];
-  dst[9] = zAxis[1];
-  dst[10] = zAxis[2];
-  dst[11] = 0;
-  dst[12] = eye[0];
-  dst[13] = eye[1];
-  dst[14] = eye[2];
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Creates a 4-by-4 matrix which translates by the given vector v.
- * @param {Vec3} v The vector by
- *     which to translate.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The translation matrix.
- * @memberOf module:twgl/m4
- */
-function translation(v, dst) {
-  dst = dst || new MatType(16);
-
-  dst[0] = 1;
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-  dst[4] = 0;
-  dst[5] = 1;
-  dst[6] = 0;
-  dst[7] = 0;
-  dst[8] = 0;
-  dst[9] = 0;
-  dst[10] = 1;
-  dst[11] = 0;
-  dst[12] = v[0];
-  dst[13] = v[1];
-  dst[14] = v[2];
-  dst[15] = 1;
-  return dst;
-}
-
-/**
- * Modifies the given 4-by-4 matrix by translation by the given vector v.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {Vec3} v The vector by
- *     which to translate.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
- * @memberOf module:twgl/m4
- */
-function translate(m, v, dst) {
-  dst = dst || new MatType(16);
-
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var m00 = m[0];
-  var m01 = m[1];
-  var m02 = m[2];
-  var m03 = m[3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var m30 = m[3 * 4 + 0];
-  var m31 = m[3 * 4 + 1];
-  var m32 = m[3 * 4 + 2];
-  var m33 = m[3 * 4 + 3];
-
-  if (m !== dst) {
-    dst[0] = m00;
-    dst[1] = m01;
-    dst[2] = m02;
-    dst[3] = m03;
-    dst[4] = m10;
-    dst[5] = m11;
-    dst[6] = m12;
-    dst[7] = m13;
-    dst[8] = m20;
-    dst[9] = m21;
-    dst[10] = m22;
-    dst[11] = m23;
-  }
-
-  dst[12] = m00 * v0 + m10 * v1 + m20 * v2 + m30;
-  dst[13] = m01 * v0 + m11 * v1 + m21 * v2 + m31;
-  dst[14] = m02 * v0 + m12 * v1 + m22 * v2 + m32;
-  dst[15] = m03 * v0 + m13 * v1 + m23 * v2 + m33;
-
-  return dst;
-}
-
-/**
- * Creates a 4-by-4 matrix which rotates around the x-axis by the given angle.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The rotation matrix.
- * @memberOf module:twgl/m4
- */
-function rotationX(angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-
-  dst[0] = 1;
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-  dst[4] = 0;
-  dst[5] = c;
-  dst[6] = s;
-  dst[7] = 0;
-  dst[8] = 0;
-  dst[9] = -s;
-  dst[10] = c;
-  dst[11] = 0;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = 0;
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given
- * angle.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
- * @memberOf module:twgl/m4
- */
-function rotateX(m, angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var m10 = m[4];
-  var m11 = m[5];
-  var m12 = m[6];
-  var m13 = m[7];
-  var m20 = m[8];
-  var m21 = m[9];
-  var m22 = m[10];
-  var m23 = m[11];
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-
-  dst[4] = c * m10 + s * m20;
-  dst[5] = c * m11 + s * m21;
-  dst[6] = c * m12 + s * m22;
-  dst[7] = c * m13 + s * m23;
-  dst[8] = c * m20 - s * m10;
-  dst[9] = c * m21 - s * m11;
-  dst[10] = c * m22 - s * m12;
-  dst[11] = c * m23 - s * m13;
-
-  if (m !== dst) {
-    dst[0] = m[0];
-    dst[1] = m[1];
-    dst[2] = m[2];
-    dst[3] = m[3];
-    dst[12] = m[12];
-    dst[13] = m[13];
-    dst[14] = m[14];
-    dst[15] = m[15];
-  }
-
-  return dst;
-}
-
-/**
- * Creates a 4-by-4 matrix which rotates around the y-axis by the given angle.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The rotation matrix.
- * @memberOf module:twgl/m4
- */
-function rotationY(angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-
-  dst[0] = c;
-  dst[1] = 0;
-  dst[2] = -s;
-  dst[3] = 0;
-  dst[4] = 0;
-  dst[5] = 1;
-  dst[6] = 0;
-  dst[7] = 0;
-  dst[8] = s;
-  dst[9] = 0;
-  dst[10] = c;
-  dst[11] = 0;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = 0;
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given
- * angle.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
- * @memberOf module:twgl/m4
- */
-function rotateY(m, angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m20 = m[2 * 4 + 0];
-  var m21 = m[2 * 4 + 1];
-  var m22 = m[2 * 4 + 2];
-  var m23 = m[2 * 4 + 3];
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-
-  dst[0] = c * m00 - s * m20;
-  dst[1] = c * m01 - s * m21;
-  dst[2] = c * m02 - s * m22;
-  dst[3] = c * m03 - s * m23;
-  dst[8] = c * m20 + s * m00;
-  dst[9] = c * m21 + s * m01;
-  dst[10] = c * m22 + s * m02;
-  dst[11] = c * m23 + s * m03;
-
-  if (m !== dst) {
-    dst[4] = m[4];
-    dst[5] = m[5];
-    dst[6] = m[6];
-    dst[7] = m[7];
-    dst[12] = m[12];
-    dst[13] = m[13];
-    dst[14] = m[14];
-    dst[15] = m[15];
-  }
-
-  return dst;
-}
-
-/**
- * Creates a 4-by-4 matrix which rotates around the z-axis by the given angle.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The rotation matrix.
- * @memberOf module:twgl/m4
- */
-function rotationZ(angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-
-  dst[0] = c;
-  dst[1] = s;
-  dst[2] = 0;
-  dst[3] = 0;
-  dst[4] = -s;
-  dst[5] = c;
-  dst[6] = 0;
-  dst[7] = 0;
-  dst[8] = 0;
-  dst[9] = 0;
-  dst[10] = 1;
-  dst[11] = 0;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = 0;
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given
- * angle.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
- * @memberOf module:twgl/m4
- */
-function rotateZ(m, angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var m00 = m[0 * 4 + 0];
-  var m01 = m[0 * 4 + 1];
-  var m02 = m[0 * 4 + 2];
-  var m03 = m[0 * 4 + 3];
-  var m10 = m[1 * 4 + 0];
-  var m11 = m[1 * 4 + 1];
-  var m12 = m[1 * 4 + 2];
-  var m13 = m[1 * 4 + 3];
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-
-  dst[0] = c * m00 + s * m10;
-  dst[1] = c * m01 + s * m11;
-  dst[2] = c * m02 + s * m12;
-  dst[3] = c * m03 + s * m13;
-  dst[4] = c * m10 - s * m00;
-  dst[5] = c * m11 - s * m01;
-  dst[6] = c * m12 - s * m02;
-  dst[7] = c * m13 - s * m03;
-
-  if (m !== dst) {
-    dst[8] = m[8];
-    dst[9] = m[9];
-    dst[10] = m[10];
-    dst[11] = m[11];
-    dst[12] = m[12];
-    dst[13] = m[13];
-    dst[14] = m[14];
-    dst[15] = m[15];
-  }
-
-  return dst;
-}
-
-/**
- * Creates a 4-by-4 matrix which rotates around the given axis by the given
- * angle.
- * @param {Vec3} axis The axis
- *     about which to rotate.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} A matrix which rotates angle radians
- *     around the axis.
- * @memberOf module:twgl/m4
- */
-function axisRotation(axis, angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var x = axis[0];
-  var y = axis[1];
-  var z = axis[2];
-  var n = Math.sqrt(x * x + y * y + z * z);
-  x /= n;
-  y /= n;
-  z /= n;
-  var xx = x * x;
-  var yy = y * y;
-  var zz = z * z;
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-  var oneMinusCosine = 1 - c;
-
-  dst[0] = xx + (1 - xx) * c;
-  dst[1] = x * y * oneMinusCosine + z * s;
-  dst[2] = x * z * oneMinusCosine - y * s;
-  dst[3] = 0;
-  dst[4] = x * y * oneMinusCosine - z * s;
-  dst[5] = yy + (1 - yy) * c;
-  dst[6] = y * z * oneMinusCosine + x * s;
-  dst[7] = 0;
-  dst[8] = x * z * oneMinusCosine + y * s;
-  dst[9] = y * z * oneMinusCosine - x * s;
-  dst[10] = zz + (1 - zz) * c;
-  dst[11] = 0;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = 0;
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Modifies the given 4-by-4 matrix by rotation around the given axis by the
- * given angle.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {Vec3} axis The axis
- *     about which to rotate.
- * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
- * @memberOf module:twgl/m4
- */
-function axisRotate(m, axis, angleInRadians, dst) {
-  dst = dst || new MatType(16);
-
-  var x = axis[0];
-  var y = axis[1];
-  var z = axis[2];
-  var n = Math.sqrt(x * x + y * y + z * z);
-  x /= n;
-  y /= n;
-  z /= n;
-  var xx = x * x;
-  var yy = y * y;
-  var zz = z * z;
-  var c = Math.cos(angleInRadians);
-  var s = Math.sin(angleInRadians);
-  var oneMinusCosine = 1 - c;
-
-  var r00 = xx + (1 - xx) * c;
-  var r01 = x * y * oneMinusCosine + z * s;
-  var r02 = x * z * oneMinusCosine - y * s;
-  var r10 = x * y * oneMinusCosine - z * s;
-  var r11 = yy + (1 - yy) * c;
-  var r12 = y * z * oneMinusCosine + x * s;
-  var r20 = x * z * oneMinusCosine + y * s;
-  var r21 = y * z * oneMinusCosine - x * s;
-  var r22 = zz + (1 - zz) * c;
-
-  var m00 = m[0];
-  var m01 = m[1];
-  var m02 = m[2];
-  var m03 = m[3];
-  var m10 = m[4];
-  var m11 = m[5];
-  var m12 = m[6];
-  var m13 = m[7];
-  var m20 = m[8];
-  var m21 = m[9];
-  var m22 = m[10];
-  var m23 = m[11];
-
-  dst[0] = r00 * m00 + r01 * m10 + r02 * m20;
-  dst[1] = r00 * m01 + r01 * m11 + r02 * m21;
-  dst[2] = r00 * m02 + r01 * m12 + r02 * m22;
-  dst[3] = r00 * m03 + r01 * m13 + r02 * m23;
-  dst[4] = r10 * m00 + r11 * m10 + r12 * m20;
-  dst[5] = r10 * m01 + r11 * m11 + r12 * m21;
-  dst[6] = r10 * m02 + r11 * m12 + r12 * m22;
-  dst[7] = r10 * m03 + r11 * m13 + r12 * m23;
-  dst[8] = r20 * m00 + r21 * m10 + r22 * m20;
-  dst[9] = r20 * m01 + r21 * m11 + r22 * m21;
-  dst[10] = r20 * m02 + r21 * m12 + r22 * m22;
-  dst[11] = r20 * m03 + r21 * m13 + r22 * m23;
-
-  if (m !== dst) {
-    dst[12] = m[12];
-    dst[13] = m[13];
-    dst[14] = m[14];
-    dst[15] = m[15];
-  }
-
-  return dst;
-}
-
-/**
- * Creates a 4-by-4 matrix which scales in each dimension by an amount given by
- * the corresponding entry in the given vector; assumes the vector has three
- * entries.
- * @param {Vec3} v A vector of
- *     three entries specifying the factor by which to scale in each dimension.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} The scaling matrix.
- * @memberOf module:twgl/m4
- */
-function scaling(v, dst) {
-  dst = dst || new MatType(16);
-
-  dst[0] = v[0];
-  dst[1] = 0;
-  dst[2] = 0;
-  dst[3] = 0;
-  dst[4] = 0;
-  dst[5] = v[1];
-  dst[6] = 0;
-  dst[7] = 0;
-  dst[8] = 0;
-  dst[9] = 0;
-  dst[10] = v[2];
-  dst[11] = 0;
-  dst[12] = 0;
-  dst[13] = 0;
-  dst[14] = 0;
-  dst[15] = 1;
-
-  return dst;
-}
-
-/**
- * Modifies the given 4-by-4 matrix, scaling in each dimension by an amount
- * given by the corresponding entry in the given vector; assumes the vector has
- * three entries.
- * @param {module:twgl/m4.Mat4} m The matrix to be modified.
- * @param {Vec3} v A vector of three entries specifying the
- *     factor by which to scale in each dimension.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
- * @memberOf module:twgl/m4
- */
-function scale(m, v, dst) {
-  dst = dst || new MatType(16);
-
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-
-  dst[0] = v0 * m[0 * 4 + 0];
-  dst[1] = v0 * m[0 * 4 + 1];
-  dst[2] = v0 * m[0 * 4 + 2];
-  dst[3] = v0 * m[0 * 4 + 3];
-  dst[4] = v1 * m[1 * 4 + 0];
-  dst[5] = v1 * m[1 * 4 + 1];
-  dst[6] = v1 * m[1 * 4 + 2];
-  dst[7] = v1 * m[1 * 4 + 3];
-  dst[8] = v2 * m[2 * 4 + 0];
-  dst[9] = v2 * m[2 * 4 + 1];
-  dst[10] = v2 * m[2 * 4 + 2];
-  dst[11] = v2 * m[2 * 4 + 3];
-
-  if (m !== dst) {
-    dst[12] = m[12];
-    dst[13] = m[13];
-    dst[14] = m[14];
-    dst[15] = m[15];
-  }
-
-  return dst;
-}
-
-/**
- * Takes a 4-by-4 matrix and a vector with 3 entries,
- * interprets the vector as a point, transforms that point by the matrix, and
- * returns the result as a vector with 3 entries.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {Vec3} v The point.
- * @param {Vec3} dst optional vec3 to store result
- * @return {Vec3} dst or new vec3 if not provided
- * @memberOf module:twgl/m4
- */
-function transformPoint(m, v, dst) {
-  dst = dst || v3.create();
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
-
-  dst[0] = (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d;
-  dst[1] = (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d;
-  dst[2] = (v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2] + m[3 * 4 + 2]) / d;
-
-  return dst;
-}
-
-/**
- * Takes a 4-by-4 matrix and a vector with 3 entries, interprets the vector as a
- * direction, transforms that direction by the matrix, and returns the result;
- * assumes the transformation of 3-dimensional space represented by the matrix
- * is parallel-preserving, i.e. any combination of rotation, scaling and
- * translation, but not a perspective distortion. Returns a vector with 3
- * entries.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {Vec3} v The direction.
- * @param {Vec3} dst optional Vec3 to store result
- * @return {Vec3} dst or new Vec3 if not provided
- * @memberOf module:twgl/m4
- */
-function transformDirection(m, v, dst) {
-  dst = dst || v3.create();
-
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-
-  dst[0] = v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0];
-  dst[1] = v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1];
-  dst[2] = v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2];
-
-  return dst;
-}
-
-/**
- * Takes a 4-by-4 matrix m and a vector v with 3 entries, interprets the vector
- * as a normal to a surface, and computes a vector which is normal upon
- * transforming that surface by the matrix. The effect of this function is the
- * same as transforming v (as a direction) by the inverse-transpose of m.  This
- * function assumes the transformation of 3-dimensional space represented by the
- * matrix is parallel-preserving, i.e. any combination of rotation, scaling and
- * translation, but not a perspective distortion.  Returns a vector with 3
- * entries.
- * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {Vec3} v The normal.
- * @param {Vec3} [dst] The direction.
- * @return {Vec3} The transformed direction.
- * @memberOf module:twgl/m4
- */
-function transformNormal(m, v, dst) {
-  dst = dst || v3.create();
-  var mi = inverse(m);
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-
-  dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
-  dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
-  dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
-
-  return dst;
-}
-
-exports.axisRotate = axisRotate;
-exports.axisRotation = axisRotation;
-exports.copy = copy;
-exports.frustum = frustum;
-exports.getAxis = getAxis;
-exports.getTranslation = getTranslation;
-exports.identity = identity;
-exports.inverse = inverse;
-exports.lookAt = lookAt;
-exports.multiply = multiply;
-exports.negate = negate;
-exports.ortho = ortho;
-exports.perspective = perspective;
-exports.rotateX = rotateX;
-exports.rotateY = rotateY;
-exports.rotateZ = rotateZ;
-exports.rotationX = rotationX;
-exports.rotationY = rotationY;
-exports.rotationZ = rotationZ;
-exports.scale = scale;
-exports.scaling = scaling;
-exports.setAxis = setAxis;
-exports.setDefaultType = setDefaultType;
-exports.setTranslation = setTranslation;
-exports.transformDirection = transformDirection;
-exports.transformNormal = transformNormal;
-exports.transformPoint = transformPoint;
-exports.translate = translate;
-exports.translation = translation;
-exports.transpose = transpose;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.primitives = exports.v3 = exports.m4 = undefined;
-
-var _twgl = __webpack_require__(9);
-
-Object.keys(_twgl).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _twgl[key];
-    }
-  });
-});
-
-var _m = __webpack_require__(7);
-
-var m4 = _interopRequireWildcard(_m);
-
-var _v = __webpack_require__(4);
-
-var v3 = _interopRequireWildcard(_v);
-
-var _primitives = __webpack_require__(13);
-
-var primitives = _interopRequireWildcard(_primitives);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-exports.m4 = m4;
-exports.v3 = v3;
-exports.primitives = primitives;
 
 /***/ }),
 /* 9 */
@@ -6205,487 +7047,35 @@ exports.primitives = primitives;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setDefaults = exports.resizeCanvasToDisplaySize = exports.getWebGLContext = exports.getContext = exports.addExtensionsToContext = undefined;
-
-var _attributes = __webpack_require__(5);
-
-Object.keys(_attributes).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _attributes[key];
-    }
-  });
-});
-
-var _draw = __webpack_require__(10);
-
-Object.keys(_draw).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _draw[key];
-    }
-  });
-});
-
-var _framebuffers = __webpack_require__(11);
-
-Object.keys(_framebuffers).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _framebuffers[key];
-    }
-  });
-});
-
-var _programs = __webpack_require__(2);
-
-Object.keys(_programs).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _programs[key];
-    }
-  });
-});
-
-var _textures = __webpack_require__(6);
-
-Object.keys(_textures).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _textures[key];
-    }
-  });
-});
-
-var _typedarrays = __webpack_require__(1);
-
-Object.keys(_typedarrays).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _typedarrays[key];
-    }
-  });
-});
-
-var _utils = __webpack_require__(3);
-
-Object.keys(_utils).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _utils[key];
-    }
-  });
-});
-
-var _vertexArrays = __webpack_require__(12);
-
-Object.keys(_vertexArrays).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _vertexArrays[key];
-    }
-  });
-});
-
-var attributes = _interopRequireWildcard(_attributes);
-
-var textures = _interopRequireWildcard(_textures);
-
-var _helper = __webpack_require__(0);
-
-var helper = _interopRequireWildcard(_helper);
-
-var utils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * The main TWGL module.
- *
- * For most use cases you shouldn't need anything outside this module.
- * Exceptions between the stuff added to twgl-full (v3, m4, primitives)
- *
- * @module twgl
- * @borrows module:twgl/attributes.setAttribInfoBufferFromArray as setAttribInfoBufferFromArray
- * @borrows module:twgl/attributes.createBufferInfoFromArrays as createBufferInfoFromArrays
- * @borrows module:twgl/attributes.createVertexArrayInfo as createVertexArrayInfo
- * @borrows module:twgl/draw.drawBufferInfo as drawBufferInfo
- * @borrows module:twgl/draw.drawObjectList as drawObjectList
- * @borrows module:twgl/framebuffers.createFramebufferInfo as createFramebufferInfo
- * @borrows module:twgl/framebuffers.resizeFramebufferInfo as resizeFramebufferInfo
- * @borrows module:twgl/framebuffers.bindFramebufferInfo as bindFramebufferInfo
- * @borrows module:twgl/programs.createProgramInfo as createProgramInfo
- * @borrows module:twgl/programs.createUniformBlockInfo as createUniformBlockInfo
- * @borrows module:twgl/programs.bindUniformBlock as bindUniformBlock
- * @borrows module:twgl/programs.setUniformBlock as setUniformBlock
- * @borrows module:twgl/programs.setBlockUniforms as setBlockUniforms
- * @borrows module:twgl/programs.setUniforms as setUniforms
- * @borrows module:twgl/programs.setBuffersAndAttributes as setBuffersAndAttributes
- * @borrows module:twgl/textures.setTextureFromArray as setTextureFromArray
- * @borrows module:twgl/textures.createTexture as createTexture
- * @borrows module:twgl/textures.resizeTexture as resizeTexture
- * @borrows module:twgl/textures.createTextures as createTextures
- */
-
-// make sure we don't see a global gl
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-var gl = undefined; // eslint-disable-line
-var defaults = {
-  addExtensionsToContext: true
+exports.__esModule = true;
+var _exportNames = {
+  m4: true,
+  v3: true,
+  primitives: true
 };
+exports.primitives = exports.v3 = exports.m4 = void 0;
 
-/**
- * Various default settings for twgl.
- *
- * Note: You can call this any number of times. Example:
- *
- *     twgl.setDefaults({ textureColor: [1, 0, 0, 1] });
- *     twgl.setDefaults({ attribPrefix: 'a_' });
- *
- * is equivalent to
- *
- *     twgl.setDefaults({
- *       textureColor: [1, 0, 0, 1],
- *       attribPrefix: 'a_',
- *     });
- *
- * @typedef {Object} Defaults
- * @property {string} attribPrefix The prefix to stick on attributes
- *
- *   When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
- *   as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
- *
- *   In otherwords I'll create arrays of geometry like this
- *
- *       const arrays = {
- *         position: ...
- *         normal: ...
- *         texcoord: ...
- *       };
- *
- *   But need those mapped to attributes and my attributes start with `a_`.
- *
- *   Default: `""`
- *
- * @property {number[]} textureColor Array of 4 values in the range 0 to 1
- *
- *   The default texture color is used when loading textures from
- *   urls. Because the URL will be loaded async we'd like to be
- *   able to use the texture immediately. By putting a 1x1 pixel
- *   color in the texture we can start using the texture before
- *   the URL has loaded.
- *
- *   Default: `[0.5, 0.75, 1, 1]`
- *
- * @property {string} crossOrigin
- *
- *   If not undefined sets the crossOrigin attribute on images
- *   that twgl creates when downloading images for textures.
- *
- *   Also see {@link module:twgl.TextureOptions}.
- *
- * @property {bool} addExtensionsToContext
- *
- *   If true, then, when twgl will try to add any supported WebGL extensions
- *   directly to the context under their normal GL names. For example
- *   if ANGLE_instances_arrays exists then twgl would enable it,
- *   add the functions `vertexAttribDivisor`, `drawArraysInstanced`,
- *   `drawElementsInstanced`, and the constant `VERTEX_ATTRIB_ARRAY_DIVISOR`
- *   to the `WebGLRenderingContext`.
- *
- * @memberOf module:twgl
- */
+var m4 = _interopRequireWildcard(__webpack_require__(6));
 
-/**
- * Sets various defaults for twgl.
- *
- * In the interest of terseness which is kind of the point
- * of twgl I've integrated a few of the older functions here
- *
- * @param {module:twgl.Defaults} newDefaults The default settings.
- * @memberOf module:twgl
- */
-function setDefaults(newDefaults) {
-  helper.copyExistingProperties(newDefaults, defaults);
-  attributes.setAttributeDefaults_(newDefaults); // eslint-disable-line
-  textures.setTextureDefaults_(newDefaults); // eslint-disable-line
-}
+exports.m4 = m4;
 
-var prefixRE = /^(.*?)_/;
-function addExtensionToContext(gl, extensionName) {
-  utils.glEnumToString(gl, 0);
-  var ext = gl.getExtension(extensionName);
-  if (ext) {
-    var enums = {};
-    var fnSuffix = prefixRE.exec(extensionName)[1];
-    var enumSuffix = '_' + fnSuffix;
-    for (var key in ext) {
-      var value = ext[key];
-      var isFunc = typeof value === 'function';
-      var suffix = isFunc ? fnSuffix : enumSuffix;
-      var name = key;
-      // examples of where this is not true are WEBGL_compressed_texture_s3tc
-      // and WEBGL_compressed_texture_pvrtc
-      if (key.endsWith(suffix)) {
-        name = key.substring(0, key.length - suffix.length);
-      }
-      if (gl[name] !== undefined) {
-        if (!isFunc && gl[name] !== value) {
-          helper.warn(name, gl[name], value, key);
-        }
-      } else {
-        if (isFunc) {
-          gl[name] = function (origFn) {
-            return function () {
-              return origFn.apply(ext, arguments);
-            };
-          }(value);
-        } else {
-          gl[name] = value;
-          enums[name] = value;
-        }
-      }
-    }
-    // pass the modified enums to glEnumToString
-    enums.constructor = {
-      name: ext.constructor.name
-    };
-    utils.glEnumToString(enums, 0);
-  }
-  return ext;
-}
+var v3 = _interopRequireWildcard(__webpack_require__(2));
 
-var supportedExtensions = ['ANGLE_instanced_arrays', 'EXT_blend_minmax', 'EXT_color_buffer_float', 'EXT_color_buffer_half_float', 'EXT_disjoint_timer_query', 'EXT_disjoint_timer_query_webgl2', 'EXT_frag_depth', 'EXT_sRGB', 'EXT_shader_texture_lod', 'EXT_texture_filter_anisotropic', 'OES_element_index_uint', 'OES_standard_derivatives', 'OES_texture_float', 'OES_texture_float_linear', 'OES_texture_half_float', 'OES_texture_half_float_linear', 'OES_vertex_array_object', 'WEBGL_color_buffer_float', 'WEBGL_compressed_texture_atc', 'WEBGL_compressed_texture_etc1', 'WEBGL_compressed_texture_pvrtc', 'WEBGL_compressed_texture_s3tc', 'WEBGL_compressed_texture_s3tc_srgb', 'WEBGL_depth_texture', 'WEBGL_draw_buffers'];
+exports.v3 = v3;
 
-/**
- * Attempts to enable all of the following extensions
- * and add their functions and constants to the
- * `WebGLRenderingContext` using their normal non-extension like names.
- *
- *      ANGLE_instanced_arrays
- *      EXT_blend_minmax
- *      EXT_color_buffer_float
- *      EXT_color_buffer_half_float
- *      EXT_disjoint_timer_query
- *      EXT_disjoint_timer_query_webgl2
- *      EXT_frag_depth
- *      EXT_sRGB
- *      EXT_shader_texture_lod
- *      EXT_texture_filter_anisotropic
- *      OES_element_index_uint
- *      OES_standard_derivatives
- *      OES_texture_float
- *      OES_texture_float_linear
- *      OES_texture_half_float
- *      OES_texture_half_float_linear
- *      OES_vertex_array_object
- *      WEBGL_color_buffer_float
- *      WEBGL_compressed_texture_atc
- *      WEBGL_compressed_texture_etc1
- *      WEBGL_compressed_texture_pvrtc
- *      WEBGL_compressed_texture_s3tc
- *      WEBGL_compressed_texture_s3tc_srgb
- *      WEBGL_depth_texture
- *      WEBGL_draw_buffers
- *
- * For example if `ANGLE_instanced_arrays` exists then the functions
- * `drawArraysInstanced`, `drawElementsInstanced`, `vertexAttribDivisor`
- * and the constant `VERTEX_ATTRIB_ARRAY_DIVISOR` are added to the
- * `WebGLRenderingContext`.
- *
- * Note that if you want to know if the extension exists you should
- * probably call `gl.getExtension` for each extension. Alternatively
- * you can check for the existance of the functions or constants that
- * are expected to be added. For example
- *
- *    if (gl.drawBuffers) {
- *      // Either WEBGL_draw_buffers was enabled OR you're running in WebGL2
- *      ....
- *
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @memberOf module:twgl
- */
-function addExtensionsToContext(gl) {
-  for (var ii = 0; ii < supportedExtensions.length; ++ii) {
-    addExtensionToContext(gl, supportedExtensions[ii]);
-  }
-}
+var primitives = _interopRequireWildcard(__webpack_require__(10));
 
-/**
- * Creates a webgl context.
- * @param {HTMLCanvasElement} canvas The canvas tag to get
- *     context from. If one is not passed in one will be
- *     created.
- * @return {WebGLRenderingContext} The created context.
- */
-function create3DContext(canvas, opt_attribs) {
-  var names = ["webgl", "experimental-webgl"];
-  var context = null;
-  for (var ii = 0; ii < names.length; ++ii) {
-    context = canvas.getContext(names[ii], opt_attribs);
-    if (context) {
-      if (defaults.addExtensionsToContext) {
-        addExtensionsToContext(context);
-      }
-      break;
-    }
-  }
-  return context;
-}
+exports.primitives = primitives;
 
-/**
- * Gets a WebGL1 context.
- *
- * Note: Will attempt to enable Vertex Array Objects
- * and add WebGL2 entry points. (unless you first set defaults with
- * `twgl.setDefaults({enableVertexArrayObjects: false})`;
- *
- * @param {HTMLCanvasElement} canvas a canvas element.
- * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
- * @memberOf module:twgl
- */
-function getWebGLContext(canvas, opt_attribs) {
-  var gl = create3DContext(canvas, opt_attribs);
-  return gl;
-}
+var _twgl = __webpack_require__(11);
 
-/**
- * Creates a webgl context.
- *
- * Will return a WebGL2 context if possible.
- *
- * You can check if it's WebGL2 with
- *
- *     twgl.isWebGL2(gl);
- *
- * @param {HTMLCanvasElement} canvas The canvas tag to get
- *     context from. If one is not passed in one will be
- *     created.
- * @return {WebGLRenderingContext} The created context.
- */
-function createContext(canvas, opt_attribs) {
-  var names = ["webgl2", "webgl", "experimental-webgl"];
-  var context = null;
-  for (var ii = 0; ii < names.length; ++ii) {
-    context = canvas.getContext(names[ii], opt_attribs);
-    if (context) {
-      if (defaults.addExtensionsToContext) {
-        addExtensionsToContext(context);
-      }
-      break;
-    }
-  }
-  return context;
-}
+Object.keys(_twgl).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _twgl[key];
+});
 
-/**
- * Gets a WebGL context.  Will create a WebGL2 context if possible.
- *
- * You can check if it's WebGL2 with
- *
- *    function isWebGL2(gl) {
- *      return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0 ") == 0;
- *    }
- *
- * Note: For a WebGL1 context will attempt to enable Vertex Array Objects
- * and add WebGL2 entry points. (unless you first set defaults with
- * `twgl.setDefaults({enableVertexArrayObjects: false})`;
- *
- * @param {HTMLCanvasElement} canvas a canvas element.
- * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
- * @return {WebGLRenderingContext} The created context.
- * @memberOf module:twgl
- */
-function getContext(canvas, opt_attribs) {
-  var gl = createContext(canvas, opt_attribs);
-  return gl;
-}
-
-/**
- * Resize a canvas to match the size it's displayed.
- * @param {HTMLCanvasElement} canvas The canvas to resize.
- * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` or other scale value if you want to.
- * @return {boolean} true if the canvas was resized.
- * @memberOf module:twgl
- */
-function resizeCanvasToDisplaySize(canvas, multiplier) {
-  multiplier = multiplier || 1;
-  multiplier = Math.max(0, multiplier);
-  var width = canvas.clientWidth * multiplier | 0;
-  var height = canvas.clientHeight * multiplier | 0;
-  if (canvas.width !== width || canvas.height !== height) {
-    canvas.width = width;
-    canvas.height = height;
-    return true;
-  }
-  return false;
-}
-
-exports.addExtensionsToContext = addExtensionsToContext;
-exports.getContext = getContext;
-exports.getWebGLContext = getWebGLContext;
-exports.resizeCanvasToDisplaySize = resizeCanvasToDisplaySize;
-exports.setDefaults = setDefaults;
-
-// function notPrivate(name) {
-//   return name[name.length - 1] !== '_';
-// }
-//
-// function copyPublicProperties(src, dst) {
-//   Object.keys(src).filter(notPrivate).forEach(function(key) {
-//     dst[key] = src[key];
-//   });
-//   return dst;
-// }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 /***/ }),
 /* 10 */
@@ -6694,731 +7084,41 @@ exports.setDefaults = setDefaults;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.drawObjectList = exports.drawBufferInfo = undefined;
+exports.__esModule = true;
+exports.create3DFVertices = create3DFVertices;
+exports.createAugmentedTypedArray = createAugmentedTypedArray;
+exports.createCubeVertices = createCubeVertices;
+exports.createPlaneVertices = createPlaneVertices;
+exports.createSphereVertices = createSphereVertices;
+exports.createTruncatedConeVertices = createTruncatedConeVertices;
+exports.createXYQuadVertices = createXYQuadVertices;
+exports.createCresentVertices = createCresentVertices;
+exports.createCylinderVertices = createCylinderVertices;
+exports.createTorusVertices = createTorusVertices;
+exports.createDiscVertices = createDiscVertices;
+exports.deindexVertices = deindexVertices;
+exports.flattenNormals = flattenNormals;
+exports.makeRandomVertexColors = makeRandomVertexColors;
+exports.reorientDirections = reorientDirections;
+exports.reorientNormals = reorientNormals;
+exports.reorientPositions = reorientPositions;
+exports.reorientVertices = reorientVertices;
+exports.concatVertices = concatVertices;
+exports.duplicateVertices = duplicateVertices;
+exports.createDiscBuffers = exports.createDiscBufferInfo = exports.createTorusBuffers = exports.createTorusBufferInfo = exports.createCylinderBuffers = exports.createCylinderBufferInfo = exports.createCresentBuffers = exports.createCresentBufferInfo = exports.createXYQuadBuffers = exports.createXYQuadBufferInfo = exports.createTruncatedConeBuffers = exports.createTruncatedConeBufferInfo = exports.createSphereBuffers = exports.createSphereBufferInfo = exports.createPlaneBuffers = exports.createPlaneBufferInfo = exports.createCubeBuffers = exports.createCubeBufferInfo = exports.create3DFBuffers = exports.create3DFBufferInfo = void 0;
+
+var attributes = _interopRequireWildcard(__webpack_require__(7));
+
+var helper = _interopRequireWildcard(__webpack_require__(0));
+
+var typedArrays = _interopRequireWildcard(__webpack_require__(1));
+
+var m4 = _interopRequireWildcard(__webpack_require__(6));
+
+var v3 = _interopRequireWildcard(__webpack_require__(2));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-var _programs = __webpack_require__(2);
-
-var programs = _interopRequireWildcard(_programs);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * Drawing related functions
- *
- * For backward compatibily they are available at both `twgl.draw` and `twgl`
- * itself
- *
- * See {@link module:twgl} for core functions
- *
- * @module twgl/draw
- */
-
-/**
- * Calls `gl.drawElements` or `gl.drawArrays`, whichever is appropriate
- *
- * normally you'd call `gl.drawElements` or `gl.drawArrays` yourself
- * but calling this means if you switch from indexed data to non-indexed
- * data you don't have to remember to update your draw call.
- *
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
- *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
- * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
- * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
- * @param {number} [offset] An optional offset. Defaults to 0.
- * @param {number} [instanceCount] An optional instanceCount. if set then `drawArraysInstanced` or `drawElementsInstanced` will be called
- * @memberOf module:twgl/draw
- */
-function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
-  type = type === undefined ? gl.TRIANGLES : type;
-  var indices = bufferInfo.indices;
-  var elementType = bufferInfo.elementType;
-  var numElements = count === undefined ? bufferInfo.numElements : count;
-  offset = offset === undefined ? 0 : offset;
-  if (elementType || indices) {
-    if (instanceCount !== undefined) {
-      gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
-    } else {
-      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
-    }
-  } else {
-    if (instanceCount !== undefined) {
-      gl.drawArraysInstanced(type, offset, numElements, instanceCount);
-    } else {
-      gl.drawArrays(type, offset, numElements);
-    }
-  }
-}
-
-/**
- * A DrawObject is useful for putting objects in to an array and passing them to {@link module:twgl.drawObjectList}.
- *
- * You need either a `BufferInfo` or a `VertexArrayInfo`.
- *
- * @typedef {Object} DrawObject
- * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
- * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
- * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
- * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
- * @property {module:twgl.VertexArrayInfo} [vertexArrayInfo] A VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
- * @property {Object<string, ?>} uniforms The values for the uniforms.
- *   You can pass multiple objects by putting them in an array. For example
- *
- *     var sharedUniforms = {
- *       u_fogNear: 10,
- *       u_projection: ...
- *       ...
- *     };
- *
- *     var localUniforms = {
- *       u_world: ...
- *       u_diffuseColor: ...
- *     };
- *
- *     var drawObj = {
- *       ...
- *       uniforms: [sharedUniforms, localUniforms],
- *     };
- *
- * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
- * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
- * @property {number} [instanceCount] the number of instances. Defaults to undefined.
- * @memberOf module:twgl
- */
-
-/**
- * Draws a list of objects
- * @param {DrawObject[]} objectsToDraw an array of objects to draw.
- * @memberOf module:twgl/draw
- */
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-function drawObjectList(gl, objectsToDraw) {
-  var lastUsedProgramInfo = null;
-  var lastUsedBufferInfo = null;
-
-  objectsToDraw.forEach(function (object) {
-    if (object.active === false) {
-      return;
-    }
-
-    var programInfo = object.programInfo;
-    var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
-    var bindBuffers = false;
-    var type = object.type === undefined ? gl.TRIANGLES : object.type;
-
-    if (programInfo !== lastUsedProgramInfo) {
-      lastUsedProgramInfo = programInfo;
-      gl.useProgram(programInfo.program);
-
-      // We have to rebind buffers when changing programs because we
-      // only bind buffers the program uses. So if 2 programs use the same
-      // bufferInfo but the 1st one uses only positions the when the
-      // we switch to the 2nd one some of the attributes will not be on.
-      bindBuffers = true;
-    }
-
-    // Setup all the needed attributes.
-    if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
-      if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject && !bufferInfo.vertexArrayObject) {
-        gl.bindVertexArray(null);
-      }
-      lastUsedBufferInfo = bufferInfo;
-      programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-    }
-
-    // Set the uniforms.
-    programs.setUniforms(programInfo, object.uniforms);
-
-    // Draw
-    drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
-  });
-
-  if (lastUsedBufferInfo.vertexArrayObject) {
-    gl.bindVertexArray(null);
-  }
-}
-
-exports.drawBufferInfo = drawBufferInfo;
-exports.drawObjectList = drawObjectList;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.resizeFramebufferInfo = exports.createFramebufferInfo = exports.bindFramebufferInfo = undefined;
-
-var _textures = __webpack_require__(6);
-
-var textures = _interopRequireWildcard(_textures);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * Framebuffer related functions
- *
- * For backward compatibily they are available at both `twgl.framebuffer` and `twgl`
- * itself
- *
- * See {@link module:twgl} for core functions
- *
- * @module twgl/framebuffers
- */
-
-// make sure we don't see a global gl
-var gl = undefined; // eslint-disable-line
-
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-var UNSIGNED_BYTE = 0x1401;
-
-/* PixelFormat */
-var DEPTH_COMPONENT = 0x1902;
-var RGBA = 0x1908;
-
-/* Framebuffer Object. */
-var RGBA4 = 0x8056;
-var RGB5_A1 = 0x8057;
-var RGB565 = 0x8D62;
-var DEPTH_COMPONENT16 = 0x81A5;
-var STENCIL_INDEX = 0x1901;
-var STENCIL_INDEX8 = 0x8D48;
-var DEPTH_STENCIL = 0x84F9;
-var COLOR_ATTACHMENT0 = 0x8CE0;
-var DEPTH_ATTACHMENT = 0x8D00;
-var STENCIL_ATTACHMENT = 0x8D20;
-var DEPTH_STENCIL_ATTACHMENT = 0x821A;
-
-/* TextureWrapMode */
-var REPEAT = 0x2901; // eslint-disable-line
-var CLAMP_TO_EDGE = 0x812F;
-var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
-
-/* TextureMagFilter */
-var NEAREST = 0x2600; // eslint-disable-line
-var LINEAR = 0x2601;
-
-/* TextureMinFilter */
-var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
-var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
-var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
-var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
-
-/**
- * The options for a framebuffer attachment.
- *
- * Note: For a `format` that is a texture include all the texture
- * options from {@link module:twgl.TextureOptions} for example
- * `min`, `mag`, `clamp`, etc... Note that unlike {@link module:twgl.TextureOptions}
- * `auto` defaults to `false` for attachment textures but `min` and `mag` default
- * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
- *
- * @typedef {Object} AttachmentOptions
- * @property {number} [attach] The attachment point. Defaults
- *   to `gl.COLOR_ATTACTMENT0 + ndx` unless type is a depth or stencil type
- *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
- *   on the format or attachment type.
- * @property {number} [format] The format. If one of `gl.RGBA4`,
- *   `gl.RGB565`, `gl.RGB5_A1`, `gl.DEPTH_COMPONENT16`,
- *   `gl.STENCIL_INDEX8` or `gl.DEPTH_STENCIL` then will create a
- *   renderbuffer. Otherwise will create a texture. Default = `gl.RGBA`
- * @property {number} [type] The type. Used for texture. Default = `gl.UNSIGNED_BYTE`.
- * @property {number} [target] The texture target for `gl.framebufferTexture2D`.
- *   Defaults to `gl.TEXTURE_2D`. Set to appropriate face for cube maps.
- * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
- * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
- *    If provided will attach this Object. This allows you to share
- *    attachemnts across framebuffers.
- * @memberOf module:twgl
- */
-
-var defaultAttachments = [{ format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE }, { format: DEPTH_STENCIL }];
-
-var attachmentsByFormat = {};
-attachmentsByFormat[DEPTH_STENCIL] = DEPTH_STENCIL_ATTACHMENT;
-attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
-attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
-attachmentsByFormat[DEPTH_COMPONENT] = DEPTH_ATTACHMENT;
-attachmentsByFormat[DEPTH_COMPONENT16] = DEPTH_ATTACHMENT;
-
-function getAttachmentPointForFormat(format) {
-  return attachmentsByFormat[format];
-}
-
-var renderbufferFormats = {};
-renderbufferFormats[RGBA4] = true;
-renderbufferFormats[RGB5_A1] = true;
-renderbufferFormats[RGB565] = true;
-renderbufferFormats[DEPTH_STENCIL] = true;
-renderbufferFormats[DEPTH_COMPONENT16] = true;
-renderbufferFormats[STENCIL_INDEX] = true;
-renderbufferFormats[STENCIL_INDEX8] = true;
-
-function isRenderbufferFormat(format) {
-  return renderbufferFormats[format];
-}
-
-/**
- * @typedef {Object} FramebufferInfo
- * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
- * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
- * @memberOf module:twgl
- */
-
-/**
- * Creates a framebuffer and attachments.
- *
- * This returns a {@link module:twgl.FramebufferInfo} because it needs to return the attachments as well as the framebuffer.
- *
- * The simplest usage
- *
- *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
- *     const fbi = twgl.createFramebufferInfo(gl);
- *
- * More complex usage
- *
- *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
- *     const attachments = [
- *       { format: RGB565, mag: NEAREST },
- *       { format: STENCIL_INDEX8 },
- *     ]
- *     const fbi = twgl.createFramebufferInfo(gl, attachments);
- *
- * Passing in a specific size
- *
- *     const width = 256;
- *     const height = 256;
- *     const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
- *
- * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
- * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
- *
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @param {module:twgl.AttachmentOptions[]} [attachments] which attachments to create. If not provided the default is a framebuffer with an
- *    `RGBA`, `UNSIGNED_BYTE` texture `COLOR_ATTACHMENT0` and a `DEPTH_STENCIL` renderbuffer `DEPTH_STENCIL_ATTACHMENT`.
- * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
- * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
- * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
- * @memberOf module:twgl/framebuffers
- */
-function createFramebufferInfo(gl, attachments, width, height) {
-  var target = gl.FRAMEBUFFER;
-  var fb = gl.createFramebuffer();
-  gl.bindFramebuffer(target, fb);
-  width = width || gl.drawingBufferWidth;
-  height = height || gl.drawingBufferHeight;
-  attachments = attachments || defaultAttachments;
-  var colorAttachmentCount = 0;
-  var framebufferInfo = {
-    framebuffer: fb,
-    attachments: [],
-    width: width,
-    height: height
-  };
-  attachments.forEach(function (attachmentOptions) {
-    var attachment = attachmentOptions.attachment;
-    var format = attachmentOptions.format;
-    var attachmentPoint = getAttachmentPointForFormat(format);
-    if (!attachmentPoint) {
-      attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
-    }
-    if (!attachment) {
-      if (isRenderbufferFormat(format)) {
-        attachment = gl.createRenderbuffer();
-        gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
-        gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
-      } else {
-        var textureOptions = Object.assign({}, attachmentOptions);
-        textureOptions.width = width;
-        textureOptions.height = height;
-        if (textureOptions.auto === undefined) {
-          textureOptions.auto = false;
-          textureOptions.min = textureOptions.min || textureOptions.minMag || gl.LINEAR;
-          textureOptions.mag = textureOptions.mag || textureOptions.minMag || gl.LINEAR;
-          textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
-          textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
-        }
-        attachment = textures.createTexture(gl, textureOptions);
-      }
-    }
-    if (attachment instanceof WebGLRenderbuffer) {
-      gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
-    } else if (attachment instanceof WebGLTexture) {
-      gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
-    } else {
-      throw "unknown attachment type";
-    }
-    framebufferInfo.attachments.push(attachment);
-  });
-  return framebufferInfo;
-}
-
-/**
- * Resizes the attachments of a framebuffer.
- *
- * You need to pass in the same `attachments` as you passed in {@link module:twgl.createFramebufferInfo}
- * because TWGL has no idea the format/type of each attachment.
- *
- * The simplest usage
- *
- *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
- *     const fbi = twgl.createFramebufferInfo(gl);
- *
- *     ...
- *
- *     function render() {
- *       if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
- *         // resize the attachments
- *         twgl.resizeFramebufferInfo(gl, fbi);
- *       }
- *
- * More complex usage
- *
- *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
- *     const attachments = [
- *       { format: RGB565, mag: NEAREST },
- *       { format: STENCIL_INDEX8 },
- *     ]
- *     const fbi = twgl.createFramebufferInfo(gl, attachments);
- *
- *     ...
- *
- *     function render() {
- *       if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
- *         // resize the attachments to match
- *         twgl.resizeFramebufferInfo(gl, fbi, attachments);
- *       }
- *
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
- * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebufferInfo}.
- * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
- * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
- * @memberOf module:twgl/framebuffers
- */
-function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
-  width = width || gl.drawingBufferWidth;
-  height = height || gl.drawingBufferHeight;
-  framebufferInfo.width = width;
-  framebufferInfo.height = height;
-  attachments = attachments || defaultAttachments;
-  attachments.forEach(function (attachmentOptions, ndx) {
-    var attachment = framebufferInfo.attachments[ndx];
-    var format = attachmentOptions.format;
-    if (attachment instanceof WebGLRenderbuffer) {
-      gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
-      gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
-    } else if (attachment instanceof WebGLTexture) {
-      textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
-    } else {
-      throw "unknown attachment type";
-    }
-  });
-}
-
-/**
- * Binds a framebuffer
- *
- * This function pretty much soley exists because I spent hours
- * trying to figure out why something I wrote wasn't working only
- * to realize I forget to set the viewport dimensions.
- * My hope is this function will fix that.
- *
- * It is effectively the same as
- *
- *     gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
- *     gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);
- *
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
- *   If not passed will bind the canvas.
- * @param {number} [target] The target. If not passed `gl.FRAMEBUFFER` will be used.
- * @memberOf module:twgl/framebuffers
- */
-
-function bindFramebufferInfo(gl, framebufferInfo, target) {
-  target = target || gl.FRAMEBUFFER;
-  if (framebufferInfo) {
-    gl.bindFramebuffer(target, framebufferInfo.framebuffer);
-    gl.viewport(0, 0, framebufferInfo.width, framebufferInfo.height);
-  } else {
-    gl.bindFramebuffer(target, null);
-    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-  }
-}
-
-exports.bindFramebufferInfo = bindFramebufferInfo;
-exports.createFramebufferInfo = createFramebufferInfo;
-exports.resizeFramebufferInfo = resizeFramebufferInfo;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createVAOFromBufferInfo = exports.createVAOAndSetAttributes = exports.createVertexArrayInfo = undefined;
-
-var _programs = __webpack_require__(2);
-
-var programs = _interopRequireWildcard(_programs);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * vertex array object related functions
- *
- * You should generally not need to use these functions. They are provided
- * for those cases where you're doing something out of the ordinary
- * and you need lower level access.
- *
- * For backward compatibily they are available at both `twgl.attributes` and `twgl`
- * itself
- *
- * See {@link module:twgl} for core functions
- *
- * @module twgl/vertexArrays
- */
-
-/**
- * @typedef {Object} VertexArrayInfo
- * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
- * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
- * @property {WebGLVertexArrayObject} [vertexArrayObject] a vertex array object
- * @memberOf module:twgl
- */
-
-/**
- * Creates a VertexArrayInfo from a BufferInfo and one or more ProgramInfos
- *
- * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
- * {@link module:twgl:drawBufferInfo}.
- *
- * > **IMPORTANT:** Vertex Array Objects are **not** a direct analog for a BufferInfo. Vertex Array Objects
- *   assign buffers to specific attributes at creation time. That means they can only be used with programs
- *   who's attributes use the same attribute locations for the same purposes.
- *
- * > Bind your attribute locations by passing an array of attribute names to {@link module:twgl.createProgramInfo}
- *   or use WebGL 2's GLSL ES 3's `layout(location = <num>)` to make sure locations match.
- *
- * also
- *
- * > **IMPORTANT:** After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object
- *   that Vertex Array Object will be bound. That means **ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES**
- *   will affect the Vertex Array Object state.
- *
- * > Call `gl.bindVertexArray(null)` to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.
- *
- * @param {WebGLRenderingContext} gl A WebGLRenderingContext
- * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
- * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
- *
- *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
- *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
- *    for shader 1 then only attributes A, B, and C will have their attributes set because TWGL doesn't
- *    now attribute D's location.
- *
- *    So, you can pass in both shader 1 and shader 2's programInfo
- *
- * @return {module:twgl.VertexArrayInfo} The created VertexArrayInfo
- *
- * @memberOf module:twgl/vertexArrays
- */
-function createVertexArrayInfo(gl, programInfos, bufferInfo) {
-  var vao = gl.createVertexArray();
-  gl.bindVertexArray(vao);
-  if (!programInfos.length) {
-    programInfos = [programInfos];
-  }
-  programInfos.forEach(function (programInfo) {
-    programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-  });
-  gl.bindVertexArray(null);
-  return {
-    numElements: bufferInfo.numElements,
-    elementType: bufferInfo.elementType,
-    vertexArrayObject: vao
-  };
-}
-
-/**
- * Creates a vertex array object and then sets the attributes on it
- *
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
- * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
- * @param {Object.<string, module:twgl.AttribInfo>} attribs AttribInfos mapped by attribute name.
- * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
- * @memberOf module:twgl/vertexArrays
- */
-/*
- * Copyright 2015, Gregg Tavares.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Gregg Tavares. nor the names of his
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-function createVAOAndSetAttributes(gl, setters, attribs, indices) {
-  var vao = gl.createVertexArray();
-  gl.bindVertexArray(vao);
-  programs.setAttributes(setters, attribs);
-  if (indices) {
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indices);
-  }
-  // We unbind this because otherwise any change to ELEMENT_ARRAY_BUFFER
-  // like when creating buffers for other stuff will mess up this VAO's binding
-  gl.bindVertexArray(null);
-  return vao;
-}
-
-/**
- * Creates a vertex array object and then sets the attributes
- * on it
- *
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext
- *        to use.
- * @param {Object.<string, function>| module:twgl.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
- * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
- * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
- * @memberOf module:twgl/vertexArrays
- */
-function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
-  return createVAOAndSetAttributes(gl, programInfo.attribSetters || programInfo, bufferInfo.attribs, bufferInfo.indices);
-}
-
-exports.createVertexArrayInfo = createVertexArrayInfo;
-exports.createVAOAndSetAttributes = createVAOAndSetAttributes;
-exports.createVAOFromBufferInfo = createVAOFromBufferInfo;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.duplicateVertices = exports.concatVertices = exports.reorientVertices = exports.reorientPositions = exports.reorientNormals = exports.reorientDirections = exports.makeRandomVertexColors = exports.flattenNormals = exports.deindexVertices = exports.createDiscVertices = exports.createDiscBuffers = exports.createDiscBufferInfo = exports.createTorusVertices = exports.createTorusBuffers = exports.createTorusBufferInfo = exports.createCylinderVertices = exports.createCylinderBuffers = exports.createCylinderBufferInfo = exports.createCresentVertices = exports.createCresentBuffers = exports.createCresentBufferInfo = exports.createXYQuadVertices = exports.createXYQuadBuffers = exports.createXYQuadBufferInfo = exports.createTruncatedConeVertices = exports.createTruncatedConeBuffers = exports.createTruncatedConeBufferInfo = exports.createSphereVertices = exports.createSphereBuffers = exports.createSphereBufferInfo = exports.createPlaneVertices = exports.createPlaneBuffers = exports.createPlaneBufferInfo = exports.createCubeVertices = exports.createCubeBuffers = exports.createCubeBufferInfo = exports.createAugmentedTypedArray = exports.create3DFVertices = exports.create3DFBuffers = exports.create3DFBufferInfo = undefined;
-
-var _attributes = __webpack_require__(5);
-
-var attributes = _interopRequireWildcard(_attributes);
-
-var _helper = __webpack_require__(0);
-
-var helper = _interopRequireWildcard(_helper);
-
-var _typedarrays = __webpack_require__(1);
-
-var typedArrays = _interopRequireWildcard(_typedarrays);
-
-var _m = __webpack_require__(7);
-
-var m4 = _interopRequireWildcard(_m);
-
-var _v = __webpack_require__(4);
-
-var v3 = _interopRequireWildcard(_v);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var getArray = attributes.getArray_; // eslint-disable-line
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -7482,6 +7182,8 @@ var getArray = attributes.getArray_; // eslint-disable-line
  *
  * @module twgl/primitives
  */
+var getArray = attributes.getArray_; // eslint-disable-line
+
 var getNumComponents = attributes.getNumComponents_; // eslint-disable-line
 
 /**
@@ -7491,11 +7193,14 @@ var getNumComponents = attributes.getNumComponents_; // eslint-disable-line
  * @param {TypedArray} typedArray TypedArray to augment
  * @param {number} numComponents number of components.
  */
+
 function augmentTypedArray(typedArray, numComponents) {
   var cursor = 0;
+
   typedArray.push = function () {
     for (var ii = 0; ii < arguments.length; ++ii) {
       var value = arguments[ii];
+
       if (value instanceof Array || typedArrays.isArrayBuffer(value)) {
         for (var jj = 0; jj < value.length; ++jj) {
           typedArray[cursor++] = value[jj];
@@ -7505,9 +7210,11 @@ function augmentTypedArray(typedArray, numComponents) {
       }
     }
   };
+
   typedArray.reset = function (opt_index) {
     cursor = opt_index || 0;
   };
+
   typedArray.numComponents = numComponents;
   Object.defineProperty(typedArray, 'numElements', {
     get: function get() {
@@ -7516,7 +7223,6 @@ function augmentTypedArray(typedArray, numComponents) {
   });
   return typedArray;
 }
-
 /**
  * creates a typed array with a `push` function attached
  * so that you can easily *push* values.
@@ -7539,6 +7245,8 @@ function augmentTypedArray(typedArray, numComponents) {
  * @return {ArrayBufferView} A typed array.
  * @memberOf module:twgl/primitives
  */
+
+
 function createAugmentedTypedArray(numComponents, numElements, opt_type) {
   var Type = opt_type || Float32Array;
   return augmentTypedArray(new Type(numComponents * numElements), numComponents);
@@ -7547,13 +7255,14 @@ function createAugmentedTypedArray(numComponents, numElements, opt_type) {
 function allButIndices(name) {
   return name !== "indices";
 }
-
 /**
  * Given indexed vertices creates a new set of vertices unindexed by expanding the indexed vertices.
  * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex
  * @return {Object.<string, TypedArray>} The deindexed vertices
  * @memberOf module:twgl/primitives
  */
+
+
 function deindexVertices(vertices) {
   var indices = vertices.indices;
   var newVertices = {};
@@ -7563,27 +7272,30 @@ function deindexVertices(vertices) {
     var srcBuffer = vertices[channel];
     var numComponents = srcBuffer.numComponents;
     var dstBuffer = createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
+
     for (var ii = 0; ii < numElements; ++ii) {
       var ndx = indices[ii];
       var offset = ndx * numComponents;
+
       for (var jj = 0; jj < numComponents; ++jj) {
         dstBuffer.push(srcBuffer[offset + jj]);
       }
     }
+
     newVertices[channel] = dstBuffer;
   }
 
   Object.keys(vertices).filter(allButIndices).forEach(expandToUnindexed);
-
   return newVertices;
 }
-
 /**
  * flattens the normals of deindexed vertices in place.
  * @param {Object.<string, TypedArray>} vertices The deindexed vertices who's normals to flatten
  * @return {Object.<string, TypedArray>} The flattened vertices (same as was passed in)
  * @memberOf module:twgl/primitives
  */
+
+
 function flattenNormals(vertices) {
   if (vertices.indices) {
     throw "can't flatten normals of indexed vertices. deindex them first";
@@ -7591,41 +7303,34 @@ function flattenNormals(vertices) {
 
   var normals = vertices.normal;
   var numNormals = normals.length;
+
   for (var ii = 0; ii < numNormals; ii += 9) {
     // pull out the 3 normals for this triangle
     var nax = normals[ii + 0];
     var nay = normals[ii + 1];
     var naz = normals[ii + 2];
-
     var nbx = normals[ii + 3];
     var nby = normals[ii + 4];
     var nbz = normals[ii + 5];
-
     var ncx = normals[ii + 6];
     var ncy = normals[ii + 7];
-    var ncz = normals[ii + 8];
+    var ncz = normals[ii + 8]; // add them
 
-    // add them
     var nx = nax + nbx + ncx;
     var ny = nay + nby + ncy;
-    var nz = naz + nbz + ncz;
+    var nz = naz + nbz + ncz; // normalize them
 
-    // normalize them
     var length = Math.sqrt(nx * nx + ny * ny + nz * nz);
-
     nx /= length;
     ny /= length;
-    nz /= length;
+    nz /= length; // copy them back in
 
-    // copy them back in
     normals[ii + 0] = nx;
     normals[ii + 1] = ny;
     normals[ii + 2] = nz;
-
     normals[ii + 3] = nx;
     normals[ii + 4] = ny;
     normals[ii + 5] = nz;
-
     normals[ii + 6] = nx;
     normals[ii + 7] = ny;
     normals[ii + 8] = nz;
@@ -7637,6 +7342,7 @@ function flattenNormals(vertices) {
 function applyFuncToV3Array(array, matrix, fn) {
   var len = array.length;
   var tmp = new Float32Array(3);
+
   for (var ii = 0; ii < len; ii += 3) {
     fn(matrix, [array[ii], array[ii + 1], array[ii + 2]], tmp);
     array[ii] = tmp[0];
@@ -7650,14 +7356,11 @@ function transformNormal(mi, v, dst) {
   var v0 = v[0];
   var v1 = v[1];
   var v2 = v[2];
-
   dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
   dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
   dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
-
   return dst;
 }
-
 /**
  * Reorients directions by the given matrix..
  * @param {number[]|TypedArray} array The array. Assumes value floats per element.
@@ -7665,11 +7368,12 @@ function transformNormal(mi, v, dst) {
  * @return {number[]|TypedArray} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientDirections(array, matrix) {
   applyFuncToV3Array(array, matrix, m4.transformDirection);
   return array;
 }
-
 /**
  * Reorients normals by the inverse-transpose of the given
  * matrix..
@@ -7678,11 +7382,12 @@ function reorientDirections(array, matrix) {
  * @return {number[]|TypedArray} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientNormals(array, matrix) {
   applyFuncToV3Array(array, m4.inverse(matrix), transformNormal);
   return array;
 }
-
 /**
  * Reorients positions by the given matrix. In other words, it
  * multiplies each vertex by the given matrix.
@@ -7691,11 +7396,12 @@ function reorientNormals(array, matrix) {
  * @return {number[]|TypedArray} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientPositions(array, matrix) {
   applyFuncToV3Array(array, matrix, m4.transformPoint);
   return array;
 }
-
 /**
  * Reorients arrays by the given matrix. Assumes arrays have
  * names that contains 'pos' could be reoriented as positions,
@@ -7706,9 +7412,12 @@ function reorientPositions(array, matrix) {
  * @return {Object.<string, (number[]|TypedArray)>} same arrays that were passed in.
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientVertices(arrays, matrix) {
   Object.keys(arrays).forEach(function (name) {
     var array = arrays[name];
+
     if (name.indexOf("pos") >= 0) {
       reorientPositions(array, matrix);
     } else if (name.indexOf("tan") >= 0 || name.indexOf("binorm") >= 0) {
@@ -7719,7 +7428,6 @@ function reorientVertices(arrays, matrix) {
   });
   return arrays;
 }
-
 /**
  * Creates XY quad BufferInfo
  *
@@ -7780,6 +7488,8 @@ function reorientVertices(arrays, matrix) {
  * @return {Object.<string, TypedArray> the created XY Quad vertices
  * @memberOf module:twgl/primitives
  */
+
+
 function createXYQuadVertices(size, xOffset, yOffset) {
   size = size || 2;
   xOffset = xOffset || 0;
@@ -7795,7 +7505,6 @@ function createXYQuadVertices(size, xOffset, yOffset) {
     indices: [0, 1, 2, 2, 1, 3]
   };
 }
-
 /**
  * Creates XZ plane BufferInfo.
  *
@@ -7841,13 +7550,14 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @return {Object.<string, TypedArray>} The created plane vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createPlaneVertices(width, depth, subdivisionsWidth, subdivisionsDepth, matrix) {
   width = width || 1;
   depth = depth || 1;
   subdivisionsWidth = subdivisionsWidth || 1;
   subdivisionsDepth = subdivisionsDepth || 1;
   matrix = matrix || m4.identity();
-
   var numVertices = (subdivisionsWidth + 1) * (subdivisionsDepth + 1);
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
@@ -7871,9 +7581,8 @@ function createPlaneVertices(width, depth, subdivisionsWidth, subdivisionsDepth,
     for (var _x = 0; _x < subdivisionsWidth; _x++) {
       // eslint-disable-line
       // Make triangle 1 of quad.
-      indices.push((_z + 0) * numVertsAcross + _x, (_z + 1) * numVertsAcross + _x, (_z + 0) * numVertsAcross + _x + 1);
+      indices.push((_z + 0) * numVertsAcross + _x, (_z + 1) * numVertsAcross + _x, (_z + 0) * numVertsAcross + _x + 1); // Make triangle 2 of quad.
 
-      // Make triangle 2 of quad.
       indices.push((_z + 1) * numVertsAcross + _x, (_z + 1) * numVertsAcross + _x + 1, (_z + 0) * numVertsAcross + _x + 1);
     }
   }
@@ -7886,7 +7595,6 @@ function createPlaneVertices(width, depth, subdivisionsWidth, subdivisionsDepth,
   }, matrix);
   return arrays;
 }
-
 /**
  * Creates sphere BufferInfo.
  *
@@ -7950,6 +7658,8 @@ function createPlaneVertices(width, depth, subdivisionsWidth, subdivisionsDepth,
  * @return {Object.<string, TypedArray>} The created sphere vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_startLatitudeInRadians, opt_endLatitudeInRadians, opt_startLongitudeInRadians, opt_endLongitudeInRadians) {
   if (subdivisionsAxis <= 0 || subdivisionsHeight <= 0) {
     throw Error('subdivisionAxis and subdivisionHeight must be > 0');
@@ -7959,19 +7669,16 @@ function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_
   opt_endLatitudeInRadians = opt_endLatitudeInRadians || Math.PI;
   opt_startLongitudeInRadians = opt_startLongitudeInRadians || 0;
   opt_endLongitudeInRadians = opt_endLongitudeInRadians || Math.PI * 2;
-
   var latRange = opt_endLatitudeInRadians - opt_startLatitudeInRadians;
-  var longRange = opt_endLongitudeInRadians - opt_startLongitudeInRadians;
-
-  // We are going to generate our sphere by iterating through its
+  var longRange = opt_endLongitudeInRadians - opt_startLongitudeInRadians; // We are going to generate our sphere by iterating through its
   // spherical coordinates and generating 2 triangles for each quad on a
   // ring of the sphere.
+
   var numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
-  var texcoords = createAugmentedTypedArray(2, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices); // Generate the individual vertices in our vertex buffer.
 
-  // Generate the individual vertices in our vertex buffer.
   for (var y = 0; y <= subdivisionsHeight; y++) {
     for (var x = 0; x <= subdivisionsAxis; x++) {
       // Generate a vertex based on its spherical coordinates
@@ -7994,14 +7701,14 @@ function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_
 
   var numVertsAround = subdivisionsAxis + 1;
   var indices = createAugmentedTypedArray(3, subdivisionsAxis * subdivisionsHeight * 2, Uint16Array);
+
   for (var _x2 = 0; _x2 < subdivisionsAxis; _x2++) {
     // eslint-disable-line
     for (var _y = 0; _y < subdivisionsHeight; _y++) {
       // eslint-disable-line
       // Make triangle 1 of quad.
-      indices.push((_y + 0) * numVertsAround + _x2, (_y + 0) * numVertsAround + _x2 + 1, (_y + 1) * numVertsAround + _x2);
+      indices.push((_y + 0) * numVertsAround + _x2, (_y + 0) * numVertsAround + _x2 + 1, (_y + 1) * numVertsAround + _x2); // Make triangle 2 of quad.
 
-      // Make triangle 2 of quad.
       indices.push((_y + 1) * numVertsAround + _x2, (_y + 0) * numVertsAround + _x2 + 1, (_y + 1) * numVertsAround + _x2 + 1);
     }
   }
@@ -8013,18 +7720,18 @@ function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_
     indices: indices
   };
 }
-
 /**
  * Array of the indices of corners of each face of a cube.
  * @type {Array.<number[]>}
  */
+
+
 var CUBE_FACE_INDICES = [[3, 7, 5, 1], // right
 [6, 2, 0, 4], // left
 [6, 7, 3, 2], // ??
 [0, 1, 5, 4], // ??
 [7, 6, 4, 5], // front
 [2, 3, 1, 0]];
-
 /**
  * Creates a BufferInfo for a cube.
  *
@@ -8058,16 +7765,13 @@ var CUBE_FACE_INDICES = [[3, 7, 5, 1], // right
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
 function createCubeVertices(size) {
   size = size || 1;
   var k = size / 2;
-
   var cornerVertices = [[-k, -k, -k], [+k, -k, -k], [-k, +k, -k], [+k, +k, -k], [-k, -k, +k], [+k, -k, +k], [-k, +k, +k], [+k, +k, +k]];
-
   var faceNormals = [[+1, +0, +0], [-1, +0, +0], [+0, +1, +0], [+0, -1, +0], [+0, +0, +1], [+0, +0, -1]];
-
   var uvCoords = [[1, 0], [0, 0], [0, 1], [1, 1]];
-
   var numVertices = 6 * 4;
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
@@ -8076,18 +7780,19 @@ function createCubeVertices(size) {
 
   for (var f = 0; f < 6; ++f) {
     var faceIndices = CUBE_FACE_INDICES[f];
+
     for (var v = 0; v < 4; ++v) {
       var position = cornerVertices[faceIndices[v]];
       var normal = faceNormals[f];
-      var uv = uvCoords[v];
-
-      // Each face needs all four vertices because the normals and texture
+      var uv = uvCoords[v]; // Each face needs all four vertices because the normals and texture
       // coordinates are not all the same.
+
       positions.push(position);
       normals.push(normal);
       texcoords.push(uv);
-    }
-    // Two triangles make a square face.
+    } // Two triangles make a square face.
+
+
     var offset = 4 * f;
     indices.push(offset + 0, offset + 1, offset + 2);
     indices.push(offset + 0, offset + 2, offset + 3);
@@ -8100,7 +7805,6 @@ function createCubeVertices(size) {
     indices: indices
   };
 }
-
 /**
  * Creates a BufferInfo for a truncated cone, which is like a cylinder
  * except that it has different top and bottom radii. A truncated cone
@@ -8164,6 +7868,8 @@ function createCubeVertices(size) {
  * @return {Object.<string, TypedArray>} The created cone vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, opt_topCap, opt_bottomCap) {
   if (radialSubdivisions < 3) {
     throw Error('radialSubdivisions must be 3 or greater');
@@ -8175,22 +7881,17 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
 
   var topCap = opt_topCap === undefined ? true : opt_topCap;
   var bottomCap = opt_bottomCap === undefined ? true : opt_bottomCap;
-
   var extra = (topCap ? 2 : 0) + (bottomCap ? 2 : 0);
-
   var numVertices = (radialSubdivisions + 1) * (verticalSubdivisions + 1 + extra);
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
   var texcoords = createAugmentedTypedArray(2, numVertices);
   var indices = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  var vertsAroundEdge = radialSubdivisions + 1; // The slant of the cone is constant across its surface
 
-  var vertsAroundEdge = radialSubdivisions + 1;
-
-  // The slant of the cone is constant across its surface
   var slant = Math.atan2(bottomRadius - topRadius, height);
   var cosSlant = Math.cos(slant);
   var sinSlant = Math.sin(slant);
-
   var start = topCap ? -2 : 0;
   var end = verticalSubdivisions + (bottomCap ? 2 : 0);
 
@@ -8198,6 +7899,7 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
     var v = yy / verticalSubdivisions;
     var y = height * v;
     var ringRadius = void 0;
+
     if (yy < 0) {
       y = 0;
       v = 1;
@@ -8209,11 +7911,14 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
     } else {
       ringRadius = bottomRadius + (topRadius - bottomRadius) * (yy / verticalSubdivisions);
     }
+
     if (yy === -2 || yy === verticalSubdivisions + 2) {
       ringRadius = 0;
       v = 0;
     }
+
     y -= height / 2;
+
     for (var ii = 0; ii < vertsAroundEdge; ++ii) {
       var sin = Math.sin(ii * Math.PI * 2 / radialSubdivisions);
       var cos = Math.cos(ii * Math.PI * 2 / radialSubdivisions);
@@ -8239,27 +7944,30 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
     indices: indices
   };
 }
-
 /**
  * Expands RLE data
  * @param {number[]} rleData data in format of run-length, x, y, z, run-length, x, y, z
  * @param {number[]} [padding] value to add each entry with.
  * @return {number[]} the expanded rleData
  */
+
+
 function expandRLEData(rleData, padding) {
   padding = padding || [];
   var data = [];
+
   for (var ii = 0; ii < rleData.length; ii += 4) {
     var runLength = rleData[ii];
     var element = rleData.slice(ii + 1, ii + 4);
     element.push.apply(element, padding);
+
     for (var jj = 0; jj < runLength; ++jj) {
       data.push.apply(data, element);
     }
   }
+
   return data;
 }
-
 /**
  * Creates 3D 'F' BufferInfo.
  * An 'F' is useful because you can easily tell which way it is oriented.
@@ -8290,190 +7998,78 @@ function expandRLEData(rleData, padding) {
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function create3DFVertices() {
-
-  var positions = [
-  // left column front
-  0, 0, 0, 0, 150, 0, 30, 0, 0, 0, 150, 0, 30, 150, 0, 30, 0, 0,
-
-  // top rung front
-  30, 0, 0, 30, 30, 0, 100, 0, 0, 30, 30, 0, 100, 30, 0, 100, 0, 0,
-
-  // middle rung front
-  30, 60, 0, 30, 90, 0, 67, 60, 0, 30, 90, 0, 67, 90, 0, 67, 60, 0,
-
-  // left column back
-  0, 0, 30, 30, 0, 30, 0, 150, 30, 0, 150, 30, 30, 0, 30, 30, 150, 30,
-
-  // top rung back
-  30, 0, 30, 100, 0, 30, 30, 30, 30, 30, 30, 30, 100, 0, 30, 100, 30, 30,
-
-  // middle rung back
-  30, 60, 30, 67, 60, 30, 30, 90, 30, 30, 90, 30, 67, 60, 30, 67, 90, 30,
-
-  // top
-  0, 0, 0, 100, 0, 0, 100, 0, 30, 0, 0, 0, 100, 0, 30, 0, 0, 30,
-
-  // top rung front
-  100, 0, 0, 100, 30, 0, 100, 30, 30, 100, 0, 0, 100, 30, 30, 100, 0, 30,
-
-  // under top rung
-  30, 30, 0, 30, 30, 30, 100, 30, 30, 30, 30, 0, 100, 30, 30, 100, 30, 0,
-
-  // between top rung and middle
-  30, 30, 0, 30, 60, 30, 30, 30, 30, 30, 30, 0, 30, 60, 0, 30, 60, 30,
-
-  // top of middle rung
-  30, 60, 0, 67, 60, 30, 30, 60, 30, 30, 60, 0, 67, 60, 0, 67, 60, 30,
-
-  // front of middle rung
-  67, 60, 0, 67, 90, 30, 67, 60, 30, 67, 60, 0, 67, 90, 0, 67, 90, 30,
-
-  // bottom of middle rung.
-  30, 90, 0, 30, 90, 30, 67, 90, 30, 30, 90, 0, 67, 90, 30, 67, 90, 0,
-
-  // front of bottom
-  30, 90, 0, 30, 150, 30, 30, 90, 30, 30, 90, 0, 30, 150, 0, 30, 150, 30,
-
-  // bottom
-  0, 150, 0, 0, 150, 30, 30, 150, 30, 0, 150, 0, 30, 150, 30, 30, 150, 0,
-
-  // left side
+  var positions = [// left column front
+  0, 0, 0, 0, 150, 0, 30, 0, 0, 0, 150, 0, 30, 150, 0, 30, 0, 0, // top rung front
+  30, 0, 0, 30, 30, 0, 100, 0, 0, 30, 30, 0, 100, 30, 0, 100, 0, 0, // middle rung front
+  30, 60, 0, 30, 90, 0, 67, 60, 0, 30, 90, 0, 67, 90, 0, 67, 60, 0, // left column back
+  0, 0, 30, 30, 0, 30, 0, 150, 30, 0, 150, 30, 30, 0, 30, 30, 150, 30, // top rung back
+  30, 0, 30, 100, 0, 30, 30, 30, 30, 30, 30, 30, 100, 0, 30, 100, 30, 30, // middle rung back
+  30, 60, 30, 67, 60, 30, 30, 90, 30, 30, 90, 30, 67, 60, 30, 67, 90, 30, // top
+  0, 0, 0, 100, 0, 0, 100, 0, 30, 0, 0, 0, 100, 0, 30, 0, 0, 30, // top rung front
+  100, 0, 0, 100, 30, 0, 100, 30, 30, 100, 0, 0, 100, 30, 30, 100, 0, 30, // under top rung
+  30, 30, 0, 30, 30, 30, 100, 30, 30, 30, 30, 0, 100, 30, 30, 100, 30, 0, // between top rung and middle
+  30, 30, 0, 30, 60, 30, 30, 30, 30, 30, 30, 0, 30, 60, 0, 30, 60, 30, // top of middle rung
+  30, 60, 0, 67, 60, 30, 30, 60, 30, 30, 60, 0, 67, 60, 0, 67, 60, 30, // front of middle rung
+  67, 60, 0, 67, 90, 30, 67, 60, 30, 67, 60, 0, 67, 90, 0, 67, 90, 30, // bottom of middle rung.
+  30, 90, 0, 30, 90, 30, 67, 90, 30, 30, 90, 0, 67, 90, 30, 67, 90, 0, // front of bottom
+  30, 90, 0, 30, 150, 30, 30, 90, 30, 30, 90, 0, 30, 150, 0, 30, 150, 30, // bottom
+  0, 150, 0, 0, 150, 30, 30, 150, 30, 0, 150, 0, 30, 150, 30, 30, 150, 0, // left side
   0, 0, 0, 0, 0, 30, 0, 150, 30, 0, 0, 0, 0, 150, 30, 0, 150, 0];
-
-  var texcoords = [
-  // left column front
-  0.22, 0.19, 0.22, 0.79, 0.34, 0.19, 0.22, 0.79, 0.34, 0.79, 0.34, 0.19,
-
-  // top rung front
-  0.34, 0.19, 0.34, 0.31, 0.62, 0.19, 0.34, 0.31, 0.62, 0.31, 0.62, 0.19,
-
-  // middle rung front
-  0.34, 0.43, 0.34, 0.55, 0.49, 0.43, 0.34, 0.55, 0.49, 0.55, 0.49, 0.43,
-
-  // left column back
-  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
-
-  // top rung back
-  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
-
-  // middle rung back
-  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1,
-
-  // top
-  0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
-
-  // top rung front
-  0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
-
-  // under top rung
-  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-
-  // between top rung and middle
-  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-  // top of middle rung
-  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-  // front of middle rung
-  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-  // bottom of middle rung.
-  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-
-  // front of bottom
-  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
-
-  // bottom
-  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0,
-
-  // left side
+  var texcoords = [// left column front
+  0.22, 0.19, 0.22, 0.79, 0.34, 0.19, 0.22, 0.79, 0.34, 0.79, 0.34, 0.19, // top rung front
+  0.34, 0.19, 0.34, 0.31, 0.62, 0.19, 0.34, 0.31, 0.62, 0.31, 0.62, 0.19, // middle rung front
+  0.34, 0.43, 0.34, 0.55, 0.49, 0.43, 0.34, 0.55, 0.49, 0.55, 0.49, 0.43, // left column back
+  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, // top rung back
+  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, // middle rung back
+  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, // top
+  0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, // top rung front
+  0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, // under top rung
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, // between top rung and middle
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // top of middle rung
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // front of middle rung
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // bottom of middle rung.
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, // front of bottom
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // bottom
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, // left side
   0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0];
-
-  var normals = expandRLEData([
-  // left column front
+  var normals = expandRLEData([// left column front
   // top rung front
   // middle rung front
-  18, 0, 0, 1,
-
-  // left column back
+  18, 0, 0, 1, // left column back
   // top rung back
   // middle rung back
-  18, 0, 0, -1,
-
-  // top
-  6, 0, 1, 0,
-
-  // top rung front
-  6, 1, 0, 0,
-
-  // under top rung
-  6, 0, -1, 0,
-
-  // between top rung and middle
-  6, 1, 0, 0,
-
-  // top of middle rung
-  6, 0, 1, 0,
-
-  // front of middle rung
-  6, 1, 0, 0,
-
-  // bottom of middle rung.
-  6, 0, -1, 0,
-
-  // front of bottom
-  6, 1, 0, 0,
-
-  // bottom
-  6, 0, -1, 0,
-
-  // left side
+  18, 0, 0, -1, // top
+  6, 0, 1, 0, // top rung front
+  6, 1, 0, 0, // under top rung
+  6, 0, -1, 0, // between top rung and middle
+  6, 1, 0, 0, // top of middle rung
+  6, 0, 1, 0, // front of middle rung
+  6, 1, 0, 0, // bottom of middle rung.
+  6, 0, -1, 0, // front of bottom
+  6, 1, 0, 0, // bottom
+  6, 0, -1, 0, // left side
   6, -1, 0, 0]);
-
-  var colors = expandRLEData([
-  // left column front
+  var colors = expandRLEData([// left column front
   // top rung front
   // middle rung front
-  18, 200, 70, 120,
-
-  // left column back
+  18, 200, 70, 120, // left column back
   // top rung back
   // middle rung back
-  18, 80, 70, 200,
-
-  // top
-  6, 70, 200, 210,
-
-  // top rung front
-  6, 200, 200, 70,
-
-  // under top rung
-  6, 210, 100, 70,
-
-  // between top rung and middle
-  6, 210, 160, 70,
-
-  // top of middle rung
-  6, 70, 180, 210,
-
-  // front of middle rung
-  6, 100, 70, 210,
-
-  // bottom of middle rung.
-  6, 76, 210, 100,
-
-  // front of bottom
-  6, 140, 210, 80,
-
-  // bottom
-  6, 90, 130, 110,
-
-  // left side
+  18, 80, 70, 200, // top
+  6, 70, 200, 210, // top rung front
+  6, 200, 200, 70, // under top rung
+  6, 210, 100, 70, // between top rung and middle
+  6, 210, 160, 70, // top of middle rung
+  6, 70, 180, 210, // front of middle rung
+  6, 100, 70, 210, // bottom of middle rung.
+  6, 76, 210, 100, // front of bottom
+  6, 140, 210, 80, // bottom
+  6, 90, 130, 110, // left side
   6, 160, 160, 220], [255]);
-
   var numVerts = positions.length / 3;
-
   var arrays = {
     position: createAugmentedTypedArray(3, numVerts),
     texcoord: createAugmentedTypedArray(2, numVerts),
@@ -8481,7 +8077,6 @@ function create3DFVertices() {
     color: createAugmentedTypedArray(4, numVerts, Uint8Array),
     indices: createAugmentedTypedArray(3, numVerts / 3, Uint16Array)
   };
-
   arrays.position.push(positions);
   arrays.texcoord.push(texcoords);
   arrays.normal.push(normals);
@@ -8493,7 +8088,6 @@ function create3DFVertices() {
 
   return arrays;
 }
-
 /**
  * Creates cresent BufferInfo.
  *
@@ -8542,6 +8136,8 @@ function create3DFVertices() {
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickness, subdivisionsDown, startOffset, endOffset) {
   if (subdivisionsDown <= 0) {
     throw Error('subdivisionDown must be > 0');
@@ -8549,9 +8145,7 @@ function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickne
 
   startOffset = startOffset || 0;
   endOffset = endOffset || 1;
-
   var subdivisionsThick = 2;
-
   var offsetRange = endOffset - startOffset;
   var numVertices = (subdivisionsDown + 1) * 2 * (2 + subdivisionsThick);
   var positions = createAugmentedTypedArray(3, numVertices);
@@ -8579,40 +8173,38 @@ function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickne
       normals.push(n);
       texcoords.push(uBack * uMult + uAdd, v);
     }
-  }
+  } // Generate the individual vertices in our vertex buffer.
 
-  // Generate the individual vertices in our vertex buffer.
+
   for (var x = 0; x < subdivisionsThick; x++) {
     var uBack = (x / (subdivisionsThick - 1) - 0.5) * 2;
     createArc(outerRadius, x, [1, 1, 1], [0, 0, 0], 1, 0);
     createArc(outerRadius, x, [0, 0, 0], [uBack, 0, 0], 0, 0);
     createArc(innerRadius, x, [1, 1, 1], [0, 0, 0], 1, 0);
     createArc(innerRadius, x, [0, 0, 0], [uBack, 0, 0], 0, 1);
-  }
+  } // Do outer surface.
 
-  // Do outer surface.
+
   var indices = createAugmentedTypedArray(3, subdivisionsDown * 2 * (2 + subdivisionsThick), Uint16Array);
 
   function createSurface(leftArcOffset, rightArcOffset) {
     for (var z = 0; z < subdivisionsDown; ++z) {
       // Make triangle 1 of quad.
-      indices.push(leftArcOffset + z + 0, leftArcOffset + z + 1, rightArcOffset + z + 0);
+      indices.push(leftArcOffset + z + 0, leftArcOffset + z + 1, rightArcOffset + z + 0); // Make triangle 2 of quad.
 
-      // Make triangle 2 of quad.
       indices.push(leftArcOffset + z + 1, rightArcOffset + z + 1, rightArcOffset + z + 0);
     }
   }
 
-  var numVerticesDown = subdivisionsDown + 1;
-  // front
-  createSurface(numVerticesDown * 0, numVerticesDown * 4);
-  // right
-  createSurface(numVerticesDown * 5, numVerticesDown * 7);
-  // back
-  createSurface(numVerticesDown * 6, numVerticesDown * 2);
-  // left
-  createSurface(numVerticesDown * 3, numVerticesDown * 1);
+  var numVerticesDown = subdivisionsDown + 1; // front
 
+  createSurface(numVerticesDown * 0, numVerticesDown * 4); // right
+
+  createSurface(numVerticesDown * 5, numVerticesDown * 7); // back
+
+  createSurface(numVerticesDown * 6, numVerticesDown * 2); // left
+
+  createSurface(numVerticesDown * 3, numVerticesDown * 1);
   return {
     position: positions,
     normal: normals,
@@ -8620,7 +8212,6 @@ function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickne
     indices: indices
   };
 }
-
 /**
  * Creates cylinder BufferInfo. The cylinder will be created around the origin
  * along the y-axis.
@@ -8666,10 +8257,11 @@ function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickne
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createCylinderVertices(radius, height, radialSubdivisions, verticalSubdivisions, topCap, bottomCap) {
   return createTruncatedConeVertices(radius, radius, height, radialSubdivisions, verticalSubdivisions, topCap, bottomCap);
 }
-
 /**
  * Creates BufferInfo for a torus
  *
@@ -8712,6 +8304,8 @@ function createCylinderVertices(radius, height, radialSubdivisions, verticalSubd
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivisions, startAngle, endAngle) {
   if (radialSubdivisions < 3) {
     throw Error('radialSubdivisions must be 3 or greater');
@@ -8724,7 +8318,6 @@ function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivis
   startAngle = startAngle || 0;
   endAngle = endAngle || Math.PI * 2;
   var range = endAngle - startAngle;
-
   var radialParts = radialSubdivisions + 1;
   var bodyParts = bodySubdivisions + 1;
   var numVertices = radialParts * bodyParts;
@@ -8740,6 +8333,7 @@ function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivis
     var ringRadius = radius + sliceSin * thickness;
     var ny = Math.cos(sliceAngle);
     var y = ny * thickness;
+
     for (var ring = 0; ring < radialParts; ++ring) {
       var u = ring / radialSubdivisions;
       var ringAngle = startAngle + u * range;
@@ -8773,7 +8367,6 @@ function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivis
     indices: indices
   };
 }
-
 /**
  * Creates a disc BufferInfo. The disc will be in the xz plane, centered at
  * the origin. When creating, at least 3 divisions, or pie
@@ -8855,6 +8448,8 @@ function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivis
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) {
   if (divisions < 3) {
     throw Error('divisions must be at least 3');
@@ -8862,22 +8457,18 @@ function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) 
 
   stacks = stacks ? stacks : 1;
   stackPower = stackPower ? stackPower : 1;
-  innerRadius = innerRadius ? innerRadius : 0;
-
-  // Note: We don't share the center vertex because that would
+  innerRadius = innerRadius ? innerRadius : 0; // Note: We don't share the center vertex because that would
   // mess up texture coordinates.
-  var numVertices = (divisions + 1) * (stacks + 1);
 
+  var numVertices = (divisions + 1) * (stacks + 1);
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
   var texcoords = createAugmentedTypedArray(2, numVertices);
   var indices = createAugmentedTypedArray(3, stacks * divisions * 2, Uint16Array);
-
   var firstIndex = 0;
   var radiusSpan = radius - innerRadius;
-  var pointsPerStack = divisions + 1;
+  var pointsPerStack = divisions + 1; // Build the disk one stack at a time.
 
-  // Build the disk one stack at a time.
   for (var stack = 0; stack <= stacks; ++stack) {
     var stackRadius = innerRadius + radiusSpan * Math.pow(stack / stacks, stackPower);
 
@@ -8885,10 +8476,10 @@ function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) 
       var theta = 2.0 * Math.PI * i / divisions;
       var x = stackRadius * Math.cos(theta);
       var z = stackRadius * Math.sin(theta);
-
       positions.push(x, 0, z);
       normals.push(0, 1, 0);
       texcoords.push(1 - i / divisions, stack / stacks);
+
       if (stack > 0 && i !== divisions) {
         // a, b, c and d are the indices of the vertices of a quad.  unless
         // the current stack is the one closest to the center, in which case
@@ -8896,9 +8487,8 @@ function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) 
         var a = firstIndex + (i + 1);
         var b = firstIndex + i;
         var c = firstIndex + i - pointsPerStack;
-        var d = firstIndex + (i + 1) - pointsPerStack;
+        var d = firstIndex + (i + 1) - pointsPerStack; // Make a quad of the vertices a, b, c, d.
 
-        // Make a quad of the vertices a, b, c, d.
         indices.push(a, b, c);
         indices.push(a, c, d);
       }
@@ -8914,16 +8504,16 @@ function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) 
     indices: indices
   };
 }
-
 /**
  * creates a random integer between 0 and range - 1 inclusive.
  * @param {number} range
  * @return {number} random value between 0 and range - 1 inclusive.
  */
+
+
 function randInt(range) {
   return Math.random() * range | 0;
 }
-
 /**
  * Used to supply random colors
  * @callback RandomColorFunc
@@ -8950,14 +8540,19 @@ function randInt(range) {
  * @return {Object.<string, augmentedTypedArray>} same vertices as passed in with `color` added.
  * @memberOf module:twgl/primitives
  */
+
+
 function makeRandomVertexColors(vertices, options) {
   options = options || {};
   var numElements = vertices.position.numElements;
   var vcolors = createAugmentedTypedArray(4, numElements, Uint8Array);
+
   var rand = options.rand || function (ndx, channel) {
     return channel < 3 ? randInt(256) : 255;
   };
+
   vertices.color = vcolors;
+
   if (vertices.indices) {
     // just make random colors if index
     for (var ii = 0; ii < numElements; ++ii) {
@@ -8967,32 +8562,37 @@ function makeRandomVertexColors(vertices, options) {
     // make random colors per triangle
     var numVertsPerColor = options.vertsPerColor || 3;
     var numSets = numElements / numVertsPerColor;
+
     for (var _ii2 = 0; _ii2 < numSets; ++_ii2) {
       // eslint-disable-line
       var color = [rand(_ii2, 0), rand(_ii2, 1), rand(_ii2, 2), rand(_ii2, 3)];
+
       for (var jj = 0; jj < numVertsPerColor; ++jj) {
         vcolors.push(color);
       }
     }
   }
+
   return vertices;
 }
-
 /**
  * creates a function that calls fn to create vertices and then
  * creates a buffers for them
  */
+
+
 function createBufferFunc(fn) {
   return function (gl) {
     var arrays = fn.apply(this, Array.prototype.slice.call(arguments, 1));
     return attributes.createBuffersFromArrays(gl, arrays);
   };
 }
-
 /**
  * creates a function that calls fn to create vertices and then
  * creates a bufferInfo object for them
  */
+
+
 function createBufferInfoFunc(fn) {
   return function (gl) {
     var arrays = fn.apply(null, Array.prototype.slice.call(arguments, 1));
@@ -9001,7 +8601,6 @@ function createBufferInfoFunc(fn) {
 }
 
 var arraySpecPropertyNames = ["numComponents", "size", "type", "normalize", "stride", "offset", "attrib", "name", "attribName"];
-
 /**
  * Copy elements from one array to another
  *
@@ -9010,14 +8609,15 @@ var arraySpecPropertyNames = ["numComponents", "size", "type", "normalize", "str
  * @param {number} dstNdx index in dest to copy src
  * @param {number} [offset] offset to add to copied values
  */
+
 function copyElements(src, dst, dstNdx, offset) {
   offset = offset || 0;
   var length = src.length;
+
   for (var ii = 0; ii < length; ++ii) {
     dst[dstNdx + ii] = src[ii] + offset;
   }
 }
-
 /**
  * Creates an array of the same time
  *
@@ -9025,24 +8625,27 @@ function copyElements(src, dst, dstNdx, offset) {
  * @param {number} length size of new array
  * @return {(number[]|ArrayBufferView|module:twgl.FullArraySpec)} array with same type as srcArray
  */
+
+
 function createArrayOfSameType(srcArray, length) {
   var arraySrc = getArray(srcArray);
   var newArray = new arraySrc.constructor(length);
-  var newArraySpec = newArray;
-  // If it appears to have been augmented make new one augemented
+  var newArraySpec = newArray; // If it appears to have been augmented make new one augemented
+
   if (arraySrc.numComponents && arraySrc.numElements) {
     augmentTypedArray(newArray, arraySrc.numComponents);
-  }
-  // If it was a fullspec make new one a fullspec
+  } // If it was a fullspec make new one a fullspec
+
+
   if (srcArray.data) {
     newArraySpec = {
       data: newArray
     };
     helper.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
   }
+
   return newArraySpec;
 }
-
 /**
  * Concatinates sets of vertices
  *
@@ -9068,10 +8671,11 @@ function createArrayOfSameType(srcArray, length) {
  * @return {module:twgl.Arrays} The concatinated vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function concatVertices(arrayOfArrays) {
   var names = {};
-  var baseName = void 0;
-  // get names of all arrays.
+  var baseName; // get names of all arrays.
   // and numElements for each set of vertices
 
   var _loop = function _loop(ii) {
@@ -9081,9 +8685,11 @@ function concatVertices(arrayOfArrays) {
       if (!names[name]) {
         names[name] = [];
       }
+
       if (!baseName && name !== 'indices') {
         baseName = name;
       }
+
       var arrayInfo = arrays[name];
       var numComponents = getNumComponents(arrayInfo, name);
       var array = getArray(arrayInfo);
@@ -9094,22 +8700,25 @@ function concatVertices(arrayOfArrays) {
 
   for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
     _loop(ii);
-  }
-
-  // compute length of combined array
+  } // compute length of combined array
   // and return one for reference
+
+
   function getLengthOfCombinedArrays(name) {
     var length = 0;
-    var arraySpec = void 0;
+    var arraySpec;
+
     for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
-      var _arrays = arrayOfArrays[ii];
-      var arrayInfo = _arrays[name];
+      var arrays = arrayOfArrays[ii];
+      var arrayInfo = arrays[name];
       var array = getArray(arrayInfo);
       length += array.length;
+
       if (!arraySpec || arrayInfo.data) {
         arraySpec = arrayInfo;
       }
     }
+
     return {
       length: length,
       spec: arraySpec
@@ -9119,22 +8728,24 @@ function concatVertices(arrayOfArrays) {
   function copyArraysToNewArray(name, base, newArray) {
     var baseIndex = 0;
     var offset = 0;
+
     for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
-      var _arrays2 = arrayOfArrays[ii];
-      var arrayInfo = _arrays2[name];
+      var arrays = arrayOfArrays[ii];
+      var arrayInfo = arrays[name];
       var array = getArray(arrayInfo);
+
       if (name === 'indices') {
         copyElements(array, newArray, offset, baseIndex);
         baseIndex += base[ii];
       } else {
         copyElements(array, newArray, offset);
       }
+
       offset += array.length;
     }
   }
 
   var base = names[baseName];
-
   var newArrays = {};
   Object.keys(names).forEach(function (name) {
     var info = getLengthOfCombinedArrays(name);
@@ -9144,7 +8755,6 @@ function concatVertices(arrayOfArrays) {
   });
   return newArrays;
 }
-
 /**
  * Creates a duplicate set of vertices
  *
@@ -9155,6 +8765,8 @@ function concatVertices(arrayOfArrays) {
  * @return {module:twgl.Arrays} The dupilicated vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function duplicateVertices(arrays) {
   var newArrays = {};
   Object.keys(arrays).forEach(function (name) {
@@ -9168,66 +8780,1223 @@ function duplicateVertices(arrays) {
 }
 
 var create3DFBufferInfo = createBufferInfoFunc(create3DFVertices);
-var create3DFBuffers = createBufferFunc(create3DFVertices);
-var createCubeBufferInfo = createBufferInfoFunc(createCubeVertices);
-var createCubeBuffers = createBufferFunc(createCubeVertices);
-var createPlaneBufferInfo = createBufferInfoFunc(createPlaneVertices);
-var createPlaneBuffers = createBufferFunc(createPlaneVertices);
-var createSphereBufferInfo = createBufferInfoFunc(createSphereVertices);
-var createSphereBuffers = createBufferFunc(createSphereVertices);
-var createTruncatedConeBufferInfo = createBufferInfoFunc(createTruncatedConeVertices);
-var createTruncatedConeBuffers = createBufferFunc(createTruncatedConeVertices);
-var createXYQuadBufferInfo = createBufferInfoFunc(createXYQuadVertices);
-var createXYQuadBuffers = createBufferFunc(createXYQuadVertices);
-var createCresentBufferInfo = createBufferInfoFunc(createCresentVertices);
-var createCresentBuffers = createBufferFunc(createCresentVertices);
-var createCylinderBufferInfo = createBufferInfoFunc(createCylinderVertices);
-var createCylinderBuffers = createBufferFunc(createCylinderVertices);
-var createTorusBufferInfo = createBufferInfoFunc(createTorusVertices);
-var createTorusBuffers = createBufferFunc(createTorusVertices);
-var createDiscBufferInfo = createBufferInfoFunc(createDiscVertices);
-var createDiscBuffers = createBufferFunc(createDiscVertices);
-
 exports.create3DFBufferInfo = create3DFBufferInfo;
+var create3DFBuffers = createBufferFunc(create3DFVertices);
 exports.create3DFBuffers = create3DFBuffers;
-exports.create3DFVertices = create3DFVertices;
-exports.createAugmentedTypedArray = createAugmentedTypedArray;
+var createCubeBufferInfo = createBufferInfoFunc(createCubeVertices);
 exports.createCubeBufferInfo = createCubeBufferInfo;
+var createCubeBuffers = createBufferFunc(createCubeVertices);
 exports.createCubeBuffers = createCubeBuffers;
-exports.createCubeVertices = createCubeVertices;
+var createPlaneBufferInfo = createBufferInfoFunc(createPlaneVertices);
 exports.createPlaneBufferInfo = createPlaneBufferInfo;
+var createPlaneBuffers = createBufferFunc(createPlaneVertices);
 exports.createPlaneBuffers = createPlaneBuffers;
-exports.createPlaneVertices = createPlaneVertices;
+var createSphereBufferInfo = createBufferInfoFunc(createSphereVertices);
 exports.createSphereBufferInfo = createSphereBufferInfo;
+var createSphereBuffers = createBufferFunc(createSphereVertices);
 exports.createSphereBuffers = createSphereBuffers;
-exports.createSphereVertices = createSphereVertices;
+var createTruncatedConeBufferInfo = createBufferInfoFunc(createTruncatedConeVertices);
 exports.createTruncatedConeBufferInfo = createTruncatedConeBufferInfo;
+var createTruncatedConeBuffers = createBufferFunc(createTruncatedConeVertices);
 exports.createTruncatedConeBuffers = createTruncatedConeBuffers;
-exports.createTruncatedConeVertices = createTruncatedConeVertices;
+var createXYQuadBufferInfo = createBufferInfoFunc(createXYQuadVertices);
 exports.createXYQuadBufferInfo = createXYQuadBufferInfo;
+var createXYQuadBuffers = createBufferFunc(createXYQuadVertices);
 exports.createXYQuadBuffers = createXYQuadBuffers;
-exports.createXYQuadVertices = createXYQuadVertices;
+var createCresentBufferInfo = createBufferInfoFunc(createCresentVertices);
 exports.createCresentBufferInfo = createCresentBufferInfo;
+var createCresentBuffers = createBufferFunc(createCresentVertices);
 exports.createCresentBuffers = createCresentBuffers;
-exports.createCresentVertices = createCresentVertices;
+var createCylinderBufferInfo = createBufferInfoFunc(createCylinderVertices);
 exports.createCylinderBufferInfo = createCylinderBufferInfo;
+var createCylinderBuffers = createBufferFunc(createCylinderVertices);
 exports.createCylinderBuffers = createCylinderBuffers;
-exports.createCylinderVertices = createCylinderVertices;
+var createTorusBufferInfo = createBufferInfoFunc(createTorusVertices);
 exports.createTorusBufferInfo = createTorusBufferInfo;
+var createTorusBuffers = createBufferFunc(createTorusVertices);
 exports.createTorusBuffers = createTorusBuffers;
-exports.createTorusVertices = createTorusVertices;
+var createDiscBufferInfo = createBufferInfoFunc(createDiscVertices);
 exports.createDiscBufferInfo = createDiscBufferInfo;
+var createDiscBuffers = createBufferFunc(createDiscVertices);
 exports.createDiscBuffers = createDiscBuffers;
-exports.createDiscVertices = createDiscVertices;
-exports.deindexVertices = deindexVertices;
-exports.flattenNormals = flattenNormals;
-exports.makeRandomVertexColors = makeRandomVertexColors;
-exports.reorientDirections = reorientDirections;
-exports.reorientNormals = reorientNormals;
-exports.reorientPositions = reorientPositions;
-exports.reorientVertices = reorientVertices;
-exports.concatVertices = concatVertices;
-exports.duplicateVertices = duplicateVertices;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+var _exportNames = {
+  addExtensionsToContext: true,
+  getContext: true,
+  getWebGLContext: true,
+  resizeCanvasToDisplaySize: true,
+  setDefaults: true
+};
+exports.addExtensionsToContext = addExtensionsToContext;
+exports.getContext = getContext;
+exports.getWebGLContext = getWebGLContext;
+exports.resizeCanvasToDisplaySize = resizeCanvasToDisplaySize;
+exports.setDefaults = setDefaults;
+
+var attributes = _interopRequireWildcard(__webpack_require__(7));
+
+Object.keys(attributes).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = attributes[key];
+});
+
+var textures = _interopRequireWildcard(__webpack_require__(8));
+
+Object.keys(textures).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = textures[key];
+});
+
+var helper = _interopRequireWildcard(__webpack_require__(0));
+
+var utils = _interopRequireWildcard(__webpack_require__(4));
+
+Object.keys(utils).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = utils[key];
+});
+
+var _draw = __webpack_require__(12);
+
+Object.keys(_draw).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _draw[key];
+});
+
+var _framebuffers = __webpack_require__(13);
+
+Object.keys(_framebuffers).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _framebuffers[key];
+});
+
+var _programs = __webpack_require__(5);
+
+Object.keys(_programs).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _programs[key];
+});
+
+var _typedarrays = __webpack_require__(1);
+
+Object.keys(_typedarrays).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _typedarrays[key];
+});
+
+var _vertexArrays = __webpack_require__(14);
+
+Object.keys(_vertexArrays).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _vertexArrays[key];
+});
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * The main TWGL module.
+ *
+ * For most use cases you shouldn't need anything outside this module.
+ * Exceptions between the stuff added to twgl-full (v3, m4, primitives)
+ *
+ * @module twgl
+ * @borrows module:twgl/attributes.setAttribInfoBufferFromArray as setAttribInfoBufferFromArray
+ * @borrows module:twgl/attributes.createBufferInfoFromArrays as createBufferInfoFromArrays
+ * @borrows module:twgl/attributes.createVertexArrayInfo as createVertexArrayInfo
+ * @borrows module:twgl/draw.drawBufferInfo as drawBufferInfo
+ * @borrows module:twgl/draw.drawObjectList as drawObjectList
+ * @borrows module:twgl/framebuffers.createFramebufferInfo as createFramebufferInfo
+ * @borrows module:twgl/framebuffers.resizeFramebufferInfo as resizeFramebufferInfo
+ * @borrows module:twgl/framebuffers.bindFramebufferInfo as bindFramebufferInfo
+ * @borrows module:twgl/programs.createProgramInfo as createProgramInfo
+ * @borrows module:twgl/programs.createUniformBlockInfo as createUniformBlockInfo
+ * @borrows module:twgl/programs.bindUniformBlock as bindUniformBlock
+ * @borrows module:twgl/programs.setUniformBlock as setUniformBlock
+ * @borrows module:twgl/programs.setBlockUniforms as setBlockUniforms
+ * @borrows module:twgl/programs.setUniforms as setUniforms
+ * @borrows module:twgl/programs.setBuffersAndAttributes as setBuffersAndAttributes
+ * @borrows module:twgl/textures.setTextureFromArray as setTextureFromArray
+ * @borrows module:twgl/textures.createTexture as createTexture
+ * @borrows module:twgl/textures.resizeTexture as resizeTexture
+ * @borrows module:twgl/textures.createTextures as createTextures
+ */
+// make sure we don't see a global gl
+var gl = undefined; // eslint-disable-line
+
+var defaults = {
+  addExtensionsToContext: true
+};
+/**
+ * Various default settings for twgl.
+ *
+ * Note: You can call this any number of times. Example:
+ *
+ *     twgl.setDefaults({ textureColor: [1, 0, 0, 1] });
+ *     twgl.setDefaults({ attribPrefix: 'a_' });
+ *
+ * is equivalent to
+ *
+ *     twgl.setDefaults({
+ *       textureColor: [1, 0, 0, 1],
+ *       attribPrefix: 'a_',
+ *     });
+ *
+ * @typedef {Object} Defaults
+ * @property {string} attribPrefix The prefix to stick on attributes
+ *
+ *   When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
+ *   as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+ *
+ *   In otherwords I'll create arrays of geometry like this
+ *
+ *       const arrays = {
+ *         position: ...
+ *         normal: ...
+ *         texcoord: ...
+ *       };
+ *
+ *   But need those mapped to attributes and my attributes start with `a_`.
+ *
+ *   Default: `""`
+ *
+ * @property {number[]} textureColor Array of 4 values in the range 0 to 1
+ *
+ *   The default texture color is used when loading textures from
+ *   urls. Because the URL will be loaded async we'd like to be
+ *   able to use the texture immediately. By putting a 1x1 pixel
+ *   color in the texture we can start using the texture before
+ *   the URL has loaded.
+ *
+ *   Default: `[0.5, 0.75, 1, 1]`
+ *
+ * @property {string} crossOrigin
+ *
+ *   If not undefined sets the crossOrigin attribute on images
+ *   that twgl creates when downloading images for textures.
+ *
+ *   Also see {@link module:twgl.TextureOptions}.
+ *
+ * @property {bool} addExtensionsToContext
+ *
+ *   If true, then, when twgl will try to add any supported WebGL extensions
+ *   directly to the context under their normal GL names. For example
+ *   if ANGLE_instances_arrays exists then twgl would enable it,
+ *   add the functions `vertexAttribDivisor`, `drawArraysInstanced`,
+ *   `drawElementsInstanced`, and the constant `VERTEX_ATTRIB_ARRAY_DIVISOR`
+ *   to the `WebGLRenderingContext`.
+ *
+ * @memberOf module:twgl
+ */
+
+/**
+ * Sets various defaults for twgl.
+ *
+ * In the interest of terseness which is kind of the point
+ * of twgl I've integrated a few of the older functions here
+ *
+ * @param {module:twgl.Defaults} newDefaults The default settings.
+ * @memberOf module:twgl
+ */
+
+function setDefaults(newDefaults) {
+  helper.copyExistingProperties(newDefaults, defaults);
+  attributes.setAttributeDefaults_(newDefaults); // eslint-disable-line
+
+  textures.setTextureDefaults_(newDefaults); // eslint-disable-line
+}
+
+var prefixRE = /^(.*?)_/;
+
+function addExtensionToContext(gl, extensionName) {
+  utils.glEnumToString(gl, 0);
+  var ext = gl.getExtension(extensionName);
+
+  if (ext) {
+    var enums = {};
+    var fnSuffix = prefixRE.exec(extensionName)[1];
+    var enumSuffix = '_' + fnSuffix;
+
+    for (var key in ext) {
+      var value = ext[key];
+      var isFunc = typeof value === 'function';
+      var suffix = isFunc ? fnSuffix : enumSuffix;
+      var name = key; // examples of where this is not true are WEBGL_compressed_texture_s3tc
+      // and WEBGL_compressed_texture_pvrtc
+
+      if (key.endsWith(suffix)) {
+        name = key.substring(0, key.length - suffix.length);
+      }
+
+      if (gl[name] !== undefined) {
+        if (!isFunc && gl[name] !== value) {
+          helper.warn(name, gl[name], value, key);
+        }
+      } else {
+        if (isFunc) {
+          gl[name] = function (origFn) {
+            return function () {
+              return origFn.apply(ext, arguments);
+            };
+          }(value);
+        } else {
+          gl[name] = value;
+          enums[name] = value;
+        }
+      }
+    } // pass the modified enums to glEnumToString
+
+
+    enums.constructor = {
+      name: ext.constructor.name
+    };
+    utils.glEnumToString(enums, 0);
+  }
+
+  return ext;
+}
+/*
+ * If you're wondering why the code doesn't just iterate
+ * over all extensions using `gl.getExtensions` is that it's possible
+ * some future extension is incompatible with this code. Rather than
+ * have thing suddenly break it seems better to manually add to this
+ * list.
+ *
+ */
+
+
+var supportedExtensions = ['ANGLE_instanced_arrays', 'EXT_blend_minmax', 'EXT_color_buffer_float', 'EXT_color_buffer_half_float', 'EXT_disjoint_timer_query', 'EXT_disjoint_timer_query_webgl2', 'EXT_frag_depth', 'EXT_sRGB', 'EXT_shader_texture_lod', 'EXT_texture_filter_anisotropic', 'OES_element_index_uint', 'OES_standard_derivatives', 'OES_texture_float', 'OES_texture_float_linear', 'OES_texture_half_float', 'OES_texture_half_float_linear', 'OES_vertex_array_object', 'WEBGL_color_buffer_float', 'WEBGL_compressed_texture_atc', 'WEBGL_compressed_texture_etc1', 'WEBGL_compressed_texture_pvrtc', 'WEBGL_compressed_texture_s3tc', 'WEBGL_compressed_texture_s3tc_srgb', 'WEBGL_depth_texture', 'WEBGL_draw_buffers'];
+/**
+ * Attempts to enable all of the following extensions
+ * and add their functions and constants to the
+ * `WebGLRenderingContext` using their normal non-extension like names.
+ *
+ *      ANGLE_instanced_arrays
+ *      EXT_blend_minmax
+ *      EXT_color_buffer_float
+ *      EXT_color_buffer_half_float
+ *      EXT_disjoint_timer_query
+ *      EXT_disjoint_timer_query_webgl2
+ *      EXT_frag_depth
+ *      EXT_sRGB
+ *      EXT_shader_texture_lod
+ *      EXT_texture_filter_anisotropic
+ *      OES_element_index_uint
+ *      OES_standard_derivatives
+ *      OES_texture_float
+ *      OES_texture_float_linear
+ *      OES_texture_half_float
+ *      OES_texture_half_float_linear
+ *      OES_vertex_array_object
+ *      WEBGL_color_buffer_float
+ *      WEBGL_compressed_texture_atc
+ *      WEBGL_compressed_texture_etc1
+ *      WEBGL_compressed_texture_pvrtc
+ *      WEBGL_compressed_texture_s3tc
+ *      WEBGL_compressed_texture_s3tc_srgb
+ *      WEBGL_depth_texture
+ *      WEBGL_draw_buffers
+ *
+ * For example if `ANGLE_instanced_arrays` exists then the functions
+ * `drawArraysInstanced`, `drawElementsInstanced`, `vertexAttribDivisor`
+ * and the constant `VERTEX_ATTRIB_ARRAY_DIVISOR` are added to the
+ * `WebGLRenderingContext`.
+ *
+ * Note that if you want to know if the extension exists you should
+ * probably call `gl.getExtension` for each extension. Alternatively
+ * you can check for the existance of the functions or constants that
+ * are expected to be added. For example
+ *
+ *    if (gl.drawBuffers) {
+ *      // Either WEBGL_draw_buffers was enabled OR you're running in WebGL2
+ *      ....
+ *
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @memberOf module:twgl
+ */
+
+function addExtensionsToContext(gl) {
+  for (var ii = 0; ii < supportedExtensions.length; ++ii) {
+    addExtensionToContext(gl, supportedExtensions[ii]);
+  }
+}
+/**
+ * Creates a webgl context.
+ * @param {HTMLCanvasElement} canvas The canvas tag to get
+ *     context from. If one is not passed in one will be
+ *     created.
+ * @return {WebGLRenderingContext} The created context.
+ */
+
+
+function create3DContext(canvas, opt_attribs) {
+  var names = ["webgl", "experimental-webgl"];
+  var context = null;
+
+  for (var ii = 0; ii < names.length; ++ii) {
+    context = canvas.getContext(names[ii], opt_attribs);
+
+    if (context) {
+      if (defaults.addExtensionsToContext) {
+        addExtensionsToContext(context);
+      }
+
+      break;
+    }
+  }
+
+  return context;
+}
+/**
+ * Gets a WebGL1 context.
+ *
+ * Note: Will attempt to enable Vertex Array Objects
+ * and add WebGL2 entry points. (unless you first set defaults with
+ * `twgl.setDefaults({enableVertexArrayObjects: false})`;
+ *
+ * @param {HTMLCanvasElement} canvas a canvas element.
+ * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
+ * @memberOf module:twgl
+ */
+
+
+function getWebGLContext(canvas, opt_attribs) {
+  var gl = create3DContext(canvas, opt_attribs);
+  return gl;
+}
+/**
+ * Creates a webgl context.
+ *
+ * Will return a WebGL2 context if possible.
+ *
+ * You can check if it's WebGL2 with
+ *
+ *     twgl.isWebGL2(gl);
+ *
+ * @param {HTMLCanvasElement} canvas The canvas tag to get
+ *     context from. If one is not passed in one will be
+ *     created.
+ * @return {WebGLRenderingContext} The created context.
+ */
+
+
+function createContext(canvas, opt_attribs) {
+  var names = ["webgl2", "webgl", "experimental-webgl"];
+  var context = null;
+
+  for (var ii = 0; ii < names.length; ++ii) {
+    context = canvas.getContext(names[ii], opt_attribs);
+
+    if (context) {
+      if (defaults.addExtensionsToContext) {
+        addExtensionsToContext(context);
+      }
+
+      break;
+    }
+  }
+
+  return context;
+}
+/**
+ * Gets a WebGL context.  Will create a WebGL2 context if possible.
+ *
+ * You can check if it's WebGL2 with
+ *
+ *    function isWebGL2(gl) {
+ *      return gl.getParameter(gl.VERSION).indexOf("WebGL 2.0 ") == 0;
+ *    }
+ *
+ * Note: For a WebGL1 context will attempt to enable Vertex Array Objects
+ * and add WebGL2 entry points. (unless you first set defaults with
+ * `twgl.setDefaults({enableVertexArrayObjects: false})`;
+ *
+ * @param {HTMLCanvasElement} canvas a canvas element.
+ * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
+ * @return {WebGLRenderingContext} The created context.
+ * @memberOf module:twgl
+ */
+
+
+function getContext(canvas, opt_attribs) {
+  var gl = createContext(canvas, opt_attribs);
+  return gl;
+}
+/**
+ * Resize a canvas to match the size it's displayed.
+ * @param {HTMLCanvasElement} canvas The canvas to resize.
+ * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` or other scale value if you want to.
+ * @return {boolean} true if the canvas was resized.
+ * @memberOf module:twgl
+ */
+
+
+function resizeCanvasToDisplaySize(canvas, multiplier) {
+  multiplier = multiplier || 1;
+  multiplier = Math.max(0, multiplier);
+  var width = canvas.clientWidth * multiplier | 0;
+  var height = canvas.clientHeight * multiplier | 0;
+
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width;
+    canvas.height = height;
+    return true;
+  }
+
+  return false;
+}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.drawBufferInfo = drawBufferInfo;
+exports.drawObjectList = drawObjectList;
+
+var programs = _interopRequireWildcard(__webpack_require__(5));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Drawing related functions
+ *
+ * For backward compatibily they are available at both `twgl.draw` and `twgl`
+ * itself
+ *
+ * See {@link module:twgl} for core functions
+ *
+ * @module twgl/draw
+ */
+
+/**
+ * Calls `gl.drawElements` or `gl.drawArrays`, whichever is appropriate
+ *
+ * normally you'd call `gl.drawElements` or `gl.drawArrays` yourself
+ * but calling this means if you switch from indexed data to non-indexed
+ * data you don't have to remember to update your draw call.
+ *
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
+ *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
+ * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
+ * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
+ * @param {number} [offset] An optional offset. Defaults to 0.
+ * @param {number} [instanceCount] An optional instanceCount. if set then `drawArraysInstanced` or `drawElementsInstanced` will be called
+ * @memberOf module:twgl/draw
+ */
+function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
+  type = type === undefined ? gl.TRIANGLES : type;
+  var indices = bufferInfo.indices;
+  var elementType = bufferInfo.elementType;
+  var numElements = count === undefined ? bufferInfo.numElements : count;
+  offset = offset === undefined ? 0 : offset;
+
+  if (elementType || indices) {
+    if (instanceCount !== undefined) {
+      gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
+    } else {
+      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+    }
+  } else {
+    if (instanceCount !== undefined) {
+      gl.drawArraysInstanced(type, offset, numElements, instanceCount);
+    } else {
+      gl.drawArrays(type, offset, numElements);
+    }
+  }
+}
+/**
+ * A DrawObject is useful for putting objects in to an array and passing them to {@link module:twgl.drawObjectList}.
+ *
+ * You need either a `BufferInfo` or a `VertexArrayInfo`.
+ *
+ * @typedef {Object} DrawObject
+ * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
+ * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
+ * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
+ * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
+ * @property {module:twgl.VertexArrayInfo} [vertexArrayInfo] A VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
+ * @property {Object<string, ?>} uniforms The values for the uniforms.
+ *   You can pass multiple objects by putting them in an array. For example
+ *
+ *     var sharedUniforms = {
+ *       u_fogNear: 10,
+ *       u_projection: ...
+ *       ...
+ *     };
+ *
+ *     var localUniforms = {
+ *       u_world: ...
+ *       u_diffuseColor: ...
+ *     };
+ *
+ *     var drawObj = {
+ *       ...
+ *       uniforms: [sharedUniforms, localUniforms],
+ *     };
+ *
+ * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
+ * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
+ * @property {number} [instanceCount] the number of instances. Defaults to undefined.
+ * @memberOf module:twgl
+ */
+
+/**
+ * Draws a list of objects
+ * @param {DrawObject[]} objectsToDraw an array of objects to draw.
+ * @memberOf module:twgl/draw
+ */
+
+
+function drawObjectList(gl, objectsToDraw) {
+  var lastUsedProgramInfo = null;
+  var lastUsedBufferInfo = null;
+  objectsToDraw.forEach(function (object) {
+    if (object.active === false) {
+      return;
+    }
+
+    var programInfo = object.programInfo;
+    var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
+    var bindBuffers = false;
+    var type = object.type === undefined ? gl.TRIANGLES : object.type;
+
+    if (programInfo !== lastUsedProgramInfo) {
+      lastUsedProgramInfo = programInfo;
+      gl.useProgram(programInfo.program); // We have to rebind buffers when changing programs because we
+      // only bind buffers the program uses. So if 2 programs use the same
+      // bufferInfo but the 1st one uses only positions the when the
+      // we switch to the 2nd one some of the attributes will not be on.
+
+      bindBuffers = true;
+    } // Setup all the needed attributes.
+
+
+    if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
+      if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject && !bufferInfo.vertexArrayObject) {
+        gl.bindVertexArray(null);
+      }
+
+      lastUsedBufferInfo = bufferInfo;
+      programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    } // Set the uniforms.
+
+
+    programs.setUniforms(programInfo, object.uniforms); // Draw
+
+    drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
+  });
+
+  if (lastUsedBufferInfo.vertexArrayObject) {
+    gl.bindVertexArray(null);
+  }
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.bindFramebufferInfo = bindFramebufferInfo;
+exports.createFramebufferInfo = createFramebufferInfo;
+exports.resizeFramebufferInfo = resizeFramebufferInfo;
+
+var textures = _interopRequireWildcard(__webpack_require__(8));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Framebuffer related functions
+ *
+ * For backward compatibily they are available at both `twgl.framebuffer` and `twgl`
+ * itself
+ *
+ * See {@link module:twgl} for core functions
+ *
+ * @module twgl/framebuffers
+ */
+// make sure we don't see a global gl
+var gl = undefined; // eslint-disable-line
+
+var UNSIGNED_BYTE = 0x1401;
+/* PixelFormat */
+
+var DEPTH_COMPONENT = 0x1902;
+var RGBA = 0x1908;
+/* Framebuffer Object. */
+
+var RGBA4 = 0x8056;
+var RGB5_A1 = 0x8057;
+var RGB565 = 0x8D62;
+var DEPTH_COMPONENT16 = 0x81A5;
+var STENCIL_INDEX = 0x1901;
+var STENCIL_INDEX8 = 0x8D48;
+var DEPTH_STENCIL = 0x84F9;
+var COLOR_ATTACHMENT0 = 0x8CE0;
+var DEPTH_ATTACHMENT = 0x8D00;
+var STENCIL_ATTACHMENT = 0x8D20;
+var DEPTH_STENCIL_ATTACHMENT = 0x821A;
+/* TextureWrapMode */
+
+var REPEAT = 0x2901; // eslint-disable-line
+
+var CLAMP_TO_EDGE = 0x812F;
+var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
+
+/* TextureMagFilter */
+
+var NEAREST = 0x2600; // eslint-disable-line
+
+var LINEAR = 0x2601;
+/* TextureMinFilter */
+
+var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
+
+var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
+
+var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
+
+var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
+
+/**
+ * The options for a framebuffer attachment.
+ *
+ * Note: For a `format` that is a texture include all the texture
+ * options from {@link module:twgl.TextureOptions} for example
+ * `min`, `mag`, `clamp`, etc... Note that unlike {@link module:twgl.TextureOptions}
+ * `auto` defaults to `false` for attachment textures but `min` and `mag` default
+ * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
+ *
+ * @typedef {Object} AttachmentOptions
+ * @property {number} [attach] The attachment point. Defaults
+ *   to `gl.COLOR_ATTACTMENT0 + ndx` unless type is a depth or stencil type
+ *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
+ *   on the format or attachment type.
+ * @property {number} [format] The format. If one of `gl.RGBA4`,
+ *   `gl.RGB565`, `gl.RGB5_A1`, `gl.DEPTH_COMPONENT16`,
+ *   `gl.STENCIL_INDEX8` or `gl.DEPTH_STENCIL` then will create a
+ *   renderbuffer. Otherwise will create a texture. Default = `gl.RGBA`
+ * @property {number} [type] The type. Used for texture. Default = `gl.UNSIGNED_BYTE`.
+ * @property {number} [target] The texture target for `gl.framebufferTexture2D`.
+ *   Defaults to `gl.TEXTURE_2D`. Set to appropriate face for cube maps.
+ * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
+ * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
+ *    If provided will attach this Object. This allows you to share
+ *    attachemnts across framebuffers.
+ * @memberOf module:twgl
+ */
+
+var defaultAttachments = [{
+  format: RGBA,
+  type: UNSIGNED_BYTE,
+  min: LINEAR,
+  wrap: CLAMP_TO_EDGE
+}, {
+  format: DEPTH_STENCIL
+}];
+var attachmentsByFormat = {};
+attachmentsByFormat[DEPTH_STENCIL] = DEPTH_STENCIL_ATTACHMENT;
+attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
+attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT16] = DEPTH_ATTACHMENT;
+
+function getAttachmentPointForFormat(format) {
+  return attachmentsByFormat[format];
+}
+
+var renderbufferFormats = {};
+renderbufferFormats[RGBA4] = true;
+renderbufferFormats[RGB5_A1] = true;
+renderbufferFormats[RGB565] = true;
+renderbufferFormats[DEPTH_STENCIL] = true;
+renderbufferFormats[DEPTH_COMPONENT16] = true;
+renderbufferFormats[STENCIL_INDEX] = true;
+renderbufferFormats[STENCIL_INDEX8] = true;
+
+function isRenderbufferFormat(format) {
+  return renderbufferFormats[format];
+}
+/**
+ * @typedef {Object} FramebufferInfo
+ * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
+ * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @memberOf module:twgl
+ */
+
+/**
+ * Creates a framebuffer and attachments.
+ *
+ * This returns a {@link module:twgl.FramebufferInfo} because it needs to return the attachments as well as the framebuffer.
+ *
+ * The simplest usage
+ *
+ *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+ *     const fbi = twgl.createFramebufferInfo(gl);
+ *
+ * More complex usage
+ *
+ *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+ *     const attachments = [
+ *       { format: RGB565, mag: NEAREST },
+ *       { format: STENCIL_INDEX8 },
+ *     ]
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments);
+ *
+ * Passing in a specific size
+ *
+ *     const width = 256;
+ *     const height = 256;
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
+ *
+ * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
+ * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.AttachmentOptions[]} [attachments] which attachments to create. If not provided the default is a framebuffer with an
+ *    `RGBA`, `UNSIGNED_BYTE` texture `COLOR_ATTACHMENT0` and a `DEPTH_STENCIL` renderbuffer `DEPTH_STENCIL_ATTACHMENT`.
+ * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
+ * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+ * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
+ * @memberOf module:twgl/framebuffers
+ */
+
+
+function createFramebufferInfo(gl, attachments, width, height) {
+  var target = gl.FRAMEBUFFER;
+  var fb = gl.createFramebuffer();
+  gl.bindFramebuffer(target, fb);
+  width = width || gl.drawingBufferWidth;
+  height = height || gl.drawingBufferHeight;
+  attachments = attachments || defaultAttachments;
+  var colorAttachmentCount = 0;
+  var framebufferInfo = {
+    framebuffer: fb,
+    attachments: [],
+    width: width,
+    height: height
+  };
+  attachments.forEach(function (attachmentOptions) {
+    var attachment = attachmentOptions.attachment;
+    var format = attachmentOptions.format;
+    var attachmentPoint = getAttachmentPointForFormat(format);
+
+    if (!attachmentPoint) {
+      attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
+    }
+
+    if (!attachment) {
+      if (isRenderbufferFormat(format)) {
+        attachment = gl.createRenderbuffer();
+        gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
+        gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
+      } else {
+        var textureOptions = Object.assign({}, attachmentOptions);
+        textureOptions.width = width;
+        textureOptions.height = height;
+
+        if (textureOptions.auto === undefined) {
+          textureOptions.auto = false;
+          textureOptions.min = textureOptions.min || textureOptions.minMag || gl.LINEAR;
+          textureOptions.mag = textureOptions.mag || textureOptions.minMag || gl.LINEAR;
+          textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+          textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+        }
+
+        attachment = textures.createTexture(gl, textureOptions);
+      }
+    }
+
+    if (attachment instanceof WebGLRenderbuffer) {
+      gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
+    } else if (attachment instanceof WebGLTexture) {
+      gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
+    } else {
+      throw "unknown attachment type";
+    }
+
+    framebufferInfo.attachments.push(attachment);
+  });
+  return framebufferInfo;
+}
+/**
+ * Resizes the attachments of a framebuffer.
+ *
+ * You need to pass in the same `attachments` as you passed in {@link module:twgl.createFramebufferInfo}
+ * because TWGL has no idea the format/type of each attachment.
+ *
+ * The simplest usage
+ *
+ *     // create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+ *     const fbi = twgl.createFramebufferInfo(gl);
+ *
+ *     ...
+ *
+ *     function render() {
+ *       if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+ *         // resize the attachments
+ *         twgl.resizeFramebufferInfo(gl, fbi);
+ *       }
+ *
+ * More complex usage
+ *
+ *     // create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+ *     const attachments = [
+ *       { format: RGB565, mag: NEAREST },
+ *       { format: STENCIL_INDEX8 },
+ *     ]
+ *     const fbi = twgl.createFramebufferInfo(gl, attachments);
+ *
+ *     ...
+ *
+ *     function render() {
+ *       if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
+ *         // resize the attachments to match
+ *         twgl.resizeFramebufferInfo(gl, fbi, attachments);
+ *       }
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
+ * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebufferInfo}.
+ * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
+ * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+ * @memberOf module:twgl/framebuffers
+ */
+
+
+function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
+  width = width || gl.drawingBufferWidth;
+  height = height || gl.drawingBufferHeight;
+  framebufferInfo.width = width;
+  framebufferInfo.height = height;
+  attachments = attachments || defaultAttachments;
+  attachments.forEach(function (attachmentOptions, ndx) {
+    var attachment = framebufferInfo.attachments[ndx];
+    var format = attachmentOptions.format;
+
+    if (attachment instanceof WebGLRenderbuffer) {
+      gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
+      gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
+    } else if (attachment instanceof WebGLTexture) {
+      textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
+    } else {
+      throw "unknown attachment type";
+    }
+  });
+}
+/**
+ * Binds a framebuffer
+ *
+ * This function pretty much soley exists because I spent hours
+ * trying to figure out why something I wrote wasn't working only
+ * to realize I forget to set the viewport dimensions.
+ * My hope is this function will fix that.
+ *
+ * It is effectively the same as
+ *
+ *     gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
+ *     gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
+ *   If not passed will bind the canvas.
+ * @param {number} [target] The target. If not passed `gl.FRAMEBUFFER` will be used.
+ * @memberOf module:twgl/framebuffers
+ */
+
+
+function bindFramebufferInfo(gl, framebufferInfo, target) {
+  target = target || gl.FRAMEBUFFER;
+
+  if (framebufferInfo) {
+    gl.bindFramebuffer(target, framebufferInfo.framebuffer);
+    gl.viewport(0, 0, framebufferInfo.width, framebufferInfo.height);
+  } else {
+    gl.bindFramebuffer(target, null);
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+  }
+}
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.createVertexArrayInfo = createVertexArrayInfo;
+exports.createVAOAndSetAttributes = createVAOAndSetAttributes;
+exports.createVAOFromBufferInfo = createVAOFromBufferInfo;
+
+var programs = _interopRequireWildcard(__webpack_require__(5));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/*
+ * Copyright 2015, Gregg Tavares.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *     * Neither the name of Gregg Tavares. nor the names of his
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * vertex array object related functions
+ *
+ * You should generally not need to use these functions. They are provided
+ * for those cases where you're doing something out of the ordinary
+ * and you need lower level access.
+ *
+ * For backward compatibily they are available at both `twgl.attributes` and `twgl`
+ * itself
+ *
+ * See {@link module:twgl} for core functions
+ *
+ * @module twgl/vertexArrays
+ */
+
+/**
+ * @typedef {Object} VertexArrayInfo
+ * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
+ * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
+ * @property {WebGLVertexArrayObject} [vertexArrayObject] a vertex array object
+ * @memberOf module:twgl
+ */
+
+/**
+ * Creates a VertexArrayInfo from a BufferInfo and one or more ProgramInfos
+ *
+ * This can be passed to {@link module:twgl.setBuffersAndAttributes} and to
+ * {@link module:twgl:drawBufferInfo}.
+ *
+ * > **IMPORTANT:** Vertex Array Objects are **not** a direct analog for a BufferInfo. Vertex Array Objects
+ *   assign buffers to specific attributes at creation time. That means they can only be used with programs
+ *   who's attributes use the same attribute locations for the same purposes.
+ *
+ * > Bind your attribute locations by passing an array of attribute names to {@link module:twgl.createProgramInfo}
+ *   or use WebGL 2's GLSL ES 3's `layout(location = <num>)` to make sure locations match.
+ *
+ * also
+ *
+ * > **IMPORTANT:** After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object
+ *   that Vertex Array Object will be bound. That means **ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES**
+ *   will affect the Vertex Array Object state.
+ *
+ * > Call `gl.bindVertexArray(null)` to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.
+ *
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
+ * @param {module:twgl.ProgramInfo|module:twgl.ProgramInfo[]} programInfo a programInfo or array of programInfos
+ * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
+ *
+ *    You need to make sure every attribute that will be used is bound. So for example assume shader 1
+ *    uses attributes A, B, C and shader 2 uses attributes A, B, D. If you only pass in the programInfo
+ *    for shader 1 then only attributes A, B, and C will have their attributes set because TWGL doesn't
+ *    now attribute D's location.
+ *
+ *    So, you can pass in both shader 1 and shader 2's programInfo
+ *
+ * @return {module:twgl.VertexArrayInfo} The created VertexArrayInfo
+ *
+ * @memberOf module:twgl/vertexArrays
+ */
+function createVertexArrayInfo(gl, programInfos, bufferInfo) {
+  var vao = gl.createVertexArray();
+  gl.bindVertexArray(vao);
+
+  if (!programInfos.length) {
+    programInfos = [programInfos];
+  }
+
+  programInfos.forEach(function (programInfo) {
+    programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+  });
+  gl.bindVertexArray(null);
+  return {
+    numElements: bufferInfo.numElements,
+    elementType: bufferInfo.elementType,
+    vertexArrayObject: vao
+  };
+}
+/**
+ * Creates a vertex array object and then sets the attributes on it
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
+ * @param {Object.<string, module:twgl.AttribInfo>} attribs AttribInfos mapped by attribute name.
+ * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+ * @memberOf module:twgl/vertexArrays
+ */
+
+
+function createVAOAndSetAttributes(gl, setters, attribs, indices) {
+  var vao = gl.createVertexArray();
+  gl.bindVertexArray(vao);
+  programs.setAttributes(setters, attribs);
+
+  if (indices) {
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indices);
+  } // We unbind this because otherwise any change to ELEMENT_ARRAY_BUFFER
+  // like when creating buffers for other stuff will mess up this VAO's binding
+
+
+  gl.bindVertexArray(null);
+  return vao;
+}
+/**
+ * Creates a vertex array object and then sets the attributes
+ * on it
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext
+ *        to use.
+ * @param {Object.<string, function>| module:twgl.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
+ * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
+ * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+ * @memberOf module:twgl/vertexArrays
+ */
+
+
+function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
+  return createVAOAndSetAttributes(gl, programInfo.attribSetters || programInfo, bufferInfo.attribs, bufferInfo.indices);
+}
 
 /***/ })
 /******/ ]);
