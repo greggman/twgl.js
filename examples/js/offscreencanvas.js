@@ -1,3 +1,5 @@
+'use strict';
+
 importScripts('../../dist/4.x/twgl-full.js');
 importScripts('../../3rdparty/chroma.min.js');
 
