@@ -77,10 +77,59 @@ const warn =
     ? global.console.warn.bind(global.console)
     : function() { };
 
+let repBuffer;
+function isBuffer(gl, t) {
+  if (!repBuffer) {
+    repBuffer = gl.createBuffer();
+  }
+  return t instanceof repBuffer.constructor;
+}
+
+let repRenderbuffer;
+function isRenderbuffer(gl, t) {
+  if (!repRenderbuffer) {
+    repRenderbuffer = gl.createRenderbuffer();
+  }
+  return t instanceof repRenderbuffer.constructor;
+}
+
+let repShader;
+function isShader(gl, t) {
+  if (!repShader) {
+    repShader = gl.createShader(gl.VERTEX_SHADER);
+  }
+  return t instanceof repShader.constructor;
+}
+
+let repTexture;
+function isTexture(gl, t) {
+  if (!repTexture) {
+    repTexture = gl.createTexture();
+  }
+  return t instanceof repTexture.constructor;
+}
+
+let repSampler;
+function isSampler(gl, t) {
+  if (!repSampler) {
+    if (gl.createSampler) {
+      repSampler = gl.createSampler();
+    } else {
+      return false;  // it can't be a sampler if this is not WebGL2
+    }
+  }
+  return t instanceof repSampler.constructor;
+}
+
 export {
   copyExistingProperties,
   copyNamedProperties,
   error,
   warn,
+  isBuffer,
+  isRenderbuffer,
+  isShader,
+  isTexture,
+  isSampler,
 };
 

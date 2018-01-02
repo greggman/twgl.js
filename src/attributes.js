@@ -98,7 +98,7 @@ function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
  * @memberOf module:twgl/attributes
  */
 function createBufferFromTypedArray(gl, typedArray, type, drawType) {
-  if (typedArray instanceof WebGLBuffer) {
+  if (helper.isBuffer(gl, typedArray)) {
     return typedArray;
   }
   type = type || gl.ARRAY_BUFFER;

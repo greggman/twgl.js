@@ -566,8 +566,6 @@ function restorePackState(gl, options) {
   }
 }
 
-const WebGLSamplerCtor = global.WebGLSampler || function NotWebGLSampler() {};
-
 /**
  * Sets the parameters of a texture or sampler
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -591,7 +589,7 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.wrap) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-    if (target === gl.TEXTURE_3D || target instanceof WebGLSamplerCtor) {
+    if (target === gl.TEXTURE_3D || helper.isSampler(gl, target)) {
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
     }
   }
@@ -1395,7 +1393,7 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (src instanceof HTMLElement) {
+    } else if (global.HTMLElement && src instanceof global.HTMLElement) {
       setTextureFromElement(gl, tex, src, options);
       width  = src.width;
       height = src.height;

@@ -31,6 +31,7 @@
 
 import * as utils from './utils.js';
 import * as helper from './helper.js';
+import global from './global-object.js';
 
 /**
  * Low level shader program related functions
@@ -49,6 +50,11 @@ import * as helper from './helper.js';
 
 const error = helper.error;
 const warn = helper.warn;
+const getElementById = (global && global.document && global.document.getElementById)
+  ? global.document.getElementById.bind(global.document)
+  : function() {
+    return null;
+};
 
 const FLOAT                         = 0x1406;
 const FLOAT_VEC2                    = 0x8B50;
@@ -257,7 +263,7 @@ function samplerSetter(gl, type, unit, location) {
   return utils.isWebGL2(gl) ? function(textureOrPair) {
     let texture;
     let sampler;
-    if (textureOrPair instanceof WebGLTexture) {
+    if (helper.isTexture(gl, textureOrPair)) {
       texture = textureOrPair;
       sampler = null;
     } else {
@@ -288,7 +294,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
       gl.activeTexture(gl.TEXTURE0 + units[index]);
       let texture;
       let sampler;
-      if (textureOrPair instanceof WebGLTexture) {
+      if (helper.isTexture(gl, textureOrPair)) {
         texture = textureOrPair;
         sampler = null;
       } else {
@@ -598,7 +604,7 @@ function createProgram(
   for (let ndx = 0; ndx < shaders.length; ++ndx) {
     let shader = shaders[ndx];
     if (typeof (shader) === 'string') {
-      const elem = document.getElementById(shader);
+      const elem = getElementById(shader);
       const src = elem ? elem.text : shader;
       let type = gl[defaultShaderType[ndx]];
       if (elem && elem.type) {
@@ -607,7 +613,7 @@ function createProgram(
       shader = loadShader(gl, src, type, progOptions.errorCallback);
       newShaders.push(shader);
     }
-    if (shader instanceof WebGLShader) {
+    if (helper.isShader(gl, shader)) {
       realShaders.push(shader);
     }
   }
@@ -665,7 +671,7 @@ function createProgram(
 function createShaderFromScript(
     gl, scriptId, opt_shaderType, opt_errorCallback) {
   let shaderSource = "";
-  const shaderScript = document.getElementById(scriptId);
+  const shaderScript = getElementById(scriptId);
   if (!shaderScript) {
     throw "*** Error: unknown script element" + scriptId;
   }
@@ -1590,7 +1596,7 @@ function createProgramInfo(
   shaderSources = shaderSources.map(function(source) {
     // Lets assume if there is no \n it's an id
     if (source.indexOf("\n") < 0) {
-      const script = document.getElementById(source);
+      const script = getElementById(source);
       if (!script) {
         progOptions.errorCallback("no element with id: " + source);
         good = false;

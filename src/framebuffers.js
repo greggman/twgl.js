@@ -30,6 +30,7 @@
  */
 
 import * as textures from './textures.js';
+import * as helper from './helper.js';
 
 /**
  * Framebuffer related functions
@@ -219,9 +220,9 @@ function createFramebufferInfo(gl, attachments, width, height) {
         attachment = textures.createTexture(gl, textureOptions);
       }
     }
-    if (attachment instanceof WebGLRenderbuffer) {
+    if (helper.isRenderbuffer(gl, attachment)) {
       gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
-    } else if (attachment instanceof WebGLTexture) {
+    } else if (helper.isTexture(gl, attachment)) {
       gl.framebufferTexture2D(
           target,
           attachmentPoint,
@@ -288,10 +289,10 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
   attachments.forEach(function(attachmentOptions, ndx) {
     const attachment = framebufferInfo.attachments[ndx];
     const format = attachmentOptions.format;
-    if (attachment instanceof WebGLRenderbuffer) {
+    if (helper.isRenderbuffer(gl, attachment)) {
       gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
       gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
-    } else if (attachment instanceof WebGLTexture) {
+    } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
       throw "unknown attachment type";
