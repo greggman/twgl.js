@@ -59,7 +59,21 @@ const defaults = {
 const isArrayBuffer = typedArrays.isArrayBuffer;
 
 // Should we make this on demand?
-const ctx = document.createElement("canvas").getContext("2d");
+const ctx = (global.document && global.document.createElement)
+    ? global.document.createElement("canvas").getContext("2d")
+    : {};
+
+// NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
+//       not only does Firefox NOT support it but Firefox freezes immediately
+//       if you try to create one instead of just returning null and continuing.
+//  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
+
+// NOTE: We can maybe remove some of the need for the 2d canvas. In WebGL2
+// we can use the various unpack settings. Otherwise we could try using
+// the ability of an imagebitmap to be cut. Unfortunately cutting an imagebitmap
+// is async and the current TWGL code expects a non-Async result though that
+// might not be a problem. ImageBitmap though is not available in Edge or Safari
+// as of 2018-01-02
 
 /* PixelFormat */
 const ALPHA                          = 0x1906;
@@ -919,33 +933,70 @@ function noop() {
  */
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
-  let img = new Image();
-  crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
-  if (crossOrigin !== undefined) {
-    img.crossOrigin = crossOrigin;
-  }
+  let img;
+  if (global.Image) {
+    img = new global.Image();
+    crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+    if (crossOrigin !== undefined) {
+      img.crossOrigin = crossOrigin;
+    }
 
-  function clearEventHandlers() {
-    img.removeEventListener('error', onError);  // eslint-disable-line
-    img.removeEventListener('load', onLoad);  // eslint-disable-line
+    const clearEventHandlers = function clearEventHandlers() {
+      img.removeEventListener('error', onError);  // eslint-disable-line
+      img.removeEventListener('load', onLoad);  // eslint-disable-line
+      img = null;
+    };
+
+    const onError = function onError() {
+      const msg = "couldn't load image: " + url;
+      helper.error(msg);
+      callback(msg, img);
+      clearEventHandlers();
+    };
+
+    const onLoad = function onLoad() {
+      callback(null, img);
+      clearEventHandlers();
+    };
+
+    img.addEventListener('error', onError);
+    img.addEventListener('load', onLoad);
+    img.src = url;
+    return img;
+  } else if (global.ImageBitmap) {
+    let err;
+    let bm;
+    const cb = function cb() {
+      callback(err, bm);
+    };
+
+    const options = {};
+    if (crossOrigin) {
+      options.mode = 'cors'; // TODO: not sure how to translate image.crossOrigin
+    }
+    fetch(url, options).then(function(response) {
+      if (!response.ok) {
+        throw response;
+      }
+      return response.blob();
+    }).then(function(blob) {
+      return global.createImageBitmap(blob, {
+        premultiplyAlpha: 'none',
+        colorSpaceConversion: 'none',
+      });
+    }).then(function(bitmap) {
+      // not sure if this works. We don't want
+      // to catch the user's error. So, call
+      // the callback in a timeout so we're
+      // not in this scope inside the promise.
+      bm = bitmap;
+      setTimeout(cb);
+    }).catch(function(e) {
+      err = e;
+      setTimeout(cb);
+    });
     img = null;
   }
-
-  function onError() {
-    const msg = "couldn't load image: " + url;
-    helper.error(msg);
-    callback(msg, img);
-    clearEventHandlers();
-  }
-
-  function onLoad() {
-    callback(null, img);
-    clearEventHandlers();
-  }
-
-  img.addEventListener('error', onError);
-  img.addEventListener('load', onLoad);
-  img.src = url;
   return img;
 }
 
