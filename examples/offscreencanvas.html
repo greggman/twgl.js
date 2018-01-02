@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - offscreencanvas" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/offscreencanvas.png" />
+    <meta property="og:description" content="TWGL.js - offscreencanvas" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - offscreencanvas">
+    <meta name="twitter:url" content="http://twgljs.org/examples/offscreencanvas.html">
+    <meta name="twitter:description" content="TWGL.js - offscreencanvas">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/offscreencanvas.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - offscreencanvas</title>
+    <style>
+      body {
+          margin: 0;
+          font-family: monospace;
+      }
+      canvas {
+          display: block;
+          width: 100vw;
+          height: 100vh;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+      #no-webgl {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: red;
+        color: white;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - offscreencanvas</div>
+    <div id="no-webgl" style="display: none;">
+      <div>Sorry but your browser doesn't appear to support WebGL</div>
+    </div>
+  </body>
+  <script>
+"use strict";
+
+const canvas = document.querySelector("canvas");
+const offscreen = canvas.transferControlToOffscreen();
+
+const worker = new Worker("js/offscreencanvas.js");
+worker.onmessage = function() {
+  document.querySelector("#no-webgl").style.display = "";
+};
+worker.postMessage({canvas: offscreen}, [offscreen]);
+
+function render(time) {
+  worker.postMessage({
+    time: time * 0.001,
+    clientWidth: canvas.clientWidth,
+    clientHeight: canvas.clientHeight,
+  });
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+
+  </script>
+</html>
+
+
+
+
