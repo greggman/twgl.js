@@ -189,6 +189,14 @@ function addExtensionToContext(gl, extensionName) {
   return ext;
 }
 
+/*
+ * If you're wondering why the code doesn't just iterate
+ * over all extensions using `gl.getExtensions` is that it's possible
+ * some future extension is incompatible with this code. Rather than
+ * have thing suddenly break it seems better to manually add to this
+ * list.
+ *
+ */
 const supportedExtensions = [
   'ANGLE_instanced_arrays',
   'EXT_blend_minmax',
