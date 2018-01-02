@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.3.0
+
+    *   Remove references to `window` so twgl can be used in workers
+
 *   4.2.0
 
     *   add `EXT_color_buffer_float`, `WEBGL_compressed_texture_s3tc_srgb`, and
