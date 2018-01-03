@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.3.2
+
+    *   Support slicing image in workers.
+
 *   4.3.1
 
     *   Make TWGL work in workers.
