@@ -45,7 +45,7 @@
         text-align: center;
         z-index: 2;
       }
-      #no-webgl {
+      #no-webgl, #no-offscreencanvas {
         position: absolute;
         left: 0;
         top: 0;
@@ -65,29 +65,38 @@
     <div id="no-webgl" style="display: none;">
       <div>Sorry but your browser doesn't appear to support WebGL</div>
     </div>
+    <div id="no-offscreencanvas" style="display: none;">
+      <div>Sorry but your browser doesn't appear to support OffscreenCanvas</div>
+    </div>
   </body>
   <script>
 "use strict";
 
-const canvas = document.querySelector("canvas");
-const offscreen = canvas.transferControlToOffscreen();
+function main() {
+  const canvas = document.querySelector("canvas");
+  if (!canvas.transferControlToOffscreen) {
+    document.querySelector("#no-offscreencanvas").style.display = "";
+    return;
+  }
+  const offscreen = canvas.transferControlToOffscreen();
 
-const worker = new Worker("js/offscreencanvas.js");
-worker.onmessage = function() {
-  document.querySelector("#no-webgl").style.display = "";
-};
-worker.postMessage({canvas: offscreen}, [offscreen]);
+  const worker = new Worker("js/offscreencanvas.js");
+  worker.onmessage = function() {
+    document.querySelector("#no-webgl").style.display = "";
+  };
+  worker.postMessage({canvas: offscreen}, [offscreen]);
 
-function render(time) {
-  worker.postMessage({
-    time: time * 0.001,
-    clientWidth: canvas.clientWidth,
-    clientHeight: canvas.clientHeight,
-  });
+  function render(time) {
+    worker.postMessage({
+      time: time * 0.001,
+      clientWidth: canvas.clientWidth,
+      clientHeight: canvas.clientHeight,
+    });
+    requestAnimationFrame(render);
+  }
   requestAnimationFrame(render);
 }
-requestAnimationFrame(render);
-
+main();
   </script>
 </html>
 
