@@ -1,6 +1,6 @@
 'use strict';
 
-importScripts('../../dist/4.x/twgl-full.js');
+importScripts('../../dist/4.x/twgl-full.min.js');
 importScripts('../../3rdparty/chroma.min.js');
 
 const onePointVS = `
@@ -123,10 +123,10 @@ function main(gl) {
       ],
     },
     // A cubemap from 1 image (can be 1x6, 2x3, 3x2, 6x1)
-//    goldengate: {
-//      target: gl.TEXTURE_CUBE_MAP,
-//      src: '../images/goldengate.jpg',
-//    },
+    goldengate: {
+      target: gl.TEXTURE_CUBE_MAP,
+      src: '../images/goldengate.jpg',
+    },
     // A 2x2 pixel texture from a JavaScript array
     checker: {
       mag: gl.NEAREST,
