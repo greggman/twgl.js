@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.3.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.3.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2692,7 +2692,7 @@ var defaults = {
 };
 var isArrayBuffer = typedArrays.isArrayBuffer; // Should we make this on demand?
 
-var ctx = _globalObject.default.document && _globalObject.default.document.createElement ? _globalObject.default.document.createElement("canvas").getContext("2d") : {}; // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
+var ctx = _globalObject.default.document && _globalObject.default.document.createElement ? _globalObject.default.document.createElement("canvas").getContext("2d") : null; // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
 //       not only does Firefox NOT support it but Firefox freezes immediately
 //       if you try to create one instead of just returning null and continuing.
 //  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
@@ -3585,6 +3585,10 @@ function setDefaults(newDefaults) {
 // a perf critical loop. Even if upload a texture every frame that's unlikely
 // to be more than 1 or 2 textures a frame. In other words, the benefits of
 // making the API easy to use outweigh any supposed perf benefits
+//
+// Also note I get that having one global of these is bad practice.
+// As long as it's used correctly it means no garbage which probably
+// doesn't matter when dealing with textures but old habits die hard.
 
 
 var lastPackState = {};
@@ -3628,6 +3632,40 @@ function restorePackState(gl, options) {
 
   if (options.flipY !== undefined) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
+  }
+}
+/**
+ * Saves state related to data size
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ */
+
+
+function saveSkipState(gl) {
+  lastPackState.unpackAlignment = gl.getParameter(gl.UNPACK_ALIGNMENT);
+
+  if (utils.isWebGL2(gl)) {
+    lastPackState.unpackRowLength = gl.getParameter(gl.UNPACK_ROW_LENGTH);
+    lastPackState.unpackImageHeight = gl.getParameter(gl.UNPACK_IMAGE_HEIGHT);
+    lastPackState.unpackSkipPixels = gl.getParameter(gl.UNPACK_SKIP_PIXELS);
+    lastPackState.unpackSkipRows = gl.getParameter(gl.UNPACK_SKIP_ROWS);
+    lastPackState.unpackSkipImages = gl.getParameter(gl.UNPACK_SKIP_IMAGES);
+  }
+}
+/**
+ * Restores state related to data size
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ */
+
+
+function restoreSkipState(gl) {
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, lastPackState.unpackAlignment);
+
+  if (utils.isWebGL2(gl)) {
+    gl.pixelStorei(gl.UNPACK_ROW_LENGTH, lastPackState.unpackRowLength);
+    gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, lastPackState.unpackImageHeight);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, lastPackState.unpackSkipPixels);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, lastPackState.unpackSkipRows);
+    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES, lastPackState.unpackSkipImages);
   }
 }
 /**
@@ -3941,20 +3979,51 @@ function setTextureFromElement(gl, tex, element, options) {
       throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
     }
 
-    ctx.canvas.width = size;
-    ctx.canvas.height = size;
-    width = size;
-    height = size;
-    getCubeFacesWithNdx(gl, options).forEach(function (f) {
-      var xOffset = slices[f.ndx * 2 + 0] * size;
-      var yOffset = slices[f.ndx * 2 + 1] * size;
-      ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-      gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
-    }); // Free up the canvas memory
+    if (ctx) {
+      ctx.canvas.width = size;
+      ctx.canvas.height = size;
+      width = size;
+      height = size;
+      getCubeFacesWithNdx(gl, options).forEach(function (f) {
+        var xOffset = slices[f.ndx * 2 + 0] * size;
+        var yOffset = slices[f.ndx * 2 + 1] * size;
+        ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
+        gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
+      }); // Free up the canvas memory
 
-    ctx.canvas.width = 1;
-    ctx.canvas.height = 1;
-  } else if (target === gl.TEXTURE_3D) {
+      ctx.canvas.width = 1;
+      ctx.canvas.height = 1;
+    } else if (_globalObject.default.createImageBitmap) {
+      // NOTE: It seems like we should prefer ImageBitmap because unlike canvas it's
+      // note lossy? (alpha is not premultiplied? although I'm not sure what
+      width = size;
+      height = size;
+      getCubeFacesWithNdx(gl, options).forEach(function (f) {
+        var xOffset = slices[f.ndx * 2 + 0] * size;
+        var yOffset = slices[f.ndx * 2 + 1] * size; // We can't easily use a default texture color here as it would have to match
+        // the type across all faces where as with a 2D one there's only one face
+        // so we're replacing everything all at once. It also has to be the correct size.
+        // On the other hand we need all faces to be the same size so as one face loads
+        // the rest match else the texture will be unrenderable.
+
+        gl.texImage2D(f.face, level, internalFormat, size, size, 0, format, type, null);
+
+        _globalObject.default.createImageBitmap(element, xOffset, yOffset, size, size, {
+          premultiplyAlpha: 'none',
+          colorSpaceConversion: 'none'
+        }).then(function (imageBitmap) {
+          savePackState(gl, options);
+          gl.bindTexture(target, tex);
+          gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
+          restorePackState(gl, options);
+
+          if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+            setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
+          }
+        });
+      });
+    }
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     var smallest = Math.min(element.width, element.height);
     var largest = Math.max(element.width, element.height);
     var depth = largest / smallest;
@@ -3965,30 +4034,22 @@ function setTextureFromElement(gl, tex, element, options) {
 
     var xMult = element.width === largest ? 1 : 0;
     var yMult = element.height === largest ? 1 : 0;
-    gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null); // remove this is texSubImage3D gets width and height arguments
-
-    ctx.canvas.width = smallest;
-    ctx.canvas.height = smallest;
+    saveSkipState(gl);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+    gl.pixelStorei(gl.UNPACK_ROW_LENGTH, element.width);
+    gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, 0);
+    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES, 0);
+    gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
 
     for (var d = 0; d < depth; ++d) {
-      //gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, d * smallest);
-      //gl.texSubImage3D(target, 0, 0, 0, d, format, type, element);
       var srcX = d * smallest * xMult;
       var srcY = d * smallest * yMult;
-      var srcW = smallest;
-      var srcH = smallest;
-      var dstX = 0;
-      var dstY = 0;
-      var dstW = smallest;
-      var dstH = smallest;
-      ctx.drawImage(element, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-      gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, ctx.canvas);
+      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, srcX);
+      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, srcY);
+      gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
     }
 
-    ctx.canvas.width = 0;
-    ctx.canvas.height = 0; //FIX (save state)
-
-    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+    restoreSkipState(gl);
   } else {
     gl.texImage2D(target, level, internalFormat, format, type, element);
   }
@@ -4456,6 +4517,7 @@ function setTextureFromArray(gl, tex, src, options) {
     height = dimensions.height;
   }
 
+  saveSkipState(gl);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
   savePackState(gl, options);
 
@@ -4474,6 +4536,7 @@ function setTextureFromArray(gl, tex, src, options) {
   }
 
   restorePackState(gl, options);
+  restoreSkipState(gl);
   return {
     width: width,
     height: height,
