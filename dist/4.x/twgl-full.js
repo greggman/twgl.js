@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.3.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5893,6 +5893,9 @@ function setDefaults(newDefaults) {
  * Texture options passed to most texture functions. Each function will use whatever options
  * are appropriate for its needs. This lets you pass the same options to all functions.
  *
+ * Note: A `TexImageSource` is defined in the WebGL spec as a `HTMLImageElement`, `HTMLVideoElement`,
+ * `HTMLCanvasElement`, `ImageBitmap`, or `ImageData`.
+ *
  * @typedef {Object} TextureOptions
  * @property {number} [target] the type of texture `gl.TEXTURE_2D` or `gl.TEXTURE_CUBE_MAP`. Defaults to `gl.TEXTURE_2D`.
  * @property {number} [level] the mip level to affect. Defaults to 0. Note, if set auto will be considered false unless explicitly set to true.
@@ -5940,16 +5943,19 @@ function setDefaults(newDefaults) {
  *      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
  *      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z]
  *
- * @property {(number[]|ArrayBufferView|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement|string|string[]|module:twgl.TextureFunc)} [src] source for texture
+ * @property {(number[]|ArrayBufferView|TexImageSource|TexImageSource[]|string|string[]|module:twgl.TextureFunc)} [src] source for texture
  *
  *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
  *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
  *    If `target` is `gl.TEXTURE_CUBE_MAP` will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
  *    The pieces will be uploaded in `cubeFaceOrder`
  *
- *    If `string[]` then it must have 6 entries, one for each face of a cube map. Target must be `gl.TEXTURE_CUBE_MAP`.
+ *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_CUBE_MAP` then it must have 6 entries, one for each face of a cube map.
  *
- *    If `HTMLElement` then it wil be used immediately to create the contents of the texture. Examples `HTMLImageElement`,
+ *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_2D_ARRAY` then eact entry is a slice of the a 2d array texture
+ *    and will be scaled to the specified width and height OR to the size of the first image that loads.
+ *
+ *    If `TexImageSource` then it wil be used immediately to create the contents of the texture. Examples `HTMLImageElement`,
  *    `HTMLCanvasElement`, `HTMLVideoElement`.
  *
  *    If `number[]` or `ArrayBufferView` it's assumed to be data for a texture. If `width` or `height` is
@@ -6462,6 +6468,7 @@ function noop() {}
 /**
  * Loads an image
  * @param {string} url url to image
+ * @param {string} crossOrigin
  * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
  *     if there was an error
  * @return {HTMLImageElement} the image being loaded.
@@ -6544,6 +6551,39 @@ function loadImage(url, crossOrigin, callback) {
   }
 
   return img;
+}
+/**
+ * check if object is a TexImageSource
+ *
+ * @param {Object} obj Object to test
+ * @return {boolean} true if object is a TexImageSource
+ */
+
+
+function isTexImageSource(obj) {
+  return _globalObject.default.ImageBitmap && obj instanceof _globalObject.default.ImageBitmap || _globalObject.default.ImageData && obj instanceof _globalObject.default.ImageData || _globalObject.default.HTMLElement && obj instanceof _globalObject.default.HTMLElement;
+}
+/**
+ * if obj is an TexImageSource then just
+ * uses it otherwise if obj is a string
+ * then load it first.
+ *
+ * @param {string|TexImageSource} obj
+ * @param {string} crossOrigin
+ * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
+ *     if there was an error
+ */
+
+
+function loadAndUseImage(obj, crossOrigin, callback) {
+  if (isTexImageSource(obj)) {
+    setTimeout(function () {
+      callback(null, obj);
+    });
+    return obj;
+  }
+
+  return loadImage(obj, crossOrigin, callback);
 }
 /**
  * Sets a texture to a 1x1 pixel color. If `options.color === false` is nothing happens. If it's not set
@@ -6648,7 +6688,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
 
   options = Object.assign({}, options);
-  var img = loadImage(options.src, options.crossOrigin, function (err, img) {
+  var img = loadAndUseImage(options.src, options.crossOrigin, function (err, img) {
     if (err) {
       callback(err, tex, img);
     } else {
@@ -6659,7 +6699,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   return img;
 }
 /**
- * Loads a cubemap from 6 urls as specified in `options.src`. Will set the cubemap to a 1x1 pixel color
+ * Loads a cubemap from 6 urls or TexImageSources as specified in `options.src`. Will set the cubemap to a 1x1 pixel color
  * so that it is usable immediately unless `option.color === false`.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
@@ -6730,17 +6770,17 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
       }
 
       if (numToLoad === 0) {
-        callback(errors.length ? errors : undefined, imgs, tex);
+        callback(errors.length ? errors : undefined, tex, imgs);
       }
     };
   }
 
   imgs = urls.map(function (url, ndx) {
-    return loadImage(url, options.crossOrigin, uploadImg(faces[ndx]));
+    return loadAndUseImage(url, options.crossOrigin, uploadImg(faces[ndx]));
   });
 }
 /**
- * Loads a 2d array or 3d texture from urls as specified in `options.src`.
+ * Loads a 2d array or 3d texture from urls OR TexImageSources as specified in `options.src`.
  * Will set the texture to a 1x1 pixel color
  * so that it is usable immediately unless `option.color === false`.
  *
@@ -6832,13 +6872,13 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
       }
 
       if (numToLoad === 0) {
-        callback(errors.length ? errors : undefined, imgs, tex);
+        callback(errors.length ? errors : undefined, tex, imgs);
       }
     };
   }
 
   imgs = urls.map(function (url, ndx) {
-    return loadImage(url, options.crossOrigin, uploadImg(ndx));
+    return loadAndUseImage(url, options.crossOrigin, uploadImg(ndx));
   });
 }
 /**
@@ -7013,13 +7053,13 @@ function createTexture(gl, options, callback) {
       width = dimensions.width;
       height = dimensions.height;
       type = dimensions.type;
-    } else if (Array.isArray(src) && typeof src[0] === 'string') {
+    } else if (Array.isArray(src) && (typeof src[0] === 'string' || isTexImageSource(src[0]))) {
       if (target === gl.TEXTURE_CUBE_MAP) {
         loadCubemapFromUrls(gl, tex, options, callback);
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (_globalObject.default.HTMLElement && src instanceof _globalObject.default.HTMLElement) {
+    } else if (isTexImageSource(src)) {
       setTextureFromElement(gl, tex, src, options);
       width = src.width;
       height = src.height;
