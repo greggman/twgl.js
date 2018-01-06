@@ -181,6 +181,23 @@ void main() {
       cubemapCtx.restore();
     }
 
+    // make 6 canvases to show loading from 6 element
+    const cubeFaceCanvases = [];
+    for (let ff = 0;ff < 6; ++ff) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 128;
+      canvas.height = 128;
+      const ctx = canvas.getContext("2d");
+      const color = chroma.hsv((baseHue + ff * 10) % 360, 1 - ff / 6, 1);
+      ctx.fillStyle = color.darken().hex();
+      ctx.fillRect(0, 0, 128, 128);
+      ctx.translate(64, 64);
+      ctx.rotate(Math.PI * .25);
+      ctx.fillStyle = color.hex();
+      ctx.fillRect(-40, -40, 80, 80);
+      cubeFaceCanvases.push(canvas);
+    }
+
     const textures = twgl.createTextures(gl, {
       // a power of 2 image
       hftIcon: { src: "images/hft-icon-16.png", mag: gl.NEAREST },
@@ -247,6 +264,7 @@ void main() {
         ],
       },
       cubemapFromCanvas: { target: gl.TEXTURE_CUBE_MAP, src: cubemapCtx.canvas },
+      cubemapFrom6Canvases: { target: gl.TEXTURE_CUBE_MAP, src: cubeFaceCanvases },
     });
 
     // This is soley to make it easy to pick textures at random
@@ -259,10 +277,11 @@ void main() {
     ];
 
     const cubeTextures = [
-      textures.yokohama,
-      textures.goldengate,
-      textures.cubemapFromCanvas,
-      textures.cubemapFromArray,
+//      textures.yokohama,
+//      textures.goldengate,
+//      textures.cubemapFromCanvas,
+      textures.cubemapFrom6Canvases,
+//      textures.cubemapFromArray,
     ];
 
     const objects = [];
