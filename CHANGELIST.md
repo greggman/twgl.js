@@ -1,5 +1,11 @@
 #Changelist
 
+*   4.4.0
+
+    *   Support passing arrays of `TexImageSource` to `createTexture(s)`.
+
+    *   Fix callback arguments for cubemaps and slices
+
 *   4.3.2
 
     *   Support slicing image in workers.
