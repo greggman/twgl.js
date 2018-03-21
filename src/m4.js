@@ -543,8 +543,8 @@ function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
  * near and far clipping plane distances.
  * @param {number} left Left side of the near clipping plane viewport.
  * @param {number} right Right side of the near clipping plane viewport.
- * @param {number} top Top of the near clipping plane viewport.
  * @param {number} bottom Bottom of the near clipping plane viewport.
+ * @param {number} top Top of the near clipping plane viewport.
  * @param {number} near The depth (negative z coordinate)
  *     of the near clipping plane.
  * @param {number} far The depth (negative z coordinate)
