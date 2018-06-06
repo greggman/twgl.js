@@ -906,7 +906,7 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
 }
 
 /**
- * Unbinds buffers afetr transform feedback.
+ * Unbinds buffers after transform feedback.
  *
  * Buffers can not be bound to 2 bind points so if you try to bind a buffer used
  * in a transform feedback as an ARRAY_BUFFER for an attribute it will fail.
