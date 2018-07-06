@@ -233,11 +233,21 @@ function main(gl) {
     });
   }
 
+  const state = {
+    clientWidth: 300,
+    clientHeight: 150,
+  };
+
   // We only have one message so just replace the one message listener
-  self.onmessage = function render(evt) {
-    const time = evt.data.time;
-    const clientWidth = evt.data.clientWidth;
-    const clientHeight = evt.data.clientHeight;
+  self.onmessage = function(evt) {
+    Object.assign(state, evt.data);
+  };
+
+  function render(time) {
+    time *= 0.001;
+
+    const clientWidth = state.clientWidth;
+    const clientHeight = state.clientHeight;
 
     // Make the canvas match its display size
     if (gl.canvas.width !== clientWidth || gl.canvas.height !== clientHeight) {
@@ -277,15 +287,26 @@ function main(gl) {
 
     twgl.drawObjectList(gl, drawObjects);
 
-    gl.commit();
-  };
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
 }
 
 self.onmessage = function(evt) {
+  if (!self.requestAnimationFrame) {
+    self.postMessage('no requestAnimationFrame in worker');
+    return;
+  }
+
   const canvas = evt.data.canvas;
+  if (!canvas) {
+    self.postMessage('no canvas in worker');
+    return;
+  }
+
   const gl = canvas.getContext("webgl");
   if (!gl) {
-    self.postMessage('nogl');
+    self.postMessage('no webgl in worker');
     return;
   }
   main(gl);

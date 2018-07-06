@@ -66,7 +66,10 @@
       <div>Sorry but your browser doesn't appear to support WebGL</div>
     </div>
     <div id="no-offscreencanvas" style="display: none;">
-      <div>Sorry but your browser doesn't appear to support <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas">OffscreenCanvas</a></div>
+      <div>
+        <div>Sorry but your browser doesn't appear to support <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas">OffscreenCanvas</a></div>
+        <div id="no-msg"></div>
+      </div>
     </div>
   </body>
   <script>
@@ -81,20 +84,21 @@ function main() {
   const offscreen = canvas.transferControlToOffscreen();
 
   const worker = new Worker("js/offscreencanvas.js");
-  worker.onmessage = function() {
+  worker.onmessage = function(evt) {
+    document.querySelector('#no-msg').textContent = evt.data;
     document.querySelector("#no-webgl").style.display = "";
   };
   worker.postMessage({canvas: offscreen}, [offscreen]);
 
-  function render(time) {
+  function sendSize() {
     worker.postMessage({
-      time: time * 0.001,
       clientWidth: canvas.clientWidth,
       clientHeight: canvas.clientHeight,
     });
-    requestAnimationFrame(render);
   }
-  requestAnimationFrame(render);
+
+  window.addEventListener('resize', sendSize);
+  sendSize();
 }
 main();
   </script>
