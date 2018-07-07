@@ -38,12 +38,11 @@
           font-family: monospace;
       }
       canvas {
+          position: absolute;
           display: block;
+          top: 0;
           width: 100vw;
           height: 100vh;
-      }
-      #c {
-          position: fixed;
       }
       #outer {
           width: 100%;
@@ -264,6 +263,8 @@ void main() {
       const eye = [0, 0, -8];
       const target = [0, 0, 0];
       const up = [0, 1, 0];
+
+      gl.canvas.style.transform = `translateY(${window.scrollY}px)`;
 
       m4.lookAt(eye, target, up, camera);
       m4.inverse(camera, view);
