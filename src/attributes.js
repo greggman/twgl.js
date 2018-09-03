@@ -189,6 +189,8 @@ function makeTypedArray(array, name) {
  * for the attribute.
  *
  * @typedef {Object} AttribInfo
+ * @property {number[]:ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
+ *    disabled and set to this constant value and all other values will be ignored.
  * @property {number} [numComponents] the number of components for this attribute.
  * @property {number} [size] synonym for `numComponents`.
  * @property {number} [type] the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
@@ -205,6 +207,8 @@ function makeTypedArray(array, name) {
 /**
  * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
  * @typedef {Object} FullArraySpec
+ * @property {number[]:ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
+ *    disabled and set to this constant value and all other values will be ignored.
  * @property {(number|number[]|ArrayBufferView)} data The data of the array. A number alone becomes the number of elements of type.
  * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
  *    If `coord` is in the name assumes `numComponents = 2`.
@@ -221,6 +225,17 @@ function makeTypedArray(array, name) {
  * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
  * @property {string} [name] synonym for `attrib`.
  * @property {string} [attribName] synonym for `attrib`.
+ * @property {WebGLBuffer} [buffer] Buffer to use for this attribute. This lets you use your own buffer
+ *    but you will need to supply `numComponents` and `type`. You can effectively pass an `AttribInfo`
+ *    to provide this. Example:
+ *
+ *         const bufferInfo1 = twgl.createBufferInfoFromArrays(gl, {
+ *           position: [1, 2, 3, ... ],
+ *         });
+ *         const bufferInfo2 = twgl.createBufferInfoFromArrays(gl, {
+ *           position: bufferInfo1.attribs.position,  // use the same buffer from bufferInfo1
+ *         });
+ *
  * @memberOf module:twgl
  */
 
@@ -329,6 +344,9 @@ function makeTypedArray(array, name) {
  *
  * @param {WebGLRenderingContext} gl The webgl rendering context.
  * @param {module:twgl.Arrays} arrays The arrays
+ * @param {module:twgl.BufferInfo} [srcBufferInfo] a BufferInfo to copy from
+ *   This lets you share buffers. Any arrays you supply will override
+ *   the buffers from srcBufferInfo.
  * @return {Object.<string, module:twgl.AttribInfo>} the attribs
  * @memberOf module:twgl/attributes
  */
@@ -338,39 +356,51 @@ function createAttribsFromArrays(gl, arrays) {
     if (!isIndices(arrayName)) {
       const array = arrays[arrayName];
       const attribName = array.attrib || array.name || array.attribName || (defaults.attribPrefix + arrayName);
-      let buffer;
-      let type;
-      let normalization;
-      let numComponents;
-      let numValues;
-      if (typeof array === "number" || typeof array.data === "number") {
-        numValues = array.data || array;
-        const arrayType = array.type || Float32Array;
-        const numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
-        type = typedArrays.getGLTypeForTypedArrayType(arrayType);
-        normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
-        numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
-        buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+      if (array.value) {
+        if (!Array.isArray(array.value) && !typedArrays.isArrayBuffer(array.value)) {
+          throw new Error('array.value is not array or typedarray');
+        }
+        attribs[attribName] = {
+          value: array.value,
+        };
       } else {
-        const typedArray = makeTypedArray(array, arrayName);
-        buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
-        type = typedArrays.getGLTypeForTypedArray(typedArray);
-        normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
-        numComponents = getNumComponents(array, arrayName);
-        numValues = typedArray.length;
+        let buffer;
+        let type;
+        let normalization;
+        let numComponents;
+        if (array.buffer) {
+          buffer = array.buffer;
+          numComponents = array.numComponents || array.size;
+          type = array.type;
+          normalization = array.normalize;
+        } else if (typeof array === "number" || typeof array.data === "number") {
+          const numValues = array.data || array;
+          const arrayType = array.type || Float32Array;
+          const numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+          type = typedArrays.getGLTypeForTypedArrayType(arrayType);
+          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
+          numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
+          buffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+          gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+        } else {
+          const typedArray = makeTypedArray(array, arrayName);
+          buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
+          type = typedArrays.getGLTypeForTypedArray(typedArray);
+          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
+          numComponents = getNumComponents(array, arrayName);
+        }
+        attribs[attribName] = {
+          buffer:        buffer,
+          numComponents: numComponents,
+          type:          type,
+          normalize:     normalization,
+          stride:        array.stride || 0,
+          offset:        array.offset || 0,
+          divisor:       array.divisor === undefined ? undefined : array.divisor,
+          drawType:      array.drawType,
+        };
       }
-      attribs[attribName] = {
-        buffer:        buffer,
-        numComponents: numComponents,
-        type:          type,
-        normalize:     normalization,
-        stride:        array.stride || 0,
-        offset:        array.offset || 0,
-        divisor:       array.divisor === undefined ? undefined : array.divisor,
-        drawType:      array.drawType,
-      };
     }
   });
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -592,17 +622,17 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
  */
-function createBufferInfoFromArrays(gl, arrays) {
-  const bufferInfo = {
-    attribs: createAttribsFromArrays(gl, arrays),
-  };
+function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
+  const newAttribs = createAttribsFromArrays(gl, arrays);
+  const bufferInfo = Object.assign({}, srcBufferInfo ? srcBufferInfo : {});
+  bufferInfo.attribs = Object.assign({}, srcBufferInfo ? srcBufferInfo.attribs : {}, newAttribs);
   const indices = arrays.indices;
   if (indices) {
     const newIndices = makeTypedArray(indices, "indices");
     bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
     bufferInfo.numElements = newIndices.length;
     bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(newIndices);
-  } else {
+  } else if (!bufferInfo.numElements) {
     bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
   }
 

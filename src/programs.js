@@ -356,24 +356,51 @@ typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null,         size:  0, setter:
 
 function floatAttribSetter(gl, index) {
   return function(b) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-    gl.enableVertexAttribArray(index);
-    gl.vertexAttribPointer(
-        index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
-    if (b.divisor !== undefined) {
-      gl.vertexAttribDivisor(index, b.divisor);
+    if (b.value) {
+      gl.disableVertexAttribArray(index);
+      gl.vertexAttrib4fv(index, b.value);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribPointer(
+          index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
     }
   };
 }
 
 function intAttribSetter(gl, index) {
   return function(b) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-    gl.enableVertexAttribArray(index);
-    gl.vertexAttribIPointer(
-        index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
-    if (b.divisor !== undefined) {
-      gl.vertexAttribDivisor(index, b.divisor);
+    if (b.value) {
+      gl.disableVertexAttribArray(index);
+      gl.vertexAttrib4iv(index, b.value);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribIPointer(
+          index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
+    }
+  };
+}
+
+function uintAttribSetter(gl, index) {
+  return function(b) {
+    if (b.value) {
+      gl.disableVertexAttribArray(index);
+      gl.vertexAttrib4uiv(index, b.value);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribIPointer(
+          index, b.numComponents || b.size, b.type || gl.UNSIGNED_INT, b.stride || 0, b.offset || 0);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
     }
   };
 }
@@ -414,10 +441,10 @@ attrTypeMap[INT]               = { size:  4, setter: intAttribSetter,   };
 attrTypeMap[INT_VEC2]          = { size:  8, setter: intAttribSetter,   };
 attrTypeMap[INT_VEC3]          = { size: 12, setter: intAttribSetter,   };
 attrTypeMap[INT_VEC4]          = { size: 16, setter: intAttribSetter,   };
-attrTypeMap[UNSIGNED_INT]      = { size:  4, setter: intAttribSetter,   };
-attrTypeMap[UNSIGNED_INT_VEC2] = { size:  8, setter: intAttribSetter,   };
-attrTypeMap[UNSIGNED_INT_VEC3] = { size: 12, setter: intAttribSetter,   };
-attrTypeMap[UNSIGNED_INT_VEC4] = { size: 16, setter: intAttribSetter,   };
+attrTypeMap[UNSIGNED_INT]      = { size:  4, setter: uintAttribSetter,  };
+attrTypeMap[UNSIGNED_INT_VEC2] = { size:  8, setter: uintAttribSetter,  };
+attrTypeMap[UNSIGNED_INT_VEC3] = { size: 12, setter: uintAttribSetter,  };
+attrTypeMap[UNSIGNED_INT_VEC4] = { size: 16, setter: uintAttribSetter,  };
 attrTypeMap[BOOL]              = { size:  4, setter: intAttribSetter,   };
 attrTypeMap[BOOL_VEC2]         = { size:  8, setter: intAttribSetter,   };
 attrTypeMap[BOOL_VEC3]         = { size: 12, setter: intAttribSetter,   };
