@@ -1,5 +1,7 @@
 "use strict";
 
+/* global require */
+
 const twgl = require('../../dist/4.x/twgl-full');   // this would be require('twgl') in a real example
 const chroma = require('../../3rdparty/chroma.min');
 const m4 = twgl.m4;

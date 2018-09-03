@@ -1,5 +1,7 @@
 "use strict";
 
+/* global require */
+
 require([
     '../../dist/4.x/twgl-full.min',
     '../../3rdparty/chroma.min',

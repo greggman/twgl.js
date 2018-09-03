@@ -178,6 +178,29 @@ void main() {
       }
     }
 
+    const texcoordRE = /coord|texture/i;
+    const colorRE = /color|colour/i;
+
+    function guessNumComponentsFromName(name, length) {
+      let numComponents;
+      if (texcoordRE.test(name)) {
+        numComponents = 2;
+      } else if (colorRE.test(name)) {
+        numComponents = 4;
+      } else {
+        numComponents = 3;  // position, normals, indices ...
+      }
+
+      if (length % numComponents > 0) {
+        throw "Can not guess numComponents for attribute '" + name + "'. Tried " +
+              numComponents + " but " + length +
+              " values is not evenly divisible by " + numComponents +
+              ". You should specify it.";
+      }
+
+      return numComponents;
+    }
+
     const defaultAttribPrefix = "a_";
     function createPackedBufferInfoFromArrays(gl, arrays) {
       // compute size of array needed and offsets
@@ -251,7 +274,7 @@ void main() {
         bufferInfo.numElements = indices.length || indices.data.length;
         bufferInfo.elementType = (indices instanceof Uint32Array) ?  gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
       } else {
-        bufferInfo.numElements = numElements;
+        bufferInfo.numElements = maxElements;
       }
 
       return bufferInfo;

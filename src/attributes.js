@@ -440,7 +440,8 @@ function getBytesPerValueForGLType(gl, type) {
 const positionKeys = ['position', 'positions', 'a_position'];
 function getNumElementsFromNonIndexedArrays(arrays) {
   let key;
-  for (let ii = 0; ii < positionKeys.length; ++ii) {
+  let ii;
+  for (ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
     if (key in arrays) {
       break;

@@ -1,5 +1,7 @@
 "use strict";
 
+/* global prettyPrint */
+
 document.addEventListener("DOMContentLoaded", function() {
   Array.prototype.forEach.call(document.querySelectorAll('pre>code'), function(section) {
     // Unwrap
