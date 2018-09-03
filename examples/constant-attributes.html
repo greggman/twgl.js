@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - constant attributes" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="TWGL.js - constant attributes" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - constant attributes">
+    <meta name="twitter:url" content="http://twgljs.org/examples/constant-attributes.html">
+    <meta name="twitter:description" content="TWGL.js - constant attributes">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - constant attributes</title>
+    <style>
+      body {
+          margin: 0;
+          font-family: monospace;
+      }
+      canvas {
+          display: block;
+          width: 100vw;
+          height: 100vh;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - constant attributes</div>
+  </body>
+  <script id="vs" type="notjs">
+uniform mat4 u_worldViewProjection;
+
+attribute vec4 position;
+attribute vec4 color;
+
+varying vec4 v_color;
+
+void main() {
+  gl_Position = u_worldViewProjection * position;
+  v_color = color;
+}
+  </script>
+  <script id="fs" type="notjs">
+precision mediump float;
+
+varying vec4 v_color;
+
+void main() {
+  gl_FragColor = v_color;
+}
+  </script>
+  <script src="../dist/4.x/twgl-full.js"></script>
+  <script>
+    "use strict";
+    const m4 = twgl.m4;
+    const gl = document.querySelector("#c").getContext("webgl", { alpha: false });
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    const redBufferInfo = twgl.createBufferInfoFromArrays(gl, {
+      position: [
+        -1, -1, 0,
+         1, -1, 0,
+        -1,  1, 0,
+         1,  1, 0,
+      ],
+      color: { value: [1, 0, 0, 1], },
+      indices:  [
+        0, 1, 2,
+        2, 1, 3,
+      ],
+    });
+    const greenBufferInfo = twgl.createBufferInfoFromArrays(gl, {
+      color: { value: [0, 1, 0, 1], },
+    }, redBufferInfo);
+    const blueBufferInfo = twgl.createBufferInfoFromArrays(gl, {
+      color: { value: [0, 0, 1, 1], },
+    }, redBufferInfo);
+    const yellowBufferInfo = twgl.createBufferInfoFromArrays(gl, {
+      color: { value: [1, 1, 0, 1], },
+    }, redBufferInfo);
+
+
+    const bufferInfos = [
+      redBufferInfo,
+      greenBufferInfo,
+      blueBufferInfo,
+      yellowBufferInfo,
+    ];
+
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.useProgram(programInfo.program);
+    for (let i = 0; i < 100; ++i) {
+      const bufferInfo = bufferInfos[r(bufferInfos.length) | 0];
+
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+
+      let matrix = m4.translation([r(-1, 1), r(-1, 1), 0]);
+      matrix = m4.scale(matrix, [0.1, 0.1, 0.1]);
+      twgl.setUniforms(programInfo, {
+        u_worldViewProjection: matrix,
+      });
+      twgl.drawBufferInfo(gl, bufferInfo);
+    }
+
+    function r(min, max) {
+      if (max === undefined) {
+        max = min;
+        min = 0;
+      }
+      return min + Math.random() * (max - min);
+    }
+
+  </script>
+</html>
+
+
