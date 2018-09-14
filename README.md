@@ -2,6 +2,8 @@ TWGL: A Tiny WebGL helper Library<div id="pronouce" style="font-size: xx-small;"
 =====================================================
 
 [![Build Status](https://travis-ci.org/greggman/twgl.js.svg?branch=master)](https://travis-ci.org/greggman/twgl.js)
+[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/greggman/twgl.js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/greggman/twgl.js/context:javascript)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/greggman/twgl.js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/greggman/twgl.js/alerts)
 
 This library's sole purpose is to make using the WebGL API less verbose.
 
