@@ -5,7 +5,6 @@
 
 // export function addExtensionsToContext(...);
 export function bindTransformFeedbackInfo(gl: WebGLRenderingContext, transformFeedbackInfo?: ProgramInfo | { [key: string]: AttribInfo }): void;
-export function bindUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
 export function createTransformFeedback(gl: WebGLRenderingContext, programInfo: ProgramInfo, bufferInfo?: BufferInfo | { [key: string]: AttribInfo }): WebGLObject;
 export function createTransformFeedbackInfo(gl: WebGLRenderingContext, program: WebGLProgram): { [key: string]: TransformFeedbackInfo };
 export function getContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAttributes): WebGLRenderingContext;
@@ -303,36 +302,44 @@ export module primitives {
 }
 
 // programs module
+export function bindUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
+export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
+// TODO:  WebGLShader[] | string[] should be tuples of lenght 2, not any length. http://twgljs.org/docs/module-twgl.html#.createProgramInfo
+// Not sure how the first version of createProgram is supposed to look, since the documentation is vague.
+// export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], options: /* what? */): WebGLProgram;
+export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], errorCallback?: ErrorCallback): WebGLProgram;
+export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], attribs: ProgramOptions | string[], errorCallback?: ErrorCallback): WebGLProgram;
+export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], attribs: ProgramOptions | string[], locations: number[], errorCallback?: ErrorCallback): WebGLProgram;
+// export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: Array<string>, opt_attribs?: Array<string>, opt_locations?: Array<string>, opt_errorCallback?:ErrorCallback): WebGLProgram;
+// TODO: More overloaded versions of this.
 export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], attribs?: string[] | ProgramOptions, locations?: number[], errorCallback?: ErrorCallback): ProgramInfo;
 export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program: WebGLProgram): ProgramInfo;
-export function createUniformBlockInfo(gl: WebGLRenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
-
-export function loadShader(gl: WebGLRenderingContext, shaderSource: string, shaderType: number, opt_errorCallback?: ErrorCallback): WebGLShader;
-export function getProgramOptions(opt_attribs?: ProgramOptions | Array<string>, opt_locations?: Array<number>, opt_errorCallback?: ErrorCallback): ProgramOptions;
-// export function createProgram(shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-// export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-// export function createProgramInfo(gl: WebGLRenderingContext, shaderSources, opt_attribsopt, opt_locationsopt, opt_errorCallback): ProgramInfo;
-
-// textures module
-export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
-export function createTextures(gl: WebGLRenderingContext, options?: { [key: string]: TextureOptions }, callback?: TexturesReadyCallback): { [key: string]: WebGLTexture };
-export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number): void;
-export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBuffer, options?: TextureOptions): void;
-
-
-
-
-
-// export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
-// export function createUniformBlockInfoFromProgram(gl: WebGLRenderingContext, program, blockName): UniformBlockInfo;
-// export function createUniformBlockSpecFromProgram(gl: WebGLRenderingContext, program): UniformBlockSpec;
-// export function createUniformSetters(program): {[key:string]: (attr: any) => void};
-
-
+export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
+export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram, blockName: string): UniformBlockInfo;
+export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram): UniformBlockSpec;
+export function createUniformSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
 /** @deprecated */
 // export function setAttributes(setters, buffers);
 // export function setBlockUniforms(uniformBlockInfo, values)
 // export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters, buffers)
 // export function setUniformBlock(gl: WebGLRenderingContext, programInfo, uniformBlockInfo)
 // export function setUniforms(setters, values)
+
+// textures module
+export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
+export function createTextures(gl: WebGLRenderingContext, options?: { [key: string]: TextureOptions }, callback?: TexturesReadyCallback): { [key: string]: WebGLTexture };
+export function getBytesPerElementForInternalFormat(internalFormat: number, type: number): number;
+export function getNumComponentsForFormat(format: number): number;
+export function loadCubemapFromUrls(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, callback?: TextureReadyCallback);
+export function loadSlicesFromUrls(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, callback?: TextureReadyCallback);
+export function loadTextureFromUrl(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions, callback?: TextureReadyCallback): HTMLImageElement;
+export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number): void;
+export function setDefaultTextureColor(color: [number, number, number, number]);
+export function setEmptyTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions);
+export function setSamplerParameters(gl: WebGLRenderingContext, sampler: WebGLSampler, options: TextureOptions);
+export function setTextureFilteringForSize(gl: WebGLRenderingContext, tex: WebGLTexture, options?:TextureOptions, width?: number, height?: number, internalFormat?: number, type?: number);
+export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBuffer, options?: TextureOptions): void;
+export function setTextureFromElement(gl: WebGLRenderingContext, tex: WebGLTexture, element: HTMLElement, options?: TextureOptions);
+export function setTextureParameters(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions);
+export function setTextureTo1PixelColor(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions);
