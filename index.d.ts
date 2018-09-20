@@ -202,39 +202,19 @@ export interface VertexArrayInfo {
 export function createBufferFromTypedArray(gl: WebGLRenderingContext, typedArray: ArrayBuffer | ArrayBufferView | WebGLBuffer, type?: number, drawType?: number): WebGLBuffer;
 
 // attributes module
-export module attributes {
-    export function createAttribsFromArrays(gl: WebGLRenderingContext, arrays: Arrays): { [name: string]: AttribInfo };
-    export function createBufferFromArray(gl: WebGLRenderingContext, array: ArraySpec, arrayName: string): WebGLBuffer;
-    export function createBufferFromTypedArray(gl: WebGLRenderingContext, typedArray: ArrayBuffer | ArrayBufferView | WebGLBuffer, type?: number, drawType?: number): WebGLBuffer;
-    export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
-    export function createBuffersFromArrays(gl: WebGLRenderingContext, arrays: Arrays): { [name: string]: WebGLBuffer };
-    export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
-    export function setAttrbutePrefix(prefix: string): void;
-}
-
 export function createAttribsFromArrays(gl: WebGLRenderingContext, arrays: Arrays): { [name: string]: AttribInfo };
 export function createBufferFromArray(gl: WebGLRenderingContext, array: ArraySpec, arrayName: string): WebGLBuffer;
 export function createBufferFromTypedArray(gl: WebGLRenderingContext, typedArray: ArrayBuffer | ArrayBufferView | WebGLBuffer, type?: number, drawType?: number): WebGLBuffer;
 export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
 export function createBuffersFromArrays(gl: WebGLRenderingContext, arrays: Arrays): { [name: string]: WebGLBuffer };
 export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
+export function setAttrbutePrefix(prefix: string): void;
 
 // draw module
-export module draw {
-    export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number): void;
-    export function drawObjectList(objectsToDraw: DrawObject[]): void;
-}
-
 export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number): void;
 export function drawObjectList(objectsToDraw: DrawObject[]): void;
 
 // framebuffers module
-export module framebuffers {
-    export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, target?: number): void;
-    export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], widt?: number, height?: number): FramebufferInfo;
-    export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
-}
-
 export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, target?: number): void;
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], widt?: number, height?: number): FramebufferInfo;
 export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
@@ -332,26 +312,27 @@ export module primitives {
     export function reorientVertices(arrays: { [key: string]: number[] | TypedArray }, matrix: Mat4): { [key: string]: number[] | TypedArray };
 }
 
+// programs module
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: Array<string>, opt_attribs?: Array<string>, opt_locations?: Array<string>, opt_errorCallback?:ErrorCallback): WebGLProgram;
 export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program: WebGLProgram): ProgramInfo;
 export function loadShader(gl: WebGLRenderingContext, shaderSource: string, shaderType: number, opt_errorCallback?: ErrorCallback): WebGLShader;
 export function getProgramOptions(opt_attribs?: ProgramOptions | Array<string>, opt_locations?: Array<number>, opt_errorCallback?: ErrorCallback): ProgramOptions;
-export module programs {
-    // export function bindUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockSpec): boolean;
-    // export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
-    // export function createProgram(shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-    // export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-    // export function createProgramInfo(gl: WebGLRenderingContext, shaderSources, opt_attribsopt, opt_locationsopt, opt_errorCallback): ProgramInfo;
-    // export function createUniformBlockInfo(gl: WebGLRenderingContext, programInfo, blockName): UniformBlockInfo;
-    // export function createUniformBlockInfoFromProgram(gl: WebGLRenderingContext, program, blockName): UniformBlockInfo;
-    // export function createUniformBlockSpecFromProgram(gl: WebGLRenderingContext, program): UniformBlockSpec;
-    // export function createUniformSetters(program): {[key:string]: (attr: any) => void};
 
 
-    /** @deprecated */
-    // export function setAttributes(setters, buffers);
-    // export function setBlockUniforms(uniformBlockInfo, values)
-    // export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters, buffers)
-    // export function setUniformBlock(gl: WebGLRenderingContext, programInfo, uniformBlockInfo)
-    // export function setUniforms(setters, values)
-}
+// export function bindUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockSpec): boolean;
+// export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
+// export function createProgram(shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
+// export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
+// export function createProgramInfo(gl: WebGLRenderingContext, shaderSources, opt_attribsopt, opt_locationsopt, opt_errorCallback): ProgramInfo;
+// export function createUniformBlockInfo(gl: WebGLRenderingContext, programInfo, blockName): UniformBlockInfo;
+// export function createUniformBlockInfoFromProgram(gl: WebGLRenderingContext, program, blockName): UniformBlockInfo;
+// export function createUniformBlockSpecFromProgram(gl: WebGLRenderingContext, program): UniformBlockSpec;
+// export function createUniformSetters(program): {[key:string]: (attr: any) => void};
+
+
+/** @deprecated */
+// export function setAttributes(setters, buffers);
+// export function setBlockUniforms(uniformBlockInfo, values)
+// export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters, buffers)
+// export function setUniformBlock(gl: WebGLRenderingContext, programInfo, uniformBlockInfo)
+// export function setUniforms(setters, values)
