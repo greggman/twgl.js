@@ -3,30 +3,19 @@
 // Definitions by: mode777 <https://gist.github.com/mode777>
 // Based on work by mode777 from this page https://gist.github.com/mode777/4f8eb25b123b2c5627034f797834f949
 
+// export function addExtensionsToContext(...);
 export function bindTransformFeedbackInfo(gl: WebGLRenderingContext, transformFeedbackInfo?: ProgramInfo | { [key: string]: AttribInfo }): void;
 export function bindUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
-export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
-export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
-export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], attribs?: string[] | ProgramOptions, locations?: number[], errorCallback?: ErrorCallback): ProgramInfo;
-export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
-export function createTextures(gl: WebGLRenderingContext, options?: { [key: string]: TextureOptions }, callback?: TexturesReadyCallback): { [key: string]: WebGLTexture };
 export function createTransformFeedback(gl: WebGLRenderingContext, programInfo: ProgramInfo, bufferInfo?: BufferInfo | { [key: string]: AttribInfo }): WebGLObject;
 export function createTransformFeedbackInfo(gl: WebGLRenderingContext, program: WebGLProgram): { [key: string]: TransformFeedbackInfo };
-export function createUniformBlockInfo(gl: WebGLRenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
-export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number): void;
-export function drawObjectList(objects: DrawObject[]): void;
 export function getContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function getWebGLContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAttributes): WebGLRenderingContext;
+// export function isWebGL1(...);
+// export function isWebGL2(...);
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
-export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
-export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number): void;
-export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
-export function setBlockUniforms(uniformBlockInfo: UniformBlockInfo, values: { [key: string]: number[] | ArrayBuffer | number }): void;
-export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, buffers: BufferInfo | VertexArrayInfo): void;
 export function setDefaults(newDefaults: Defaults): void;
-export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBuffer, options?: TextureOptions): void;
-export function setUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): void;
-export function setUniforms(setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, values: { [key: string]: any }): void;
+// export function create3DContext(...);
+// export function createContext(...);
 
 export interface Arrays {
     [key: string]: number[] | ArrayBuffer | FullArraySpec
@@ -313,17 +302,27 @@ export module primitives {
 
 // programs module
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: Array<string>, opt_attribs?: Array<string>, opt_locations?: Array<string>, opt_errorCallback?:ErrorCallback): WebGLProgram;
+export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], attribs?: string[] | ProgramOptions, locations?: number[], errorCallback?: ErrorCallback): ProgramInfo;
 export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program: WebGLProgram): ProgramInfo;
+export function createUniformBlockInfo(gl: WebGLRenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
+
 export function loadShader(gl: WebGLRenderingContext, shaderSource: string, shaderType: number, opt_errorCallback?: ErrorCallback): WebGLShader;
 export function getProgramOptions(opt_attribs?: ProgramOptions | Array<string>, opt_locations?: Array<number>, opt_errorCallback?: ErrorCallback): ProgramOptions;
+// export function createProgram(shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
+// export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
+// export function createProgramInfo(gl: WebGLRenderingContext, shaderSources, opt_attribsopt, opt_locationsopt, opt_errorCallback): ProgramInfo;
+
+// textures module
+export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
+export function createTextures(gl: WebGLRenderingContext, options?: { [key: string]: TextureOptions }, callback?: TexturesReadyCallback): { [key: string]: WebGLTexture };
+export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number): void;
+export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBuffer, options?: TextureOptions): void;
+
+
 
 
 
 // export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
-// export function createProgram(shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-// export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-// export function createProgramInfo(gl: WebGLRenderingContext, shaderSources, opt_attribsopt, opt_locationsopt, opt_errorCallback): ProgramInfo;
-// export function createUniformBlockInfo(gl: WebGLRenderingContext, programInfo, blockName): UniformBlockInfo;
 // export function createUniformBlockInfoFromProgram(gl: WebGLRenderingContext, program, blockName): UniformBlockInfo;
 // export function createUniformBlockSpecFromProgram(gl: WebGLRenderingContext, program): UniformBlockSpec;
 // export function createUniformSetters(program): {[key:string]: (attr: any) => void};
