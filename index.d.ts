@@ -344,11 +344,33 @@ export function setTextureFromElement(gl: WebGLRenderingContext, tex: WebGLTextu
 export function setTextureParameters(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions);
 export function setTextureTo1PixelColor(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions);
 
+type TypedArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Uint16ArrayConstructor | Int32ArrayConstructor | Uint32ArrayConstructor | Float32ArrayConstructor | Float64ArrayConstructor;
+
 // typedArray module
 export function getGLTypeForTypedArray(typedArray: ArrayBuffer | ArrayBufferView): number;
 export function getGLTypeForTypedArrayType(typedArrayType: ArrayBufferViewType): number;
-type TypedArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Uint16ArrayConstructor | Int32ArrayConstructor | Uint32ArrayConstructor | Float32ArrayConstructor | Float64ArrayConstructor;
 export function getTypedArrayTypeForGLType(type: number): TypedArrayConstructor;
+
+export namespace v3 {
+    export function add(a: Vec3, b: Vec3, dest?: Vec3): Vec3;
+    export function copy(v: Vec3): Vec3;
+    export function create(): Vec3;
+    export function cross(a: Vec3, b: Vec3, dest?: Vec3): Vec3;
+    export function distance(a: Vec3, b: Vec3): number;
+    export function distanceSq(a: Vec3, b: Vec3): number;
+    export function divide(a: Vec3, b: Vec3, dest?: Vec3): Vec3;
+    export function divScalar(v: Vec3, k: number, dest?: Vec3): Vec3;
+    export function dot(a: Vec3, b: Vec3): number;
+    export function length(v: Vec3): number;
+    export function lengthSq(v: Vec3): number;
+    export function lerp(a: Vec3, b: Vec3, t: number, dest?: Vec3): Vec3;
+    export function mulScalar(v: Vec3, k: number, dest?: Vec3): Vec3;
+    export function multiply(a: Vec3, b: Vec3, dest?: Vec3): Vec3;
+    export function negate(v: Vec3, dest?: Vec3): Vec3;
+    export function normalize(v: Vec3, dest?: Vec3): Vec3;
+    export function subtract(a: Vec3, b: Vec3, dest?: Vec3): Vec3;
+    export function setDefaultType(ctor: ArrayConstructor | TypedArrayConstructor): ArrayConstructor | TypedArrayConstructor;
+}
 
 // vertexArrays module
 export function createVAOAndSetAttributes(gl: WebGLRenderingContext, setters: {[key: string]: (value: any) => void}, attribs:  {[key: string]: AttribInfo}, indices?: WebGLBuffer);
