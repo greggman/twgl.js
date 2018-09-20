@@ -196,7 +196,7 @@ export function createBufferFromTypedArray(gl: WebGLRenderingContext, typedArray
 export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
 export function createBuffersFromArrays(gl: WebGLRenderingContext, arrays: Arrays): { [name: string]: WebGLBuffer };
 export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
-export function setAttrbutePrefix(prefix: string): void;
+export function setAttributePrefix(prefix: string): void;
 
 // draw module
 export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number): void;
