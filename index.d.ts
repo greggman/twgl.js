@@ -321,10 +321,10 @@ export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, pr
 export function createUniformSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
 /** @deprecated */
 // export function setAttributes(setters, buffers);
-// export function setBlockUniforms(uniformBlockInfo, values)
-// export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters, buffers)
-// export function setUniformBlock(gl: WebGLRenderingContext, programInfo, uniformBlockInfo)
-// export function setUniforms(setters, values)
+export function setBlockUniforms(uniformBlockInfo: UniformBlockInfo, values: { [key: string]: number[] | ArrayBuffer | number }): void;
+export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, buffers: BufferInfo | VertexArrayInfo): void;
+export function setUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): void;
+export function setUniforms(setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, values: { [key: string]: any }): void;
 
 // textures module
 export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
