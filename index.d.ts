@@ -209,7 +209,7 @@ export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo
 export type Mat4 = number[] | Float32Array;
 export type Vec3 = number[] | Float32Array;
 
-export module m4 {
+export namespace m4 {
     export function axisRotate(m: Mat4, axis: Vec3, angleInRadians: number, dst?: Mat4): Mat4;
     export function axisRotation(axis: Vec3, angleInRadians: number, dst?: Mat4): Mat4;
     export function copy(m: Mat4, dst?: Mat4): Mat4;
@@ -244,7 +244,7 @@ export module m4 {
 
 export type TypedArray = Uint16Array | Uint8Array | Uint32Array | Int32Array | Int16Array | Int8Array | Float32Array | Float64Array;
 
-export module primitives {
+export namespace primitives {
     export interface RandomVerticesOptions {
         rand: RandomColorFunc;
         vertsPerColor: number;
