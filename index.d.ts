@@ -1,6 +1,4 @@
-// Type definitions for twgl 4.4.0
-// Project: twgl
-// Definitions by: mode777 <https://gist.github.com/mode777>
+// Type definitions for twgl.js 4.4.0
 // Based on work by mode777 from this page https://gist.github.com/mode777/4f8eb25b123b2c5627034f797834f949
 
 // export function addExtensionsToContext(...);
