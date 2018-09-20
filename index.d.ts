@@ -343,3 +343,14 @@ export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture
 export function setTextureFromElement(gl: WebGLRenderingContext, tex: WebGLTexture, element: HTMLElement, options?: TextureOptions);
 export function setTextureParameters(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions);
 export function setTextureTo1PixelColor(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions);
+
+// typedArray module
+export function getGLTypeForTypedArray(typedArray: ArrayBuffer | ArrayBufferView): number;
+export function getGLTypeForTypedArrayType(typedArrayType: ArrayBufferViewType): number;
+type TypedArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Uint16ArrayConstructor | Int32ArrayConstructor | Uint32ArrayConstructor | Float32ArrayConstructor | Float64ArrayConstructor;
+export function getTypedArrayTypeForGLType(type: number): TypedArrayConstructor;
+
+// vertexArrays module
+export function createVAOAndSetAttributes(gl: WebGLRenderingContext, setters: {[key: string]: (value: any) => void}, attribs:  {[key: string]: AttribInfo}, indices?: WebGLBuffer);
+export function createVAOFromBufferInfo(gl: WebGLRenderingContext, programInfo: {[key: string]: (value: any) => void} | ProgramInfo, bufferInfo: BufferInfo, indices?: WebGLBuffer);
+export function createVertexArrayInfo(gl: WebGLRenderingContext, programInfo: ProgramInfo | Array<ProgramInfo>, bufferInfo: BufferInfo);
