@@ -268,6 +268,7 @@ export module primitives {
     export function createCresentBufferInfo(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): BufferInfo;
     export function createCresentBuffers(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): { [key: string]: WebGLBuffer };
     export function createCresentVertices(verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): { [key: string]: TypedArray };
+    export function createCubeBufferInfo(gl: WebGLRenderingContext, size?: number): BufferInfo;
     export function createCubeBuffers(gl: WebGLRenderingContext, size?: number): { [key: string]: WebGLBuffer };
     export function createCubeVertices(size?: number): { [key: string]: TypedArray };
     export function createCylinderBufferInfo(gl: WebGLRenderingContext, radius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, topCap?: boolean, bottomCap?: boolean): { [key: string]: BufferInfo };
