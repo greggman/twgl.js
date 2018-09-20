@@ -240,6 +240,7 @@ export module m4 {
     export function translate(m: Mat4, v: Vec3, dst?: Mat4): Mat4;
     export function translation(v: Vec3, dst?: Mat4): Mat4;
     export function transpose(m: Mat4, dst?: Mat4): Mat4;
+    // export function setDefaultType(...);
 }
 
 export type TypedArray = Uint16Array | Uint8Array | Uint32Array | Int32Array | Int16Array | Int8Array | Float32Array | Float64Array;
@@ -265,7 +266,7 @@ export module primitives {
     export function create3DFVertices(): { [key: string]: TypedArray };
     export function createAugmentedTypedArray(numComponents: number, numElements: number, opt_type?: TypedArrayConstructor): AugmentedTypedArray;
     export function createCresentBufferInfo(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): BufferInfo;
-    export function createCresentBufferInfo(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): { [key: string]: WebGLBuffer };
+    export function createCresentBuffers(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): { [key: string]: WebGLBuffer };
     export function createCresentVertices(verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, subdivisionsThick: number, startOffset?: number, endOffset?: number): { [key: string]: TypedArray };
     export function createCubeBuffers(gl: WebGLRenderingContext, size?: number): { [key: string]: WebGLBuffer };
     export function createCubeVertices(size?: number): { [key: string]: TypedArray };
