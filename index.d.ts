@@ -3,7 +3,6 @@
 // Definitions by: mode777 <https://gist.github.com/mode777>
 // Based on work by mode777 from this page https://gist.github.com/mode777/4f8eb25b123b2c5627034f797834f949
 
-export function bindFramebufferInfo(gl: WebGLRenderingContext, framewbufferInfo?: FramebufferInfo, target?: number): void;
 export function bindTransformFeedbackInfo(gl: WebGLRenderingContext, transformFeedbackInfo?: ProgramInfo | { [key: string]: AttribInfo }): void;
 export function bindUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
 export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
@@ -215,7 +214,7 @@ export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo
 export function drawObjectList(objectsToDraw: DrawObject[]): void;
 
 // framebuffers module
-export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, target?: number): void;
+export function bindFramebufferInfo(gl: WebGLRenderingContext, framewbufferInfo?: FramebufferInfo, target?: number): void;
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], widt?: number, height?: number): FramebufferInfo;
 export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
 
@@ -319,7 +318,7 @@ export function loadShader(gl: WebGLRenderingContext, shaderSource: string, shad
 export function getProgramOptions(opt_attribs?: ProgramOptions | Array<string>, opt_locations?: Array<number>, opt_errorCallback?: ErrorCallback): ProgramOptions;
 
 
-// export function bindUniformBlock(gl: WebGLRenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockSpec): boolean;
+
 // export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
 // export function createProgram(shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
 // export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
