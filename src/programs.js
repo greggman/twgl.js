@@ -588,6 +588,7 @@ function deleteShaders(gl, shaders) {
  *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
  *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
  *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
  * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
  * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
