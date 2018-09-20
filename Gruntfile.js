@@ -249,6 +249,10 @@ module.exports = function(grunt) {
         src: 'README.md',
         dest: 'npm/base/README.md',
       },
+      typescript: {
+        src: 'index.d.ts',
+        dest: 'npm/base/index.d.ts',
+      },
     },
     browserify: {
       example: {
