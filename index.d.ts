@@ -296,6 +296,9 @@ export namespace primitives {
     export function reorientVertices(arrays: { [key: string]: number[] | TypedArray }, matrix: Mat4): { [key: string]: number[] | TypedArray };
 }
 
+// Not sure how to type this properly.
+type WebGL2RenderingContext = WebGLRenderingContext;
+
 // programs module
 export function bindUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
 export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
@@ -314,6 +317,9 @@ export function setBlockUniforms(uniformBlockInfo: UniformBlockInfo, values: { [
 export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, buffers: BufferInfo | VertexArrayInfo): void;
 export function setUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): void;
 export function setUniforms(setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, values: { [key: string]: any }): void;
+
+// Not sure how to type this properly.
+type  WebGLSampler = any;
 
 // textures module
 export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
