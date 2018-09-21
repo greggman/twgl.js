@@ -590,8 +590,8 @@ function deleteShaders(gl, shaders) {
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
- * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error.
@@ -701,10 +701,11 @@ function createShaderFromScript(
  * @param {string[]} shaderScriptIds Array of ids of the script
  *        tags for the shaders. The first is assumed to be the
  *        vertex shader, the second the fragment shader.
- * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
+ * @return {WebGLProgram?} the created program or null if error.
  * @return {WebGLProgram} The created program.
  * @memberOf module:twgl/programs
  */
@@ -738,11 +739,11 @@ function createProgramFromScripts(
  * @param {string[]} shaderSources Array of sources for the
  *        shaders. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
- * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram} The created program.
+ * @return {WebGLProgram?} the created program or null if error.
  * @memberOf module:twgl/programs
  */
 function createProgramFromSources(
@@ -1583,9 +1584,9 @@ function createProgramInfoFromProgram(gl, program) {
  * @param {string[]} shaderSources Array of sources for the
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
- * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the attributes. A parallel array to opt_attribs letting you assign locations.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {module:twgl.ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
  * @memberOf module:twgl/programs
