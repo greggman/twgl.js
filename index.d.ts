@@ -343,7 +343,7 @@ type TypedArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Uint
 
 // typedArray module
 export function getGLTypeForTypedArray(typedArray: ArrayBuffer | ArrayBufferView): number;
-export function getGLTypeForTypedArrayType(typedArrayType: ArrayBufferViewType): number;
+export function getGLTypeForTypedArrayType(typedArrayType: TypedArrayConstructor): number;
 export function getTypedArrayTypeForGLType(type: number): TypedArrayConstructor;
 
 export namespace v3 {
