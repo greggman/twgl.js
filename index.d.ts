@@ -11,8 +11,6 @@ export function isWebGL1(gl: WebGLRenderingContext): boolean;
 export function isWebGL2(gl: WebGLRenderingContext): boolean;
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
 export function setDefaults(newDefaults: Defaults): void;
-// export function create3DContext(...);
-// export function createContext(...);
 
 export interface Arrays {
     [key: string]: number[] | ArrayBuffer | FullArraySpec
@@ -237,7 +235,6 @@ export namespace m4 {
     export function translate(m: Mat4, v: Vec3, dst?: Mat4): Mat4;
     export function translation(v: Vec3, dst?: Mat4): Mat4;
     export function transpose(m: Mat4, dst?: Mat4): Mat4;
-    // export function setDefaultType(...);
 }
 
 export type TypedArray = Uint16Array | Uint8Array | Uint32Array | Int32Array | Int16Array | Int8Array | Float32Array | Float64Array;
