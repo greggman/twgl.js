@@ -299,11 +299,10 @@ export namespace primitives {
 // programs module
 export function bindUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
 export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
-// TODO:  WebGLShader[] | string[] should be tuples of lenght 2, not any length. http://twgljs.org/docs/module-twgl.html#.createProgramInfo
-export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], options?: ProgramOptions): WebGLProgram;
-export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], options?: ProgramOptions): WebGLProgram;
-export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: Array<string>, options?: ProgramOptions): WebGLProgram;
-export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], options?: ProgramOptions): ProgramInfo;
+export function createProgram(gl: WebGLRenderingContext, shaders: [WebGLShader, WebGLShader] | [string, string], options?: ProgramOptions): WebGLProgram;
+export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: [string, string], options?: ProgramOptions): WebGLProgram;
+export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: [string, string], options?: ProgramOptions): WebGLProgram;
+export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: [string, string], options?: ProgramOptions): ProgramInfo;
 export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program: WebGLProgram): ProgramInfo;
 export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
 export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram, blockName: string): UniformBlockInfo;
