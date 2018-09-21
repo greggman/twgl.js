@@ -523,7 +523,7 @@
 
     
 
-    <h4 class="name" id=".createProgram"><span class="type-signature">(static) </span>createProgram<span class="signature">(shaders, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
+    <h4 class="name" id=".createProgram"><span class="type-signature">(static) </span>createProgram<span class="signature">(gl, shaders, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
 
     
 
@@ -608,6 +608,40 @@ twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>WebGLRenderingContext</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The WebGLRenderingContext to use.</p>
+                
+            </td>
+        </tr>
+
     
 
         <tr>
