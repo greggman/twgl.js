@@ -1559,7 +1559,7 @@ const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></
 
     
 
-    <h4 class="name" id=".createProgramInfo"><span class="type-signature">(static) </span>createProgramInfo<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback)</span><span class="type-signature"> &rarr; (nullable) {<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
+    <h4 class="name" id=".createProgramInfo"><span class="type-signature">(static) </span>createProgramInfo<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
 
     
 
@@ -1731,6 +1731,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 |
 
 <span class="param-type"><code>Array.&lt;string></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
@@ -1751,7 +1754,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>Options for the program or an array of attribs names. Locations will be assigned by index if not passed in</p>
+                <p>Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in</p>
                 
             </td>
         </tr>
@@ -1760,7 +1763,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
         <tr>
             
-                <td class="name"><code>opt_locations</code></td>
+                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
             
 
             <td class="type">
@@ -1787,7 +1790,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>The locations for the attributes. A parallel array to opt_attribs letting you assign locations.</p>
+                <p>The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.</p>
                 
             </td>
         </tr>
@@ -1810,6 +1813,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
                 
