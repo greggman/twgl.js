@@ -300,15 +300,10 @@ export namespace primitives {
 export function bindUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
 export function createAttributeSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
 // TODO:  WebGLShader[] | string[] should be tuples of lenght 2, not any length. http://twgljs.org/docs/module-twgl.html#.createProgramInfo
-// Not sure how the first version of createProgram is supposed to look, since the documentation is vague.
-// export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], options: /* what? */): WebGLProgram;
-export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], errorCallback?: ErrorCallback): WebGLProgram;
-export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], attribs: ProgramOptions | string[], errorCallback?: ErrorCallback): WebGLProgram;
-export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], attribs: ProgramOptions | string[], locations: number[], errorCallback?: ErrorCallback): WebGLProgram;
-// export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: string[], opt_locations?: number[], opt_errorCallback?: ErrorCallback): WebGLProgram;
-export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: Array<string>, opt_attribs?: Array<string>, opt_locations?: Array<string>, opt_errorCallback?:ErrorCallback): WebGLProgram;
-// TODO: More overloaded versions of this.
-export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], attribs?: string[] | ProgramOptions, locations?: number[], errorCallback?: ErrorCallback): ProgramInfo;
+export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], options?: ProgramOptions): WebGLProgram;
+export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], options?: ProgramOptions): WebGLProgram;
+export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: Array<string>, options?: ProgramOptions): WebGLProgram;
+export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], options?: ProgramOptions): ProgramInfo;
 export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program: WebGLProgram): ProgramInfo;
 export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
 export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram, blockName: string): UniformBlockInfo;
