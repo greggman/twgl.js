@@ -1,14 +1,14 @@
 // Type definitions for twgl.js 4.4.0
 // Based on work by mode777 from this page https://gist.github.com/mode777/4f8eb25b123b2c5627034f797834f949
 
-// export function addExtensionsToContext(...);
+export function addExtensionsToContext(gl: WebGLRenderingContext);
 export function bindTransformFeedbackInfo(gl: WebGLRenderingContext, transformFeedbackInfo?: ProgramInfo | { [key: string]: AttribInfo }): void;
 export function createTransformFeedback(gl: WebGLRenderingContext, programInfo: ProgramInfo, bufferInfo?: BufferInfo | { [key: string]: AttribInfo }): WebGLObject;
 export function createTransformFeedbackInfo(gl: WebGLRenderingContext, program: WebGLProgram): { [key: string]: TransformFeedbackInfo };
 export function getContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function getWebGLContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAttributes): WebGLRenderingContext;
-// export function isWebGL1(...);
-// export function isWebGL2(...);
+export function isWebGL1(gl: WebGLRenderingContext): boolean;
+export function isWebGL2(gl: WebGLRenderingContext): boolean;
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
 export function setDefaults(newDefaults: Defaults): void;
 // export function create3DContext(...);
@@ -318,7 +318,7 @@ export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, pr
 export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram): UniformBlockSpec;
 export function createUniformSetters(program: WebGLProgram): {[key:string]: (attr: any) => void};
 /** @deprecated */
-// export function setAttributes(setters, buffers);
+export function setAttributes(setters: {[key:string]: (attr: any) => void}, buffers: {[key: string]: AttribInfo});
 export function setBlockUniforms(uniformBlockInfo: UniformBlockInfo, values: { [key: string]: number[] | ArrayBuffer | number }): void;
 export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: ProgramInfo | { [key: string]: (...params: any[]) => void }, buffers: BufferInfo | VertexArrayInfo): void;
 export function setUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): void;
