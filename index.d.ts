@@ -225,9 +225,9 @@ export namespace m4 {
     export function rotationX(angleInRadians: number, dst?: Mat4): Mat4;
     export function rotationY(angleInRadians: number, dst?: Mat4): Mat4;
     export function rotationZ(angleInRadians: number, dst?: Mat4): Mat4;
-    export function scale(m: Mat4, v: number[], dst?: Mat4): Mat4;
-    export function scaling(v: number, dst?: Mat4): Mat4;
-    export function setAxis(v: number, axis: number, dst?: Mat4): Mat4;
+    export function scale(m: Mat4, v: Vec3, dst?: Mat4): Mat4;
+    export function scaling(v: Vec3, dst?: Mat4): Mat4;
+    export function setAxis(v: Vec3, axis: number, dst?: Mat4): Mat4;
     export function setTranslation(a: Mat4, v: Vec3, dst?: Mat4): Mat4;
     export function transformDirection(m: Mat4, v: Vec3, dst?: Vec3): Vec3;
     export function transformNormal(m: Mat4, v: Vec3, dst?: Vec3): Vec3;
