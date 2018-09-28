@@ -189,7 +189,7 @@ function makeTypedArray(array, name) {
  * for the attribute.
  *
  * @typedef {Object} AttribInfo
- * @property {number[]:ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
+ * @property {number[]|ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
  *    disabled and set to this constant value and all other values will be ignored.
  * @property {number} [numComponents] the number of components for this attribute.
  * @property {number} [size] synonym for `numComponents`.
@@ -207,7 +207,7 @@ function makeTypedArray(array, name) {
 /**
  * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
  * @typedef {Object} FullArraySpec
- * @property {number[]:ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
+ * @property {number[]|ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
  *    disabled and set to this constant value and all other values will be ignored.
  * @property {(number|number[]|ArrayBufferView)} data The data of the array. A number alone becomes the number of elements of type.
  * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
