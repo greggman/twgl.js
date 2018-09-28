@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.5.0
+
+    *   Add support for constant attributes
+
 *   4.4.0
 
     *   Support passing arrays of `TexImageSource` to `createTexture(s)`.
