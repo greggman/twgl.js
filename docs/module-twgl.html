@@ -7245,6 +7245,42 @@ Bare TypedArrays
 
         <tr>
             
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code>ArrayBufferView</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a constant value for the attribute. Note: if this is set the attribute will be<br>   disabled and set to this constant value and all other values will be ignored.</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
                 <td class="name"><code>numComponents</code></td>
             
 
@@ -9241,6 +9277,42 @@ var drawObj = {
 
         <tr>
             
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code>ArrayBufferView</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>a constant value for the attribute. Note: if this is set the attribute will be<br>   disabled and set to this constant value and all other values will be ignored.</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
                 <td class="name"><code>data</code></td>
             
 
@@ -9600,6 +9672,45 @@ var drawObj = {
             
 
             <td class="description last"><p>synonym for <code>attrib</code>.</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>WebGLBuffer</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Buffer to use for this attribute. This lets you use your own buffer<br>   but you will need to supply <code>numComponents</code> and <code>type</code>. You can effectively pass an <code>AttribInfo</code><br>   to provide this. Example:</p>
+<pre class="prettyprint source"><code>    const bufferInfo1 = twgl.createBufferInfoFromArrays(gl, {
+      position: [1, 2, 3, ... ],
+    });
+    const bufferInfo2 = twgl.createBufferInfoFromArrays(gl, {
+      position: bufferInfo1.attribs.position,  // use the same buffer from bufferInfo1
+    });</code></pre></td>
         </tr>
 
         

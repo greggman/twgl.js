@@ -213,7 +213,7 @@
 
     
 
-    <h4 class="name" id=".createAttribsFromArrays"><span class="type-signature">(static) </span>createAttribsFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#.AttribInfo">module:twgl.AttribInfo</a>>}</span></h4>
+    <h4 class="name" id=".createAttribsFromArrays"><span class="type-signature">(static) </span>createAttribsFromArrays<span class="signature">(gl, arrays, srcBufferInfo<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="module-twgl.html#.AttribInfo">module:twgl.AttribInfo</a>>}</span></h4>
 
     
 
@@ -316,6 +316,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -340,6 +342,14 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -367,11 +377,55 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">
                 <p>The arrays</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>srcBufferInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code><a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a></code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>a BufferInfo to copy from<br>  This lets you share buffers. Any arrays you supply will override<br>  the buffers from srcBufferInfo.</p>
                 
             </td>
         </tr>
