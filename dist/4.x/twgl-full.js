@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.4.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.5.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -595,6 +595,7 @@ function create(x, y, z) {
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 
@@ -611,6 +612,7 @@ function add(a, b, dst) {
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 
@@ -630,6 +632,7 @@ function subtract(a, b, dst) {
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {number} t Interpolation coefficient.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 
@@ -1597,24 +1600,51 @@ typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = {
 
 function floatAttribSetter(gl, index) {
   return function (b) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-    gl.enableVertexAttribArray(index);
-    gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+    if (b.value) {
+      gl.disableVertexAttribArray(index);
+      gl.vertexAttrib4fv(index, b.value);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
 
-    if (b.divisor !== undefined) {
-      gl.vertexAttribDivisor(index, b.divisor);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
     }
   };
 }
 
 function intAttribSetter(gl, index) {
   return function (b) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-    gl.enableVertexAttribArray(index);
-    gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+    if (b.value) {
+      gl.disableVertexAttribArray(index);
+      gl.vertexAttrib4iv(index, b.value);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
 
-    if (b.divisor !== undefined) {
-      gl.vertexAttribDivisor(index, b.divisor);
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
+    }
+  };
+}
+
+function uintAttribSetter(gl, index) {
+  return function (b) {
+    if (b.value) {
+      gl.disableVertexAttribArray(index);
+      gl.vertexAttrib4uiv(index, b.value);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.enableVertexAttribArray(index);
+      gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.UNSIGNED_INT, b.stride || 0, b.offset || 0);
+
+      if (b.divisor !== undefined) {
+        gl.vertexAttribDivisor(index, b.divisor);
+      }
     }
   };
 }
@@ -1679,19 +1709,19 @@ attrTypeMap[INT_VEC4] = {
 };
 attrTypeMap[UNSIGNED_INT] = {
   size: 4,
-  setter: intAttribSetter
+  setter: uintAttribSetter
 };
 attrTypeMap[UNSIGNED_INT_VEC2] = {
   size: 8,
-  setter: intAttribSetter
+  setter: uintAttribSetter
 };
 attrTypeMap[UNSIGNED_INT_VEC3] = {
   size: 12,
-  setter: intAttribSetter
+  setter: uintAttribSetter
 };
 attrTypeMap[UNSIGNED_INT_VEC4] = {
   size: 16,
-  setter: intAttribSetter
+  setter: uintAttribSetter
 };
 attrTypeMap[BOOL] = {
   size: 4,
@@ -1887,9 +1917,10 @@ function deleteShaders(gl, shaders) {
  *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
  *     twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
  *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
- * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error.
@@ -2012,10 +2043,11 @@ function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback)
  * @param {string[]} shaderScriptIds Array of ids of the script
  *        tags for the shaders. The first is assumed to be the
  *        vertex shader, the second the fragment shader.
- * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
+ * @return {WebGLProgram?} the created program or null if error.
  * @return {WebGLProgram} The created program.
  * @memberOf module:twgl/programs
  */
@@ -2052,11 +2084,11 @@ function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_location
  * @param {string[]} shaderSources Array of sources for the
  *        shaders. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
- * @param {string[]} [opt_attribs] An array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram} The created program.
+ * @return {WebGLProgram?} the created program or null if error.
  * @memberOf module:twgl/programs
  */
 
@@ -2243,7 +2275,7 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   }
 }
 /**
- * Unbinds buffers afetr transform feedback.
+ * Unbinds buffers after transform feedback.
  *
  * Buffers can not be bound to 2 bind points so if you try to bind a buffer used
  * in a transform feedback as an ARRAY_BUFFER for an attribute it will fail.
@@ -2951,9 +2983,9 @@ function createProgramInfoFromProgram(gl, program) {
  * @param {string[]} shaderSources Array of sources for the
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
- * @param {module:twgl.ProgramOptions|string[]} [opt_attribs] Options for the program or an array of attribs names. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations] The locations for the attributes. A parallel array to opt_attribs letting you assign locations.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors. By default it just prints an error to the console
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {module:twgl.ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
  * @memberOf module:twgl/programs
@@ -3547,8 +3579,8 @@ function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
  * near and far clipping plane distances.
  * @param {number} left Left side of the near clipping plane viewport.
  * @param {number} right Right side of the near clipping plane viewport.
- * @param {number} top Top of the near clipping plane viewport.
  * @param {number} bottom Bottom of the near clipping plane viewport.
+ * @param {number} top Top of the near clipping plane viewport.
  * @param {number} near The depth (negative z coordinate)
  *     of the near clipping plane.
  * @param {number} far The depth (negative z coordinate)
@@ -4473,6 +4505,8 @@ function makeTypedArray(array, name) {
  * for the attribute.
  *
  * @typedef {Object} AttribInfo
+ * @property {number[]|ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
+ *    disabled and set to this constant value and all other values will be ignored.
  * @property {number} [numComponents] the number of components for this attribute.
  * @property {number} [size] synonym for `numComponents`.
  * @property {number} [type] the type of the attribute (eg. `gl.FLOAT`, `gl.UNSIGNED_BYTE`, etc...) Default = `gl.FLOAT`
@@ -4489,12 +4523,14 @@ function makeTypedArray(array, name) {
 /**
  * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
  * @typedef {Object} FullArraySpec
+ * @property {number[]|ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
+ *    disabled and set to this constant value and all other values will be ignored.
  * @property {(number|number[]|ArrayBufferView)} data The data of the array. A number alone becomes the number of elements of type.
  * @property {number} [numComponents] number of components for `vertexAttribPointer`. Default is based on the name of the array.
  *    If `coord` is in the name assumes `numComponents = 2`.
  *    If `color` is in the name assumes `numComponents = 4`.
  *    otherwise assumes `numComponents = 3`
- * @property {constructor} type The type. This is only used if `data` is a JavaScript array. It is the constructor for the typedarray. (eg. `Uint8Array`).
+ * @property {constructor} [type] type. This is only used if `data` is a JavaScript array. It is the constructor for the typedarray. (eg. `Uint8Array`).
  * For example if you want colors in a `Uint8Array` you might have a `FullArraySpec` like `{ type: Uint8Array, data: [255,0,255,255, ...], }`.
  * @property {number} [size] synonym for `numComponents`.
  * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
@@ -4505,6 +4541,17 @@ function makeTypedArray(array, name) {
  * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
  * @property {string} [name] synonym for `attrib`.
  * @property {string} [attribName] synonym for `attrib`.
+ * @property {WebGLBuffer} [buffer] Buffer to use for this attribute. This lets you use your own buffer
+ *    but you will need to supply `numComponents` and `type`. You can effectively pass an `AttribInfo`
+ *    to provide this. Example:
+ *
+ *         const bufferInfo1 = twgl.createBufferInfoFromArrays(gl, {
+ *           position: [1, 2, 3, ... ],
+ *         });
+ *         const bufferInfo2 = twgl.createBufferInfoFromArrays(gl, {
+ *           position: bufferInfo1.attribs.position,  // use the same buffer from bufferInfo1
+ *         });
+ *
  * @memberOf module:twgl
  */
 
@@ -4612,6 +4659,9 @@ function makeTypedArray(array, name) {
  *
  * @param {WebGLRenderingContext} gl The webgl rendering context.
  * @param {module:twgl.Arrays} arrays The arrays
+ * @param {module:twgl.BufferInfo} [srcBufferInfo] a BufferInfo to copy from
+ *   This lets you share buffers. Any arrays you supply will override
+ *   the buffers from srcBufferInfo.
  * @return {Object.<string, module:twgl.AttribInfo>} the attribs
  * @memberOf module:twgl/attributes
  */
@@ -4623,41 +4673,55 @@ function createAttribsFromArrays(gl, arrays) {
     if (!isIndices(arrayName)) {
       var array = arrays[arrayName];
       var attribName = array.attrib || array.name || array.attribName || defaults.attribPrefix + arrayName;
-      var buffer;
-      var type;
-      var normalization;
-      var numComponents;
-      var numValues;
 
-      if (typeof array === "number" || typeof array.data === "number") {
-        numValues = array.data || array;
-        var arrayType = array.type || Float32Array;
-        var numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
-        type = typedArrays.getGLTypeForTypedArrayType(arrayType);
-        normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
-        numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
-        buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+      if (array.value) {
+        if (!Array.isArray(array.value) && !typedArrays.isArrayBuffer(array.value)) {
+          throw new Error('array.value is not array or typedarray');
+        }
+
+        attribs[attribName] = {
+          value: array.value
+        };
       } else {
-        var typedArray = makeTypedArray(array, arrayName);
-        buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
-        type = typedArrays.getGLTypeForTypedArray(typedArray);
-        normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
-        numComponents = getNumComponents(array, arrayName);
-        numValues = typedArray.length;
-      }
+        var buffer;
+        var type;
+        var normalization;
+        var numComponents;
 
-      attribs[attribName] = {
-        buffer: buffer,
-        numComponents: numComponents,
-        type: type,
-        normalize: normalization,
-        stride: array.stride || 0,
-        offset: array.offset || 0,
-        divisor: array.divisor === undefined ? undefined : array.divisor,
-        drawType: array.drawType
-      };
+        if (array.buffer) {
+          buffer = array.buffer;
+          numComponents = array.numComponents || array.size;
+          type = array.type;
+          normalization = array.normalize;
+        } else if (typeof array === "number" || typeof array.data === "number") {
+          var numValues = array.data || array;
+          var arrayType = array.type || Float32Array;
+          var numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+          type = typedArrays.getGLTypeForTypedArrayType(arrayType);
+          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
+          numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
+          buffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+          gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+        } else {
+          var typedArray = makeTypedArray(array, arrayName);
+          buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
+          type = typedArrays.getGLTypeForTypedArray(typedArray);
+          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
+          numComponents = getNumComponents(array, arrayName);
+        }
+
+        attribs[attribName] = {
+          buffer: buffer,
+          numComponents: numComponents,
+          type: type,
+          normalize: normalization,
+          stride: array.stride || 0,
+          offset: array.offset || 0,
+          divisor: array.divisor === undefined ? undefined : array.divisor,
+          drawType: array.drawType
+        };
+      }
     }
   });
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -4738,9 +4802,10 @@ var positionKeys = ['position', 'positions', 'a_position'];
 
 function getNumElementsFromNonIndexedArrays(arrays) {
   var key;
+  var ii;
 
-  for (var _ii = 0; _ii < positionKeys.length; ++_ii) {
-    key = positionKeys[_ii];
+  for (ii = 0; ii < positionKeys.length; ++ii) {
+    key = positionKeys[ii];
 
     if (key in arrays) {
       break;
@@ -4903,10 +4968,10 @@ function getNumElementsFromAttributes(gl, attribs) {
  */
 
 
-function createBufferInfoFromArrays(gl, arrays) {
-  var bufferInfo = {
-    attribs: createAttribsFromArrays(gl, arrays)
-  };
+function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
+  var newAttribs = createAttribsFromArrays(gl, arrays);
+  var bufferInfo = Object.assign({}, srcBufferInfo ? srcBufferInfo : {});
+  bufferInfo.attribs = Object.assign({}, srcBufferInfo ? srcBufferInfo.attribs : {}, newAttribs);
   var indices = arrays.indices;
 
   if (indices) {
@@ -4914,7 +4979,7 @@ function createBufferInfoFromArrays(gl, arrays) {
     bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
     bufferInfo.numElements = newIndices.length;
     bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(newIndices);
-  } else {
+  } else if (!bufferInfo.numElements) {
     bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
   }
 
@@ -7901,8 +7966,8 @@ function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_
       // Generate a vertex based on its spherical coordinates
       var u = x / subdivisionsAxis;
       var v = y / subdivisionsHeight;
-      var theta = longRange * u;
-      var phi = latRange * v;
+      var theta = longRange * u + opt_startLongitudeInRadians;
+      var phi = latRange * v + opt_startLatitudeInRadians;
       var sinTheta = Math.sin(theta);
       var cosTheta = Math.cos(theta);
       var sinPhi = Math.sin(phi);
