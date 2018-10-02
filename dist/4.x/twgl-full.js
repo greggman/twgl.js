@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.5.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.5.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4688,7 +4688,7 @@ function createAttribsFromArrays(gl, arrays) {
         var normalization;
         var numComponents;
 
-        if (array.buffer) {
+        if (array.buffer && array.buffer instanceof WebGLBuffer) {
           buffer = array.buffer;
           numComponents = array.numComponents || array.size;
           type = array.type;
