@@ -368,7 +368,7 @@ function createAttribsFromArrays(gl, arrays) {
         let type;
         let normalization;
         let numComponents;
-        if (array.buffer) {
+        if (array.buffer && array.buffer instanceof WebGLBuffer) {
           buffer = array.buffer;
           numComponents = array.numComponents || array.size;
           type = array.type;
