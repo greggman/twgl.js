@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.5.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1496,7 +1496,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
 
 var defaultShaderType = ["VERTEX_SHADER", "FRAGMENT_SHADER"];
 
-function getShaderTypeFromScriptType(scriptType) {
+function getShaderTypeFromScriptType(gl, scriptType) {
   if (scriptType.indexOf("frag") >= 0) {
     return gl.FRAGMENT_SHADER;
   } else if (scriptType.indexOf("vert") >= 0) {
@@ -1547,7 +1547,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
       var type = gl[defaultShaderType[ndx]];
 
       if (elem && elem.type) {
-        type = getShaderTypeFromScriptType(elem.type) || type;
+        type = getShaderTypeFromScriptType(gl, elem.type) || type;
       }
 
       shader = loadShader(gl, src, type, progOptions.errorCallback);
@@ -1625,7 +1625,7 @@ function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback)
   }
 
   shaderSource = shaderScript.text;
-  var shaderType = opt_shaderType || getShaderTypeFromScriptType(shaderScript.type);
+  var shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
 
   if (!shaderType) {
     throw "*** Error: unknown shader type";
@@ -4099,6 +4099,17 @@ function setTextureFromElement(gl, tex, element, options) {
 }
 
 function noop() {}
+
+var localOrigin = new URL(_globalObject.default.location.href).origin;
+
+function urlIsSameOrigin(url) {
+  var urlOrigin = new URL(url, _globalObject.default.location.href);
+  return urlOrigin === localOrigin;
+}
+
+function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
+  return crossOrigin === undefined && !urlIsSameOrigin(url) ? 'anonymous' : crossOrigin;
+}
 /**
  * Loads an image
  * @param {string} url url to image
@@ -4112,10 +4123,11 @@ function noop() {}
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
   var img;
+  crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+  crossOrigin = setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin);
 
   if (_globalObject.default.Image) {
     img = new _globalObject.default.Image();
-    crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
 
     if (crossOrigin !== undefined) {
       img.crossOrigin = crossOrigin;

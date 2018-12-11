@@ -1,5 +1,11 @@
 #Changelist
 
+*   4.6.0
+
+    *   Crossorigin settings for images are now automatic by default
+
+    *   Fixed bug in `getShaderTypeFromScriptType`
+
 *   4.5.0
 
     *   Add support for constant attributes

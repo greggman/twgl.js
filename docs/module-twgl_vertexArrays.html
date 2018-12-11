@@ -652,11 +652,15 @@
 <p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br><code>module:twgl:drawBufferInfo</code>.</p>
 <blockquote>
 <p><strong>IMPORTANT:</strong> Vertex Array Objects are <strong>not</strong> a direct analog for a BufferInfo. Vertex Array Objects<br>  assign buffers to specific attributes at creation time. That means they can only be used with programs<br>  who's attributes use the same attribute locations for the same purposes.</p>
+</blockquote>
+<blockquote>
 <p>Bind your attribute locations by passing an array of attribute names to <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a><br>  or use WebGL 2's GLSL ES 3's <code>layout(location = &lt;num&gt;)</code> to make sure locations match.</p>
 </blockquote>
 <p>also</p>
 <blockquote>
 <p><strong>IMPORTANT:</strong> After calling twgl.setBuffersAndAttribute with a BufferInfo that uses a Vertex Array Object<br>  that Vertex Array Object will be bound. That means <strong>ANY MANIPULATION OF ELEMENT_ARRAY_BUFFER or ATTRIBUTES</strong><br>  will affect the Vertex Array Object state.</p>
+</blockquote>
+<blockquote>
 <p>Call <code>gl.bindVertexArray(null)</code> to get back manipulating the global attributes and ELEMENT_ARRAY_BUFFER.</p>
 </blockquote>
 </div>
