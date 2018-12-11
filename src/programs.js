@@ -589,7 +589,7 @@ const defaultShaderType = [
   "FRAGMENT_SHADER",
 ];
 
-function getShaderTypeFromScriptType(scriptType) {
+function getShaderTypeFromScriptType(gl, scriptType) {
   if (scriptType.indexOf("frag") >= 0) {
     return gl.FRAGMENT_SHADER;
   } else if (scriptType.indexOf("vert") >= 0) {
@@ -636,7 +636,7 @@ function createProgram(
       const src = elem ? elem.text : shader;
       let type = gl[defaultShaderType[ndx]];
       if (elem && elem.type) {
-        type = getShaderTypeFromScriptType(elem.type) || type;
+        type = getShaderTypeFromScriptType(gl, elem.type) || type;
       }
       shader = loadShader(gl, src, type, progOptions.errorCallback);
       newShaders.push(shader);
@@ -705,7 +705,7 @@ function createShaderFromScript(
   }
   shaderSource = shaderScript.text;
 
-  const shaderType = opt_shaderType || getShaderTypeFromScriptType(shaderScript.type);
+  const shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
   if (!shaderType) {
     throw "*** Error: unknown shader type";
   }
