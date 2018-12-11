@@ -987,6 +987,18 @@ function setTextureFromElement(gl, tex, element, options) {
 function noop() {
 }
 
+const localOrigin = (new URL(global.location.href)).origin;
+function urlIsSameOrigin(url) {
+  const urlOrigin = (new URL(url, global.location.href));
+  return urlOrigin === localOrigin;
+}
+
+function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
+  return crossOrigin === undefined && !urlIsSameOrigin(url)
+     ? 'anonymous'
+     : crossOrigin;
+}
+
 /**
  * Loads an image
  * @param {string} url url to image
@@ -998,9 +1010,10 @@ function noop() {
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
   let img;
+  crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
+  crossOrigin = setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin);
   if (global.Image) {
     img = new global.Image();
-    crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
     if (crossOrigin !== undefined) {
       img.crossOrigin = crossOrigin;
     }
