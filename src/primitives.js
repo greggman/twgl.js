@@ -76,6 +76,7 @@ const getNumComponents = attributes.getNumComponents_;  // eslint-disable-line
  * don't have to manually compute offsets
  * @param {TypedArray} typedArray TypedArray to augment
  * @param {number} numComponents number of components.
+ * @private
  */
 function augmentTypedArray(typedArray, numComponents) {
   let cursor = 0;
@@ -642,6 +643,7 @@ function createSphereVertices(
 /**
  * Array of the indices of corners of each face of a cube.
  * @type {Array.<number[]>}
+ * @private
  */
 const CUBE_FACE_INDICES = [
   [3, 7, 5, 1],  // right
@@ -907,6 +909,7 @@ function createTruncatedConeVertices(
  * @param {number[]} rleData data in format of run-length, x, y, z, run-length, x, y, z
  * @param {number[]} [padding] value to add each entry with.
  * @return {number[]} the expanded rleData
+ * @private
  */
 function expandRLEData(rleData, padding) {
   padding = padding || [];
@@ -1785,6 +1788,7 @@ function createDiscVertices(
  * creates a random integer between 0 and range - 1 inclusive.
  * @param {number} range
  * @return {number} random value between 0 and range - 1 inclusive.
+ * @private
  */
 function randInt(range) {
   return Math.random() * range | 0;
@@ -1846,6 +1850,7 @@ function makeRandomVertexColors(vertices, options) {
 /**
  * creates a function that calls fn to create vertices and then
  * creates a buffers for them
+ * @private
  */
 function createBufferFunc(fn) {
   return function(gl) {
@@ -1857,6 +1862,7 @@ function createBufferFunc(fn) {
 /**
  * creates a function that calls fn to create vertices and then
  * creates a bufferInfo object for them
+ * @private
  */
 function createBufferInfoFunc(fn) {
   return function(gl) {
@@ -1884,6 +1890,7 @@ const arraySpecPropertyNames = [
  * @param {Array|TypedArray} dst dest array
  * @param {number} dstNdx index in dest to copy src
  * @param {number} [offset] offset to add to copied values
+ * @private
  */
 function copyElements(src, dst, dstNdx, offset) {
   offset = offset || 0;
@@ -1899,6 +1906,7 @@ function copyElements(src, dst, dstNdx, offset) {
  * @param {(number[]|ArrayBufferView|module:twgl.FullArraySpec)} srcArray array who's type to copy
  * @param {number} length size of new array
  * @return {(number[]|ArrayBufferView|module:twgl.FullArraySpec)} array with same type as srcArray
+ * @private
  */
 function createArrayOfSameType(srcArray, length) {
   const arraySrc = getArray(srcArray);

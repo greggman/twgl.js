@@ -203,16 +203,12 @@ const formatInfo = {};
 
 /**
  * @typedef {Object} TextureFormatDetails
- * @property {number} textureFormat format to pass texImage2D
- *           and similar functions.
- * @property {boolean} colorRenderable true if you can render to
- *           this format of texture.
- * @property {boolean} textureFilterable true if you can filter
- *           the texture, false if you can ony use NEAREST.
- * @property {number[]} type Array of possible types you can
- *           pass to teximage2D and similar function
- * @property {Object.<number,number>} bytesPerElementMap A map
- *           of types to bytes per element
+ * @property {number} textureFormat format to pass texImage2D and similar functions.
+ * @property {boolean} colorRenderable true if you can render to this format of texture.
+ * @property {boolean} textureFilterable true if you can filter the texture, false if you can ony use `NEAREST`.
+ * @property {number[]} type Array of possible types you can pass to teximage2D and similar function
+ * @property {Object.<number,number>} bytesPerElementMap A map of types to bytes per element
+ * @private
  */
 
 const textureInternalFormatInfo = {};
@@ -314,22 +310,19 @@ function getBytesPerElementForInternalFormat(internalFormat, type) {
 
 /**
  * Info related to a specific texture internalFormat as returned
- * from {@link module:twgl.getFormatAndTypeForInternalFormat}.
+ * from {@link module:twgl/textures.getFormatAndTypeForInternalFormat}.
  *
  * @typedef {Object} TextureFormatInfo
- * @property {number} format Format to pass to texImage2D and
- *           related functions
- * @property {number} type Type to pass to texImage2D and
- *           related functions
+ * @property {number} format Format to pass to texImage2D and related functions
+ * @property {number} type Type to pass to texImage2D and related functions
  * @memberOf module:twgl/textures
  */
 
 /**
- * Gets the format for a given internalFormat
+ * Gets the format and type for a given internalFormat
  *
  * @param {number} internalFormat The internal format
- * @return {module:twgl.textures.TextureFormatInfo} the
- *         corresponding format and type,
+ * @return {module:twgl/textures.TextureFormatInfo} the corresponding format and type,
  * @memberOf module:twgl/textures
  */
 function getFormatAndTypeForInternalFormat(internalFormat) {
@@ -347,6 +340,7 @@ function getFormatAndTypeForInternalFormat(internalFormat) {
  * Returns true if value is power of 2
  * @param {number} value number to check.
  * @return true if value is power of 2
+ * @private
  */
 function isPowerOf2(value) {
   return (value & (value - 1)) === 0;
@@ -405,6 +399,7 @@ function getNumComponentsForFormat(format) {
  * Gets the texture type for a given array type.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @return {number} the gl texture type
+ * @private
  */
 function getTextureTypeForArrayType(gl, src, defaultType) {
   if (isArrayBuffer(src)) {
@@ -584,6 +579,7 @@ const lastPackState = {};
  * Saves any packing state that will be set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 function savePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
@@ -604,6 +600,7 @@ function savePackState(gl, options) {
  * Restores any packing state that was set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 function restorePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
@@ -620,6 +617,7 @@ function restorePackState(gl, options) {
 /**
  * Saves state related to data size
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 function saveSkipState(gl) {
   lastPackState.unpackAlignment   = gl.getParameter(gl.UNPACK_ALIGNMENT);
@@ -635,6 +633,7 @@ function saveSkipState(gl) {
 /**
  * Restores state related to data size
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 function restoreSkipState(gl) {
   gl.pixelStorei(gl.UNPACK_ALIGNMENT,    lastPackState.unpackAlignment);
@@ -656,6 +655,7 @@ function restoreSkipState(gl) {
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
+ * @private
  */
 function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.minMag) {
@@ -736,6 +736,7 @@ function setSamplerParameters(gl, sampler, options) {
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per sampler.
  * @return {Object.<string,WebGLSampler>} the created samplers by name
+ * @private
  */
 function createSampler(gl, options) {
   const sampler = gl.createSampler();
@@ -775,6 +776,7 @@ function createSampler(gl, options) {
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set on the sampler
+ * @private
  */
 function createSamplers(gl, samplerOptions) {
   const samplers = {};
@@ -789,6 +791,7 @@ function createSamplers(gl, samplerOptions) {
  * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
  * @param {(number[]|ArrayBufferView)} [color] The color using 0-1 values
  * @return {Uint8Array} Unit8Array with color.
+ * @private
  */
 function make1Pixel(color) {
   color = color || defaults.textureColor;
@@ -841,6 +844,7 @@ function shouldAutomaticallySetTextureFilteringForSize(options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  * @return {number[]} cubemap face enums
+ * @private
  */
 function getCubeFaceOrder(gl, options) {
   options = options || {};
@@ -872,6 +876,7 @@ function getCubeFaceOrder(gl, options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundent but
  *    it's needed internally to sort the array of `ndx` properties by `face`.
+ * @private
  */
 function getCubeFacesWithNdx(gl, options) {
   const faces = getCubeFaceOrder(gl, options);
@@ -1033,6 +1038,7 @@ function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
  * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
  *     if there was an error
  * @return {HTMLImageElement} the image being loaded.
+ * @private
  */
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
@@ -1109,6 +1115,7 @@ function loadImage(url, crossOrigin, callback) {
  *
  * @param {Object} obj Object to test
  * @return {boolean} true if object is a TexImageSource
+ * @private
  */
 function isTexImageSource(obj) {
   return (global.ImageBitmap && obj instanceof global.ImageBitmap) ||
@@ -1125,6 +1132,7 @@ function isTexImageSource(obj) {
  * @param {string} crossOrigin
  * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
  *     if there was an error
+ * @private
  */
 function loadAndUseImage(obj, crossOrigin, callback) {
   if (isTexImageSource(obj)) {
@@ -1649,6 +1657,7 @@ function resizeTexture(gl, tex, options, width, height) {
  * if src is an array of strings we're going to download cubemap images
  * @param {*} src The src from a TextureOptions
  * @returns {bool} true if src is async.
+ * @private
  */
 function isAsyncSrc(src) {
   return typeof src === 'string' ||

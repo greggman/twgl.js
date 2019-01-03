@@ -73,6 +73,7 @@ const tempV3c = v3.create();
  * Sets the type this library creates for a Mat4
  * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
  * @return {constructor} previous constructor for Mat4
+ * @memberOf module:twgl/m4
  */
 function setDefaultType(ctor) {
   const oldType = MatType;

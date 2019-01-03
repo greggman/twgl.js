@@ -285,6 +285,7 @@ function addExtensionsToContext(gl) {
  *     context from. If one is not passed in one will be
  *     created.
  * @return {WebGLRenderingContext} The created context.
+ * @private
  */
 function create3DContext(canvas, opt_attribs) {
   const names = ["webgl", "experimental-webgl"];

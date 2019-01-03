@@ -37,6 +37,7 @@ import global from './global-object.js';
  * @param {string[]} names names of properties to copy
  * @param {object} src object to copy properties from
  * @param {object} dst object to copy properties to
+ * @private
  */
 function copyNamedProperties(names, src, dst) {
   names.forEach(function(name) {
@@ -52,6 +53,7 @@ function copyNamedProperties(names, src, dst) {
  *
  * @param {Object.<string, ?>} src the source
  * @param {Object.<string, ?>} dst the dest
+ * @private
  */
 function copyExistingProperties(src, dst) {
   Object.keys(dst).forEach(function(key) {

@@ -67,6 +67,7 @@ let VecType = Float32Array;
  * Sets the type this library creates for a Vec3
  * @param {constructor} ctor the constructor for the type. Either `Float32Array` or `Array`
  * @return {constructor} previous constructor for Vec3
+ * @memberOf module:twgl/v3
  */
 function setDefaultType(ctor) {
   const oldType = VecType;

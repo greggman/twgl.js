@@ -482,6 +482,7 @@ const spaceRE = /^[ \t]*\n/;
  * @param {number} shaderType The type of shader.
  * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
  * @return {WebGLShader} The created shader.
+ * @private
  */
 function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   const errFn = opt_errorCallback || error;
@@ -542,6 +543,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
+ * @private
  */
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   let transformFeedbackVaryings;
@@ -695,6 +697,7 @@ function createProgram(
  *     be derived from the type of the script tag.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors.
  * @return {WebGLShader?} The created shader or null if error.
+ * @private
  */
 function createShaderFromScript(
     gl, scriptId, opt_shaderType, opt_errorCallback) {
@@ -803,6 +806,7 @@ function createProgramFromSources(
  * @param {WebGLActiveInfo} info As returned from `gl.getActiveUniform` or
  *    `gl.getActiveAttrib`.
  * @return {bool} true if it's reserved
+ * @private
  */
 function isBuiltIn(info) {
   const name = info.name;
@@ -945,6 +949,7 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
  * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+ * @private
  */
 function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (transformFeedbackInfo.transformFeedbackInfo) {

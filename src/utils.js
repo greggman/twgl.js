@@ -33,6 +33,7 @@
  * Gets the gl version as a number
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @return {number} version of gl
+ * @private
  */
 //function getVersionAsNumber(gl) {
 //  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
