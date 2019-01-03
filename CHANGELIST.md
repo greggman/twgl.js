@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.7.0
+
+    *   expose `getFormatAndTypeForInternalFormat`, `canFilter`, and `canGenerateMipmap`.
+
 *   4.6.0
 
     *   Crossorigin settings for images are now automatic by default
