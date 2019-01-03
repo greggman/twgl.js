@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.7.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -136,6 +136,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {string[]} names names of properties to copy
  * @param {object} src object to copy properties from
  * @param {object} dst object to copy properties to
+ * @private
  */
 function copyNamedProperties(names, src, dst) {
   names.forEach(function (name) {
@@ -151,6 +152,7 @@ function copyNamedProperties(names, src, dst) {
  *
  * @param {Object.<string, ?>} src the source
  * @param {Object.<string, ?>} dst the dest
+ * @private
  */
 
 
@@ -512,6 +514,7 @@ exports.glEnumToString = void 0;
  * Gets the gl version as a number
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @return {number} version of gl
+ * @private
  */
 //function getVersionAsNumber(gl) {
 //  return parseFloat(gl.getParameter(gl.VERSION).substr(6));
@@ -1386,6 +1389,7 @@ var spaceRE = /^[ \t]*\n/;
  * @param {number} shaderType The type of shader.
  * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
  * @return {WebGLShader} The created shader.
+ * @private
  */
 
 function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
@@ -1445,6 +1449,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
+ * @private
  */
 
 
@@ -1613,6 +1618,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
  *     be derived from the type of the script tag.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors.
  * @return {WebGLShader?} The created shader or null if error.
+ * @private
  */
 
 
@@ -1729,6 +1735,7 @@ function createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations,
  * @param {WebGLActiveInfo} info As returned from `gl.getActiveUniform` or
  *    `gl.getActiveAttrib`.
  * @return {bool} true if it's reserved
+ * @private
  */
 
 
@@ -1890,6 +1897,7 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
  * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
+ * @private
  */
 
 
@@ -2651,8 +2659,11 @@ exports.setTextureParameters = setTextureParameters;
 exports.setDefaultTextureColor = setDefaultTextureColor;
 exports.createTextures = createTextures;
 exports.resizeTexture = resizeTexture;
+exports.canGenerateMipmap = canGenerateMipmap;
+exports.canFilter = canFilter;
 exports.getNumComponentsForFormat = getNumComponentsForFormat;
 exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
+exports.getFormatAndTypeForInternalFormat = getFormatAndTypeForInternalFormat;
 
 var utils = _interopRequireWildcard(__webpack_require__(3));
 
@@ -2892,6 +2903,16 @@ var formatInfo = {};
     numColorComponents: 2
   };
 }
+/**
+ * @typedef {Object} TextureFormatDetails
+ * @property {number} textureFormat format to pass texImage2D and similar functions.
+ * @property {boolean} colorRenderable true if you can render to this format of texture.
+ * @property {boolean} textureFilterable true if you can filter the texture, false if you can ony use `NEAREST`.
+ * @property {number[]} type Array of possible types you can pass to teximage2D and similar function
+ * @property {Object.<number,number>} bytesPerElementMap A map of types to bytes per element
+ * @private
+ */
+
 var textureInternalFormatInfo = {};
 {
   // NOTE: these properties need unique names so we can let Uglify mangle the name.
@@ -2937,15 +2958,15 @@ var textureInternalFormatInfo = {};
     textureFormat: RED,
     colorRenderable: true,
     textureFilterable: true,
-    bytesPerElement: 1,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [1],
+    type: [UNSIGNED_BYTE]
   };
   t[R8_SNORM] = {
     textureFormat: RED,
     colorRenderable: false,
     textureFilterable: true,
-    bytesPerElement: 1,
-    type: BYTE
+    bytesPerElement: [1],
+    type: [BYTE]
   };
   t[R16F] = {
     textureFormat: RED,
@@ -2958,64 +2979,64 @@ var textureInternalFormatInfo = {};
     textureFormat: RED,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: FLOAT
+    bytesPerElement: [4],
+    type: [FLOAT]
   };
   t[R8UI] = {
     textureFormat: RED_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 1,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [1],
+    type: [UNSIGNED_BYTE]
   };
   t[R8I] = {
     textureFormat: RED_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 1,
-    type: BYTE
+    bytesPerElement: [1],
+    type: [BYTE]
   };
   t[R16UI] = {
     textureFormat: RED_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 2,
-    type: UNSIGNED_SHORT
+    bytesPerElement: [2],
+    type: [UNSIGNED_SHORT]
   };
   t[R16I] = {
     textureFormat: RED_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 2,
-    type: SHORT
+    bytesPerElement: [2],
+    type: [SHORT]
   };
   t[R32UI] = {
     textureFormat: RED_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: UNSIGNED_INT
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT]
   };
   t[R32I] = {
     textureFormat: RED_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: INT
+    bytesPerElement: [4],
+    type: [INT]
   };
   t[RG8] = {
     textureFormat: RG,
     colorRenderable: true,
     textureFilterable: true,
-    bytesPerElement: 2,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [2],
+    type: [UNSIGNED_BYTE]
   };
   t[RG8_SNORM] = {
     textureFormat: RG,
     colorRenderable: false,
     textureFilterable: true,
-    bytesPerElement: 2,
-    type: BYTE
+    bytesPerElement: [2],
+    type: [BYTE]
   };
   t[RG16F] = {
     textureFormat: RG,
@@ -3028,64 +3049,64 @@ var textureInternalFormatInfo = {};
     textureFormat: RG,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 8,
-    type: FLOAT
+    bytesPerElement: [8],
+    type: [FLOAT]
   };
   t[RG8UI] = {
     textureFormat: RG_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 2,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [2],
+    type: [UNSIGNED_BYTE]
   };
   t[RG8I] = {
     textureFormat: RG_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 2,
-    type: BYTE
+    bytesPerElement: [2],
+    type: [BYTE]
   };
   t[RG16UI] = {
     textureFormat: RG_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: UNSIGNED_SHORT
+    bytesPerElement: [4],
+    type: [UNSIGNED_SHORT]
   };
   t[RG16I] = {
     textureFormat: RG_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: SHORT
+    bytesPerElement: [4],
+    type: [SHORT]
   };
   t[RG32UI] = {
     textureFormat: RG_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 8,
-    type: UNSIGNED_INT
+    bytesPerElement: [8],
+    type: [UNSIGNED_INT]
   };
   t[RG32I] = {
     textureFormat: RG_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 8,
-    type: INT
+    bytesPerElement: [8],
+    type: [INT]
   };
   t[RGB8] = {
     textureFormat: RGB,
     colorRenderable: true,
     textureFilterable: true,
-    bytesPerElement: 3,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [3],
+    type: [UNSIGNED_BYTE]
   };
   t[SRGB8] = {
     textureFormat: RGB,
     colorRenderable: false,
     textureFilterable: true,
-    bytesPerElement: 3,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [3],
+    type: [UNSIGNED_BYTE]
   };
   t[RGB565] = {
     textureFormat: RGB,
@@ -3098,8 +3119,8 @@ var textureInternalFormatInfo = {};
     textureFormat: RGB,
     colorRenderable: false,
     textureFilterable: true,
-    bytesPerElement: 3,
-    type: BYTE
+    bytesPerElement: [3],
+    type: [BYTE]
   };
   t[R11F_G11F_B10F] = {
     textureFormat: RGB,
@@ -3126,71 +3147,71 @@ var textureInternalFormatInfo = {};
     textureFormat: RGB,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 12,
-    type: FLOAT
+    bytesPerElement: [12],
+    type: [FLOAT]
   };
   t[RGB8UI] = {
     textureFormat: RGB_INTEGER,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 3,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [3],
+    type: [UNSIGNED_BYTE]
   };
   t[RGB8I] = {
     textureFormat: RGB_INTEGER,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 3,
-    type: BYTE
+    bytesPerElement: [3],
+    type: [BYTE]
   };
   t[RGB16UI] = {
     textureFormat: RGB_INTEGER,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 6,
-    type: UNSIGNED_SHORT
+    bytesPerElement: [6],
+    type: [UNSIGNED_SHORT]
   };
   t[RGB16I] = {
     textureFormat: RGB_INTEGER,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 6,
-    type: SHORT
+    bytesPerElement: [6],
+    type: [SHORT]
   };
   t[RGB32UI] = {
     textureFormat: RGB_INTEGER,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 12,
-    type: UNSIGNED_INT
+    bytesPerElement: [12],
+    type: [UNSIGNED_INT]
   };
   t[RGB32I] = {
     textureFormat: RGB_INTEGER,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 12,
-    type: INT
+    bytesPerElement: [12],
+    type: [INT]
   };
   t[RGBA8] = {
     textureFormat: RGBA,
     colorRenderable: true,
     textureFilterable: true,
-    bytesPerElement: 4,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [4],
+    type: [UNSIGNED_BYTE]
   };
   t[SRGB8_ALPHA8] = {
     textureFormat: RGBA,
     colorRenderable: true,
     textureFilterable: true,
-    bytesPerElement: 4,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [4],
+    type: [UNSIGNED_BYTE]
   };
   t[RGBA8_SNORM] = {
     textureFormat: RGBA,
     colorRenderable: false,
     textureFilterable: true,
-    bytesPerElement: 4,
-    type: BYTE
+    bytesPerElement: [4],
+    type: [BYTE]
   };
   t[RGB5_A1] = {
     textureFormat: RGBA,
@@ -3210,8 +3231,8 @@ var textureInternalFormatInfo = {};
     textureFormat: RGBA,
     colorRenderable: true,
     textureFilterable: true,
-    bytesPerElement: 4,
-    type: UNSIGNED_INT_2_10_10_10_REV
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT_2_10_10_10_REV]
   };
   t[RGBA16F] = {
     textureFormat: RGBA,
@@ -3224,57 +3245,57 @@ var textureInternalFormatInfo = {};
     textureFormat: RGBA,
     colorRenderable: false,
     textureFilterable: false,
-    bytesPerElement: 16,
-    type: FLOAT
+    bytesPerElement: [16],
+    type: [FLOAT]
   };
   t[RGBA8UI] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: UNSIGNED_BYTE
+    bytesPerElement: [4],
+    type: [UNSIGNED_BYTE]
   };
   t[RGBA8I] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: BYTE
+    bytesPerElement: [4],
+    type: [BYTE]
   };
   t[RGB10_A2UI] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: UNSIGNED_INT_2_10_10_10_REV
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT_2_10_10_10_REV]
   };
   t[RGBA16UI] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 8,
-    type: UNSIGNED_SHORT
+    bytesPerElement: [8],
+    type: [UNSIGNED_SHORT]
   };
   t[RGBA16I] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 8,
-    type: SHORT
+    bytesPerElement: [8],
+    type: [SHORT]
   };
   t[RGBA32I] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 16,
-    type: INT
+    bytesPerElement: [16],
+    type: [INT]
   };
   t[RGBA32UI] = {
     textureFormat: RGBA_INTEGER,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 16,
-    type: UNSIGNED_INT
+    bytesPerElement: [16],
+    type: [UNSIGNED_INT]
   }; // Sized Internal
 
   t[DEPTH_COMPONENT16] = {
@@ -3288,43 +3309,37 @@ var textureInternalFormatInfo = {};
     textureFormat: DEPTH_COMPONENT,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: UNSIGNED_INT
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT]
   };
   t[DEPTH_COMPONENT32F] = {
     textureFormat: DEPTH_COMPONENT,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: FLOAT
+    bytesPerElement: [4],
+    type: [FLOAT]
   };
   t[DEPTH24_STENCIL8] = {
     textureFormat: DEPTH_STENCIL,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: UNSIGNED_INT_24_8
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT_24_8]
   };
   t[DEPTH32F_STENCIL8] = {
     textureFormat: DEPTH_STENCIL,
     colorRenderable: true,
     textureFilterable: false,
-    bytesPerElement: 4,
-    type: FLOAT_32_UNSIGNED_INT_24_8_REV
+    bytesPerElement: [4],
+    type: [FLOAT_32_UNSIGNED_INT_24_8_REV]
   };
   Object.keys(t).forEach(function (internalFormat) {
     var info = t[internalFormat];
     info.bytesPerElementMap = {};
-
-    if (Array.isArray(info.bytesPerElement)) {
-      info.bytesPerElement.forEach(function (bytesPerElement, ndx) {
-        var type = info.type[ndx];
-        info.bytesPerElementMap[type] = bytesPerElement;
-      });
-    } else {
-      var type = info.type;
-      info.bytesPerElementMap[type] = info.bytesPerElement;
-    }
+    info.bytesPerElement.forEach(function (bytesPerElement, ndx) {
+      var type = info.type[ndx];
+      info.bytesPerElementMap[type] = bytesPerElement;
+    });
   });
 }
 /**
@@ -3351,10 +3366,21 @@ function getBytesPerElementForInternalFormat(internalFormat, type) {
   return bytesPerElement;
 }
 /**
- * Gets the format for a given internalFormat
+ * Info related to a specific texture internalFormat as returned
+ * from {@link module:twgl/textures.getFormatAndTypeForInternalFormat}.
+ *
+ * @typedef {Object} TextureFormatInfo
+ * @property {number} format Format to pass to texImage2D and related functions
+ * @property {number} type Type to pass to texImage2D and related functions
+ * @memberOf module:twgl/textures
+ */
+
+/**
+ * Gets the format and type for a given internalFormat
  *
  * @param {number} internalFormat The internal format
- * @return {{format:number, type:number}} the corresponding format and type
+ * @return {module:twgl/textures.TextureFormatInfo} the corresponding format and type,
+ * @memberOf module:twgl/textures
  */
 
 
@@ -3367,13 +3393,14 @@ function getFormatAndTypeForInternalFormat(internalFormat) {
 
   return {
     format: info.textureFormat,
-    type: Array.isArray(info.type) ? info.type[0] : info.type
+    type: info.type[0]
   };
 }
 /**
  * Returns true if value is power of 2
  * @param {number} value number to check.
  * @return true if value is power of 2
+ * @private
  */
 
 
@@ -3381,10 +3408,13 @@ function isPowerOf2(value) {
   return (value & value - 1) === 0;
 }
 /**
- * Gets whether or not we can generate mips for the given format
+ * Gets whether or not we can generate mips for the given
+ * internal format.
+ *
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
  * @param {number} type The type parameter for texImage2D etc..
  * @return {boolean} true if we can generate mips
+ * @memberOf module:twgl/textures
  */
 
 
@@ -3408,6 +3438,7 @@ function canGenerateMipmap(gl, width, height, internalFormat
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
  * @param {number} type The type parameter for texImage2D etc..
  * @return {boolean} true if we can generate mips
+ * @memberOf module:twgl/textures
  */
 
 
@@ -3443,6 +3474,7 @@ function getNumComponentsForFormat(format) {
  * Gets the texture type for a given array type.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @return {number} the gl texture type
+ * @private
  */
 
 
@@ -3631,6 +3663,7 @@ var lastPackState = {};
  * Saves any packing state that will be set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 
 function savePackState(gl, options) {
@@ -3653,6 +3686,7 @@ function savePackState(gl, options) {
  * Restores any packing state that was set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 
 
@@ -3672,6 +3706,7 @@ function restorePackState(gl, options) {
 /**
  * Saves state related to data size
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 
 
@@ -3689,6 +3724,7 @@ function saveSkipState(gl) {
 /**
  * Restores state related to data size
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @private
  */
 
 
@@ -3711,6 +3747,7 @@ function restoreSkipState(gl) {
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
+ * @private
  */
 
 
@@ -3805,6 +3842,7 @@ function setSamplerParameters(gl, sampler, options) {
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per sampler.
  * @return {Object.<string,WebGLSampler>} the created samplers by name
+ * @private
  */
 
 
@@ -3845,6 +3883,7 @@ function createSampler(gl, options) {
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set on the sampler
+ * @private
  */
 
 
@@ -3860,6 +3899,7 @@ function createSamplers(gl, samplerOptions) {
  * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
  * @param {(number[]|ArrayBufferView)} [color] The color using 0-1 values
  * @return {Uint8Array} Unit8Array with color.
+ * @private
  */
 
 
@@ -3917,6 +3957,7 @@ function shouldAutomaticallySetTextureFilteringForSize(options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  * @return {number[]} cubemap face enums
+ * @private
  */
 
 
@@ -3942,6 +3983,7 @@ function getCubeFaceOrder(gl, options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundent but
  *    it's needed internally to sort the array of `ndx` properties by `face`.
+ * @private
  */
 
 
@@ -4117,6 +4159,7 @@ function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
  * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
  *     if there was an error
  * @return {HTMLImageElement} the image being loaded.
+ * @private
  */
 
 
@@ -4203,6 +4246,7 @@ function loadImage(url, crossOrigin, callback) {
  *
  * @param {Object} obj Object to test
  * @return {boolean} true if object is a TexImageSource
+ * @private
  */
 
 
@@ -4218,6 +4262,7 @@ function isTexImageSource(obj) {
  * @param {string} crossOrigin
  * @param {function(err, img)} [callback] a callback that's passed an error and the image. The error will be non-null
  *     if there was an error
+ * @private
  */
 
 
@@ -4775,6 +4820,7 @@ function resizeTexture(gl, tex, options, width, height) {
  * if src is an array of strings we're going to download cubemap images
  * @param {*} src The src from a TextureOptions
  * @returns {bool} true if src is async.
+ * @private
  */
 
 
@@ -5271,6 +5317,7 @@ function addExtensionsToContext(gl) {
  *     context from. If one is not passed in one will be
  *     created.
  * @return {WebGLRenderingContext} The created context.
+ * @private
  */
 
 
