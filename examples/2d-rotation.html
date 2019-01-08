@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+  <title>twgl.js - 2d-rotation</title>
+</head>
+<body style="margin:0; overflow: hidden; font-family: monospace;">
+
+<canvas id="canvasgl" style="height: 100vh; width: 100vw;"></canvas>
+<div id="b" style="position: absolute; top: 10px; width: 100%; text-align: center; z-index: 2;"><a href="http://twgljs.org">twgl.js</a> - 2d-rotation</div>
+
+<script src="https://cdn.jsdelivr.net/npm/twgl.js@4.5.2/dist/4.x/twgl-full.min.js"></script>
+<script>
+  'use strict';
+
+  const vsource = `
+    precision mediump float;
+
+    uniform vec2 size;
+    uniform vec2 center;
+    uniform float phi;
+
+    attribute vec2 position;
+    varying vec2 c;
+
+    void main() {
+      vec2 rot = vec2(sin(phi), cos(phi));
+      vec2 p = size * position;
+      c = center + vec2(p.x * rot.y - p.y * rot.x, dot(p, rot));
+      gl_Position = vec4(position, 0.0, 1.0);
+    }`;
+  const fsource = `
+    precision mediump float;
+
+    #define imax 200
+    varying vec2 c;
+    
+    void main() {
+      float x, y, t, col;
+
+      for (int i = 0; i < imax; i++) {
+        t = x * x - y * y + c.x;
+        y = 2 * x * y + c.y;
+        x = t;
+
+        if (x * x + y * y > 16.0) break;
+        else col += 1.0;
+      }
+      gl_FragColor = vec4(vec3(0.9 - 0.9 * col/float(imax)), 1.0);
+    }`;
+
+  const canvas = document.getElementById('canvasgl');
+  const gl = twgl.getContext(canvas, {depth: false });
+  const programInfo = twgl.createProgramInfo(gl, [vsource, fsource]);
+
+  function draw(gl, programInfo, phi) {
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.useProgram(programInfo.program);
+
+    const arrays = { position: { data: [-1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, 1], numComponents: 2 } };
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    const uniforms = {
+      center: [-0.5, 0],
+      size: [3.3, 3.3 / gl.canvas.width * gl.canvas.height],
+      phi: phi
+    };
+
+    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    twgl.setUniforms(programInfo, uniforms);
+    twgl.drawBufferInfo(gl, bufferInfo);
+  }
+
+  let timePassed = 0;
+  let prev = Date.now();
+  (function animate() {
+    let now = Date.now();
+    timePassed += now - prev;
+    prev = now;
+    draw(gl, programInfo, timePassed / 1000);
+    requestAnimationFrame(animate);
+  })();
+</script>
+
+</body>
+</html>
