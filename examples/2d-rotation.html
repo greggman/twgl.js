@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
   <title>twgl.js - 2d-rotation</title>
 </head>
 <body style="margin:0; overflow: hidden; font-family: monospace;">
@@ -69,7 +70,7 @@
     const uniforms = {
       center: [-0.5, 0],
       size: [3.3, 3.3 / gl.canvas.width * gl.canvas.height],
-      phi: phi
+      phi: phi,
     };
 
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
@@ -80,7 +81,7 @@
   let timePassed = 0;
   let prev = Date.now();
   (function animate() {
-    let now = Date.now();
+    const now = Date.now();
     timePassed += now - prev;
     prev = now;
     draw(gl, programInfo, timePassed / 1000);
