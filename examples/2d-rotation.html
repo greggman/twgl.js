@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
   <title>twgl.js - 2d-rotation</title>
 </head>
 <body style="margin:0; overflow: hidden; font-family: monospace;">
@@ -43,7 +42,7 @@
 
       for (int i = 0; i < imax; i++) {
         t = x * x - y * y + c.x;
-        y = 2 * x * y + c.y;
+        y = 2.0 * x * y + c.y;
         x = t;
 
         if (x * x + y * y > 16.0) break;
