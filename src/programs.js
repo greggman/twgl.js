@@ -1533,7 +1533,7 @@ function setAttributes(setters, buffers) {
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
  * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
- * @param {(module:twgl.BufferInfo|module:twgl.vertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
+ * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
  *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
  * @memberOf module:twgl/programs
  */
