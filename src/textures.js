@@ -510,7 +510,7 @@ function setDefaults(newDefaults) {
  * @property {number} [colorspaceConversion] Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.
  *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
  *     the current setting for specific textures.
- * @property {(number[]|ArrayBufferView)} color color used as temporary 1x1 pixel color for textures loaded async when src is a string.
+ * @property {(number[]|ArrayBufferView)} [color] color used as temporary 1x1 pixel color for textures loaded async when src is a string.
  *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in `[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0`.
  *    Defaults to `[0.5, 0.75, 1, 1]`. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
  * @property {boolean} [auto] If `undefined` or `true`, in WebGL1, texture filtering is set automatically for non-power of 2 images and
