@@ -154,6 +154,15 @@ module.exports = function(grunt) {
           outputSourceFiles: false,
         },
       },
+      ts: {
+        src: docsFiles,
+        options: {
+          destination: 'dist/4.x',
+          configure: 'build/jsdoc.conf.json',
+          template: './node_modules/tsd-jsdoc/dist',
+          outputSourceFiles: false,
+        },
+      }
     },
     webpack: {
       full: {
