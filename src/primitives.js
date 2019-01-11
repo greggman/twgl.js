@@ -248,7 +248,7 @@ function transformNormal(mi, v, dst) {
 /**
  * Reorients directions by the given matrix..
  * @param {number[]|TypedArray} array The array. Assumes value floats per element.
- * @param {Matrix} matrix A matrix to multiply by.
+ * @param {module:twgl/m4.Mat4} matrix A matrix to multiply by.
  * @return {number[]|TypedArray} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
@@ -261,7 +261,7 @@ function reorientDirections(array, matrix) {
  * Reorients normals by the inverse-transpose of the given
  * matrix..
  * @param {number[]|TypedArray} array The array. Assumes value floats per element.
- * @param {Matrix} matrix A matrix to multiply by.
+ * @param {module:twgl/m4.Mat4} matrix A matrix to multiply by.
  * @return {number[]|TypedArray} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
@@ -274,7 +274,7 @@ function reorientNormals(array, matrix) {
  * Reorients positions by the given matrix. In other words, it
  * multiplies each vertex by the given matrix.
  * @param {number[]|TypedArray} array The array. Assumes value floats per element.
- * @param {Matrix} matrix A matrix to multiply by.
+ * @param {module:twgl/m4.Mat4} matrix A matrix to multiply by.
  * @return {number[]|TypedArray} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
@@ -289,7 +289,7 @@ function reorientPositions(array, matrix) {
  * 'binorm' or 'tan' as directions, and 'norm' as normals.
  *
  * @param {Object.<string, (number[]|TypedArray)>} arrays The vertices to reorient
- * @param {Matrix} matrix matrix to reorient by.
+ * @param {module:twgl/m4.Mat4} matrix matrix to reorient by.
  * @return {Object.<string, (number[]|TypedArray)>} same arrays that were passed in.
  * @memberOf module:twgl/primitives
  */
@@ -408,7 +408,7 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @param {number} [depth] Depth of the plane. Default = 1
  * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
  * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
- * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
+ * @param {module:twgl/m4.Mat4} [matrix] A matrix by which to multiply all the vertices.
  * @return {@module:twgl.BufferInfo} The created plane BufferInfo.
  * @memberOf module:twgl/primitives
  * @function createPlaneBufferInfo
@@ -424,7 +424,7 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @param {number} [depth] Depth of the plane. Default = 1
  * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
  * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
- * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
+ * @param {module:twgl/m4.Mat4} [matrix] A matrix by which to multiply all the vertices.
  * @return {Object.<string, WebGLBuffer>} The created plane buffers.
  * @memberOf module:twgl/primitives
  * @function createPlaneBuffers
@@ -439,7 +439,7 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @param {number} [depth] Depth of the plane. Default = 1
  * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
  * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
- * @param {Matrix4} [matrix] A matrix by which to multiply all the vertices.
+ * @param {module:twgl/m4.Mat4} [matrix] A matrix by which to multiply all the vertices.
  * @return {Object.<string, TypedArray>} The created plane vertices.
  * @memberOf module:twgl/primitives
  */
