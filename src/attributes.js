@@ -464,9 +464,7 @@ function getBytesPerValueForGLType(gl, type) {
   return 0;
 }
 
-/**
- * tries to get the number of elements from a set of arrays.
- */
+// Tries to get the number of elements from a set of arrays.
 const positionKeys = ['position', 'positions', 'a_position'];
 function getNumElementsFromNonIndexedArrays(arrays) {
   let key;
