@@ -1,4 +1,4 @@
 require('should');
-const loader = require("@std/esm")(module, { esm: "js" });
+const loader = require("esm")(module);
 loader('./v3-test.js');
 
