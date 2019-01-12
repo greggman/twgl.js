@@ -65,7 +65,6 @@
   const gl = twgl.getContext(canvas, {depth: false });
   const programInfo = twgl.createProgramInfo(gl, [vsource, fsource]);
 
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.useProgram(programInfo.program);
 
   const arrays = { position: { data: [-1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, 1], numComponents: 2 } };
@@ -87,11 +86,10 @@
     twgl.drawBufferInfo(gl, bufferInfo);
   }
 
-  const start = Date.now();
-  (function animate() {
-    draw(gl, programInfo, (Date.now() - start) / 1000);
+  (function animate(now) {
+    draw(gl, programInfo, now / 1000);
     requestAnimationFrame(animate);
-  })();
+  })(0);
 </script>
 
 </body>
