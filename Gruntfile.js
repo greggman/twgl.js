@@ -162,7 +162,7 @@ module.exports = function(grunt) {
           template: './node_modules/tsd-jsdoc/dist',
           outputSourceFiles: false,
         },
-      }
+      },
     },
     webpack: {
       full: {
@@ -352,16 +352,88 @@ module.exports = function(grunt) {
     fs.writeFileSync("npm/base/package.json", JSON.stringify(p, null, 2), {encoding: "utf8"});
   });
 
+  grunt.registerTask('tsmunge', function() {
+    let content = fs.readFileSync('dist/4.x/types.d.ts', {encoding: 'utf8'});
+
+    // Remove docstrings (declarations do not by convention include these)
+    content = content.replace(/\/\*\*.*?\*\/\s*/g, '');
+
+    // Docs use "?" to represent an arbitrary type; TS uses "any"
+    content = content.replace(/\]: \?/g, ']: any');
+
+    // Docs use "constructor"; TS expects something more like "Function"
+    content = content.replace(/: constructor/, ': Function');
+
+    // Docs use "ArrayBufferViewType" to describe a TypedArray constructor
+    content = content.replace(/\bArrayBufferViewType\b/g, 'Function');
+
+    // What docs call "TypedArray", lib.d.ts calls "ArrayBufferView"
+    content = content.replace(/\bTypedArray\b/g, 'ArrayBufferView');
+
+    // What docs call an "augmentedTypedArray" is technically an "ArrayBufferView"
+    // albeit with a patched-in "push" method.
+    content = content.replace(/\baugmentedTypedArray\b/, 'ArrayBufferView');
+
+    // Docs use "enum"; TS expects "GLenum"
+    // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
+    content = content.replace(/: enum/g, ': GLenum');
+
+    // Remove every instance of "module:twgl" and "module:twgl/whatever"
+    content = content.replace(/module:twgl(\/\w+)?\./g, '');
+
+    // Remove all "declare module twgl" and "declare module twgl/whatever"
+    // It should be enough simply for the declarations to reside in a "twgl.js.d.ts" file
+    content = content.replace(/declare module twgl \{\s*/g, '');
+    content = content.replace(/}\s*$/g, '');
+    content = content.replace(/\}[^{}]*?declare module twgl\/\w+ \{/g, '');
+
+    // De-indent cause all that left-over whitespace is driving me bonkers
+    content = content.replace(/^ {4}/gm, '');
+
+    // Replace "function", "type" declarations with "export function", "export type"
+    content = content.replace(/^(function|type) /mg, 'export $1 ');
+
+    // Fixup dynamically generated glEnumToString function signature
+    const glEnumToString = `
+    export function glEnumToString(gl: WebGLRenderingContext, value: number): string;
+    `;
+    content = content.replace(/var glEnumToString: any;/g, glEnumToString);
+
+    // Add missing type (describes canvas.getContext input attributes)
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
+    content = `
+    export interface WebGLContextCreationAttirbutes {
+        alpha?: boolean;
+        antialias?: boolean;
+        depth?: boolean;
+        failIfMajorPerformanceCaveat?: boolean;
+        powerPreference?: string;
+        premultipliedAlpha?: boolean;
+        preserveDrawingBuffer?: boolean;
+        stencil?: boolean;
+    }
+    ${content}
+    `;
+
+    // Write to destination test file
+    fs.writeFileSync('dist/4.x/types.d.ts', content);
+  });
+
   grunt.registerTask('docs', [
       'eslint:examples',
       'clean:docs',
-      'jsdoc',
+      'jsdoc:docs',
       'makeindex',
+  ]);
+  grunt.registerTask('buildts', [
+      'jsdoc:ts',
+      'tsmunge',
   ]);
   grunt.registerTask('build', [
       'eslint:lib',
       'clean:dist',
       'webpack',
+      'buildts',
       'copy',
       'npmpackage',
   ]);

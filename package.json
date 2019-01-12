@@ -8,6 +8,7 @@
     "test": "node node_modules/mocha/bin/mocha --recursive 'test/**/*-harness.js'",
     "pre-push": "grunt eslint",
     "build": "grunt build",
+    "buildts": "grunt buildts",
     "bumpminor": "grunt bumpminor",
     "bumpmajor": "grunt bumpmajor",
     "bumppatch": "grunt bumppatch",
