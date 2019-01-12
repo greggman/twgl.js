@@ -44,8 +44,6 @@
  * @module twgl/typedArray
  */
 
-import global from './global-object.js';
-
 // make sure we don't see a global gl
 const gl = undefined;  // eslint-disable-line
 
@@ -140,9 +138,9 @@ function getTypedArrayTypeForGLType(type) {
   return CTOR;
 }
 
-const isArrayBuffer = global.SharedArrayBuffer
+const isArrayBuffer = typeof SharedArrayBuffer !== 'undefined'
   ? function isArrayBufferOrSharedArrayBuffer(a) {
-    return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof global.SharedArrayBuffer);
+    return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof SharedArrayBuffer);
   }
   : function isArrayBuffer(a) {
     return a && a.buffer && a.buffer instanceof ArrayBuffer;

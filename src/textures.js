@@ -32,7 +32,6 @@
 import * as utils from './utils.js';
 import * as typedArrays from './typedarrays.js';
 import * as helper from './helper.js';
-import global from './global-object.js';
 
 /**
  * Low level texture related functions
@@ -59,8 +58,8 @@ const defaults = {
 const isArrayBuffer = typedArrays.isArrayBuffer;
 
 // Should we make this on demand?
-const ctx = (global.document && global.document.createElement)
-    ? global.document.createElement("canvas").getContext("2d")
+const ctx = (typeof document !== 'undefined' && document.createElement)
+    ? document.createElement("canvas").getContext("2d")
     : null;
 
 // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
@@ -954,7 +953,7 @@ function setTextureFromElement(gl, tex, element, options) {
       // Free up the canvas memory
       ctx.canvas.width = 1;
       ctx.canvas.height = 1;
-    } else if (global.createImageBitmap) {
+    } else if (typeof createImageBitmap !== 'undefined') {
       // NOTE: It seems like we should prefer ImageBitmap because unlike canvas it's
       // note lossy? (alpha is not premultiplied? although I'm not sure what
       width = size;
@@ -968,7 +967,7 @@ function setTextureFromElement(gl, tex, element, options) {
         // On the other hand we need all faces to be the same size so as one face loads
         // the rest match else the texture will be unrenderable.
         gl.texImage2D(f.face, level, internalFormat, size, size, 0, format, type, null);
-        global.createImageBitmap(element, xOffset, yOffset, size, size, {
+        createImageBitmap(element, xOffset, yOffset, size, size, {
           premultiplyAlpha: 'none',
           colorSpaceConversion: 'none',
         })
@@ -1019,9 +1018,9 @@ function setTextureFromElement(gl, tex, element, options) {
 function noop() {
 }
 
-const localOrigin = (new URL(global.location.href)).origin;
+const localOrigin = (new URL(location.href)).origin;
 function urlIsSameOrigin(url) {
-  const urlOrigin = (new URL(url, global.location.href));
+  const urlOrigin = (new URL(url, location.href));
   return urlOrigin === localOrigin;
 }
 
@@ -1045,8 +1044,8 @@ function loadImage(url, crossOrigin, callback) {
   let img;
   crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
   crossOrigin = setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin);
-  if (global.Image) {
-    img = new global.Image();
+  if (typeof Image !== 'undefined') {
+    img = new Image();
     if (crossOrigin !== undefined) {
       img.crossOrigin = crossOrigin;
     }
@@ -1073,7 +1072,7 @@ function loadImage(url, crossOrigin, callback) {
     img.addEventListener('load', onLoad);
     img.src = url;
     return img;
-  } else if (global.ImageBitmap) {
+  } else if (typeof ImageBitmap !== 'undefined') {
     let err;
     let bm;
     const cb = function cb() {
@@ -1090,7 +1089,7 @@ function loadImage(url, crossOrigin, callback) {
       }
       return response.blob();
     }).then(function(blob) {
-      return global.createImageBitmap(blob, {
+      return createImageBitmap(blob, {
         premultiplyAlpha: 'none',
         colorSpaceConversion: 'none',
       });
@@ -1118,9 +1117,9 @@ function loadImage(url, crossOrigin, callback) {
  * @private
  */
 function isTexImageSource(obj) {
-  return (global.ImageBitmap && obj instanceof global.ImageBitmap) ||
-         (global.ImageData && obj instanceof global.ImageData) ||
-         (global.HTMLElement && obj instanceof global.HTMLElement);
+  return (typeof ImageBitmap !== 'undefined' && obj instanceof ImageBitmap) ||
+         (typeof ImageData !== 'undefined'  && obj instanceof ImageData) ||
+         (typeof HTMLElement !== 'undefined'  && obj instanceof HTMLElement);
 }
 
 /**

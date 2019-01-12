@@ -29,7 +29,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import global from './global-object.js';
+/* eslint no-console: "off" */
 
 /**
  * Copy named properties
@@ -64,19 +64,19 @@ function copyExistingProperties(src, dst) {
 }
 
 const error =
-    (    global.console
-      && global.console.error
-      && typeof global.console.error === "function"
+    ( typeof console !== 'undefined'
+      && console.error
+      && typeof console.error === "function"
     )
-    ? global.console.error.bind(global.console)
+    ? console.error.bind(console)
     : function() { };
 
 const warn =
-    (    global.console
-      && global.console.warn
-      && typeof global.console.warn === "function"
+    ( typeof console !== 'undefined'
+      && console.warn
+      && typeof console.warn === "function"
     )
-    ? global.console.warn.bind(global.console)
+    ? console.warn.bind(console)
     : function() { };
 
 let repBuffer;

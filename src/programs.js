@@ -31,7 +31,6 @@
 
 import * as utils from './utils.js';
 import * as helper from './helper.js';
-import global from './global-object.js';
 
 /**
  * Low level shader program related functions
@@ -50,8 +49,8 @@ import global from './global-object.js';
 
 const error = helper.error;
 const warn = helper.warn;
-const getElementById = (global && global.document && global.document.getElementById)
-  ? global.document.getElementById.bind(global.document)
+const getElementById = (typeof document !== 'undefined' && document.getElementById)
+  ? document.getElementById.bind(document)
   : function() {
     return null;
 };
