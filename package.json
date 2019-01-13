@@ -55,6 +55,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-eslint": "^21.0.0",
     "grunt-jsdoc": "^2.2.0",
+    "grunt-ts": "^6.0.0-beta.21",
     "grunt-webpack": "^3.0.2",
     "http-server": "^0.11.1",
     "load-grunt-tasks": "^4.0.0",
@@ -66,6 +67,7 @@
     "should": "^13.2.0",
     "terser-webpack-plugin": "^1.2.1",
     "tsd-jsdoc": "^2.1.2",
+    "typescript": "^3.2.2",
     "webpack": "^4.28.4"
   },
   "dependencies": {}

@@ -273,6 +273,11 @@ module.exports = function(grunt) {
       dist: [ `dist/${verDir}` ],
       docs: [ 'docs' ],
     },
+    ts: {
+      example: {
+        src: ['examples/*.ts'],
+      },
+    },
   });
 
   grunt.registerTask('makeindex', function() {
@@ -434,6 +439,7 @@ module.exports = function(grunt) {
       'clean:dist',
       'webpack',
       'buildts',
+      'ts',
       'copy',
       'npmpackage',
   ]);
