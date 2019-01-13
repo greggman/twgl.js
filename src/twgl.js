@@ -373,15 +373,14 @@ function getContext(canvas, opt_attribs) {
 /**
  * Resize a canvas to match the size it's displayed.
  * @param {HTMLCanvasElement} canvas The canvas to resize.
- * @param {number} [multiplier] So you can pass in `window.devicePixelRatio` or other scale value if you want to.
+ * @param {number} [multiplier] By default it equal to `window.devicePixelRatio` but you can pass another resolution multiplier.
  * @return {boolean} true if the canvas was resized.
  * @memberOf module:twgl
  */
 function resizeCanvasToDisplaySize(canvas, multiplier) {
-  multiplier = multiplier || 1;
-  multiplier = Math.max(0, multiplier);
-  const width  = canvas.clientWidth  * multiplier | 0;
-  const height = canvas.clientHeight * multiplier | 0;
+  multiplier = multiplier || (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+  const width  = canvas.clientWidth * multiplier;
+  const height = canvas.clientHeight * multiplier;
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width;
     canvas.height = height;
