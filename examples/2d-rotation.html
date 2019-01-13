@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta property="og:image:height" content="393">
+  <meta property="og:image:width" content="750">
+  <meta property="og:title" content="TWGL.js - 2d-rotation example">
+  <meta property="og:description" content="This example shows how to use rotation and zoom in WebGL with the twgl.js library.">
+  <meta property="og:url" content="http://twgljs.org/examples/2d-rotation.html">
+  <meta property="og:image" content="http://twgljs.org/examples/screenshots/2d-rotation.jpg">
+
+  <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+  <title>twgl.js - 2d-rotation</title>
+</head>
+<body style="margin:0; overflow: hidden; font-family: monospace;">
+
+<canvas id="canvasgl" style="height: 100vh; width: 100vw;"></canvas>
+<div id="b" style="position: absolute; top: 10px; width: 100%; text-align: center; z-index: 2;"><a href="http://twgljs.org">twgl.js</a> - 2d-rotation</div>
+
+<script src="../dist/twgl-full.min.js"></script>
+<script>
+  'use strict';
+
+  const vsource = `
+    precision mediump float;
+
+    uniform vec2 size;
+    uniform vec2 center;
+    uniform float phi;
+    uniform float zoom;
+
+    attribute vec2 position;
+    varying vec2 c;
+
+    void main() {
+      vec2 rot = vec2(sin(phi), cos(phi));
+      vec2 p = size * position * zoom;
+      c = center + vec2(p.x * rot.y - p.y * rot.x, dot(p, rot));
+      gl_Position = vec4(position, 0.0, 1.0);
+    }`;
+  const fsource = `
+    precision mediump float;
+
+    #define imax 50
+    varying vec2 c;
+    
+    void main() {
+      float x, y, t, col;
+
+      for (int i = 0; i < imax; i++) {
+        t = x * x - y * y + c.x;
+        y = 2.0 * x * y + c.y;
+        x = t;
+
+        if (x * x + y * y > 16.0) break;
+        else col += 1.0;
+      }
+      gl_FragColor = vec4(vec3(0.9 - 0.9 * col/float(imax)), 1.0);
+    }`;
+
+  const canvas = document.getElementById('canvasgl');
+  const gl = twgl.getContext(canvas, {depth: false });
+  const programInfo = twgl.createProgramInfo(gl, [vsource, fsource]);
+
+  gl.useProgram(programInfo.program);
+
+  const arrays = { position: { data: [-1, 1, 1, 1, 1, -1, 1, -1, -1, -1, -1, 1], numComponents: 2 } };
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+  twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+
+  function draw(gl, programInfo, timePassed) {
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    const uniforms = {
+      center: [-0.75, 0],
+      size: [2, 2 / gl.canvas.width * gl.canvas.height],
+      phi: timePassed,
+      zoom: 1.3 + Math.sin(timePassed),
+    };
+
+    twgl.setUniforms(programInfo, uniforms);
+    twgl.drawBufferInfo(gl, bufferInfo);
+  }
+
+  (function animate(now) {
+    draw(gl, programInfo, now / 1000);
+    requestAnimationFrame(animate);
+  })(0);
+</script>
+
+</body>
+</html>
