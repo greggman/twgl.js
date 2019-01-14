@@ -362,8 +362,6 @@ module.exports = function(grunt) {
     // TypeScript definitions.
     let content = fs.readFileSync('dist/4.x/types.d.ts', {encoding: 'utf8'});
     // These strings will be useful later
-    let vec3Declaration = "";
-    let mat4Declaration = "";
     const glEnumToString = `
     export function glEnumToString(gl: WebGLRenderingContext, value: number): string;
     `;
@@ -394,6 +392,8 @@ module.exports = function(grunt) {
     // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
     content = content.replace(/: enum/g, ': GLenum');
     // Remove every instance of "module:twgl" and "module:twgl/whatever"
+    // Except for "module:twgl.(m4|v3|primitives)" which become just "m4.", etc.
+    content = content.replace(/module:twgl(\/(m4|v3|primitives))\./g, '$2.');
     content = content.replace(/module:twgl(\/\w+)?\./g, '');
     // Replace "function", "type" declarations with "export function", "export type"
     content = content.replace(/^(\s*)(function|type) /mg, '$1export $2 ');
@@ -423,25 +423,10 @@ module.exports = function(grunt) {
     // Build additional code for the extended twgl-full.js output
     let extraContent = extraModules.map((code) => {
       // Fix "declare module twgl/whatever" statements
-      code = code.replace(/^declare module twgl(\/(\w+))? \{/m,
+      return code.replace(/^declare module twgl(\/(\w+))? \{/m,
         "declare module $2 {"
       );
-      // Record and remove Mat4 and Vec3 types; these belong in the global scope
-      vec3Match = code.match(/^.*type Vec3 =.*$/m);
-      mat4Match = code.match(/^.*type Mat4 =.*$/m);
-      vec3Declaration = vec3Declaration || (vec3Match && vec3Match[0]) || "";
-      mat4Declaration = mat4Declaration || (mat4Match && mat4Match[0]) || "";
-      code.replace(/^.*type Vec3 =.*$/m, "");
-      code.replace(/^.*type Mat4 =.*$/m, "");
-      // All done
-      return code;
     }).join("\n");
-    // Insert Mat4 and Vec3 declarations into the global scope
-    extraContent = [
-      vec3Declaration.trim(),
-      mat4Declaration.trim(),
-      extraContent
-    ].join("\n");
     // Write twgl-full declarations to destination file
     const fullContent = [coreContent, extraContent].join("\n");
     fs.writeFileSync('dist/4.x/twgl-full.d.ts', fullContent);
