@@ -394,7 +394,7 @@ module.exports = function(grunt) {
     content = content.replace(/var glEnumToString: any;/g, glEnumToString);
     // Add missing type (describes canvas.getContext input attributes)
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-    content = `export interface WebGLContextCreationAttirbutes {
+    content = `export interface WebGLContextCreationAttributes {
         alpha?: boolean;
         antialias?: boolean;
         depth?: boolean;
