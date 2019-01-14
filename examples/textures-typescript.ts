@@ -1,10 +1,5 @@
-/*
-<script src="../dist/4.x/twgl-full.min.js"></script>
-  <script src="../3rdparty/chroma.min.js"></script>
-  <script>
-*/
-import twgl from '../dist/4.x/twgl-full.js';
-
+import * as twgl from '../dist/4.x/twgl-full.js';
+import chroma from '../3rdparty/chroma.min.js';
 
 const onePointVS = `
 uniform mat4 u_worldViewProjection;
@@ -73,9 +68,9 @@ void main() {
 
 twgl.setDefaults({attribPrefix: "a_"});
 const m4 = twgl.m4;
-const gl = document.querySelector("#c").getContext("webgl");
-const onePointProgramInfo = twgl.createProgramInfo(gl, ["one-point-vs", "one-point-fs"]);
-const envMapProgramInfo = twgl.createProgramInfo(gl, ["env-map-vs", "env-map-fs"]);
+const gl = (<HTMLCanvasElement>document.querySelector("#c")).getContext("webgl");
+const onePointProgramInfo = twgl.createProgramInfo(gl, [onePointVS, onePointFS]);
+const envMapProgramInfo = twgl.createProgramInfo(gl, [envMapVS, envMapFS]);
 
 const shapes = [
   twgl.primitives.createCubeBufferInfo(gl, 2),
@@ -84,7 +79,7 @@ const shapes = [
   twgl.primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
 ];
 
-function rand(min, max) {
+function rand(min: number, max?: number) {
   if (max === undefined) {
     max = min;
     min = 0;
@@ -106,7 +101,7 @@ ctx.canvas.height = 64;
 function updateCanvas(time) {
   ctx.fillStyle = "#00f";
   ctx.strokeStyle = "#ff0";
-  ctx.lineWidth = "10";
+  ctx.lineWidth = 10;
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.beginPath();
   ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, ctx.canvas.width / 2.2 * Math.abs(Math.cos(time)), 0, Math.PI * 2);
