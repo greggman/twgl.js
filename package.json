@@ -70,7 +70,6 @@
     "semver": "^5.4.1",
     "should": "^13.2.0",
     "terser-webpack-plugin": "^1.2.1",
-    "tsc": "^1.20150623.0",
     "tsd-jsdoc": "^2.1.2",
     "typescript": "^3.2.2",
     "webpack": "^4.28.4"
