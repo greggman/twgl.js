@@ -71,6 +71,10 @@ const getArray = attributes.getArray_;  // eslint-disable-line
 const getNumComponents = attributes.getNumComponents_;  // eslint-disable-line
 
 /**
+ * @typedef {(Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array)} TypedArray
+ */
+
+/**
  * Add `push` to a typed array. It just keeps a 'cursor'
  * and allows use to `push` values into the array so we
  * don't have to manually compute offsets
@@ -247,9 +251,9 @@ function transformNormal(mi, v, dst) {
 
 /**
  * Reorients directions by the given matrix..
- * @param {number[]|TypedArray} array The array. Assumes value floats per element.
+ * @param {(number[]|TypedArray)} array The array. Assumes value floats per element.
  * @param {module:twgl/m4.Mat4} matrix A matrix to multiply by.
- * @return {number[]|TypedArray} the same array that was passed in
+ * @return {(number[]|TypedArray)} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
 function reorientDirections(array, matrix) {
@@ -260,9 +264,9 @@ function reorientDirections(array, matrix) {
 /**
  * Reorients normals by the inverse-transpose of the given
  * matrix..
- * @param {number[]|TypedArray} array The array. Assumes value floats per element.
+ * @param {(number[]|TypedArray)} array The array. Assumes value floats per element.
  * @param {module:twgl/m4.Mat4} matrix A matrix to multiply by.
- * @return {number[]|TypedArray} the same array that was passed in
+ * @return {(number[]|TypedArray)} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
 function reorientNormals(array, matrix) {
@@ -273,9 +277,9 @@ function reorientNormals(array, matrix) {
 /**
  * Reorients positions by the given matrix. In other words, it
  * multiplies each vertex by the given matrix.
- * @param {number[]|TypedArray} array The array. Assumes value floats per element.
+ * @param {(number[]|TypedArray)} array The array. Assumes value floats per element.
  * @param {module:twgl/m4.Mat4} matrix A matrix to multiply by.
- * @return {number[]|TypedArray} the same array that was passed in
+ * @return {(number[]|TypedArray)} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
 function reorientPositions(array, matrix) {
@@ -284,13 +288,17 @@ function reorientPositions(array, matrix) {
 }
 
 /**
+ * @typedef {(number[]|TypedArray)} NativeArrayOrTypedArray
+ */
+
+/**
  * Reorients arrays by the given matrix. Assumes arrays have
  * names that contains 'pos' could be reoriented as positions,
  * 'binorm' or 'tan' as directions, and 'norm' as normals.
  *
- * @param {Object.<string, (number[]|TypedArray)>} arrays The vertices to reorient
+ * @param {Object.<string, NativeArrayOrTypedArray>} arrays The vertices to reorient
  * @param {module:twgl/m4.Mat4} matrix matrix to reorient by.
- * @return {Object.<string, (number[]|TypedArray)>} same arrays that were passed in.
+ * @return {Object.<string, NativeArrayOrTypedArray>} same arrays that were passed in.
  * @memberOf module:twgl/primitives
  */
 function reorientVertices(arrays, matrix) {
@@ -364,7 +372,7 @@ function reorientVertices(arrays, matrix) {
  * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
  * @param {number} [xOffset] the amount to offset the quad in X
  * @param {number} [yOffset] the amount to offset the quad in Y
- * @return {Object.<string, TypedArray> the created XY Quad vertices
+ * @return {Object.<string, TypedArray>} the created XY Quad vertices
  * @memberOf module:twgl/primitives
  */
 function createXYQuadVertices(size, xOffset, yOffset) {
@@ -409,7 +417,7 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
  * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
  * @param {module:twgl/m4.Mat4} [matrix] A matrix by which to multiply all the vertices.
- * @return {@module:twgl.BufferInfo} The created plane BufferInfo.
+ * @return {module:twgl.BufferInfo} The created plane BufferInfo.
  * @memberOf module:twgl/primitives
  * @function createPlaneBufferInfo
  */
@@ -1812,9 +1820,9 @@ function randInt(range) {
  * If the vertices are indexed (have an indices array) then will
  * just make random colors. Otherwise assumes they are triangles
  * and makes one random color for every 3 vertices.
- * @param {Object.<string, augmentedTypedArray>} vertices Vertices as returned from one of the createXXXVertices functions.
+ * @param {Object.<string, AugmentedTypedArray>} vertices Vertices as returned from one of the createXXXVertices functions.
  * @param {module:twgl/primitives.RandomVerticesOptions} [options] options.
- * @return {Object.<string, augmentedTypedArray>} same vertices as passed in with `color` added.
+ * @return {Object.<string, AugmentedTypedArray>} same vertices as passed in with `color` added.
  * @memberOf module:twgl/primitives
  */
 function makeRandomVertexColors(vertices, options) {

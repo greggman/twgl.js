@@ -110,9 +110,11 @@ function isWebGL1(gl) {
  * If you're using `twgl.addExtensionsToContext` to enable your extensions
  * then twgl will automatically get the extension's enums.
  *
- * @param {WebGLRenderingContext|Extension} gl A WebGLRenderingContext or any extension object
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext or any extension object
  * @param {number} value the value of the enum you want to look up.
+ * @return {string} enum string or hex value
  * @memberOf module:twgl
+ * @function glEnumToString
  */
 const glEnumToString = (function() {
   const haveEnumsForType = {};
