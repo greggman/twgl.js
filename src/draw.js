@@ -52,7 +52,7 @@ import * as programs from './programs.js';
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} bufferInfo A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays} or
  *   a VertexArrayInfo as returned from {@link module:twgl.createVertexArrayInfo}
- * @param {enum} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
+ * @param {number} [type] eg (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.TRIANGLE_STRIP, ...). Defaults to `gl.TRIANGLES`
  * @param {number} [count] An optional count. Defaults to bufferInfo.numElements
  * @param {number} [offset] An optional offset. Defaults to 0.
  * @param {number} [instanceCount] An optional instanceCount. if set then `drawArraysInstanced` or `drawElementsInstanced` will be called
@@ -117,6 +117,7 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
 
 /**
  * Draws a list of objects
+ * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {DrawObject[]} objectsToDraw an array of objects to draw.
  * @memberOf module:twgl/draw
  */
