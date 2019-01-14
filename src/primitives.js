@@ -1332,7 +1332,6 @@ function create3DFVertices() {
  * @param {number} innerRadius The inner radius of the cresent.
  * @param {number} thickness The thickness of the cresent.
  * @param {number} subdivisionsDown number of steps around the cresent.
- * @param {number} subdivisionsThick number of vertically on the cresent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
  * @return {module:twgl.BufferInfo} The created BufferInfo.
@@ -1349,7 +1348,6 @@ function create3DFVertices() {
  * @param {number} innerRadius The inner radius of the cresent.
  * @param {number} thickness The thickness of the cresent.
  * @param {number} subdivisionsDown number of steps around the cresent.
- * @param {number} subdivisionsThick number of vertically on the cresent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
  * @return {Object.<string, WebGLBuffer>} The created buffers.
@@ -1365,7 +1363,6 @@ function create3DFVertices() {
  * @param {number} innerRadius The inner radius of the cresent.
  * @param {number} thickness The thickness of the cresent.
  * @param {number} subdivisionsDown number of steps around the cresent.
- * @param {number} subdivisionsThick number of vertically on the cresent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
  * @return {Object.<string, TypedArray>} The created vertices.
