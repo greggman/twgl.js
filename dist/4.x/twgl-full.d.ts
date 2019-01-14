@@ -334,61 +334,59 @@ export function createVAOFromBufferInfo(gl: WebGLRenderingContext, programInfo: 
     [key: string]: (...params: any[]) => any;
 } | ProgramInfo, bufferInfo: BufferInfo, indices?: WebGLBuffer): void;
 
-export type Vec3 = number[] | Float32Array;
-export type Mat4 = number[] | Float32Array;
 declare module v3 {
     export type Vec3 = number[] | Float32Array;
     export function setDefaultType(ctor: Function): Function;
-    export function create(): Vec3;
-    export function add(a: Vec3, b: Vec3, dst?: Vec3): Vec3;
-    export function subtract(a: Vec3, b: Vec3, dst?: Vec3): Vec3;
-    export function lerp(a: Vec3, b: Vec3, t: number, dst?: Vec3): Vec3;
-    export function mulScalar(v: Vec3, k: number, dst?: Vec3): Vec3;
-    export function divScalar(v: Vec3, k: number, dst?: Vec3): Vec3;
-    export function cross(a: Vec3, b: Vec3, dst?: Vec3): Vec3;
-    export function dot(a: Vec3, b: Vec3): number;
-    export function length(v: Vec3): number;
-    export function lengthSq(v: Vec3): number;
-    export function distance(a: Vec3, b: Vec3): number;
-    export function distanceSq(a: Vec3, b: Vec3): number;
-    export function normalize(a: Vec3, dst?: Vec3): Vec3;
-    export function negate(v: Vec3, dst?: Vec3): Vec3;
-    export function copy(v: Vec3, dst?: Vec3): Vec3;
-    export function multiply(a: Vec3, b: Vec3, dst?: Vec3): Vec3;
-    export function divide(a: Vec3, b: Vec3, dst?: Vec3): Vec3;
+    export function create(): v3.Vec3;
+    export function add(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function subtract(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function lerp(a: v3.Vec3, b: v3.Vec3, t: number, dst?: v3.Vec3): v3.Vec3;
+    export function mulScalar(v: v3.Vec3, k: number, dst?: v3.Vec3): v3.Vec3;
+    export function divScalar(v: v3.Vec3, k: number, dst?: v3.Vec3): v3.Vec3;
+    export function cross(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function dot(a: v3.Vec3, b: v3.Vec3): number;
+    export function length(v: v3.Vec3): number;
+    export function lengthSq(v: v3.Vec3): number;
+    export function distance(a: v3.Vec3, b: v3.Vec3): number;
+    export function distanceSq(a: v3.Vec3, b: v3.Vec3): number;
+    export function normalize(a: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function negate(v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function copy(v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function multiply(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function divide(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
 }
 declare module m4 {
     export type Mat4 = number[] | Float32Array;
     export function setDefaultType(ctor: Function): Function;
-    export function negate(m: Mat4, dst?: Mat4): Mat4;
-    export function copy(m: Mat4, dst?: Mat4): Mat4;
-    export function identity(dst?: Mat4): Mat4;
-    export function transpose(m: Mat4, dst?: Mat4): Mat4;
-    export function inverse(m: Mat4, dst?: Mat4): Mat4;
-    export function multiply(a: Mat4, b: Mat4, dst?: Mat4): Mat4;
-    export function setTranslation(a: Mat4, v: Vec3, dst?: Mat4): Mat4;
-    export function getTranslation(m: Mat4, dst?: Vec3): Vec3;
-    export function getAxis(m: Mat4, axis: number): void;
-    export function setAxis(v: Vec3, axis: number, dst?: Mat4): Mat4;
-    export function perspective(fieldOfViewYInRadians: number, aspect: number, zNear: number, zFar: number, dst?: Mat4): Mat4;
-    export function ortho(left: number, right: number, bottom: number, top: number, near: number, far: number, dst?: Mat4): Mat4;
-    export function frustum(left: number, right: number, bottom: number, top: number, near: number, far: number, dst?: Mat4): Mat4;
-    export function lookAt(eye: Vec3, target: Vec3, up: Vec3, dst?: Mat4): Mat4;
-    export function translation(v: Vec3, dst?: Mat4): Mat4;
-    export function translate(m: Mat4, v: Vec3, dst?: Mat4): Mat4;
-    export function rotationX(angleInRadians: number, dst?: Mat4): Mat4;
-    export function rotateX(m: Mat4, angleInRadians: number, dst?: Mat4): Mat4;
-    export function rotationY(angleInRadians: number, dst?: Mat4): Mat4;
-    export function rotateY(m: Mat4, angleInRadians: number, dst?: Mat4): Mat4;
-    export function rotationZ(angleInRadians: number, dst?: Mat4): Mat4;
-    export function rotateZ(m: Mat4, angleInRadians: number, dst?: Mat4): Mat4;
-    export function axisRotation(axis: Vec3, angleInRadians: number, dst?: Mat4): Mat4;
-    export function axisRotate(m: Mat4, axis: Vec3, angleInRadians: number, dst?: Mat4): Mat4;
-    export function scaling(v: Vec3, dst?: Mat4): Mat4;
-    export function scale(m: Mat4, v: Vec3, dst?: Mat4): Mat4;
-    export function transformPoint(m: Mat4, v: Vec3, dst: Vec3): Vec3;
-    export function transformDirection(m: Mat4, v: Vec3, dst: Vec3): Vec3;
-    export function transformNormal(m: Mat4, v: Vec3, dst?: Vec3): Vec3;
+    export function negate(m: m4.Mat4, dst?: m4.Mat4): m4.Mat4;
+    export function copy(m: m4.Mat4, dst?: m4.Mat4): m4.Mat4;
+    export function identity(dst?: m4.Mat4): m4.Mat4;
+    export function transpose(m: m4.Mat4, dst?: m4.Mat4): m4.Mat4;
+    export function inverse(m: m4.Mat4, dst?: m4.Mat4): m4.Mat4;
+    export function multiply(a: m4.Mat4, b: m4.Mat4, dst?: m4.Mat4): m4.Mat4;
+    export function setTranslation(a: m4.Mat4, v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
+    export function getTranslation(m: m4.Mat4, dst?: v3.Vec3): v3.Vec3;
+    export function getAxis(m: m4.Mat4, axis: number): void;
+    export function setAxis(v: v3.Vec3, axis: number, dst?: m4.Mat4): m4.Mat4;
+    export function perspective(fieldOfViewYInRadians: number, aspect: number, zNear: number, zFar: number, dst?: m4.Mat4): m4.Mat4;
+    export function ortho(left: number, right: number, bottom: number, top: number, near: number, far: number, dst?: m4.Mat4): m4.Mat4;
+    export function frustum(left: number, right: number, bottom: number, top: number, near: number, far: number, dst?: m4.Mat4): m4.Mat4;
+    export function lookAt(eye: v3.Vec3, target: v3.Vec3, up: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
+    export function translation(v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
+    export function translate(m: m4.Mat4, v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
+    export function rotationX(angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function rotateX(m: m4.Mat4, angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function rotationY(angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function rotateY(m: m4.Mat4, angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function rotationZ(angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function rotateZ(m: m4.Mat4, angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function axisRotation(axis: v3.Vec3, angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function axisRotate(m: m4.Mat4, axis: v3.Vec3, angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
+    export function scaling(v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
+    export function scale(m: m4.Mat4, v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
+    export function transformPoint(m: m4.Mat4, v: v3.Vec3, dst: v3.Vec3): v3.Vec3;
+    export function transformDirection(m: m4.Mat4, v: v3.Vec3, dst: v3.Vec3): v3.Vec3;
+    export function transformNormal(m: m4.Mat4, v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
 }
 declare module primitives {
     export function createAugmentedTypedArray(numComponents: number, numElements: number, opt_type: Function): ArrayBufferView;
@@ -402,12 +400,12 @@ declare module primitives {
     }): {
         [key: string]: ArrayBufferView;
     };
-    export function reorientDirections(array: number[] | ArrayBufferView, matrix: Mat4): number[] | ArrayBufferView;
-    export function reorientNormals(array: number[] | ArrayBufferView, matrix: Mat4): number[] | ArrayBufferView;
-    export function reorientPositions(array: number[] | ArrayBufferView, matrix: Mat4): number[] | ArrayBufferView;
+    export function reorientDirections(array: number[] | ArrayBufferView, matrix: m4.Mat4): number[] | ArrayBufferView;
+    export function reorientNormals(array: number[] | ArrayBufferView, matrix: m4.Mat4): number[] | ArrayBufferView;
+    export function reorientPositions(array: number[] | ArrayBufferView, matrix: m4.Mat4): number[] | ArrayBufferView;
     export function reorientVertices(arrays: {
         [key: string]: any;
-    }, matrix: Mat4): {
+    }, matrix: m4.Mat4): {
         [key: string]: any;
     };
     export function createXYQuadBufferInfo(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): {
@@ -415,11 +413,11 @@ declare module primitives {
     };
     export function createXYQuadBuffers(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): BufferInfo;
     export function createXYQuadVertices(size?: number, xOffset?: number, yOffset?: number): any;
-    export function createPlaneBufferInfo(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: Mat4): any;
-    export function createPlaneBuffers(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: Mat4): {
+    export function createPlaneBufferInfo(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): any;
+    export function createPlaneBuffers(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): {
         [key: string]: WebGLBuffer;
     };
-    export function createPlaneVertices(width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: Mat4): {
+    export function createPlaneVertices(width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): {
         [key: string]: ArrayBufferView;
     };
     export function createSphereBufferInfo(gl: WebGLRenderingContext, radius: number, subdivisionsAxis: number, subdivisionsHeight: number, opt_startLatitudeInRadians?: number, opt_endLatitudeInRadians?: number, opt_startLongitudeInRadians?: number, opt_endLongitudeInRadians?: number): BufferInfo;
@@ -481,11 +479,11 @@ declare module primitives {
     export type RandomColorFunc = (ndx: number, channel: number) => number;
     export type RandomVerticesOptions = {
         vertsPerColor?: number;
-        rand?: RandomColorFunc;
+        rand?: primitives.RandomColorFunc;
     };
     export function makeRandomVertexColors(vertices: {
         [key: string]: ArrayBufferView;
-    }, options?: RandomVerticesOptions): {
+    }, options?: primitives.RandomVerticesOptions): {
         [key: string]: ArrayBufferView;
     };
     export function concatVertices(arrays: Arrays[]): Arrays;

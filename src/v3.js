@@ -77,7 +77,7 @@ function setDefaultType(ctor) {
 
 /**
  * Creates a vec3; may be called with x, y, z to set initial values.
- * @return {Vec3} the created vector
+ * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 function create(x, y, z) {
@@ -99,7 +99,7 @@ function create(x, y, z) {
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {Vec3} the created vector
+ * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 function add(a, b, dst) {
@@ -117,7 +117,7 @@ function add(a, b, dst) {
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {Vec3} the created vector
+ * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 function subtract(a, b, dst) {
@@ -138,7 +138,7 @@ function subtract(a, b, dst) {
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {number} t Interpolation coefficient.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {Vec3} the created vector
+ * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
 function lerp(a, b, t, dst) {

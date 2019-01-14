@@ -10,7 +10,7 @@ window.addEventListener("onload", function() {
     const programInfo: twgl.ProgramInfo = twgl.createProgramInfo(gl, [
         "vs", "fs" // Placeholders
     ]);
-    const identity: twgl.Mat4 = twgl.m4.identity();
+    const identity: twgl.m4.Mat4 = twgl.m4.identity();
     const tex: WebGLTexture = twgl.createTexture(gl, {
       minMag: gl.LINEAR,
       wrap: gl.CLAMP_TO_EDGE,
