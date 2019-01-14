@@ -361,40 +361,13 @@ module.exports = function(grunt) {
     // Fix up syntax and content issues with the auto-generated
     // TypeScript definitions.
     let content = fs.readFileSync('dist/4.x/types.d.ts', {encoding: 'utf8'});
-    // Remove docstrings (Declarations do not by convention include these)
-    content = content.replace(/\/\*\*.*?\*\/\s*/sg, '');
-    // Docs use "?" to represent an arbitrary type; TS uses "any"
-    content = content.replace(/\]: \?/g, ']: any');
-    // Docs use "constructor"; TS expects something more like "Function"
-    content = content.replace(/: constructor/, ': Function');
-    // Docs use "ArrayBufferViewType" to describe a TypedArray constructor
-    content = content.replace(/\bArrayBufferViewType\b/g, 'Function');
-    // What docs call "TypedArray", lib.d.ts calls "ArrayBufferView"
-    content = content.replace(/\bTypedArray\b/g, 'ArrayBufferView');
-    // What docs call an "augmentedTypedArray" is technically an "ArrayBufferView"
-    // albeit with a patched-in "push" method.
-    content = content.replace(/\baugmentedTypedArray\b/, 'ArrayBufferView');
-    // Docs use "enum"; TS expects "GLenum"
-    // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
-    content = content.replace(/: enum/g, ': GLenum');
-    // Remove every instance of "module:twgl" and "module:twgl/whatever"
-    content = content.replace(/module:twgl(\/\w+)?\./g, '');
-    // Remove all "declare module twgl" and "declare module twgl/whatever";
-    // It should be enough simply for the declarations to reside in
-    // a "twgl.js.d.ts" file
-    content = content.replace(/declare module twgl \{\s*/g, '');
-    content = content.replace(/}\s*$/g, '');
-    content = content.replace(/\}[^{}]*?declare module twgl\/\w+ \{/sg, '');
-    // Replace "function", "type" declarations with "export function", "export type"
-    content = content.replace(/^(function|type) /mg, 'export $1 ');
-    // Fixup dynamically generated glEnumToString function signature
+    // These strings will be useful later
+    let vec3Declaration = "";
+    let mat4Declaration = "";
     const glEnumToString = `
     export function glEnumToString(gl: WebGLRenderingContext, value: number): string;
     `;
-    content = content.replace(/var glEnumToString: any;/g, glEnumToString);
-    // Add missing type (describes canvas.getContext input attributes)
-    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-    content = `export interface WebGLContextCreationAttributes {
+    const creationAttributes = `export interface WebGLContextCreationAttributes {
         alpha?: boolean;
         antialias?: boolean;
         depth?: boolean;
@@ -403,11 +376,79 @@ module.exports = function(grunt) {
         premultipliedAlpha?: boolean;
         preserveDrawingBuffer?: boolean;
         stencil?: boolean;
-    }` + "\n" + content;
-    // De-indent cause all that left-over whitespace is driving me bonkers
-    content = content.replace(/^ {4}/mg, '');
-    // Write to destination test file
-    fs.writeFileSync('dist/4.x/types.d.ts', content);
+    }`.replace(/^ {4}/mg, '');
+    // Remove docstrings (Declarations do not by convention include these)
+    content = content.replace(/\/\*\*.*?\*\/\s*/sg, '');
+    // Docs use "?" to represent an arbitrary type; TS uses "any"
+    content = content.replace(/\]: \?/g, ']: any');
+    // Docs use "constructor"; TS expects something more like "Function"
+    content = content.replace(/: constructor/g, ': Function');
+    // Docs use "ArrayBufferViewType" to describe a TypedArray constructor
+    content = content.replace(/\bArrayBufferViewType\b/g, 'Function');
+    // What docs call "TypedArray", lib.d.ts calls "ArrayBufferView"
+    content = content.replace(/\bTypedArray\b/g, 'ArrayBufferView');
+    // What docs call an "augmentedTypedArray" is technically an "ArrayBufferView"
+    // albeit with a patched-in "push" method.
+    content = content.replace(/\baugmentedTypedArray\b/g, 'ArrayBufferView');
+    // Docs use "enum"; TS expects "GLenum"
+    // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
+    content = content.replace(/: enum/g, ': GLenum');
+    // Remove every instance of "module:twgl" and "module:twgl/whatever"
+    content = content.replace(/module:twgl(\/\w+)?\./g, '');
+    // Replace "function", "type" declarations with "export function", "export type"
+    content = content.replace(/^(\s*)(function|type) /mg, '$1export $2 ');
+    // Fixup dynamically generated glEnumToString function signature
+    content = content.replace(/var glEnumToString: any;/g, glEnumToString);
+    // Break the file down into a list of modules
+    const modules = content.match(/^declare module twgl(\/(\w+))? \{.*?^\}/msg);
+    // Split into core modules and extra (only in twgl-full) modules
+    const coreModules = modules.filter(
+      (code) => !code.match(/^declare module twgl\/(m4|v3|primitives)/)
+    );
+    const extraModules = modules.filter(
+      (code) => code.match(/^declare module twgl\/(m4|v3|primitives)/)
+    );
+    // Build code for the core twgl.js output
+    let coreContent = coreModules.map((code) => {
+      // Get rid of "declare module twgl/whatever" scope
+      code = code.replace(/^declare module twgl(\/\w+)? \{(.*?)^\}/msg, "$2");
+      // De-indent the contents of that scope
+      code = code.replace(/^ {4}/mg, '');
+      // All done
+      return code;
+    }).join("\n");
+    // Include type describing canvas.getContext input attributes
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
+    coreContent = [creationAttributes, coreContent].join("\n");
+    // Build additional code for the extended twgl-full.js output
+    let extraContent = extraModules.map((code) => {
+      // Fix "declare module twgl/whatever" statements
+      code = code.replace(/^declare module twgl(\/(\w+))? \{/m,
+        "declare module $2 {"
+      );
+      // Record and remove Mat4 and Vec3 types; these belong in the global scope
+      vec3Match = code.match(/^.*type Vec3 =.*$/m);
+      mat4Match = code.match(/^.*type Mat4 =.*$/m);
+      vec3Declaration = vec3Declaration || (vec3Match && vec3Match[0]) || "";
+      mat4Declaration = mat4Declaration || (mat4Match && mat4Match[0]) || "";
+      code.replace(/^.*type Vec3 =.*$/m, "");
+      code.replace(/^.*type Mat4 =.*$/m, "");
+      // All done
+      return code;
+    }).join("\n");
+    // Insert Mat4 and Vec3 declarations into the global scope
+    extraContent = [
+      vec3Declaration.trim(),
+      mat4Declaration.trim(),
+      extraContent
+    ].join("\n");
+    // Write twgl-full declarations to destination file
+    const fullContent = [coreContent, extraContent].join("\n");
+    fs.writeFileSync('dist/4.x/twgl-full.d.ts', fullContent);
+    // Write core declarations to destination file
+    fs.writeFileSync('dist/4.x/twgl.d.ts', coreContent);
+    // Remove the auto-generated input file
+    fs.unlinkSync('dist/4.x/types.d.ts');
   });
 
   grunt.registerTask('docs', [
