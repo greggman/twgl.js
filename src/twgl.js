@@ -84,7 +84,7 @@ const defaults = {
  *     });
  *
  * @typedef {Object} Defaults
- * @property {string} attribPrefix The prefix to stick on attributes
+ * @property {string} [attribPrefix] The prefix to stick on attributes
  *
  *   When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
  *   as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
@@ -101,7 +101,7 @@ const defaults = {
  *
  *   Default: `""`
  *
- * @property {number[]} textureColor Array of 4 values in the range 0 to 1
+ * @property {number[]} [textureColor] Array of 4 values in the range 0 to 1
  *
  *   The default texture color is used when loading textures from
  *   urls. Because the URL will be loaded async we'd like to be
@@ -111,14 +111,14 @@ const defaults = {
  *
  *   Default: `[0.5, 0.75, 1, 1]`
  *
- * @property {string} crossOrigin
+ * @property {string} [crossOrigin]
  *
  *   If not undefined sets the crossOrigin attribute on images
  *   that twgl creates when downloading images for textures.
  *
  *   Also see {@link module:twgl.TextureOptions}.
  *
- * @property {bool} addExtensionsToContext
+ * @property {bool} [addExtensionsToContext]
  *
  *   If true, then, when twgl will try to add any supported WebGL extensions
  *   directly to the context under their normal GL names. For example
