@@ -1,6 +1,6 @@
-
 /* eslint-env node */
 /* eslint no-console: "off" */
+/* eslint quotes: ["error", "single"] */
 
 const path   = require('path');
 const fs     = require('fs');
@@ -44,7 +44,7 @@ const replaceParams = (function() {
     }
 
     return str.replace(replaceParamsRE, function(match, key) {
-      const colonNdx = key.indexOf(":");
+      const colonNdx = key.indexOf(':');
       if (colonNdx >= 0) {
         /*
         try {
@@ -78,8 +78,8 @@ const replaceParams = (function() {
           }
         }
       }
-      console.error("unknown key: " + key);
-      return "%(" + key + ")s";
+      console.error('unknown key: ' + key);
+      return '%(' + key + ')s';
     });
   };
 }());
@@ -106,7 +106,8 @@ module.exports = function(grunt) {
     'src/primitives.js',
   ];
 
-  const docsFiles = srcFiles.concat(extraFiles, 'README.md');
+  const fullFiles = srcFiles.concat(extraFiles);
+  const docsFiles = fullFiles.push('README.md');
 
   const idRegex = /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/;
 
@@ -120,7 +121,7 @@ module.exports = function(grunt) {
         query: {
           presets: ['@babel/preset-env'],
           plugins: [
-             ['@babel/plugin-transform-modules-commonjs', {loose: true}],
+            ['@babel/plugin-transform-modules-commonjs', {loose: true}],
           ],
         },
       },
@@ -155,7 +156,7 @@ module.exports = function(grunt) {
         },
       },
       ts: {
-        src: docsFiles,
+        src: fullFiles,
         options: {
           destination: 'dist/4.x',
           configure: 'build/jsdoc.conf.json',
@@ -299,18 +300,18 @@ module.exports = function(grunt) {
 
   function getHeaderVersion(filename) {
     const twglVersionRE = / (\d+\.\d+\.\d+) /;
-    return twglVersionRE.exec(fs.readFileSync(filename, {encoding: "utf8"}))[1];
+    return twglVersionRE.exec(fs.readFileSync(filename, {encoding: 'utf8'}))[1];
   }
 
   function getPackageVersion(filename) {
-    return JSON.parse(fs.readFileSync(filename, {encoding: "utf8"})).version;
+    return JSON.parse(fs.readFileSync(filename, {encoding: 'utf8'})).version;
   }
 
   function bump(type) {
     pkg.version = semver.inc(pkg.version, type);
-    fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2));
-    const filename = "bower.json";
-    const p = JSON.parse(fs.readFileSync(filename, {encoding: "utf8"}));
+    fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+    const filename = 'bower.json';
+    const p = JSON.parse(fs.readFileSync(filename, {encoding: 'utf8'}));
     p.version = pkg.version;
     fs.writeFileSync(filename, JSON.stringify(p, null, 2));
     grunt.config.set('webpack.full.plugins.0', new webpack.BannerPlugin(getLicense(pkg)));
@@ -341,66 +342,43 @@ module.exports = function(grunt) {
       const version = file.fn(file.filename);
       if (version !== pkg.version) {
         good = false;
-        grunt.log.error("version mis-match in:", file.filename, " Expected:", pkg.version, " Actual:", version);
+        grunt.log.error('version mis-match in:', file.filename, ' Expected:', pkg.version, ' Actual:', version);
       }
     });
     return good;
   });
 
   grunt.registerTask('npmpackage', function() {
-    const p = JSON.parse(fs.readFileSync('package.json', {encoding: "utf8"}));
-    p.name = "twgl-base.js";
+    const p = JSON.parse(fs.readFileSync('package.json', {encoding: 'utf8'}));
+    p.name = 'twgl-base.js';
     p.scripts = {};
     p.devDependencies = {};
     p.main = `dist/${verDir}/twgl.js`;
     p.files = [ `dist/${  verDir}/twgl.js` ];
-    fs.writeFileSync("npm/base/package.json", JSON.stringify(p, null, 2), {encoding: "utf8"});
+    fs.writeFileSync('npm/base/package.json', JSON.stringify(p, null, 2), {encoding: 'utf8'});
   });
 
   grunt.registerTask('tsmunge', function() {
     // Fix up syntax and content issues with the auto-generated
     // TypeScript definitions.
     let content = fs.readFileSync('dist/4.x/types.d.ts', {encoding: 'utf8'});
-    // These strings will be useful later
-    const glEnumToString = `
-    export function glEnumToString(gl: WebGLRenderingContext, value: number): string;
-    `;
-    const creationAttributes = `export interface WebGLContextCreationAttributes {
-        alpha?: boolean;
-        antialias?: boolean;
-        depth?: boolean;
-        failIfMajorPerformanceCaveat?: boolean;
-        powerPreference?: string;
-        premultipliedAlpha?: boolean;
-        preserveDrawingBuffer?: boolean;
-        stencil?: boolean;
-    }`.replace(/^ {4}/mg, '');
     // Remove docstrings (Declarations do not by convention include these)
-    content = content.replace(/\/\*\*.*?\*\/\s*/sg, '');
+    content = content.replace(/\/\*\*[\s\S]*?\*\/\s*/g, '');
     // Docs use "?" to represent an arbitrary type; TS uses "any"
     content = content.replace(/\]: \?/g, ']: any');
     // Docs use "constructor"; TS expects something more like "Function"
     content = content.replace(/: constructor/g, ': Function');
-    // Docs use "ArrayBufferViewType" to describe a TypedArray constructor
-    content = content.replace(/\bArrayBufferViewType\b/g, 'Function');
-    // What docs call "TypedArray", lib.d.ts calls "ArrayBufferView"
-    content = content.replace(/\bTypedArray\b/g, 'ArrayBufferView');
     // What docs call an "augmentedTypedArray" is technically an "ArrayBufferView"
     // albeit with a patched-in "push" method.
-    content = content.replace(/\baugmentedTypedArray\b/g, 'ArrayBufferView');
-    // Docs use "enum"; TS expects "GLenum"
-    // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
-    content = content.replace(/: enum/g, ': GLenum');
+    content = content.replace(/\bAugmentedTypedArray\b/g, 'ArrayBufferView');
     // Remove every instance of "module:twgl" and "module:twgl/whatever"
     // Except for "module:twgl.(m4|v3|primitives)" which become just "m4.", etc.
     content = content.replace(/module:twgl(\/(m4|v3|primitives))\./g, '$2.');
     content = content.replace(/module:twgl(\/\w+)?\./g, '');
     // Replace "function", "type" declarations with "export function", "export type"
     content = content.replace(/^(\s*)(function|type) /mg, '$1export $2 ');
-    // Fixup dynamically generated glEnumToString function signature
-    content = content.replace(/var glEnumToString: any;/g, glEnumToString);
     // Break the file down into a list of modules
-    const modules = content.match(/^declare module twgl(\/(\w+))? \{.*?^\}/msg);
+    const modules = content.match(/^declare module twgl(\/(\w+))? \{[\s\S]*?^\}/mg);
     // Split into core modules and extra (only in twgl-full) modules
     const coreModules = modules.filter(
       (code) => !code.match(/^declare module twgl\/(m4|v3|primitives)/)
@@ -409,26 +387,23 @@ module.exports = function(grunt) {
       (code) => code.match(/^declare module twgl\/(m4|v3|primitives)/)
     );
     // Build code for the core twgl.js output
-    let coreContent = coreModules.map((code) => {
+    const coreContent = coreModules.map((code) => {
       // Get rid of "declare module twgl/whatever" scope
-      code = code.replace(/^declare module twgl(\/\w+)? \{(.*?)^\}/msg, "$2");
+      code = code.replace(/^declare module twgl(\/\w+)? \{([\s\S]*?)^\}/mg, '$2');
       // De-indent the contents of that scope
       code = code.replace(/^ {4}/mg, '');
       // All done
       return code;
-    }).join("\n");
-    // Include type describing canvas.getContext input attributes
-    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext
-    coreContent = [creationAttributes, coreContent].join("\n");
+    }).join('\n');
     // Build additional code for the extended twgl-full.js output
-    let extraContent = extraModules.map((code) => {
+    const extraContent = extraModules.map((code) => {
       // Fix "declare module twgl/whatever" statements
       return code.replace(/^declare module twgl(\/(\w+))? \{/m,
-        "declare module $2 {"
+        'declare module $2 {'
       );
-    }).join("\n");
+    }).join('\n');
     // Write twgl-full declarations to destination file
-    const fullContent = [coreContent, extraContent].join("\n");
+    const fullContent = [coreContent, extraContent].join('\n');
     fs.writeFileSync('dist/4.x/twgl-full.d.ts', fullContent);
     // Write core declarations to destination file
     fs.writeFileSync('dist/4.x/twgl.d.ts', coreContent);
