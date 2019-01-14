@@ -35,7 +35,8 @@
   "files": [
     "dist/4.x/twgl-full.js",
     "dist/4.x/twgl.js",
-    "dist/4.x/types.d.ts"
+    "dist/4.x/twgl-full.d.ts",
+    "dist/4.x/twgl.d.ts"
   ],
   "devDependencies": {
     "@babel/core": "^7.2.2",
