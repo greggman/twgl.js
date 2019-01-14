@@ -310,7 +310,7 @@ function create3DContext(canvas, opt_attribs) {
  * `twgl.setDefaults({enableVertexArrayObjects: false})`;
  *
  * @param {HTMLCanvasElement} canvas a canvas element.
- * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
+ * @param {WebGLContextCreationAttributes} [opt_attribs] optional webgl context creation attributes
  * @memberOf module:twgl
  */
 function getWebGLContext(canvas, opt_attribs) {
@@ -361,7 +361,7 @@ function createContext(canvas, opt_attribs) {
  * `twgl.setDefaults({enableVertexArrayObjects: false})`;
  *
  * @param {HTMLCanvasElement} canvas a canvas element.
- * @param {WebGLContextCreationAttirbutes} [opt_attribs] optional webgl context creation attributes
+ * @param {WebGLContextCreationAttributes} [opt_attribs] optional webgl context creation attributes
  * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
  */
