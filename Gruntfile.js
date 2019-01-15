@@ -107,7 +107,7 @@ module.exports = function(grunt) {
   ];
 
   const fullFiles = srcFiles.concat(extraFiles);
-  const docsFiles = fullFiles.push('README.md');
+  const docsFiles = fullFiles.concat('README.md');
 
   const idRegex = /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/;
 
@@ -158,7 +158,7 @@ module.exports = function(grunt) {
       ts: {
         src: fullFiles,
         options: {
-          destination: 'dist/4.x',
+          destination: `dist/${verDir}`,
           configure: 'build/jsdoc.conf.json',
           template: './node_modules/tsd-jsdoc/dist',
           outputSourceFiles: false,
@@ -364,7 +364,7 @@ module.exports = function(grunt) {
   grunt.registerTask('tsmunge', function() {
     // Fix up syntax and content issues with the auto-generated
     // TypeScript definitions.
-    let content = fs.readFileSync('dist/4.x/types.d.ts', {encoding: 'utf8'});
+    let content = fs.readFileSync(`dist/${verDir}/types.d.ts`, {encoding: 'utf8'});
     // Remove docstrings (Declarations do not by convention include these)
     content = content.replace(/\/\*\*[\s\S]*?\*\/\s*/g, '');
     // Docs use "?" to represent an arbitrary type; TS uses "any"
@@ -407,11 +407,11 @@ module.exports = function(grunt) {
     }).join('\n');
     // Write twgl-full declarations to destination file
     const fullContent = [coreContent, extraContent].join('\n');
-    fs.writeFileSync('dist/4.x/twgl-full.d.ts', fullContent);
+    fs.writeFileSync(`dist/${verDir}/twgl-full.d.ts`, fullContent);
     // Write core declarations to destination file
-    fs.writeFileSync('dist/4.x/twgl.d.ts', coreContent);
+    fs.writeFileSync(`dist/${verDir}/twgl.d.ts`, coreContent);
     // Remove the auto-generated input file
-    fs.unlinkSync('dist/4.x/types.d.ts');
+    fs.unlinkSync(`dist/${verDir}/types.d.ts`);
   });
 
   grunt.registerTask('docs', [
