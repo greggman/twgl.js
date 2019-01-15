@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.8.0
+
+    *   add typescript types
+
 *   4.7.0
 
     *   expose `getFormatAndTypeForInternalFormat`, `canFilter`, and `canGenerateMipmap`.
