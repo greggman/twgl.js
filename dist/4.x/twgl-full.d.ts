@@ -1,13 +1,3 @@
-export interface WebGLContextCreationAttributes {
-    alpha?: boolean;
-    antialias?: boolean;
-    depth?: boolean;
-    failIfMajorPerformanceCaveat?: boolean;
-    powerPreference?: string;
-    premultipliedAlpha?: boolean;
-    preserveDrawingBuffer?: boolean;
-    stencil?: boolean;
-}
 
 export type Defaults = {
     attribPrefix?: string;
@@ -17,9 +7,9 @@ export type Defaults = {
 };
 export function setDefaults(newDefaults: Defaults): void;
 export function addExtensionsToContext(gl: WebGLRenderingContext): void;
-export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextCreationAttributes): void;
+export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): void;
 export function createContext(canvas: HTMLCanvasElement): WebGLRenderingContext;
-export function getContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextCreationAttributes): WebGLRenderingContext;
+export function getContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
 export type AttribInfo = {
     value?: number[] | ArrayBufferView;
@@ -193,9 +183,7 @@ export type CubemapReadyCallback = (err: any, tex: WebGLTexture, imgs: HTMLImage
 export type ThreeDReadyCallback = (err: any, tex: WebGLTexture, imgs: HTMLImageElement[]) => void;
 export function isWebGL2(gl: WebGLRenderingContext): boolean;
 export function isWebGL1(gl: WebGLRenderingContext): boolean;
-
 export function glEnumToString(gl: WebGLRenderingContext, value: number): string;
-
 export type VertexArrayInfo = {
     numElements: number;
     elementType?: number;
@@ -203,8 +191,8 @@ export type VertexArrayInfo = {
 };
 export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
 export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
-export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: GLenum, count?: number, offset?: number, instanceCount?: number): void;
-export function drawObjectList(objectsToDraw: DrawObject[]): void;
+export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number, instanceCount?: number): void;
+export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObject[]): void;
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
 export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
 export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo, target?: number): void;
@@ -246,8 +234,8 @@ export function createBuffersFromArrays(gl: WebGLRenderingContext, arrays: Array
 };
 
 
-export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: GLenum, count?: number, offset?: number, instanceCount?: number): void;
-export function drawObjectList(objectsToDraw: DrawObject[]): void;
+export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number, instanceCount?: number): void;
+export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObject[]): void;
 
 
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
@@ -319,8 +307,8 @@ export function createTextures(gl: WebGLRenderingContext, options: {
 };
 
 
-export function getGLTypeForTypedArray(typedArray: ArrayBuffer | ArrayBufferView): number;
-export function getGLTypeForTypedArrayType(typedArrayType: Function): number;
+export function getGLTypeForTypedArray(typedArray: ArrayBufferView): number;
+export function getGLTypeForTypedArrayType(typedArrayType: ArrayBufferView): number;
 export function getTypedArrayTypeForGLType(type: number): (...params: any[]) => any;
 
 
@@ -389,92 +377,96 @@ declare module m4 {
     export function transformNormal(m: m4.Mat4, v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
 }
 declare module primitives {
+    export type TypedArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array;
     export function createAugmentedTypedArray(numComponents: number, numElements: number, opt_type: Function): ArrayBufferView;
     export function deindexVertices(vertices: {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     }): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function flattenNormals(vertices: {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     }): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
-    export function reorientDirections(array: number[] | ArrayBufferView, matrix: m4.Mat4): number[] | ArrayBufferView;
-    export function reorientNormals(array: number[] | ArrayBufferView, matrix: m4.Mat4): number[] | ArrayBufferView;
-    export function reorientPositions(array: number[] | ArrayBufferView, matrix: m4.Mat4): number[] | ArrayBufferView;
+    export function reorientDirections(array: number[] | TypedArray, matrix: m4.Mat4): number[] | TypedArray;
+    export function reorientNormals(array: number[] | TypedArray, matrix: m4.Mat4): number[] | TypedArray;
+    export function reorientPositions(array: number[] | TypedArray, matrix: m4.Mat4): number[] | TypedArray;
+    export type NativeArrayOrTypedArray = number[] | TypedArray;
     export function reorientVertices(arrays: {
-        [key: string]: any;
+        [key: string]: NativeArrayOrTypedArray;
     }, matrix: m4.Mat4): {
-        [key: string]: any;
+        [key: string]: NativeArrayOrTypedArray;
     };
     export function createXYQuadBufferInfo(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): {
         [key: string]: WebGLBuffer;
     };
     export function createXYQuadBuffers(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): BufferInfo;
-    export function createXYQuadVertices(size?: number, xOffset?: number, yOffset?: number): any;
-    export function createPlaneBufferInfo(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): any;
+    export function createXYQuadVertices(size?: number, xOffset?: number, yOffset?: number): {
+        [key: string]: TypedArray;
+    };
+    export function createPlaneBufferInfo(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): BufferInfo;
     export function createPlaneBuffers(gl: WebGLRenderingContext, width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): {
         [key: string]: WebGLBuffer;
     };
     export function createPlaneVertices(width?: number, depth?: number, subdivisionsWidth?: number, subdivisionsDepth?: number, matrix?: m4.Mat4): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createSphereBufferInfo(gl: WebGLRenderingContext, radius: number, subdivisionsAxis: number, subdivisionsHeight: number, opt_startLatitudeInRadians?: number, opt_endLatitudeInRadians?: number, opt_startLongitudeInRadians?: number, opt_endLongitudeInRadians?: number): BufferInfo;
     export function createSphereBuffers(gl: WebGLRenderingContext, radius: number, subdivisionsAxis: number, subdivisionsHeight: number, opt_startLatitudeInRadians?: number, opt_endLatitudeInRadians?: number, opt_startLongitudeInRadians?: number, opt_endLongitudeInRadians?: number): {
         [key: string]: WebGLBuffer;
     };
     export function createSphereVertices(radius: number, subdivisionsAxis: number, subdivisionsHeight: number, opt_startLatitudeInRadians?: number, opt_endLatitudeInRadians?: number, opt_startLongitudeInRadians?: number, opt_endLongitudeInRadians?: number): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createCubeBufferInfo(gl: WebGLRenderingContext, size?: number): BufferInfo;
     export function createCubeBuffers(gl: WebGLRenderingContext, size?: number): {
         [key: string]: WebGLBuffer;
     };
     export function createCubeVertices(size?: number): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createTruncatedConeBufferInfo(gl: WebGLRenderingContext, bottomRadius: number, topRadius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, opt_topCap?: boolean, opt_bottomCap?: boolean): BufferInfo;
     export function createTruncatedConeBuffers(gl: WebGLRenderingContext, bottomRadius: number, topRadius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, opt_topCap?: boolean, opt_bottomCap?: boolean): {
         [key: string]: WebGLBuffer;
     };
     export function createTruncatedConeVertices(bottomRadius: number, topRadius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, opt_topCap?: boolean, opt_bottomCap?: boolean): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function create3DFBufferInfo(gl: WebGLRenderingContext): BufferInfo;
     export function create3DFBuffers(gl: WebGLRenderingContext): {
         [key: string]: WebGLBuffer;
     };
     export function create3DFVertices(): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createCresentBufferInfo(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): BufferInfo;
     export function createCresentBuffers(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
         [key: string]: WebGLBuffer;
     };
     export function createCresentVertices(verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createCylinderBufferInfo(gl: WebGLRenderingContext, radius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, topCap?: boolean, bottomCap?: boolean): BufferInfo;
     export function createCylinderBuffers(gl: WebGLRenderingContext, radius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, topCap?: boolean, bottomCap?: boolean): {
         [key: string]: WebGLBuffer;
     };
     export function createCylinderVertices(radius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, topCap?: boolean, bottomCap?: boolean): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createTorusBufferInfo(gl: WebGLRenderingContext, radius: number, thickness: number, radialSubdivisions: number, bodySubdivisions: number, startAngle?: boolean, endAngle?: boolean): BufferInfo;
     export function createTorusBuffers(gl: WebGLRenderingContext, radius: number, thickness: number, radialSubdivisions: number, bodySubdivisions: number, startAngle?: boolean, endAngle?: boolean): {
         [key: string]: WebGLBuffer;
     };
     export function createTorusVertices(radius: number, thickness: number, radialSubdivisions: number, bodySubdivisions: number, startAngle?: boolean, endAngle?: boolean): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export function createDiscBufferInfo(gl: WebGLRenderingContext, radius: number, divisions: number, stacks?: number, innerRadius?: number, stackPower?: number): BufferInfo;
     export function createDiscBuffers(gl: WebGLRenderingContext, radius: number, divisions: number, stacks?: number, innerRadius?: number, stackPower?: number): {
         [key: string]: WebGLBuffer;
     };
     export function createDiscVertices(radius: number, divisions: number, stacks?: number, innerRadius?: number, stackPower?: number): {
-        [key: string]: ArrayBufferView;
+        [key: string]: TypedArray;
     };
     export type RandomColorFunc = (ndx: number, channel: number) => number;
     export type RandomVerticesOptions = {

@@ -1,13 +1,3 @@
-export interface WebGLContextCreationAttributes {
-    alpha?: boolean;
-    antialias?: boolean;
-    depth?: boolean;
-    failIfMajorPerformanceCaveat?: boolean;
-    powerPreference?: string;
-    premultipliedAlpha?: boolean;
-    preserveDrawingBuffer?: boolean;
-    stencil?: boolean;
-}
 
 export type Defaults = {
     attribPrefix?: string;
@@ -17,9 +7,9 @@ export type Defaults = {
 };
 export function setDefaults(newDefaults: Defaults): void;
 export function addExtensionsToContext(gl: WebGLRenderingContext): void;
-export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextCreationAttributes): void;
+export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): void;
 export function createContext(canvas: HTMLCanvasElement): WebGLRenderingContext;
-export function getContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextCreationAttributes): WebGLRenderingContext;
+export function getContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
 export type AttribInfo = {
     value?: number[] | ArrayBufferView;
@@ -193,9 +183,7 @@ export type CubemapReadyCallback = (err: any, tex: WebGLTexture, imgs: HTMLImage
 export type ThreeDReadyCallback = (err: any, tex: WebGLTexture, imgs: HTMLImageElement[]) => void;
 export function isWebGL2(gl: WebGLRenderingContext): boolean;
 export function isWebGL1(gl: WebGLRenderingContext): boolean;
-
 export function glEnumToString(gl: WebGLRenderingContext, value: number): string;
-
 export type VertexArrayInfo = {
     numElements: number;
     elementType?: number;
@@ -203,8 +191,8 @@ export type VertexArrayInfo = {
 };
 export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
 export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
-export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: GLenum, count?: number, offset?: number, instanceCount?: number): void;
-export function drawObjectList(objectsToDraw: DrawObject[]): void;
+export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number, instanceCount?: number): void;
+export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObject[]): void;
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
 export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
 export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo, target?: number): void;
@@ -246,8 +234,8 @@ export function createBuffersFromArrays(gl: WebGLRenderingContext, arrays: Array
 };
 
 
-export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: GLenum, count?: number, offset?: number, instanceCount?: number): void;
-export function drawObjectList(objectsToDraw: DrawObject[]): void;
+export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number, instanceCount?: number): void;
+export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObject[]): void;
 
 
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
@@ -319,8 +307,8 @@ export function createTextures(gl: WebGLRenderingContext, options: {
 };
 
 
-export function getGLTypeForTypedArray(typedArray: ArrayBuffer | ArrayBufferView): number;
-export function getGLTypeForTypedArrayType(typedArrayType: Function): number;
+export function getGLTypeForTypedArray(typedArray: ArrayBufferView): number;
+export function getGLTypeForTypedArrayType(typedArrayType: ArrayBufferView): number;
 export function getTypedArrayTypeForGLType(type: number): (...params: any[]) => any;
 
 
