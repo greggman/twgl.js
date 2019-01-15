@@ -277,6 +277,9 @@ module.exports = function(grunt) {
     ts: {
       example: {
         src: ['examples/*.ts'],
+        options: {
+          module: 'umd',
+        },
       },
     },
   });
