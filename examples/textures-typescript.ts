@@ -1,5 +1,5 @@
 import * as twgl from '../dist/4.x/twgl-full.js';
-import chroma from '../3rdparty/chroma.min.js';
+import * as chroma from '../3rdparty/chroma.min.js';
 
 const onePointVS = `
 uniform mat4 u_worldViewProjection;
