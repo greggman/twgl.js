@@ -617,6 +617,11 @@ function getNumElementsFromAttributes(gl, attribs) {
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {module:twgl.Arrays} arrays Your data
+ * @param {module:twgl.BufferInfo} [srcBufferInfo] An existing
+ *        buffer info to start from. WebGLBuffers etc specified
+ *        in the srcBufferInfo will be used in a new BufferInfo
+ *        with any arrays specfied overriding the ones in
+ *        srcBufferInfo.
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
  */
