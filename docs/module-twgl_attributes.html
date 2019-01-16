@@ -912,7 +912,7 @@
 
     
 
-    <h4 class="name" id=".createBufferInfoFromArrays"><span class="type-signature">(static) </span>createBufferInfoFromArrays<span class="signature">(gl, arrays)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
+    <h4 class="name" id=".createBufferInfoFromArrays"><span class="type-signature">(static) </span>createBufferInfoFromArrays<span class="signature">(gl, arrays, srcBufferInfo<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
 
     
 
@@ -1045,6 +1045,8 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -1069,6 +1071,14 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -1096,11 +1106,55 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">
                 <p>Your data</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>srcBufferInfo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code><a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a></code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>An existing<br>       buffer info to start from. WebGLBuffers etc specified<br>       in the srcBufferInfo will be used in a new BufferInfo<br>       with any arrays specfied overriding the ones in<br>       srcBufferInfo.</p>
                 
             </td>
         </tr>
