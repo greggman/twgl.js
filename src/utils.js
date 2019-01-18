@@ -94,7 +94,7 @@ function isWebGL1(gl) {
  * want them to show up you need to pass the extension at least
  * once. For example
  *
- *     const ext = gl.getExtension('WEBGL_compressed_texture_s3tc`);
+ *     const ext = gl.getExtension('WEBGL_compressed_texture_s3tc');
  *     if (ext) {
  *        twgl.glEnumToString(ext, 0);  // just prime the function
  *
