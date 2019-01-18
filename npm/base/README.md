@@ -449,10 +449,6 @@ See the examples. Otherwise there's a few different versions
 *   `twgl.min.js` the minimum version (no 3d math, no primitives)
 *   `twgl.js` the concatinated minimum version (no 3d math, no primitives)
 
-## API Docs
-
-[API Docs are here](http://twgljs.org/docs/).
-
 ## Download
 
 *   from github
@@ -527,6 +523,10 @@ twgl.setAttributes(attribSetters, attribs);
 
 The point of the example above is TWGL is a **thin** wrapper. All it's doing is trying
 to make common WebGL operations easier and less verbose. Feel free to mix it with raw WebGL.
+
+## API Docs
+
+[API Docs are here](http://twgljs.org/docs/).
 
 ## Want to learn WebGL?
 

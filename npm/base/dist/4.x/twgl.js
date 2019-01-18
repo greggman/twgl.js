@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.8.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.8.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -741,6 +741,11 @@ function getNumElementsFromAttributes(gl, attribs) {
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {module:twgl.Arrays} arrays Your data
+ * @param {module:twgl.BufferInfo} [srcBufferInfo] An existing
+ *        buffer info to start from. WebGLBuffers etc specified
+ *        in the srcBufferInfo will be used in a new BufferInfo
+ *        with any arrays specfied overriding the ones in
+ *        srcBufferInfo.
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
  */
@@ -2297,7 +2302,6 @@ function createShaderFromScript(
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error.
- * @return {WebGLProgram} The created program.
  * @memberOf module:twgl/programs
  */
 function createProgramFromScripts(

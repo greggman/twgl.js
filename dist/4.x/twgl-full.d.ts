@@ -190,7 +190,7 @@ export type VertexArrayInfo = {
     vertexArrayObject?: WebGLVertexArrayObject;
 };
 export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
-export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
+export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays, srcBufferInfo?: BufferInfo): BufferInfo;
 export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo | VertexArrayInfo, type?: number, count?: number, offset?: number, instanceCount?: number): void;
 export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObject[]): void;
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
@@ -227,7 +227,7 @@ export function createAttribsFromArrays(gl: WebGLRenderingContext, arrays: Array
     [key: string]: AttribInfo;
 };
 export function setAttribInfoBufferFromArray(gl: WebGLRenderingContext, attribInfo: AttribInfo, array: ArraySpec, offset?: number): void;
-export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays): BufferInfo;
+export function createBufferInfoFromArrays(gl: WebGLRenderingContext, arrays: Arrays, srcBufferInfo?: BufferInfo): BufferInfo;
 export function createBufferFromArray(gl: WebGLRenderingContext, array: ArraySpec, arrayName: string): WebGLBuffer;
 export function createBuffersFromArrays(gl: WebGLRenderingContext, arrays: Arrays): {
     [key: string]: WebGLBuffer;
@@ -245,7 +245,7 @@ export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?:
 
 export function getBindPointForSamplerType(): void;
 export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
-export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): void;
+export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createUniformSetters(program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
