@@ -311,6 +311,7 @@ function create3DContext(canvas, opt_attribs) {
  *
  * @param {HTMLCanvasElement} canvas a canvas element.
  * @param {WebGLContextAttributes} [opt_attribs] optional webgl context creation attributes
+ * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
  */
 function getWebGLContext(canvas, opt_attribs) {
