@@ -735,7 +735,6 @@ function createShaderFromScript(
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error.
- * @return {WebGLProgram} The created program.
  * @memberOf module:twgl/programs
  */
 function createProgramFromScripts(
