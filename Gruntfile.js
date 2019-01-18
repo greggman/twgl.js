@@ -401,9 +401,16 @@ module.exports = function(grunt) {
     // Build additional code for the extended twgl-full.js output
     const extraContent = extraModules.map((code) => {
       // Fix "declare module twgl/whatever" statements
-      return code.replace(/^declare module twgl(\/(\w+))? \{/m,
+      code = code.replace(/^declare module twgl(\/(\w+))? \{/m,
         'declare module $2 {'
       );
+      code = code.replace(
+          /(StandardBuffers\s*=\s*\{[\s\S]*?)(\})/g,
+          '$1    [key: string]: WebGLBuffer;\n    $2');
+      code = code.replace(
+          /(StandardArrays\s*=\s*\{[\s\S]*?)(\})/g,
+          '$1    [key: string]: TypedArray;\n    $2');
+      return code;
     }).join('\n');
     // Write twgl-full declarations to destination file
     const fullContent = [coreContent, extraContent].join('\n');

@@ -75,6 +75,24 @@ const getNumComponents = attributes.getNumComponents_;  // eslint-disable-line
  */
 
 /**
+ * @typedef {Object} StandardBuffers
+ * @property {WebGLBuffer} position vertex positions
+ * @property {WebGLBuffer} texcoord textrue coords
+ * @property {WebGLBuffer} normal vertex normals
+ * @property {WebGLBuffer} indices vertex indices
+ * @memberOf module:twgl/primitives
+ */
+
+/**
+ * @typedef {Object} StandardArrays
+ * @property {Float32Array} position vertex positions
+ * @property {Float32Array} texcoord textrue coords
+ * @property {Float32Array} normal vertex normals
+ * @property {Uint16Array} indices vertex indices
+ * @memberOf module:twgl/primitives
+ */
+
+/**
  * Add `push` to a typed array. It just keeps a 'cursor'
  * and allows use to `push` values into the array so we
  * don't have to manually compute offsets
@@ -331,7 +349,7 @@ function reorientVertices(arrays, matrix) {
  * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
  * @param {number} [xOffset] the amount to offset the quad in X
  * @param {number} [yOffset] the amount to offset the quad in Y
- * @return {Object.<string, WebGLBuffer>} the created XY Quad BufferInfo
+ * @return {module:twgl.BufferInfo} the created XY Quad BufferInfo
  * @memberOf module:twgl/primitives
  * @function createXYQuadBufferInfo
  */
@@ -352,7 +370,7 @@ function reorientVertices(arrays, matrix) {
  * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
  * @param {number} [xOffset] the amount to offset the quad in X
  * @param {number} [yOffset] the amount to offset the quad in Y
- * @return {module:twgl.BufferInfo} the created XY Quad buffers
+ * @return {module:twgl/primtives.StandardBuffers} the created XY Quad buffers
  * @memberOf module:twgl/primitives
  * @function createXYQuadBuffers
  */
@@ -372,7 +390,7 @@ function reorientVertices(arrays, matrix) {
  * @param {number} [size] the size across the quad. Defaults to 2 which means vertices will go from -1 to +1
  * @param {number} [xOffset] the amount to offset the quad in X
  * @param {number} [yOffset] the amount to offset the quad in Y
- * @return {Object.<string, TypedArray>} the created XY Quad vertices
+ * @return {module:twgl/primtives.StandardArrays} the created XY Quad vertices
  * @memberOf module:twgl/primitives
  */
 function createXYQuadVertices(size, xOffset, yOffset) {
@@ -433,7 +451,7 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
  * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
  * @param {module:twgl/m4.Mat4} [matrix] A matrix by which to multiply all the vertices.
- * @return {Object.<string, WebGLBuffer>} The created plane buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created plane buffers.
  * @memberOf module:twgl/primitives
  * @function createPlaneBuffers
  */
@@ -448,7 +466,7 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @param {number} [subdivisionsWidth] Number of steps across the plane. Default = 1
  * @param {number} [subdivisionsDepth] Number of steps down the plane. Default = 1
  * @param {module:twgl/m4.Mat4} [matrix] A matrix by which to multiply all the vertices.
- * @return {Object.<string, TypedArray>} The created plane vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created plane vertices.
  * @memberOf module:twgl/primitives
  */
 function createPlaneVertices(
@@ -549,7 +567,7 @@ function createPlaneVertices(
  *     wrapping the sphere. Default = 0.
  * @param {number} [opt_endLongitudeInRadians] where to end
  *     wrapping the sphere. Default = 2 * Math.PI.
- * @return {Object.<string, WebGLBuffer>} The created sphere buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created sphere buffers.
  * @memberOf module:twgl/primitives
  * @function createSphereBuffers
  */
@@ -570,7 +588,7 @@ function createPlaneVertices(
  *     wrapping the sphere. Default = 0.
  * @param {number} [opt_endLongitudeInRadians] where to end
  *     wrapping the sphere. Default = 2 * Math.PI.
- * @return {Object.<string, TypedArray>} The created sphere vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created sphere vertices.
  * @memberOf module:twgl/primitives
  */
 function createSphereVertices(
@@ -681,7 +699,7 @@ const CUBE_FACE_INDICES = [
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
  * @param {number} [size] width, height and depth of the cube.
- * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created buffers.
  * @memberOf module:twgl/primitives
  * @function createCubeBuffers
  */
@@ -692,7 +710,7 @@ const CUBE_FACE_INDICES = [
  * The cube is created around the origin. (-size / 2, size / 2).
  *
  * @param {number} [size] width, height and depth of the cube.
- * @return {Object.<string, TypedArray>} The created vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created vertices.
  * @memberOf module:twgl/primitives
  */
 function createCubeVertices(size) {
@@ -799,7 +817,7 @@ function createCubeVertices(size) {
  *     truncated cone.
  * @param {boolean} [opt_topCap] Create top cap. Default = true.
  * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
- * @return {Object.<string, WebGLBuffer>} The created cone buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created cone buffers.
  * @memberOf module:twgl/primitives
  * @function createTruncatedConeBuffers
  */
@@ -820,7 +838,7 @@ function createCubeVertices(size) {
  *     truncated cone.
  * @param {boolean} [opt_topCap] Create top cap. Default = true.
  * @param {boolean} [opt_bottomCap] Create bottom cap. Default = true.
- * @return {Object.<string, TypedArray>} The created cone vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created cone vertices.
  * @memberOf module:twgl/primitives
  */
 function createTruncatedConeVertices(
@@ -950,7 +968,7 @@ function expandRLEData(rleData, padding) {
  * The created 'F' has position, normal, texcoord, and color buffers.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created buffers.
  * @memberOf module:twgl/primitives
  * @function create3DFBuffers
  */
@@ -960,7 +978,7 @@ function expandRLEData(rleData, padding) {
  * An 'F' is useful because you can easily tell which way it is oriented.
  * The created 'F' has position, normal, texcoord, and color arrays.
  *
- * @return {Object.<string, TypedArray>} The created vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created vertices.
  * @memberOf module:twgl/primitives
  */
 function create3DFVertices() {
@@ -1358,7 +1376,7 @@ function create3DFVertices() {
  * @param {number} subdivisionsDown number of steps around the cresent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
- * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created buffers.
  * @memberOf module:twgl/primitives
  * @function createCresentBuffers
  */
@@ -1373,7 +1391,7 @@ function create3DFVertices() {
  * @param {number} subdivisionsDown number of steps around the cresent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
- * @return {Object.<string, TypedArray>} The created vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created vertices.
  * @memberOf module:twgl/primitives
  */
  function createCresentVertices(
@@ -1495,7 +1513,7 @@ function create3DFVertices() {
   * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
   * @param {boolean} [topCap] Create top cap. Default = true.
   * @param {boolean} [bottomCap] Create bottom cap. Default = true.
-  * @return {Object.<string, WebGLBuffer>} The created buffers.
+  * @return {module:twgl/primtives.StandardBuffers} The created buffers.
   * @memberOf module:twgl/primitives
   * @function createCylinderBuffers
   */
@@ -1510,7 +1528,7 @@ function create3DFVertices() {
   * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
   * @param {boolean} [topCap] Create top cap. Default = true.
   * @param {boolean} [bottomCap] Create bottom cap. Default = true.
-  * @return {Object.<string, TypedArray>} The created vertices.
+  * @return {module:twgl/primtives.StandardArrays} The created vertices.
   * @memberOf module:twgl/primitives
   */
 function createCylinderVertices(
@@ -1555,7 +1573,7 @@ function createCylinderVertices(
  * @param {number} bodySubdivisions The number of subdivisions around the body torus.
  * @param {boolean} [startAngle] start angle in radians. Default = 0.
  * @param {boolean} [endAngle] end angle in radians. Default = Math.PI * 2.
- * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created buffers.
  * @memberOf module:twgl/primitives
  * @function createTorusBuffers
  */
@@ -1569,7 +1587,7 @@ function createCylinderVertices(
  * @param {number} bodySubdivisions The number of subdivisions around the body torus.
  * @param {boolean} [startAngle] start angle in radians. Default = 0.
  * @param {boolean} [endAngle] end angle in radians. Default = Math.PI * 2.
- * @return {Object.<string, TypedArray>} The created vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created vertices.
  * @memberOf module:twgl/primitives
  */
 function createTorusVertices(
@@ -1694,7 +1712,7 @@ function createTorusVertices(
  * @param {number} [stacks] Number of radial divisions (default=1).
  * @param {number} [innerRadius] Default 0.
  * @param {number} [stackPower] Power to raise stack size to for decreasing width.
- * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @return {module:twgl/primtives.StandardBuffers} The created buffers.
  * @memberOf module:twgl/primitives
  * @function createDiscBuffers
  */
@@ -1721,7 +1739,7 @@ function createTorusVertices(
  * @param {number} [stacks] Number of radial divisions (default=1).
  * @param {number} [innerRadius] Default 0.
  * @param {number} [stackPower] Power to raise stack size to for decreasing width.
- * @return {Object.<string, TypedArray>} The created vertices.
+ * @return {module:twgl/primtives.StandardArrays} The created vertices.
  * @memberOf module:twgl/primitives
  */
 function createDiscVertices(
