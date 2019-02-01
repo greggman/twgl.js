@@ -1,5 +1,11 @@
 #Changelist
 
+*   4.8.2
+
+    *   Fixed IE URL issue
+
+    *   Fixed building with new JS
+
 *   4.8.0
 
     *   add typescript types
