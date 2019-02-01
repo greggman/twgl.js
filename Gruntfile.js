@@ -111,23 +111,21 @@ module.exports = function(grunt) {
 
   const idRegex = /^(colorRenderable|textureFilterable|bytesPerElement|numColorComponents|textureFormat)$/;
 
-  const noIdeaWhatThisIs = {};
-  /*
-  const noIdeaWhatThisIs = {
-    loaders: [
+  const babelOptionsForWebpack = {
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        exclude: /node_modules/,
+        loader: "babel-loader",
         query: {
           presets: ['@babel/preset-env'],
           plugins: [
             ['@babel/plugin-transform-modules-commonjs', {loose: true}],
           ],
-        },
+        }
       },
     ],
   };
-  */
 
   const optimization = {
     minimizer: [
@@ -173,7 +171,7 @@ module.exports = function(grunt) {
         plugins: [
           new webpack.BannerPlugin(getLicense(pkg)),
         ],
-        module: noIdeaWhatThisIs,
+        module: babelOptionsForWebpack,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl-full.js',
@@ -189,7 +187,7 @@ module.exports = function(grunt) {
         plugins: [
           new webpack.BannerPlugin(getLicense(pkg)),
         ],
-        module: noIdeaWhatThisIs,
+        module: babelOptionsForWebpack,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl.js',
@@ -205,7 +203,7 @@ module.exports = function(grunt) {
           new webpack.BannerPlugin(getLicense(pkg)),
         ],
         optimization,
-        module: noIdeaWhatThisIs,
+        module: babelOptionsForWebpack,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl-full.min.js',
@@ -221,7 +219,7 @@ module.exports = function(grunt) {
           new webpack.BannerPlugin(getLicense(pkg)),
         ],
         optimization,
-        module: noIdeaWhatThisIs,
+        module: babelOptionsForWebpack,
         output: {
           path: path.join(__dirname, `dist/${verDir}`),
           filename: 'twgl.min.js',
