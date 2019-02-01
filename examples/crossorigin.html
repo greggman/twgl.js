@@ -136,7 +136,9 @@ void main() {
       min: gl.NEAREST,
       mag: gl.NEAREST,
       src: "https://farm6.staticflickr.com/5795/21506301808_efb27ed699_q_d.jpg",
-      crossOrigin: "", // either this or use twgl.setDefaults
+      // crossOrigin is now handled by default. Only set this property
+      // if you want a specific value for crossOrigin
+      // crossOrigin: "", // either this or use twgl.setDefaults
     });
 
     const uniforms = {
