@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.8.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.8.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -105,23 +105,30 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!***************************!*\
   !*** ./src/attributes.js ***!
   \***************************/
-/*! exports provided: createAttribsFromArrays, createBuffersFromArrays, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, setAttribInfoBufferFromArray, setAttributePrefix, setAttributeDefaults_, getNumComponents_, getArray_ */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createAttribsFromArrays", function() { return createAttribsFromArrays; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBuffersFromArrays", function() { return createBuffersFromArrays; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBufferFromArray", function() { return createBufferFromArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBufferFromTypedArray", function() { return createBufferFromTypedArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBufferInfoFromArrays", function() { return createBufferInfoFromArrays; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAttribInfoBufferFromArray", function() { return setAttribInfoBufferFromArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAttributePrefix", function() { return setAttributePrefix; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAttributeDefaults_", function() { return setDefaults; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNumComponents_", function() { return getNumComponents; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArray_", function() { return getArray; });
-/* harmony import */ var _typedarrays_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js");
-/* harmony import */ var _helper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper.js */ "./src/helper.js");
+
+
+exports.__esModule = true;
+exports.createAttribsFromArrays = createAttribsFromArrays;
+exports.createBuffersFromArrays = createBuffersFromArrays;
+exports.createBufferFromArray = createBufferFromArray;
+exports.createBufferFromTypedArray = createBufferFromTypedArray;
+exports.createBufferInfoFromArrays = createBufferInfoFromArrays;
+exports.setAttribInfoBufferFromArray = setAttribInfoBufferFromArray;
+exports.setAttributePrefix = setAttributePrefix;
+exports.setAttributeDefaults_ = setDefaults;
+exports.getNumComponents_ = getNumComponents;
+exports.getArray_ = getArray;
+
+var typedArrays = _interopRequireWildcard(__webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js"));
+
+var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -153,9 +160,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-
 /**
  * Low level attribute and buffer related functions
  *
@@ -170,13 +174,12 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/attributes
  */
-
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
-const defaults = {
-  attribPrefix: "",
-};
+var gl = undefined; // eslint-disable-line
 
+var defaults = {
+  attribPrefix: ""
+};
 /**
  * Sets the default attrib prefix
  *
@@ -197,19 +200,19 @@ const defaults = {
  * @param {string} prefix prefix for attribs
  * @memberOf module:twgl/attributes
  */
+
 function setAttributePrefix(prefix) {
   defaults.attribPrefix = prefix;
 }
 
 function setDefaults(newDefaults) {
-  _helper_js__WEBPACK_IMPORTED_MODULE_1__["copyExistingProperties"](newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
 }
 
 function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
   gl.bindBuffer(type, buffer);
   gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
 }
-
 /**
  * Given typed array creates a WebGLBuffer and copies the typed array
  * into it.
@@ -221,33 +224,52 @@ function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
  * @return {WebGLBuffer} the created WebGLBuffer
  * @memberOf module:twgl/attributes
  */
+
+
 function createBufferFromTypedArray(gl, typedArray, type, drawType) {
-  if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isBuffer"](gl, typedArray)) {
+  if (helper.isBuffer(gl, typedArray)) {
     return typedArray;
   }
+
   type = type || gl.ARRAY_BUFFER;
-  const buffer = gl.createBuffer();
+  var buffer = gl.createBuffer();
   setBufferFromTypedArray(gl, type, buffer, typedArray, drawType);
   return buffer;
 }
 
 function isIndices(name) {
   return name === "indices";
-}
-
-// This is really just a guess. Though I can't really imagine using
+} // This is really just a guess. Though I can't really imagine using
 // anything else? Maybe for some compression?
+
+
 function getNormalizationForTypedArray(typedArray) {
-  if (typedArray instanceof Int8Array)    { return true; }  // eslint-disable-line
-  if (typedArray instanceof Uint8Array)   { return true; }  // eslint-disable-line
-  return false;
-}
+  if (typedArray instanceof Int8Array) {
+    return true;
+  } // eslint-disable-line
 
-// This is really just a guess. Though I can't really imagine using
+
+  if (typedArray instanceof Uint8Array) {
+    return true;
+  } // eslint-disable-line
+
+
+  return false;
+} // This is really just a guess. Though I can't really imagine using
 // anything else? Maybe for some compression?
+
+
 function getNormalizationForTypedArrayType(typedArrayType) {
-  if (typedArrayType === Int8Array)    { return true; }  // eslint-disable-line
-  if (typedArrayType === Uint8Array)   { return true; }  // eslint-disable-line
+  if (typedArrayType === Int8Array) {
+    return true;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Uint8Array) {
+    return true;
+  } // eslint-disable-line
+
+
   return false;
 }
 
@@ -255,24 +277,22 @@ function getArray(array) {
   return array.length ? array : array.data;
 }
 
-const texcoordRE = /coord|texture/i;
-const colorRE = /color|colour/i;
+var texcoordRE = /coord|texture/i;
+var colorRE = /color|colour/i;
 
 function guessNumComponentsFromName(name, length) {
-  let numComponents;
+  var numComponents;
+
   if (texcoordRE.test(name)) {
     numComponents = 2;
   } else if (colorRE.test(name)) {
     numComponents = 4;
   } else {
-    numComponents = 3;  // position, normals, indices ...
+    numComponents = 3; // position, normals, indices ...
   }
 
   if (length % numComponents > 0) {
-    throw "Can not guess numComponents for attribute '" + name + "'. Tried " +
-          numComponents + " but " + length +
-          " values is not evenly divisible by " + numComponents +
-          ". You should specify it.";
+    throw "Can not guess numComponents for attribute '" + name + "'. Tried " + numComponents + " but " + length + " values is not evenly divisible by " + numComponents + ". You should specify it.";
   }
 
   return numComponents;
@@ -283,21 +303,22 @@ function getNumComponents(array, arrayName) {
 }
 
 function makeTypedArray(array, name) {
-  if (_typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["isArrayBuffer"](array)) {
+  if (typedArrays.isArrayBuffer(array)) {
     return array;
   }
 
-  if (_typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["isArrayBuffer"](array.data)) {
+  if (typedArrays.isArrayBuffer(array.data)) {
     return array.data;
   }
 
   if (Array.isArray(array)) {
     array = {
-      data: array,
+      data: array
     };
   }
 
-  let Type = array.type;
+  var Type = array.type;
+
   if (!Type) {
     if (isIndices(name)) {
       Type = Uint16Array;
@@ -305,9 +326,9 @@ function makeTypedArray(array, name) {
       Type = Float32Array;
     }
   }
+
   return new Type(array.data);
 }
-
 /**
  * The info for an attribute. This is effectively just the arguments to `gl.vertexAttribPointer` plus the WebGLBuffer
  * for the attribute.
@@ -415,7 +436,6 @@ function makeTypedArray(array, name) {
  * @memberOf module:twgl
  */
 
-
 /**
  * Creates a set of attribute data and WebGLBuffers from set of arrays
  *
@@ -474,55 +494,61 @@ function makeTypedArray(array, name) {
  * @return {Object.<string, module:twgl.AttribInfo>} the attribs
  * @memberOf module:twgl/attributes
  */
+
+
 function createAttribsFromArrays(gl, arrays) {
-  const attribs = {};
-  Object.keys(arrays).forEach(function(arrayName) {
+  var attribs = {};
+  Object.keys(arrays).forEach(function (arrayName) {
     if (!isIndices(arrayName)) {
-      const array = arrays[arrayName];
-      const attribName = array.attrib || array.name || array.attribName || (defaults.attribPrefix + arrayName);
+      var array = arrays[arrayName];
+      var attribName = array.attrib || array.name || array.attribName || defaults.attribPrefix + arrayName;
+
       if (array.value) {
-        if (!Array.isArray(array.value) && !_typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["isArrayBuffer"](array.value)) {
+        if (!Array.isArray(array.value) && !typedArrays.isArrayBuffer(array.value)) {
           throw new Error('array.value is not array or typedarray');
         }
+
         attribs[attribName] = {
-          value: array.value,
+          value: array.value
         };
       } else {
-        let buffer;
-        let type;
-        let normalization;
-        let numComponents;
+        var buffer;
+        var type;
+        var normalization;
+        var numComponents;
+
         if (array.buffer && array.buffer instanceof WebGLBuffer) {
           buffer = array.buffer;
           numComponents = array.numComponents || array.size;
           type = array.type;
           normalization = array.normalize;
         } else if (typeof array === "number" || typeof array.data === "number") {
-          const numValues = array.data || array;
-          const arrayType = array.type || Float32Array;
-          const numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
-          type = _typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["getGLTypeForTypedArrayType"](arrayType);
+          var numValues = array.data || array;
+          var arrayType = array.type || Float32Array;
+          var numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+          type = typedArrays.getGLTypeForTypedArrayType(arrayType);
           normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
           numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
           buffer = gl.createBuffer();
           gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
           gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
         } else {
-          const typedArray = makeTypedArray(array, arrayName);
+          var typedArray = makeTypedArray(array, arrayName);
           buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
-          type = _typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["getGLTypeForTypedArray"](typedArray);
+          type = typedArrays.getGLTypeForTypedArray(typedArray);
           normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
           numComponents = getNumComponents(array, arrayName);
         }
+
         attribs[attribName] = {
-          buffer:        buffer,
+          buffer: buffer,
           numComponents: numComponents,
-          type:          type,
-          normalize:     normalization,
-          stride:        array.stride || 0,
-          offset:        array.offset || 0,
-          divisor:       array.divisor === undefined ? undefined : array.divisor,
-          drawType:      array.drawType,
+          type: type,
+          normalize: normalization,
+          stride: array.stride || 0,
+          offset: array.offset || 0,
+          divisor: array.divisor === undefined ? undefined : array.divisor,
+          drawType: array.drawType
         };
       }
     }
@@ -530,7 +556,6 @@ function createAttribsFromArrays(gl, arrays) {
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
   return attribs;
 }
-
 /**
  * Sets the contents of a buffer attached to an attribInfo
  *
@@ -567,8 +592,11 @@ function createAttribsFromArrays(gl, arrays) {
  *    Now you can pass `someSubArray` into setAttribInfoBufferFromArray`
  * @memberOf module:twgl/attributes
  */
+
+
 function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
   array = makeTypedArray(array);
+
   if (offset !== undefined) {
     gl.bindBuffer(gl.ARRAY_BUFFER, attribInfo.buffer);
     gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
@@ -578,72 +606,92 @@ function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
 }
 
 function getBytesPerValueForGLType(gl, type) {
-  if (type === gl.BYTE)           return 1;  // eslint-disable-line
-  if (type === gl.UNSIGNED_BYTE)  return 1;  // eslint-disable-line
-  if (type === gl.SHORT)          return 2;  // eslint-disable-line
-  if (type === gl.UNSIGNED_SHORT) return 2;  // eslint-disable-line
-  if (type === gl.INT)            return 4;  // eslint-disable-line
-  if (type === gl.UNSIGNED_INT)   return 4;  // eslint-disable-line
-  if (type === gl.FLOAT)          return 4;  // eslint-disable-line
-  return 0;
-}
+  if (type === gl.BYTE) return 1; // eslint-disable-line
 
-// Tries to get the number of elements from a set of arrays.
-const positionKeys = ['position', 'positions', 'a_position'];
+  if (type === gl.UNSIGNED_BYTE) return 1; // eslint-disable-line
+
+  if (type === gl.SHORT) return 2; // eslint-disable-line
+
+  if (type === gl.UNSIGNED_SHORT) return 2; // eslint-disable-line
+
+  if (type === gl.INT) return 4; // eslint-disable-line
+
+  if (type === gl.UNSIGNED_INT) return 4; // eslint-disable-line
+
+  if (type === gl.FLOAT) return 4; // eslint-disable-line
+
+  return 0;
+} // Tries to get the number of elements from a set of arrays.
+
+
+var positionKeys = ['position', 'positions', 'a_position'];
+
 function getNumElementsFromNonIndexedArrays(arrays) {
-  let key;
-  let ii;
+  var key;
+  var ii;
+
   for (ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
+
     if (key in arrays) {
       break;
     }
   }
+
   if (ii === positionKeys.length) {
     key = Object.keys(arrays)[0];
   }
-  const array = arrays[key];
-  const length = getArray(array).length;
-  const numComponents = getNumComponents(array, key);
-  const numElements = length / numComponents;
+
+  var array = arrays[key];
+  var length = getArray(array).length;
+  var numComponents = getNumComponents(array, key);
+  var numElements = length / numComponents;
+
   if (length % numComponents > 0) {
     throw "numComponents " + numComponents + " not correct for length " + length;
   }
+
   return numElements;
 }
 
 function getNumElementsFromAttributes(gl, attribs) {
-  let key;
-  let ii;
+  var key;
+  var ii;
+
   for (ii = 0; ii < positionKeys.length; ++ii) {
     key = positionKeys[ii];
+
     if (key in attribs) {
       break;
     }
+
     key = defaults.attribPrefix + key;
+
     if (key in attribs) {
       break;
     }
   }
+
   if (ii === positionKeys.length) {
     key = Object.keys(attribs)[0];
   }
-  const attrib = attribs[key];
-  gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
-  const numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  const bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
-  const totalElements = numBytes / bytesPerValue;
-  const numComponents = attrib.numComponents || attrib.size;
-  // TODO: check stride
-  const numElements = totalElements / numComponents;
+  var attrib = attribs[key];
+  gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
+  var numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  var bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
+  var totalElements = numBytes / bytesPerValue;
+  var numComponents = attrib.numComponents || attrib.size; // TODO: check stride
+
+  var numElements = totalElements / numComponents;
+
   if (numElements % 1 !== 0) {
     throw "numComponents " + numComponents + " not correct for length " + length;
   }
+
   return numElements;
 }
-
 /**
  * @typedef {Object} BufferInfo
  * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
@@ -749,23 +797,25 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
  */
+
+
 function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
-  const newAttribs = createAttribsFromArrays(gl, arrays);
-  const bufferInfo = Object.assign({}, srcBufferInfo ? srcBufferInfo : {});
+  var newAttribs = createAttribsFromArrays(gl, arrays);
+  var bufferInfo = Object.assign({}, srcBufferInfo ? srcBufferInfo : {});
   bufferInfo.attribs = Object.assign({}, srcBufferInfo ? srcBufferInfo.attribs : {}, newAttribs);
-  const indices = arrays.indices;
+  var indices = arrays.indices;
+
   if (indices) {
-    const newIndices = makeTypedArray(indices, "indices");
+    var newIndices = makeTypedArray(indices, "indices");
     bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
     bufferInfo.numElements = newIndices.length;
-    bufferInfo.elementType = _typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["getGLTypeForTypedArray"](newIndices);
+    bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(newIndices);
   } else if (!bufferInfo.numElements) {
     bufferInfo.numElements = getNumElementsFromAttributes(gl, bufferInfo.attribs);
   }
 
   return bufferInfo;
 }
-
 /**
  * Creates a buffer from an array, typed array, or array spec
  *
@@ -792,12 +842,13 @@ function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
  * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
  * @memberOf module:twgl/attributes
  */
+
+
 function createBufferFromArray(gl, array, arrayName) {
-  const type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
-  const typedArray = makeTypedArray(array, arrayName);
+  var type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+  var typedArray = makeTypedArray(array, arrayName);
   return createBufferFromTypedArray(gl, typedArray, type);
 }
-
 /**
  * Creates buffers from arrays or typed arrays
  *
@@ -822,16 +873,17 @@ function createBufferFromArray(gl, array, arrayName) {
  * @return {Object<string, WebGLBuffer>} returns an object with one WebGLBuffer per array
  * @memberOf module:twgl/attributes
  */
-function createBuffersFromArrays(gl, arrays) {
-  const buffers = { };
-  Object.keys(arrays).forEach(function(key) {
-    buffers[key] = createBufferFromArray(gl, arrays[key], key);
-  });
 
-  // Ugh!
+
+function createBuffersFromArrays(gl, arrays) {
+  var buffers = {};
+  Object.keys(arrays).forEach(function (key) {
+    buffers[key] = createBufferFromArray(gl, arrays[key], key);
+  }); // Ugh!
+
   if (arrays.indices) {
     buffers.numElements = arrays.indices.length;
-    buffers.elementType = _typedarrays_js__WEBPACK_IMPORTED_MODULE_0__["getGLTypeForTypedArray"](makeTypedArray(arrays.indices), 'indices');
+    buffers.elementType = typedArrays.getGLTypeForTypedArray(makeTypedArray(arrays.indices), 'indices');
   } else {
     buffers.numElements = getNumElementsFromNonIndexedArrays(arrays);
   }
@@ -839,24 +891,26 @@ function createBuffersFromArrays(gl, arrays) {
   return buffers;
 }
 
-
-
-
-
 /***/ }),
 
 /***/ "./src/draw.js":
 /*!*********************!*\
   !*** ./src/draw.js ***!
   \*********************/
-/*! exports provided: drawBufferInfo, drawObjectList */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawBufferInfo", function() { return drawBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawObjectList", function() { return drawObjectList; });
-/* harmony import */ var _programs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./programs.js */ "./src/programs.js");
+
+
+exports.__esModule = true;
+exports.drawBufferInfo = drawBufferInfo;
+exports.drawObjectList = drawObjectList;
+
+var programs = _interopRequireWildcard(__webpack_require__(/*! ./programs.js */ "./src/programs.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -888,8 +942,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
 /**
  * Drawing related functions
  *
@@ -919,10 +971,11 @@ __webpack_require__.r(__webpack_exports__);
  */
 function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
   type = type === undefined ? gl.TRIANGLES : type;
-  const indices = bufferInfo.indices;
-  const elementType = bufferInfo.elementType;
-  const numElements = count === undefined ? bufferInfo.numElements : count;
+  var indices = bufferInfo.indices;
+  var elementType = bufferInfo.elementType;
+  var numElements = count === undefined ? bufferInfo.numElements : count;
   offset = offset === undefined ? 0 : offset;
+
   if (elementType || indices) {
     if (instanceCount !== undefined) {
       gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
@@ -937,7 +990,6 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
     }
   }
 }
-
 /**
  * A DrawObject is useful for putting objects in to an array and passing them to {@link module:twgl.drawObjectList}.
  *
@@ -980,44 +1032,44 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
  * @param {DrawObject[]} objectsToDraw an array of objects to draw.
  * @memberOf module:twgl/draw
  */
-function drawObjectList(gl, objectsToDraw) {
-  let lastUsedProgramInfo = null;
-  let lastUsedBufferInfo = null;
 
-  objectsToDraw.forEach(function(object) {
+
+function drawObjectList(gl, objectsToDraw) {
+  var lastUsedProgramInfo = null;
+  var lastUsedBufferInfo = null;
+  objectsToDraw.forEach(function (object) {
     if (object.active === false) {
       return;
     }
 
-    const programInfo = object.programInfo;
-    const bufferInfo = object.vertexArrayInfo || object.bufferInfo;
-    let bindBuffers = false;
-    const type = object.type === undefined ? gl.TRIANGLES : object.type;
+    var programInfo = object.programInfo;
+    var bufferInfo = object.vertexArrayInfo || object.bufferInfo;
+    var bindBuffers = false;
+    var type = object.type === undefined ? gl.TRIANGLES : object.type;
 
     if (programInfo !== lastUsedProgramInfo) {
       lastUsedProgramInfo = programInfo;
-      gl.useProgram(programInfo.program);
-
-      // We have to rebind buffers when changing programs because we
+      gl.useProgram(programInfo.program); // We have to rebind buffers when changing programs because we
       // only bind buffers the program uses. So if 2 programs use the same
       // bufferInfo but the 1st one uses only positions the when the
       // we switch to the 2nd one some of the attributes will not be on.
-      bindBuffers = true;
-    }
 
-    // Setup all the needed attributes.
+      bindBuffers = true;
+    } // Setup all the needed attributes.
+
+
     if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
       if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject && !bufferInfo.vertexArrayObject) {
         gl.bindVertexArray(null);
       }
+
       lastUsedBufferInfo = bufferInfo;
-      _programs_js__WEBPACK_IMPORTED_MODULE_0__["setBuffersAndAttributes"](gl, programInfo, bufferInfo);
-    }
+      programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    } // Set the uniforms.
 
-    // Set the uniforms.
-    _programs_js__WEBPACK_IMPORTED_MODULE_0__["setUniforms"](programInfo, object.uniforms);
 
-    // Draw
+    programs.setUniforms(programInfo, object.uniforms); // Draw
+
     drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
   });
 
@@ -1026,26 +1078,29 @@ function drawObjectList(gl, objectsToDraw) {
   }
 }
 
-
-
-
-
 /***/ }),
 
 /***/ "./src/framebuffers.js":
 /*!*****************************!*\
   !*** ./src/framebuffers.js ***!
   \*****************************/
-/*! exports provided: bindFramebufferInfo, createFramebufferInfo, resizeFramebufferInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bindFramebufferInfo", function() { return bindFramebufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFramebufferInfo", function() { return createFramebufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeFramebufferInfo", function() { return resizeFramebufferInfo; });
-/* harmony import */ var _textures_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./textures.js */ "./src/textures.js");
-/* harmony import */ var _helper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper.js */ "./src/helper.js");
+
+
+exports.__esModule = true;
+exports.bindFramebufferInfo = bindFramebufferInfo;
+exports.createFramebufferInfo = createFramebufferInfo;
+exports.resizeFramebufferInfo = resizeFramebufferInfo;
+
+var textures = _interopRequireWildcard(__webpack_require__(/*! ./textures.js */ "./src/textures.js"));
+
+var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -1077,9 +1132,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-
 /**
  * Framebuffer related functions
  *
@@ -1090,43 +1142,48 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/framebuffers
  */
-
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+var gl = undefined; // eslint-disable-line
 
-const UNSIGNED_BYTE                  = 0x1401;
-
+var UNSIGNED_BYTE = 0x1401;
 /* PixelFormat */
-const DEPTH_COMPONENT                = 0x1902;
-const RGBA                           = 0x1908;
 
+var DEPTH_COMPONENT = 0x1902;
+var RGBA = 0x1908;
 /* Framebuffer Object. */
-const RGBA4                          = 0x8056;
-const RGB5_A1                        = 0x8057;
-const RGB565                         = 0x8D62;
-const DEPTH_COMPONENT16              = 0x81A5;
-const STENCIL_INDEX                  = 0x1901;
-const STENCIL_INDEX8                 = 0x8D48;
-const DEPTH_STENCIL                  = 0x84F9;
-const COLOR_ATTACHMENT0              = 0x8CE0;
-const DEPTH_ATTACHMENT               = 0x8D00;
-const STENCIL_ATTACHMENT             = 0x8D20;
-const DEPTH_STENCIL_ATTACHMENT       = 0x821A;
 
+var RGBA4 = 0x8056;
+var RGB5_A1 = 0x8057;
+var RGB565 = 0x8D62;
+var DEPTH_COMPONENT16 = 0x81A5;
+var STENCIL_INDEX = 0x1901;
+var STENCIL_INDEX8 = 0x8D48;
+var DEPTH_STENCIL = 0x84F9;
+var COLOR_ATTACHMENT0 = 0x8CE0;
+var DEPTH_ATTACHMENT = 0x8D00;
+var STENCIL_ATTACHMENT = 0x8D20;
+var DEPTH_STENCIL_ATTACHMENT = 0x821A;
 /* TextureWrapMode */
-const REPEAT                         = 0x2901;  // eslint-disable-line
-const CLAMP_TO_EDGE                  = 0x812F;
-const MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
+
+var REPEAT = 0x2901; // eslint-disable-line
+
+var CLAMP_TO_EDGE = 0x812F;
+var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
 
 /* TextureMagFilter */
-const NEAREST                        = 0x2600;  // eslint-disable-line
-const LINEAR                         = 0x2601;
 
+var NEAREST = 0x2600; // eslint-disable-line
+
+var LINEAR = 0x2601;
 /* TextureMinFilter */
-const NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
-const LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
-const NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
-const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
+
+var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
+
+var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
+
+var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
+
+var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
 
 /**
  * The options for a framebuffer attachment.
@@ -1156,12 +1213,15 @@ const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
  * @memberOf module:twgl
  */
 
-const defaultAttachments = [
-  { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE, },
-  { format: DEPTH_STENCIL, },
-];
-
-const attachmentsByFormat = {};
+var defaultAttachments = [{
+  format: RGBA,
+  type: UNSIGNED_BYTE,
+  min: LINEAR,
+  wrap: CLAMP_TO_EDGE
+}, {
+  format: DEPTH_STENCIL
+}];
+var attachmentsByFormat = {};
 attachmentsByFormat[DEPTH_STENCIL] = DEPTH_STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
@@ -1172,7 +1232,7 @@ function getAttachmentPointForFormat(format) {
   return attachmentsByFormat[format];
 }
 
-const renderbufferFormats = {};
+var renderbufferFormats = {};
 renderbufferFormats[RGBA4] = true;
 renderbufferFormats[RGB5_A1] = true;
 renderbufferFormats[RGB565] = true;
@@ -1184,7 +1244,6 @@ renderbufferFormats[STENCIL_INDEX8] = true;
 function isRenderbufferFormat(format) {
   return renderbufferFormats[format];
 }
-
 /**
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
@@ -1228,36 +1287,41 @@ function isRenderbufferFormat(format) {
  * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
  * @memberOf module:twgl/framebuffers
  */
+
+
 function createFramebufferInfo(gl, attachments, width, height) {
-  const target = gl.FRAMEBUFFER;
-  const fb = gl.createFramebuffer();
+  var target = gl.FRAMEBUFFER;
+  var fb = gl.createFramebuffer();
   gl.bindFramebuffer(target, fb);
-  width  = width  || gl.drawingBufferWidth;
+  width = width || gl.drawingBufferWidth;
   height = height || gl.drawingBufferHeight;
   attachments = attachments || defaultAttachments;
-  let colorAttachmentCount = 0;
-  const framebufferInfo = {
+  var colorAttachmentCount = 0;
+  var framebufferInfo = {
     framebuffer: fb,
     attachments: [],
     width: width,
-    height: height,
+    height: height
   };
-  attachments.forEach(function(attachmentOptions) {
-    let attachment = attachmentOptions.attachment;
-    const format = attachmentOptions.format;
-    let attachmentPoint = getAttachmentPointForFormat(format);
+  attachments.forEach(function (attachmentOptions) {
+    var attachment = attachmentOptions.attachment;
+    var format = attachmentOptions.format;
+    var attachmentPoint = getAttachmentPointForFormat(format);
+
     if (!attachmentPoint) {
       attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
     }
+
     if (!attachment) {
       if (isRenderbufferFormat(format)) {
         attachment = gl.createRenderbuffer();
         gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
         gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
       } else {
-        const textureOptions = Object.assign({}, attachmentOptions);
+        var textureOptions = Object.assign({}, attachmentOptions);
         textureOptions.width = width;
         textureOptions.height = height;
+
         if (textureOptions.auto === undefined) {
           textureOptions.auto = false;
           textureOptions.min = textureOptions.min || textureOptions.minMag || gl.LINEAR;
@@ -1265,26 +1329,23 @@ function createFramebufferInfo(gl, attachments, width, height) {
           textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
           textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
         }
-        attachment = _textures_js__WEBPACK_IMPORTED_MODULE_0__["createTexture"](gl, textureOptions);
+
+        attachment = textures.createTexture(gl, textureOptions);
       }
     }
-    if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isRenderbuffer"](gl, attachment)) {
+
+    if (helper.isRenderbuffer(gl, attachment)) {
       gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
-    } else if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isTexture"](gl, attachment)) {
-      gl.framebufferTexture2D(
-          target,
-          attachmentPoint,
-          attachmentOptions.texTarget || gl.TEXTURE_2D,
-          attachment,
-          attachmentOptions.level || 0);
+    } else if (helper.isTexture(gl, attachment)) {
+      gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
     } else {
       throw "unknown attachment type";
     }
+
     framebufferInfo.attachments.push(attachment);
   });
   return framebufferInfo;
 }
-
 /**
  * Resizes the attachments of a framebuffer.
  *
@@ -1328,26 +1389,28 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
  * @memberOf module:twgl/framebuffers
  */
+
+
 function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
-  width  = width  || gl.drawingBufferWidth;
+  width = width || gl.drawingBufferWidth;
   height = height || gl.drawingBufferHeight;
   framebufferInfo.width = width;
   framebufferInfo.height = height;
   attachments = attachments || defaultAttachments;
-  attachments.forEach(function(attachmentOptions, ndx) {
-    const attachment = framebufferInfo.attachments[ndx];
-    const format = attachmentOptions.format;
-    if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isRenderbuffer"](gl, attachment)) {
+  attachments.forEach(function (attachmentOptions, ndx) {
+    var attachment = framebufferInfo.attachments[ndx];
+    var format = attachmentOptions.format;
+
+    if (helper.isRenderbuffer(gl, attachment)) {
       gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
       gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
-    } else if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isTexture"](gl, attachment)) {
-      _textures_js__WEBPACK_IMPORTED_MODULE_0__["resizeTexture"](gl, attachment, attachmentOptions, width, height);
+    } else if (helper.isTexture(gl, attachment)) {
+      textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
       throw "unknown attachment type";
     }
   });
 }
-
 /**
  * Binds a framebuffer
  *
@@ -1368,8 +1431,10 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
  * @memberOf module:twgl/framebuffers
  */
 
+
 function bindFramebufferInfo(gl, framebufferInfo, target) {
   target = target || gl.FRAMEBUFFER;
+
   if (framebufferInfo) {
     gl.bindFramebuffer(target, framebufferInfo.framebuffer);
     gl.viewport(0, 0, framebufferInfo.width, framebufferInfo.height);
@@ -1379,31 +1444,28 @@ function bindFramebufferInfo(gl, framebufferInfo, target) {
   }
 }
 
-
-
-
-
-
 /***/ }),
 
 /***/ "./src/helper.js":
 /*!***********************!*\
   !*** ./src/helper.js ***!
   \***********************/
-/*! exports provided: copyExistingProperties, copyNamedProperties, error, warn, isBuffer, isRenderbuffer, isShader, isTexture, isSampler */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "copyExistingProperties", function() { return copyExistingProperties; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "copyNamedProperties", function() { return copyNamedProperties; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "error", function() { return error; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "warn", function() { return warn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isBuffer", function() { return isBuffer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isRenderbuffer", function() { return isRenderbuffer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isShader", function() { return isShader; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isTexture", function() { return isTexture; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isSampler", function() { return isSampler; });
+
+
+exports.__esModule = true;
+exports.copyExistingProperties = copyExistingProperties;
+exports.copyNamedProperties = copyNamedProperties;
+exports.isBuffer = isBuffer;
+exports.isRenderbuffer = isRenderbuffer;
+exports.isShader = isShader;
+exports.isTexture = isTexture;
+exports.isSampler = isSampler;
+exports.warn = exports.error = void 0;
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -1446,14 +1508,14 @@ __webpack_require__.r(__webpack_exports__);
  * @private
  */
 function copyNamedProperties(names, src, dst) {
-  names.forEach(function(name) {
-    const value = src[name];
+  names.forEach(function (name) {
+    var value = src[name];
+
     if (value !== undefined) {
       dst[name] = value;
     }
   });
 }
-
 /**
  * Copies properties from source to dest only if a matching key is in dest
  *
@@ -1461,77 +1523,73 @@ function copyNamedProperties(names, src, dst) {
  * @param {Object.<string, ?>} dst the dest
  * @private
  */
+
+
 function copyExistingProperties(src, dst) {
-  Object.keys(dst).forEach(function(key) {
+  Object.keys(dst).forEach(function (key) {
     if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
       dst[key] = src[key];
     }
   });
 }
 
-const error =
-    ( typeof console !== 'undefined'
-      && console.error
-      && typeof console.error === "function"
-    )
-    ? console.error.bind(console)
-    : function() { };
+var error = typeof console !== 'undefined' && console.error && typeof console.error === "function" ? console.error.bind(console) : function () {};
+exports.error = error;
+var warn = typeof console !== 'undefined' && console.warn && typeof console.warn === "function" ? console.warn.bind(console) : function () {};
+exports.warn = warn;
+var repBuffer;
 
-const warn =
-    ( typeof console !== 'undefined'
-      && console.warn
-      && typeof console.warn === "function"
-    )
-    ? console.warn.bind(console)
-    : function() { };
-
-let repBuffer;
 function isBuffer(gl, t) {
   if (!repBuffer) {
     repBuffer = gl.createBuffer();
   }
+
   return t instanceof repBuffer.constructor;
 }
 
-let repRenderbuffer;
+var repRenderbuffer;
+
 function isRenderbuffer(gl, t) {
   if (!repRenderbuffer) {
     repRenderbuffer = gl.createRenderbuffer();
   }
+
   return t instanceof repRenderbuffer.constructor;
 }
 
-let repShader;
+var repShader;
+
 function isShader(gl, t) {
   if (!repShader) {
     repShader = gl.createShader(gl.VERTEX_SHADER);
   }
+
   return t instanceof repShader.constructor;
 }
 
-let repTexture;
+var repTexture;
+
 function isTexture(gl, t) {
   if (!repTexture) {
     repTexture = gl.createTexture();
   }
+
   return t instanceof repTexture.constructor;
 }
 
-let repSampler;
+var repSampler;
+
 function isSampler(gl, t) {
   if (!repSampler) {
     if (gl.createSampler) {
       repSampler = gl.createSampler();
     } else {
-      return false;  // it can't be a sampler if this is not WebGL2
+      return false; // it can't be a sampler if this is not WebGL2
     }
   }
+
   return t instanceof repSampler.constructor;
 }
-
-
-
-
 
 /***/ }),
 
@@ -1539,42 +1597,48 @@ function isSampler(gl, t) {
 /*!*******************!*\
   !*** ./src/m4.js ***!
   \*******************/
-/*! exports provided: axisRotate, axisRotation, copy, frustum, getAxis, getTranslation, identity, inverse, lookAt, multiply, negate, ortho, perspective, rotateX, rotateY, rotateZ, rotationX, rotationY, rotationZ, scale, scaling, setAxis, setDefaultType, setTranslation, transformDirection, transformNormal, transformPoint, translate, translation, transpose */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "axisRotate", function() { return axisRotate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "axisRotation", function() { return axisRotation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "copy", function() { return copy; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "frustum", function() { return frustum; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAxis", function() { return getAxis; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTranslation", function() { return getTranslation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "identity", function() { return identity; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "inverse", function() { return inverse; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lookAt", function() { return lookAt; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "multiply", function() { return multiply; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "negate", function() { return negate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ortho", function() { return ortho; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "perspective", function() { return perspective; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotateX", function() { return rotateX; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotateY", function() { return rotateY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotateZ", function() { return rotateZ; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotationX", function() { return rotationX; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotationY", function() { return rotationY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotationZ", function() { return rotationZ; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scale", function() { return scale; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scaling", function() { return scaling; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAxis", function() { return setAxis; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDefaultType", function() { return setDefaultType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTranslation", function() { return setTranslation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformDirection", function() { return transformDirection; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformNormal", function() { return transformNormal; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformPoint", function() { return transformPoint; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "translate", function() { return translate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "translation", function() { return translation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transpose", function() { return transpose; });
-/* harmony import */ var _v3_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./v3.js */ "./src/v3.js");
+
+
+exports.__esModule = true;
+exports.axisRotate = axisRotate;
+exports.axisRotation = axisRotation;
+exports.copy = copy;
+exports.frustum = frustum;
+exports.getAxis = getAxis;
+exports.getTranslation = getTranslation;
+exports.identity = identity;
+exports.inverse = inverse;
+exports.lookAt = lookAt;
+exports.multiply = multiply;
+exports.negate = negate;
+exports.ortho = ortho;
+exports.perspective = perspective;
+exports.rotateX = rotateX;
+exports.rotateY = rotateY;
+exports.rotateZ = rotateZ;
+exports.rotationX = rotationX;
+exports.rotationY = rotationY;
+exports.rotationZ = rotationZ;
+exports.scale = scale;
+exports.scaling = scaling;
+exports.setAxis = setAxis;
+exports.setDefaultType = setDefaultType;
+exports.setTranslation = setTranslation;
+exports.transformDirection = transformDirection;
+exports.transformNormal = transformNormal;
+exports.transformPoint = transformPoint;
+exports.translate = translate;
+exports.translation = translation;
+exports.transpose = transpose;
+
+var v3 = _interopRequireWildcard(__webpack_require__(/*! ./v3.js */ "./src/v3.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -1606,8 +1670,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
 /**
  * 4x4 Matrix math math functions.
  *
@@ -1632,12 +1694,10 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/m4
  */
-let MatType = Float32Array;
-
-const tempV3a = _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-const tempV3b = _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-const tempV3c = _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-
+var MatType = Float32Array;
+var tempV3a = v3.create();
+var tempV3b = v3.create();
+var tempV3c = v3.create();
 /**
  * A JavaScript array with 16 values or a Float32Array with 16 values.
  * When created by the library will create the default type which is `Float32Array`
@@ -1652,12 +1712,12 @@ const tempV3c = _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
  * @return {constructor} previous constructor for Mat4
  * @memberOf module:twgl/m4
  */
+
 function setDefaultType(ctor) {
-  const oldType = MatType;
+  var oldType = MatType;
   MatType = ctor;
   return oldType;
 }
-
 /**
  * Negates a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
@@ -1665,29 +1725,28 @@ function setDefaultType(ctor) {
  * @return {module:twgl/m4.Mat4} -m.
  * @memberOf module:twgl/m4
  */
+
+
 function negate(m, dst) {
   dst = dst || new MatType(16);
-
-  dst[ 0] = -m[ 0];
-  dst[ 1] = -m[ 1];
-  dst[ 2] = -m[ 2];
-  dst[ 3] = -m[ 3];
-  dst[ 4] = -m[ 4];
-  dst[ 5] = -m[ 5];
-  dst[ 6] = -m[ 6];
-  dst[ 7] = -m[ 7];
-  dst[ 8] = -m[ 8];
-  dst[ 9] = -m[ 9];
+  dst[0] = -m[0];
+  dst[1] = -m[1];
+  dst[2] = -m[2];
+  dst[3] = -m[3];
+  dst[4] = -m[4];
+  dst[5] = -m[5];
+  dst[6] = -m[6];
+  dst[7] = -m[7];
+  dst[8] = -m[8];
+  dst[9] = -m[9];
   dst[10] = -m[10];
   dst[11] = -m[11];
   dst[12] = -m[12];
   dst[13] = -m[13];
   dst[14] = -m[14];
   dst[15] = -m[15];
-
   return dst;
 }
-
 /**
  * Copies a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
@@ -1695,29 +1754,28 @@ function negate(m, dst) {
  * @return {module:twgl/m4.Mat4} A copy of m.
  * @memberOf module:twgl/m4
  */
+
+
 function copy(m, dst) {
   dst = dst || new MatType(16);
-
-  dst[ 0] = m[ 0];
-  dst[ 1] = m[ 1];
-  dst[ 2] = m[ 2];
-  dst[ 3] = m[ 3];
-  dst[ 4] = m[ 4];
-  dst[ 5] = m[ 5];
-  dst[ 6] = m[ 6];
-  dst[ 7] = m[ 7];
-  dst[ 8] = m[ 8];
-  dst[ 9] = m[ 9];
+  dst[0] = m[0];
+  dst[1] = m[1];
+  dst[2] = m[2];
+  dst[3] = m[3];
+  dst[4] = m[4];
+  dst[5] = m[5];
+  dst[6] = m[6];
+  dst[7] = m[7];
+  dst[8] = m[8];
+  dst[9] = m[9];
   dst[10] = m[10];
   dst[11] = m[11];
   dst[12] = m[12];
   dst[13] = m[13];
   dst[14] = m[14];
   dst[15] = m[15];
-
   return dst;
 }
-
 /**
  * Creates an n-by-n identity matrix.
  *
@@ -1725,29 +1783,28 @@ function copy(m, dst) {
  * @return {module:twgl/m4.Mat4} An n-by-n identity matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function identity(dst) {
   dst = dst || new MatType(16);
-
-  dst[ 0] = 1;
-  dst[ 1] = 0;
-  dst[ 2] = 0;
-  dst[ 3] = 0;
-  dst[ 4] = 0;
-  dst[ 5] = 1;
-  dst[ 6] = 0;
-  dst[ 7] = 0;
-  dst[ 8] = 0;
-  dst[ 9] = 0;
+  dst[0] = 1;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 1;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
   dst[10] = 1;
   dst[11] = 0;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = 0;
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Takes the transpose of a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
@@ -1755,74 +1812,68 @@ function identity(dst) {
  * @return {module:twgl/m4.Mat4} The transpose of m.
  * @memberOf module:twgl/m4
  */
- function transpose(m, dst) {
-  dst = dst || new MatType(16);
-  if (dst === m) {
-    let t;
 
+
+function transpose(m, dst) {
+  dst = dst || new MatType(16);
+
+  if (dst === m) {
+    var t;
     t = m[1];
     m[1] = m[4];
     m[4] = t;
-
     t = m[2];
     m[2] = m[8];
     m[8] = t;
-
     t = m[3];
     m[3] = m[12];
     m[12] = t;
-
     t = m[6];
     m[6] = m[9];
     m[9] = t;
-
     t = m[7];
     m[7] = m[13];
     m[13] = t;
-
     t = m[11];
     m[11] = m[14];
     m[14] = t;
     return dst;
   }
 
-  const m00 = m[0 * 4 + 0];
-  const m01 = m[0 * 4 + 1];
-  const m02 = m[0 * 4 + 2];
-  const m03 = m[0 * 4 + 3];
-  const m10 = m[1 * 4 + 0];
-  const m11 = m[1 * 4 + 1];
-  const m12 = m[1 * 4 + 2];
-  const m13 = m[1 * 4 + 3];
-  const m20 = m[2 * 4 + 0];
-  const m21 = m[2 * 4 + 1];
-  const m22 = m[2 * 4 + 2];
-  const m23 = m[2 * 4 + 3];
-  const m30 = m[3 * 4 + 0];
-  const m31 = m[3 * 4 + 1];
-  const m32 = m[3 * 4 + 2];
-  const m33 = m[3 * 4 + 3];
-
-  dst[ 0] = m00;
-  dst[ 1] = m10;
-  dst[ 2] = m20;
-  dst[ 3] = m30;
-  dst[ 4] = m01;
-  dst[ 5] = m11;
-  dst[ 6] = m21;
-  dst[ 7] = m31;
-  dst[ 8] = m02;
-  dst[ 9] = m12;
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var m30 = m[3 * 4 + 0];
+  var m31 = m[3 * 4 + 1];
+  var m32 = m[3 * 4 + 2];
+  var m33 = m[3 * 4 + 3];
+  dst[0] = m00;
+  dst[1] = m10;
+  dst[2] = m20;
+  dst[3] = m30;
+  dst[4] = m01;
+  dst[5] = m11;
+  dst[6] = m21;
+  dst[7] = m31;
+  dst[8] = m02;
+  dst[9] = m12;
   dst[10] = m22;
   dst[11] = m32;
   dst[12] = m03;
   dst[13] = m13;
   dst[14] = m23;
   dst[15] = m33;
-
   return dst;
 }
-
 /**
  * Computes the inverse of a 4-by-4 matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
@@ -1830,93 +1881,73 @@ function identity(dst) {
  * @return {module:twgl/m4.Mat4} The inverse of m.
  * @memberOf module:twgl/m4
  */
+
+
 function inverse(m, dst) {
   dst = dst || new MatType(16);
-
-  const m00 = m[0 * 4 + 0];
-  const m01 = m[0 * 4 + 1];
-  const m02 = m[0 * 4 + 2];
-  const m03 = m[0 * 4 + 3];
-  const m10 = m[1 * 4 + 0];
-  const m11 = m[1 * 4 + 1];
-  const m12 = m[1 * 4 + 2];
-  const m13 = m[1 * 4 + 3];
-  const m20 = m[2 * 4 + 0];
-  const m21 = m[2 * 4 + 1];
-  const m22 = m[2 * 4 + 2];
-  const m23 = m[2 * 4 + 3];
-  const m30 = m[3 * 4 + 0];
-  const m31 = m[3 * 4 + 1];
-  const m32 = m[3 * 4 + 2];
-  const m33 = m[3 * 4 + 3];
-  const tmp_0  = m22 * m33;
-  const tmp_1  = m32 * m23;
-  const tmp_2  = m12 * m33;
-  const tmp_3  = m32 * m13;
-  const tmp_4  = m12 * m23;
-  const tmp_5  = m22 * m13;
-  const tmp_6  = m02 * m33;
-  const tmp_7  = m32 * m03;
-  const tmp_8  = m02 * m23;
-  const tmp_9  = m22 * m03;
-  const tmp_10 = m02 * m13;
-  const tmp_11 = m12 * m03;
-  const tmp_12 = m20 * m31;
-  const tmp_13 = m30 * m21;
-  const tmp_14 = m10 * m31;
-  const tmp_15 = m30 * m11;
-  const tmp_16 = m10 * m21;
-  const tmp_17 = m20 * m11;
-  const tmp_18 = m00 * m31;
-  const tmp_19 = m30 * m01;
-  const tmp_20 = m00 * m21;
-  const tmp_21 = m20 * m01;
-  const tmp_22 = m00 * m11;
-  const tmp_23 = m10 * m01;
-
-  const t0 = (tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31) -
-      (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
-  const t1 = (tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31) -
-      (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
-  const t2 = (tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31) -
-      (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
-  const t3 = (tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21) -
-      (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
-
-  const d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
-
-  dst[ 0] = d * t0;
-  dst[ 1] = d * t1;
-  dst[ 2] = d * t2;
-  dst[ 3] = d * t3;
-  dst[ 4] = d * ((tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30) -
-          (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
-  dst[ 5] = d * ((tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30) -
-          (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
-  dst[ 6] = d * ((tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30) -
-          (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
-  dst[ 7] = d * ((tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20) -
-          (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
-  dst[ 8] = d * ((tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33) -
-          (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
-  dst[ 9] = d * ((tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33) -
-          (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
-  dst[10] = d * ((tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33) -
-          (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
-  dst[11] = d * ((tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23) -
-          (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
-  dst[12] = d * ((tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12) -
-          (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
-  dst[13] = d * ((tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22) -
-          (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
-  dst[14] = d * ((tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02) -
-          (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
-  dst[15] = d * ((tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12) -
-          (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
-
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var m30 = m[3 * 4 + 0];
+  var m31 = m[3 * 4 + 1];
+  var m32 = m[3 * 4 + 2];
+  var m33 = m[3 * 4 + 3];
+  var tmp_0 = m22 * m33;
+  var tmp_1 = m32 * m23;
+  var tmp_2 = m12 * m33;
+  var tmp_3 = m32 * m13;
+  var tmp_4 = m12 * m23;
+  var tmp_5 = m22 * m13;
+  var tmp_6 = m02 * m33;
+  var tmp_7 = m32 * m03;
+  var tmp_8 = m02 * m23;
+  var tmp_9 = m22 * m03;
+  var tmp_10 = m02 * m13;
+  var tmp_11 = m12 * m03;
+  var tmp_12 = m20 * m31;
+  var tmp_13 = m30 * m21;
+  var tmp_14 = m10 * m31;
+  var tmp_15 = m30 * m11;
+  var tmp_16 = m10 * m21;
+  var tmp_17 = m20 * m11;
+  var tmp_18 = m00 * m31;
+  var tmp_19 = m30 * m01;
+  var tmp_20 = m00 * m21;
+  var tmp_21 = m20 * m01;
+  var tmp_22 = m00 * m11;
+  var tmp_23 = m10 * m01;
+  var t0 = tmp_0 * m11 + tmp_3 * m21 + tmp_4 * m31 - (tmp_1 * m11 + tmp_2 * m21 + tmp_5 * m31);
+  var t1 = tmp_1 * m01 + tmp_6 * m21 + tmp_9 * m31 - (tmp_0 * m01 + tmp_7 * m21 + tmp_8 * m31);
+  var t2 = tmp_2 * m01 + tmp_7 * m11 + tmp_10 * m31 - (tmp_3 * m01 + tmp_6 * m11 + tmp_11 * m31);
+  var t3 = tmp_5 * m01 + tmp_8 * m11 + tmp_11 * m21 - (tmp_4 * m01 + tmp_9 * m11 + tmp_10 * m21);
+  var d = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
+  dst[0] = d * t0;
+  dst[1] = d * t1;
+  dst[2] = d * t2;
+  dst[3] = d * t3;
+  dst[4] = d * (tmp_1 * m10 + tmp_2 * m20 + tmp_5 * m30 - (tmp_0 * m10 + tmp_3 * m20 + tmp_4 * m30));
+  dst[5] = d * (tmp_0 * m00 + tmp_7 * m20 + tmp_8 * m30 - (tmp_1 * m00 + tmp_6 * m20 + tmp_9 * m30));
+  dst[6] = d * (tmp_3 * m00 + tmp_6 * m10 + tmp_11 * m30 - (tmp_2 * m00 + tmp_7 * m10 + tmp_10 * m30));
+  dst[7] = d * (tmp_4 * m00 + tmp_9 * m10 + tmp_10 * m20 - (tmp_5 * m00 + tmp_8 * m10 + tmp_11 * m20));
+  dst[8] = d * (tmp_12 * m13 + tmp_15 * m23 + tmp_16 * m33 - (tmp_13 * m13 + tmp_14 * m23 + tmp_17 * m33));
+  dst[9] = d * (tmp_13 * m03 + tmp_18 * m23 + tmp_21 * m33 - (tmp_12 * m03 + tmp_19 * m23 + tmp_20 * m33));
+  dst[10] = d * (tmp_14 * m03 + tmp_19 * m13 + tmp_22 * m33 - (tmp_15 * m03 + tmp_18 * m13 + tmp_23 * m33));
+  dst[11] = d * (tmp_17 * m03 + tmp_20 * m13 + tmp_23 * m23 - (tmp_16 * m03 + tmp_21 * m13 + tmp_22 * m23));
+  dst[12] = d * (tmp_14 * m22 + tmp_17 * m32 + tmp_13 * m12 - (tmp_16 * m32 + tmp_12 * m12 + tmp_15 * m22));
+  dst[13] = d * (tmp_20 * m32 + tmp_12 * m02 + tmp_19 * m22 - (tmp_18 * m22 + tmp_21 * m32 + tmp_13 * m02));
+  dst[14] = d * (tmp_18 * m12 + tmp_23 * m32 + tmp_15 * m02 - (tmp_22 * m32 + tmp_14 * m02 + tmp_19 * m12));
+  dst[15] = d * (tmp_22 * m22 + tmp_16 * m02 + tmp_21 * m12 - (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02));
   return dst;
 }
-
 /**
  * Multiplies two 4-by-4 matrices with a on the left and b on the right
  * @param {module:twgl/m4.Mat4} a The matrix on the left.
@@ -1925,62 +1956,60 @@ function inverse(m, dst) {
  * @return {module:twgl/m4.Mat4} The matrix product of a and b.
  * @memberOf module:twgl/m4
  */
+
+
 function multiply(a, b, dst) {
   dst = dst || new MatType(16);
-
-  const a00 = a[0];
-  const a01 = a[1];
-  const a02 = a[2];
-  const a03 = a[3];
-  const a10 = a[ 4 + 0];
-  const a11 = a[ 4 + 1];
-  const a12 = a[ 4 + 2];
-  const a13 = a[ 4 + 3];
-  const a20 = a[ 8 + 0];
-  const a21 = a[ 8 + 1];
-  const a22 = a[ 8 + 2];
-  const a23 = a[ 8 + 3];
-  const a30 = a[12 + 0];
-  const a31 = a[12 + 1];
-  const a32 = a[12 + 2];
-  const a33 = a[12 + 3];
-  const b00 = b[0];
-  const b01 = b[1];
-  const b02 = b[2];
-  const b03 = b[3];
-  const b10 = b[ 4 + 0];
-  const b11 = b[ 4 + 1];
-  const b12 = b[ 4 + 2];
-  const b13 = b[ 4 + 3];
-  const b20 = b[ 8 + 0];
-  const b21 = b[ 8 + 1];
-  const b22 = b[ 8 + 2];
-  const b23 = b[ 8 + 3];
-  const b30 = b[12 + 0];
-  const b31 = b[12 + 1];
-  const b32 = b[12 + 2];
-  const b33 = b[12 + 3];
-
-  dst[ 0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
-  dst[ 1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
-  dst[ 2] = a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03;
-  dst[ 3] = a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03;
-  dst[ 4] = a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13;
-  dst[ 5] = a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13;
-  dst[ 6] = a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13;
-  dst[ 7] = a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13;
-  dst[ 8] = a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23;
-  dst[ 9] = a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23;
+  var a00 = a[0];
+  var a01 = a[1];
+  var a02 = a[2];
+  var a03 = a[3];
+  var a10 = a[4 + 0];
+  var a11 = a[4 + 1];
+  var a12 = a[4 + 2];
+  var a13 = a[4 + 3];
+  var a20 = a[8 + 0];
+  var a21 = a[8 + 1];
+  var a22 = a[8 + 2];
+  var a23 = a[8 + 3];
+  var a30 = a[12 + 0];
+  var a31 = a[12 + 1];
+  var a32 = a[12 + 2];
+  var a33 = a[12 + 3];
+  var b00 = b[0];
+  var b01 = b[1];
+  var b02 = b[2];
+  var b03 = b[3];
+  var b10 = b[4 + 0];
+  var b11 = b[4 + 1];
+  var b12 = b[4 + 2];
+  var b13 = b[4 + 3];
+  var b20 = b[8 + 0];
+  var b21 = b[8 + 1];
+  var b22 = b[8 + 2];
+  var b23 = b[8 + 3];
+  var b30 = b[12 + 0];
+  var b31 = b[12 + 1];
+  var b32 = b[12 + 2];
+  var b33 = b[12 + 3];
+  dst[0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
+  dst[1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;
+  dst[2] = a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03;
+  dst[3] = a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03;
+  dst[4] = a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13;
+  dst[5] = a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13;
+  dst[6] = a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13;
+  dst[7] = a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13;
+  dst[8] = a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23;
+  dst[9] = a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23;
   dst[10] = a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23;
   dst[11] = a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23;
   dst[12] = a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33;
   dst[13] = a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33;
   dst[14] = a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33;
   dst[15] = a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33;
-
   return dst;
 }
-
 /**
  * Sets the translation component of a 4-by-4 matrix to the given
  * vector.
@@ -1990,29 +2019,32 @@ function multiply(a, b, dst) {
  * @return {module:twgl/m4.Mat4} a once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function setTranslation(a, v, dst) {
   dst = dst || identity();
+
   if (a !== dst) {
-    dst[ 0] = a[ 0];
-    dst[ 1] = a[ 1];
-    dst[ 2] = a[ 2];
-    dst[ 3] = a[ 3];
-    dst[ 4] = a[ 4];
-    dst[ 5] = a[ 5];
-    dst[ 6] = a[ 6];
-    dst[ 7] = a[ 7];
-    dst[ 8] = a[ 8];
-    dst[ 9] = a[ 9];
+    dst[0] = a[0];
+    dst[1] = a[1];
+    dst[2] = a[2];
+    dst[3] = a[3];
+    dst[4] = a[4];
+    dst[5] = a[5];
+    dst[6] = a[6];
+    dst[7] = a[7];
+    dst[8] = a[8];
+    dst[9] = a[9];
     dst[10] = a[10];
     dst[11] = a[11];
   }
+
   dst[12] = v[0];
   dst[13] = v[1];
   dst[14] = v[2];
   dst[15] = 1;
   return dst;
 }
-
 /**
  * Returns the translation component of a 4-by-4 matrix as a vector with 3
  * entries.
@@ -2021,14 +2053,15 @@ function setTranslation(a, v, dst) {
  * @return {module:twgl/v3.Vec3} The translation component of m.
  * @memberOf module:twgl/m4
  */
+
+
 function getTranslation(m, dst) {
-  dst = dst || _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
+  dst = dst || v3.create();
   dst[0] = m[12];
   dst[1] = m[13];
   dst[2] = m[14];
   return dst;
 }
-
 /**
  * Returns an axis of a 4x4 matrix as a vector with 3 entries
  * @param {module:twgl/m4.Mat4} m The matrix.
@@ -2037,15 +2070,16 @@ function getTranslation(m, dst) {
  * @return {module:twgl/v3.Vec3} The axis component of m.
  * @memberOf module:twgl/m4
  */
+
+
 function getAxis(m, axis, dst) {
-  dst = dst || _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-  const off = axis * 4;
+  dst = dst || v3.create();
+  var off = axis * 4;
   dst[0] = m[off + 0];
   dst[1] = m[off + 1];
   dst[2] = m[off + 2];
   return dst;
 }
-
 /**
  * Sets an axis of a 4x4 matrix as a vector with 3 entries
  * @param {module:twgl/v3.Vec3} v the axis vector
@@ -2054,17 +2088,19 @@ function getAxis(m, axis, dst) {
  * @return {module:twgl/m4.Mat4} dst
  * @memberOf module:twgl/m4
  */
+
+
 function setAxis(a, v, axis, dst) {
   if (dst !== a) {
     dst = copy(a, dst);
   }
-  const off = axis * 4;
+
+  var off = axis * 4;
   dst[off + 0] = v[0];
   dst[off + 1] = v[1];
   dst[off + 2] = v[2];
   return dst;
 }
-
 /**
  * Computes a 4-by-4 perspective transformation matrix given the angular height
  * of the frustum, the aspect ratio, and the near and far clipping planes.  The
@@ -2086,35 +2122,30 @@ function setAxis(a, v, axis, dst) {
  * @return {module:twgl/m4.Mat4} The perspective matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
   dst = dst || new MatType(16);
-
-  const f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
-  const rangeInv = 1.0 / (zNear - zFar);
-
-  dst[0]  = f / aspect;
-  dst[1]  = 0;
-  dst[2]  = 0;
-  dst[3]  = 0;
-
-  dst[4]  = 0;
-  dst[5]  = f;
-  dst[6]  = 0;
-  dst[7]  = 0;
-
-  dst[8]  = 0;
-  dst[9]  = 0;
+  var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
+  var rangeInv = 1.0 / (zNear - zFar);
+  dst[0] = f / aspect;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = f;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
   dst[10] = (zNear + zFar) * rangeInv;
   dst[11] = -1;
-
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = zNear * zFar * rangeInv * 2;
   dst[15] = 0;
-
   return dst;
 }
-
 /**
  * Computes a 4-by-4 othogonal transformation matrix given the left, right,
  * bottom, and top dimensions of the near clipping plane as well as the
@@ -2131,32 +2162,28 @@ function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
  * @return {module:twgl/m4.Mat4} The perspective matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function ortho(left, right, bottom, top, near, far, dst) {
   dst = dst || new MatType(16);
-
-  dst[0]  = 2 / (right - left);
-  dst[1]  = 0;
-  dst[2]  = 0;
-  dst[3]  = 0;
-
-  dst[4]  = 0;
-  dst[5]  = 2 / (top - bottom);
-  dst[6]  = 0;
-  dst[7]  = 0;
-
-  dst[8]  = 0;
-  dst[9]  = 0;
+  dst[0] = 2 / (right - left);
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 2 / (top - bottom);
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
   dst[10] = 2 / (near - far);
   dst[11] = 0;
-
   dst[12] = (right + left) / (left - right);
   dst[13] = (top + bottom) / (bottom - top);
   dst[14] = (far + near) / (near - far);
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Computes a 4-by-4 perspective transformation matrix given the left, right,
  * top, bottom, near and far clipping planes. The arguments define a frustum
@@ -2176,33 +2203,31 @@ function ortho(left, right, bottom, top, near, far, dst) {
  * @return {module:twgl/m4.Mat4} The perspective projection matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function frustum(left, right, bottom, top, near, far, dst) {
   dst = dst || new MatType(16);
-
-  const dx = (right - left);
-  const dy = (top - bottom);
-  const dz = (near - far);
-
-  dst[ 0] = 2 * near / dx;
-  dst[ 1] = 0;
-  dst[ 2] = 0;
-  dst[ 3] = 0;
-  dst[ 4] = 0;
-  dst[ 5] = 2 * near / dy;
-  dst[ 6] = 0;
-  dst[ 7] = 0;
-  dst[ 8] = (left + right) / dx;
-  dst[ 9] = (top + bottom) / dy;
+  var dx = right - left;
+  var dy = top - bottom;
+  var dz = near - far;
+  dst[0] = 2 * near / dx;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 2 * near / dy;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = (left + right) / dx;
+  dst[9] = (top + bottom) / dy;
   dst[10] = far / dz;
   dst[11] = -1;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = near * far / dz;
   dst[15] = 0;
-
   return dst;
 }
-
 /**
  * Computes a 4-by-4 look-at transformation.
  *
@@ -2217,38 +2242,34 @@ function frustum(left, right, bottom, top, near, far, dst) {
  * @return {module:twgl/m4.Mat4} The look-at matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function lookAt(eye, target, up, dst) {
   dst = dst || new MatType(16);
-
-  const xAxis = tempV3a;
-  const yAxis = tempV3b;
-  const zAxis = tempV3c;
-
-  _v3_js__WEBPACK_IMPORTED_MODULE_0__["normalize"](
-      _v3_js__WEBPACK_IMPORTED_MODULE_0__["subtract"](eye, target, zAxis), zAxis);
-  _v3_js__WEBPACK_IMPORTED_MODULE_0__["normalize"](_v3_js__WEBPACK_IMPORTED_MODULE_0__["cross"](up, zAxis, xAxis), xAxis);
-  _v3_js__WEBPACK_IMPORTED_MODULE_0__["normalize"](_v3_js__WEBPACK_IMPORTED_MODULE_0__["cross"](zAxis, xAxis, yAxis), yAxis);
-
-  dst[ 0] = xAxis[0];
-  dst[ 1] = xAxis[1];
-  dst[ 2] = xAxis[2];
-  dst[ 3] = 0;
-  dst[ 4] = yAxis[0];
-  dst[ 5] = yAxis[1];
-  dst[ 6] = yAxis[2];
-  dst[ 7] = 0;
-  dst[ 8] = zAxis[0];
-  dst[ 9] = zAxis[1];
+  var xAxis = tempV3a;
+  var yAxis = tempV3b;
+  var zAxis = tempV3c;
+  v3.normalize(v3.subtract(eye, target, zAxis), zAxis);
+  v3.normalize(v3.cross(up, zAxis, xAxis), xAxis);
+  v3.normalize(v3.cross(zAxis, xAxis, yAxis), yAxis);
+  dst[0] = xAxis[0];
+  dst[1] = xAxis[1];
+  dst[2] = xAxis[2];
+  dst[3] = 0;
+  dst[4] = yAxis[0];
+  dst[5] = yAxis[1];
+  dst[6] = yAxis[2];
+  dst[7] = 0;
+  dst[8] = zAxis[0];
+  dst[9] = zAxis[1];
   dst[10] = zAxis[2];
   dst[11] = 0;
   dst[12] = eye[0];
   dst[13] = eye[1];
   dst[14] = eye[2];
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Creates a 4-by-4 matrix which translates by the given vector v.
  * @param {module:twgl/v3.Vec3} v The vector by
@@ -2257,19 +2278,20 @@ function lookAt(eye, target, up, dst) {
  * @return {module:twgl/m4.Mat4} The translation matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function translation(v, dst) {
   dst = dst || new MatType(16);
-
-  dst[ 0] = 1;
-  dst[ 1] = 0;
-  dst[ 2] = 0;
-  dst[ 3] = 0;
-  dst[ 4] = 0;
-  dst[ 5] = 1;
-  dst[ 6] = 0;
-  dst[ 7] = 0;
-  dst[ 8] = 0;
-  dst[ 9] = 0;
+  dst[0] = 1;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 1;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
   dst[10] = 1;
   dst[11] = 0;
   dst[12] = v[0];
@@ -2278,7 +2300,6 @@ function translation(v, dst) {
   dst[15] = 1;
   return dst;
 }
-
 /**
  * Modifies the given 4-by-4 matrix by translation by the given vector v.
  * @param {module:twgl/m4.Mat4} m The matrix.
@@ -2288,40 +2309,41 @@ function translation(v, dst) {
  * @return {module:twgl/m4.Mat4} m once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function translate(m, v, dst) {
   dst = dst || new MatType(16);
-
-  const v0 = v[0];
-  const v1 = v[1];
-  const v2 = v[2];
-  const m00 = m[0];
-  const m01 = m[1];
-  const m02 = m[2];
-  const m03 = m[3];
-  const m10 = m[1 * 4 + 0];
-  const m11 = m[1 * 4 + 1];
-  const m12 = m[1 * 4 + 2];
-  const m13 = m[1 * 4 + 3];
-  const m20 = m[2 * 4 + 0];
-  const m21 = m[2 * 4 + 1];
-  const m22 = m[2 * 4 + 2];
-  const m23 = m[2 * 4 + 3];
-  const m30 = m[3 * 4 + 0];
-  const m31 = m[3 * 4 + 1];
-  const m32 = m[3 * 4 + 2];
-  const m33 = m[3 * 4 + 3];
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  var m00 = m[0];
+  var m01 = m[1];
+  var m02 = m[2];
+  var m03 = m[3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var m30 = m[3 * 4 + 0];
+  var m31 = m[3 * 4 + 1];
+  var m32 = m[3 * 4 + 2];
+  var m33 = m[3 * 4 + 3];
 
   if (m !== dst) {
-    dst[ 0] = m00;
-    dst[ 1] = m01;
-    dst[ 2] = m02;
-    dst[ 3] = m03;
-    dst[ 4] = m10;
-    dst[ 5] = m11;
-    dst[ 6] = m12;
-    dst[ 7] = m13;
-    dst[ 8] = m20;
-    dst[ 9] = m21;
+    dst[0] = m00;
+    dst[1] = m01;
+    dst[2] = m02;
+    dst[3] = m03;
+    dst[4] = m10;
+    dst[5] = m11;
+    dst[6] = m12;
+    dst[7] = m13;
+    dst[8] = m20;
+    dst[9] = m21;
     dst[10] = m22;
     dst[11] = m23;
   }
@@ -2330,10 +2352,8 @@ function translate(m, v, dst) {
   dst[13] = m01 * v0 + m11 * v1 + m21 * v2 + m31;
   dst[14] = m02 * v0 + m12 * v1 + m22 * v2 + m32;
   dst[15] = m03 * v0 + m13 * v1 + m23 * v2 + m33;
-
   return dst;
 }
-
 /**
  * Creates a 4-by-4 matrix which rotates around the x-axis by the given angle.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
@@ -2341,32 +2361,30 @@ function translate(m, v, dst) {
  * @return {module:twgl/m4.Mat4} The rotation matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function rotationX(angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-
-  dst[ 0] = 1;
-  dst[ 1] = 0;
-  dst[ 2] = 0;
-  dst[ 3] = 0;
-  dst[ 4] = 0;
-  dst[ 5] = c;
-  dst[ 6] = s;
-  dst[ 7] = 0;
-  dst[ 8] = 0;
-  dst[ 9] = -s;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = 1;
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = c;
+  dst[6] = s;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = -s;
   dst[10] = c;
   dst[11] = 0;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = 0;
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given
  * angle.
@@ -2376,34 +2394,34 @@ function rotationX(angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} m once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function rotateX(m, angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  const m10 = m[4];
-  const m11 = m[5];
-  const m12 = m[6];
-  const m13 = m[7];
-  const m20 = m[8];
-  const m21 = m[9];
-  const m22 = m[10];
-  const m23 = m[11];
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-
-  dst[4]  = c * m10 + s * m20;
-  dst[5]  = c * m11 + s * m21;
-  dst[6]  = c * m12 + s * m22;
-  dst[7]  = c * m13 + s * m23;
-  dst[8]  = c * m20 - s * m10;
-  dst[9]  = c * m21 - s * m11;
+  var m10 = m[4];
+  var m11 = m[5];
+  var m12 = m[6];
+  var m13 = m[7];
+  var m20 = m[8];
+  var m21 = m[9];
+  var m22 = m[10];
+  var m23 = m[11];
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[4] = c * m10 + s * m20;
+  dst[5] = c * m11 + s * m21;
+  dst[6] = c * m12 + s * m22;
+  dst[7] = c * m13 + s * m23;
+  dst[8] = c * m20 - s * m10;
+  dst[9] = c * m21 - s * m11;
   dst[10] = c * m22 - s * m12;
   dst[11] = c * m23 - s * m13;
 
   if (m !== dst) {
-    dst[ 0] = m[ 0];
-    dst[ 1] = m[ 1];
-    dst[ 2] = m[ 2];
-    dst[ 3] = m[ 3];
+    dst[0] = m[0];
+    dst[1] = m[1];
+    dst[2] = m[2];
+    dst[3] = m[3];
     dst[12] = m[12];
     dst[13] = m[13];
     dst[14] = m[14];
@@ -2412,7 +2430,6 @@ function rotateX(m, angleInRadians, dst) {
 
   return dst;
 }
-
 /**
  * Creates a 4-by-4 matrix which rotates around the y-axis by the given angle.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
@@ -2420,32 +2437,30 @@ function rotateX(m, angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} The rotation matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function rotationY(angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-
-  dst[ 0] = c;
-  dst[ 1] = 0;
-  dst[ 2] = -s;
-  dst[ 3] = 0;
-  dst[ 4] = 0;
-  dst[ 5] = 1;
-  dst[ 6] = 0;
-  dst[ 7] = 0;
-  dst[ 8] = s;
-  dst[ 9] = 0;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c;
+  dst[1] = 0;
+  dst[2] = -s;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = 1;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = s;
+  dst[9] = 0;
   dst[10] = c;
   dst[11] = 0;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = 0;
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given
  * angle.
@@ -2455,34 +2470,34 @@ function rotationY(angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} m once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function rotateY(m, angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  const m00 = m[0 * 4 + 0];
-  const m01 = m[0 * 4 + 1];
-  const m02 = m[0 * 4 + 2];
-  const m03 = m[0 * 4 + 3];
-  const m20 = m[2 * 4 + 0];
-  const m21 = m[2 * 4 + 1];
-  const m22 = m[2 * 4 + 2];
-  const m23 = m[2 * 4 + 3];
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-
-  dst[ 0] = c * m00 - s * m20;
-  dst[ 1] = c * m01 - s * m21;
-  dst[ 2] = c * m02 - s * m22;
-  dst[ 3] = c * m03 - s * m23;
-  dst[ 8] = c * m20 + s * m00;
-  dst[ 9] = c * m21 + s * m01;
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m20 = m[2 * 4 + 0];
+  var m21 = m[2 * 4 + 1];
+  var m22 = m[2 * 4 + 2];
+  var m23 = m[2 * 4 + 3];
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c * m00 - s * m20;
+  dst[1] = c * m01 - s * m21;
+  dst[2] = c * m02 - s * m22;
+  dst[3] = c * m03 - s * m23;
+  dst[8] = c * m20 + s * m00;
+  dst[9] = c * m21 + s * m01;
   dst[10] = c * m22 + s * m02;
   dst[11] = c * m23 + s * m03;
 
   if (m !== dst) {
-    dst[ 4] = m[ 4];
-    dst[ 5] = m[ 5];
-    dst[ 6] = m[ 6];
-    dst[ 7] = m[ 7];
+    dst[4] = m[4];
+    dst[5] = m[5];
+    dst[6] = m[6];
+    dst[7] = m[7];
     dst[12] = m[12];
     dst[13] = m[13];
     dst[14] = m[14];
@@ -2491,7 +2506,6 @@ function rotateY(m, angleInRadians, dst) {
 
   return dst;
 }
-
 /**
  * Creates a 4-by-4 matrix which rotates around the z-axis by the given angle.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
@@ -2499,32 +2513,30 @@ function rotateY(m, angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} The rotation matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function rotationZ(angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-
-  dst[ 0] = c;
-  dst[ 1] = s;
-  dst[ 2] = 0;
-  dst[ 3] = 0;
-  dst[ 4] = -s;
-  dst[ 5] = c;
-  dst[ 6] = 0;
-  dst[ 7] = 0;
-  dst[ 8] = 0;
-  dst[ 9] = 0;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c;
+  dst[1] = s;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = -s;
+  dst[5] = c;
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
   dst[10] = 1;
   dst[11] = 0;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = 0;
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given
  * angle.
@@ -2534,32 +2546,32 @@ function rotationZ(angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} m once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function rotateZ(m, angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  const m00 = m[0 * 4 + 0];
-  const m01 = m[0 * 4 + 1];
-  const m02 = m[0 * 4 + 2];
-  const m03 = m[0 * 4 + 3];
-  const m10 = m[1 * 4 + 0];
-  const m11 = m[1 * 4 + 1];
-  const m12 = m[1 * 4 + 2];
-  const m13 = m[1 * 4 + 3];
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-
-  dst[ 0] = c * m00 + s * m10;
-  dst[ 1] = c * m01 + s * m11;
-  dst[ 2] = c * m02 + s * m12;
-  dst[ 3] = c * m03 + s * m13;
-  dst[ 4] = c * m10 - s * m00;
-  dst[ 5] = c * m11 - s * m01;
-  dst[ 6] = c * m12 - s * m02;
-  dst[ 7] = c * m13 - s * m03;
+  var m00 = m[0 * 4 + 0];
+  var m01 = m[0 * 4 + 1];
+  var m02 = m[0 * 4 + 2];
+  var m03 = m[0 * 4 + 3];
+  var m10 = m[1 * 4 + 0];
+  var m11 = m[1 * 4 + 1];
+  var m12 = m[1 * 4 + 2];
+  var m13 = m[1 * 4 + 3];
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  dst[0] = c * m00 + s * m10;
+  dst[1] = c * m01 + s * m11;
+  dst[2] = c * m02 + s * m12;
+  dst[3] = c * m03 + s * m13;
+  dst[4] = c * m10 - s * m00;
+  dst[5] = c * m11 - s * m01;
+  dst[6] = c * m12 - s * m02;
+  dst[7] = c * m13 - s * m03;
 
   if (m !== dst) {
-    dst[ 8] = m[ 8];
-    dst[ 9] = m[ 9];
+    dst[8] = m[8];
+    dst[9] = m[9];
     dst[10] = m[10];
     dst[11] = m[11];
     dst[12] = m[12];
@@ -2570,7 +2582,6 @@ function rotateZ(m, angleInRadians, dst) {
 
   return dst;
 }
-
 /**
  * Creates a 4-by-4 matrix which rotates around the given axis by the given
  * angle.
@@ -2582,43 +2593,41 @@ function rotateZ(m, angleInRadians, dst) {
  *     around the axis.
  * @memberOf module:twgl/m4
  */
+
+
 function axisRotation(axis, angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  let x = axis[0];
-  let y = axis[1];
-  let z = axis[2];
-  const n = Math.sqrt(x * x + y * y + z * z);
+  var x = axis[0];
+  var y = axis[1];
+  var z = axis[2];
+  var n = Math.sqrt(x * x + y * y + z * z);
   x /= n;
   y /= n;
   z /= n;
-  const xx = x * x;
-  const yy = y * y;
-  const zz = z * z;
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-  const oneMinusCosine = 1 - c;
-
-  dst[ 0] = xx + (1 - xx) * c;
-  dst[ 1] = x * y * oneMinusCosine + z * s;
-  dst[ 2] = x * z * oneMinusCosine - y * s;
-  dst[ 3] = 0;
-  dst[ 4] = x * y * oneMinusCosine - z * s;
-  dst[ 5] = yy + (1 - yy) * c;
-  dst[ 6] = y * z * oneMinusCosine + x * s;
-  dst[ 7] = 0;
-  dst[ 8] = x * z * oneMinusCosine + y * s;
-  dst[ 9] = y * z * oneMinusCosine - x * s;
+  var xx = x * x;
+  var yy = y * y;
+  var zz = z * z;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  var oneMinusCosine = 1 - c;
+  dst[0] = xx + (1 - xx) * c;
+  dst[1] = x * y * oneMinusCosine + z * s;
+  dst[2] = x * z * oneMinusCosine - y * s;
+  dst[3] = 0;
+  dst[4] = x * y * oneMinusCosine - z * s;
+  dst[5] = yy + (1 - yy) * c;
+  dst[6] = y * z * oneMinusCosine + x * s;
+  dst[7] = 0;
+  dst[8] = x * z * oneMinusCosine + y * s;
+  dst[9] = y * z * oneMinusCosine - x * s;
   dst[10] = zz + (1 - zz) * c;
   dst[11] = 0;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = 0;
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Modifies the given 4-by-4 matrix by rotation around the given axis by the
  * given angle.
@@ -2630,56 +2639,54 @@ function axisRotation(axis, angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} m once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function axisRotate(m, axis, angleInRadians, dst) {
   dst = dst || new MatType(16);
-
-  let x = axis[0];
-  let y = axis[1];
-  let z = axis[2];
-  const n = Math.sqrt(x * x + y * y + z * z);
+  var x = axis[0];
+  var y = axis[1];
+  var z = axis[2];
+  var n = Math.sqrt(x * x + y * y + z * z);
   x /= n;
   y /= n;
   z /= n;
-  const xx = x * x;
-  const yy = y * y;
-  const zz = z * z;
-  const c = Math.cos(angleInRadians);
-  const s = Math.sin(angleInRadians);
-  const oneMinusCosine = 1 - c;
-
-  const r00 = xx + (1 - xx) * c;
-  const r01 = x * y * oneMinusCosine + z * s;
-  const r02 = x * z * oneMinusCosine - y * s;
-  const r10 = x * y * oneMinusCosine - z * s;
-  const r11 = yy + (1 - yy) * c;
-  const r12 = y * z * oneMinusCosine + x * s;
-  const r20 = x * z * oneMinusCosine + y * s;
-  const r21 = y * z * oneMinusCosine - x * s;
-  const r22 = zz + (1 - zz) * c;
-
-  const m00 = m[0];
-  const m01 = m[1];
-  const m02 = m[2];
-  const m03 = m[3];
-  const m10 = m[4];
-  const m11 = m[5];
-  const m12 = m[6];
-  const m13 = m[7];
-  const m20 = m[8];
-  const m21 = m[9];
-  const m22 = m[10];
-  const m23 = m[11];
-
-  dst[ 0] = r00 * m00 + r01 * m10 + r02 * m20;
-  dst[ 1] = r00 * m01 + r01 * m11 + r02 * m21;
-  dst[ 2] = r00 * m02 + r01 * m12 + r02 * m22;
-  dst[ 3] = r00 * m03 + r01 * m13 + r02 * m23;
-  dst[ 4] = r10 * m00 + r11 * m10 + r12 * m20;
-  dst[ 5] = r10 * m01 + r11 * m11 + r12 * m21;
-  dst[ 6] = r10 * m02 + r11 * m12 + r12 * m22;
-  dst[ 7] = r10 * m03 + r11 * m13 + r12 * m23;
-  dst[ 8] = r20 * m00 + r21 * m10 + r22 * m20;
-  dst[ 9] = r20 * m01 + r21 * m11 + r22 * m21;
+  var xx = x * x;
+  var yy = y * y;
+  var zz = z * z;
+  var c = Math.cos(angleInRadians);
+  var s = Math.sin(angleInRadians);
+  var oneMinusCosine = 1 - c;
+  var r00 = xx + (1 - xx) * c;
+  var r01 = x * y * oneMinusCosine + z * s;
+  var r02 = x * z * oneMinusCosine - y * s;
+  var r10 = x * y * oneMinusCosine - z * s;
+  var r11 = yy + (1 - yy) * c;
+  var r12 = y * z * oneMinusCosine + x * s;
+  var r20 = x * z * oneMinusCosine + y * s;
+  var r21 = y * z * oneMinusCosine - x * s;
+  var r22 = zz + (1 - zz) * c;
+  var m00 = m[0];
+  var m01 = m[1];
+  var m02 = m[2];
+  var m03 = m[3];
+  var m10 = m[4];
+  var m11 = m[5];
+  var m12 = m[6];
+  var m13 = m[7];
+  var m20 = m[8];
+  var m21 = m[9];
+  var m22 = m[10];
+  var m23 = m[11];
+  dst[0] = r00 * m00 + r01 * m10 + r02 * m20;
+  dst[1] = r00 * m01 + r01 * m11 + r02 * m21;
+  dst[2] = r00 * m02 + r01 * m12 + r02 * m22;
+  dst[3] = r00 * m03 + r01 * m13 + r02 * m23;
+  dst[4] = r10 * m00 + r11 * m10 + r12 * m20;
+  dst[5] = r10 * m01 + r11 * m11 + r12 * m21;
+  dst[6] = r10 * m02 + r11 * m12 + r12 * m22;
+  dst[7] = r10 * m03 + r11 * m13 + r12 * m23;
+  dst[8] = r20 * m00 + r21 * m10 + r22 * m20;
+  dst[9] = r20 * m01 + r21 * m11 + r22 * m21;
   dst[10] = r20 * m02 + r21 * m12 + r22 * m22;
   dst[11] = r20 * m03 + r21 * m13 + r22 * m23;
 
@@ -2692,7 +2699,6 @@ function axisRotate(m, axis, angleInRadians, dst) {
 
   return dst;
 }
-
 /**
  * Creates a 4-by-4 matrix which scales in each dimension by an amount given by
  * the corresponding entry in the given vector; assumes the vector has three
@@ -2703,29 +2709,28 @@ function axisRotate(m, axis, angleInRadians, dst) {
  * @return {module:twgl/m4.Mat4} The scaling matrix.
  * @memberOf module:twgl/m4
  */
+
+
 function scaling(v, dst) {
   dst = dst || new MatType(16);
-
-  dst[ 0] = v[0];
-  dst[ 1] = 0;
-  dst[ 2] = 0;
-  dst[ 3] = 0;
-  dst[ 4] = 0;
-  dst[ 5] = v[1];
-  dst[ 6] = 0;
-  dst[ 7] = 0;
-  dst[ 8] = 0;
-  dst[ 9] = 0;
+  dst[0] = v[0];
+  dst[1] = 0;
+  dst[2] = 0;
+  dst[3] = 0;
+  dst[4] = 0;
+  dst[5] = v[1];
+  dst[6] = 0;
+  dst[7] = 0;
+  dst[8] = 0;
+  dst[9] = 0;
   dst[10] = v[2];
   dst[11] = 0;
   dst[12] = 0;
   dst[13] = 0;
   dst[14] = 0;
   dst[15] = 1;
-
   return dst;
 }
-
 /**
  * Modifies the given 4-by-4 matrix, scaling in each dimension by an amount
  * given by the corresponding entry in the given vector; assumes the vector has
@@ -2737,23 +2742,23 @@ function scaling(v, dst) {
  * @return {module:twgl/m4.Mat4} m once modified.
  * @memberOf module:twgl/m4
  */
+
+
 function scale(m, v, dst) {
   dst = dst || new MatType(16);
-
-  const v0 = v[0];
-  const v1 = v[1];
-  const v2 = v[2];
-
-  dst[ 0] = v0 * m[0 * 4 + 0];
-  dst[ 1] = v0 * m[0 * 4 + 1];
-  dst[ 2] = v0 * m[0 * 4 + 2];
-  dst[ 3] = v0 * m[0 * 4 + 3];
-  dst[ 4] = v1 * m[1 * 4 + 0];
-  dst[ 5] = v1 * m[1 * 4 + 1];
-  dst[ 6] = v1 * m[1 * 4 + 2];
-  dst[ 7] = v1 * m[1 * 4 + 3];
-  dst[ 8] = v2 * m[2 * 4 + 0];
-  dst[ 9] = v2 * m[2 * 4 + 1];
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  dst[0] = v0 * m[0 * 4 + 0];
+  dst[1] = v0 * m[0 * 4 + 1];
+  dst[2] = v0 * m[0 * 4 + 2];
+  dst[3] = v0 * m[0 * 4 + 3];
+  dst[4] = v1 * m[1 * 4 + 0];
+  dst[5] = v1 * m[1 * 4 + 1];
+  dst[6] = v1 * m[1 * 4 + 2];
+  dst[7] = v1 * m[1 * 4 + 3];
+  dst[8] = v2 * m[2 * 4 + 0];
+  dst[9] = v2 * m[2 * 4 + 1];
   dst[10] = v2 * m[2 * 4 + 2];
   dst[11] = v2 * m[2 * 4 + 3];
 
@@ -2766,7 +2771,6 @@ function scale(m, v, dst) {
 
   return dst;
 }
-
 /**
  * Takes a 4-by-4 matrix and a vector with 3 entries,
  * interprets the vector as a point, transforms that point by the matrix, and
@@ -2777,20 +2781,19 @@ function scale(m, v, dst) {
  * @return {module:twgl/v3.Vec3} dst or new vec3 if not provided
  * @memberOf module:twgl/m4
  */
-function transformPoint(m, v, dst) {
-  dst = dst || _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-  const v0 = v[0];
-  const v1 = v[1];
-  const v2 = v[2];
-  const d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
 
+
+function transformPoint(m, v, dst) {
+  dst = dst || v3.create();
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
+  var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
   dst[0] = (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d;
   dst[1] = (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d;
   dst[2] = (v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2] + m[3 * 4 + 2]) / d;
-
   return dst;
 }
-
 /**
  * Takes a 4-by-4 matrix and a vector with 3 entries, interprets the vector as a
  * direction, transforms that direction by the matrix, and returns the result;
@@ -2804,20 +2807,18 @@ function transformPoint(m, v, dst) {
  * @return {module:twgl/v3.Vec3} dst or new Vec3 if not provided
  * @memberOf module:twgl/m4
  */
+
+
 function transformDirection(m, v, dst) {
-  dst = dst || _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-
-  const v0 = v[0];
-  const v1 = v[1];
-  const v2 = v[2];
-
+  dst = dst || v3.create();
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
   dst[0] = v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0];
   dst[1] = v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1];
   dst[2] = v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2];
-
   return dst;
 }
-
 /**
  * Takes a 4-by-4 matrix m and a vector v with 3 entries, interprets the vector
  * as a normal to a surface, and computes a vector which is normal upon
@@ -2833,23 +2834,19 @@ function transformDirection(m, v, dst) {
  * @return {module:twgl/v3.Vec3} The transformed direction.
  * @memberOf module:twgl/m4
  */
-function transformNormal(m, v, dst) {
-  dst = dst || _v3_js__WEBPACK_IMPORTED_MODULE_0__["create"]();
-  const mi = inverse(m);
-  const v0 = v[0];
-  const v1 = v[1];
-  const v2 = v[2];
 
+
+function transformNormal(m, v, dst) {
+  dst = dst || v3.create();
+  var mi = inverse(m);
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
   dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
   dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
   dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
-
   return dst;
 }
-
-
-
-
 
 /***/ }),
 
@@ -2857,56 +2854,47 @@ function transformNormal(m, v, dst) {
 /*!***************************!*\
   !*** ./src/primitives.js ***!
   \***************************/
-/*! exports provided: create3DFBufferInfo, create3DFBuffers, create3DFVertices, createAugmentedTypedArray, createCubeBufferInfo, createCubeBuffers, createCubeVertices, createPlaneBufferInfo, createPlaneBuffers, createPlaneVertices, createSphereBufferInfo, createSphereBuffers, createSphereVertices, createTruncatedConeBufferInfo, createTruncatedConeBuffers, createTruncatedConeVertices, createXYQuadBufferInfo, createXYQuadBuffers, createXYQuadVertices, createCresentBufferInfo, createCresentBuffers, createCresentVertices, createCylinderBufferInfo, createCylinderBuffers, createCylinderVertices, createTorusBufferInfo, createTorusBuffers, createTorusVertices, createDiscBufferInfo, createDiscBuffers, createDiscVertices, deindexVertices, flattenNormals, makeRandomVertexColors, reorientDirections, reorientNormals, reorientPositions, reorientVertices, concatVertices, duplicateVertices */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create3DFBufferInfo", function() { return create3DFBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create3DFBuffers", function() { return create3DFBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create3DFVertices", function() { return create3DFVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createAugmentedTypedArray", function() { return createAugmentedTypedArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCubeBufferInfo", function() { return createCubeBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCubeBuffers", function() { return createCubeBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCubeVertices", function() { return createCubeVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPlaneBufferInfo", function() { return createPlaneBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPlaneBuffers", function() { return createPlaneBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPlaneVertices", function() { return createPlaneVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSphereBufferInfo", function() { return createSphereBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSphereBuffers", function() { return createSphereBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSphereVertices", function() { return createSphereVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTruncatedConeBufferInfo", function() { return createTruncatedConeBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTruncatedConeBuffers", function() { return createTruncatedConeBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTruncatedConeVertices", function() { return createTruncatedConeVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createXYQuadBufferInfo", function() { return createXYQuadBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createXYQuadBuffers", function() { return createXYQuadBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createXYQuadVertices", function() { return createXYQuadVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCresentBufferInfo", function() { return createCresentBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCresentBuffers", function() { return createCresentBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCresentVertices", function() { return createCresentVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCylinderBufferInfo", function() { return createCylinderBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCylinderBuffers", function() { return createCylinderBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCylinderVertices", function() { return createCylinderVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTorusBufferInfo", function() { return createTorusBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTorusBuffers", function() { return createTorusBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTorusVertices", function() { return createTorusVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDiscBufferInfo", function() { return createDiscBufferInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDiscBuffers", function() { return createDiscBuffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDiscVertices", function() { return createDiscVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deindexVertices", function() { return deindexVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "flattenNormals", function() { return flattenNormals; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeRandomVertexColors", function() { return makeRandomVertexColors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reorientDirections", function() { return reorientDirections; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reorientNormals", function() { return reorientNormals; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reorientPositions", function() { return reorientPositions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reorientVertices", function() { return reorientVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "concatVertices", function() { return concatVertices; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "duplicateVertices", function() { return duplicateVertices; });
-/* harmony import */ var _attributes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./attributes.js */ "./src/attributes.js");
-/* harmony import */ var _helper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper.js */ "./src/helper.js");
-/* harmony import */ var _typedarrays_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js");
-/* harmony import */ var _m4_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./m4.js */ "./src/m4.js");
-/* harmony import */ var _v3_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./v3.js */ "./src/v3.js");
+
+
+exports.__esModule = true;
+exports.create3DFVertices = create3DFVertices;
+exports.createAugmentedTypedArray = createAugmentedTypedArray;
+exports.createCubeVertices = createCubeVertices;
+exports.createPlaneVertices = createPlaneVertices;
+exports.createSphereVertices = createSphereVertices;
+exports.createTruncatedConeVertices = createTruncatedConeVertices;
+exports.createXYQuadVertices = createXYQuadVertices;
+exports.createCresentVertices = createCresentVertices;
+exports.createCylinderVertices = createCylinderVertices;
+exports.createTorusVertices = createTorusVertices;
+exports.createDiscVertices = createDiscVertices;
+exports.deindexVertices = deindexVertices;
+exports.flattenNormals = flattenNormals;
+exports.makeRandomVertexColors = makeRandomVertexColors;
+exports.reorientDirections = reorientDirections;
+exports.reorientNormals = reorientNormals;
+exports.reorientPositions = reorientPositions;
+exports.reorientVertices = reorientVertices;
+exports.concatVertices = concatVertices;
+exports.duplicateVertices = duplicateVertices;
+exports.createDiscBuffers = exports.createDiscBufferInfo = exports.createTorusBuffers = exports.createTorusBufferInfo = exports.createCylinderBuffers = exports.createCylinderBufferInfo = exports.createCresentBuffers = exports.createCresentBufferInfo = exports.createXYQuadBuffers = exports.createXYQuadBufferInfo = exports.createTruncatedConeBuffers = exports.createTruncatedConeBufferInfo = exports.createSphereBuffers = exports.createSphereBufferInfo = exports.createPlaneBuffers = exports.createPlaneBufferInfo = exports.createCubeBuffers = exports.createCubeBufferInfo = exports.create3DFBuffers = exports.create3DFBufferInfo = void 0;
+
+var attributes = _interopRequireWildcard(__webpack_require__(/*! ./attributes.js */ "./src/attributes.js"));
+
+var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
+
+var typedArrays = _interopRequireWildcard(__webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js"));
+
+var m4 = _interopRequireWildcard(__webpack_require__(/*! ./m4.js */ "./src/m4.js"));
+
+var v3 = _interopRequireWildcard(__webpack_require__(/*! ./v3.js */ "./src/v3.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -2970,14 +2958,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/primitives
  */
+var getArray = attributes.getArray_; // eslint-disable-line
 
-
-
-
-
-
-const getArray = _attributes_js__WEBPACK_IMPORTED_MODULE_0__["getArray_"];  // eslint-disable-line
-const getNumComponents = _attributes_js__WEBPACK_IMPORTED_MODULE_0__["getNumComponents_"];  // eslint-disable-line
+var getNumComponents = attributes.getNumComponents_; // eslint-disable-line
 
 /**
  * @typedef {(Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array)} TypedArray
@@ -2991,13 +2974,16 @@ const getNumComponents = _attributes_js__WEBPACK_IMPORTED_MODULE_0__["getNumComp
  * @param {number} numComponents number of components.
  * @private
  */
+
 function augmentTypedArray(typedArray, numComponents) {
-  let cursor = 0;
-  typedArray.push = function() {
-    for (let ii = 0; ii < arguments.length; ++ii) {
-      const value = arguments[ii];
-      if (value instanceof Array || _typedarrays_js__WEBPACK_IMPORTED_MODULE_2__["isArrayBuffer"](value)) {
-        for (let jj = 0; jj < value.length; ++jj) {
+  var cursor = 0;
+
+  typedArray.push = function () {
+    for (var ii = 0; ii < arguments.length; ++ii) {
+      var value = arguments[ii];
+
+      if (value instanceof Array || typedArrays.isArrayBuffer(value)) {
+        for (var jj = 0; jj < value.length; ++jj) {
           typedArray[cursor++] = value[jj];
         }
       } else {
@@ -3005,18 +2991,19 @@ function augmentTypedArray(typedArray, numComponents) {
       }
     }
   };
-  typedArray.reset = function(opt_index) {
+
+  typedArray.reset = function (opt_index) {
     cursor = opt_index || 0;
   };
+
   typedArray.numComponents = numComponents;
   Object.defineProperty(typedArray, 'numElements', {
-    get: function() {
+    get: function get() {
       return this.length / this.numComponents | 0;
-    },
+    }
   });
   return typedArray;
 }
-
 /**
  * creates a typed array with a `push` function attached
  * so that you can easily *push* values.
@@ -3039,93 +3026,92 @@ function augmentTypedArray(typedArray, numComponents) {
  * @return {ArrayBufferView} A typed array.
  * @memberOf module:twgl/primitives
  */
+
+
 function createAugmentedTypedArray(numComponents, numElements, opt_type) {
-  const Type = opt_type || Float32Array;
+  var Type = opt_type || Float32Array;
   return augmentTypedArray(new Type(numComponents * numElements), numComponents);
 }
 
 function allButIndices(name) {
   return name !== "indices";
 }
-
 /**
  * Given indexed vertices creates a new set of vertices unindexed by expanding the indexed vertices.
  * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex
  * @return {Object.<string, TypedArray>} The deindexed vertices
  * @memberOf module:twgl/primitives
  */
+
+
 function deindexVertices(vertices) {
-  const indices = vertices.indices;
-  const newVertices = {};
-  const numElements = indices.length;
+  var indices = vertices.indices;
+  var newVertices = {};
+  var numElements = indices.length;
 
   function expandToUnindexed(channel) {
-    const srcBuffer = vertices[channel];
-    const numComponents = srcBuffer.numComponents;
-    const dstBuffer = createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
-    for (let ii = 0; ii < numElements; ++ii) {
-      const ndx = indices[ii];
-      const offset = ndx * numComponents;
-      for (let jj = 0; jj < numComponents; ++jj) {
+    var srcBuffer = vertices[channel];
+    var numComponents = srcBuffer.numComponents;
+    var dstBuffer = createAugmentedTypedArray(numComponents, numElements, srcBuffer.constructor);
+
+    for (var ii = 0; ii < numElements; ++ii) {
+      var ndx = indices[ii];
+      var offset = ndx * numComponents;
+
+      for (var jj = 0; jj < numComponents; ++jj) {
         dstBuffer.push(srcBuffer[offset + jj]);
       }
     }
+
     newVertices[channel] = dstBuffer;
   }
 
   Object.keys(vertices).filter(allButIndices).forEach(expandToUnindexed);
-
   return newVertices;
 }
-
 /**
  * flattens the normals of deindexed vertices in place.
  * @param {Object.<string, TypedArray>} vertices The deindexed vertices who's normals to flatten
  * @return {Object.<string, TypedArray>} The flattened vertices (same as was passed in)
  * @memberOf module:twgl/primitives
  */
+
+
 function flattenNormals(vertices) {
   if (vertices.indices) {
     throw "can't flatten normals of indexed vertices. deindex them first";
   }
 
-  const normals = vertices.normal;
-  const numNormals = normals.length;
-  for (let ii = 0; ii < numNormals; ii += 9) {
+  var normals = vertices.normal;
+  var numNormals = normals.length;
+
+  for (var ii = 0; ii < numNormals; ii += 9) {
     // pull out the 3 normals for this triangle
-    const nax = normals[ii + 0];
-    const nay = normals[ii + 1];
-    const naz = normals[ii + 2];
+    var nax = normals[ii + 0];
+    var nay = normals[ii + 1];
+    var naz = normals[ii + 2];
+    var nbx = normals[ii + 3];
+    var nby = normals[ii + 4];
+    var nbz = normals[ii + 5];
+    var ncx = normals[ii + 6];
+    var ncy = normals[ii + 7];
+    var ncz = normals[ii + 8]; // add them
 
-    const nbx = normals[ii + 3];
-    const nby = normals[ii + 4];
-    const nbz = normals[ii + 5];
+    var nx = nax + nbx + ncx;
+    var ny = nay + nby + ncy;
+    var nz = naz + nbz + ncz; // normalize them
 
-    const ncx = normals[ii + 6];
-    const ncy = normals[ii + 7];
-    const ncz = normals[ii + 8];
-
-    // add them
-    let nx = nax + nbx + ncx;
-    let ny = nay + nby + ncy;
-    let nz = naz + nbz + ncz;
-
-    // normalize them
-    const length = Math.sqrt(nx * nx + ny * ny + nz * nz);
-
+    var length = Math.sqrt(nx * nx + ny * ny + nz * nz);
     nx /= length;
     ny /= length;
-    nz /= length;
+    nz /= length; // copy them back in
 
-    // copy them back in
     normals[ii + 0] = nx;
     normals[ii + 1] = ny;
     normals[ii + 2] = nz;
-
     normals[ii + 3] = nx;
     normals[ii + 4] = ny;
     normals[ii + 5] = nz;
-
     normals[ii + 6] = nx;
     normals[ii + 7] = ny;
     normals[ii + 8] = nz;
@@ -3135,29 +3121,27 @@ function flattenNormals(vertices) {
 }
 
 function applyFuncToV3Array(array, matrix, fn) {
-  const len = array.length;
-  const tmp = new Float32Array(3);
-  for (let ii = 0; ii < len; ii += 3) {
+  var len = array.length;
+  var tmp = new Float32Array(3);
+
+  for (var ii = 0; ii < len; ii += 3) {
     fn(matrix, [array[ii], array[ii + 1], array[ii + 2]], tmp);
-    array[ii    ] = tmp[0];
+    array[ii] = tmp[0];
     array[ii + 1] = tmp[1];
     array[ii + 2] = tmp[2];
   }
 }
 
 function transformNormal(mi, v, dst) {
-  dst = dst || _v3_js__WEBPACK_IMPORTED_MODULE_4__["create"]();
-  const v0 = v[0];
-  const v1 = v[1];
-  const v2 = v[2];
-
+  dst = dst || v3.create();
+  var v0 = v[0];
+  var v1 = v[1];
+  var v2 = v[2];
   dst[0] = v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2];
   dst[1] = v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2];
   dst[2] = v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2];
-
   return dst;
 }
-
 /**
  * Reorients directions by the given matrix..
  * @param {(number[]|TypedArray)} array The array. Assumes value floats per element.
@@ -3165,11 +3149,12 @@ function transformNormal(mi, v, dst) {
  * @return {(number[]|TypedArray)} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientDirections(array, matrix) {
-  applyFuncToV3Array(array, matrix, _m4_js__WEBPACK_IMPORTED_MODULE_3__["transformDirection"]);
+  applyFuncToV3Array(array, matrix, m4.transformDirection);
   return array;
 }
-
 /**
  * Reorients normals by the inverse-transpose of the given
  * matrix..
@@ -3178,11 +3163,12 @@ function reorientDirections(array, matrix) {
  * @return {(number[]|TypedArray)} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientNormals(array, matrix) {
-  applyFuncToV3Array(array, _m4_js__WEBPACK_IMPORTED_MODULE_3__["inverse"](matrix), transformNormal);
+  applyFuncToV3Array(array, m4.inverse(matrix), transformNormal);
   return array;
 }
-
 /**
  * Reorients positions by the given matrix. In other words, it
  * multiplies each vertex by the given matrix.
@@ -3191,11 +3177,12 @@ function reorientNormals(array, matrix) {
  * @return {(number[]|TypedArray)} the same array that was passed in
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientPositions(array, matrix) {
-  applyFuncToV3Array(array, matrix, _m4_js__WEBPACK_IMPORTED_MODULE_3__["transformPoint"]);
+  applyFuncToV3Array(array, matrix, m4.transformPoint);
   return array;
 }
-
 /**
  * @typedef {(number[]|TypedArray)} NativeArrayOrTypedArray
  */
@@ -3210,9 +3197,12 @@ function reorientPositions(array, matrix) {
  * @return {Object.<string, NativeArrayOrTypedArray>} same arrays that were passed in.
  * @memberOf module:twgl/primitives
  */
+
+
 function reorientVertices(arrays, matrix) {
-  Object.keys(arrays).forEach(function(name) {
-    const array = arrays[name];
+  Object.keys(arrays).forEach(function (name) {
+    var array = arrays[name];
+
     if (name.indexOf("pos") >= 0) {
       reorientPositions(array, matrix);
     } else if (name.indexOf("tan") >= 0 || name.indexOf("binorm") >= 0) {
@@ -3223,7 +3213,6 @@ function reorientVertices(arrays, matrix) {
   });
   return arrays;
 }
-
 /**
  * Creates XY quad BufferInfo
  *
@@ -3284,6 +3273,8 @@ function reorientVertices(arrays, matrix) {
  * @return {Object.<string, TypedArray>} the created XY Quad vertices
  * @memberOf module:twgl/primitives
  */
+
+
 function createXYQuadVertices(size, xOffset, yOffset) {
   size = size || 2;
   xOffset = xOffset || 0;
@@ -3292,29 +3283,13 @@ function createXYQuadVertices(size, xOffset, yOffset) {
   return {
     position: {
       numComponents: 2,
-      data: [
-        xOffset + -1 * size, yOffset + -1 * size,
-        xOffset +  1 * size, yOffset + -1 * size,
-        xOffset + -1 * size, yOffset +  1 * size,
-        xOffset +  1 * size, yOffset +  1 * size,
-      ],
+      data: [xOffset + -1 * size, yOffset + -1 * size, xOffset + 1 * size, yOffset + -1 * size, xOffset + -1 * size, yOffset + 1 * size, xOffset + 1 * size, yOffset + 1 * size]
     },
-    normal: [
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-      0, 0, 1,
-    ],
-    texcoord: [
-      0, 0,
-      1, 0,
-      0, 1,
-      1, 1,
-    ],
-    indices: [ 0, 1, 2, 2, 1, 3 ],
+    normal: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+    texcoord: [0, 0, 1, 0, 0, 1, 1, 1],
+    indices: [0, 1, 2, 2, 1, 3]
   };
 }
-
 /**
  * Creates XZ plane BufferInfo.
  *
@@ -3360,65 +3335,51 @@ function createXYQuadVertices(size, xOffset, yOffset) {
  * @return {Object.<string, TypedArray>} The created plane vertices.
  * @memberOf module:twgl/primitives
  */
-function createPlaneVertices(
-    width,
-    depth,
-    subdivisionsWidth,
-    subdivisionsDepth,
-    matrix) {
+
+
+function createPlaneVertices(width, depth, subdivisionsWidth, subdivisionsDepth, matrix) {
   width = width || 1;
   depth = depth || 1;
   subdivisionsWidth = subdivisionsWidth || 1;
   subdivisionsDepth = subdivisionsDepth || 1;
-  matrix = matrix || _m4_js__WEBPACK_IMPORTED_MODULE_3__["identity"]();
+  matrix = matrix || m4.identity();
+  var numVertices = (subdivisionsWidth + 1) * (subdivisionsDepth + 1);
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices);
 
-  const numVertices = (subdivisionsWidth + 1) * (subdivisionsDepth + 1);
-  const positions = createAugmentedTypedArray(3, numVertices);
-  const normals = createAugmentedTypedArray(3, numVertices);
-  const texcoords = createAugmentedTypedArray(2, numVertices);
-
-  for (let z = 0; z <= subdivisionsDepth; z++) {
-    for (let x = 0; x <= subdivisionsWidth; x++) {
-      const u = x / subdivisionsWidth;
-      const v = z / subdivisionsDepth;
-      positions.push(
-          width * u - width * 0.5,
-          0,
-          depth * v - depth * 0.5);
+  for (var z = 0; z <= subdivisionsDepth; z++) {
+    for (var x = 0; x <= subdivisionsWidth; x++) {
+      var u = x / subdivisionsWidth;
+      var v = z / subdivisionsDepth;
+      positions.push(width * u - width * 0.5, 0, depth * v - depth * 0.5);
       normals.push(0, 1, 0);
       texcoords.push(u, v);
     }
   }
 
-  const numVertsAcross = subdivisionsWidth + 1;
-  const indices = createAugmentedTypedArray(
-      3, subdivisionsWidth * subdivisionsDepth * 2, Uint16Array);
+  var numVertsAcross = subdivisionsWidth + 1;
+  var indices = createAugmentedTypedArray(3, subdivisionsWidth * subdivisionsDepth * 2, Uint16Array);
 
-  for (let z = 0; z < subdivisionsDepth; z++) {  // eslint-disable-line
-    for (let x = 0; x < subdivisionsWidth; x++) {  // eslint-disable-line
+  for (var _z = 0; _z < subdivisionsDepth; _z++) {
+    // eslint-disable-line
+    for (var _x = 0; _x < subdivisionsWidth; _x++) {
+      // eslint-disable-line
       // Make triangle 1 of quad.
-      indices.push(
-          (z + 0) * numVertsAcross + x,
-          (z + 1) * numVertsAcross + x,
-          (z + 0) * numVertsAcross + x + 1);
+      indices.push((_z + 0) * numVertsAcross + _x, (_z + 1) * numVertsAcross + _x, (_z + 0) * numVertsAcross + _x + 1); // Make triangle 2 of quad.
 
-      // Make triangle 2 of quad.
-      indices.push(
-          (z + 1) * numVertsAcross + x,
-          (z + 1) * numVertsAcross + x + 1,
-          (z + 0) * numVertsAcross + x + 1);
+      indices.push((_z + 1) * numVertsAcross + _x, (_z + 1) * numVertsAcross + _x + 1, (_z + 0) * numVertsAcross + _x + 1);
     }
   }
 
-  const arrays = reorientVertices({
+  var arrays = reorientVertices({
     position: positions,
     normal: normals,
     texcoord: texcoords,
-    indices: indices,
+    indices: indices
   }, matrix);
   return arrays;
 }
-
 /**
  * Creates sphere BufferInfo.
  *
@@ -3482,14 +3443,9 @@ function createPlaneVertices(
  * @return {Object.<string, TypedArray>} The created sphere vertices.
  * @memberOf module:twgl/primitives
  */
-function createSphereVertices(
-    radius,
-    subdivisionsAxis,
-    subdivisionsHeight,
-    opt_startLatitudeInRadians,
-    opt_endLatitudeInRadians,
-    opt_startLongitudeInRadians,
-    opt_endLongitudeInRadians) {
+
+
+function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_startLatitudeInRadians, opt_endLatitudeInRadians, opt_startLongitudeInRadians, opt_endLongitudeInRadians) {
   if (subdivisionsAxis <= 0 || subdivisionsHeight <= 0) {
     throw Error('subdivisionAxis and subdivisionHeight must be > 0');
   }
@@ -3497,55 +3453,48 @@ function createSphereVertices(
   opt_startLatitudeInRadians = opt_startLatitudeInRadians || 0;
   opt_endLatitudeInRadians = opt_endLatitudeInRadians || Math.PI;
   opt_startLongitudeInRadians = opt_startLongitudeInRadians || 0;
-  opt_endLongitudeInRadians = opt_endLongitudeInRadians || (Math.PI * 2);
-
-  const latRange = opt_endLatitudeInRadians - opt_startLatitudeInRadians;
-  const longRange = opt_endLongitudeInRadians - opt_startLongitudeInRadians;
-
-  // We are going to generate our sphere by iterating through its
+  opt_endLongitudeInRadians = opt_endLongitudeInRadians || Math.PI * 2;
+  var latRange = opt_endLatitudeInRadians - opt_startLatitudeInRadians;
+  var longRange = opt_endLongitudeInRadians - opt_startLongitudeInRadians; // We are going to generate our sphere by iterating through its
   // spherical coordinates and generating 2 triangles for each quad on a
   // ring of the sphere.
-  const numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
-  const positions = createAugmentedTypedArray(3, numVertices);
-  const normals   = createAugmentedTypedArray(3, numVertices);
-  const texcoords = createAugmentedTypedArray(2 , numVertices);
 
-  // Generate the individual vertices in our vertex buffer.
-  for (let y = 0; y <= subdivisionsHeight; y++) {
-    for (let x = 0; x <= subdivisionsAxis; x++) {
+  var numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices); // Generate the individual vertices in our vertex buffer.
+
+  for (var y = 0; y <= subdivisionsHeight; y++) {
+    for (var x = 0; x <= subdivisionsAxis; x++) {
       // Generate a vertex based on its spherical coordinates
-      const u = x / subdivisionsAxis;
-      const v = y / subdivisionsHeight;
-      const theta = longRange * u + opt_startLongitudeInRadians;
-      const phi = latRange * v + opt_startLatitudeInRadians;
-      const sinTheta = Math.sin(theta);
-      const cosTheta = Math.cos(theta);
-      const sinPhi = Math.sin(phi);
-      const cosPhi = Math.cos(phi);
-      const ux = cosTheta * sinPhi;
-      const uy = cosPhi;
-      const uz = sinTheta * sinPhi;
+      var u = x / subdivisionsAxis;
+      var v = y / subdivisionsHeight;
+      var theta = longRange * u + opt_startLongitudeInRadians;
+      var phi = latRange * v + opt_startLatitudeInRadians;
+      var sinTheta = Math.sin(theta);
+      var cosTheta = Math.cos(theta);
+      var sinPhi = Math.sin(phi);
+      var cosPhi = Math.cos(phi);
+      var ux = cosTheta * sinPhi;
+      var uy = cosPhi;
+      var uz = sinTheta * sinPhi;
       positions.push(radius * ux, radius * uy, radius * uz);
       normals.push(ux, uy, uz);
       texcoords.push(1 - u, v);
     }
   }
 
-  const numVertsAround = subdivisionsAxis + 1;
-  const indices = createAugmentedTypedArray(3, subdivisionsAxis * subdivisionsHeight * 2, Uint16Array);
-  for (let x = 0; x < subdivisionsAxis; x++) {  // eslint-disable-line
-    for (let y = 0; y < subdivisionsHeight; y++) {  // eslint-disable-line
-      // Make triangle 1 of quad.
-      indices.push(
-          (y + 0) * numVertsAround + x,
-          (y + 0) * numVertsAround + x + 1,
-          (y + 1) * numVertsAround + x);
+  var numVertsAround = subdivisionsAxis + 1;
+  var indices = createAugmentedTypedArray(3, subdivisionsAxis * subdivisionsHeight * 2, Uint16Array);
 
-      // Make triangle 2 of quad.
-      indices.push(
-          (y + 1) * numVertsAround + x,
-          (y + 0) * numVertsAround + x + 1,
-          (y + 1) * numVertsAround + x + 1);
+  for (var _x2 = 0; _x2 < subdivisionsAxis; _x2++) {
+    // eslint-disable-line
+    for (var _y = 0; _y < subdivisionsHeight; _y++) {
+      // eslint-disable-line
+      // Make triangle 1 of quad.
+      indices.push((_y + 0) * numVertsAround + _x2, (_y + 0) * numVertsAround + _x2 + 1, (_y + 1) * numVertsAround + _x2); // Make triangle 2 of quad.
+
+      indices.push((_y + 1) * numVertsAround + _x2, (_y + 0) * numVertsAround + _x2 + 1, (_y + 1) * numVertsAround + _x2 + 1);
     }
   }
 
@@ -3553,24 +3502,22 @@ function createSphereVertices(
     position: positions,
     normal: normals,
     texcoord: texcoords,
-    indices: indices,
+    indices: indices
   };
 }
-
 /**
  * Array of the indices of corners of each face of a cube.
  * @type {Array.<number[]>}
  * @private
  */
-const CUBE_FACE_INDICES = [
-  [3, 7, 5, 1],  // right
-  [6, 2, 0, 4],  // left
-  [6, 7, 3, 2],  // ??
-  [0, 1, 5, 4],  // ??
-  [7, 6, 4, 5],  // front
-  [2, 3, 1, 0],  // back
-];
 
+
+var CUBE_FACE_INDICES = [[3, 7, 5, 1], // right
+[6, 2, 0, 4], // left
+[6, 7, 3, 2], // ??
+[0, 1, 5, 4], // ??
+[7, 6, 4, 5], // front
+[2, 3, 1, 0]];
 /**
  * Creates a BufferInfo for a cube.
  *
@@ -3604,59 +3551,35 @@ const CUBE_FACE_INDICES = [
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
 function createCubeVertices(size) {
   size = size || 1;
-  const k = size / 2;
+  var k = size / 2;
+  var cornerVertices = [[-k, -k, -k], [+k, -k, -k], [-k, +k, -k], [+k, +k, -k], [-k, -k, +k], [+k, -k, +k], [-k, +k, +k], [+k, +k, +k]];
+  var faceNormals = [[+1, +0, +0], [-1, +0, +0], [+0, +1, +0], [+0, -1, +0], [+0, +0, +1], [+0, +0, -1]];
+  var uvCoords = [[1, 0], [0, 0], [0, 1], [1, 1]];
+  var numVertices = 6 * 4;
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices);
+  var indices = createAugmentedTypedArray(3, 6 * 2, Uint16Array);
 
-  const cornerVertices = [
-    [-k, -k, -k],
-    [+k, -k, -k],
-    [-k, +k, -k],
-    [+k, +k, -k],
-    [-k, -k, +k],
-    [+k, -k, +k],
-    [-k, +k, +k],
-    [+k, +k, +k],
-  ];
+  for (var f = 0; f < 6; ++f) {
+    var faceIndices = CUBE_FACE_INDICES[f];
 
-  const faceNormals = [
-    [+1, +0, +0],
-    [-1, +0, +0],
-    [+0, +1, +0],
-    [+0, -1, +0],
-    [+0, +0, +1],
-    [+0, +0, -1],
-  ];
-
-  const uvCoords = [
-    [1, 0],
-    [0, 0],
-    [0, 1],
-    [1, 1],
-  ];
-
-  const numVertices = 6 * 4;
-  const positions = createAugmentedTypedArray(3, numVertices);
-  const normals   = createAugmentedTypedArray(3, numVertices);
-  const texcoords = createAugmentedTypedArray(2 , numVertices);
-  const indices   = createAugmentedTypedArray(3, 6 * 2, Uint16Array);
-
-  for (let f = 0; f < 6; ++f) {
-    const faceIndices = CUBE_FACE_INDICES[f];
-    for (let v = 0; v < 4; ++v) {
-      const position = cornerVertices[faceIndices[v]];
-      const normal = faceNormals[f];
-      const uv = uvCoords[v];
-
-      // Each face needs all four vertices because the normals and texture
+    for (var v = 0; v < 4; ++v) {
+      var position = cornerVertices[faceIndices[v]];
+      var normal = faceNormals[f];
+      var uv = uvCoords[v]; // Each face needs all four vertices because the normals and texture
       // coordinates are not all the same.
+
       positions.push(position);
       normals.push(normal);
       texcoords.push(uv);
+    } // Two triangles make a square face.
 
-    }
-    // Two triangles make a square face.
-    const offset = 4 * f;
+
+    var offset = 4 * f;
     indices.push(offset + 0, offset + 1, offset + 2);
     indices.push(offset + 0, offset + 2, offset + 3);
   }
@@ -3665,10 +3588,9 @@ function createCubeVertices(size) {
     position: positions,
     normal: normals,
     texcoord: texcoords,
-    indices: indices,
+    indices: indices
   };
 }
-
 /**
  * Creates a BufferInfo for a truncated cone, which is like a cylinder
  * except that it has different top and bottom radii. A truncated cone
@@ -3732,14 +3654,9 @@ function createCubeVertices(size) {
  * @return {Object.<string, TypedArray>} The created cone vertices.
  * @memberOf module:twgl/primitives
  */
-function createTruncatedConeVertices(
-    bottomRadius,
-    topRadius,
-    height,
-    radialSubdivisions,
-    verticalSubdivisions,
-    opt_topCap,
-    opt_bottomCap) {
+
+
+function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, opt_topCap, opt_bottomCap) {
   if (radialSubdivisions < 3) {
     throw Error('radialSubdivisions must be 3 or greater');
   }
@@ -3748,31 +3665,27 @@ function createTruncatedConeVertices(
     throw Error('verticalSubdivisions must be 1 or greater');
   }
 
-  const topCap = (opt_topCap === undefined) ? true : opt_topCap;
-  const bottomCap = (opt_bottomCap === undefined) ? true : opt_bottomCap;
+  var topCap = opt_topCap === undefined ? true : opt_topCap;
+  var bottomCap = opt_bottomCap === undefined ? true : opt_bottomCap;
+  var extra = (topCap ? 2 : 0) + (bottomCap ? 2 : 0);
+  var numVertices = (radialSubdivisions + 1) * (verticalSubdivisions + 1 + extra);
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices);
+  var indices = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  var vertsAroundEdge = radialSubdivisions + 1; // The slant of the cone is constant across its surface
 
-  const extra = (topCap ? 2 : 0) + (bottomCap ? 2 : 0);
+  var slant = Math.atan2(bottomRadius - topRadius, height);
+  var cosSlant = Math.cos(slant);
+  var sinSlant = Math.sin(slant);
+  var start = topCap ? -2 : 0;
+  var end = verticalSubdivisions + (bottomCap ? 2 : 0);
 
-  const numVertices = (radialSubdivisions + 1) * (verticalSubdivisions + 1 + extra);
-  const positions = createAugmentedTypedArray(3, numVertices);
-  const normals   = createAugmentedTypedArray(3, numVertices);
-  const texcoords = createAugmentedTypedArray(2, numVertices);
-  const indices   = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  for (var yy = start; yy <= end; ++yy) {
+    var v = yy / verticalSubdivisions;
+    var y = height * v;
+    var ringRadius = void 0;
 
-  const vertsAroundEdge = radialSubdivisions + 1;
-
-  // The slant of the cone is constant across its surface
-  const slant = Math.atan2(bottomRadius - topRadius, height);
-  const cosSlant = Math.cos(slant);
-  const sinSlant = Math.sin(slant);
-
-  const start = topCap ? -2 : 0;
-  const end = verticalSubdivisions + (bottomCap ? 2 : 0);
-
-  for (let yy = start; yy <= end; ++yy) {
-    let v = yy / verticalSubdivisions;
-    let y = height * v;
-    let ringRadius;
     if (yy < 0) {
       y = 0;
       v = 1;
@@ -3782,34 +3695,31 @@ function createTruncatedConeVertices(
       v = 1;
       ringRadius = topRadius;
     } else {
-      ringRadius = bottomRadius +
-        (topRadius - bottomRadius) * (yy / verticalSubdivisions);
+      ringRadius = bottomRadius + (topRadius - bottomRadius) * (yy / verticalSubdivisions);
     }
+
     if (yy === -2 || yy === verticalSubdivisions + 2) {
       ringRadius = 0;
       v = 0;
     }
+
     y -= height / 2;
-    for (let ii = 0; ii < vertsAroundEdge; ++ii) {
-      const sin = Math.sin(ii * Math.PI * 2 / radialSubdivisions);
-      const cos = Math.cos(ii * Math.PI * 2 / radialSubdivisions);
+
+    for (var ii = 0; ii < vertsAroundEdge; ++ii) {
+      var sin = Math.sin(ii * Math.PI * 2 / radialSubdivisions);
+      var cos = Math.cos(ii * Math.PI * 2 / radialSubdivisions);
       positions.push(sin * ringRadius, y, cos * ringRadius);
-      normals.push(
-          (yy < 0 || yy > verticalSubdivisions) ? 0 : (sin * cosSlant),
-          (yy < 0) ? -1 : (yy > verticalSubdivisions ? 1 : sinSlant),
-          (yy < 0 || yy > verticalSubdivisions) ? 0 : (cos * cosSlant));
-      texcoords.push((ii / radialSubdivisions), 1 - v);
+      normals.push(yy < 0 || yy > verticalSubdivisions ? 0 : sin * cosSlant, yy < 0 ? -1 : yy > verticalSubdivisions ? 1 : sinSlant, yy < 0 || yy > verticalSubdivisions ? 0 : cos * cosSlant);
+      texcoords.push(ii / radialSubdivisions, 1 - v);
     }
   }
 
-  for (let yy = 0; yy < verticalSubdivisions + extra; ++yy) {  // eslint-disable-line
-    for (let ii = 0; ii < radialSubdivisions; ++ii) {  // eslint-disable-line
-      indices.push(vertsAroundEdge * (yy + 0) + 0 + ii,
-                   vertsAroundEdge * (yy + 0) + 1 + ii,
-                   vertsAroundEdge * (yy + 1) + 1 + ii);
-      indices.push(vertsAroundEdge * (yy + 0) + 0 + ii,
-                   vertsAroundEdge * (yy + 1) + 1 + ii,
-                   vertsAroundEdge * (yy + 1) + 0 + ii);
+  for (var _yy = 0; _yy < verticalSubdivisions + extra; ++_yy) {
+    // eslint-disable-line
+    for (var _ii = 0; _ii < radialSubdivisions; ++_ii) {
+      // eslint-disable-line
+      indices.push(vertsAroundEdge * (_yy + 0) + 0 + _ii, vertsAroundEdge * (_yy + 0) + 1 + _ii, vertsAroundEdge * (_yy + 1) + 1 + _ii);
+      indices.push(vertsAroundEdge * (_yy + 0) + 0 + _ii, vertsAroundEdge * (_yy + 1) + 1 + _ii, vertsAroundEdge * (_yy + 1) + 0 + _ii);
     }
   }
 
@@ -3817,10 +3727,9 @@ function createTruncatedConeVertices(
     position: positions,
     normal: normals,
     texcoord: texcoords,
-    indices: indices,
+    indices: indices
   };
 }
-
 /**
  * Expands RLE data
  * @param {number[]} rleData data in format of run-length, x, y, z, run-length, x, y, z
@@ -3828,20 +3737,24 @@ function createTruncatedConeVertices(
  * @return {number[]} the expanded rleData
  * @private
  */
+
+
 function expandRLEData(rleData, padding) {
   padding = padding || [];
-  const data = [];
-  for (let ii = 0; ii < rleData.length; ii += 4) {
-    const runLength = rleData[ii];
-    const element = rleData.slice(ii + 1, ii + 4);
+  var data = [];
+
+  for (var ii = 0; ii < rleData.length; ii += 4) {
+    var runLength = rleData[ii];
+    var element = rleData.slice(ii + 1, ii + 4);
     element.push.apply(element, padding);
-    for (let jj = 0; jj < runLength; ++jj) {
+
+    for (var jj = 0; jj < runLength; ++jj) {
       data.push.apply(data, element);
     }
   }
+
   return data;
 }
-
 /**
  * Creates 3D 'F' BufferInfo.
  * An 'F' is useful because you can easily tell which way it is oriented.
@@ -3872,374 +3785,96 @@ function expandRLEData(rleData, padding) {
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function create3DFVertices() {
-
-  const positions = [
-    // left column front
-    0,   0,  0,
-    0, 150,  0,
-    30,   0,  0,
-    0, 150,  0,
-    30, 150,  0,
-    30,   0,  0,
-
-    // top rung front
-    30,   0,  0,
-    30,  30,  0,
-    100,   0,  0,
-    30,  30,  0,
-    100,  30,  0,
-    100,   0,  0,
-
-    // middle rung front
-    30,  60,  0,
-    30,  90,  0,
-    67,  60,  0,
-    30,  90,  0,
-    67,  90,  0,
-    67,  60,  0,
-
-    // left column back
-      0,   0,  30,
-     30,   0,  30,
-      0, 150,  30,
-      0, 150,  30,
-     30,   0,  30,
-     30, 150,  30,
-
-    // top rung back
-     30,   0,  30,
-    100,   0,  30,
-     30,  30,  30,
-     30,  30,  30,
-    100,   0,  30,
-    100,  30,  30,
-
-    // middle rung back
-     30,  60,  30,
-     67,  60,  30,
-     30,  90,  30,
-     30,  90,  30,
-     67,  60,  30,
-     67,  90,  30,
-
-    // top
-      0,   0,   0,
-    100,   0,   0,
-    100,   0,  30,
-      0,   0,   0,
-    100,   0,  30,
-      0,   0,  30,
-
-    // top rung front
-    100,   0,   0,
-    100,  30,   0,
-    100,  30,  30,
-    100,   0,   0,
-    100,  30,  30,
-    100,   0,  30,
-
-    // under top rung
-    30,   30,   0,
-    30,   30,  30,
-    100,  30,  30,
-    30,   30,   0,
-    100,  30,  30,
-    100,  30,   0,
-
-    // between top rung and middle
-    30,   30,   0,
-    30,   60,  30,
-    30,   30,  30,
-    30,   30,   0,
-    30,   60,   0,
-    30,   60,  30,
-
-    // top of middle rung
-    30,   60,   0,
-    67,   60,  30,
-    30,   60,  30,
-    30,   60,   0,
-    67,   60,   0,
-    67,   60,  30,
-
-    // front of middle rung
-    67,   60,   0,
-    67,   90,  30,
-    67,   60,  30,
-    67,   60,   0,
-    67,   90,   0,
-    67,   90,  30,
-
-    // bottom of middle rung.
-    30,   90,   0,
-    30,   90,  30,
-    67,   90,  30,
-    30,   90,   0,
-    67,   90,  30,
-    67,   90,   0,
-
-    // front of bottom
-    30,   90,   0,
-    30,  150,  30,
-    30,   90,  30,
-    30,   90,   0,
-    30,  150,   0,
-    30,  150,  30,
-
-    // bottom
-    0,   150,   0,
-    0,   150,  30,
-    30,  150,  30,
-    0,   150,   0,
-    30,  150,  30,
-    30,  150,   0,
-
-    // left side
-    0,   0,   0,
-    0,   0,  30,
-    0, 150,  30,
-    0,   0,   0,
-    0, 150,  30,
-    0, 150,   0,
-  ];
-
-  const texcoords = [
-    // left column front
-    0.22, 0.19,
-    0.22, 0.79,
-    0.34, 0.19,
-    0.22, 0.79,
-    0.34, 0.79,
-    0.34, 0.19,
-
-    // top rung front
-    0.34, 0.19,
-    0.34, 0.31,
-    0.62, 0.19,
-    0.34, 0.31,
-    0.62, 0.31,
-    0.62, 0.19,
-
-    // middle rung front
-    0.34, 0.43,
-    0.34, 0.55,
-    0.49, 0.43,
-    0.34, 0.55,
-    0.49, 0.55,
-    0.49, 0.43,
-
-    // left column back
-    0, 0,
-    1, 0,
-    0, 1,
-    0, 1,
-    1, 0,
-    1, 1,
-
-    // top rung back
-    0, 0,
-    1, 0,
-    0, 1,
-    0, 1,
-    1, 0,
-    1, 1,
-
-    // middle rung back
-    0, 0,
-    1, 0,
-    0, 1,
-    0, 1,
-    1, 0,
-    1, 1,
-
-    // top
-    0, 0,
-    1, 0,
-    1, 1,
-    0, 0,
-    1, 1,
-    0, 1,
-
-    // top rung front
-    0, 0,
-    1, 0,
-    1, 1,
-    0, 0,
-    1, 1,
-    0, 1,
-
-    // under top rung
-    0, 0,
-    0, 1,
-    1, 1,
-    0, 0,
-    1, 1,
-    1, 0,
-
-    // between top rung and middle
-    0, 0,
-    1, 1,
-    0, 1,
-    0, 0,
-    1, 0,
-    1, 1,
-
-    // top of middle rung
-    0, 0,
-    1, 1,
-    0, 1,
-    0, 0,
-    1, 0,
-    1, 1,
-
-    // front of middle rung
-    0, 0,
-    1, 1,
-    0, 1,
-    0, 0,
-    1, 0,
-    1, 1,
-
-    // bottom of middle rung.
-    0, 0,
-    0, 1,
-    1, 1,
-    0, 0,
-    1, 1,
-    1, 0,
-
-    // front of bottom
-    0, 0,
-    1, 1,
-    0, 1,
-    0, 0,
-    1, 0,
-    1, 1,
-
-    // bottom
-    0, 0,
-    0, 1,
-    1, 1,
-    0, 0,
-    1, 1,
-    1, 0,
-
-    // left side
-    0, 0,
-    0, 1,
-    1, 1,
-    0, 0,
-    1, 1,
-    1, 0,
-  ];
-
-  const normals = expandRLEData([
-    // left column front
-    // top rung front
-    // middle rung front
-    18, 0, 0, 1,
-
-    // left column back
-    // top rung back
-    // middle rung back
-    18, 0, 0, -1,
-
-    // top
-    6, 0, 1, 0,
-
-    // top rung front
-    6, 1, 0, 0,
-
-    // under top rung
-    6, 0, -1, 0,
-
-    // between top rung and middle
-    6, 1, 0, 0,
-
-    // top of middle rung
-    6, 0, 1, 0,
-
-    // front of middle rung
-    6, 1, 0, 0,
-
-    // bottom of middle rung.
-    6, 0, -1, 0,
-
-    // front of bottom
-    6, 1, 0, 0,
-
-    // bottom
-    6, 0, -1, 0,
-
-    // left side
-    6, -1, 0, 0,
-  ]);
-
-  const colors = expandRLEData([
-        // left column front
-        // top rung front
-        // middle rung front
-      18, 200,  70, 120,
-
-        // left column back
-        // top rung back
-        // middle rung back
-      18, 80, 70, 200,
-
-        // top
-      6, 70, 200, 210,
-
-        // top rung front
-      6, 200, 200, 70,
-
-        // under top rung
-      6, 210, 100, 70,
-
-        // between top rung and middle
-      6, 210, 160, 70,
-
-        // top of middle rung
-      6, 70, 180, 210,
-
-        // front of middle rung
-      6, 100, 70, 210,
-
-        // bottom of middle rung.
-      6, 76, 210, 100,
-
-        // front of bottom
-      6, 140, 210, 80,
-
-        // bottom
-      6, 90, 130, 110,
-
-        // left side
-      6, 160, 160, 220,
-  ], [255]);
-
-  const numVerts = positions.length / 3;
-
-  const arrays = {
+  var positions = [// left column front
+  0, 0, 0, 0, 150, 0, 30, 0, 0, 0, 150, 0, 30, 150, 0, 30, 0, 0, // top rung front
+  30, 0, 0, 30, 30, 0, 100, 0, 0, 30, 30, 0, 100, 30, 0, 100, 0, 0, // middle rung front
+  30, 60, 0, 30, 90, 0, 67, 60, 0, 30, 90, 0, 67, 90, 0, 67, 60, 0, // left column back
+  0, 0, 30, 30, 0, 30, 0, 150, 30, 0, 150, 30, 30, 0, 30, 30, 150, 30, // top rung back
+  30, 0, 30, 100, 0, 30, 30, 30, 30, 30, 30, 30, 100, 0, 30, 100, 30, 30, // middle rung back
+  30, 60, 30, 67, 60, 30, 30, 90, 30, 30, 90, 30, 67, 60, 30, 67, 90, 30, // top
+  0, 0, 0, 100, 0, 0, 100, 0, 30, 0, 0, 0, 100, 0, 30, 0, 0, 30, // top rung front
+  100, 0, 0, 100, 30, 0, 100, 30, 30, 100, 0, 0, 100, 30, 30, 100, 0, 30, // under top rung
+  30, 30, 0, 30, 30, 30, 100, 30, 30, 30, 30, 0, 100, 30, 30, 100, 30, 0, // between top rung and middle
+  30, 30, 0, 30, 60, 30, 30, 30, 30, 30, 30, 0, 30, 60, 0, 30, 60, 30, // top of middle rung
+  30, 60, 0, 67, 60, 30, 30, 60, 30, 30, 60, 0, 67, 60, 0, 67, 60, 30, // front of middle rung
+  67, 60, 0, 67, 90, 30, 67, 60, 30, 67, 60, 0, 67, 90, 0, 67, 90, 30, // bottom of middle rung.
+  30, 90, 0, 30, 90, 30, 67, 90, 30, 30, 90, 0, 67, 90, 30, 67, 90, 0, // front of bottom
+  30, 90, 0, 30, 150, 30, 30, 90, 30, 30, 90, 0, 30, 150, 0, 30, 150, 30, // bottom
+  0, 150, 0, 0, 150, 30, 30, 150, 30, 0, 150, 0, 30, 150, 30, 30, 150, 0, // left side
+  0, 0, 0, 0, 0, 30, 0, 150, 30, 0, 0, 0, 0, 150, 30, 0, 150, 0];
+  var texcoords = [// left column front
+  0.22, 0.19, 0.22, 0.79, 0.34, 0.19, 0.22, 0.79, 0.34, 0.79, 0.34, 0.19, // top rung front
+  0.34, 0.19, 0.34, 0.31, 0.62, 0.19, 0.34, 0.31, 0.62, 0.31, 0.62, 0.19, // middle rung front
+  0.34, 0.43, 0.34, 0.55, 0.49, 0.43, 0.34, 0.55, 0.49, 0.55, 0.49, 0.43, // left column back
+  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, // top rung back
+  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, // middle rung back
+  0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, // top
+  0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, // top rung front
+  0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, // under top rung
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, // between top rung and middle
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // top of middle rung
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // front of middle rung
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // bottom of middle rung.
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, // front of bottom
+  0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, // bottom
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, // left side
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0];
+  var normals = expandRLEData([// left column front
+  // top rung front
+  // middle rung front
+  18, 0, 0, 1, // left column back
+  // top rung back
+  // middle rung back
+  18, 0, 0, -1, // top
+  6, 0, 1, 0, // top rung front
+  6, 1, 0, 0, // under top rung
+  6, 0, -1, 0, // between top rung and middle
+  6, 1, 0, 0, // top of middle rung
+  6, 0, 1, 0, // front of middle rung
+  6, 1, 0, 0, // bottom of middle rung.
+  6, 0, -1, 0, // front of bottom
+  6, 1, 0, 0, // bottom
+  6, 0, -1, 0, // left side
+  6, -1, 0, 0]);
+  var colors = expandRLEData([// left column front
+  // top rung front
+  // middle rung front
+  18, 200, 70, 120, // left column back
+  // top rung back
+  // middle rung back
+  18, 80, 70, 200, // top
+  6, 70, 200, 210, // top rung front
+  6, 200, 200, 70, // under top rung
+  6, 210, 100, 70, // between top rung and middle
+  6, 210, 160, 70, // top of middle rung
+  6, 70, 180, 210, // front of middle rung
+  6, 100, 70, 210, // bottom of middle rung.
+  6, 76, 210, 100, // front of bottom
+  6, 140, 210, 80, // bottom
+  6, 90, 130, 110, // left side
+  6, 160, 160, 220], [255]);
+  var numVerts = positions.length / 3;
+  var arrays = {
     position: createAugmentedTypedArray(3, numVerts),
-    texcoord: createAugmentedTypedArray(2,  numVerts),
+    texcoord: createAugmentedTypedArray(2, numVerts),
     normal: createAugmentedTypedArray(3, numVerts),
     color: createAugmentedTypedArray(4, numVerts, Uint8Array),
-    indices: createAugmentedTypedArray(3, numVerts / 3, Uint16Array),
+    indices: createAugmentedTypedArray(3, numVerts / 3, Uint16Array)
   };
-
   arrays.position.push(positions);
   arrays.texcoord.push(texcoords);
   arrays.normal.push(normals);
   arrays.color.push(colors);
 
-  for (let ii = 0; ii < numVerts; ++ii) {
+  for (var ii = 0; ii < numVerts; ++ii) {
     arrays.indices.push(ii);
   }
 
   return arrays;
 }
-
 /**
  * Creates cresent BufferInfo.
  *
@@ -4285,98 +3920,82 @@ function create3DFVertices() {
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
- function createCresentVertices(
-    verticalRadius,
-    outerRadius,
-    innerRadius,
-    thickness,
-    subdivisionsDown,
-    startOffset,
-    endOffset) {
+
+
+function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickness, subdivisionsDown, startOffset, endOffset) {
   if (subdivisionsDown <= 0) {
     throw Error('subdivisionDown must be > 0');
   }
 
   startOffset = startOffset || 0;
-  endOffset   = endOffset || 1;
-
-  const subdivisionsThick = 2;
-
-  const offsetRange = endOffset - startOffset;
-  const numVertices = (subdivisionsDown + 1) * 2 * (2 + subdivisionsThick);
-  const positions   = createAugmentedTypedArray(3, numVertices);
-  const normals     = createAugmentedTypedArray(3, numVertices);
-  const texcoords   = createAugmentedTypedArray(2, numVertices);
+  endOffset = endOffset || 1;
+  var subdivisionsThick = 2;
+  var offsetRange = endOffset - startOffset;
+  var numVertices = (subdivisionsDown + 1) * 2 * (2 + subdivisionsThick);
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices);
 
   function lerp(a, b, s) {
     return a + (b - a) * s;
   }
 
   function createArc(arcRadius, x, normalMult, normalAdd, uMult, uAdd) {
-    for (let z = 0; z <= subdivisionsDown; z++) {
-      const uBack = x / (subdivisionsThick - 1);
-      const v = z / subdivisionsDown;
-      const xBack = (uBack - 0.5) * 2;
-      const angle = (startOffset + (v * offsetRange)) * Math.PI;
-      const s = Math.sin(angle);
-      const c = Math.cos(angle);
-      const radius = lerp(verticalRadius, arcRadius, s);
-      const px = xBack * thickness;
-      const py = c * verticalRadius;
-      const pz = s * radius;
+    for (var z = 0; z <= subdivisionsDown; z++) {
+      var uBack = x / (subdivisionsThick - 1);
+      var v = z / subdivisionsDown;
+      var xBack = (uBack - 0.5) * 2;
+      var angle = (startOffset + v * offsetRange) * Math.PI;
+      var s = Math.sin(angle);
+      var c = Math.cos(angle);
+      var radius = lerp(verticalRadius, arcRadius, s);
+      var px = xBack * thickness;
+      var py = c * verticalRadius;
+      var pz = s * radius;
       positions.push(px, py, pz);
-      const n = _v3_js__WEBPACK_IMPORTED_MODULE_4__["add"](_v3_js__WEBPACK_IMPORTED_MODULE_4__["multiply"]([0, s, c], normalMult), normalAdd);
+      var n = v3.add(v3.multiply([0, s, c], normalMult), normalAdd);
       normals.push(n);
       texcoords.push(uBack * uMult + uAdd, v);
     }
-  }
+  } // Generate the individual vertices in our vertex buffer.
 
-  // Generate the individual vertices in our vertex buffer.
-  for (let x = 0; x < subdivisionsThick; x++) {
-    const uBack = (x / (subdivisionsThick - 1) - 0.5) * 2;
-    createArc(outerRadius, x, [1, 1, 1], [0,     0, 0], 1, 0);
+
+  for (var x = 0; x < subdivisionsThick; x++) {
+    var uBack = (x / (subdivisionsThick - 1) - 0.5) * 2;
+    createArc(outerRadius, x, [1, 1, 1], [0, 0, 0], 1, 0);
     createArc(outerRadius, x, [0, 0, 0], [uBack, 0, 0], 0, 0);
-    createArc(innerRadius, x, [1, 1, 1], [0,     0, 0], 1, 0);
+    createArc(innerRadius, x, [1, 1, 1], [0, 0, 0], 1, 0);
     createArc(innerRadius, x, [0, 0, 0], [uBack, 0, 0], 0, 1);
-  }
+  } // Do outer surface.
 
-  // Do outer surface.
-  const indices = createAugmentedTypedArray(3, (subdivisionsDown * 2) * (2 + subdivisionsThick), Uint16Array);
+
+  var indices = createAugmentedTypedArray(3, subdivisionsDown * 2 * (2 + subdivisionsThick), Uint16Array);
 
   function createSurface(leftArcOffset, rightArcOffset) {
-    for (let z = 0; z < subdivisionsDown; ++z) {
+    for (var z = 0; z < subdivisionsDown; ++z) {
       // Make triangle 1 of quad.
-      indices.push(
-          leftArcOffset + z + 0,
-          leftArcOffset + z + 1,
-          rightArcOffset + z + 0);
+      indices.push(leftArcOffset + z + 0, leftArcOffset + z + 1, rightArcOffset + z + 0); // Make triangle 2 of quad.
 
-      // Make triangle 2 of quad.
-      indices.push(
-          leftArcOffset + z + 1,
-          rightArcOffset + z + 1,
-          rightArcOffset + z + 0);
+      indices.push(leftArcOffset + z + 1, rightArcOffset + z + 1, rightArcOffset + z + 0);
     }
   }
 
-  const numVerticesDown = subdivisionsDown + 1;
-  // front
-  createSurface(numVerticesDown * 0, numVerticesDown * 4);
-  // right
-  createSurface(numVerticesDown * 5, numVerticesDown * 7);
-  // back
-  createSurface(numVerticesDown * 6, numVerticesDown * 2);
-  // left
-  createSurface(numVerticesDown * 3, numVerticesDown * 1);
+  var numVerticesDown = subdivisionsDown + 1; // front
 
+  createSurface(numVerticesDown * 0, numVerticesDown * 4); // right
+
+  createSurface(numVerticesDown * 5, numVerticesDown * 7); // back
+
+  createSurface(numVerticesDown * 6, numVerticesDown * 2); // left
+
+  createSurface(numVerticesDown * 3, numVerticesDown * 1);
   return {
     position: positions,
-    normal:   normals,
+    normal: normals,
     texcoord: texcoords,
-    indices:  indices,
+    indices: indices
   };
 }
-
 /**
  * Creates cylinder BufferInfo. The cylinder will be created around the origin
  * along the y-axis.
@@ -4393,52 +4012,40 @@ function create3DFVertices() {
  * @function createCylinderBufferInfo
  */
 
- /**
-  * Creates cylinder buffers. The cylinder will be created around the origin
-  * along the y-axis.
-  *
-  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
-  * @param {number} radius Radius of cylinder.
-  * @param {number} height Height of cylinder.
-  * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
-  * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
-  * @param {boolean} [topCap] Create top cap. Default = true.
-  * @param {boolean} [bottomCap] Create bottom cap. Default = true.
-  * @return {Object.<string, WebGLBuffer>} The created buffers.
-  * @memberOf module:twgl/primitives
-  * @function createCylinderBuffers
-  */
+/**
+ * Creates cylinder buffers. The cylinder will be created around the origin
+ * along the y-axis.
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+ * @param {number} radius Radius of cylinder.
+ * @param {number} height Height of cylinder.
+ * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
+ * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
+ * @param {boolean} [topCap] Create top cap. Default = true.
+ * @param {boolean} [bottomCap] Create bottom cap. Default = true.
+ * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @memberOf module:twgl/primitives
+ * @function createCylinderBuffers
+ */
 
- /**
-  * Creates cylinder vertices. The cylinder will be created around the origin
-  * along the y-axis.
-  *
-  * @param {number} radius Radius of cylinder.
-  * @param {number} height Height of cylinder.
-  * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
-  * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
-  * @param {boolean} [topCap] Create top cap. Default = true.
-  * @param {boolean} [bottomCap] Create bottom cap. Default = true.
-  * @return {Object.<string, TypedArray>} The created vertices.
-  * @memberOf module:twgl/primitives
-  */
-function createCylinderVertices(
-    radius,
-    height,
-    radialSubdivisions,
-    verticalSubdivisions,
-    topCap,
-    bottomCap) {
-  return createTruncatedConeVertices(
-      radius,
-      radius,
-      height,
-      radialSubdivisions,
-      verticalSubdivisions,
-      topCap,
-      bottomCap);
+/**
+ * Creates cylinder vertices. The cylinder will be created around the origin
+ * along the y-axis.
+ *
+ * @param {number} radius Radius of cylinder.
+ * @param {number} height Height of cylinder.
+ * @param {number} radialSubdivisions The number of subdivisions around the cylinder.
+ * @param {number} verticalSubdivisions The number of subdivisions down the cylinder.
+ * @param {boolean} [topCap] Create top cap. Default = true.
+ * @param {boolean} [bottomCap] Create bottom cap. Default = true.
+ * @return {Object.<string, TypedArray>} The created vertices.
+ * @memberOf module:twgl/primitives
+ */
+
+
+function createCylinderVertices(radius, height, radialSubdivisions, verticalSubdivisions, topCap, bottomCap) {
+  return createTruncatedConeVertices(radius, radius, height, radialSubdivisions, verticalSubdivisions, topCap, bottomCap);
 }
-
 /**
  * Creates BufferInfo for a torus
  *
@@ -4481,13 +4088,9 @@ function createCylinderVertices(
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
-function createTorusVertices(
-    radius,
-    thickness,
-    radialSubdivisions,
-    bodySubdivisions,
-    startAngle,
-    endAngle) {
+
+
+function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivisions, startAngle, endAngle) {
   if (radialSubdivisions < 3) {
     throw Error('radialSubdivisions must be 3 or greater');
   }
@@ -4498,60 +4101,56 @@ function createTorusVertices(
 
   startAngle = startAngle || 0;
   endAngle = endAngle || Math.PI * 2;
-  const range = endAngle - startAngle;
+  var range = endAngle - startAngle;
+  var radialParts = radialSubdivisions + 1;
+  var bodyParts = bodySubdivisions + 1;
+  var numVertices = radialParts * bodyParts;
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices);
+  var indices = createAugmentedTypedArray(3, radialSubdivisions * bodySubdivisions * 2, Uint16Array);
 
-  const radialParts = radialSubdivisions + 1;
-  const bodyParts   = bodySubdivisions + 1;
-  const numVertices = radialParts * bodyParts;
-  const positions   = createAugmentedTypedArray(3, numVertices);
-  const normals     = createAugmentedTypedArray(3, numVertices);
-  const texcoords   = createAugmentedTypedArray(2, numVertices);
-  const indices     = createAugmentedTypedArray(3, (radialSubdivisions) * (bodySubdivisions) * 2, Uint16Array);
+  for (var slice = 0; slice < bodyParts; ++slice) {
+    var v = slice / bodySubdivisions;
+    var sliceAngle = v * Math.PI * 2;
+    var sliceSin = Math.sin(sliceAngle);
+    var ringRadius = radius + sliceSin * thickness;
+    var ny = Math.cos(sliceAngle);
+    var y = ny * thickness;
 
-  for (let slice = 0; slice < bodyParts; ++slice) {
-    const v = slice / bodySubdivisions;
-    const sliceAngle = v * Math.PI * 2;
-    const sliceSin = Math.sin(sliceAngle);
-    const ringRadius = radius + sliceSin * thickness;
-    const ny = Math.cos(sliceAngle);
-    const y = ny * thickness;
-    for (let ring = 0; ring < radialParts; ++ring) {
-      const u = ring / radialSubdivisions;
-      const ringAngle = startAngle + u * range;
-      const xSin = Math.sin(ringAngle);
-      const zCos = Math.cos(ringAngle);
-      const x = xSin * ringRadius;
-      const z = zCos * ringRadius;
-      const nx = xSin * sliceSin;
-      const nz = zCos * sliceSin;
+    for (var ring = 0; ring < radialParts; ++ring) {
+      var u = ring / radialSubdivisions;
+      var ringAngle = startAngle + u * range;
+      var xSin = Math.sin(ringAngle);
+      var zCos = Math.cos(ringAngle);
+      var x = xSin * ringRadius;
+      var z = zCos * ringRadius;
+      var nx = xSin * sliceSin;
+      var nz = zCos * sliceSin;
       positions.push(x, y, z);
       normals.push(nx, ny, nz);
       texcoords.push(u, 1 - v);
     }
   }
 
-  for (let slice = 0; slice < bodySubdivisions; ++slice) {  // eslint-disable-line
-    for (let ring = 0; ring < radialSubdivisions; ++ring) {  // eslint-disable-line
-      const nextRingIndex  = 1 + ring;
-      const nextSliceIndex = 1 + slice;
-      indices.push(radialParts * slice          + ring,
-                   radialParts * nextSliceIndex + ring,
-                   radialParts * slice          + nextRingIndex);
-      indices.push(radialParts * nextSliceIndex + ring,
-                   radialParts * nextSliceIndex + nextRingIndex,
-                   radialParts * slice          + nextRingIndex);
+  for (var _slice = 0; _slice < bodySubdivisions; ++_slice) {
+    // eslint-disable-line
+    for (var _ring = 0; _ring < radialSubdivisions; ++_ring) {
+      // eslint-disable-line
+      var nextRingIndex = 1 + _ring;
+      var nextSliceIndex = 1 + _slice;
+      indices.push(radialParts * _slice + _ring, radialParts * nextSliceIndex + _ring, radialParts * _slice + nextRingIndex);
+      indices.push(radialParts * nextSliceIndex + _ring, radialParts * nextSliceIndex + nextRingIndex, radialParts * _slice + nextRingIndex);
     }
   }
 
   return {
     position: positions,
-    normal:   normals,
+    normal: normals,
     texcoord: texcoords,
-    indices:  indices,
+    indices: indices
   };
 }
-
-
 /**
  * Creates a disc BufferInfo. The disc will be in the xz plane, centered at
  * the origin. When creating, at least 3 divisions, or pie
@@ -4633,55 +4232,47 @@ function createTorusVertices(
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
-function createDiscVertices(
-    radius,
-    divisions,
-    stacks,
-    innerRadius,
-    stackPower) {
+
+
+function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) {
   if (divisions < 3) {
     throw Error('divisions must be at least 3');
   }
 
   stacks = stacks ? stacks : 1;
   stackPower = stackPower ? stackPower : 1;
-  innerRadius = innerRadius ? innerRadius : 0;
-
-  // Note: We don't share the center vertex because that would
+  innerRadius = innerRadius ? innerRadius : 0; // Note: We don't share the center vertex because that would
   // mess up texture coordinates.
-  const numVertices = (divisions + 1) * (stacks + 1);
 
-  const positions = createAugmentedTypedArray(3, numVertices);
-  const normals   = createAugmentedTypedArray(3, numVertices);
-  const texcoords = createAugmentedTypedArray(2, numVertices);
-  const indices   = createAugmentedTypedArray(3, stacks * divisions * 2, Uint16Array);
+  var numVertices = (divisions + 1) * (stacks + 1);
+  var positions = createAugmentedTypedArray(3, numVertices);
+  var normals = createAugmentedTypedArray(3, numVertices);
+  var texcoords = createAugmentedTypedArray(2, numVertices);
+  var indices = createAugmentedTypedArray(3, stacks * divisions * 2, Uint16Array);
+  var firstIndex = 0;
+  var radiusSpan = radius - innerRadius;
+  var pointsPerStack = divisions + 1; // Build the disk one stack at a time.
 
-  let firstIndex = 0;
-  const radiusSpan = radius - innerRadius;
-  const pointsPerStack = divisions + 1;
+  for (var stack = 0; stack <= stacks; ++stack) {
+    var stackRadius = innerRadius + radiusSpan * Math.pow(stack / stacks, stackPower);
 
-  // Build the disk one stack at a time.
-  for (let stack = 0; stack <= stacks; ++stack) {
-    const stackRadius = innerRadius + radiusSpan * Math.pow(stack / stacks, stackPower);
-
-    for (let i = 0; i <= divisions; ++i) {
-      const theta = 2.0 * Math.PI * i / divisions;
-      const x = stackRadius * Math.cos(theta);
-      const z = stackRadius * Math.sin(theta);
-
+    for (var i = 0; i <= divisions; ++i) {
+      var theta = 2.0 * Math.PI * i / divisions;
+      var x = stackRadius * Math.cos(theta);
+      var z = stackRadius * Math.sin(theta);
       positions.push(x, 0, z);
       normals.push(0, 1, 0);
-      texcoords.push(1 - (i / divisions), stack / stacks);
+      texcoords.push(1 - i / divisions, stack / stacks);
+
       if (stack > 0 && i !== divisions) {
         // a, b, c and d are the indices of the vertices of a quad.  unless
         // the current stack is the one closest to the center, in which case
         // the vertices a and b connect to the center vertex.
-        const a = firstIndex + (i + 1);
-        const b = firstIndex + i;
-        const c = firstIndex + i - pointsPerStack;
-        const d = firstIndex + (i + 1) - pointsPerStack;
+        var a = firstIndex + (i + 1);
+        var b = firstIndex + i;
+        var c = firstIndex + i - pointsPerStack;
+        var d = firstIndex + (i + 1) - pointsPerStack; // Make a quad of the vertices a, b, c, d.
 
-        // Make a quad of the vertices a, b, c, d.
         indices.push(a, b, c);
         indices.push(a, c, d);
       }
@@ -4694,20 +4285,20 @@ function createDiscVertices(
     position: positions,
     normal: normals,
     texcoord: texcoords,
-    indices: indices,
+    indices: indices
   };
 }
-
 /**
  * creates a random integer between 0 and range - 1 inclusive.
  * @param {number} range
  * @return {number} random value between 0 and range - 1 inclusive.
  * @private
  */
+
+
 function randInt(range) {
   return Math.random() * range | 0;
 }
-
 /**
  * Used to supply random colors
  * @callback RandomColorFunc
@@ -4734,69 +4325,69 @@ function randInt(range) {
  * @return {Object.<string, AugmentedTypedArray>} same vertices as passed in with `color` added.
  * @memberOf module:twgl/primitives
  */
+
+
 function makeRandomVertexColors(vertices, options) {
   options = options || {};
-  const numElements = vertices.position.numElements;
-  const vcolors = createAugmentedTypedArray(4, numElements, Uint8Array);
-  const rand = options.rand || function(ndx, channel) {
+  var numElements = vertices.position.numElements;
+  var vcolors = createAugmentedTypedArray(4, numElements, Uint8Array);
+
+  var rand = options.rand || function (ndx, channel) {
     return channel < 3 ? randInt(256) : 255;
   };
+
   vertices.color = vcolors;
+
   if (vertices.indices) {
     // just make random colors if index
-    for (let ii = 0; ii < numElements; ++ii) {
+    for (var ii = 0; ii < numElements; ++ii) {
       vcolors.push(rand(ii, 0), rand(ii, 1), rand(ii, 2), rand(ii, 3));
     }
   } else {
     // make random colors per triangle
-    const numVertsPerColor = options.vertsPerColor || 3;
-    const numSets = numElements / numVertsPerColor;
-    for (let ii = 0; ii < numSets; ++ii) {  // eslint-disable-line
-      const color = [rand(ii, 0), rand(ii, 1), rand(ii, 2), rand(ii, 3)];
-      for (let jj = 0; jj < numVertsPerColor; ++jj) {
+    var numVertsPerColor = options.vertsPerColor || 3;
+    var numSets = numElements / numVertsPerColor;
+
+    for (var _ii2 = 0; _ii2 < numSets; ++_ii2) {
+      // eslint-disable-line
+      var color = [rand(_ii2, 0), rand(_ii2, 1), rand(_ii2, 2), rand(_ii2, 3)];
+
+      for (var jj = 0; jj < numVertsPerColor; ++jj) {
         vcolors.push(color);
       }
     }
   }
+
   return vertices;
 }
-
 /**
  * creates a function that calls fn to create vertices and then
  * creates a buffers for them
  * @private
  */
+
+
 function createBufferFunc(fn) {
-  return function(gl) {
-    const arrays = fn.apply(this, Array.prototype.slice.call(arguments, 1));
-    return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createBuffersFromArrays"](gl, arrays);
+  return function (gl) {
+    var arrays = fn.apply(this, Array.prototype.slice.call(arguments, 1));
+    return attributes.createBuffersFromArrays(gl, arrays);
   };
 }
-
 /**
  * creates a function that calls fn to create vertices and then
  * creates a bufferInfo object for them
  * @private
  */
+
+
 function createBufferInfoFunc(fn) {
-  return function(gl) {
-    const arrays = fn.apply(null,  Array.prototype.slice.call(arguments, 1));
-    return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createBufferInfoFromArrays"](gl, arrays);
+  return function (gl) {
+    var arrays = fn.apply(null, Array.prototype.slice.call(arguments, 1));
+    return attributes.createBufferInfoFromArrays(gl, arrays);
   };
 }
 
-const arraySpecPropertyNames = [
-  "numComponents",
-  "size",
-  "type",
-  "normalize",
-  "stride",
-  "offset",
-  "attrib",
-  "name",
-  "attribName",
-];
-
+var arraySpecPropertyNames = ["numComponents", "size", "type", "normalize", "stride", "offset", "attrib", "name", "attribName"];
 /**
  * Copy elements from one array to another
  *
@@ -4806,14 +4397,15 @@ const arraySpecPropertyNames = [
  * @param {number} [offset] offset to add to copied values
  * @private
  */
+
 function copyElements(src, dst, dstNdx, offset) {
   offset = offset || 0;
-  const length = src.length;
-  for (let ii = 0; ii < length; ++ii) {
+  var length = src.length;
+
+  for (var ii = 0; ii < length; ++ii) {
     dst[dstNdx + ii] = src[ii] + offset;
   }
 }
-
 /**
  * Creates an array of the same time
  *
@@ -4822,24 +4414,27 @@ function copyElements(src, dst, dstNdx, offset) {
  * @return {(number[]|ArrayBufferView|module:twgl.FullArraySpec)} array with same type as srcArray
  * @private
  */
+
+
 function createArrayOfSameType(srcArray, length) {
-  const arraySrc = getArray(srcArray);
-  const newArray = new arraySrc.constructor(length);
-  let newArraySpec = newArray;
-  // If it appears to have been augmented make new one augemented
+  var arraySrc = getArray(srcArray);
+  var newArray = new arraySrc.constructor(length);
+  var newArraySpec = newArray; // If it appears to have been augmented make new one augemented
+
   if (arraySrc.numComponents && arraySrc.numElements) {
     augmentTypedArray(newArray, arraySrc.numComponents);
-  }
-  // If it was a fullspec make new one a fullspec
+  } // If it was a fullspec make new one a fullspec
+
+
   if (srcArray.data) {
     newArraySpec = {
-      data: newArray,
+      data: newArray
     };
-    _helper_js__WEBPACK_IMPORTED_MODULE_1__["copyNamedProperties"](arraySpecPropertyNames, srcArray, newArraySpec);
+    helper.copyNamedProperties(arraySpecPropertyNames, srcArray, newArraySpec);
   }
+
   return newArraySpec;
 }
-
 /**
  * Concatinates sets of vertices
  *
@@ -4865,77 +4460,90 @@ function createArrayOfSameType(srcArray, length) {
  * @return {module:twgl.Arrays} The concatinated vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function concatVertices(arrayOfArrays) {
-  const names = {};
-  let baseName;
-  // get names of all arrays.
+  var names = {};
+  var baseName; // get names of all arrays.
   // and numElements for each set of vertices
-  for (let ii = 0; ii < arrayOfArrays.length; ++ii) {
-    const arrays = arrayOfArrays[ii];
-    Object.keys(arrays).forEach(function(name) {  // eslint-disable-line
+
+  var _loop = function _loop(ii) {
+    var arrays = arrayOfArrays[ii];
+    Object.keys(arrays).forEach(function (name) {
+      // eslint-disable-line
       if (!names[name]) {
         names[name] = [];
       }
+
       if (!baseName && name !== 'indices') {
         baseName = name;
       }
-      const arrayInfo = arrays[name];
-      const numComponents = getNumComponents(arrayInfo, name);
-      const array = getArray(arrayInfo);
-      const numElements = array.length / numComponents;
+
+      var arrayInfo = arrays[name];
+      var numComponents = getNumComponents(arrayInfo, name);
+      var array = getArray(arrayInfo);
+      var numElements = array.length / numComponents;
       names[name].push(numElements);
     });
-  }
+  };
 
-  // compute length of combined array
+  for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+    _loop(ii);
+  } // compute length of combined array
   // and return one for reference
+
+
   function getLengthOfCombinedArrays(name) {
-    let length = 0;
-    let arraySpec;
-    for (let ii = 0; ii < arrayOfArrays.length; ++ii) {
-      const arrays = arrayOfArrays[ii];
-      const arrayInfo = arrays[name];
-      const array = getArray(arrayInfo);
+    var length = 0;
+    var arraySpec;
+
+    for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+      var arrays = arrayOfArrays[ii];
+      var arrayInfo = arrays[name];
+      var array = getArray(arrayInfo);
       length += array.length;
+
       if (!arraySpec || arrayInfo.data) {
         arraySpec = arrayInfo;
       }
     }
+
     return {
       length: length,
-      spec: arraySpec,
+      spec: arraySpec
     };
   }
 
   function copyArraysToNewArray(name, base, newArray) {
-    let baseIndex = 0;
-    let offset = 0;
-    for (let ii = 0; ii < arrayOfArrays.length; ++ii) {
-      const arrays = arrayOfArrays[ii];
-      const arrayInfo = arrays[name];
-      const array = getArray(arrayInfo);
+    var baseIndex = 0;
+    var offset = 0;
+
+    for (var ii = 0; ii < arrayOfArrays.length; ++ii) {
+      var arrays = arrayOfArrays[ii];
+      var arrayInfo = arrays[name];
+      var array = getArray(arrayInfo);
+
       if (name === 'indices') {
         copyElements(array, newArray, offset, baseIndex);
         baseIndex += base[ii];
       } else {
         copyElements(array, newArray, offset);
       }
+
       offset += array.length;
     }
   }
 
-  const base = names[baseName];
-
-  const newArrays = {};
-  Object.keys(names).forEach(function(name) {
-    const info = getLengthOfCombinedArrays(name);
-    const newArraySpec = createArrayOfSameType(info.spec, info.length);
+  var base = names[baseName];
+  var newArrays = {};
+  Object.keys(names).forEach(function (name) {
+    var info = getLengthOfCombinedArrays(name);
+    var newArraySpec = createArrayOfSameType(info.spec, info.length);
     copyArraysToNewArray(name, base, getArray(newArraySpec));
     newArrays[name] = newArraySpec;
   });
   return newArrays;
 }
-
 /**
  * Creates a duplicate set of vertices
  *
@@ -4946,42 +4554,60 @@ function concatVertices(arrayOfArrays) {
  * @return {module:twgl.Arrays} The dupilicated vertices.
  * @memberOf module:twgl/primitives
  */
+
+
 function duplicateVertices(arrays) {
-  const newArrays = {};
-  Object.keys(arrays).forEach(function(name) {
-    const arraySpec = arrays[name];
-    const srcArray = getArray(arraySpec);
-    const newArraySpec = createArrayOfSameType(arraySpec, srcArray.length);
+  var newArrays = {};
+  Object.keys(arrays).forEach(function (name) {
+    var arraySpec = arrays[name];
+    var srcArray = getArray(arraySpec);
+    var newArraySpec = createArrayOfSameType(arraySpec, srcArray.length);
     copyElements(srcArray, getArray(newArraySpec), 0);
     newArrays[name] = newArraySpec;
   });
   return newArrays;
 }
 
-const create3DFBufferInfo = createBufferInfoFunc(create3DFVertices);
-const create3DFBuffers = createBufferFunc(create3DFVertices);
-const createCubeBufferInfo = createBufferInfoFunc(createCubeVertices);
-const createCubeBuffers = createBufferFunc(createCubeVertices);
-const createPlaneBufferInfo = createBufferInfoFunc(createPlaneVertices);
-const createPlaneBuffers = createBufferFunc(createPlaneVertices);
-const createSphereBufferInfo = createBufferInfoFunc(createSphereVertices);
-const createSphereBuffers = createBufferFunc(createSphereVertices);
-const createTruncatedConeBufferInfo = createBufferInfoFunc(createTruncatedConeVertices);
-const createTruncatedConeBuffers = createBufferFunc(createTruncatedConeVertices);
-const createXYQuadBufferInfo = createBufferInfoFunc(createXYQuadVertices);
-const createXYQuadBuffers = createBufferFunc(createXYQuadVertices);
-const createCresentBufferInfo = createBufferInfoFunc(createCresentVertices);
-const createCresentBuffers = createBufferFunc(createCresentVertices);
-const createCylinderBufferInfo = createBufferInfoFunc(createCylinderVertices);
-const createCylinderBuffers = createBufferFunc(createCylinderVertices);
-const createTorusBufferInfo = createBufferInfoFunc(createTorusVertices);
-const createTorusBuffers = createBufferFunc(createTorusVertices);
-const createDiscBufferInfo = createBufferInfoFunc(createDiscVertices);
-const createDiscBuffers = createBufferFunc(createDiscVertices);
-
-
-
-
+var create3DFBufferInfo = createBufferInfoFunc(create3DFVertices);
+exports.create3DFBufferInfo = create3DFBufferInfo;
+var create3DFBuffers = createBufferFunc(create3DFVertices);
+exports.create3DFBuffers = create3DFBuffers;
+var createCubeBufferInfo = createBufferInfoFunc(createCubeVertices);
+exports.createCubeBufferInfo = createCubeBufferInfo;
+var createCubeBuffers = createBufferFunc(createCubeVertices);
+exports.createCubeBuffers = createCubeBuffers;
+var createPlaneBufferInfo = createBufferInfoFunc(createPlaneVertices);
+exports.createPlaneBufferInfo = createPlaneBufferInfo;
+var createPlaneBuffers = createBufferFunc(createPlaneVertices);
+exports.createPlaneBuffers = createPlaneBuffers;
+var createSphereBufferInfo = createBufferInfoFunc(createSphereVertices);
+exports.createSphereBufferInfo = createSphereBufferInfo;
+var createSphereBuffers = createBufferFunc(createSphereVertices);
+exports.createSphereBuffers = createSphereBuffers;
+var createTruncatedConeBufferInfo = createBufferInfoFunc(createTruncatedConeVertices);
+exports.createTruncatedConeBufferInfo = createTruncatedConeBufferInfo;
+var createTruncatedConeBuffers = createBufferFunc(createTruncatedConeVertices);
+exports.createTruncatedConeBuffers = createTruncatedConeBuffers;
+var createXYQuadBufferInfo = createBufferInfoFunc(createXYQuadVertices);
+exports.createXYQuadBufferInfo = createXYQuadBufferInfo;
+var createXYQuadBuffers = createBufferFunc(createXYQuadVertices);
+exports.createXYQuadBuffers = createXYQuadBuffers;
+var createCresentBufferInfo = createBufferInfoFunc(createCresentVertices);
+exports.createCresentBufferInfo = createCresentBufferInfo;
+var createCresentBuffers = createBufferFunc(createCresentVertices);
+exports.createCresentBuffers = createCresentBuffers;
+var createCylinderBufferInfo = createBufferInfoFunc(createCylinderVertices);
+exports.createCylinderBufferInfo = createCylinderBufferInfo;
+var createCylinderBuffers = createBufferFunc(createCylinderVertices);
+exports.createCylinderBuffers = createCylinderBuffers;
+var createTorusBufferInfo = createBufferInfoFunc(createTorusVertices);
+exports.createTorusBufferInfo = createTorusBufferInfo;
+var createTorusBuffers = createBufferFunc(createTorusVertices);
+exports.createTorusBuffers = createTorusBuffers;
+var createDiscBufferInfo = createBufferInfoFunc(createDiscVertices);
+exports.createDiscBufferInfo = createDiscBufferInfo;
+var createDiscBuffers = createBufferFunc(createDiscVertices);
+exports.createDiscBuffers = createDiscBuffers;
 
 /***/ }),
 
@@ -4989,32 +4615,39 @@ const createDiscBuffers = createBufferFunc(createDiscVertices);
 /*!*************************!*\
   !*** ./src/programs.js ***!
   \*************************/
-/*! exports provided: createAttributeSetters, createProgram, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoFromProgram, createUniformSetters, createUniformBlockSpecFromProgram, createUniformBlockInfoFromProgram, createUniformBlockInfo, createTransformFeedback, createTransformFeedbackInfo, bindTransformFeedbackInfo, setAttributes, setBuffersAndAttributes, setUniforms, setUniformBlock, setBlockUniforms, bindUniformBlock */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createAttributeSetters", function() { return createAttributeSetters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgram", function() { return createProgram; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgramFromScripts", function() { return createProgramFromScripts; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgramFromSources", function() { return createProgramFromSources; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgramInfo", function() { return createProgramInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgramInfoFromProgram", function() { return createProgramInfoFromProgram; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUniformSetters", function() { return createUniformSetters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockSpecFromProgram", function() { return createUniformBlockSpecFromProgram; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockInfoFromProgram", function() { return createUniformBlockInfoFromProgram; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockInfo", function() { return createUniformBlockInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTransformFeedback", function() { return createTransformFeedback; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTransformFeedbackInfo", function() { return createTransformFeedbackInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bindTransformFeedbackInfo", function() { return bindTransformFeedbackInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAttributes", function() { return setAttributes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setBuffersAndAttributes", function() { return setBuffersAndAttributes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUniforms", function() { return setUniforms; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUniformBlock", function() { return setUniformBlock; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setBlockUniforms", function() { return setBlockUniforms; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bindUniformBlock", function() { return bindUniformBlock; });
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
-/* harmony import */ var _helper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper.js */ "./src/helper.js");
+
+
+exports.__esModule = true;
+exports.createAttributeSetters = createAttributeSetters;
+exports.createProgram = createProgram;
+exports.createProgramFromScripts = createProgramFromScripts;
+exports.createProgramFromSources = createProgramFromSources;
+exports.createProgramInfo = createProgramInfo;
+exports.createProgramInfoFromProgram = createProgramInfoFromProgram;
+exports.createUniformSetters = createUniformSetters;
+exports.createUniformBlockSpecFromProgram = createUniformBlockSpecFromProgram;
+exports.createUniformBlockInfoFromProgram = createUniformBlockInfoFromProgram;
+exports.createUniformBlockInfo = createUniformBlockInfo;
+exports.createTransformFeedback = createTransformFeedback;
+exports.createTransformFeedbackInfo = createTransformFeedbackInfo;
+exports.bindTransformFeedbackInfo = bindTransformFeedbackInfo;
+exports.setAttributes = setAttributes;
+exports.setBuffersAndAttributes = setBuffersAndAttributes;
+exports.setUniforms = setUniforms;
+exports.setUniformBlock = setUniformBlock;
+exports.setBlockUniforms = setBlockUniforms;
+exports.bindUniformBlock = bindUniformBlock;
+
+var utils = _interopRequireWildcard(__webpack_require__(/*! ./utils.js */ "./src/utils.js"));
+
+var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -5046,9 +4679,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-
 /**
  * Low level shader program related functions
  *
@@ -5063,234 +4693,229 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/programs
  */
-
-const error = _helper_js__WEBPACK_IMPORTED_MODULE_1__["error"];
-const warn = _helper_js__WEBPACK_IMPORTED_MODULE_1__["warn"];
-const getElementById = (typeof document !== 'undefined' && document.getElementById)
-  ? document.getElementById.bind(document)
-  : function() {
-    return null;
+var error = helper.error;
+var warn = helper.warn;
+var getElementById = typeof document !== 'undefined' && document.getElementById ? document.getElementById.bind(document) : function () {
+  return null;
 };
-
-const FLOAT                         = 0x1406;
-const FLOAT_VEC2                    = 0x8B50;
-const FLOAT_VEC3                    = 0x8B51;
-const FLOAT_VEC4                    = 0x8B52;
-const INT                           = 0x1404;
-const INT_VEC2                      = 0x8B53;
-const INT_VEC3                      = 0x8B54;
-const INT_VEC4                      = 0x8B55;
-const BOOL                          = 0x8B56;
-const BOOL_VEC2                     = 0x8B57;
-const BOOL_VEC3                     = 0x8B58;
-const BOOL_VEC4                     = 0x8B59;
-const FLOAT_MAT2                    = 0x8B5A;
-const FLOAT_MAT3                    = 0x8B5B;
-const FLOAT_MAT4                    = 0x8B5C;
-const SAMPLER_2D                    = 0x8B5E;
-const SAMPLER_CUBE                  = 0x8B60;
-const SAMPLER_3D                    = 0x8B5F;
-const SAMPLER_2D_SHADOW             = 0x8B62;
-const FLOAT_MAT2x3                  = 0x8B65;
-const FLOAT_MAT2x4                  = 0x8B66;
-const FLOAT_MAT3x2                  = 0x8B67;
-const FLOAT_MAT3x4                  = 0x8B68;
-const FLOAT_MAT4x2                  = 0x8B69;
-const FLOAT_MAT4x3                  = 0x8B6A;
-const SAMPLER_2D_ARRAY              = 0x8DC1;
-const SAMPLER_2D_ARRAY_SHADOW       = 0x8DC4;
-const SAMPLER_CUBE_SHADOW           = 0x8DC5;
-const UNSIGNED_INT                  = 0x1405;
-const UNSIGNED_INT_VEC2             = 0x8DC6;
-const UNSIGNED_INT_VEC3             = 0x8DC7;
-const UNSIGNED_INT_VEC4             = 0x8DC8;
-const INT_SAMPLER_2D                = 0x8DCA;
-const INT_SAMPLER_3D                = 0x8DCB;
-const INT_SAMPLER_CUBE              = 0x8DCC;
-const INT_SAMPLER_2D_ARRAY          = 0x8DCF;
-const UNSIGNED_INT_SAMPLER_2D       = 0x8DD2;
-const UNSIGNED_INT_SAMPLER_3D       = 0x8DD3;
-const UNSIGNED_INT_SAMPLER_CUBE     = 0x8DD4;
-const UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
-
-const TEXTURE_2D                    = 0x0DE1;
-const TEXTURE_CUBE_MAP              = 0x8513;
-const TEXTURE_3D                    = 0x806F;
-const TEXTURE_2D_ARRAY              = 0x8C1A;
-
-const typeMap = {};
-
+var FLOAT = 0x1406;
+var FLOAT_VEC2 = 0x8B50;
+var FLOAT_VEC3 = 0x8B51;
+var FLOAT_VEC4 = 0x8B52;
+var INT = 0x1404;
+var INT_VEC2 = 0x8B53;
+var INT_VEC3 = 0x8B54;
+var INT_VEC4 = 0x8B55;
+var BOOL = 0x8B56;
+var BOOL_VEC2 = 0x8B57;
+var BOOL_VEC3 = 0x8B58;
+var BOOL_VEC4 = 0x8B59;
+var FLOAT_MAT2 = 0x8B5A;
+var FLOAT_MAT3 = 0x8B5B;
+var FLOAT_MAT4 = 0x8B5C;
+var SAMPLER_2D = 0x8B5E;
+var SAMPLER_CUBE = 0x8B60;
+var SAMPLER_3D = 0x8B5F;
+var SAMPLER_2D_SHADOW = 0x8B62;
+var FLOAT_MAT2x3 = 0x8B65;
+var FLOAT_MAT2x4 = 0x8B66;
+var FLOAT_MAT3x2 = 0x8B67;
+var FLOAT_MAT3x4 = 0x8B68;
+var FLOAT_MAT4x2 = 0x8B69;
+var FLOAT_MAT4x3 = 0x8B6A;
+var SAMPLER_2D_ARRAY = 0x8DC1;
+var SAMPLER_2D_ARRAY_SHADOW = 0x8DC4;
+var SAMPLER_CUBE_SHADOW = 0x8DC5;
+var UNSIGNED_INT = 0x1405;
+var UNSIGNED_INT_VEC2 = 0x8DC6;
+var UNSIGNED_INT_VEC3 = 0x8DC7;
+var UNSIGNED_INT_VEC4 = 0x8DC8;
+var INT_SAMPLER_2D = 0x8DCA;
+var INT_SAMPLER_3D = 0x8DCB;
+var INT_SAMPLER_CUBE = 0x8DCC;
+var INT_SAMPLER_2D_ARRAY = 0x8DCF;
+var UNSIGNED_INT_SAMPLER_2D = 0x8DD2;
+var UNSIGNED_INT_SAMPLER_3D = 0x8DD3;
+var UNSIGNED_INT_SAMPLER_CUBE = 0x8DD4;
+var UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
+var TEXTURE_2D = 0x0DE1;
+var TEXTURE_CUBE_MAP = 0x8513;
+var TEXTURE_3D = 0x806F;
+var TEXTURE_2D_ARRAY = 0x8C1A;
+var typeMap = {};
 /**
  * Returns the corresponding bind point for a given sampler type
  */
+
 function getBindPointForSamplerType(gl, type) {
   return typeMap[type].bindPoint;
-}
-
-// This kind of sucks! If you could compose functions as in `var fn = gl[name];`
+} // This kind of sucks! If you could compose functions as in `var fn = gl[name];`
 // this code could be a lot smaller but that is sadly really slow (T_T)
 
+
 function floatSetter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform1f(location, v);
   };
 }
 
 function floatArraySetter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform1fv(location, v);
   };
 }
 
 function floatVec2Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform2fv(location, v);
   };
 }
 
 function floatVec3Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform3fv(location, v);
   };
 }
 
 function floatVec4Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform4fv(location, v);
   };
 }
 
 function intSetter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform1i(location, v);
   };
 }
 
 function intArraySetter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform1iv(location, v);
   };
 }
 
 function intVec2Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform2iv(location, v);
   };
 }
 
 function intVec3Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform3iv(location, v);
   };
 }
 
 function intVec4Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform4iv(location, v);
   };
 }
 
 function uintSetter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform1ui(location, v);
   };
 }
 
 function uintArraySetter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform1uiv(location, v);
   };
 }
 
 function uintVec2Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform2uiv(location, v);
   };
 }
 
 function uintVec3Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform3uiv(location, v);
   };
 }
 
 function uintVec4Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniform4uiv(location, v);
   };
 }
 
 function floatMat2Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix2fv(location, false, v);
   };
 }
 
 function floatMat3Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix3fv(location, false, v);
   };
 }
 
 function floatMat4Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix4fv(location, false, v);
   };
 }
 
 function floatMat23Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix2x3fv(location, false, v);
   };
 }
 
 function floatMat32Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix3x2fv(location, false, v);
   };
 }
 
 function floatMat24Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix2x4fv(location, false, v);
   };
 }
 
 function floatMat42Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix4x2fv(location, false, v);
   };
 }
 
 function floatMat34Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix3x4fv(location, false, v);
   };
 }
 
 function floatMat43Setter(gl, location) {
-  return function(v) {
+  return function (v) {
     gl.uniformMatrix4x3fv(location, false, v);
   };
 }
 
 function samplerSetter(gl, type, unit, location) {
-  const bindPoint = getBindPointForSamplerType(gl, type);
-  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["isWebGL2"](gl) ? function(textureOrPair) {
-    let texture;
-    let sampler;
-    if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isTexture"](gl, textureOrPair)) {
+  var bindPoint = getBindPointForSamplerType(gl, type);
+  return utils.isWebGL2(gl) ? function (textureOrPair) {
+    var texture;
+    var sampler;
+
+    if (helper.isTexture(gl, textureOrPair)) {
       texture = textureOrPair;
       sampler = null;
     } else {
       texture = textureOrPair.texture;
       sampler = textureOrPair.sampler;
     }
+
     gl.uniform1i(location, unit);
     gl.activeTexture(gl.TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
     gl.bindSampler(unit, sampler);
-  } : function(texture) {
+  } : function (texture) {
     gl.uniform1i(location, unit);
     gl.activeTexture(gl.TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
@@ -5298,88 +4923,285 @@ function samplerSetter(gl, type, unit, location) {
 }
 
 function samplerArraySetter(gl, type, unit, location, size) {
-  const bindPoint = getBindPointForSamplerType(gl, type);
-  const units = new Int32Array(size);
-  for (let ii = 0; ii < size; ++ii) {
+  var bindPoint = getBindPointForSamplerType(gl, type);
+  var units = new Int32Array(size);
+
+  for (var ii = 0; ii < size; ++ii) {
     units[ii] = unit + ii;
   }
 
-  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["isWebGL2"](gl) ? function(textures) {
+  return utils.isWebGL2(gl) ? function (textures) {
     gl.uniform1iv(location, units);
-    textures.forEach(function(textureOrPair, index) {
+    textures.forEach(function (textureOrPair, index) {
       gl.activeTexture(gl.TEXTURE0 + units[index]);
-      let texture;
-      let sampler;
-      if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isTexture"](gl, textureOrPair)) {
+      var texture;
+      var sampler;
+
+      if (helper.isTexture(gl, textureOrPair)) {
         texture = textureOrPair;
         sampler = null;
       } else {
         texture = textureOrPair.texture;
         sampler = textureOrPair.sampler;
       }
+
       gl.bindSampler(unit, sampler);
       gl.bindTexture(bindPoint, texture);
     });
-  } : function(textures) {
+  } : function (textures) {
     gl.uniform1iv(location, units);
-    textures.forEach(function(texture, index) {
+    textures.forEach(function (texture, index) {
       gl.activeTexture(gl.TEXTURE0 + units[index]);
       gl.bindTexture(bindPoint, texture);
     });
   };
 }
 
-typeMap[FLOAT]                         = { Type: Float32Array, size:  4, setter: floatSetter,      arraySetter: floatArraySetter, };
-typeMap[FLOAT_VEC2]                    = { Type: Float32Array, size:  8, setter: floatVec2Setter,  };
-typeMap[FLOAT_VEC3]                    = { Type: Float32Array, size: 12, setter: floatVec3Setter,  };
-typeMap[FLOAT_VEC4]                    = { Type: Float32Array, size: 16, setter: floatVec4Setter,  };
-typeMap[INT]                           = { Type: Int32Array,   size:  4, setter: intSetter,        arraySetter: intArraySetter, };
-typeMap[INT_VEC2]                      = { Type: Int32Array,   size:  8, setter: intVec2Setter,    };
-typeMap[INT_VEC3]                      = { Type: Int32Array,   size: 12, setter: intVec3Setter,    };
-typeMap[INT_VEC4]                      = { Type: Int32Array,   size: 16, setter: intVec4Setter,    };
-typeMap[UNSIGNED_INT]                  = { Type: Uint32Array,  size:  4, setter: uintSetter,       arraySetter: uintArraySetter, };
-typeMap[UNSIGNED_INT_VEC2]             = { Type: Uint32Array,  size:  8, setter: uintVec2Setter,   };
-typeMap[UNSIGNED_INT_VEC3]             = { Type: Uint32Array,  size: 12, setter: uintVec3Setter,   };
-typeMap[UNSIGNED_INT_VEC4]             = { Type: Uint32Array,  size: 16, setter: uintVec4Setter,   };
-typeMap[BOOL]                          = { Type: Uint32Array,  size:  4, setter: intSetter,        arraySetter: intArraySetter, };
-typeMap[BOOL_VEC2]                     = { Type: Uint32Array,  size:  8, setter: intVec2Setter,    };
-typeMap[BOOL_VEC3]                     = { Type: Uint32Array,  size: 12, setter: intVec3Setter,    };
-typeMap[BOOL_VEC4]                     = { Type: Uint32Array,  size: 16, setter: intVec4Setter,    };
-typeMap[FLOAT_MAT2]                    = { Type: Float32Array, size: 16, setter: floatMat2Setter,  };
-typeMap[FLOAT_MAT3]                    = { Type: Float32Array, size: 36, setter: floatMat3Setter,  };
-typeMap[FLOAT_MAT4]                    = { Type: Float32Array, size: 64, setter: floatMat4Setter,  };
-typeMap[FLOAT_MAT2x3]                  = { Type: Float32Array, size: 24, setter: floatMat23Setter, };
-typeMap[FLOAT_MAT2x4]                  = { Type: Float32Array, size: 32, setter: floatMat24Setter, };
-typeMap[FLOAT_MAT3x2]                  = { Type: Float32Array, size: 24, setter: floatMat32Setter, };
-typeMap[FLOAT_MAT3x4]                  = { Type: Float32Array, size: 48, setter: floatMat34Setter, };
-typeMap[FLOAT_MAT4x2]                  = { Type: Float32Array, size: 32, setter: floatMat42Setter, };
-typeMap[FLOAT_MAT4x3]                  = { Type: Float32Array, size: 48, setter: floatMat43Setter, };
-typeMap[SAMPLER_2D]                    = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
-typeMap[SAMPLER_CUBE]                  = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
-typeMap[SAMPLER_3D]                    = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D,       };
-typeMap[SAMPLER_2D_SHADOW]             = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
-typeMap[SAMPLER_2D_ARRAY]              = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
-typeMap[SAMPLER_2D_ARRAY_SHADOW]       = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
-typeMap[SAMPLER_CUBE_SHADOW]           = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
-typeMap[INT_SAMPLER_2D]                = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
-typeMap[INT_SAMPLER_3D]                = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D,       };
-typeMap[INT_SAMPLER_CUBE]              = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
-typeMap[INT_SAMPLER_2D_ARRAY]          = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
-typeMap[UNSIGNED_INT_SAMPLER_2D]       = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D,       };
-typeMap[UNSIGNED_INT_SAMPLER_3D]       = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D,       };
-typeMap[UNSIGNED_INT_SAMPLER_CUBE]     = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP, };
-typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D_ARRAY, };
+typeMap[FLOAT] = {
+  Type: Float32Array,
+  size: 4,
+  setter: floatSetter,
+  arraySetter: floatArraySetter
+};
+typeMap[FLOAT_VEC2] = {
+  Type: Float32Array,
+  size: 8,
+  setter: floatVec2Setter
+};
+typeMap[FLOAT_VEC3] = {
+  Type: Float32Array,
+  size: 12,
+  setter: floatVec3Setter
+};
+typeMap[FLOAT_VEC4] = {
+  Type: Float32Array,
+  size: 16,
+  setter: floatVec4Setter
+};
+typeMap[INT] = {
+  Type: Int32Array,
+  size: 4,
+  setter: intSetter,
+  arraySetter: intArraySetter
+};
+typeMap[INT_VEC2] = {
+  Type: Int32Array,
+  size: 8,
+  setter: intVec2Setter
+};
+typeMap[INT_VEC3] = {
+  Type: Int32Array,
+  size: 12,
+  setter: intVec3Setter
+};
+typeMap[INT_VEC4] = {
+  Type: Int32Array,
+  size: 16,
+  setter: intVec4Setter
+};
+typeMap[UNSIGNED_INT] = {
+  Type: Uint32Array,
+  size: 4,
+  setter: uintSetter,
+  arraySetter: uintArraySetter
+};
+typeMap[UNSIGNED_INT_VEC2] = {
+  Type: Uint32Array,
+  size: 8,
+  setter: uintVec2Setter
+};
+typeMap[UNSIGNED_INT_VEC3] = {
+  Type: Uint32Array,
+  size: 12,
+  setter: uintVec3Setter
+};
+typeMap[UNSIGNED_INT_VEC4] = {
+  Type: Uint32Array,
+  size: 16,
+  setter: uintVec4Setter
+};
+typeMap[BOOL] = {
+  Type: Uint32Array,
+  size: 4,
+  setter: intSetter,
+  arraySetter: intArraySetter
+};
+typeMap[BOOL_VEC2] = {
+  Type: Uint32Array,
+  size: 8,
+  setter: intVec2Setter
+};
+typeMap[BOOL_VEC3] = {
+  Type: Uint32Array,
+  size: 12,
+  setter: intVec3Setter
+};
+typeMap[BOOL_VEC4] = {
+  Type: Uint32Array,
+  size: 16,
+  setter: intVec4Setter
+};
+typeMap[FLOAT_MAT2] = {
+  Type: Float32Array,
+  size: 16,
+  setter: floatMat2Setter
+};
+typeMap[FLOAT_MAT3] = {
+  Type: Float32Array,
+  size: 36,
+  setter: floatMat3Setter
+};
+typeMap[FLOAT_MAT4] = {
+  Type: Float32Array,
+  size: 64,
+  setter: floatMat4Setter
+};
+typeMap[FLOAT_MAT2x3] = {
+  Type: Float32Array,
+  size: 24,
+  setter: floatMat23Setter
+};
+typeMap[FLOAT_MAT2x4] = {
+  Type: Float32Array,
+  size: 32,
+  setter: floatMat24Setter
+};
+typeMap[FLOAT_MAT3x2] = {
+  Type: Float32Array,
+  size: 24,
+  setter: floatMat32Setter
+};
+typeMap[FLOAT_MAT3x4] = {
+  Type: Float32Array,
+  size: 48,
+  setter: floatMat34Setter
+};
+typeMap[FLOAT_MAT4x2] = {
+  Type: Float32Array,
+  size: 32,
+  setter: floatMat42Setter
+};
+typeMap[FLOAT_MAT4x3] = {
+  Type: Float32Array,
+  size: 48,
+  setter: floatMat43Setter
+};
+typeMap[SAMPLER_2D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[SAMPLER_CUBE] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[SAMPLER_3D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_3D
+};
+typeMap[SAMPLER_2D_SHADOW] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[SAMPLER_2D_ARRAY] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
+typeMap[SAMPLER_2D_ARRAY_SHADOW] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
+typeMap[SAMPLER_CUBE_SHADOW] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[INT_SAMPLER_2D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[INT_SAMPLER_3D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_3D
+};
+typeMap[INT_SAMPLER_CUBE] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[INT_SAMPLER_2D_ARRAY] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
+typeMap[UNSIGNED_INT_SAMPLER_2D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D
+};
+typeMap[UNSIGNED_INT_SAMPLER_3D] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_3D
+};
+typeMap[UNSIGNED_INT_SAMPLER_CUBE] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_CUBE_MAP
+};
+typeMap[UNSIGNED_INT_SAMPLER_2D_ARRAY] = {
+  Type: null,
+  size: 0,
+  setter: samplerSetter,
+  arraySetter: samplerArraySetter,
+  bindPoint: TEXTURE_2D_ARRAY
+};
 
 function floatAttribSetter(gl, index) {
-  return function(b) {
+  return function (b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
       gl.vertexAttrib4fv(index, b.value);
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
-      gl.vertexAttribPointer(
-          index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+      gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index, b.divisor);
       }
@@ -5388,15 +5210,15 @@ function floatAttribSetter(gl, index) {
 }
 
 function intAttribSetter(gl, index) {
-  return function(b) {
+  return function (b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
       gl.vertexAttrib4iv(index, b.value);
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
-      gl.vertexAttribIPointer(
-          index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+      gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index, b.divisor);
       }
@@ -5405,15 +5227,15 @@ function intAttribSetter(gl, index) {
 }
 
 function uintAttribSetter(gl, index) {
-  return function(b) {
+  return function (b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
       gl.vertexAttrib4uiv(index, b.value);
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
-      gl.vertexAttribIPointer(
-          index, b.numComponents || b.size, b.type || gl.UNSIGNED_INT, b.stride || 0, b.offset || 0);
+      gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || gl.UNSIGNED_INT, b.stride || 0, b.offset || 0);
+
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index, b.divisor);
       }
@@ -5422,23 +5244,23 @@ function uintAttribSetter(gl, index) {
 }
 
 function matAttribSetter(gl, index, typeInfo) {
-  const defaultSize = typeInfo.size;
-  const count = typeInfo.count;
-
-  return function(b) {
+  var defaultSize = typeInfo.size;
+  var count = typeInfo.count;
+  return function (b) {
     gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
-    const numComponents = b.size || b.numComponents || defaultSize;
-    const size = numComponents / count;
-    const type = b.type || gl.FLOAT;
-    const typeInfo = typeMap[type];
-    const stride = typeInfo.size * numComponents;
-    const normalize = b.normalize || false;
-    const offset = b.offset || 0;
-    const rowOffset = stride / count;
-    for (let i = 0; i < count; ++i) {
+    var numComponents = b.size || b.numComponents || defaultSize;
+    var size = numComponents / count;
+    var type = b.type || gl.FLOAT;
+    var typeInfo = typeMap[type];
+    var stride = typeInfo.size * numComponents;
+    var normalize = b.normalize || false;
+    var offset = b.offset || 0;
+    var rowOffset = stride / count;
+
+    for (var i = 0; i < count; ++i) {
       gl.enableVertexAttribArray(index + i);
-      gl.vertexAttribPointer(
-          index + i, size, type, normalize, stride, offset + rowOffset * i);
+      gl.vertexAttribPointer(index + i, size, type, normalize, stride, offset + rowOffset * i);
+
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index + i, b.divisor);
       }
@@ -5446,31 +5268,88 @@ function matAttribSetter(gl, index, typeInfo) {
   };
 }
 
+var attrTypeMap = {};
+attrTypeMap[FLOAT] = {
+  size: 4,
+  setter: floatAttribSetter
+};
+attrTypeMap[FLOAT_VEC2] = {
+  size: 8,
+  setter: floatAttribSetter
+};
+attrTypeMap[FLOAT_VEC3] = {
+  size: 12,
+  setter: floatAttribSetter
+};
+attrTypeMap[FLOAT_VEC4] = {
+  size: 16,
+  setter: floatAttribSetter
+};
+attrTypeMap[INT] = {
+  size: 4,
+  setter: intAttribSetter
+};
+attrTypeMap[INT_VEC2] = {
+  size: 8,
+  setter: intAttribSetter
+};
+attrTypeMap[INT_VEC3] = {
+  size: 12,
+  setter: intAttribSetter
+};
+attrTypeMap[INT_VEC4] = {
+  size: 16,
+  setter: intAttribSetter
+};
+attrTypeMap[UNSIGNED_INT] = {
+  size: 4,
+  setter: uintAttribSetter
+};
+attrTypeMap[UNSIGNED_INT_VEC2] = {
+  size: 8,
+  setter: uintAttribSetter
+};
+attrTypeMap[UNSIGNED_INT_VEC3] = {
+  size: 12,
+  setter: uintAttribSetter
+};
+attrTypeMap[UNSIGNED_INT_VEC4] = {
+  size: 16,
+  setter: uintAttribSetter
+};
+attrTypeMap[BOOL] = {
+  size: 4,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL_VEC2] = {
+  size: 8,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL_VEC3] = {
+  size: 12,
+  setter: intAttribSetter
+};
+attrTypeMap[BOOL_VEC4] = {
+  size: 16,
+  setter: intAttribSetter
+};
+attrTypeMap[FLOAT_MAT2] = {
+  size: 4,
+  setter: matAttribSetter,
+  count: 2
+};
+attrTypeMap[FLOAT_MAT3] = {
+  size: 9,
+  setter: matAttribSetter,
+  count: 3
+};
+attrTypeMap[FLOAT_MAT4] = {
+  size: 16,
+  setter: matAttribSetter,
+  count: 4
+}; // make sure we don't see a global gl
 
-
-const attrTypeMap = {};
-attrTypeMap[FLOAT]             = { size:  4, setter: floatAttribSetter, };
-attrTypeMap[FLOAT_VEC2]        = { size:  8, setter: floatAttribSetter, };
-attrTypeMap[FLOAT_VEC3]        = { size: 12, setter: floatAttribSetter, };
-attrTypeMap[FLOAT_VEC4]        = { size: 16, setter: floatAttribSetter, };
-attrTypeMap[INT]               = { size:  4, setter: intAttribSetter,   };
-attrTypeMap[INT_VEC2]          = { size:  8, setter: intAttribSetter,   };
-attrTypeMap[INT_VEC3]          = { size: 12, setter: intAttribSetter,   };
-attrTypeMap[INT_VEC4]          = { size: 16, setter: intAttribSetter,   };
-attrTypeMap[UNSIGNED_INT]      = { size:  4, setter: uintAttribSetter,  };
-attrTypeMap[UNSIGNED_INT_VEC2] = { size:  8, setter: uintAttribSetter,  };
-attrTypeMap[UNSIGNED_INT_VEC3] = { size: 12, setter: uintAttribSetter,  };
-attrTypeMap[UNSIGNED_INT_VEC4] = { size: 16, setter: uintAttribSetter,  };
-attrTypeMap[BOOL]              = { size:  4, setter: intAttribSetter,   };
-attrTypeMap[BOOL_VEC2]         = { size:  8, setter: intAttribSetter,   };
-attrTypeMap[BOOL_VEC3]         = { size: 12, setter: intAttribSetter,   };
-attrTypeMap[BOOL_VEC4]         = { size: 16, setter: intAttribSetter,   };
-attrTypeMap[FLOAT_MAT2]        = { size:  4, setter: matAttribSetter,   count: 2, };
-attrTypeMap[FLOAT_MAT3]        = { size:  9, setter: matAttribSetter,   count: 3, };
-attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4, };
-
-// make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+var gl = undefined; // eslint-disable-line
 
 /**
  * Error Callback
@@ -5483,14 +5362,12 @@ const gl = undefined;  // eslint-disable-line
 function addLineNumbers(src, lineOffset) {
   lineOffset = lineOffset || 0;
   ++lineOffset;
-
-  return src.split("\n").map(function(line, ndx) {
-    return (ndx + lineOffset) + ": " + line;
+  return src.split("\n").map(function (line, ndx) {
+    return ndx + lineOffset + ": " + line;
   }).join("\n");
 }
 
-const spaceRE = /^[ \t]*\n/;
-
+var spaceRE = /^[ \t]*\n/;
 /**
  * Loads a shader.
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
@@ -5500,12 +5377,11 @@ const spaceRE = /^[ \t]*\n/;
  * @return {WebGLShader} The created shader.
  * @private
  */
-function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
-  const errFn = opt_errorCallback || error;
-  // Create the shader object
-  const shader = gl.createShader(shaderType);
 
-  // Remove the first end of line because WebGL 2.0 requires
+function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
+  var errFn = opt_errorCallback || error; // Create the shader object
+
+  var shader = gl.createShader(shaderType); // Remove the first end of line because WebGL 2.0 requires
   // #version 300 es
   // as the first line. No whitespace allowed before that line
   // so
@@ -5516,23 +5392,24 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   //
   // Has one line before it which is invalid according to GLSL ES 3.00
   //
-  let lineOffset = 0;
+
+  var lineOffset = 0;
+
   if (spaceRE.test(shaderSource)) {
     lineOffset = 1;
     shaderSource = shaderSource.replace(spaceRE, '');
-  }
+  } // Load the shader source
 
-  // Load the shader source
-  gl.shaderSource(shader, shaderSource);
 
-  // Compile the shader
-  gl.compileShader(shader);
+  gl.shaderSource(shader, shaderSource); // Compile the shader
 
-  // Check the compile status
-  const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  gl.compileShader(shader); // Check the compile status
+
+  var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+
   if (!compiled) {
     // Something went wrong during compilation; get the error
-    const lastError = gl.getShaderInfoLog(shader);
+    var lastError = gl.getShaderInfoLog(shader);
     errFn(addLineNumbers(shaderSource, lineOffset) + "\n*** Error compiling shader: " + lastError);
     gl.deleteShader(shader);
     return null;
@@ -5540,7 +5417,6 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
 
   return shader;
 }
-
 /**
  * @typedef {Object} ProgramOptions
  * @property {function(string)} [errorCallback] callback for errors
@@ -5561,12 +5437,16 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
  * @private
  */
+
+
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
-  let transformFeedbackVaryings;
+  var transformFeedbackVaryings;
+
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
     opt_locations = undefined;
   }
+
   if (typeof opt_attribs === 'function') {
     opt_errorCallback = opt_attribs;
     opt_attribs = undefined;
@@ -5576,36 +5456,36 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     if (opt_attribs.errorCallback) {
       return opt_attribs;
     }
-    const opt = opt_attribs;
+
+    var opt = opt_attribs;
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
     transformFeedbackVaryings = opt.transformFeedbackVaryings;
   }
 
-  const options = {
+  var options = {
     errorCallback: opt_errorCallback || error,
-    transformFeedbackVaryings: transformFeedbackVaryings,
+    transformFeedbackVaryings: transformFeedbackVaryings
   };
 
   if (opt_attribs) {
-    let attribLocations = {};
+    var attribLocations = {};
+
     if (Array.isArray(opt_attribs)) {
-      opt_attribs.forEach(function(attrib,  ndx) {
+      opt_attribs.forEach(function (attrib, ndx) {
         attribLocations[attrib] = opt_locations ? opt_locations[ndx] : ndx;
       });
     } else {
       attribLocations = opt_attribs;
     }
+
     options.attribLocations = attribLocations;
   }
 
   return options;
 }
 
-const defaultShaderType = [
-  "VERTEX_SHADER",
-  "FRAGMENT_SHADER",
-];
+var defaultShaderType = ["VERTEX_SHADER", "FRAGMENT_SHADER"];
 
 function getShaderTypeFromScriptType(gl, scriptType) {
   if (scriptType.indexOf("frag") >= 0) {
@@ -5613,15 +5493,15 @@ function getShaderTypeFromScriptType(gl, scriptType) {
   } else if (scriptType.indexOf("vert") >= 0) {
     return gl.VERTEX_SHADER;
   }
+
   return undefined;
 }
 
 function deleteShaders(gl, shaders) {
-  shaders.forEach(function(shader) {
+  shaders.forEach(function (shader) {
     gl.deleteShader(shader);
   });
 }
-
 /**
  * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
  * program and calls useProgram.
@@ -5642,24 +5522,30 @@ function deleteShaders(gl, shaders) {
  * @return {WebGLProgram?} the created program or null if error.
  * @memberOf module:twgl/programs
  */
-function createProgram(
-    gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
-  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  const realShaders = [];
-  const newShaders = [];
-  for (let ndx = 0; ndx < shaders.length; ++ndx) {
-    let shader = shaders[ndx];
-    if (typeof (shader) === 'string') {
-      const elem = getElementById(shader);
-      const src = elem ? elem.text : shader;
-      let type = gl[defaultShaderType[ndx]];
+
+
+function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
+  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  var realShaders = [];
+  var newShaders = [];
+
+  for (var ndx = 0; ndx < shaders.length; ++ndx) {
+    var shader = shaders[ndx];
+
+    if (typeof shader === 'string') {
+      var elem = getElementById(shader);
+      var src = elem ? elem.text : shader;
+      var type = gl[defaultShaderType[ndx]];
+
       if (elem && elem.type) {
         type = getShaderTypeFromScriptType(gl, elem.type) || type;
       }
+
       shader = loadShader(gl, src, type, progOptions.errorCallback);
       newShaders.push(shader);
     }
-    if (_helper_js__WEBPACK_IMPORTED_MODULE_1__["isShader"](gl, shader)) {
+
+    if (helper.isShader(gl, shader)) {
       realShaders.push(shader);
     }
   }
@@ -5670,41 +5556,46 @@ function createProgram(
     return null;
   }
 
-  const program = gl.createProgram();
-  realShaders.forEach(function(shader) {
+  var program = gl.createProgram();
+  realShaders.forEach(function (shader) {
     gl.attachShader(program, shader);
   });
+
   if (progOptions.attribLocations) {
-    Object.keys(progOptions.attribLocations).forEach(function(attrib) {
+    Object.keys(progOptions.attribLocations).forEach(function (attrib) {
       gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
     });
   }
-  let varyings = progOptions.transformFeedbackVaryings;
+
+  var varyings = progOptions.transformFeedbackVaryings;
+
   if (varyings) {
     if (varyings.attribs) {
       varyings = varyings.attribs;
     }
+
     if (!Array.isArray(varyings)) {
       varyings = Object.keys(varyings);
     }
+
     gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || gl.SEPARATE_ATTRIBS);
   }
-  gl.linkProgram(program);
 
-  // Check the link status
-  const linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+  gl.linkProgram(program); // Check the link status
+
+  var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+
   if (!linked) {
     // something went wrong with the link
-    const lastError = gl.getProgramInfoLog(program);
+    var lastError = gl.getProgramInfoLog(program);
     progOptions.errorCallback("Error in program linking:" + lastError);
-
     gl.deleteProgram(program);
     deleteShaders(gl, newShaders);
     return null;
   }
+
   return program;
 }
-
 /**
  * Loads a shader from a script tag.
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
@@ -5715,23 +5606,25 @@ function createProgram(
  * @return {WebGLShader?} The created shader or null if error.
  * @private
  */
-function createShaderFromScript(
-    gl, scriptId, opt_shaderType, opt_errorCallback) {
-  let shaderSource = "";
-  const shaderScript = getElementById(scriptId);
+
+
+function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback) {
+  var shaderSource = "";
+  var shaderScript = getElementById(scriptId);
+
   if (!shaderScript) {
     throw "*** Error: unknown script element" + scriptId;
   }
-  shaderSource = shaderScript.text;
 
-  const shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
+  shaderSource = shaderScript.text;
+  var shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
+
   if (!shaderType) {
     throw "*** Error: unknown shader type";
   }
 
   return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
 }
-
 /**
  * Creates a program from 2 script tags.
  *
@@ -5754,21 +5647,24 @@ function createShaderFromScript(
  * @return {WebGLProgram?} the created program or null if error.
  * @memberOf module:twgl/programs
  */
-function createProgramFromScripts(
-    gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
-  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  const shaders = [];
-  for (let ii = 0; ii < shaderScriptIds.length; ++ii) {
-    const shader = createShaderFromScript(
-        gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+
+
+function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
+  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  var shaders = [];
+
+  for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
+    var shader = createShaderFromScript(gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+
     if (!shader) {
       return null;
     }
+
     shaders.push(shader);
   }
+
   return createProgram(gl, shaders, progOptions);
 }
-
 /**
  * Creates a program from 2 sources.
  *
@@ -5791,21 +5687,24 @@ function createProgramFromScripts(
  * @return {WebGLProgram?} the created program or null if error.
  * @memberOf module:twgl/programs
  */
-function createProgramFromSources(
-    gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  const shaders = [];
-  for (let ii = 0; ii < shaderSources.length; ++ii) {
-    const shader = loadShader(
-        gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+
+
+function createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
+  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  var shaders = [];
+
+  for (var ii = 0; ii < shaderSources.length; ++ii) {
+    var shader = loadShader(gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+
     if (!shader) {
       return null;
     }
+
     shaders.push(shader);
   }
+
   return createProgram(gl, shaders, progOptions);
 }
-
 /**
  * Returns true if attribute/uniform is a reserved/built in
  *
@@ -5823,11 +5722,12 @@ function createProgramFromSources(
  * @return {bool} true if it's reserved
  * @private
  */
+
+
 function isBuiltIn(info) {
-  const name = info.name;
+  var name = info.name;
   return name.startsWith("gl_") || name.startsWith("webgl_");
 }
-
 /**
  * Creates setter functions for all uniforms of a shader
  * program.
@@ -5838,9 +5738,10 @@ function isBuiltIn(info) {
  * @returns {Object.<string, function>} an object with a setter by name for each uniform
  * @memberOf module:twgl/programs
  */
-function createUniformSetters(gl, program) {
-  let textureUnit = 0;
 
+
+function createUniformSetters(gl, program) {
+  var textureUnit = 0;
   /**
    * Creates a setter for a uniform of the given program with it's
    * location embedded in the setter.
@@ -5848,19 +5749,24 @@ function createUniformSetters(gl, program) {
    * @param {WebGLUniformInfo} uniformInfo
    * @returns {function} the created setter.
    */
+
   function createUniformSetter(program, uniformInfo) {
-    const location = gl.getUniformLocation(program, uniformInfo.name);
-    const isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
-    const type = uniformInfo.type;
-    const typeInfo = typeMap[type];
+    var location = gl.getUniformLocation(program, uniformInfo.name);
+    var isArray = uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]";
+    var type = uniformInfo.type;
+    var typeInfo = typeMap[type];
+
     if (!typeInfo) {
-      throw ("unknown type: 0x" + type.toString(16)); // we should never get here.
+      throw "unknown type: 0x" + type.toString(16); // we should never get here.
     }
-    let setter;
+
+    var setter;
+
     if (typeInfo.bindPoint) {
       // it's a sampler
-      const unit = textureUnit;
+      var unit = textureUnit;
       textureUnit += uniformInfo.size;
+
       if (isArray) {
         setter = typeInfo.arraySetter(gl, type, unit, location, uniformInfo.size);
       } else {
@@ -5873,29 +5779,33 @@ function createUniformSetters(gl, program) {
         setter = typeInfo.setter(gl, location);
       }
     }
+
     setter.location = location;
     return setter;
   }
 
-  const uniformSetters = { };
-  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  var uniformSetters = {};
+  var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
-  for (let ii = 0; ii < numUniforms; ++ii) {
-    const uniformInfo = gl.getActiveUniform(program, ii);
+  for (var ii = 0; ii < numUniforms; ++ii) {
+    var uniformInfo = gl.getActiveUniform(program, ii);
+
     if (isBuiltIn(uniformInfo)) {
-        continue;
+      continue;
     }
-    let name = uniformInfo.name;
-    // remove the array suffix.
+
+    var name = uniformInfo.name; // remove the array suffix.
+
     if (name.substr(-3) === "[0]") {
       name = name.substr(0, name.length - 3);
     }
-    const setter = createUniformSetter(program, uniformInfo);
+
+    var setter = createUniformSetter(program, uniformInfo);
     uniformSetters[name] = setter;
   }
+
   return uniformSetters;
 }
-
 /**
  * @typedef {Object} TransformFeedbackInfo
  * @property {number} index index of transform feedback
@@ -5911,20 +5821,23 @@ function createUniformSetters(gl, program) {
  * @return {Object<string, module:twgl.TransformFeedbackInfo>}
  * @memberOf module:twgl
  */
+
+
 function createTransformFeedbackInfo(gl, program) {
-  const info = {};
-  const numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
-  for (let ii = 0; ii < numVaryings; ++ii) {
-    const varying = gl.getTransformFeedbackVarying(program, ii);
+  var info = {};
+  var numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+
+  for (var ii = 0; ii < numVaryings; ++ii) {
+    var varying = gl.getTransformFeedbackVarying(program, ii);
     info[varying.name] = {
       index: ii,
       type: varying.type,
-      size: varying.size,
+      size: varying.size
     };
   }
+
   return info;
 }
-
 /**
  * Binds buffers for transform feedback.
  *
@@ -5933,17 +5846,23 @@ function createTransformFeedbackInfo(gl, program) {
  * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
  * @memberOf module:twgl
  */
+
+
 function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (transformFeedbackInfo.transformFeedbackInfo) {
     transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
   }
+
   if (bufferInfo.attribs) {
     bufferInfo = bufferInfo.attribs;
   }
-  for (const name in bufferInfo) {
-    const varying = transformFeedbackInfo[name];
+
+  for (var name in bufferInfo) {
+    var varying = transformFeedbackInfo[name];
+
     if (varying) {
-      const buf = bufferInfo[name];
+      var buf = bufferInfo[name];
+
       if (buf.offset) {
         gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
       } else {
@@ -5952,7 +5871,6 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
     }
   }
 }
-
 /**
  * Unbinds buffers after transform feedback.
  *
@@ -5966,21 +5884,25 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
  * @private
  */
+
+
 function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   if (transformFeedbackInfo.transformFeedbackInfo) {
     transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
   }
+
   if (bufferInfo.attribs) {
     bufferInfo = bufferInfo.attribs;
   }
-  for (const name in bufferInfo) {
-    const varying = transformFeedbackInfo[name];
+
+  for (var name in bufferInfo) {
+    var varying = transformFeedbackInfo[name];
+
     if (varying) {
       gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
     }
   }
 }
-
 /**
  * Creates a transform feedback and sets the buffers
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
@@ -5989,18 +5911,19 @@ function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  * @return {WebGLTransformFeedback} the created transform feedback
  * @memberOf module:twgl
  */
+
+
 function createTransformFeedback(gl, programInfo, bufferInfo) {
-  const tf = gl.createTransformFeedback();
+  var tf = gl.createTransformFeedback();
   gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
   gl.useProgram(programInfo.program);
   bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
-  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
-  // This is only needed because of a bug in Chrome 56. Will remove
+  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null); // This is only needed because of a bug in Chrome 56. Will remove
   // when chrome fixes it.
+
   unbindTransformFeedbackInfo(gl, programInfo, bufferInfo);
   return tf;
 }
-
 /**
  * @typedef {Object} UniformData
  * @property {number} type The WebGL type enum for this uniform
@@ -6045,46 +5968,45 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * @return {module:twgl.UniformBlockSpec} The created UniformBlockSpec
  * @memberOf module:twgl/programs
  */
-function createUniformBlockSpecFromProgram(gl, program) {
-  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-  const uniformData = [];
-  const uniformIndices = [];
 
-  for (let ii = 0; ii < numUniforms; ++ii) {
+
+function createUniformBlockSpecFromProgram(gl, program) {
+  var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  var uniformData = [];
+  var uniformIndices = [];
+
+  for (var ii = 0; ii < numUniforms; ++ii) {
     uniformIndices.push(ii);
     uniformData.push({});
-    const uniformInfo = gl.getActiveUniform(program, ii);
+    var uniformInfo = gl.getActiveUniform(program, ii);
+
     if (isBuiltIn(uniformInfo)) {
       break;
-    }
-    // REMOVE [0]?
+    } // REMOVE [0]?
+
+
     uniformData[ii].name = uniformInfo.name;
   }
 
-  [
-    [ "UNIFORM_TYPE", "type" ],
-    [ "UNIFORM_SIZE", "size" ],  // num elements
-    [ "UNIFORM_BLOCK_INDEX", "blockNdx" ],
-    [ "UNIFORM_OFFSET", "offset", ],
-  ].forEach(function(pair) {
-    const pname = pair[0];
-    const key = pair[1];
-    gl.getActiveUniforms(program, uniformIndices, gl[pname]).forEach(function(value, ndx) {
+  [["UNIFORM_TYPE", "type"], ["UNIFORM_SIZE", "size"], // num elements
+  ["UNIFORM_BLOCK_INDEX", "blockNdx"], ["UNIFORM_OFFSET", "offset"]].forEach(function (pair) {
+    var pname = pair[0];
+    var key = pair[1];
+    gl.getActiveUniforms(program, uniformIndices, gl[pname]).forEach(function (value, ndx) {
       uniformData[ndx][key] = value;
     });
   });
+  var blockSpecs = {};
+  var numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
 
-  const blockSpecs = {};
-
-  const numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
-  for (let ii = 0; ii < numUniformBlocks; ++ii) {
-    const name = gl.getActiveUniformBlockName(program, ii);
-    const blockSpec = {
-      index: ii,
-      usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
-      usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
-      size: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_DATA_SIZE),
-      uniformIndices: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES),
+  for (var _ii = 0; _ii < numUniformBlocks; ++_ii) {
+    var name = gl.getActiveUniformBlockName(program, _ii);
+    var blockSpec = {
+      index: _ii,
+      usedByVertexShader: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
+      usedByFragmentShader: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
+      size: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_DATA_SIZE),
+      uniformIndices: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES)
     };
     blockSpec.used = blockSpec.usedByVertexSahder || blockSpec.usedByFragmentShader;
     blockSpecs[name] = blockSpec;
@@ -6092,11 +6014,11 @@ function createUniformBlockSpecFromProgram(gl, program) {
 
   return {
     blockSpecs: blockSpecs,
-    uniformData: uniformData,
+    uniformData: uniformData
   };
 }
 
-const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
+var arraySuffixRE = /\[\d+\]\.$/; // better way to check?
 
 /**
  * Represents a UniformBlockObject including an ArrayBuffer with all the uniform values
@@ -6134,48 +6056,54 @@ const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
+
 function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
-  const blockSpecs = uniformBlockSpec.blockSpecs;
-  const uniformData = uniformBlockSpec.uniformData;
-  const blockSpec = blockSpecs[blockName];
+  var blockSpecs = uniformBlockSpec.blockSpecs;
+  var uniformData = uniformBlockSpec.uniformData;
+  var blockSpec = blockSpecs[blockName];
+
   if (!blockSpec) {
     warn("no uniform block object named:", blockName);
     return {
       name: blockName,
-      uniforms: {},
+      uniforms: {}
     };
   }
-  const array = new ArrayBuffer(blockSpec.size);
-  const buffer = gl.createBuffer();
-  const uniformBufferIndex = blockSpec.index;
+
+  var array = new ArrayBuffer(blockSpec.size);
+  var buffer = gl.createBuffer();
+  var uniformBufferIndex = blockSpec.index;
   gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
   gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
+  var prefix = blockName + ".";
 
-  let prefix = blockName + ".";
   if (arraySuffixRE.test(prefix)) {
     prefix = prefix.replace(arraySuffixRE, ".");
   }
-  const uniforms = {};
-  blockSpec.uniformIndices.forEach(function(uniformNdx) {
-    const data = uniformData[uniformNdx];
-    const typeInfo = typeMap[data.type];
-    const Type = typeInfo.Type;
-    const length = data.size * typeInfo.size;
-    let name = data.name;
+
+  var uniforms = {};
+  blockSpec.uniformIndices.forEach(function (uniformNdx) {
+    var data = uniformData[uniformNdx];
+    var typeInfo = typeMap[data.type];
+    var Type = typeInfo.Type;
+    var length = data.size * typeInfo.size;
+    var name = data.name;
+
     if (name.substr(0, prefix.length) === prefix) {
       name = name.substr(prefix.length);
     }
+
     uniforms[name] = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
   });
   return {
     name: blockName,
     array: array,
-    asFloat: new Float32Array(array),  // for debugging
+    asFloat: new Float32Array(array),
+    // for debugging
     buffer: buffer,
-    uniforms: uniforms,
+    uniforms: uniforms
   };
 }
-
 /**
  * Creates a `UniformBlockInfo` for the specified block
  *
@@ -6192,10 +6120,11 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
+
+
 function createUniformBlockInfo(gl, programInfo, blockName) {
   return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
 }
-
 /**
  * Binds a unform block to the matching uniform block point.
  * Matches by blocks by name so blocks must have the same name not just the same
@@ -6214,17 +6143,20 @@ function createUniformBlockInfo(gl, programInfo, blockName) {
  *     no buffer is bound.
  * @memberOf module:twgl/programs
  */
+
+
 function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
-  const uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
-  const blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
+  var uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
+  var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
+
   if (blockSpec) {
-    const bufferBindIndex = blockSpec.index;
+    var bufferBindIndex = blockSpec.index;
     gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
     return true;
   }
+
   return false;
 }
-
 /**
  * Uploads the current uniform values to the corresponding WebGLBuffer
  * and binds that buffer to the program's corresponding bind point for the uniform block object.
@@ -6240,12 +6172,13 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
  *     {@link module:twgl.createUniformBlockInfo}.
  * @memberOf module:twgl/programs
  */
+
+
 function setUniformBlock(gl, programInfo, uniformBlockInfo) {
   if (bindUniformBlock(gl, programInfo, uniformBlockInfo)) {
     gl.bufferData(gl.UNIFORM_BUFFER, uniformBlockInfo.array, gl.DYNAMIC_DRAW);
   }
 }
-
 /**
  * Sets values of a uniform block object
  *
@@ -6274,12 +6207,17 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  *  Any name that doesn't match will be ignored
  * @memberOf module:twgl/programs
  */
+
+
 function setBlockUniforms(uniformBlockInfo, values) {
-  const uniforms = uniformBlockInfo.uniforms;
-  for (const name in values) {
-    const array = uniforms[name];
+  var uniforms = uniformBlockInfo.uniforms;
+
+  for (var name in values) {
+    var array = uniforms[name];
+
     if (array) {
-      const value = values[name];
+      var value = values[name];
+
       if (value.length) {
         array.set(value);
       } else {
@@ -6288,7 +6226,6 @@ function setBlockUniforms(uniformBlockInfo, values) {
     }
   }
 }
-
 /**
  * Set uniforms and binds related textures.
  *
@@ -6403,19 +6340,26 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *
  * @memberOf module:twgl/programs
  */
-function setUniforms(setters, values) {  // eslint-disable-line
-  const actualSetters = setters.uniformSetters || setters;
-  const numArgs = arguments.length;
-  for (let andx = 1; andx < numArgs; ++andx) {
-    const vals = arguments[andx];
+
+
+function setUniforms(setters, values) {
+  // eslint-disable-line
+  var actualSetters = setters.uniformSetters || setters;
+  var numArgs = arguments.length;
+
+  for (var andx = 1; andx < numArgs; ++andx) {
+    var vals = arguments[andx];
+
     if (Array.isArray(vals)) {
-      const numValues = vals.length;
-      for (let ii = 0; ii < numValues; ++ii) {
+      var numValues = vals.length;
+
+      for (var ii = 0; ii < numValues; ++ii) {
         setUniforms(actualSetters, vals[ii]);
       }
     } else {
-      for (const name in vals) {
-        const setter = actualSetters[name];
+      for (var name in vals) {
+        var setter = actualSetters[name];
+
         if (setter) {
           setter(vals[name]);
         }
@@ -6423,7 +6367,6 @@ function setUniforms(setters, values) {  // eslint-disable-line
     }
   }
 }
-
 /**
  * Creates setter functions for all attributes of a shader
  * program. You can pass this to {@link module:twgl.setBuffersAndAttributes} to set all your buffers and attributes.
@@ -6433,26 +6376,28 @@ function setUniforms(setters, values) {  // eslint-disable-line
  * @return {Object.<string, function>} an object with a setter for each attribute by name.
  * @memberOf module:twgl/programs
  */
-function createAttributeSetters(gl, program) {
-  const attribSetters = {
-  };
 
-  const numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-  for (let ii = 0; ii < numAttribs; ++ii) {
-    const attribInfo = gl.getActiveAttrib(program, ii);
+
+function createAttributeSetters(gl, program) {
+  var attribSetters = {};
+  var numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+
+  for (var ii = 0; ii < numAttribs; ++ii) {
+    var attribInfo = gl.getActiveAttrib(program, ii);
+
     if (isBuiltIn(attribInfo)) {
-        continue;
+      continue;
     }
-    const index = gl.getAttribLocation(program, attribInfo.name);
-    const typeInfo = attrTypeMap[attribInfo.type];
-    const setter = typeInfo.setter(gl, index, typeInfo);
+
+    var index = gl.getAttribLocation(program, attribInfo.name);
+    var typeInfo = attrTypeMap[attribInfo.type];
+    var setter = typeInfo.setter(gl, index, typeInfo);
     setter.location = index;
     attribSetters[attribInfo.name] = setter;
   }
 
   return attribSetters;
 }
-
 /**
  * Sets attributes and binds buffers (deprecated... use {@link module:twgl.setBuffersAndAttributes})
  *
@@ -6507,15 +6452,17 @@ function createAttributeSetters(gl, program) {
  * @memberOf module:twgl/programs
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
  */
+
+
 function setAttributes(setters, buffers) {
-  for (const name in buffers) {
-    const setter = setters[name];
+  for (var name in buffers) {
+    var setter = setters[name];
+
     if (setter) {
       setter(buffers[name]);
     }
   }
 }
-
 /**
  * Sets attributes and buffers including the `ELEMENT_ARRAY_BUFFER` if appropriate
  *
@@ -6553,17 +6500,19 @@ function setAttributes(setters, buffers) {
  *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
  * @memberOf module:twgl/programs
  */
+
+
 function setBuffersAndAttributes(gl, programInfo, buffers) {
   if (buffers.vertexArrayObject) {
     gl.bindVertexArray(buffers.vertexArrayObject);
   } else {
     setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
+
     if (buffers.indices) {
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     }
   }
 }
-
 /**
  * @typedef {Object} ProgramInfo
  * @property {WebGLProgram} program A shader program
@@ -6591,23 +6540,24 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @return {module:twgl.ProgramInfo} The created ProgramInfo.
  * @memberOf module:twgl/programs
  */
+
+
 function createProgramInfoFromProgram(gl, program) {
-  const uniformSetters = createUniformSetters(gl, program);
-  const attribSetters = createAttributeSetters(gl, program);
-  const programInfo = {
+  var uniformSetters = createUniformSetters(gl, program);
+  var attribSetters = createAttributeSetters(gl, program);
+  var programInfo = {
     program: program,
     uniformSetters: uniformSetters,
-    attribSetters: attribSetters,
+    attribSetters: attribSetters
   };
 
-  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["isWebGL2"](gl)) {
+  if (utils.isWebGL2(gl)) {
     programInfo.uniformBlockSpec = createUniformBlockSpecFromProgram(gl, program);
     programInfo.transformFeedbackInfo = createTransformFeedbackInfo(gl, program);
   }
 
   return programInfo;
 }
-
 /**
  * Creates a ProgramInfo from 2 sources.
  *
@@ -6638,14 +6588,16 @@ function createProgramInfoFromProgram(gl, program) {
  * @return {module:twgl.ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
  * @memberOf module:twgl/programs
  */
-function createProgramInfo(
-    gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-  const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  let good = true;
-  shaderSources = shaderSources.map(function(source) {
+
+
+function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
+  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
+  var good = true;
+  shaderSources = shaderSources.map(function (source) {
     // Lets assume if there is no \n it's an id
     if (source.indexOf("\n") < 0) {
-      const script = getElementById(source);
+      var script = getElementById(source);
+
       if (!script) {
         progOptions.errorCallback("no element with id: " + source);
         good = false;
@@ -6653,21 +6605,22 @@ function createProgramInfo(
         source = script.text;
       }
     }
+
     return source;
   });
+
   if (!good) {
     return null;
   }
-  const program = createProgramFromSources(gl, shaderSources, progOptions);
+
+  var program = createProgramFromSources(gl, shaderSources, progOptions);
+
   if (!program) {
     return null;
   }
+
   return createProgramInfoFromProgram(gl, program);
 }
-
-
-
-
 
 /***/ }),
 
@@ -6675,33 +6628,41 @@ function createProgramInfo(
 /*!*************************!*\
   !*** ./src/textures.js ***!
   \*************************/
-/*! exports provided: setTextureDefaults_, createSampler, createSamplers, setSamplerParameters, createTexture, setEmptyTexture, setTextureFromArray, loadTextureFromUrl, setTextureFromElement, setTextureFilteringForSize, setTextureParameters, setDefaultTextureColor, createTextures, resizeTexture, canGenerateMipmap, canFilter, getNumComponentsForFormat, getBytesPerElementForInternalFormat, getFormatAndTypeForInternalFormat */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTextureDefaults_", function() { return setDefaults; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSampler", function() { return createSampler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSamplers", function() { return createSamplers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSamplerParameters", function() { return setSamplerParameters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTexture", function() { return createTexture; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEmptyTexture", function() { return setEmptyTexture; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTextureFromArray", function() { return setTextureFromArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadTextureFromUrl", function() { return loadTextureFromUrl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTextureFromElement", function() { return setTextureFromElement; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTextureFilteringForSize", function() { return setTextureFilteringForSize; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTextureParameters", function() { return setTextureParameters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDefaultTextureColor", function() { return setDefaultTextureColor; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTextures", function() { return createTextures; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeTexture", function() { return resizeTexture; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "canGenerateMipmap", function() { return canGenerateMipmap; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "canFilter", function() { return canFilter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNumComponentsForFormat", function() { return getNumComponentsForFormat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBytesPerElementForInternalFormat", function() { return getBytesPerElementForInternalFormat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFormatAndTypeForInternalFormat", function() { return getFormatAndTypeForInternalFormat; });
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
-/* harmony import */ var _typedarrays_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js");
-/* harmony import */ var _helper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helper.js */ "./src/helper.js");
+
+
+exports.__esModule = true;
+exports.setTextureDefaults_ = setDefaults;
+exports.createSampler = createSampler;
+exports.createSamplers = createSamplers;
+exports.setSamplerParameters = setSamplerParameters;
+exports.createTexture = createTexture;
+exports.setEmptyTexture = setEmptyTexture;
+exports.setTextureFromArray = setTextureFromArray;
+exports.loadTextureFromUrl = loadTextureFromUrl;
+exports.setTextureFromElement = setTextureFromElement;
+exports.setTextureFilteringForSize = setTextureFilteringForSize;
+exports.setTextureParameters = setTextureParameters;
+exports.setDefaultTextureColor = setDefaultTextureColor;
+exports.createTextures = createTextures;
+exports.resizeTexture = resizeTexture;
+exports.canGenerateMipmap = canGenerateMipmap;
+exports.canFilter = canFilter;
+exports.getNumComponentsForFormat = getNumComponentsForFormat;
+exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
+exports.getFormatAndTypeForInternalFormat = getFormatAndTypeForInternalFormat;
+
+var utils = _interopRequireWildcard(__webpack_require__(/*! ./utils.js */ "./src/utils.js"));
+
+var typedArrays = _interopRequireWildcard(__webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js"));
+
+var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -6733,10 +6694,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-
-
 /**
  * Low level texture related functions
  *
@@ -6751,26 +6708,20 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/textures
  */
-
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
-const defaults = {
+var gl = undefined; // eslint-disable-line
+
+var defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
-  crossOrigin: undefined,
+  crossOrigin: undefined
 };
-const isArrayBuffer = _typedarrays_js__WEBPACK_IMPORTED_MODULE_1__["isArrayBuffer"];
+var isArrayBuffer = typedArrays.isArrayBuffer; // Should we make this on demand?
 
-// Should we make this on demand?
-const ctx = (typeof document !== 'undefined' && document.createElement)
-    ? document.createElement("canvas").getContext("2d")
-    : null;
-
-// NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
+var ctx = typeof document !== 'undefined' && document.createElement ? document.createElement("canvas").getContext("2d") : null; // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
 //       not only does Firefox NOT support it but Firefox freezes immediately
 //       if you try to create one instead of just returning null and continuing.
 //  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
-
 // NOTE: We can maybe remove some of the need for the 2d canvas. In WebGL2
 // we can use the various unpack settings. Otherwise we could try using
 // the ability of an imagebitmap to be cut. Unfortunately cutting an imagebitmap
@@ -6779,131 +6730,165 @@ const ctx = (typeof document !== 'undefined' && document.createElement)
 // as of 2018-01-02
 
 /* PixelFormat */
-const ALPHA                          = 0x1906;
-const RGB                            = 0x1907;
-const RGBA                           = 0x1908;
-const LUMINANCE                      = 0x1909;
-const LUMINANCE_ALPHA                = 0x190A;
-const DEPTH_COMPONENT                = 0x1902;
-const DEPTH_STENCIL                  = 0x84F9;
 
+var ALPHA = 0x1906;
+var RGB = 0x1907;
+var RGBA = 0x1908;
+var LUMINANCE = 0x1909;
+var LUMINANCE_ALPHA = 0x190A;
+var DEPTH_COMPONENT = 0x1902;
+var DEPTH_STENCIL = 0x84F9;
 /* TextureWrapMode */
-const REPEAT                         = 0x2901;  // eslint-disable-line
-const MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
+
+var REPEAT = 0x2901; // eslint-disable-line
+
+var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
 
 /* TextureMagFilter */
-const NEAREST                        = 0x2600;  // eslint-disable-line
+
+var NEAREST = 0x2600; // eslint-disable-line
 
 /* TextureMinFilter */
-const NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
-const LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
-const NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
-const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
 
-const R8                           = 0x8229;
-const R8_SNORM                     = 0x8F94;
-const R16F                         = 0x822D;
-const R32F                         = 0x822E;
-const R8UI                         = 0x8232;
-const R8I                          = 0x8231;
-const RG16UI                       = 0x823A;
-const RG16I                        = 0x8239;
-const RG32UI                       = 0x823C;
-const RG32I                        = 0x823B;
-const RG8                          = 0x822B;
-const RG8_SNORM                    = 0x8F95;
-const RG16F                        = 0x822F;
-const RG32F                        = 0x8230;
-const RG8UI                        = 0x8238;
-const RG8I                         = 0x8237;
-const R16UI                        = 0x8234;
-const R16I                         = 0x8233;
-const R32UI                        = 0x8236;
-const R32I                         = 0x8235;
-const RGB8                         = 0x8051;
-const SRGB8                        = 0x8C41;
-const RGB565                       = 0x8D62;
-const RGB8_SNORM                   = 0x8F96;
-const R11F_G11F_B10F               = 0x8C3A;
-const RGB9_E5                      = 0x8C3D;
-const RGB16F                       = 0x881B;
-const RGB32F                       = 0x8815;
-const RGB8UI                       = 0x8D7D;
-const RGB8I                        = 0x8D8F;
-const RGB16UI                      = 0x8D77;
-const RGB16I                       = 0x8D89;
-const RGB32UI                      = 0x8D71;
-const RGB32I                       = 0x8D83;
-const RGBA8                        = 0x8058;
-const SRGB8_ALPHA8                 = 0x8C43;
-const RGBA8_SNORM                  = 0x8F97;
-const RGB5_A1                      = 0x8057;
-const RGBA4                        = 0x8056;
-const RGB10_A2                     = 0x8059;
-const RGBA16F                      = 0x881A;
-const RGBA32F                      = 0x8814;
-const RGBA8UI                      = 0x8D7C;
-const RGBA8I                       = 0x8D8E;
-const RGB10_A2UI                   = 0x906F;
-const RGBA16UI                     = 0x8D76;
-const RGBA16I                      = 0x8D88;
-const RGBA32I                      = 0x8D82;
-const RGBA32UI                     = 0x8D70;
+var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
 
-const DEPTH_COMPONENT16            = 0x81A5;
-const DEPTH_COMPONENT24            = 0x81A6;
-const DEPTH_COMPONENT32F           = 0x8CAC;
-const DEPTH32F_STENCIL8            = 0x8CAD;
-const DEPTH24_STENCIL8             = 0x88F0;
+var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
 
+var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
+
+var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
+
+var R8 = 0x8229;
+var R8_SNORM = 0x8F94;
+var R16F = 0x822D;
+var R32F = 0x822E;
+var R8UI = 0x8232;
+var R8I = 0x8231;
+var RG16UI = 0x823A;
+var RG16I = 0x8239;
+var RG32UI = 0x823C;
+var RG32I = 0x823B;
+var RG8 = 0x822B;
+var RG8_SNORM = 0x8F95;
+var RG16F = 0x822F;
+var RG32F = 0x8230;
+var RG8UI = 0x8238;
+var RG8I = 0x8237;
+var R16UI = 0x8234;
+var R16I = 0x8233;
+var R32UI = 0x8236;
+var R32I = 0x8235;
+var RGB8 = 0x8051;
+var SRGB8 = 0x8C41;
+var RGB565 = 0x8D62;
+var RGB8_SNORM = 0x8F96;
+var R11F_G11F_B10F = 0x8C3A;
+var RGB9_E5 = 0x8C3D;
+var RGB16F = 0x881B;
+var RGB32F = 0x8815;
+var RGB8UI = 0x8D7D;
+var RGB8I = 0x8D8F;
+var RGB16UI = 0x8D77;
+var RGB16I = 0x8D89;
+var RGB32UI = 0x8D71;
+var RGB32I = 0x8D83;
+var RGBA8 = 0x8058;
+var SRGB8_ALPHA8 = 0x8C43;
+var RGBA8_SNORM = 0x8F97;
+var RGB5_A1 = 0x8057;
+var RGBA4 = 0x8056;
+var RGB10_A2 = 0x8059;
+var RGBA16F = 0x881A;
+var RGBA32F = 0x8814;
+var RGBA8UI = 0x8D7C;
+var RGBA8I = 0x8D8E;
+var RGB10_A2UI = 0x906F;
+var RGBA16UI = 0x8D76;
+var RGBA16I = 0x8D88;
+var RGBA32I = 0x8D82;
+var RGBA32UI = 0x8D70;
+var DEPTH_COMPONENT16 = 0x81A5;
+var DEPTH_COMPONENT24 = 0x81A6;
+var DEPTH_COMPONENT32F = 0x8CAC;
+var DEPTH32F_STENCIL8 = 0x8CAD;
+var DEPTH24_STENCIL8 = 0x88F0;
 /* DataType */
-const BYTE                         = 0x1400;
-const UNSIGNED_BYTE                = 0x1401;
-const SHORT                        = 0x1402;
-const UNSIGNED_SHORT               = 0x1403;
-const INT                          = 0x1404;
-const UNSIGNED_INT                 = 0x1405;
-const FLOAT                        = 0x1406;
-const UNSIGNED_SHORT_4_4_4_4       = 0x8033;
-const UNSIGNED_SHORT_5_5_5_1       = 0x8034;
-const UNSIGNED_SHORT_5_6_5         = 0x8363;
-const HALF_FLOAT                   = 0x140B;
-const HALF_FLOAT_OES               = 0x8D61;  // Thanks Khronos for making this different >:(
-const UNSIGNED_INT_2_10_10_10_REV  = 0x8368;
-const UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
-const UNSIGNED_INT_5_9_9_9_REV     = 0x8C3E;
-const FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
-const UNSIGNED_INT_24_8            = 0x84FA;
 
-const RG                           = 0x8227;
-const RG_INTEGER                   = 0x8228;
-const RED                          = 0x1903;
-const RED_INTEGER                  = 0x8D94;
-const RGB_INTEGER                  = 0x8D98;
-const RGBA_INTEGER                 = 0x8D99;
+var BYTE = 0x1400;
+var UNSIGNED_BYTE = 0x1401;
+var SHORT = 0x1402;
+var UNSIGNED_SHORT = 0x1403;
+var INT = 0x1404;
+var UNSIGNED_INT = 0x1405;
+var FLOAT = 0x1406;
+var UNSIGNED_SHORT_4_4_4_4 = 0x8033;
+var UNSIGNED_SHORT_5_5_5_1 = 0x8034;
+var UNSIGNED_SHORT_5_6_5 = 0x8363;
+var HALF_FLOAT = 0x140B;
+var HALF_FLOAT_OES = 0x8D61; // Thanks Khronos for making this different >:(
 
-const formatInfo = {};
+var UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
+var FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+var UNSIGNED_INT_24_8 = 0x84FA;
+var RG = 0x8227;
+var RG_INTEGER = 0x8228;
+var RED = 0x1903;
+var RED_INTEGER = 0x8D94;
+var RGB_INTEGER = 0x8D98;
+var RGBA_INTEGER = 0x8D99;
+var formatInfo = {};
 {
   // NOTE: this is named `numColorComponents` vs `numComponents` so we can let Uglify mangle
   // the name.
-  const f = formatInfo;
-  f[ALPHA]           = { numColorComponents: 1, };
-  f[LUMINANCE]       = { numColorComponents: 1, };
-  f[LUMINANCE_ALPHA] = { numColorComponents: 2, };
-  f[RGB]             = { numColorComponents: 3, };
-  f[RGBA]            = { numColorComponents: 4, };
-  f[RED]             = { numColorComponents: 1, };
-  f[RED_INTEGER]     = { numColorComponents: 1, };
-  f[RG]              = { numColorComponents: 2, };
-  f[RG_INTEGER]      = { numColorComponents: 2, };
-  f[RGB]             = { numColorComponents: 3, };
-  f[RGB_INTEGER]     = { numColorComponents: 3, };
-  f[RGBA]            = { numColorComponents: 4, };
-  f[RGBA_INTEGER]    = { numColorComponents: 4, };
-  f[DEPTH_COMPONENT] = { numColorComponents: 1, };
-  f[DEPTH_STENCIL]   = { numColorComponents: 2, };
+  var f = formatInfo;
+  f[ALPHA] = {
+    numColorComponents: 1
+  };
+  f[LUMINANCE] = {
+    numColorComponents: 1
+  };
+  f[LUMINANCE_ALPHA] = {
+    numColorComponents: 2
+  };
+  f[RGB] = {
+    numColorComponents: 3
+  };
+  f[RGBA] = {
+    numColorComponents: 4
+  };
+  f[RED] = {
+    numColorComponents: 1
+  };
+  f[RED_INTEGER] = {
+    numColorComponents: 1
+  };
+  f[RG] = {
+    numColorComponents: 2
+  };
+  f[RG_INTEGER] = {
+    numColorComponents: 2
+  };
+  f[RGB] = {
+    numColorComponents: 3
+  };
+  f[RGB_INTEGER] = {
+    numColorComponents: 3
+  };
+  f[RGBA] = {
+    numColorComponents: 4
+  };
+  f[RGBA_INTEGER] = {
+    numColorComponents: 4
+  };
+  f[DEPTH_COMPONENT] = {
+    numColorComponents: 1
+  };
+  f[DEPTH_STENCIL] = {
+    numColorComponents: 2
+  };
 }
-
 /**
  * @typedef {Object} TextureFormatDetails
  * @property {number} textureFormat format to pass texImage2D and similar functions.
@@ -6914,84 +6899,435 @@ const formatInfo = {};
  * @private
  */
 
-const textureInternalFormatInfo = {};
+var textureInternalFormatInfo = {};
 {
   // NOTE: these properties need unique names so we can let Uglify mangle the name.
-  const t = textureInternalFormatInfo;
-  // unsized formats
-  t[ALPHA]              = { textureFormat: ALPHA,           colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT], };
-  t[LUMINANCE]          = { textureFormat: LUMINANCE,       colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1, 2, 2, 4],        type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT], };
-  t[LUMINANCE_ALPHA]    = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true,  textureFilterable: true,  bytesPerElement: [2, 4, 4, 8],        type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT], };
-  t[RGB]                = { textureFormat: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 6, 6, 12, 2],    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_5_6_5], };
-  t[RGBA]               = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 8, 8, 16, 2, 2], type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1], };
+  var t = textureInternalFormatInfo; // unsized formats
 
-  // sized formats
-  t[R8]                 = { textureFormat: RED,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1],        type: [UNSIGNED_BYTE], };
-  t[R8_SNORM]           = { textureFormat: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [1],        type: [BYTE], };
-  t[R16F]               = { textureFormat: RED,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [4, 2],     type: [FLOAT, HALF_FLOAT], };
-  t[R32F]               = { textureFormat: RED,             colorRenderable: false, textureFilterable: false, bytesPerElement: [4],        type: [FLOAT], };
-  t[R8UI]               = { textureFormat: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement: [1],        type: [UNSIGNED_BYTE], };
-  t[R8I]                = { textureFormat: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement: [1],        type: [BYTE], };
-  t[R16UI]              = { textureFormat: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement: [2],        type: [UNSIGNED_SHORT], };
-  t[R16I]               = { textureFormat: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement: [2],        type: [SHORT], };
-  t[R32UI]              = { textureFormat: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_INT], };
-  t[R32I]               = { textureFormat: RED_INTEGER,     colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [INT], };
-  t[RG8]                = { textureFormat: RG,              colorRenderable: true,  textureFilterable: true,  bytesPerElement: [2],        type: [UNSIGNED_BYTE], };
-  t[RG8_SNORM]          = { textureFormat: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement: [2],        type: [BYTE], };
-  t[RG16F]              = { textureFormat: RG,              colorRenderable: false, textureFilterable: true,  bytesPerElement: [8, 4],     type: [FLOAT, HALF_FLOAT], };
-  t[RG32F]              = { textureFormat: RG,              colorRenderable: false, textureFilterable: false, bytesPerElement: [8],        type: [FLOAT], };
-  t[RG8UI]              = { textureFormat: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement: [2],        type: [UNSIGNED_BYTE], };
-  t[RG8I]               = { textureFormat: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement: [2],        type: [BYTE], };
-  t[RG16UI]             = { textureFormat: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_SHORT], };
-  t[RG16I]              = { textureFormat: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [SHORT], };
-  t[RG32UI]             = { textureFormat: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement: [8],        type: [UNSIGNED_INT], };
-  t[RG32I]              = { textureFormat: RG_INTEGER,      colorRenderable: true,  textureFilterable: false, bytesPerElement: [8],        type: [INT], };
-  t[RGB8]               = { textureFormat: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3],        type: [UNSIGNED_BYTE], };
-  t[SRGB8]              = { textureFormat: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [3],        type: [UNSIGNED_BYTE], };
-  t[RGB565]             = { textureFormat: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 2],     type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5], };
-  t[RGB8_SNORM]         = { textureFormat: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [3],        type: [BYTE], };
-  t[R11F_G11F_B10F]     = { textureFormat: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_10F_11F_11F_REV], };
-  t[RGB9_E5]            = { textureFormat: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [12, 6, 4], type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_5_9_9_9_REV], };
-  t[RGB16F]             = { textureFormat: RGB,             colorRenderable: false, textureFilterable: true,  bytesPerElement: [12, 6],    type: [FLOAT, HALF_FLOAT], };
-  t[RGB32F]             = { textureFormat: RGB,             colorRenderable: false, textureFilterable: false, bytesPerElement: [12],       type: [FLOAT], };
-  t[RGB8UI]             = { textureFormat: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: [3],        type: [UNSIGNED_BYTE], };
-  t[RGB8I]              = { textureFormat: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: [3],        type: [BYTE], };
-  t[RGB16UI]            = { textureFormat: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: [6],        type: [UNSIGNED_SHORT], };
-  t[RGB16I]             = { textureFormat: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: [6],        type: [SHORT], };
-  t[RGB32UI]            = { textureFormat: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: [12],       type: [UNSIGNED_INT], };
-  t[RGB32I]             = { textureFormat: RGB_INTEGER,     colorRenderable: false, textureFilterable: false, bytesPerElement: [12],       type: [INT], };
-  t[RGBA8]              = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4],        type: [UNSIGNED_BYTE], };
-  t[SRGB8_ALPHA8]       = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4],        type: [UNSIGNED_BYTE], };
-  t[RGBA8_SNORM]        = { textureFormat: RGBA,            colorRenderable: false, textureFilterable: true,  bytesPerElement: [4],        type: [BYTE], };
-  t[RGB5_A1]            = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 2, 4],  type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV], };
-  t[RGBA4]              = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 2],     type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4], };
-  t[RGB10_A2]           = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4],        type: [UNSIGNED_INT_2_10_10_10_REV], };
-  t[RGBA16F]            = { textureFormat: RGBA,            colorRenderable: false, textureFilterable: true,  bytesPerElement: [16, 8],    type: [FLOAT, HALF_FLOAT], };
-  t[RGBA32F]            = { textureFormat: RGBA,            colorRenderable: false, textureFilterable: false, bytesPerElement: [16],       type: [FLOAT], };
-  t[RGBA8UI]            = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_BYTE], };
-  t[RGBA8I]             = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [BYTE], };
-  t[RGB10_A2UI]         = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_INT_2_10_10_10_REV], };
-  t[RGBA16UI]           = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [8],        type: [UNSIGNED_SHORT], };
-  t[RGBA16I]            = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [8],        type: [SHORT], };
-  t[RGBA32I]            = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [16],       type: [INT], };
-  t[RGBA32UI]           = { textureFormat: RGBA_INTEGER,    colorRenderable: true,  textureFilterable: false, bytesPerElement: [16],       type: [UNSIGNED_INT], };
-  // Sized Internal
-  t[DEPTH_COMPONENT16]  = { textureFormat: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement: [2, 4],     type: [UNSIGNED_SHORT, UNSIGNED_INT], };
-  t[DEPTH_COMPONENT24]  = { textureFormat: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_INT], };
-  t[DEPTH_COMPONENT32F] = { textureFormat: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [FLOAT], };
-  t[DEPTH24_STENCIL8]   = { textureFormat: DEPTH_STENCIL,   colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_INT_24_8], };
-  t[DEPTH32F_STENCIL8]  = { textureFormat: DEPTH_STENCIL,   colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [FLOAT_32_UNSIGNED_INT_24_8_REV], };
+  t[ALPHA] = {
+    textureFormat: ALPHA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [1, 2, 2, 4],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT]
+  };
+  t[LUMINANCE] = {
+    textureFormat: LUMINANCE,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [1, 2, 2, 4],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT]
+  };
+  t[LUMINANCE_ALPHA] = {
+    textureFormat: LUMINANCE_ALPHA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [2, 4, 4, 8],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT]
+  };
+  t[RGB] = {
+    textureFormat: RGB,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [3, 6, 6, 12, 2],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_5_6_5]
+  };
+  t[RGBA] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4, 8, 8, 16, 2, 2],
+    type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1]
+  }; // sized formats
 
-  Object.keys(t).forEach(function(internalFormat) {
-    const info = t[internalFormat];
+  t[R8] = {
+    textureFormat: RED,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [1],
+    type: [UNSIGNED_BYTE]
+  };
+  t[R8_SNORM] = {
+    textureFormat: RED,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [1],
+    type: [BYTE]
+  };
+  t[R16F] = {
+    textureFormat: RED,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [4, 2],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[R32F] = {
+    textureFormat: RED,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [FLOAT]
+  };
+  t[R8UI] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [1],
+    type: [UNSIGNED_BYTE]
+  };
+  t[R8I] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [1],
+    type: [BYTE]
+  };
+  t[R16UI] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [2],
+    type: [UNSIGNED_SHORT]
+  };
+  t[R16I] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [2],
+    type: [SHORT]
+  };
+  t[R32UI] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT]
+  };
+  t[R32I] = {
+    textureFormat: RED_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [INT]
+  };
+  t[RG8] = {
+    textureFormat: RG,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [2],
+    type: [UNSIGNED_BYTE]
+  };
+  t[RG8_SNORM] = {
+    textureFormat: RG,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [2],
+    type: [BYTE]
+  };
+  t[RG16F] = {
+    textureFormat: RG,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [8, 4],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[RG32F] = {
+    textureFormat: RG,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [8],
+    type: [FLOAT]
+  };
+  t[RG8UI] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [2],
+    type: [UNSIGNED_BYTE]
+  };
+  t[RG8I] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [2],
+    type: [BYTE]
+  };
+  t[RG16UI] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [UNSIGNED_SHORT]
+  };
+  t[RG16I] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [SHORT]
+  };
+  t[RG32UI] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [8],
+    type: [UNSIGNED_INT]
+  };
+  t[RG32I] = {
+    textureFormat: RG_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [8],
+    type: [INT]
+  };
+  t[RGB8] = {
+    textureFormat: RGB,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [3],
+    type: [UNSIGNED_BYTE]
+  };
+  t[SRGB8] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [3],
+    type: [UNSIGNED_BYTE]
+  };
+  t[RGB565] = {
+    textureFormat: RGB,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [3, 2],
+    type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5]
+  };
+  t[RGB8_SNORM] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [3],
+    type: [BYTE]
+  };
+  t[R11F_G11F_B10F] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [12, 6, 4],
+    type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_10F_11F_11F_REV]
+  };
+  t[RGB9_E5] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [12, 6, 4],
+    type: [FLOAT, HALF_FLOAT, UNSIGNED_INT_5_9_9_9_REV]
+  };
+  t[RGB16F] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [12, 6],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[RGB32F] = {
+    textureFormat: RGB,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [12],
+    type: [FLOAT]
+  };
+  t[RGB8UI] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [3],
+    type: [UNSIGNED_BYTE]
+  };
+  t[RGB8I] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [3],
+    type: [BYTE]
+  };
+  t[RGB16UI] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [6],
+    type: [UNSIGNED_SHORT]
+  };
+  t[RGB16I] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [6],
+    type: [SHORT]
+  };
+  t[RGB32UI] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [12],
+    type: [UNSIGNED_INT]
+  };
+  t[RGB32I] = {
+    textureFormat: RGB_INTEGER,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [12],
+    type: [INT]
+  };
+  t[RGBA8] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4],
+    type: [UNSIGNED_BYTE]
+  };
+  t[SRGB8_ALPHA8] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4],
+    type: [UNSIGNED_BYTE]
+  };
+  t[RGBA8_SNORM] = {
+    textureFormat: RGBA,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [4],
+    type: [BYTE]
+  };
+  t[RGB5_A1] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4, 2, 4],
+    type: [UNSIGNED_BYTE, UNSIGNED_SHORT_5_5_5_1, UNSIGNED_INT_2_10_10_10_REV]
+  };
+  t[RGBA4] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4, 2],
+    type: [UNSIGNED_BYTE, UNSIGNED_SHORT_4_4_4_4]
+  };
+  t[RGB10_A2] = {
+    textureFormat: RGBA,
+    colorRenderable: true,
+    textureFilterable: true,
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT_2_10_10_10_REV]
+  };
+  t[RGBA16F] = {
+    textureFormat: RGBA,
+    colorRenderable: false,
+    textureFilterable: true,
+    bytesPerElement: [16, 8],
+    type: [FLOAT, HALF_FLOAT]
+  };
+  t[RGBA32F] = {
+    textureFormat: RGBA,
+    colorRenderable: false,
+    textureFilterable: false,
+    bytesPerElement: [16],
+    type: [FLOAT]
+  };
+  t[RGBA8UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [UNSIGNED_BYTE]
+  };
+  t[RGBA8I] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [BYTE]
+  };
+  t[RGB10_A2UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT_2_10_10_10_REV]
+  };
+  t[RGBA16UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [8],
+    type: [UNSIGNED_SHORT]
+  };
+  t[RGBA16I] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [8],
+    type: [SHORT]
+  };
+  t[RGBA32I] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [16],
+    type: [INT]
+  };
+  t[RGBA32UI] = {
+    textureFormat: RGBA_INTEGER,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [16],
+    type: [UNSIGNED_INT]
+  }; // Sized Internal
+
+  t[DEPTH_COMPONENT16] = {
+    textureFormat: DEPTH_COMPONENT,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [2, 4],
+    type: [UNSIGNED_SHORT, UNSIGNED_INT]
+  };
+  t[DEPTH_COMPONENT24] = {
+    textureFormat: DEPTH_COMPONENT,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT]
+  };
+  t[DEPTH_COMPONENT32F] = {
+    textureFormat: DEPTH_COMPONENT,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [FLOAT]
+  };
+  t[DEPTH24_STENCIL8] = {
+    textureFormat: DEPTH_STENCIL,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [UNSIGNED_INT_24_8]
+  };
+  t[DEPTH32F_STENCIL8] = {
+    textureFormat: DEPTH_STENCIL,
+    colorRenderable: true,
+    textureFilterable: false,
+    bytesPerElement: [4],
+    type: [FLOAT_32_UNSIGNED_INT_24_8_REV]
+  };
+  Object.keys(t).forEach(function (internalFormat) {
+    var info = t[internalFormat];
     info.bytesPerElementMap = {};
-    info.bytesPerElement.forEach(function(bytesPerElement, ndx) {
-      const type = info.type[ndx];
+    info.bytesPerElement.forEach(function (bytesPerElement, ndx) {
+      var type = info.type[ndx];
       info.bytesPerElementMap[type] = bytesPerElement;
     });
   });
 }
-
 /**
  * Gets the number of bytes per element for a given internalFormat / type
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
@@ -6999,18 +7335,22 @@ const textureInternalFormatInfo = {};
  * @return {number} the number of bytes per element for the given internalFormat, type combo
  * @memberOf module:twgl/textures
  */
+
 function getBytesPerElementForInternalFormat(internalFormat, type) {
-  const info = textureInternalFormatInfo[internalFormat];
+  var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
-  const bytesPerElement = info.bytesPerElementMap[type];
+
+  var bytesPerElement = info.bytesPerElementMap[type];
+
   if (bytesPerElement === undefined) {
     throw "unknown internal format";
   }
+
   return bytesPerElement;
 }
-
 /**
  * Info related to a specific texture internalFormat as returned
  * from {@link module:twgl/textures.getFormatAndTypeForInternalFormat}.
@@ -7028,27 +7368,31 @@ function getBytesPerElementForInternalFormat(internalFormat, type) {
  * @return {module:twgl/textures.TextureFormatInfo} the corresponding format and type,
  * @memberOf module:twgl/textures
  */
+
+
 function getFormatAndTypeForInternalFormat(internalFormat) {
-  const info = textureInternalFormatInfo[internalFormat];
+  var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   return {
     format: info.textureFormat,
-    type: info.type[0],
+    type: info.type[0]
   };
 }
-
 /**
  * Returns true if value is power of 2
  * @param {number} value number to check.
  * @return true if value is power of 2
  * @private
  */
-function isPowerOf2(value) {
-  return (value & (value - 1)) === 0;
-}
 
+
+function isPowerOf2(value) {
+  return (value & value - 1) === 0;
+}
 /**
  * Gets whether or not we can generate mips for the given
  * internal format.
@@ -7058,17 +7402,23 @@ function isPowerOf2(value) {
  * @return {boolean} true if we can generate mips
  * @memberOf module:twgl/textures
  */
-function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
-  if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["isWebGL2"](gl)) {
+
+
+function canGenerateMipmap(gl, width, height, internalFormat
+/*, type */
+) {
+  if (!utils.isWebGL2(gl)) {
     return isPowerOf2(width) && isPowerOf2(height);
   }
-  const info = textureInternalFormatInfo[internalFormat];
+
+  var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   return info.colorRenderable && info.textureFilterable;
 }
-
 /**
  * Gets whether or not we can generate mips for the given format
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
@@ -7076,38 +7426,49 @@ function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
  * @return {boolean} true if we can generate mips
  * @memberOf module:twgl/textures
  */
-function canFilter(internalFormat /*, type */) {
-  const info = textureInternalFormatInfo[internalFormat];
+
+
+function canFilter(internalFormat
+/*, type */
+) {
+  var info = textureInternalFormatInfo[internalFormat];
+
   if (!info) {
     throw "unknown internal format";
   }
+
   return info.textureFilterable;
 }
-
 /**
  * Gets the number of compontents for a given image format.
  * @param {number} format the format.
  * @return {number} the number of components for the format.
  * @memberOf module:twgl/textures
  */
+
+
 function getNumComponentsForFormat(format) {
-  const info = formatInfo[format];
+  var info = formatInfo[format];
+
   if (!info) {
     throw "unknown format: " + format;
   }
+
   return info.numColorComponents;
 }
-
 /**
  * Gets the texture type for a given array type.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @return {number} the gl texture type
  * @private
  */
+
+
 function getTextureTypeForArrayType(gl, src, defaultType) {
   if (isArrayBuffer(src)) {
-    return _typedarrays_js__WEBPACK_IMPORTED_MODULE_1__["getGLTypeForTypedArray"](src);
+    return typedArrays.getGLTypeForTypedArray(src);
   }
+
   return defaultType || gl.UNSIGNED_BYTE;
 }
 
@@ -7115,8 +7476,10 @@ function guessDimensions(gl, target, width, height, numElements) {
   if (numElements % 1 !== 0) {
     throw "can't guess dimensions";
   }
+
   if (!width && !height) {
-    const size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
+    var size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
+
     if (size % 1 === 0) {
       width = size;
       height = size;
@@ -7126,21 +7489,23 @@ function guessDimensions(gl, target, width, height, numElements) {
     }
   } else if (!height) {
     height = numElements / width;
+
     if (height % 1) {
       throw "can't guess dimensions";
     }
   } else if (!width) {
     width = numElements / height;
+
     if (width % 1) {
       throw "can't guess dimensions";
     }
   }
+
   return {
     width: width,
-    height: height,
+    height: height
   };
 }
-
 /**
  * Sets the default texture color.
  *
@@ -7154,17 +7519,19 @@ function guessDimensions(gl, target, width, height, numElements) {
  * @deprecated see {@link module:twgl.setDefaults}
  * @memberOf module:twgl/textures
  */
+
+
 function setDefaultTextureColor(color) {
   defaults.textureColor = new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
 }
 
 function setDefaults(newDefaults) {
-  _helper_js__WEBPACK_IMPORTED_MODULE_2__["copyExistingProperties"](newDefaults, defaults);
+  helper.copyExistingProperties(newDefaults, defaults);
+
   if (newDefaults.textureColor) {
     setDefaultTextureColor(newDefaults.textureColor);
   }
 }
-
 /**
  * A function to generate the source for a texture.
  * @callback TextureFunc
@@ -7266,7 +7633,6 @@ function setDefaults(newDefaults) {
  *
  * @memberOf module:twgl
  */
-
 // NOTE: While querying GL is considered slow it's not remotely as slow
 // as uploading a texture. On top of that you're unlikely to call this in
 // a perf critical loop. Even if upload a texture every frame that's unlikely
@@ -7276,80 +7642,89 @@ function setDefaults(newDefaults) {
 // Also note I get that having one global of these is bad practice.
 // As long as it's used correctly it means no garbage which probably
 // doesn't matter when dealing with textures but old habits die hard.
-const lastPackState = {};
 
+
+var lastPackState = {};
 /**
  * Saves any packing state that will be set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
+
 function savePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
     lastPackState.colorspaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
     gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
   }
+
   if (options.premultiplyAlpha !== undefined) {
     lastPackState.premultiplyAlpha = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
   }
+
   if (options.flipY !== undefined) {
     lastPackState.flipY = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, options.flipY);
   }
 }
-
 /**
  * Restores any packing state that was set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
+
+
 function restorePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
     gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
   }
+
   if (options.premultiplyAlpha !== undefined) {
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
   }
+
   if (options.flipY !== undefined) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
   }
 }
-
 /**
  * Saves state related to data size
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
+
+
 function saveSkipState(gl) {
-  lastPackState.unpackAlignment   = gl.getParameter(gl.UNPACK_ALIGNMENT);
-  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["isWebGL2"](gl)) {
-    lastPackState.unpackRowLength   = gl.getParameter(gl.UNPACK_ROW_LENGTH);
+  lastPackState.unpackAlignment = gl.getParameter(gl.UNPACK_ALIGNMENT);
+
+  if (utils.isWebGL2(gl)) {
+    lastPackState.unpackRowLength = gl.getParameter(gl.UNPACK_ROW_LENGTH);
     lastPackState.unpackImageHeight = gl.getParameter(gl.UNPACK_IMAGE_HEIGHT);
-    lastPackState.unpackSkipPixels  = gl.getParameter(gl.UNPACK_SKIP_PIXELS);
-    lastPackState.unpackSkipRows    = gl.getParameter(gl.UNPACK_SKIP_ROWS);
-    lastPackState.unpackSkipImages  = gl.getParameter(gl.UNPACK_SKIP_IMAGES);
+    lastPackState.unpackSkipPixels = gl.getParameter(gl.UNPACK_SKIP_PIXELS);
+    lastPackState.unpackSkipRows = gl.getParameter(gl.UNPACK_SKIP_ROWS);
+    lastPackState.unpackSkipImages = gl.getParameter(gl.UNPACK_SKIP_IMAGES);
   }
 }
-
 /**
  * Restores state related to data size
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
+
+
 function restoreSkipState(gl) {
-  gl.pixelStorei(gl.UNPACK_ALIGNMENT,    lastPackState.unpackAlignment);
-  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["isWebGL2"](gl)) {
-    gl.pixelStorei(gl.UNPACK_ROW_LENGTH,   lastPackState.unpackRowLength);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, lastPackState.unpackAlignment);
+
+  if (utils.isWebGL2(gl)) {
+    gl.pixelStorei(gl.UNPACK_ROW_LENGTH, lastPackState.unpackRowLength);
     gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, lastPackState.unpackImageHeight);
-    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS,  lastPackState.unpackSkipPixels);
-    gl.pixelStorei(gl.UNPACK_SKIP_ROWS,    lastPackState.unpackSkipRows);
-    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES,  lastPackState.unpackSkipImages);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, lastPackState.unpackSkipPixels);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, lastPackState.unpackSkipRows);
+    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES, lastPackState.unpackSkipImages);
   }
 }
-
-
 /**
  * Sets the parameters of a texture or sampler
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -7360,47 +7735,59 @@ function restoreSkipState(gl) {
  *   This is often the same options you passed in when you created the texture.
  * @private
  */
+
+
 function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.minMag) {
     parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.minMag);
     parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.minMag);
   }
+
   if (options.min) {
     parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.min);
   }
+
   if (options.mag) {
     parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.mag);
   }
+
   if (options.wrap) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-    if (target === gl.TEXTURE_3D || _helper_js__WEBPACK_IMPORTED_MODULE_2__["isSampler"](gl, target)) {
+
+    if (target === gl.TEXTURE_3D || helper.isSampler(gl, target)) {
       parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
     }
   }
+
   if (options.wrapR) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrapR);
   }
+
   if (options.wrapS) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrapS);
   }
+
   if (options.wrapT) {
     parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrapT);
   }
+
   if (options.minLod) {
     parameteriFn.call(gl, target, gl.TEXTURE_MIN_LOD, options.minLod);
   }
+
   if (options.maxLod) {
     parameteriFn.call(gl, target, gl.TEXTURE_MAX_LOD, options.maxLod);
   }
+
   if (options.baseLevel) {
     parameteriFn.call(gl, target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
   }
+
   if (options.maxLevel) {
     parameteriFn.call(gl, target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
   }
 }
-
 /**
  * Sets the texture parameters of a texture.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -7409,12 +7796,13 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureParameters(gl, tex, options) {
-  const target = options.target || gl.TEXTURE_2D;
+  var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
   setTextureSamplerParameters(gl, target, gl.texParameteri, options);
 }
-
 /**
  * Sets the sampler parameters of a sampler.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -7422,10 +7810,11 @@ function setTextureParameters(gl, tex, options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @memberOf module:twgl/textures
  */
+
+
 function setSamplerParameters(gl, sampler, options) {
   setTextureSamplerParameters(gl, sampler, gl.samplerParameteri, options);
 }
-
 /**
  * Creates a new sampler object and sets parameters.
  *
@@ -7441,12 +7830,13 @@ function setSamplerParameters(gl, sampler, options) {
  * @return {Object.<string,WebGLSampler>} the created samplers by name
  * @private
  */
+
+
 function createSampler(gl, options) {
-  const sampler = gl.createSampler();
+  var sampler = gl.createSampler();
   setSamplerParameters(gl, sampler, options);
   return sampler;
 }
-
 /**
  * Creates a multiple sampler objects and sets parameters on each.
  *
@@ -7481,14 +7871,15 @@ function createSampler(gl, options) {
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set on the sampler
  * @private
  */
+
+
 function createSamplers(gl, samplerOptions) {
-  const samplers = {};
-  Object.keys(samplerOptions).forEach(function(name) {
+  var samplers = {};
+  Object.keys(samplerOptions).forEach(function (name) {
     samplers[name] = createSampler(gl, samplerOptions[name]);
   });
   return samplers;
 }
-
 /**
  * Makes a 1x1 pixel
  * If no color is passed in uses the default color which can be set by calling `setDefaultTextureColor`.
@@ -7496,14 +7887,17 @@ function createSamplers(gl, samplerOptions) {
  * @return {Uint8Array} Unit8Array with color.
  * @private
  */
+
+
 function make1Pixel(color) {
   color = color || defaults.textureColor;
+
   if (isArrayBuffer(color)) {
     return color;
   }
+
   return new Uint8Array([color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]);
 }
-
 /**
  * Sets filtering or generates mips for texture based on width or height
  * If width or height is not passed in uses `options.width` and//or `options.height`
@@ -7518,18 +7912,21 @@ function make1Pixel(color) {
  * @param {number} [type] The type parameter for texImage2D etc..
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type) {
   options = options || defaults.textureOptions;
   internalFormat = internalFormat || gl.RGBA;
   type = type || gl.UNSIGNED_BYTE;
-  const target = options.target || gl.TEXTURE_2D;
+  var target = options.target || gl.TEXTURE_2D;
   width = width || options.width;
   height = height || options.height;
   gl.bindTexture(target, tex);
+
   if (canGenerateMipmap(gl, width, height, internalFormat, type)) {
     gl.generateMipmap(target);
   } else {
-    const filtering = canFilter(internalFormat, type) ? gl.LINEAR : gl.NEAREST;
+    var filtering = canFilter(internalFormat, type) ? gl.LINEAR : gl.NEAREST;
     gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, filtering);
     gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, filtering);
     gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -7538,9 +7935,8 @@ function setTextureFilteringForSize(gl, tex, options, width, height, internalFor
 }
 
 function shouldAutomaticallySetTextureFilteringForSize(options) {
-  return options.auto === true || (options.auto === undefined && options.level === undefined);
+  return options.auto === true || options.auto === undefined && options.level === undefined;
 }
-
 /**
  * Gets an array of cubemap face enums
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -7549,18 +7945,12 @@ function shouldAutomaticallySetTextureFilteringForSize(options) {
  * @return {number[]} cubemap face enums
  * @private
  */
+
+
 function getCubeFaceOrder(gl, options) {
   options = options || {};
-  return options.cubeFaceOrder || [
-      gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-      gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-      gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-      gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-    ];
+  return options.cubeFaceOrder || [gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z];
 }
-
 /**
  * @typedef {Object} FaceInfo
  * @property {number} face gl enum for texImage2D
@@ -7581,18 +7971,22 @@ function getCubeFaceOrder(gl, options) {
  *    it's needed internally to sort the array of `ndx` properties by `face`.
  * @private
  */
+
+
 function getCubeFacesWithNdx(gl, options) {
-  const faces = getCubeFaceOrder(gl, options);
-  // work around bug in NVidia drivers. We have to upload the first face first else the driver crashes :(
-  const facesWithNdx = faces.map(function(face, ndx) {
-    return { face: face, ndx: ndx };
+  var faces = getCubeFaceOrder(gl, options); // work around bug in NVidia drivers. We have to upload the first face first else the driver crashes :(
+
+  var facesWithNdx = faces.map(function (face, ndx) {
+    return {
+      face: face,
+      ndx: ndx
+    };
   });
-  facesWithNdx.sort(function(a, b) {
+  facesWithNdx.sort(function (a, b) {
     return a.face - b.face;
   });
   return facesWithNdx;
 }
-
 /**
  * Set a texture from the contents of an element. Will also set
  * texture filtering or generate mips based on the dimensions of the element
@@ -7606,24 +8000,28 @@ function getCubeFacesWithNdx(gl, options) {
  * @memberOf module:twgl/textures
  * @kind function
  */
+
+
 function setTextureFromElement(gl, tex, element, options) {
   options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
-  const level = options.level || 0;
-  let width = element.width;
-  let height = element.height;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  const type = options.type || formatType.type;
+  var target = options.target || gl.TEXTURE_2D;
+  var level = options.level || 0;
+  var width = element.width;
+  var height = element.height;
+  var internalFormat = options.internalFormat || options.format || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var format = options.format || formatType.format;
+  var type = options.type || formatType.type;
   savePackState(gl, options);
   gl.bindTexture(target, tex);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     // guess the parts
-    const imgWidth  = element.width;
-    const imgHeight = element.height;
-    let size;
-    let slices;
+    var imgWidth = element.width;
+    var imgHeight = element.height;
+    var size;
+    var slices;
+
     if (imgWidth / 6 === imgHeight) {
       // It's 6x1
       size = imgHeight;
@@ -7643,18 +8041,19 @@ function setTextureFromElement(gl, tex, element, options) {
     } else {
       throw "can't figure out cube map from element: " + (element.src ? element.src : element.nodeName);
     }
+
     if (ctx) {
       ctx.canvas.width = size;
       ctx.canvas.height = size;
       width = size;
       height = size;
-      getCubeFacesWithNdx(gl, options).forEach(function(f) {
-        const xOffset = slices[f.ndx * 2 + 0] * size;
-        const yOffset = slices[f.ndx * 2 + 1] * size;
+      getCubeFacesWithNdx(gl, options).forEach(function (f) {
+        var xOffset = slices[f.ndx * 2 + 0] * size;
+        var yOffset = slices[f.ndx * 2 + 1] * size;
         ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
         gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
-      });
-      // Free up the canvas memory
+      }); // Free up the canvas memory
+
       ctx.canvas.width = 1;
       ctx.canvas.height = 1;
     } else if (typeof createImageBitmap !== 'undefined') {
@@ -7662,24 +8061,24 @@ function setTextureFromElement(gl, tex, element, options) {
       // note lossy? (alpha is not premultiplied? although I'm not sure what
       width = size;
       height = size;
-      getCubeFacesWithNdx(gl, options).forEach(function(f) {
-        const xOffset = slices[f.ndx * 2 + 0] * size;
-        const yOffset = slices[f.ndx * 2 + 1] * size;
-        // We can't easily use a default texture color here as it would have to match
+      getCubeFacesWithNdx(gl, options).forEach(function (f) {
+        var xOffset = slices[f.ndx * 2 + 0] * size;
+        var yOffset = slices[f.ndx * 2 + 1] * size; // We can't easily use a default texture color here as it would have to match
         // the type across all faces where as with a 2D one there's only one face
         // so we're replacing everything all at once. It also has to be the correct size.
         // On the other hand we need all faces to be the same size so as one face loads
         // the rest match else the texture will be unrenderable.
+
         gl.texImage2D(f.face, level, internalFormat, size, size, 0, format, type, null);
         createImageBitmap(element, xOffset, yOffset, size, size, {
           premultiplyAlpha: 'none',
-          colorSpaceConversion: 'none',
-        })
-        .then(function(imageBitmap) {
+          colorSpaceConversion: 'none'
+        }).then(function (imageBitmap) {
           savePackState(gl, options);
           gl.bindTexture(target, tex);
           gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
           restorePackState(gl, options);
+
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
           }
@@ -7687,53 +8086,67 @@ function setTextureFromElement(gl, tex, element, options) {
       });
     }
   } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
-    const smallest = Math.min(element.width, element.height);
-    const largest = Math.max(element.width, element.height);
-    const depth = largest / smallest;
+    var smallest = Math.min(element.width, element.height);
+    var largest = Math.max(element.width, element.height);
+    var depth = largest / smallest;
+
     if (depth % 1 !== 0) {
       throw "can not compute 3D dimensions of element";
     }
-    const xMult = element.width  === largest ? 1 : 0;
-    const yMult = element.height === largest ? 1 : 0;
+
+    var xMult = element.width === largest ? 1 : 0;
+    var yMult = element.height === largest ? 1 : 0;
     saveSkipState(gl);
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
     gl.pixelStorei(gl.UNPACK_ROW_LENGTH, element.width);
     gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, 0);
     gl.pixelStorei(gl.UNPACK_SKIP_IMAGES, 0);
     gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
-    for (let d = 0; d < depth; ++d) {
-      const srcX = d * smallest * xMult;
-      const srcY = d * smallest * yMult;
+
+    for (var d = 0; d < depth; ++d) {
+      var srcX = d * smallest * xMult;
+      var srcY = d * smallest * yMult;
       gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, srcX);
       gl.pixelStorei(gl.UNPACK_SKIP_ROWS, srcY);
       gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
     }
+
     restoreSkipState(gl);
   } else {
     gl.texImage2D(target, level, internalFormat, format, type, element);
   }
+
   restorePackState(gl, options);
+
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
   }
+
   setTextureParameters(gl, tex, options);
 }
 
-function noop() {
-}
+function noop() {}
 
-const localOrigin = (new URL(location.href)).origin;
-function urlIsSameOrigin(url) {
-  const urlOrigin = (new URL(url, location.href));
-  return urlOrigin === localOrigin;
-}
+var urlIsSameOrigin = function () {
+  if (typeof document !== 'undefined') {
+    // for IE really
+    var a = document.createElement('a');
+    return function (url) {
+      a.href = url;
+      return a.hostname === location.hostname && a.port === location.port && a.protocol === location.protocol;
+    };
+  } else {
+    var localOrigin = new URL(location.href).origin;
+    return function (url) {
+      var urlOrigin = new URL(url, location.href).origin;
+      return urlOrigin === localOrigin;
+    };
+  }
+}();
 
 function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
-  return crossOrigin === undefined && !urlIsSameOrigin(url)
-     ? 'anonymous'
-     : crossOrigin;
+  return crossOrigin === undefined && !urlIsSameOrigin(url) ? 'anonymous' : crossOrigin;
 }
-
 /**
  * Loads an image
  * @param {string} url url to image
@@ -7743,31 +8156,37 @@ function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
  * @return {HTMLImageElement} the image being loaded.
  * @private
  */
+
+
 function loadImage(url, crossOrigin, callback) {
   callback = callback || noop;
-  let img;
+  var img;
   crossOrigin = crossOrigin !== undefined ? crossOrigin : defaults.crossOrigin;
   crossOrigin = setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin);
+
   if (typeof Image !== 'undefined') {
     img = new Image();
+
     if (crossOrigin !== undefined) {
       img.crossOrigin = crossOrigin;
     }
 
-    const clearEventHandlers = function clearEventHandlers() {
-      img.removeEventListener('error', onError);  // eslint-disable-line
-      img.removeEventListener('load', onLoad);  // eslint-disable-line
+    var clearEventHandlers = function clearEventHandlers() {
+      img.removeEventListener('error', onError); // eslint-disable-line
+
+      img.removeEventListener('load', onLoad); // eslint-disable-line
+
       img = null;
     };
 
-    const onError = function onError() {
-      const msg = "couldn't load image: " + url;
-      _helper_js__WEBPACK_IMPORTED_MODULE_2__["error"](msg);
+    var onError = function onError() {
+      var msg = "couldn't load image: " + url;
+      helper.error(msg);
       callback(msg, img);
       clearEventHandlers();
     };
 
-    const onLoad = function onLoad() {
+    var onLoad = function onLoad() {
       callback(null, img);
       clearEventHandlers();
     };
@@ -7777,42 +8196,46 @@ function loadImage(url, crossOrigin, callback) {
     img.src = url;
     return img;
   } else if (typeof ImageBitmap !== 'undefined') {
-    let err;
-    let bm;
-    const cb = function cb() {
+    var err;
+    var bm;
+
+    var cb = function cb() {
       callback(err, bm);
     };
 
-    const options = {};
+    var options = {};
+
     if (crossOrigin) {
       options.mode = 'cors'; // TODO: not sure how to translate image.crossOrigin
     }
-    fetch(url, options).then(function(response) {
+
+    fetch(url, options).then(function (response) {
       if (!response.ok) {
         throw response;
       }
+
       return response.blob();
-    }).then(function(blob) {
+    }).then(function (blob) {
       return createImageBitmap(blob, {
         premultiplyAlpha: 'none',
-        colorSpaceConversion: 'none',
+        colorSpaceConversion: 'none'
       });
-    }).then(function(bitmap) {
+    }).then(function (bitmap) {
       // not sure if this works. We don't want
       // to catch the user's error. So, call
       // the callback in a timeout so we're
       // not in this scope inside the promise.
       bm = bitmap;
       setTimeout(cb);
-    }).catch(function(e) {
+    }).catch(function (e) {
       err = e;
       setTimeout(cb);
     });
     img = null;
   }
+
   return img;
 }
-
 /**
  * check if object is a TexImageSource
  *
@@ -7820,12 +8243,11 @@ function loadImage(url, crossOrigin, callback) {
  * @return {boolean} true if object is a TexImageSource
  * @private
  */
-function isTexImageSource(obj) {
-  return (typeof ImageBitmap !== 'undefined' && obj instanceof ImageBitmap) ||
-         (typeof ImageData !== 'undefined'  && obj instanceof ImageData) ||
-         (typeof HTMLElement !== 'undefined'  && obj instanceof HTMLElement);
-}
 
+
+function isTexImageSource(obj) {
+  return typeof ImageBitmap !== 'undefined' && obj instanceof ImageBitmap || typeof ImageData !== 'undefined' && obj instanceof ImageData || typeof HTMLElement !== 'undefined' && obj instanceof HTMLElement;
+}
 /**
  * if obj is an TexImageSource then just
  * uses it otherwise if obj is a string
@@ -7837,9 +8259,11 @@ function isTexImageSource(obj) {
  *     if there was an error
  * @private
  */
+
+
 function loadAndUseImage(obj, crossOrigin, callback) {
   if (isTexImageSource(obj)) {
-    setTimeout(function() {
+    setTimeout(function () {
       callback(null, obj);
     });
     return obj;
@@ -7847,7 +8271,6 @@ function loadAndUseImage(obj, crossOrigin, callback) {
 
   return loadImage(obj, crossOrigin, callback);
 }
-
 /**
  * Sets a texture to a 1x1 pixel color. If `options.color === false` is nothing happens. If it's not set
  * the default texture color is used which can be set by calling `setDefaultTextureColor`.
@@ -7857,18 +8280,23 @@ function loadAndUseImage(obj, crossOrigin, callback) {
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureTo1PixelColor(gl, tex, options) {
   options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
+  var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
+
   if (options.color === false) {
     return;
-  }
-  // Assume it's a URL
+  } // Assume it's a URL
   // Put 1x1 pixels in texture. That makes it renderable immediately regardless of filtering.
-  const color = make1Pixel(options.color);
+
+
+  var color = make1Pixel(options.color);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
-    for (let ii = 0; ii < 6; ++ii) {
+    for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
     }
   } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
@@ -7877,7 +8305,6 @@ function setTextureTo1PixelColor(gl, tex, options) {
     gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
   }
 }
-
 /**
  * The src image(s) used to create a texture.
  *
@@ -7939,13 +8366,15 @@ function setTextureTo1PixelColor(gl, tex, options) {
  * @return {HTMLImageElement} the image being downloaded.
  * @memberOf module:twgl/textures
  */
+
+
 function loadTextureFromUrl(gl, tex, options, callback) {
   callback = callback || noop;
   options = options || defaults.textureOptions;
-  setTextureTo1PixelColor(gl, tex, options);
-  // Because it's async we need to copy the options.
+  setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
+
   options = Object.assign({}, options);
-  const img = loadAndUseImage(options.src, options.crossOrigin, function(err, img) {
+  var img = loadAndUseImage(options.src, options.crossOrigin, function (err, img) {
     if (err) {
       callback(err, tex, img);
     } else {
@@ -7955,7 +8384,6 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   });
   return img;
 }
-
 /**
  * Loads a cubemap from 6 urls or TexImageSources as specified in `options.src`. Will set the cubemap to a 1x1 pixel color
  * so that it is usable immediately unless `option.color === false`.
@@ -7966,32 +8394,39 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
  */
+
+
 function loadCubemapFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
-  const urls = options.src;
+  var urls = options.src;
+
   if (urls.length !== 6) {
     throw "there must be 6 urls for a cubemap";
   }
-  const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  const type = options.type || gl.UNSIGNED_BYTE;
-  const target = options.target || gl.TEXTURE_2D;
+
+  var level = options.level || 0;
+  var internalFormat = options.internalFormat || options.format || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var format = options.format || formatType.format;
+  var type = options.type || gl.UNSIGNED_BYTE;
+  var target = options.target || gl.TEXTURE_2D;
+
   if (target !== gl.TEXTURE_CUBE_MAP) {
     throw "target must be TEXTURE_CUBE_MAP";
   }
-  setTextureTo1PixelColor(gl, tex, options);
-  // Because it's async we need to copy the options.
+
+  setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
+
   options = Object.assign({}, options);
-  let numToLoad = 6;
-  const errors = [];
-  const faces = getCubeFaceOrder(gl, options);
-  let imgs;  // eslint-disable-line
+  var numToLoad = 6;
+  var errors = [];
+  var faces = getCubeFaceOrder(gl, options);
+  var imgs; // eslint-disable-line
 
   function uploadImg(faceTarget) {
-    return function(err, img) {
+    return function (err, img) {
       --numToLoad;
+
       if (err) {
         errors.push(err);
       } else {
@@ -7999,13 +8434,12 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
           errors.push("cubemap face img is not a square: " + img.src);
         } else {
           savePackState(gl, options);
-          gl.bindTexture(target, tex);
-
-          // So assuming this is the first image we now have one face that's img sized
+          gl.bindTexture(target, tex); // So assuming this is the first image we now have one face that's img sized
           // and 5 faces that are 1x1 pixel so size the other faces
+
           if (numToLoad === 5) {
             // use the default order
-            getCubeFaceOrder(gl).forEach(function(otherTarget) {
+            getCubeFaceOrder(gl).forEach(function (otherTarget) {
               // Should we re-use the same face or a color?
               gl.texImage2D(otherTarget, level, internalFormat, format, type, img);
             });
@@ -8014,6 +8448,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
           }
 
           restorePackState(gl, options);
+
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             gl.generateMipmap(target);
           }
@@ -8026,11 +8461,10 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
     };
   }
 
-  imgs = urls.map(function(url, ndx) {
+  imgs = urls.map(function (url, ndx) {
     return loadAndUseImage(url, options.crossOrigin, uploadImg(faces[ndx]));
   });
 }
-
 /**
  * Loads a 2d array or 3d texture from urls OR TexImageSources as specified in `options.src`.
  * Will set the texture to a 1x1 pixel color
@@ -8050,32 +8484,38 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
  */
+
+
 function loadSlicesFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
-  const urls = options.src;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  const type = options.type || gl.UNSIGNED_BYTE;
-  const target = options.target || gl.TEXTURE_2D_ARRAY;
+  var urls = options.src;
+  var internalFormat = options.internalFormat || options.format || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var format = options.format || formatType.format;
+  var type = options.type || gl.UNSIGNED_BYTE;
+  var target = options.target || gl.TEXTURE_2D_ARRAY;
+
   if (target !== gl.TEXTURE_3D && target !== gl.TEXTURE_2D_ARRAY) {
     throw "target must be TEXTURE_3D or TEXTURE_2D_ARRAY";
   }
-  setTextureTo1PixelColor(gl, tex, options);
-  // Because it's async we need to copy the options.
+
+  setTextureTo1PixelColor(gl, tex, options); // Because it's async we need to copy the options.
+
   options = Object.assign({}, options);
-  let numToLoad = urls.length;
-  const errors = [];
-  let imgs;  // eslint-disable-line
-  const level = options.level || 0;
-  let width = options.width;
-  let height = options.height;
-  const depth = urls.length;
-  let firstImage = true;
+  var numToLoad = urls.length;
+  var errors = [];
+  var imgs; // eslint-disable-line
+
+  var level = options.level || 0;
+  var width = options.width;
+  var height = options.height;
+  var depth = urls.length;
+  var firstImage = true;
 
   function uploadImg(slice) {
-    return function(err, img) {
+    return function (err, img) {
       --numToLoad;
+
       if (err) {
         errors.push(err);
       } else {
@@ -8086,14 +8526,14 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
           firstImage = false;
           width = options.width || img.width;
           height = options.height || img.height;
-          gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
+          gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null); // put it in every slice otherwise some slices will be 0,0,0,0
 
-          // put it in every slice otherwise some slices will be 0,0,0,0
-          for (let s = 0; s < depth; ++s) {
+          for (var s = 0; s < depth; ++s) {
             gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
           }
         } else {
-          let src = img;
+          var src = img;
+
           if (img.width !== width || img.height !== height) {
             // Size the image to fix
             src = ctx.canvas;
@@ -8102,9 +8542,8 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
             ctx.drawImage(img, 0, 0, width, height);
           }
 
-          gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
+          gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src); // free the canvas memory
 
-          // free the canvas memory
           if (src === ctx.canvas) {
             ctx.canvas.width = 0;
             ctx.canvas.height = 0;
@@ -8112,6 +8551,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
         }
 
         restorePackState(gl, options);
+
         if (shouldAutomaticallySetTextureFilteringForSize(options)) {
           gl.generateMipmap(target);
         }
@@ -8123,11 +8563,10 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
     };
   }
 
-  imgs = urls.map(function(url, ndx) {
+  imgs = urls.map(function (url, ndx) {
     return loadAndUseImage(url, options.crossOrigin, uploadImg(ndx));
   });
 }
-
 /**
  * Sets a texture from an array or typed array. If the width or height is not provided will attempt to
  * guess the size. See {@link module:twgl.TextureOptions}.
@@ -8138,37 +8577,45 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
  */
+
+
 function setTextureFromArray(gl, tex, src, options) {
   options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
+  var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
-  let width = options.width;
-  let height = options.height;
-  let depth = options.depth;
-  const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  const type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
+  var width = options.width;
+  var height = options.height;
+  var depth = options.depth;
+  var level = options.level || 0;
+  var internalFormat = options.internalFormat || options.format || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var format = options.format || formatType.format;
+  var type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
+
   if (!isArrayBuffer(src)) {
-    const Type = _typedarrays_js__WEBPACK_IMPORTED_MODULE_1__["getTypedArrayTypeForGLType"](type);
+    var Type = typedArrays.getTypedArrayTypeForGLType(type);
     src = new Type(src);
   } else if (src instanceof Uint8ClampedArray) {
     src = new Uint8Array(src.buffer);
   }
 
-  const bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
-  const numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
+  var bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
+  var numElements = src.byteLength / bytesPerElement; // TODO: check UNPACK_ALIGNMENT?
+
   if (numElements % 1) {
-    throw "length wrong size for format: " + _utils_js__WEBPACK_IMPORTED_MODULE_0__["glEnumToString"](gl, format);
+    throw "length wrong size for format: " + utils.glEnumToString(gl, format);
   }
-  let dimensions;
+
+  var dimensions;
+
   if (target === gl.TEXTURE_3D) {
     if (!width && !height && !depth) {
-      const size = Math.cbrt(numElements);
+      var size = Math.cbrt(numElements);
+
       if (size % 1 !== 0) {
         throw "can't guess cube size of array of numElements: " + numElements;
       }
+
       width = size;
       height = size;
       depth = size;
@@ -8190,16 +8637,17 @@ function setTextureFromArray(gl, tex, src, options) {
     width = dimensions.width;
     height = dimensions.height;
   }
+
   saveSkipState(gl);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
   savePackState(gl, options);
-  if (target === gl.TEXTURE_CUBE_MAP) {
-    const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
-    const faceSize = numElements / 6 * elementsPerElement;
 
-    getCubeFacesWithNdx(gl, options).forEach(f => {
-      const offset = faceSize * f.ndx;
-      const data = src.subarray(offset, offset + faceSize);
+  if (target === gl.TEXTURE_CUBE_MAP) {
+    var elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
+    var faceSize = numElements / 6 * elementsPerElement;
+    getCubeFacesWithNdx(gl, options).forEach(function (f) {
+      var offset = faceSize * f.ndx;
+      var data = src.subarray(offset, offset + faceSize);
       gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
     });
   } else if (target === gl.TEXTURE_3D) {
@@ -8207,16 +8655,16 @@ function setTextureFromArray(gl, tex, src, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
   }
+
   restorePackState(gl, options);
   restoreSkipState(gl);
   return {
     width: width,
     height: height,
     depth: depth,
-    type: type,
+    type: type
   };
 }
-
 /**
  * Sets a texture with no contents of a certain size. In other words calls `gl.texImage2D` with `null`.
  * You must set `options.width` and `options.height`.
@@ -8225,17 +8673,20 @@ function setTextureFromArray(gl, tex, src, options) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @memberOf module:twgl/textures
  */
+
+
 function setEmptyTexture(gl, tex, options) {
-  const target = options.target || gl.TEXTURE_2D;
+  var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
-  const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  const type = options.type || formatType.type;
+  var level = options.level || 0;
+  var internalFormat = options.internalFormat || options.format || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var format = options.format || formatType.format;
+  var type = options.type || formatType.type;
   savePackState(gl, options);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
-    for (let ii = 0; ii < 6; ++ii) {
+    for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
     }
   } else if (target === gl.TEXTURE_3D) {
@@ -8243,9 +8694,9 @@ function setEmptyTexture(gl, tex, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
   }
+
   restorePackState(gl, options);
 }
-
 /**
  * Creates a texture based on the options passed in.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
@@ -8254,41 +8705,41 @@ function setEmptyTexture(gl, tex, options) {
  * @return {WebGLTexture} the created texture.
  * @memberOf module:twgl/textures
  */
+
+
 function createTexture(gl, options, callback) {
   callback = callback || noop;
   options = options || defaults.textureOptions;
-  const tex = gl.createTexture();
-  const target = options.target || gl.TEXTURE_2D;
-  let width  = options.width  || 1;
-  let height = options.height || 1;
-  const internalFormat = options.internalFormat || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  let type = options.type || formatType.type;
+  var tex = gl.createTexture();
+  var target = options.target || gl.TEXTURE_2D;
+  var width = options.width || 1;
+  var height = options.height || 1;
+  var internalFormat = options.internalFormat || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var type = options.type || formatType.type;
   gl.bindTexture(target, tex);
+
   if (target === gl.TEXTURE_CUBE_MAP) {
     // this should have been the default for CUBEMAPS :(
     gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
-  let src = options.src;
+
+  var src = options.src;
+
   if (src) {
     if (typeof src === "function") {
       src = src(gl, options);
     }
-    if (typeof (src) === "string") {
+
+    if (typeof src === "string") {
       loadTextureFromUrl(gl, tex, options, callback);
-    } else if (isArrayBuffer(src) ||
-               (Array.isArray(src) && (
-                    typeof src[0] === 'number' ||
-                    Array.isArray(src[0]) ||
-                    isArrayBuffer(src[0]))
-               )
-              ) {
-      const dimensions = setTextureFromArray(gl, tex, src, options);
-      width  = dimensions.width;
+    } else if (isArrayBuffer(src) || Array.isArray(src) && (typeof src[0] === 'number' || Array.isArray(src[0]) || isArrayBuffer(src[0]))) {
+      var dimensions = setTextureFromArray(gl, tex, src, options);
+      width = dimensions.width;
       height = dimensions.height;
-      type   = dimensions.type;
-    } else if (Array.isArray(src) && (typeof (src[0]) === 'string' || isTexImageSource(src[0]))) {
+      type = dimensions.type;
+    } else if (Array.isArray(src) && (typeof src[0] === 'string' || isTexImageSource(src[0]))) {
       if (target === gl.TEXTURE_CUBE_MAP) {
         loadCubemapFromUrls(gl, tex, options, callback);
       } else {
@@ -8296,7 +8747,7 @@ function createTexture(gl, options, callback) {
       }
     } else if (isTexImageSource(src)) {
       setTextureFromElement(gl, tex, src, options);
-      width  = src.width;
+      width = src.width;
       height = src.height;
     } else {
       throw "unsupported src type";
@@ -8304,13 +8755,14 @@ function createTexture(gl, options, callback) {
   } else {
     setEmptyTexture(gl, tex, options);
   }
+
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
   }
+
   setTextureParameters(gl, tex, options);
   return tex;
 }
-
 /**
  * Resizes a texture based on the options passed in.
  *
@@ -8327,33 +8779,36 @@ function createTexture(gl, options, callback) {
  * @param {number} [height] the new height. If not passed in will use `options.height`
  * @memberOf module:twgl/textures
  */
+
+
 function resizeTexture(gl, tex, options, width, height) {
   width = width || options.width;
   height = height || options.height;
-  const target = options.target || gl.TEXTURE_2D;
+  var target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
-  const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  const format = options.format || formatType.format;
-  let type;
-  const src = options.src;
+  var level = options.level || 0;
+  var internalFormat = options.internalFormat || options.format || gl.RGBA;
+  var formatType = getFormatAndTypeForInternalFormat(internalFormat);
+  var format = options.format || formatType.format;
+  var type;
+  var src = options.src;
+
   if (!src) {
     type = options.type || formatType.type;
-  } else if (isArrayBuffer(src) || (Array.isArray(src) && typeof (src[0]) === 'number')) {
+  } else if (isArrayBuffer(src) || Array.isArray(src) && typeof src[0] === 'number') {
     type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
   } else {
     type = options.type || formatType.type;
   }
+
   if (target === gl.TEXTURE_CUBE_MAP) {
-    for (let ii = 0; ii < 6; ++ii) {
+    for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
     }
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
   }
 }
-
 /**
  * Check if a src is an async request.
  * if src is a string we're going to download an image
@@ -8362,11 +8817,11 @@ function resizeTexture(gl, tex, options, width, height) {
  * @returns {bool} true if src is async.
  * @private
  */
-function isAsyncSrc(src) {
-  return typeof src === 'string' ||
-         (Array.isArray(src) && typeof src[0] === 'string');
-}
 
+
+function isAsyncSrc(src) {
+  return typeof src === 'string' || Array.isArray(src) && typeof src[0] === 'string';
+}
 /**
  * Creates a bunch of textures based on the passed in options.
  *
@@ -8442,52 +8897,52 @@ function isAsyncSrc(src) {
  * @return {Object.<string,WebGLTexture>} the created textures by name
  * @memberOf module:twgl/textures
  */
+
+
 function createTextures(gl, textureOptions, callback) {
   callback = callback || noop;
-  let numDownloading = 0;
-  const errors = [];
-  const textures = {};
-  const images = {};
+  var numDownloading = 0;
+  var errors = [];
+  var textures = {};
+  var images = {};
 
   function callCallbackIfReady() {
     if (numDownloading === 0) {
-      setTimeout(function() {
+      setTimeout(function () {
         callback(errors.length ? errors : undefined, textures, images);
       }, 0);
     }
   }
 
-  Object.keys(textureOptions).forEach(function(name) {
-    const options = textureOptions[name];
-    let onLoadFn;
+  Object.keys(textureOptions).forEach(function (name) {
+    var options = textureOptions[name];
+    var onLoadFn;
+
     if (isAsyncSrc(options.src)) {
-      onLoadFn = function(err, tex, img) {
+      onLoadFn = function onLoadFn(err, tex, img) {
         images[name] = img;
         --numDownloading;
+
         if (err) {
           errors.push(err);
         }
+
         callCallbackIfReady();
       };
+
       ++numDownloading;
     }
-    textures[name] = createTexture(gl, options, onLoadFn);
-  });
 
-  // queue the callback if there are no images to download.
+    textures[name] = createTexture(gl, options, onLoadFn);
+  }); // queue the callback if there are no images to download.
   // We do this because if your code is structured to wait for
   // images to download but then you comment out all the async
   // images your code would break.
+
   callCallbackIfReady();
-
   return textures;
-}
-
-// Using quotes prevents Uglify from changing the names.
+} // Using quotes prevents Uglify from changing the names.
 // No speed diff AFAICT.
-
-
-
 
 /***/ }),
 
@@ -8495,166 +8950,41 @@ function createTextures(gl, textureOptions, callback) {
 /*!**************************!*\
   !*** ./src/twgl-full.js ***!
   \**************************/
-/*! exports provided: m4, v3, primitives, addExtensionsToContext, getContext, getWebGLContext, resizeCanvasToDisplaySize, setDefaults, createAttribsFromArrays, createBuffersFromArrays, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, setAttribInfoBufferFromArray, setAttributePrefix, setAttributeDefaults_, getNumComponents_, getArray_, drawBufferInfo, drawObjectList, bindFramebufferInfo, createFramebufferInfo, resizeFramebufferInfo, createAttributeSetters, createProgram, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoFromProgram, createUniformSetters, createUniformBlockSpecFromProgram, createUniformBlockInfoFromProgram, createUniformBlockInfo, createTransformFeedback, createTransformFeedbackInfo, bindTransformFeedbackInfo, setAttributes, setBuffersAndAttributes, setUniforms, setUniformBlock, setBlockUniforms, bindUniformBlock, setTextureDefaults_, createSampler, createSamplers, setSamplerParameters, createTexture, setEmptyTexture, setTextureFromArray, loadTextureFromUrl, setTextureFromElement, setTextureFilteringForSize, setTextureParameters, setDefaultTextureColor, createTextures, resizeTexture, canGenerateMipmap, canFilter, getNumComponentsForFormat, getBytesPerElementForInternalFormat, getFormatAndTypeForInternalFormat, getGLTypeForTypedArray, getGLTypeForTypedArrayType, getTypedArrayTypeForGLType, isArrayBuffer, glEnumToString, isWebGL1, isWebGL2, createVertexArrayInfo, createVAOAndSetAttributes, createVAOFromBufferInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _m4_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./m4.js */ "./src/m4.js");
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "m4", function() { return _m4_js__WEBPACK_IMPORTED_MODULE_0__; });
-/* harmony import */ var _v3_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./v3.js */ "./src/v3.js");
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "v3", function() { return _v3_js__WEBPACK_IMPORTED_MODULE_1__; });
-/* harmony import */ var _primitives_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./primitives.js */ "./src/primitives.js");
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "primitives", function() { return _primitives_js__WEBPACK_IMPORTED_MODULE_2__; });
-/* harmony import */ var _twgl_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./twgl.js */ "./src/twgl.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addExtensionsToContext", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["addExtensionsToContext"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getContext", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getContext"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getWebGLContext", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getWebGLContext"]; });
+exports.__esModule = true;
+var _exportNames = {
+  m4: true,
+  v3: true,
+  primitives: true
+};
+exports.primitives = exports.v3 = exports.m4 = void 0;
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resizeCanvasToDisplaySize", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["resizeCanvasToDisplaySize"]; });
+var m4 = _interopRequireWildcard(__webpack_require__(/*! ./m4.js */ "./src/m4.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setDefaults", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setDefaults"]; });
+exports.m4 = m4;
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createAttribsFromArrays", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createAttribsFromArrays"]; });
+var v3 = _interopRequireWildcard(__webpack_require__(/*! ./v3.js */ "./src/v3.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBuffersFromArrays", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createBuffersFromArrays"]; });
+exports.v3 = v3;
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBufferFromArray", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createBufferFromArray"]; });
+var primitives = _interopRequireWildcard(__webpack_require__(/*! ./primitives.js */ "./src/primitives.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBufferFromTypedArray", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createBufferFromTypedArray"]; });
+exports.primitives = primitives;
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBufferInfoFromArrays", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createBufferInfoFromArrays"]; });
+var _twgl = __webpack_require__(/*! ./twgl.js */ "./src/twgl.js");
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttribInfoBufferFromArray", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setAttribInfoBufferFromArray"]; });
+Object.keys(_twgl).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _twgl[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttributePrefix", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setAttributePrefix"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttributeDefaults_", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setAttributeDefaults_"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNumComponents_", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getNumComponents_"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArray_", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getArray_"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawBufferInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["drawBufferInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawObjectList", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["drawObjectList"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindFramebufferInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["bindFramebufferInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createFramebufferInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createFramebufferInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resizeFramebufferInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["resizeFramebufferInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createAttributeSetters", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createAttributeSetters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgram", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramFromScripts", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createProgramFromScripts"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramFromSources", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createProgramFromSources"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createProgramInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramInfoFromProgram", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createProgramInfoFromProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformSetters", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createUniformSetters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockSpecFromProgram", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createUniformBlockSpecFromProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockInfoFromProgram", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createUniformBlockInfoFromProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createUniformBlockInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTransformFeedback", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createTransformFeedback"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTransformFeedbackInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createTransformFeedbackInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindTransformFeedbackInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["bindTransformFeedbackInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttributes", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setAttributes"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBuffersAndAttributes", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setBuffersAndAttributes"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setUniforms", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setUniforms"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setUniformBlock", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setUniformBlock"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBlockUniforms", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setBlockUniforms"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindUniformBlock", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["bindUniformBlock"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureDefaults_", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setTextureDefaults_"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createSampler", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createSampler"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createSamplers", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createSamplers"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setSamplerParameters", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setSamplerParameters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTexture", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createTexture"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setEmptyTexture", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setEmptyTexture"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureFromArray", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setTextureFromArray"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTextureFromUrl", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["loadTextureFromUrl"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureFromElement", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setTextureFromElement"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureFilteringForSize", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setTextureFilteringForSize"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureParameters", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setTextureParameters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setDefaultTextureColor", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["setDefaultTextureColor"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTextures", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createTextures"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resizeTexture", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["resizeTexture"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canGenerateMipmap", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["canGenerateMipmap"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canFilter", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["canFilter"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNumComponentsForFormat", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getNumComponentsForFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBytesPerElementForInternalFormat", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getBytesPerElementForInternalFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getFormatAndTypeForInternalFormat", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getFormatAndTypeForInternalFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGLTypeForTypedArray", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getGLTypeForTypedArray"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGLTypeForTypedArrayType", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getGLTypeForTypedArrayType"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getTypedArrayTypeForGLType", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["getTypedArrayTypeForGLType"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isArrayBuffer", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["isArrayBuffer"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "glEnumToString", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["glEnumToString"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isWebGL1", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["isWebGL1"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isWebGL2", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["isWebGL2"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVertexArrayInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createVertexArrayInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVAOAndSetAttributes", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createVAOAndSetAttributes"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVAOFromBufferInfo", function() { return _twgl_js__WEBPACK_IMPORTED_MODULE_3__["createVAOFromBufferInfo"]; });
-
-
-
-
-
-
-
-
-
-
-
-
-
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 /***/ }),
 
@@ -8662,150 +8992,93 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************!*\
   !*** ./src/twgl.js ***!
   \*********************/
-/*! exports provided: addExtensionsToContext, getContext, getWebGLContext, resizeCanvasToDisplaySize, setDefaults, createAttribsFromArrays, createBuffersFromArrays, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, setAttribInfoBufferFromArray, setAttributePrefix, setAttributeDefaults_, getNumComponents_, getArray_, drawBufferInfo, drawObjectList, bindFramebufferInfo, createFramebufferInfo, resizeFramebufferInfo, createAttributeSetters, createProgram, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoFromProgram, createUniformSetters, createUniformBlockSpecFromProgram, createUniformBlockInfoFromProgram, createUniformBlockInfo, createTransformFeedback, createTransformFeedbackInfo, bindTransformFeedbackInfo, setAttributes, setBuffersAndAttributes, setUniforms, setUniformBlock, setBlockUniforms, bindUniformBlock, setTextureDefaults_, createSampler, createSamplers, setSamplerParameters, createTexture, setEmptyTexture, setTextureFromArray, loadTextureFromUrl, setTextureFromElement, setTextureFilteringForSize, setTextureParameters, setDefaultTextureColor, createTextures, resizeTexture, canGenerateMipmap, canFilter, getNumComponentsForFormat, getBytesPerElementForInternalFormat, getFormatAndTypeForInternalFormat, getGLTypeForTypedArray, getGLTypeForTypedArrayType, getTypedArrayTypeForGLType, isArrayBuffer, glEnumToString, isWebGL1, isWebGL2, createVertexArrayInfo, createVAOAndSetAttributes, createVAOFromBufferInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addExtensionsToContext", function() { return addExtensionsToContext; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getContext", function() { return getContext; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWebGLContext", function() { return getWebGLContext; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeCanvasToDisplaySize", function() { return resizeCanvasToDisplaySize; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDefaults", function() { return setDefaults; });
-/* harmony import */ var _attributes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./attributes.js */ "./src/attributes.js");
-/* harmony import */ var _textures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./textures.js */ "./src/textures.js");
-/* harmony import */ var _helper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helper.js */ "./src/helper.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createAttribsFromArrays", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createAttribsFromArrays"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBuffersFromArrays", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createBuffersFromArrays"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBufferFromArray", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createBufferFromArray"]; });
+exports.__esModule = true;
+var _exportNames = {
+  addExtensionsToContext: true,
+  getContext: true,
+  getWebGLContext: true,
+  resizeCanvasToDisplaySize: true,
+  setDefaults: true
+};
+exports.addExtensionsToContext = addExtensionsToContext;
+exports.getContext = getContext;
+exports.getWebGLContext = getWebGLContext;
+exports.resizeCanvasToDisplaySize = resizeCanvasToDisplaySize;
+exports.setDefaults = setDefaults;
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBufferFromTypedArray", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createBufferFromTypedArray"]; });
+var attributes = _interopRequireWildcard(__webpack_require__(/*! ./attributes.js */ "./src/attributes.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBufferInfoFromArrays", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["createBufferInfoFromArrays"]; });
+Object.keys(attributes).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = attributes[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttribInfoBufferFromArray", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["setAttribInfoBufferFromArray"]; });
+var textures = _interopRequireWildcard(__webpack_require__(/*! ./textures.js */ "./src/textures.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttributePrefix", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["setAttributePrefix"]; });
+Object.keys(textures).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = textures[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttributeDefaults_", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["setAttributeDefaults_"]; });
+var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNumComponents_", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["getNumComponents_"]; });
+var utils = _interopRequireWildcard(__webpack_require__(/*! ./utils.js */ "./src/utils.js"));
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArray_", function() { return _attributes_js__WEBPACK_IMPORTED_MODULE_0__["getArray_"]; });
+Object.keys(utils).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = utils[key];
+});
 
-/* harmony import */ var _draw_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./draw.js */ "./src/draw.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawBufferInfo", function() { return _draw_js__WEBPACK_IMPORTED_MODULE_4__["drawBufferInfo"]; });
+var _draw = __webpack_require__(/*! ./draw.js */ "./src/draw.js");
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "drawObjectList", function() { return _draw_js__WEBPACK_IMPORTED_MODULE_4__["drawObjectList"]; });
+Object.keys(_draw).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _draw[key];
+});
 
-/* harmony import */ var _framebuffers_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./framebuffers.js */ "./src/framebuffers.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindFramebufferInfo", function() { return _framebuffers_js__WEBPACK_IMPORTED_MODULE_5__["bindFramebufferInfo"]; });
+var _framebuffers = __webpack_require__(/*! ./framebuffers.js */ "./src/framebuffers.js");
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createFramebufferInfo", function() { return _framebuffers_js__WEBPACK_IMPORTED_MODULE_5__["createFramebufferInfo"]; });
+Object.keys(_framebuffers).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _framebuffers[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resizeFramebufferInfo", function() { return _framebuffers_js__WEBPACK_IMPORTED_MODULE_5__["resizeFramebufferInfo"]; });
+var _programs = __webpack_require__(/*! ./programs.js */ "./src/programs.js");
 
-/* harmony import */ var _programs_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./programs.js */ "./src/programs.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createAttributeSetters", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createAttributeSetters"]; });
+Object.keys(_programs).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _programs[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgram", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createProgram"]; });
+var _typedarrays = __webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js");
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramFromScripts", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createProgramFromScripts"]; });
+Object.keys(_typedarrays).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _typedarrays[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramFromSources", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createProgramFromSources"]; });
+var _vertexArrays = __webpack_require__(/*! ./vertex-arrays.js */ "./src/vertex-arrays.js");
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramInfo", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createProgramInfo"]; });
+Object.keys(_vertexArrays).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  exports[key] = _vertexArrays[key];
+});
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgramInfoFromProgram", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createProgramInfoFromProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformSetters", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createUniformSetters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockSpecFromProgram", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createUniformBlockSpecFromProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockInfoFromProgram", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createUniformBlockInfoFromProgram"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUniformBlockInfo", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createUniformBlockInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTransformFeedback", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createTransformFeedback"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTransformFeedbackInfo", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["createTransformFeedbackInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindTransformFeedbackInfo", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["bindTransformFeedbackInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setAttributes", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["setAttributes"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBuffersAndAttributes", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["setBuffersAndAttributes"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setUniforms", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["setUniforms"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setUniformBlock", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["setUniformBlock"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBlockUniforms", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["setBlockUniforms"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bindUniformBlock", function() { return _programs_js__WEBPACK_IMPORTED_MODULE_6__["bindUniformBlock"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureDefaults_", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setTextureDefaults_"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createSampler", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["createSampler"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createSamplers", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["createSamplers"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setSamplerParameters", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setSamplerParameters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTexture", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["createTexture"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setEmptyTexture", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setEmptyTexture"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureFromArray", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setTextureFromArray"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTextureFromUrl", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["loadTextureFromUrl"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureFromElement", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setTextureFromElement"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureFilteringForSize", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setTextureFilteringForSize"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTextureParameters", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setTextureParameters"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setDefaultTextureColor", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["setDefaultTextureColor"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createTextures", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["createTextures"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resizeTexture", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["resizeTexture"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canGenerateMipmap", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["canGenerateMipmap"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canFilter", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["canFilter"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNumComponentsForFormat", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["getNumComponentsForFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBytesPerElementForInternalFormat", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["getBytesPerElementForInternalFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getFormatAndTypeForInternalFormat", function() { return _textures_js__WEBPACK_IMPORTED_MODULE_1__["getFormatAndTypeForInternalFormat"]; });
-
-/* harmony import */ var _typedarrays_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGLTypeForTypedArray", function() { return _typedarrays_js__WEBPACK_IMPORTED_MODULE_7__["getGLTypeForTypedArray"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGLTypeForTypedArrayType", function() { return _typedarrays_js__WEBPACK_IMPORTED_MODULE_7__["getGLTypeForTypedArrayType"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getTypedArrayTypeForGLType", function() { return _typedarrays_js__WEBPACK_IMPORTED_MODULE_7__["getTypedArrayTypeForGLType"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isArrayBuffer", function() { return _typedarrays_js__WEBPACK_IMPORTED_MODULE_7__["isArrayBuffer"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "glEnumToString", function() { return _utils_js__WEBPACK_IMPORTED_MODULE_3__["glEnumToString"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isWebGL1", function() { return _utils_js__WEBPACK_IMPORTED_MODULE_3__["isWebGL1"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isWebGL2", function() { return _utils_js__WEBPACK_IMPORTED_MODULE_3__["isWebGL2"]; });
-
-/* harmony import */ var _vertex_arrays_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./vertex-arrays.js */ "./src/vertex-arrays.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVertexArrayInfo", function() { return _vertex_arrays_js__WEBPACK_IMPORTED_MODULE_8__["createVertexArrayInfo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVAOAndSetAttributes", function() { return _vertex_arrays_js__WEBPACK_IMPORTED_MODULE_8__["createVAOAndSetAttributes"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVAOFromBufferInfo", function() { return _vertex_arrays_js__WEBPACK_IMPORTED_MODULE_8__["createVAOFromBufferInfo"]; });
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 /*
  * Copyright 2015, Gregg Tavares.
@@ -8838,11 +9111,6 @@ __webpack_require__.r(__webpack_exports__);
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-
-
-
 /**
  * The main TWGL module.
  *
@@ -8870,13 +9138,12 @@ __webpack_require__.r(__webpack_exports__);
  * @borrows module:twgl/textures.resizeTexture as resizeTexture
  * @borrows module:twgl/textures.createTextures as createTextures
  */
-
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
-const defaults = {
-  addExtensionsToContext: true,
-};
+var gl = undefined; // eslint-disable-line
 
+var defaults = {
+  addExtensionsToContext: true
+};
 /**
  * Various default settings for twgl.
  *
@@ -8948,38 +9215,44 @@ const defaults = {
  * @param {module:twgl.Defaults} newDefaults The default settings.
  * @memberOf module:twgl
  */
+
 function setDefaults(newDefaults) {
-  _helper_js__WEBPACK_IMPORTED_MODULE_2__["copyExistingProperties"](newDefaults, defaults);
-  _attributes_js__WEBPACK_IMPORTED_MODULE_0__["setAttributeDefaults_"](newDefaults);  // eslint-disable-line
-  _textures_js__WEBPACK_IMPORTED_MODULE_1__["setTextureDefaults_"](newDefaults);  // eslint-disable-line
+  helper.copyExistingProperties(newDefaults, defaults);
+  attributes.setAttributeDefaults_(newDefaults); // eslint-disable-line
+
+  textures.setTextureDefaults_(newDefaults); // eslint-disable-line
 }
 
-const prefixRE = /^(.*?)_/;
+var prefixRE = /^(.*?)_/;
+
 function addExtensionToContext(gl, extensionName) {
-  _utils_js__WEBPACK_IMPORTED_MODULE_3__["glEnumToString"](gl, 0);
-  const ext = gl.getExtension(extensionName);
+  utils.glEnumToString(gl, 0);
+  var ext = gl.getExtension(extensionName);
+
   if (ext) {
-    const enums = {};
-    const fnSuffix = prefixRE.exec(extensionName)[1];
-    const enumSuffix = '_' + fnSuffix;
-    for (const key in ext) {
-      const value = ext[key];
-      const isFunc = typeof (value) === 'function';
-      const suffix = isFunc ? fnSuffix : enumSuffix;
-      let name = key;
-      // examples of where this is not true are WEBGL_compressed_texture_s3tc
+    var enums = {};
+    var fnSuffix = prefixRE.exec(extensionName)[1];
+    var enumSuffix = '_' + fnSuffix;
+
+    for (var key in ext) {
+      var value = ext[key];
+      var isFunc = typeof value === 'function';
+      var suffix = isFunc ? fnSuffix : enumSuffix;
+      var name = key; // examples of where this is not true are WEBGL_compressed_texture_s3tc
       // and WEBGL_compressed_texture_pvrtc
+
       if (key.endsWith(suffix)) {
         name = key.substring(0, key.length - suffix.length);
       }
+
       if (gl[name] !== undefined) {
         if (!isFunc && gl[name] !== value) {
-          _helper_js__WEBPACK_IMPORTED_MODULE_2__["warn"](name, gl[name], value, key);
+          helper.warn(name, gl[name], value, key);
         }
       } else {
         if (isFunc) {
-          gl[name] = function(origFn) {
-            return function() {
+          gl[name] = function (origFn) {
+            return function () {
               return origFn.apply(ext, arguments);
             };
           }(value);
@@ -8988,16 +9261,17 @@ function addExtensionToContext(gl, extensionName) {
           enums[name] = value;
         }
       }
-    }
-    // pass the modified enums to glEnumToString
+    } // pass the modified enums to glEnumToString
+
+
     enums.constructor = {
-      name: ext.constructor.name,
+      name: ext.constructor.name
     };
-    _utils_js__WEBPACK_IMPORTED_MODULE_3__["glEnumToString"](enums, 0);
+    utils.glEnumToString(enums, 0);
   }
+
   return ext;
 }
-
 /*
  * If you're wondering why the code doesn't just iterate
  * over all extensions using `gl.getExtensions` is that it's possible
@@ -9006,34 +9280,9 @@ function addExtensionToContext(gl, extensionName) {
  * list.
  *
  */
-const supportedExtensions = [
-  'ANGLE_instanced_arrays',
-  'EXT_blend_minmax',
-  'EXT_color_buffer_float',
-  'EXT_color_buffer_half_float',
-  'EXT_disjoint_timer_query',
-  'EXT_disjoint_timer_query_webgl2',
-  'EXT_frag_depth',
-  'EXT_sRGB',
-  'EXT_shader_texture_lod',
-  'EXT_texture_filter_anisotropic',
-  'OES_element_index_uint',
-  'OES_standard_derivatives',
-  'OES_texture_float',
-  'OES_texture_float_linear',
-  'OES_texture_half_float',
-  'OES_texture_half_float_linear',
-  'OES_vertex_array_object',
-  'WEBGL_color_buffer_float',
-  'WEBGL_compressed_texture_atc',
-  'WEBGL_compressed_texture_etc1',
-  'WEBGL_compressed_texture_pvrtc',
-  'WEBGL_compressed_texture_s3tc',
-  'WEBGL_compressed_texture_s3tc_srgb',
-  'WEBGL_depth_texture',
-  'WEBGL_draw_buffers',
-];
 
+
+var supportedExtensions = ['ANGLE_instanced_arrays', 'EXT_blend_minmax', 'EXT_color_buffer_float', 'EXT_color_buffer_half_float', 'EXT_disjoint_timer_query', 'EXT_disjoint_timer_query_webgl2', 'EXT_frag_depth', 'EXT_sRGB', 'EXT_shader_texture_lod', 'EXT_texture_filter_anisotropic', 'OES_element_index_uint', 'OES_standard_derivatives', 'OES_texture_float', 'OES_texture_float_linear', 'OES_texture_half_float', 'OES_texture_half_float_linear', 'OES_vertex_array_object', 'WEBGL_color_buffer_float', 'WEBGL_compressed_texture_atc', 'WEBGL_compressed_texture_etc1', 'WEBGL_compressed_texture_pvrtc', 'WEBGL_compressed_texture_s3tc', 'WEBGL_compressed_texture_s3tc_srgb', 'WEBGL_depth_texture', 'WEBGL_draw_buffers'];
 /**
  * Attempts to enable all of the following extensions
  * and add their functions and constants to the
@@ -9082,12 +9331,12 @@ const supportedExtensions = [
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @memberOf module:twgl
  */
+
 function addExtensionsToContext(gl) {
-  for (let ii = 0; ii < supportedExtensions.length; ++ii) {
+  for (var ii = 0; ii < supportedExtensions.length; ++ii) {
     addExtensionToContext(gl, supportedExtensions[ii]);
   }
 }
-
 /**
  * Creates a webgl context.
  * @param {HTMLCanvasElement} canvas The canvas tag to get
@@ -9096,21 +9345,26 @@ function addExtensionsToContext(gl) {
  * @return {WebGLRenderingContext} The created context.
  * @private
  */
+
+
 function create3DContext(canvas, opt_attribs) {
-  const names = ["webgl", "experimental-webgl"];
-  let context = null;
-  for (let ii = 0; ii < names.length; ++ii) {
+  var names = ["webgl", "experimental-webgl"];
+  var context = null;
+
+  for (var ii = 0; ii < names.length; ++ii) {
     context = canvas.getContext(names[ii], opt_attribs);
+
     if (context) {
       if (defaults.addExtensionsToContext) {
         addExtensionsToContext(context);
       }
+
       break;
     }
   }
+
   return context;
 }
-
 /**
  * Gets a WebGL1 context.
  *
@@ -9120,13 +9374,15 @@ function create3DContext(canvas, opt_attribs) {
  *
  * @param {HTMLCanvasElement} canvas a canvas element.
  * @param {WebGLContextAttributes} [opt_attribs] optional webgl context creation attributes
+ * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
  */
+
+
 function getWebGLContext(canvas, opt_attribs) {
-  const gl = create3DContext(canvas, opt_attribs);
+  var gl = create3DContext(canvas, opt_attribs);
   return gl;
 }
-
 /**
  * Creates a webgl context.
  *
@@ -9141,21 +9397,26 @@ function getWebGLContext(canvas, opt_attribs) {
  *     created.
  * @return {WebGLRenderingContext} The created context.
  */
+
+
 function createContext(canvas, opt_attribs) {
-  const names = ["webgl2", "webgl", "experimental-webgl"];
-  let context = null;
-  for (let ii = 0; ii < names.length; ++ii) {
+  var names = ["webgl2", "webgl", "experimental-webgl"];
+  var context = null;
+
+  for (var ii = 0; ii < names.length; ++ii) {
     context = canvas.getContext(names[ii], opt_attribs);
+
     if (context) {
       if (defaults.addExtensionsToContext) {
         addExtensionsToContext(context);
       }
+
       break;
     }
   }
+
   return context;
 }
-
 /**
  * Gets a WebGL context.  Will create a WebGL2 context if possible.
  *
@@ -9174,11 +9435,12 @@ function createContext(canvas, opt_attribs) {
  * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
  */
+
+
 function getContext(canvas, opt_attribs) {
-  const gl = createContext(canvas, opt_attribs);
+  var gl = createContext(canvas, opt_attribs);
   return gl;
 }
-
 /**
  * Resize a canvas to match the size it's displayed.
  * @param {HTMLCanvasElement} canvas The canvas to resize.
@@ -9186,43 +9448,22 @@ function getContext(canvas, opt_attribs) {
  * @return {boolean} true if the canvas was resized.
  * @memberOf module:twgl
  */
+
+
 function resizeCanvasToDisplaySize(canvas, multiplier) {
   multiplier = multiplier || 1;
   multiplier = Math.max(0, multiplier);
-  const width  = canvas.clientWidth  * multiplier | 0;
-  const height = canvas.clientHeight * multiplier | 0;
+  var width = canvas.clientWidth * multiplier | 0;
+  var height = canvas.clientHeight * multiplier | 0;
+
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width;
     canvas.height = height;
     return true;
   }
+
   return false;
 }
-
-
-
-// function notPrivate(name) {
-//   return name[name.length - 1] !== '_';
-// }
-//
-// function copyPublicProperties(src, dst) {
-//   Object.keys(src).filter(notPrivate).forEach(function(key) {
-//     dst[key] = src[key];
-//   });
-//   return dst;
-// }
-
-
-
-
-
-
-
-
-
-
-
-
 
 /***/ }),
 
@@ -9230,15 +9471,18 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
 /*!****************************!*\
   !*** ./src/typedarrays.js ***!
   \****************************/
-/*! exports provided: getGLTypeForTypedArray, getGLTypeForTypedArrayType, getTypedArrayTypeForGLType, isArrayBuffer */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGLTypeForTypedArray", function() { return getGLTypeForTypedArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGLTypeForTypedArrayType", function() { return getGLTypeForTypedArrayType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTypedArrayTypeForGLType", function() { return getTypedArrayTypeForGLType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isArrayBuffer", function() { return isArrayBuffer; });
+
+
+exports.__esModule = true;
+exports.getGLTypeForTypedArray = getGLTypeForTypedArray;
+exports.getGLTypeForTypedArrayType = getGLTypeForTypedArrayType;
+exports.getTypedArrayTypeForGLType = getTypedArrayTypeForGLType;
+exports.isArrayBuffer = void 0;
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -9284,49 +9528,47 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/typedArray
  */
-
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+var gl = undefined; // eslint-disable-line
 
 /* DataType */
-const BYTE                           = 0x1400;
-const UNSIGNED_BYTE                  = 0x1401;
-const SHORT                          = 0x1402;
-const UNSIGNED_SHORT                 = 0x1403;
-const INT                            = 0x1404;
-const UNSIGNED_INT                   = 0x1405;
-const FLOAT                          = 0x1406;
-const UNSIGNED_SHORT_4_4_4_4       = 0x8033;
-const UNSIGNED_SHORT_5_5_5_1       = 0x8034;
-const UNSIGNED_SHORT_5_6_5         = 0x8363;
-const HALF_FLOAT                   = 0x140B;
-const UNSIGNED_INT_2_10_10_10_REV  = 0x8368;
-const UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
-const UNSIGNED_INT_5_9_9_9_REV     = 0x8C3E;
-const FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
-const UNSIGNED_INT_24_8            = 0x84FA;
 
-const glTypeToTypedArray = {};
+var BYTE = 0x1400;
+var UNSIGNED_BYTE = 0x1401;
+var SHORT = 0x1402;
+var UNSIGNED_SHORT = 0x1403;
+var INT = 0x1404;
+var UNSIGNED_INT = 0x1405;
+var FLOAT = 0x1406;
+var UNSIGNED_SHORT_4_4_4_4 = 0x8033;
+var UNSIGNED_SHORT_5_5_5_1 = 0x8034;
+var UNSIGNED_SHORT_5_6_5 = 0x8363;
+var HALF_FLOAT = 0x140B;
+var UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+var UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+var UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
+var FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+var UNSIGNED_INT_24_8 = 0x84FA;
+var glTypeToTypedArray = {};
 {
-  const tt = glTypeToTypedArray;
-  tt[BYTE]                           = Int8Array;
-  tt[UNSIGNED_BYTE]                  = Uint8Array;
-  tt[SHORT]                          = Int16Array;
-  tt[UNSIGNED_SHORT]                 = Uint16Array;
-  tt[INT]                            = Int32Array;
-  tt[UNSIGNED_INT]                   = Uint32Array;
-  tt[FLOAT]                          = Float32Array;
-  tt[UNSIGNED_SHORT_4_4_4_4]         = Uint16Array;
-  tt[UNSIGNED_SHORT_5_5_5_1]         = Uint16Array;
-  tt[UNSIGNED_SHORT_5_6_5]           = Uint16Array;
-  tt[HALF_FLOAT]                     = Uint16Array;
-  tt[UNSIGNED_INT_2_10_10_10_REV]    = Uint32Array;
-  tt[UNSIGNED_INT_10F_11F_11F_REV]   = Uint32Array;
-  tt[UNSIGNED_INT_5_9_9_9_REV]       = Uint32Array;
+  var tt = glTypeToTypedArray;
+  tt[BYTE] = Int8Array;
+  tt[UNSIGNED_BYTE] = Uint8Array;
+  tt[SHORT] = Int16Array;
+  tt[UNSIGNED_SHORT] = Uint16Array;
+  tt[INT] = Int32Array;
+  tt[UNSIGNED_INT] = Uint32Array;
+  tt[FLOAT] = Float32Array;
+  tt[UNSIGNED_SHORT_4_4_4_4] = Uint16Array;
+  tt[UNSIGNED_SHORT_5_5_5_1] = Uint16Array;
+  tt[UNSIGNED_SHORT_5_6_5] = Uint16Array;
+  tt[HALF_FLOAT] = Uint16Array;
+  tt[UNSIGNED_INT_2_10_10_10_REV] = Uint32Array;
+  tt[UNSIGNED_INT_10F_11F_11F_REV] = Uint32Array;
+  tt[UNSIGNED_INT_5_9_9_9_REV] = Uint32Array;
   tt[FLOAT_32_UNSIGNED_INT_24_8_REV] = Uint32Array;
-  tt[UNSIGNED_INT_24_8]              = Uint32Array;
+  tt[UNSIGNED_INT_24_8] = Uint32Array;
 }
-
 /**
  * Get the GL type for a typedArray
  * @param {ArrayBufferView} typedArray a typedArray
@@ -9334,18 +9576,50 @@ const glTypeToTypedArray = {};
  *   be returned. Pass in a `Uint32Array` and `gl.UNSIGNED_INT` will be returned
  * @memberOf module:twgl/typedArray
  */
+
 function getGLTypeForTypedArray(typedArray) {
-  if (typedArray instanceof Int8Array)         { return BYTE; }           // eslint-disable-line
-  if (typedArray instanceof Uint8Array)        { return UNSIGNED_BYTE; }  // eslint-disable-line
-  if (typedArray instanceof Uint8ClampedArray) { return UNSIGNED_BYTE; }  // eslint-disable-line
-  if (typedArray instanceof Int16Array)        { return SHORT; }          // eslint-disable-line
-  if (typedArray instanceof Uint16Array)       { return UNSIGNED_SHORT; } // eslint-disable-line
-  if (typedArray instanceof Int32Array)        { return INT; }            // eslint-disable-line
-  if (typedArray instanceof Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
-  if (typedArray instanceof Float32Array)      { return FLOAT; }          // eslint-disable-line
+  if (typedArray instanceof Int8Array) {
+    return BYTE;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Uint8Array) {
+    return UNSIGNED_BYTE;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Uint8ClampedArray) {
+    return UNSIGNED_BYTE;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Int16Array) {
+    return SHORT;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Uint16Array) {
+    return UNSIGNED_SHORT;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Int32Array) {
+    return INT;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Uint32Array) {
+    return UNSIGNED_INT;
+  } // eslint-disable-line
+
+
+  if (typedArray instanceof Float32Array) {
+    return FLOAT;
+  } // eslint-disable-line
+
+
   throw "unsupported typed array type";
 }
-
 /**
  * Get the GL type for a typedArray type
  * @param {ArrayBufferView} typedArrayType a typedArray constructor
@@ -9353,43 +9627,75 @@ function getGLTypeForTypedArray(typedArray) {
  *   be returned. Pass in `Uint32Array` and `gl.UNSIGNED_INT` will be returned
  * @memberOf module:twgl/typedArray
  */
+
+
 function getGLTypeForTypedArrayType(typedArrayType) {
-  if (typedArrayType === Int8Array)         { return BYTE; }           // eslint-disable-line
-  if (typedArrayType === Uint8Array)        { return UNSIGNED_BYTE; }  // eslint-disable-line
-  if (typedArrayType === Uint8ClampedArray) { return UNSIGNED_BYTE; }  // eslint-disable-line
-  if (typedArrayType === Int16Array)        { return SHORT; }          // eslint-disable-line
-  if (typedArrayType === Uint16Array)       { return UNSIGNED_SHORT; } // eslint-disable-line
-  if (typedArrayType === Int32Array)        { return INT; }            // eslint-disable-line
-  if (typedArrayType === Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
-  if (typedArrayType === Float32Array)      { return FLOAT; }          // eslint-disable-line
+  if (typedArrayType === Int8Array) {
+    return BYTE;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Uint8Array) {
+    return UNSIGNED_BYTE;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Uint8ClampedArray) {
+    return UNSIGNED_BYTE;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Int16Array) {
+    return SHORT;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Uint16Array) {
+    return UNSIGNED_SHORT;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Int32Array) {
+    return INT;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Uint32Array) {
+    return UNSIGNED_INT;
+  } // eslint-disable-line
+
+
+  if (typedArrayType === Float32Array) {
+    return FLOAT;
+  } // eslint-disable-line
+
+
   throw "unsupported typed array type";
 }
-
 /**
  * Get the typed array constructor for a given GL type
  * @param {number} type the GL type. (eg: `gl.UNSIGNED_INT`)
  * @return {function} the constructor for a the corresponding typed array. (eg. `Uint32Array`).
  * @memberOf module:twgl/typedArray
  */
+
+
 function getTypedArrayTypeForGLType(type) {
-  const CTOR = glTypeToTypedArray[type];
+  var CTOR = glTypeToTypedArray[type];
+
   if (!CTOR) {
     throw "unknown gl type";
   }
+
   return CTOR;
 }
 
-const isArrayBuffer = typeof SharedArrayBuffer !== 'undefined'
-  ? function isArrayBufferOrSharedArrayBuffer(a) {
-    return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof SharedArrayBuffer);
-  }
-  : function isArrayBuffer(a) {
-    return a && a.buffer && a.buffer instanceof ArrayBuffer;
-  };
-
-
-
-
+var isArrayBuffer = typeof SharedArrayBuffer !== 'undefined' ? function isArrayBufferOrSharedArrayBuffer(a) {
+  return a && a.buffer && (a.buffer instanceof ArrayBuffer || a.buffer instanceof SharedArrayBuffer);
+} : function isArrayBuffer(a) {
+  return a && a.buffer && a.buffer instanceof ArrayBuffer;
+};
+exports.isArrayBuffer = isArrayBuffer;
 
 /***/ }),
 
@@ -9397,14 +9703,17 @@ const isArrayBuffer = typeof SharedArrayBuffer !== 'undefined'
 /*!**********************!*\
   !*** ./src/utils.js ***!
   \**********************/
-/*! exports provided: glEnumToString, isWebGL1, isWebGL2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "glEnumToString", function() { return glEnumToString; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isWebGL1", function() { return isWebGL1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isWebGL2", function() { return isWebGL2; });
+
+
+exports.__esModule = true;
+exports.isWebGL1 = isWebGL1;
+exports.isWebGL2 = isWebGL2;
+exports.glEnumToString = void 0;
+
 /*
  * Copyright 2017, Gregg Tavares.
  * All rights reserved.
@@ -9459,13 +9768,14 @@ function isWebGL2(gl) {
   // return gl instanceof WebGL2RenderingContext;
   return !!gl.texStorage2D;
 }
-
 /**
  * Check if context is WebGL 1.0
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @return {bool} true if it's WebGL 1.0
  * @memberOf module:twgl
  */
+
+
 function isWebGL1(gl) {
   // This is the correct check but it's slow
   // const version = getVersionAsNumber(gl);
@@ -9474,7 +9784,6 @@ function isWebGL1(gl) {
   // return gl instanceof WebGLRenderingContext;
   return !gl.texStorage2D;
 }
-
 /**
  * Gets a string for WebGL enum
  *
@@ -9523,33 +9832,34 @@ function isWebGL1(gl) {
  * @memberOf module:twgl
  * @function glEnumToString
  */
-const glEnumToString = (function() {
-  const haveEnumsForType = {};
-  const enums = {};
+
+
+var glEnumToString = function () {
+  var haveEnumsForType = {};
+  var enums = {};
 
   function addEnums(gl) {
-    const type = gl.constructor.name;
+    var type = gl.constructor.name;
+
     if (!haveEnumsForType[type]) {
-      for (const key in gl) {
+      for (var key in gl) {
         if (typeof gl[key] === 'number') {
-          const existing = enums[gl[key]];
-          enums[gl[key]] = existing ? `${existing} | ${key}` : key;
+          var existing = enums[gl[key]];
+          enums[gl[key]] = existing ? "".concat(existing, " | ").concat(key) : key;
         }
       }
+
       haveEnumsForType[type] = true;
     }
   }
 
   return function glEnumToString(gl, value) {
     addEnums(gl);
-    return enums[value] || ("0x" + value.toString(16));
+    return enums[value] || "0x" + value.toString(16);
   };
-}());
+}();
 
-
-
-
-
+exports.glEnumToString = glEnumToString;
 
 /***/ }),
 
@@ -9557,29 +9867,32 @@ const glEnumToString = (function() {
 /*!*******************!*\
   !*** ./src/v3.js ***!
   \*******************/
-/*! exports provided: add, copy, create, cross, distance, distanceSq, divide, divScalar, dot, lerp, length, lengthSq, mulScalar, multiply, negate, normalize, setDefaultType, subtract */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "copy", function() { return copy; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cross", function() { return cross; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "distance", function() { return distance; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "distanceSq", function() { return distanceSq; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "divide", function() { return divide; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "divScalar", function() { return divScalar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dot", function() { return dot; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lerp", function() { return lerp; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "length", function() { return length; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lengthSq", function() { return lengthSq; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mulScalar", function() { return mulScalar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "multiply", function() { return multiply; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "negate", function() { return negate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "normalize", function() { return normalize; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDefaultType", function() { return setDefaultType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "subtract", function() { return subtract; });
+
+
+exports.__esModule = true;
+exports.add = add;
+exports.copy = copy;
+exports.create = create;
+exports.cross = cross;
+exports.distance = distance;
+exports.distanceSq = distanceSq;
+exports.divide = divide;
+exports.divScalar = divScalar;
+exports.dot = dot;
+exports.lerp = lerp;
+exports.length = length;
+exports.lengthSq = lengthSq;
+exports.mulScalar = mulScalar;
+exports.multiply = multiply;
+exports.negate = negate;
+exports.normalize = normalize;
+exports.setDefaultType = setDefaultType;
+exports.subtract = subtract;
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -9634,9 +9947,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @module twgl/v3
  */
-
-let VecType = Float32Array;
-
+var VecType = Float32Array;
 /**
  * A JavaScript array with 3 values or a Float32Array with 3 values.
  * When created by the library will create the default type which is `Float32Array`
@@ -9651,31 +9962,36 @@ let VecType = Float32Array;
  * @return {constructor} previous constructor for Vec3
  * @memberOf module:twgl/v3
  */
+
 function setDefaultType(ctor) {
-  const oldType = VecType;
+  var oldType = VecType;
   VecType = ctor;
   return oldType;
 }
-
 /**
  * Creates a vec3; may be called with x, y, z to set initial values.
  * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
+
+
 function create(x, y, z) {
-  const dst = new VecType(3);
+  var dst = new VecType(3);
+
   if (x) {
     dst[0] = x;
   }
+
   if (y) {
     dst[1] = y;
   }
+
   if (z) {
     dst[2] = z;
   }
+
   return dst;
 }
-
 /**
  * Adds two vectors; assumes a and b have the same dimension.
  * @param {module:twgl/v3.Vec3} a Operand vector.
@@ -9684,16 +10000,15 @@ function create(x, y, z) {
  * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
+
+
 function add(a, b, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = a[0] + b[0];
   dst[1] = a[1] + b[1];
   dst[2] = a[2] + b[2];
-
   return dst;
 }
-
 /**
  * Subtracts two vectors.
  * @param {module:twgl/v3.Vec3} a Operand vector.
@@ -9702,16 +10017,15 @@ function add(a, b, dst) {
  * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
+
+
 function subtract(a, b, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = a[0] - b[0];
   dst[1] = a[1] - b[1];
   dst[2] = a[2] - b[2];
-
   return dst;
 }
-
 /**
  * Performs linear interpolation on two vectors.
  * Given vectors a and b and interpolation coefficient t, returns
@@ -9723,16 +10037,15 @@ function subtract(a, b, dst) {
  * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
+
+
 function lerp(a, b, t, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = (1 - t) * a[0] + t * b[0];
   dst[1] = (1 - t) * a[1] + t * b[1];
   dst[2] = (1 - t) * a[2] + t * b[2];
-
   return dst;
 }
-
 /**
  * Mutiplies a vector by a scalar.
  * @param {module:twgl/v3.Vec3} v The vector.
@@ -9741,16 +10054,15 @@ function lerp(a, b, t, dst) {
  * @return {module:twgl/v3.Vec3} dst.
  * @memberOf module:twgl/v3
  */
+
+
 function mulScalar(v, k, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = v[0] * k;
   dst[1] = v[1] * k;
   dst[2] = v[2] * k;
-
   return dst;
 }
-
 /**
  * Divides a vector by a scalar.
  * @param {module:twgl/v3.Vec3} v The vector.
@@ -9759,16 +10071,15 @@ function mulScalar(v, k, dst) {
  * @return {module:twgl/v3.Vec3} dst.
  * @memberOf module:twgl/v3
  */
+
+
 function divScalar(v, k, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = v[0] / k;
   dst[1] = v[1] / k;
   dst[2] = v[2] / k;
-
   return dst;
 }
-
 /**
  * Computes the cross product of two vectors; assumes both vectors have
  * three entries.
@@ -9778,18 +10089,17 @@ function divScalar(v, k, dst) {
  * @return {module:twgl/v3.Vec3} The vector a cross b.
  * @memberOf module:twgl/v3
  */
+
+
 function cross(a, b, dst) {
   dst = dst || new VecType(3);
-
-  const t1 = a[2] * b[0] - a[0] * b[2];
-  const t2 = a[0] * b[1] - a[1] * b[0];
+  var t1 = a[2] * b[0] - a[0] * b[2];
+  var t2 = a[0] * b[1] - a[1] * b[0];
   dst[0] = a[1] * b[2] - a[2] * b[1];
   dst[1] = t1;
   dst[2] = t2;
-
   return dst;
 }
-
 /**
  * Computes the dot product of two vectors; assumes both vectors have
  * three entries.
@@ -9798,30 +10108,33 @@ function cross(a, b, dst) {
  * @return {number} dot product
  * @memberOf module:twgl/v3
  */
-function dot(a, b) {
-  return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
-}
 
+
+function dot(a, b) {
+  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+}
 /**
  * Computes the length of vector
  * @param {module:twgl/v3.Vec3} v vector.
  * @return {number} length of vector.
  * @memberOf module:twgl/v3
  */
+
+
 function length(v) {
   return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
-
 /**
  * Computes the square of the length of vector
  * @param {module:twgl/v3.Vec3} v vector.
  * @return {number} square of the length of vector.
  * @memberOf module:twgl/v3
  */
+
+
 function lengthSq(v) {
   return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
 }
-
 /**
  * Computes the distance between 2 points
  * @param {module:twgl/v3.Vec3} a vector.
@@ -9829,13 +10142,14 @@ function lengthSq(v) {
  * @return {number} distance between a and b
  * @memberOf module:twgl/v3
  */
+
+
 function distance(a, b) {
-  const dx = a[0] - b[0];
-  const dy = a[1] - b[1];
-  const dz = a[2] - b[2];
+  var dx = a[0] - b[0];
+  var dy = a[1] - b[1];
+  var dz = a[2] - b[2];
   return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }
-
 /**
  * Computes the square of the distance between 2 points
  * @param {module:twgl/v3.Vec3} a vector.
@@ -9843,13 +10157,14 @@ function distance(a, b) {
  * @return {number} square of the distance between a and b
  * @memberOf module:twgl/v3
  */
+
+
 function distanceSq(a, b) {
-  const dx = a[0] - b[0];
-  const dy = a[1] - b[1];
-  const dz = a[2] - b[2];
+  var dx = a[0] - b[0];
+  var dy = a[1] - b[1];
+  var dz = a[2] - b[2];
   return dx * dx + dy * dy + dz * dz;
 }
-
 /**
  * Divides a vector by its Euclidean length and returns the quotient.
  * @param {module:twgl/v3.Vec3} a The vector.
@@ -9857,11 +10172,13 @@ function distanceSq(a, b) {
  * @return {module:twgl/v3.Vec3} The normalized vector.
  * @memberOf module:twgl/v3
  */
+
+
 function normalize(a, dst) {
   dst = dst || new VecType(3);
+  var lenSq = a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
+  var len = Math.sqrt(lenSq);
 
-  const lenSq = a[0] * a[0] + a[1] * a[1] + a[2] * a[2];
-  const len = Math.sqrt(lenSq);
   if (len > 0.00001) {
     dst[0] = a[0] / len;
     dst[1] = a[1] / len;
@@ -9874,7 +10191,6 @@ function normalize(a, dst) {
 
   return dst;
 }
-
 /**
  * Negates a vector.
  * @param {module:twgl/v3.Vec3} v The vector.
@@ -9882,16 +10198,15 @@ function normalize(a, dst) {
  * @return {module:twgl/v3.Vec3} -v.
  * @memberOf module:twgl/v3
  */
+
+
 function negate(v, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = -v[0];
   dst[1] = -v[1];
   dst[2] = -v[2];
-
   return dst;
 }
-
 /**
  * Copies a vector.
  * @param {module:twgl/v3.Vec3} v The vector.
@@ -9899,16 +10214,15 @@ function negate(v, dst) {
  * @return {module:twgl/v3.Vec3} A copy of v.
  * @memberOf module:twgl/v3
  */
+
+
 function copy(v, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = v[0];
   dst[1] = v[1];
   dst[2] = v[2];
-
   return dst;
 }
-
 /**
  * Multiplies a vector by another vector (component-wise); assumes a and
  * b have the same length.
@@ -9919,16 +10233,15 @@ function copy(v, dst) {
  *     b.
  * @memberOf module:twgl/v3
  */
+
+
 function multiply(a, b, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = a[0] * b[0];
   dst[1] = a[1] * b[1];
   dst[2] = a[2] * b[2];
-
   return dst;
 }
-
 /**
  * Divides a vector by another vector (component-wise); assumes a and
  * b have the same length.
@@ -9939,19 +10252,15 @@ function multiply(a, b, dst) {
  *     b.
  * @memberOf module:twgl/v3
  */
+
+
 function divide(a, b, dst) {
   dst = dst || new VecType(3);
-
   dst[0] = a[0] / b[0];
   dst[1] = a[1] / b[1];
   dst[2] = a[2] / b[2];
-
   return dst;
 }
-
-
-
-
 
 /***/ }),
 
@@ -9959,15 +10268,21 @@ function divide(a, b, dst) {
 /*!******************************!*\
   !*** ./src/vertex-arrays.js ***!
   \******************************/
-/*! exports provided: createVertexArrayInfo, createVAOAndSetAttributes, createVAOFromBufferInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createVertexArrayInfo", function() { return createVertexArrayInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createVAOAndSetAttributes", function() { return createVAOAndSetAttributes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createVAOFromBufferInfo", function() { return createVAOFromBufferInfo; });
-/* harmony import */ var _programs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./programs.js */ "./src/programs.js");
+
+
+exports.__esModule = true;
+exports.createVertexArrayInfo = createVertexArrayInfo;
+exports.createVAOAndSetAttributes = createVAOAndSetAttributes;
+exports.createVAOFromBufferInfo = createVAOFromBufferInfo;
+
+var programs = _interopRequireWildcard(__webpack_require__(/*! ./programs.js */ "./src/programs.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 /*
  * Copyright 2015, Gregg Tavares.
  * All rights reserved.
@@ -9998,8 +10313,6 @@ __webpack_require__.r(__webpack_exports__);
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-
 
 /**
  * vertex array object related functions
@@ -10061,22 +10374,23 @@ __webpack_require__.r(__webpack_exports__);
  * @memberOf module:twgl/vertexArrays
  */
 function createVertexArrayInfo(gl, programInfos, bufferInfo) {
-  const vao = gl.createVertexArray();
+  var vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
+
   if (!programInfos.length) {
     programInfos = [programInfos];
   }
-  programInfos.forEach(function(programInfo) {
-    _programs_js__WEBPACK_IMPORTED_MODULE_0__["setBuffersAndAttributes"](gl, programInfo, bufferInfo);
+
+  programInfos.forEach(function (programInfo) {
+    programs.setBuffersAndAttributes(gl, programInfo, bufferInfo);
   });
   gl.bindVertexArray(null);
   return {
     numElements: bufferInfo.numElements,
     elementType: bufferInfo.elementType,
-    vertexArrayObject: vao,
+    vertexArrayObject: vao
   };
 }
-
 /**
  * Creates a vertex array object and then sets the attributes on it
  *
@@ -10086,19 +10400,22 @@ function createVertexArrayInfo(gl, programInfos, bufferInfo) {
  * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
  * @memberOf module:twgl/vertexArrays
  */
+
+
 function createVAOAndSetAttributes(gl, setters, attribs, indices) {
-  const vao = gl.createVertexArray();
+  var vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
-  _programs_js__WEBPACK_IMPORTED_MODULE_0__["setAttributes"](setters, attribs);
+  programs.setAttributes(setters, attribs);
+
   if (indices) {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indices);
-  }
-  // We unbind this because otherwise any change to ELEMENT_ARRAY_BUFFER
+  } // We unbind this because otherwise any change to ELEMENT_ARRAY_BUFFER
   // like when creating buffers for other stuff will mess up this VAO's binding
+
+
   gl.bindVertexArray(null);
   return vao;
 }
-
 /**
  * Creates a vertex array object and then sets the attributes
  * on it
@@ -10110,13 +10427,11 @@ function createVAOAndSetAttributes(gl, setters, attribs, indices) {
  * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
  * @memberOf module:twgl/vertexArrays
  */
+
+
 function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
   return createVAOAndSetAttributes(gl, programInfo.attribSetters || programInfo, bufferInfo.attribs, bufferInfo.indices);
 }
-
-
-
-
 
 /***/ })
 

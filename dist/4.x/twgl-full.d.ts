@@ -7,7 +7,7 @@ export type Defaults = {
 };
 export function setDefaults(newDefaults: Defaults): void;
 export function addExtensionsToContext(gl: WebGLRenderingContext): void;
-export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): void;
+export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function createContext(canvas: HTMLCanvasElement): WebGLRenderingContext;
 export function getContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
