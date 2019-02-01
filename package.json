@@ -1,6 +1,6 @@
 {
   "name": "twgl.js",
-  "version": "4.8.1",
+  "version": "4.8.2",
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl-full.js",
   "types": "dist/4.x/twgl-full.d.ts",
@@ -9,6 +9,7 @@
     "testjs": "node node_modules/mocha/bin/mocha --recursive 'test/src/js/*-harness.js'",
     "testts": "tsc --project test/src/ts/",
     "pre-push": "grunt eslint",
+    "lint": "grunt eslint",
     "build": "grunt build",
     "buildts": "grunt buildts",
     "bumpminor": "grunt bumpminor",
