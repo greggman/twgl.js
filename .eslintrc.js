@@ -1,22 +1,23 @@
-{
+module.exports = {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
   },
   "globals": {
     "chroma": true,
     "importScripts": true,
     "SharedArrayBuffer": true,
-    "twgl": true
+    "twgl": true,
   },
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 2019,
   },
   "plugins": [
     "eslint-plugin-html",
     "eslint-plugin-optional-comma-spacing",
     "eslint-plugin-one-variable-per-var",
-    "eslint-plugin-require-trailing-comma"
+    "eslint-plugin-require-trailing-comma",
   ],
   "extends": "eslint:recommended",
   "rules": {
@@ -91,7 +92,6 @@
     "require-trailing-comma/require-trailing-comma": [2],
     "semi": [2, "always"],
     "space-before-function-paren": [2, "never"],
-    "keyword-spacing": [1, {"before": true, "after": true, "overrides": {}} ]
-  }
-
-}
+    "keyword-spacing": [1, {"before": true, "after": true, "overrides": {}} ],
+  },
+};
