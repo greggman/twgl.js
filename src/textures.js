@@ -1018,11 +1018,24 @@ function setTextureFromElement(gl, tex, element, options) {
 function noop() {
 }
 
-const localOrigin = (new URL(location.href)).origin;
-function urlIsSameOrigin(url) {
-  const urlOrigin = (new URL(url, location.href));
-  return urlOrigin === localOrigin;
-}
+const urlIsSameOrigin = function() {
+  if (typeof document !== 'undefined') {
+    // for IE really
+    const a = document.createElement('a');
+    return function(url) {
+      a.href = url;
+      return a.hostname === location.hostname &&
+             a.port     === location.port &&
+             a.protocol === location.protocol;
+    };
+  } else {
+    const localOrigin = (new URL(location.href)).origin;
+    return function(url) {
+      const urlOrigin = (new URL(url, location.href)).origin;
+      return urlOrigin === localOrigin;
+    };
+  }
+}();
 
 function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
   return crossOrigin === undefined && !urlIsSameOrigin(url)
