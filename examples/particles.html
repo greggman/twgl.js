@@ -86,7 +86,7 @@
       gl_FragColor = vec4(vec3(0.), 1.);
     }`;
 
-  let mousepos = [0.5, 0.5];
+  const mousepos = [0.5, 0.5];
   const canvas = document.getElementById('canvasgl');
   const gl = twgl.getContext(canvas, { depth: false });
 
@@ -96,13 +96,14 @@
 
   twgl.resizeCanvasToDisplaySize(gl.canvas);
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  const n = 128, m = 128;
+  const n = 128;
+  const m = 128;
   let fb1 = twgl.createFramebufferInfo(gl, undefined, n, m);
   let fb2 = twgl.createFramebufferInfo(gl, undefined, n, m);
   const positionObject = { position: { data: [1, 1, 1, -1, -1, -1, -1, 1], numComponents: 2 } };
   const positionBuffer = twgl.createBufferInfoFromArrays(gl, positionObject);
 
-  let pointData = [];
+  const pointData = [];
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < m; j++) {
       pointData.push(i / (n - 1));
@@ -118,7 +119,10 @@
   twgl.bindFramebufferInfo(gl, fb1);
   twgl.drawBufferInfo(gl, positionBuffer, gl.TRIANGLE_FAN);
 
-  let temp, dt, prevTime;
+  let dt;
+  let prevTime;
+  let temp;
+  
   function draw(time) {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -140,7 +144,9 @@
     twgl.drawBufferInfo(gl, pointsBuffer, gl.POINTS);
 
     // ping-pong buffers
-    temp = fb1; fb1 = fb2; fb2 = temp;
+    temp = fb1;
+    fb1 = fb2;
+    fb2 = temp;
   }
 
   (function animate(now) {
