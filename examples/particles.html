@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>GPGPU Particles.</title>
+</head>
+<body style="margin:0; overflow: hidden; font-family: monospace;">
+
+<canvas id="canvasgl" style="height: 100vh; width: 100vw;"></canvas>
+<div id="b" style="position: absolute; top: 10px; width: 100%; text-align: center; z-index: 2;"><a href="http://twgljs.org">twgl.js</a> - GPGPU Particles.</div>
+
+<script src="https://cdn.jsdelivr.net/npm/twgl-base.js@4.8.2/dist/4.x/twgl.min.js"></script>
+<script>
+  'use strict';
+
+  // particle initialization
+  const vInit = `
+    precision mediump float;
+    attribute vec2 position;
+    varying vec2 v_position;
+    
+    void main() {
+      v_position = 0.5 * position + 0.5;
+      gl_Position = vec4(position, 0.0, 1.0);
+    }`;
+  const fInit = `
+    precision mediump float;
+    varying vec2 v_position;
+
+    // random 
+    vec2 n2rand() {
+      return vec2(fract(sin(dot((v_position + 0.07).xy, vec2(12.9898, 78.233))) * 43758.5453), 
+        fract(sin(dot((v_position + 0.11).xy, vec2(12.9898, 78.233))) * 43758.5453));
+    }
+    void main() {
+      gl_FragColor = vec4(n2rand(), 0., 0.);
+    }`;
+
+  // particle physics in a cycle
+  const vPhysics = `
+    precision mediump float;
+
+    attribute vec2 position;
+    varying vec2 v_texcoord;
+    
+    void main() {
+      v_texcoord = 0.5 * position + 0.5;
+      gl_Position = vec4(position, 0.0, 1.0);
+    }`;
+  const fPhysics = `
+    precision mediump float;
+
+    varying vec2 v_texcoord;
+    uniform sampler2D u_texture;
+    uniform vec2 gravity_center;
+    uniform float dt;
+
+    void main() {
+      vec4 particle = texture2D(u_texture, v_texcoord);
+      vec2 r, x = particle.xy, v = particle.zw;
+
+      // physics emulation
+      r = (x - gravity_center) * 2.0;
+      x += (v - 0.5) * dt;
+      v += -normalize(r) * dt * clamp(1. / dot(r, r), 0., 2.);
+
+      gl_FragColor = vec4(x, v);
+    }`;
+
+  // drawing particles
+  const vDraw = `
+    precision mediump float;
+
+    attribute vec2 v_texcoord;
+    uniform sampler2D u_texture;
+
+    void main () {
+      vec4 particle = texture2D(u_texture, v_texcoord);
+      gl_Position = vec4(particle.xy * 2.0 - 1.0, 0.0, 1.0);
+      gl_PointSize = 2.0;
+    }`;
+  const fDraw = `
+    void main () {
+      gl_FragColor = vec4(vec3(0.), 1.);
+    }`;
+
+  let mousepos = [0.5, 0.5];
+  const canvas = document.getElementById('canvasgl');
+  const gl = twgl.getContext(canvas, { depth: false });
+
+  const programInit = twgl.createProgramInfo(gl, [vInit, fInit]);
+  const programPhysics = twgl.createProgramInfo(gl, [vPhysics, fPhysics]);
+  const programDraw = twgl.createProgramInfo(gl, [vDraw, fDraw]);
+
+  twgl.resizeCanvasToDisplaySize(gl.canvas);
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  const n = 128, m = 128;
+  let fb1 = twgl.createFramebufferInfo(gl, undefined, n, m);
+  let fb2 = twgl.createFramebufferInfo(gl, undefined, n, m);
+  const positionObject = { position: { data: [1, 1, 1, -1, -1, -1, -1, 1], numComponents: 2 } };
+  const positionBuffer = twgl.createBufferInfoFromArrays(gl, positionObject);
+
+  let pointData = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      pointData.push(i / (n - 1));
+      pointData.push(j / (m - 1));
+    }
+  }
+  const pointsObject = { v_texcoord: { data: pointData, numComponents: 2 } };
+  const pointsBuffer = twgl.createBufferInfoFromArrays(gl, pointsObject);
+
+  // particle initialization
+  gl.useProgram(programInit.program);
+  twgl.setBuffersAndAttributes(gl, programInit, positionBuffer);
+  twgl.bindFramebufferInfo(gl, fb1);
+  twgl.drawBufferInfo(gl, positionBuffer, gl.TRIANGLE_FAN);
+
+  let temp, dt, prevTime;
+  function draw(time) {
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    dt = (prevTime) ? time - prevTime : 0;
+    prevTime = time;
+
+    // particle physics
+    gl.useProgram(programPhysics.program);
+    twgl.setBuffersAndAttributes(gl, programPhysics, positionBuffer);
+    twgl.setUniforms(programPhysics, { u_texture: fb1.attachments[0], dt: dt, gravity_center: mousepos });
+    twgl.bindFramebufferInfo(gl, fb2);
+    twgl.drawBufferInfo(gl, positionBuffer, gl.TRIANGLE_FAN);
+
+    // drawing particles
+    gl.useProgram(programDraw.program);
+    twgl.setBuffersAndAttributes(gl, programDraw, pointsBuffer);
+    twgl.setUniforms(programDraw, { u_texture: fb2.attachments[0] });
+    twgl.bindFramebufferInfo(gl, null);
+    twgl.drawBufferInfo(gl, pointsBuffer, gl.POINTS);
+
+    // ping-pong buffers
+    temp = fb1; fb1 = fb2; fb2 = temp;
+  }
+
+  (function animate(now) {
+    draw(now / 1000);
+    requestAnimationFrame(animate);
+  })(0);
+
+  window.addEventListener('mousemove', e => {
+    mousepos[0] = e.offsetX / gl.canvas.width;
+    mousepos[1] = 1 - e.offsetY / gl.canvas.height;
+  });
+</script>
+
+</body>
+</html>
