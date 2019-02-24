@@ -132,7 +132,7 @@
     // particle physics
     gl.useProgram(programPhysics.program);
     twgl.setBuffersAndAttributes(gl, programPhysics, positionBuffer);
-    twgl.setUniforms(programPhysics, { u_texture: fb1.attachments[0], dt: 3*dt, gravity_center: mousepos });
+    twgl.setUniforms(programPhysics, { u_texture: fb1.attachments[0], dt: 3 * dt, gravity_center: mousepos });
     twgl.bindFramebufferInfo(gl, fb2);
     twgl.drawBufferInfo(gl, positionBuffer, gl.TRIANGLE_FAN);
 
@@ -159,10 +159,10 @@
     mousepos[1] = 1 - e.offsetY / gl.canvas.height;
   });
 
-  canvas.addEventListener('mouseleave', e => {
+  canvas.addEventListener('mouseleave', () => {
     mousepos[0] = 0.5;
     mousepos[1] = 0.5;
-  })
+  });
 </script>
 
 </body>
