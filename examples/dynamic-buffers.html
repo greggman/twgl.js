@@ -193,8 +193,11 @@ void main() {
     function startMusic() {
       clickElem.style.display = "none";
       streamSource.play();
-      streamSource.getSource().connect(analyser);
-      analyser.connect(context.destination);
+      context.resume().then(() => {
+        streamSource.play();
+        streamSource.getSource().connect(analyser);
+        analyser.connect(context.destination);
+      });
     }
 
     streamSource.on('error', function(e) {
