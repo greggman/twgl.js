@@ -3914,7 +3914,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
  36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING</code></pre><p>It's also not useful for bits really unless you pass in individual bits.<br>In other words</p>
 <pre class="prettyprint source"><code>const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
 twgl.glEnumToString(gl, bits);  // not going to work</code></pre><p>Note that some enums only exist on extensions. If you<br>want them to show up you need to pass the extension at least<br>once. For example</p>
-<pre class="prettyprint source"><code>const ext = gl.getExtension('WEBGL_compressed_texture_s3tc`);
+<pre class="prettyprint source"><code>const ext = gl.getExtension('WEBGL_compressed_texture_s3tc');
 if (ext) {
    twgl.glEnumToString(ext, 0);  // just prime the function
 
