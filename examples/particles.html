@@ -152,15 +152,26 @@
     requestAnimationFrame(animate);
   })(0);
 
-  canvas.addEventListener('mousemove', e => {
-    mousepos[0] = e.offsetX / gl.canvas.width;
-    mousepos[1] = 1 - e.offsetY / gl.canvas.height;
-  });
+  function setMousePos(e) {
+    mousepos[0] = e.clientX / gl.canvas.clientWidth;
+    mousepos[1] = 1 - e.clientY / gl.canvas.clientHeight;
+  }
+
+  canvas.addEventListener('mousemove', setMousePos);
 
   canvas.addEventListener('mouseleave', () => {
     mousepos[0] = 0.5;
     mousepos[1] = 0.5;
   });
+
+  function handleTouch(e) {
+    e.preventDefault();
+    setMousePos(e.touches[0]);
+  }
+
+  canvas.addEventListener('touchstart', handleTouch, {passive: false});
+  canvas.addEventListener('touchmove', handleTouch, {passive: false});
+
 </script>
 
 </body>
