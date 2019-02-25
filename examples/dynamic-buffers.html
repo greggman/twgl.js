@@ -140,7 +140,6 @@ void main() {
     // so my hope is whenever they get around to actually supporting the 3+ year old
     // standard that things will actually work.
     const shittyBrowser = window.AudioContext === undefined && /iPhone|iPad|iPod/.test(navigator.userAgent);
-    const isMobile = window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone/i);
     const context = new (window.AudioContext || window.webkitAudioContext)();
     const analyser = context.createAnalyser();
 
@@ -204,11 +203,7 @@ void main() {
 
     streamSource.on('newSource', function(/* source */) {
       loadElem.style.display = "none";
-      if (!isMobile) {
-        startMusic();
-      } else {
-        clickElem.addEventListener('click', startMusic);
-      }
+      clickElem.addEventListener('click', startMusic);
     });
 
     streamSource.setSource(
