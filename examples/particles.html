@@ -94,8 +94,6 @@
   const programPhysics = twgl.createProgramInfo(gl, [vPhysics, fPhysics]);
   const programDraw = twgl.createProgramInfo(gl, [vDraw, fDraw]);
 
-  twgl.resizeCanvasToDisplaySize(gl.canvas);
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   const n = 255;
   const m = 255;
   let fb1 = twgl.createFramebufferInfo(gl, undefined, n, m);
