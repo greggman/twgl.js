@@ -1009,24 +1009,25 @@ function setTextureFromElement(gl, tex, element, options) {
 function noop() {
 }
 
-const urlIsSameOrigin = function() {
+/**
+ * Checks whether the url's origin is the same so that we can set the `crossOrigin`
+ * @param {string} url url to image
+ * @returns {boolean} true if the window's origin is the same as image's url
+ */
+function urlIsSameOrigin(url) {
   if (typeof document !== 'undefined') {
     // for IE really
     const a = document.createElement('a');
-    return function(url) {
-      a.href = url;
-      return a.hostname === location.hostname &&
-             a.port     === location.port &&
-             a.protocol === location.protocol;
-    };
+    a.href = url;
+    return a.hostname === location.hostname &&
+            a.port     === location.port &&
+            a.protocol === location.protocol;
   } else {
     const localOrigin = (new URL(location.href)).origin;
-    return function(url) {
-      const urlOrigin = (new URL(url, location.href)).origin;
-      return urlOrigin === localOrigin;
-    };
+    const urlOrigin = (new URL(url, location.href)).origin;
+    return urlOrigin === localOrigin;
   }
-}();
+}
 
 function setToAnonymousIfUndefinedAndURLIsNotSameOrigin(url, crossOrigin) {
   return crossOrigin === undefined && !urlIsSameOrigin(url)
