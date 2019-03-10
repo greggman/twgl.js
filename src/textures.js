@@ -1013,6 +1013,7 @@ function noop() {
  * Checks whether the url's origin is the same so that we can set the `crossOrigin`
  * @param {string} url url to image
  * @returns {boolean} true if the window's origin is the same as image's url
+ * @private
  */
 function urlIsSameOrigin(url) {
   if (typeof document !== 'undefined') {
@@ -1020,8 +1021,8 @@ function urlIsSameOrigin(url) {
     const a = document.createElement('a');
     a.href = url;
     return a.hostname === location.hostname &&
-            a.port     === location.port &&
-            a.protocol === location.protocol;
+           a.port     === location.port &&
+           a.protocol === location.protocol;
   } else {
     const localOrigin = (new URL(location.href)).origin;
     const urlOrigin = (new URL(url, location.href)).origin;
