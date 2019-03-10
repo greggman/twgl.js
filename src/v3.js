@@ -124,7 +124,7 @@ function subtract(a, b, dst) {
 /**
  * Performs linear interpolation on two vectors.
  * Given vectors a and b and interpolation coefficient t, returns
- * (1 - t) * a + t * b.
+ * a + t * (b - a).
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {number} t Interpolation coefficient.
@@ -135,9 +135,70 @@ function subtract(a, b, dst) {
 function lerp(a, b, t, dst) {
   dst = dst || new VecType(3);
 
-  dst[0] = (1 - t) * a[0] + t * b[0];
-  dst[1] = (1 - t) * a[1] + t * b[1];
-  dst[2] = (1 - t) * a[2] + t * b[2];
+  dst[0] = a[0] + t * (b[0] - a[0]);
+  dst[1] = a[1] + t * (b[1] - a[1]);
+  dst[2] = a[2] + t * (b[2] - a[2]);
+
+  return dst;
+}
+
+/**
+ * Performs linear interpolation on two vectors.
+ * Given vectors a and b and interpolation coefficient vector t, returns
+ * a + t * (b - a).
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} t Interpolation coefficients vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} the created vector
+ * @memberOf module:twgl/v3
+ */
+function lerpV(a, b, t, dst) {
+  dst = dst || new VecType(3);
+
+  dst[0] = a[0] + t[0] * (b[0] - a[0]);
+  dst[1] = a[1] + t[1] * (b[1] - a[1]);
+  dst[2] = a[2] + t[2] * (b[2] - a[2]);
+
+  return dst;
+}
+
+/**
+ * Return max values of two vectors.
+ * Given vectors a and b returns
+ * [max(a[0], b[0]), max(a[1], b[1]), max(a[2], b[2])].
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} the created vector
+ * @memberOf module:twgl/v3
+ */
+function max(a, b, dst) {
+  dst = dst || new VecType(3);
+
+  dst[0] = Math.max(a[0], b[0]);
+  dst[1] = Math.max(a[1], b[1]);
+  dst[2] = Math.max(a[2], b[2]);
+
+  return dst;
+}
+
+/**
+ * Return min values of two vectors.
+ * Given vectors a and b returns
+ * [min(a[0], b[0]), min(a[1], b[1]), min(a[2], b[2])].
+ * @param {module:twgl/v3.Vec3} a Operand vector.
+ * @param {module:twgl/v3.Vec3} b Operand vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @return {module:twgl/v3.Vec3} the created vector
+ * @memberOf module:twgl/v3
+ */
+function min(a, b, dst) {
+  dst = dst || new VecType(3);
+
+  dst[0] = Math.min(a[0], b[0]);
+  dst[1] = Math.min(a[1], b[1]);
+  dst[2] = Math.min(a[2], b[2]);
 
   return dst;
 }
@@ -369,8 +430,11 @@ export {
   divScalar,
   dot,
   lerp,
+  lerpV,
   length,
   lengthSq,
+  max,
+  min,
   mulScalar,
   multiply,
   negate,
