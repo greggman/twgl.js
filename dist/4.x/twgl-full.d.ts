@@ -329,6 +329,9 @@ declare module v3 {
     export function add(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
     export function subtract(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
     export function lerp(a: v3.Vec3, b: v3.Vec3, t: number, dst?: v3.Vec3): v3.Vec3;
+    export function lerpV(a: v3.Vec3, b: v3.Vec3, t: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function max(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function min(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
     export function mulScalar(v: v3.Vec3, k: number, dst?: v3.Vec3): v3.Vec3;
     export function divScalar(v: v3.Vec3, k: number, dst?: v3.Vec3): v3.Vec3;
     export function cross(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
