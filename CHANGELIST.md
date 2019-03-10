@@ -1,5 +1,11 @@
 #Changelist
 
+*   4.9.0
+
+    *   added v3.lerpV, v3.min, v3.max
+
+    *   fixed issue with urlISSameDomain on servers
+
 *   4.8.2
 
     *   Fixed IE URL issue
