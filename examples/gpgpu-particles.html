@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta property="og:image:height" content="419">
+  <meta property="og:image:width" content="800">
+  <meta property="og:title" content="TWGL.js - GPGPU Particles">
+  <meta property="og:description" content="This example shows how to use GPGPU  in WebGL with the twgl.js library.">
+  <meta property="og:url" content="http://twgljs.org/examples/gpgpu-particles.html">
+  <meta property="og:image" content="http://twgljs.org/examples/screenshots/gpgpu-particles.png">
+
+  <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
   <title>GPGPU Particles.</title>
 </head>
 <body style="margin:0; font-family: monospace;">
@@ -159,7 +169,7 @@
       gravity_center: mousepos,
       off_gravity: offGravity,
       restore_colors: restoreColors,
-      dt: 2.5 * dt
+      dt: 2.5 * dt,
     });
     twgl.bindFramebufferInfo(gl, fb2);
     twgl.drawBufferInfo(gl, positionBuffer, gl.TRIANGLE_FAN);
@@ -195,7 +205,7 @@
   });
   
   canvas.addEventListener('mousedown', e => {
-    if (e.button == 0) {
+    if (e.button === 0) {
       offGravity = 1;
     } else {
       restoreColors = 1;
