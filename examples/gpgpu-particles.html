@@ -49,6 +49,8 @@
     varying vec2 v_texcoord;
     uniform sampler2D u_texture;
     uniform vec2 gravity_center;
+    uniform float off_gravity;
+    uniform float restore_colors;
     uniform float dt;
     
     vec2 n2rand() {
@@ -58,12 +60,22 @@
 
     void main() {
       vec4 particle = texture2D(u_texture, v_texcoord);
-      vec2 r, x = particle.xy, v = particle.zw;
+      vec2 r, d, a, x, v;
+
+      x = particle.xy;
+      v = particle.zw;
+      r = x - gravity_center;
+      d = x - v_texcoord;
 
       // physics emulation
-      r = (x - gravity_center) * 2.0;
-      x += (v - 0.5) * dt;
-      v += -normalize(r) * dt * clamp(3. / dot(r, r), 0., 2.) + (n2rand() - 0.5) * 0.02;
+      a = (1.0 - off_gravity) * ( -normalize(r) * dt * clamp(3. / dot(r, r), 0., 2.) + 0.03 * (n2rand() - 0.5) );
+      x += (1.0 - restore_colors) * (v - 0.5) * dt;
+      x += restore_colors * -d;
+      v += a;
+
+      // mirror edge
+      v -= 2.0 * (v - 0.5) * step(0.0, abs(x - 0.5) - 0.5);
+      x = abs(abs(abs(x) - 1.0) - 1.0);
 
       gl_FragColor = vec4(x, v);
     }`;
@@ -74,15 +86,26 @@
 
     attribute vec2 v_texcoord;
     uniform sampler2D u_texture;
+    varying vec3 color;   
+
+    vec3 hsv2rgb(vec3 c) {
+      vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+      vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+      return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
 
     void main () {
       vec4 particle = texture2D(u_texture, v_texcoord);
+      color = hsv2rgb(vec3(0.5 * v_texcoord + 0.4, 0.9));
       gl_Position = vec4(particle.xy * 2.0 - 1.0, 0.0, 1.0);
       gl_PointSize = 1.0;
     }`;
   const fDraw = `
+    precision mediump float;
+    varying vec3 color;
+
     void main () {
-      gl_FragColor = vec4(vec3(0.), 1.);
+      gl_FragColor = vec4(color, 1.);
     }`;
 
   const mousepos = [0.5, 0.5];
@@ -93,8 +116,8 @@
   const programPhysics = twgl.createProgramInfo(gl, [vPhysics, fPhysics]);
   const programDraw = twgl.createProgramInfo(gl, [vDraw, fDraw]);
 
-  const n = 255;
-  const m = 255;
+  const n = 256;
+  const m = 256;
   let fb1 = twgl.createFramebufferInfo(gl, undefined, n, m);
   let fb2 = twgl.createFramebufferInfo(gl, undefined, n, m);
   const positionObject = { position: { data: [1, 1, 1, -1, -1, -1, -1, 1], numComponents: 2 } };
@@ -119,6 +142,8 @@
   let dt;
   let prevTime;
   let temp;
+  let offGravity = 0;
+  let restoreColors = 0;
 
   function draw(time) {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
@@ -129,7 +154,13 @@
     // particle physics
     gl.useProgram(programPhysics.program);
     twgl.setBuffersAndAttributes(gl, programPhysics, positionBuffer);
-    twgl.setUniforms(programPhysics, { u_texture: fb1.attachments[0], dt: 3 * dt, gravity_center: mousepos });
+    twgl.setUniforms(programPhysics, {
+      u_texture: fb1.attachments[0],
+      gravity_center: mousepos,
+      off_gravity: offGravity,
+      restore_colors: restoreColors,
+      dt: 2.5 * dt
+    });
     twgl.bindFramebufferInfo(gl, fb2);
     twgl.drawBufferInfo(gl, positionBuffer, gl.TRIANGLE_FAN);
 
@@ -162,12 +193,26 @@
     mousepos[0] = 0.5;
     mousepos[1] = 0.5;
   });
+  
+  canvas.addEventListener('mousedown', e => {
+    if (e.button == 0) {
+      offGravity = 1;
+    } else {
+      restoreColors = 1;
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    offGravity = 0;
+    restoreColors = 0;
+  });
 
   function handleTouch(e) {
     e.preventDefault();
     setMousePos(e.touches[0]);
   }
 
+  canvas.addEventListener('contextmenu', e => e.preventDefault());
   canvas.addEventListener('touchstart', handleTouch, {passive: false});
   canvas.addEventListener('touchmove', handleTouch, {passive: false});
 
