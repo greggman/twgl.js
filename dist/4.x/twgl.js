@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.9.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.9.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2752,7 +2752,7 @@ function createUniformSetters(gl, program) {
  */
 
 /**
- * Create TransformFeedbackInfo for passing to bind/unbindTransformFeedbackInfo.
+ * Create TransformFeedbackInfo for passing to bindTransformFeedbackInfo.
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLProgram} program an existing WebGLProgram.
  * @return {Object<string, module:twgl.TransformFeedbackInfo>}
@@ -2809,38 +2809,6 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
   }
 }
 /**
- * Unbinds buffers after transform feedback.
- *
- * Buffers can not be bound to 2 bind points so if you try to bind a buffer used
- * in a transform feedback as an ARRAY_BUFFER for an attribute it will fail.
- *
- * This function unbinds all buffers that were bound with {@link module:twgl.bindTransformFeedbackInfo}.
- *
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
- * @param {(module:twgl.ProgramInfo|Object<string, module:twgl.TransformFeedbackInfo>)} transformFeedbackInfo A ProgramInfo or TransformFeedbackInfo.
- * @param {(module:twgl.BufferInfo|Object<string, module:twgl.AttribInfo>)} [bufferInfo] A BufferInfo or set of AttribInfos.
- * @private
- */
-
-
-function unbindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
-  if (transformFeedbackInfo.transformFeedbackInfo) {
-    transformFeedbackInfo = transformFeedbackInfo.transformFeedbackInfo;
-  }
-
-  if (bufferInfo.attribs) {
-    bufferInfo = bufferInfo.attribs;
-  }
-
-  for (var name in bufferInfo) {
-    var varying = transformFeedbackInfo[name];
-
-    if (varying) {
-      gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, null);
-    }
-  }
-}
-/**
  * Creates a transform feedback and sets the buffers
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
@@ -2855,10 +2823,7 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
   gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
   gl.useProgram(programInfo.program);
   bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
-  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null); // This is only needed because of a bug in Chrome 56. Will remove
-  // when chrome fixes it.
-
-  unbindTransformFeedbackInfo(gl, programInfo, bufferInfo);
+  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
   return tf;
 }
 /**
