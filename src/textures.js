@@ -491,6 +491,9 @@ function setDefaults(newDefaults) {
  * @property {number} [baseLevel] TEXTURE_BASE_LEVEL setting
  * @property {number} [maxLevel] TEXTURE_MAX_LEVEL setting
  * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
+ * @property {number[]} [color] Color to initialize this texture with if loading an image asynchronously.
+ *     The default use a blue 1x1 pixel texture. You can set another default by calling `twgl.setDefaults`
+ *     or you can set an individual texture's initial color by setting this property. Example: `[1, .5, .5, 1]` = pink
  * @property {number} [premultiplyAlpha] Whether or not to premultiply alpha. Defaults to whatever the current setting is.
  *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
  *     the current setting for specific textures.
