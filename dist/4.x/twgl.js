@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.9.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.9.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4464,6 +4464,9 @@ function setDefaults(newDefaults) {
  * @property {number} [baseLevel] TEXTURE_BASE_LEVEL setting
  * @property {number} [maxLevel] TEXTURE_MAX_LEVEL setting
  * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
+ * @property {number[]|ArrayBufferView} [color] Color to initialize this texture with if loading an image asynchronously.
+ *     The default use a blue 1x1 pixel texture. You can set another default by calling `twgl.setDefaults`
+ *     or you can set an individual texture's initial color by setting this property. Example: `[1, .5, .5, 1]` = pink
  * @property {number} [premultiplyAlpha] Whether or not to premultiply alpha. Defaults to whatever the current setting is.
  *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
  *     the current setting for specific textures.
@@ -4473,9 +4476,6 @@ function setDefaults(newDefaults) {
  * @property {number} [colorspaceConversion] Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.
  *     This lets you set it once before calling `twgl.createTexture` or `twgl.createTextures` and only override
  *     the current setting for specific textures.
- * @property {(number[]|ArrayBufferView)} [color] color used as temporary 1x1 pixel color for textures loaded async when src is a string.
- *    If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in `[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0`.
- *    Defaults to `[0.5, 0.75, 1, 1]`. See {@link module:twgl.setDefaultTextureColor}. If `false` texture is set. Can be used to re-load a texture
  * @property {boolean} [auto] If `undefined` or `true`, in WebGL1, texture filtering is set automatically for non-power of 2 images and
  *    mips are generated for power of 2 images. In WebGL2 mips are generated if they can be. Note: if `level` is set above
  *    then then `auto` is assumed to be `false` unless explicity set to `true`.

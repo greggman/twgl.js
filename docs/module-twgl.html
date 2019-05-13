@@ -11219,6 +11219,42 @@ var drawObj = {
 
         <tr>
             
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code>ArrayBufferView</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Color to initialize this texture with if loading an image asynchronously.<br>    The default use a blue 1x1 pixel texture. You can set another default by calling <code>twgl.setDefaults</code><br>    or you can set an individual texture's initial color by setting this property. Example: <code>[1, .5, .5, 1]</code> = pink</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
                 <td class="name"><code>premultiplyAlpha</code></td>
             
 
@@ -11310,42 +11346,6 @@ var drawObj = {
             
 
             <td class="description last"><p>Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.<br>    This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>    the current setting for specific textures.</p></td>
-        </tr>
-
-        
-
-    
-
-        <tr>
-            
-                <td class="name"><code>color</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>Array.&lt;number></code></span>
-|
-
-<span class="param-type"><code>ArrayBufferView</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>color used as temporary 1x1 pixel color for textures loaded async when src is a string.<br>   If it's a JavaScript array assumes color is 0 to 1 like most GL colors as in <code>[1, 0, 0, 1] = red=1, green=0, blue=0, alpha=0</code>.<br>   Defaults to <code>[0.5, 0.75, 1, 1]</code>. See <code>module:twgl.setDefaultTextureColor</code>. If <code>false</code> texture is set. Can be used to re-load a texture</p></td>
         </tr>
 
         

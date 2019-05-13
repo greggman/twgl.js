@@ -163,10 +163,10 @@ export type TextureOptions = {
     baseLevel?: number;
     maxLevel?: number;
     unpackAlignment?: number;
+    color?: number[] | ArrayBufferView;
     premultiplyAlpha?: number;
     flipY?: number;
     colorspaceConversion?: number;
-    color?: number[] | ArrayBufferView;
     auto?: boolean;
     cubeFaceOrder?: number[];
     src?: number[] | ArrayBufferView | TexImageSource | TexImageSource[] | string | string[] | TextureFunc;
