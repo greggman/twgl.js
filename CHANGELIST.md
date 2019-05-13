@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.9.2
+
+    *   Add .map to twgl-base npm package
+
 *   4.9.0
 
     *   added v3.lerpV, v3.min, v3.max
