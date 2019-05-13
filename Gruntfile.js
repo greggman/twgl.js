@@ -360,7 +360,10 @@ module.exports = function(grunt) {
     p.scripts = {};
     p.devDependencies = {};
     p.main = `dist/${verDir}/twgl.js`;
-    p.files = [ `dist/${  verDir}/twgl.js` ];
+    p.files = [
+      `dist/${verDir}/twgl.js`,
+      `dist/${verDir}/twgl.js.map`,
+    ];
     fs.writeFileSync('npm/base/package.json', JSON.stringify(p, null, 2), {encoding: 'utf8'});
   });
 
