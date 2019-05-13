@@ -253,8 +253,13 @@ module.exports = function(grunt) {
     },
     copy: {
       twgl: {
-        src: `dist/${verDir}/twgl.js`,
-        dest: `npm/base/dist/${verDir}/twgl.js`,
+        expand: true,
+        cwd: `dist/${verDir}/`,
+        src: [
+          'twgl.js',
+          'twgl.js.map',
+        ],
+        dest: `npm/base/dist/${verDir}/`,
       },
       readme: {
         src: 'README.md',
