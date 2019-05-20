@@ -70,48 +70,24 @@ const warn =
     ? console.warn.bind(console)
     : function() { };
 
-let repBuffer;
 function isBuffer(gl, t) {
-  if (!repBuffer) {
-    repBuffer = gl.createBuffer();
-  }
-  return t instanceof repBuffer.constructor;
+  return t instanceof WebGLBuffer;
 }
 
-let repRenderbuffer;
 function isRenderbuffer(gl, t) {
-  if (!repRenderbuffer) {
-    repRenderbuffer = gl.createRenderbuffer();
-  }
-  return t instanceof repRenderbuffer.constructor;
+  return t instanceof WebGLRenderbuffer;
 }
 
-let repShader;
 function isShader(gl, t) {
-  if (!repShader) {
-    repShader = gl.createShader(gl.VERTEX_SHADER);
-  }
-  return t instanceof repShader.constructor;
+  return t instanceof WebGLShader;
 }
 
-let repTexture;
 function isTexture(gl, t) {
-  if (!repTexture) {
-    repTexture = gl.createTexture();
-  }
-  return t instanceof repTexture.constructor;
+  return t instanceof WebGLTexture;
 }
 
-let repSampler;
 function isSampler(gl, t) {
-  if (!repSampler) {
-    if (gl.createSampler) {
-      repSampler = gl.createSampler();
-    } else {
-      return false;  // it can't be a sampler if this is not WebGL2
-    }
-  }
-  return t instanceof repSampler.constructor;
+  return t instanceof WebGLSampler;
 }
 
 export {
