@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.9.4
+
+    *   Make helper.js more node friendly
+
 *   4.9.3
 
     *   Use instanceof Type in helper.js
