@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.9.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.9.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1503,23 +1503,23 @@ var warn = typeof console !== 'undefined' && console.warn && typeof console.warn
 exports.warn = warn;
 
 function isBuffer(gl, t) {
-  return t instanceof WebGLBuffer;
+  return typeof WebGLBuffer !== 'undefined' && t instanceof WebGLBuffer;
 }
 
 function isRenderbuffer(gl, t) {
-  return t instanceof WebGLRenderbuffer;
+  return typeof WebGLRenderbuffer !== 'undefined' && t instanceof WebGLRenderbuffer;
 }
 
 function isShader(gl, t) {
-  return t instanceof WebGLShader;
+  return typeof WebGLShader !== 'undefined' && t instanceof WebGLShader;
 }
 
 function isTexture(gl, t) {
-  return t instanceof WebGLTexture;
+  return typeof WebGLTexture !== 'undefined' && t instanceof WebGLTexture;
 }
 
 function isSampler(gl, t) {
-  return t instanceof WebGLSampler;
+  return typeof WebGLSampler !== 'undefined' && t instanceof WebGLSampler;
 }
 
 /***/ }),
