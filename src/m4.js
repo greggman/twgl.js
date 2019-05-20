@@ -1187,7 +1187,7 @@ function scale(m, v, dst) {
  * returns the result as a vector with 3 entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The point.
- * @param {module:twgl/v3.Vec3} dst optional vec3 to store result
+ * @param {module:twgl/v3.Vec3} [dst] optional vec3 to store result
  * @return {module:twgl/v3.Vec3} dst or new vec3 if not provided
  * @memberOf module:twgl/m4
  */
@@ -1214,7 +1214,7 @@ function transformPoint(m, v, dst) {
  * entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The direction.
- * @param {module:twgl/v3.Vec3} dst optional Vec3 to store result
+ * @param {module:twgl/v3.Vec3} [dst] optional Vec3 to store result
  * @return {module:twgl/v3.Vec3} dst or new Vec3 if not provided
  * @memberOf module:twgl/m4
  */
