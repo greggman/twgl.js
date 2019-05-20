@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.9.3
+
+    *   Use instanceof Type in helper.js
+
 *   4.9.2
 
     *   Add .map to twgl-base npm package
