@@ -71,23 +71,23 @@ const warn =
     : function() { };
 
 function isBuffer(gl, t) {
-  return t instanceof WebGLBuffer;
+  return typeof WebGLBuffer !== 'undefined' && t instanceof WebGLBuffer;
 }
 
 function isRenderbuffer(gl, t) {
-  return t instanceof WebGLRenderbuffer;
+  return typeof WebGLRenderbuffer !== 'undefined' && t instanceof WebGLRenderbuffer;
 }
 
 function isShader(gl, t) {
-  return t instanceof WebGLShader;
+  return typeof WebGLShader !== 'undefined' && t instanceof WebGLShader;
 }
 
 function isTexture(gl, t) {
-  return t instanceof WebGLTexture;
+  return typeof WebGLTexture !== 'undefined' && t instanceof WebGLTexture;
 }
 
 function isSampler(gl, t) {
-  return t instanceof WebGLSampler;
+  return typeof WebGLSampler !== 'undefined' && t instanceof WebGLSampler;
 }
 
 export {
