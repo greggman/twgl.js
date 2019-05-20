@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.9.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.9.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1501,58 +1501,25 @@ var error = typeof console !== 'undefined' && console.error && typeof console.er
 exports.error = error;
 var warn = typeof console !== 'undefined' && console.warn && typeof console.warn === "function" ? console.warn.bind(console) : function () {};
 exports.warn = warn;
-var repBuffer;
 
 function isBuffer(gl, t) {
-  if (!repBuffer) {
-    repBuffer = gl.createBuffer();
-  }
-
-  return t instanceof repBuffer.constructor;
+  return t instanceof WebGLBuffer;
 }
-
-var repRenderbuffer;
 
 function isRenderbuffer(gl, t) {
-  if (!repRenderbuffer) {
-    repRenderbuffer = gl.createRenderbuffer();
-  }
-
-  return t instanceof repRenderbuffer.constructor;
+  return t instanceof WebGLRenderbuffer;
 }
-
-var repShader;
 
 function isShader(gl, t) {
-  if (!repShader) {
-    repShader = gl.createShader(gl.VERTEX_SHADER);
-  }
-
-  return t instanceof repShader.constructor;
+  return t instanceof WebGLShader;
 }
-
-var repTexture;
 
 function isTexture(gl, t) {
-  if (!repTexture) {
-    repTexture = gl.createTexture();
-  }
-
-  return t instanceof repTexture.constructor;
+  return t instanceof WebGLTexture;
 }
 
-var repSampler;
-
 function isSampler(gl, t) {
-  if (!repSampler) {
-    if (gl.createSampler) {
-      repSampler = gl.createSampler();
-    } else {
-      return false; // it can't be a sampler if this is not WebGL2
-    }
-  }
-
-  return t instanceof repSampler.constructor;
+  return t instanceof WebGLSampler;
 }
 
 /***/ }),
