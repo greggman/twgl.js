@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.9.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.10.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -283,7 +283,7 @@ function guessNumComponentsFromName(name, length) {
   }
 
   if (length % numComponents > 0) {
-    throw "Can not guess numComponents for attribute '" + name + "'. Tried " + numComponents + " but " + length + " values is not evenly divisible by " + numComponents + ". You should specify it.";
+    throw new Error("Can not guess numComponents for attribute '".concat(name, "'. Tried ").concat(numComponents, " but ").concat(length, " values is not evenly divisible by ").concat(numComponents, ". You should specify it."));
   }
 
   return numComponents;
@@ -639,7 +639,7 @@ function getNumElementsFromNonIndexedArrays(arrays) {
   var numElements = length / numComponents;
 
   if (length % numComponents > 0) {
-    throw "numComponents " + numComponents + " not correct for length " + length;
+    throw new Error("numComponents ".concat(numComponents, " not correct for length ").concat(length));
   }
 
   return numElements;
@@ -678,7 +678,7 @@ function getNumElementsFromAttributes(gl, attribs) {
   var numElements = totalElements / numComponents;
 
   if (numElements % 1 !== 0) {
-    throw "numComponents " + numComponents + " not correct for length " + length;
+    throw new Error("numComponents ".concat(numComponents, " not correct for length ").concat(length));
   }
 
   return numElements;
@@ -1312,7 +1312,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
     } else if (helper.isTexture(gl, attachment)) {
       gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
     } else {
-      throw "unknown attachment type";
+      throw new Error('unknown attachment type');
     }
 
     framebufferInfo.attachments.push(attachment);
@@ -1380,7 +1380,7 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
     } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
-      throw "unknown attachment type";
+      throw new Error('unknown attachment type');
     }
   });
 }
@@ -2699,7 +2699,7 @@ function scale(m, v, dst) {
  * returns the result as a vector with 3 entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The point.
- * @param {module:twgl/v3.Vec3} dst optional vec3 to store result
+ * @param {module:twgl/v3.Vec3} [dst] optional vec3 to store result
  * @return {module:twgl/v3.Vec3} dst or new vec3 if not provided
  * @memberOf module:twgl/m4
  */
@@ -2725,7 +2725,7 @@ function transformPoint(m, v, dst) {
  * entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The direction.
- * @param {module:twgl/v3.Vec3} dst optional Vec3 to store result
+ * @param {module:twgl/v3.Vec3} [dst] optional Vec3 to store result
  * @return {module:twgl/v3.Vec3} dst or new Vec3 if not provided
  * @memberOf module:twgl/m4
  */
@@ -2992,7 +2992,7 @@ function deindexVertices(vertices) {
 
 function flattenNormals(vertices) {
   if (vertices.indices) {
-    throw "can't flatten normals of indexed vertices. deindex them first";
+    throw new Error('can not flatten normals of indexed vertices. deindex them first');
   }
 
   var normals = vertices.normal;
@@ -3360,7 +3360,7 @@ function createPlaneVertices(width, depth, subdivisionsWidth, subdivisionsDepth,
 
 function createSphereVertices(radius, subdivisionsAxis, subdivisionsHeight, opt_startLatitudeInRadians, opt_endLatitudeInRadians, opt_startLongitudeInRadians, opt_endLongitudeInRadians) {
   if (subdivisionsAxis <= 0 || subdivisionsHeight <= 0) {
-    throw Error('subdivisionAxis and subdivisionHeight must be > 0');
+    throw new Error('subdivisionAxis and subdivisionHeight must be > 0');
   }
 
   opt_startLatitudeInRadians = opt_startLatitudeInRadians || 0;
@@ -3571,11 +3571,11 @@ function createCubeVertices(size) {
 
 function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions, opt_topCap, opt_bottomCap) {
   if (radialSubdivisions < 3) {
-    throw Error('radialSubdivisions must be 3 or greater');
+    throw new Error('radialSubdivisions must be 3 or greater');
   }
 
   if (verticalSubdivisions < 1) {
-    throw Error('verticalSubdivisions must be 1 or greater');
+    throw new Error('verticalSubdivisions must be 1 or greater');
   }
 
   var topCap = opt_topCap === undefined ? true : opt_topCap;
@@ -3837,7 +3837,7 @@ function create3DFVertices() {
 
 function createCresentVertices(verticalRadius, outerRadius, innerRadius, thickness, subdivisionsDown, startOffset, endOffset) {
   if (subdivisionsDown <= 0) {
-    throw Error('subdivisionDown must be > 0');
+    throw new Error('subdivisionDown must be > 0');
   }
 
   startOffset = startOffset || 0;
@@ -4005,11 +4005,11 @@ function createCylinderVertices(radius, height, radialSubdivisions, verticalSubd
 
 function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivisions, startAngle, endAngle) {
   if (radialSubdivisions < 3) {
-    throw Error('radialSubdivisions must be 3 or greater');
+    throw new Error('radialSubdivisions must be 3 or greater');
   }
 
   if (bodySubdivisions < 3) {
-    throw Error('verticalSubdivisions must be 3 or greater');
+    throw new Error('verticalSubdivisions must be 3 or greater');
   }
 
   startAngle = startAngle || 0;
@@ -4149,7 +4149,7 @@ function createTorusVertices(radius, thickness, radialSubdivisions, bodySubdivis
 
 function createDiscVertices(radius, divisions, stacks, innerRadius, stackPower) {
   if (divisions < 3) {
-    throw Error('divisions must be at least 3');
+    throw new Error('divisions must be at least 3');
   }
 
   stacks = stacks ? stacks : 1;
@@ -5100,7 +5100,27 @@ function floatAttribSetter(gl, index) {
   return function (b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      gl.vertexAttrib4fv(index, b.value);
+
+      switch (b.value.length) {
+        case 4:
+          gl.vertexAttrib4fv(index, b.value);
+          break;
+
+        case 3:
+          gl.vertexAttrib3fv(index, b.value);
+          break;
+
+        case 2:
+          gl.vertexAttrib2fv(index, b.value);
+          break;
+
+        case 1:
+          gl.vertexAttrib1fv(index, b.value);
+          break;
+
+        default:
+          throw new Error('the length of a float constant value must be between 1 and 4!');
+      }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
@@ -5117,7 +5137,12 @@ function intAttribSetter(gl, index) {
   return function (b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      gl.vertexAttrib4iv(index, b.value);
+
+      if (b.value.length === 4) {
+        gl.vertexAttrib4iv(index, b.value);
+      } else {
+        throw new Error('The length of an integer constant value must be 4!');
+      }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
@@ -5134,7 +5159,12 @@ function uintAttribSetter(gl, index) {
   return function (b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      gl.vertexAttrib4uiv(index, b.value);
+
+      if (b.value.length === 4) {
+        gl.vertexAttrib4uiv(index, b.value);
+      } else {
+        throw new Error('The length of an unsigned integer constant value must be 4!');
+      }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
@@ -5517,14 +5547,14 @@ function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback)
   var shaderScript = getElementById(scriptId);
 
   if (!shaderScript) {
-    throw "*** Error: unknown script element" + scriptId;
+    throw new Error("unknown script element: ".concat(scriptId));
   }
 
   shaderSource = shaderScript.text;
   var shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
 
   if (!shaderType) {
-    throw "*** Error: unknown shader type";
+    throw new Error('unknown shader type');
   }
 
   return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
@@ -5661,7 +5691,7 @@ function createUniformSetters(gl, program) {
     var typeInfo = typeMap[type];
 
     if (!typeInfo) {
-      throw "unknown type: 0x" + type.toString(16); // we should never get here.
+      throw new Error("unknown type: 0x".concat(type.toString(16))); // we should never get here.
     }
 
     var setter;
@@ -9463,7 +9493,7 @@ function getGLTypeForTypedArray(typedArray) {
   } // eslint-disable-line
 
 
-  throw "unsupported typed array type";
+  throw new Error('unsupported typed array type');
 }
 /**
  * Get the GL type for a typedArray type
@@ -9515,7 +9545,7 @@ function getGLTypeForTypedArrayType(typedArrayType) {
   } // eslint-disable-line
 
 
-  throw "unsupported typed array type";
+  throw new Error('unsupported typed array type');
 }
 /**
  * Get the typed array constructor for a given GL type
@@ -9529,7 +9559,7 @@ function getTypedArrayTypeForGLType(type) {
   var CTOR = glTypeToTypedArray[type];
 
   if (!CTOR) {
-    throw "unknown gl type";
+    throw new Error('unknown gl type');
   }
 
   return CTOR;

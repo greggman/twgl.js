@@ -375,8 +375,8 @@ declare module m4 {
     export function axisRotate(m: m4.Mat4, axis: v3.Vec3, angleInRadians: number, dst?: m4.Mat4): m4.Mat4;
     export function scaling(v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
     export function scale(m: m4.Mat4, v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
-    export function transformPoint(m: m4.Mat4, v: v3.Vec3, dst: v3.Vec3): v3.Vec3;
-    export function transformDirection(m: m4.Mat4, v: v3.Vec3, dst: v3.Vec3): v3.Vec3;
+    export function transformPoint(m: m4.Mat4, v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
+    export function transformDirection(m: m4.Mat4, v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
     export function transformNormal(m: m4.Mat4, v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
 }
 declare module primitives {
