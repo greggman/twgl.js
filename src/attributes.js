@@ -136,10 +136,7 @@ function guessNumComponentsFromName(name, length) {
   }
 
   if (length % numComponents > 0) {
-    throw "Can not guess numComponents for attribute '" + name + "'. Tried " +
-          numComponents + " but " + length +
-          " values is not evenly divisible by " + numComponents +
-          ". You should specify it.";
+    throw new Error(`Can not guess numComponents for attribute '${name}'. Tried ${numComponents} but ${length} values is not evenly divisible by ${numComponents}. You should specify it.`);
   }
 
   return numComponents;
@@ -474,7 +471,7 @@ function getNumElementsFromNonIndexedArrays(arrays) {
   const numComponents = getNumComponents(array, key);
   const numElements = length / numComponents;
   if (length % numComponents > 0) {
-    throw "numComponents " + numComponents + " not correct for length " + length;
+    throw new Error(`numComponents ${numComponents} not correct for length ${length}`);
   }
   return numElements;
 }
@@ -506,7 +503,7 @@ function getNumElementsFromAttributes(gl, attribs) {
   // TODO: check stride
   const numElements = totalElements / numComponents;
   if (numElements % 1 !== 0) {
-    throw "numComponents " + numComponents + " not correct for length " + length;
+    throw new Error(`numComponents ${numComponents} not correct for length ${length}`);
   }
   return numElements;
 }

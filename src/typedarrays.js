@@ -93,7 +93,7 @@ function getGLTypeForTypedArray(typedArray) {
   if (typedArray instanceof Int32Array)        { return INT; }            // eslint-disable-line
   if (typedArray instanceof Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
   if (typedArray instanceof Float32Array)      { return FLOAT; }          // eslint-disable-line
-  throw "unsupported typed array type";
+  throw new Error('unsupported typed array type');
 }
 
 /**
@@ -112,7 +112,7 @@ function getGLTypeForTypedArrayType(typedArrayType) {
   if (typedArrayType === Int32Array)        { return INT; }            // eslint-disable-line
   if (typedArrayType === Uint32Array)       { return UNSIGNED_INT; }   // eslint-disable-line
   if (typedArrayType === Float32Array)      { return FLOAT; }          // eslint-disable-line
-  throw "unsupported typed array type";
+  throw new Error('unsupported typed array type');
 }
 
 /**
@@ -124,7 +124,7 @@ function getGLTypeForTypedArrayType(typedArrayType) {
 function getTypedArrayTypeForGLType(type) {
   const CTOR = glTypeToTypedArray[type];
   if (!CTOR) {
-    throw "unknown gl type";
+    throw new Error('unknown gl type');
   }
   return CTOR;
 }

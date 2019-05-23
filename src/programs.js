@@ -348,16 +348,21 @@ function floatAttribSetter(gl, index) {
   return function(b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      if (b.value.length === 1) {
-        gl.vertexAttrib1fv(index, b.value);
-      } else if (b.value.length === 2) {
-        gl.vertexAttrib2fv(index, b.value);
-      } else if (b.value.length === 3) {
-        gl.vertexAttrib3fv(index, b.value);
-      } else if (b.value.length === 4) {
-        gl.vertexAttrib4fv(index, b.value);
-      } else {
-        throw "The length of a float constant value must be between 1 and 4!";
+      switch (b.value.length) {
+        case 4:
+          gl.vertexAttrib4fv(index, b.value);
+          break;
+        case 3:
+          gl.vertexAttrib3fv(index, b.value);
+          break;
+        case 2:
+          gl.vertexAttrib2fv(index, b.value);
+          break;
+        case 1:
+          gl.vertexAttrib1fv(index, b.value);
+          break;
+        default:
+          throw new Error('the length of a float constant value must be between 1 and 4!');
       }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
@@ -378,7 +383,7 @@ function intAttribSetter(gl, index) {
       if (b.value.length === 4) {
         gl.vertexAttrib4iv(index, b.value);
       } else {
-        throw "The length of an integer constant value must be 4!";
+        throw new Error('The length of an integer constant value must be 4!');
       }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
@@ -399,7 +404,7 @@ function uintAttribSetter(gl, index) {
       if (b.value.length === 4) {
         gl.vertexAttrib4uiv(index, b.value);
       } else {
-        throw "The length of an unsigned integer constant value must be 4!";
+        throw new Error('The length of an unsigned integer constant value must be 4!');
       }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
@@ -712,13 +717,13 @@ function createShaderFromScript(
   let shaderSource = "";
   const shaderScript = getElementById(scriptId);
   if (!shaderScript) {
-    throw "*** Error: unknown script element" + scriptId;
+    throw new Error(`unknown script element: ${scriptId}`);
   }
   shaderSource = shaderScript.text;
 
   const shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
   if (!shaderType) {
-    throw "*** Error: unknown shader type";
+    throw new Error('unknown shader type');
   }
 
   return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
@@ -846,7 +851,7 @@ function createUniformSetters(gl, program) {
     const type = uniformInfo.type;
     const typeInfo = typeMap[type];
     if (!typeInfo) {
-      throw ("unknown type: 0x" + type.toString(16)); // we should never get here.
+      throw new Error(`unknown type: 0x${type.toString(16)}`); // we should never get here.
     }
     let setter;
     if (typeInfo.bindPoint) {
