@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.10.0
+
+    *   Support constant attribute values for float, vec2, vec3 (used to only support vec4)
+
 *   4.9.4
 
     *   Make helper.js more node friendly
