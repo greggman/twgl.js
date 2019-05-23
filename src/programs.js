@@ -348,7 +348,17 @@ function floatAttribSetter(gl, index) {
   return function(b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      gl.vertexAttrib4fv(index, b.value);
+      if (b.value.length === 1) {
+        gl.vertexAttrib1fv(index, b.value);
+      } else if (b.value.length === 2) {
+        gl.vertexAttrib2fv(index, b.value);
+      } else if (b.value.length === 3) {
+        gl.vertexAttrib3fv(index, b.value);
+      } else if (b.value.length === 4) {
+        gl.vertexAttrib4fv(index, b.value);
+      } else {
+        throw "The length of a float constant value must be between 1 and 4!";
+      }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
@@ -365,7 +375,11 @@ function intAttribSetter(gl, index) {
   return function(b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      gl.vertexAttrib4iv(index, b.value);
+      if (b.value.length === 4) {
+        gl.vertexAttrib4iv(index, b.value);
+      } else {
+        throw "The length of an integer constant value must be 4!";
+      }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
@@ -382,7 +396,11 @@ function uintAttribSetter(gl, index) {
   return function(b) {
     if (b.value) {
       gl.disableVertexAttribArray(index);
-      gl.vertexAttrib4uiv(index, b.value);
+      if (b.value.length === 4) {
+        gl.vertexAttrib4uiv(index, b.value);
+      } else {
+        throw "The length of an unsigned integer constant value must be 4!";
+      }
     } else {
       gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
