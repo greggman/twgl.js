@@ -340,8 +340,10 @@ function isPowerOf2(value) {
  * Gets whether or not we can generate mips for the given
  * internal format.
  *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {number} width The width parameter from texImage2D etc..
+ * @param {number} height The height parameter from texImage2D etc..
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
- * @param {number} type The type parameter for texImage2D etc..
  * @return {boolean} true if we can generate mips
  * @memberOf module:twgl/textures
  */
@@ -359,7 +361,6 @@ function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
 /**
  * Gets whether or not we can generate mips for the given format
  * @param {number} internalFormat The internalFormat parameter from texImage2D etc..
- * @param {number} type The type parameter for texImage2D etc..
  * @return {boolean} true if we can generate mips
  * @memberOf module:twgl/textures
  */
