@@ -168,7 +168,7 @@ function deindexVertices(vertices) {
  */
 function flattenNormals(vertices) {
   if (vertices.indices) {
-    throw "can't flatten normals of indexed vertices. deindex them first";
+    throw new Error('can not flatten normals of indexed vertices. deindex them first');
   }
 
   const normals = vertices.normal;
@@ -573,7 +573,7 @@ function createSphereVertices(
     opt_startLongitudeInRadians,
     opt_endLongitudeInRadians) {
   if (subdivisionsAxis <= 0 || subdivisionsHeight <= 0) {
-    throw Error('subdivisionAxis and subdivisionHeight must be > 0');
+    throw new Error('subdivisionAxis and subdivisionHeight must be > 0');
   }
 
   opt_startLatitudeInRadians = opt_startLatitudeInRadians || 0;
@@ -823,11 +823,11 @@ function createTruncatedConeVertices(
     opt_topCap,
     opt_bottomCap) {
   if (radialSubdivisions < 3) {
-    throw Error('radialSubdivisions must be 3 or greater');
+    throw new Error('radialSubdivisions must be 3 or greater');
   }
 
   if (verticalSubdivisions < 1) {
-    throw Error('verticalSubdivisions must be 1 or greater');
+    throw new Error('verticalSubdivisions must be 1 or greater');
   }
 
   const topCap = (opt_topCap === undefined) ? true : opt_topCap;
@@ -1376,7 +1376,7 @@ function create3DFVertices() {
     startOffset,
     endOffset) {
   if (subdivisionsDown <= 0) {
-    throw Error('subdivisionDown must be > 0');
+    throw new Error('subdivisionDown must be > 0');
   }
 
   startOffset = startOffset || 0;
@@ -1571,11 +1571,11 @@ function createTorusVertices(
     startAngle,
     endAngle) {
   if (radialSubdivisions < 3) {
-    throw Error('radialSubdivisions must be 3 or greater');
+    throw new Error('radialSubdivisions must be 3 or greater');
   }
 
   if (bodySubdivisions < 3) {
-    throw Error('verticalSubdivisions must be 3 or greater');
+    throw new Error('verticalSubdivisions must be 3 or greater');
   }
 
   startAngle = startAngle || 0;
@@ -1722,7 +1722,7 @@ function createDiscVertices(
     innerRadius,
     stackPower) {
   if (divisions < 3) {
-    throw Error('divisions must be at least 3');
+    throw new Error('divisions must be at least 3');
   }
 
   stacks = stacks ? stacks : 1;

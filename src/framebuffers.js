@@ -221,7 +221,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
           attachment,
           attachmentOptions.level || 0);
     } else {
-      throw "unknown attachment type";
+      throw new Error('unknown attachment type');
     }
     framebufferInfo.attachments.push(attachment);
   });
@@ -286,7 +286,7 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
     } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
-      throw "unknown attachment type";
+      throw new Error('unknown attachment type');
     }
   });
 }
