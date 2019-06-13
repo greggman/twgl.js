@@ -150,7 +150,7 @@
 
     
 
-    <h4 class="name" id=".canFilter"><span class="type-signature">(static) </span>canFilter<span class="signature">(internalFormat, type)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id=".canFilter"><span class="type-signature">(static) </span>canFilter<span class="signature">(internalFormat)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
     
 
@@ -255,32 +255,6 @@
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>number</code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <p>The type parameter for texImage2D etc..</p>
-                
-            </td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -331,7 +305,7 @@
 
     
 
-    <h4 class="name" id=".canGenerateMipmap"><span class="type-signature">(static) </span>canGenerateMipmap<span class="signature">(internalFormat, type)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id=".canGenerateMipmap"><span class="type-signature">(static) </span>canGenerateMipmap<span class="signature">(gl, width, height, internalFormat)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
     
 
@@ -413,6 +387,84 @@
 
         <tr>
             
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>WebGLRenderingContext</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>the WebGLRenderingContext</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>The width parameter from texImage2D etc..</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>The height parameter from texImage2D etc..</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>internalFormat</code></td>
             
 
@@ -431,32 +483,6 @@
 
             <td class="description last">
                 <p>The internalFormat parameter from texImage2D etc..</p>
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>number</code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <p>The type parameter for texImage2D etc..</p>
                 
             </td>
         </tr>

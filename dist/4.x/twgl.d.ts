@@ -284,8 +284,8 @@ export type TextureFormatInfo = {
     type: number;
 };
 export function getFormatAndTypeForInternalFormat(internalFormat: number): TextureFormatInfo;
-export function canGenerateMipmap(internalFormat: number, type: number): boolean;
-export function canFilter(internalFormat: number, type: number): boolean;
+export function canGenerateMipmap(gl: WebGLRenderingContext, width: number, height: number, internalFormat: number): boolean;
+export function canFilter(internalFormat: number): boolean;
 export function getNumComponentsForFormat(format: number): number;
 export function setDefaultTextureColor(color: number[]): void;
 export function setTextureParameters(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions): void;
