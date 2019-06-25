@@ -60,7 +60,7 @@
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-eslint": "^21.0.0",
-    "grunt-jsdoc": "^2.2.0",
+    "grunt-jsdoc": "^2.4.0",
     "grunt-ts": "^6.0.0-beta.21",
     "grunt-webpack": "^3.0.2",
     "http-server": "^0.11.1",
