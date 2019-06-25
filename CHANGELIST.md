@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.11.0
+
+    *   Support `layer` attachment option for `createFramebufferInfo`
+
 *   4.10.0
 
     *   Support constant attribute values for float, vec2, vec3 (used to only support vec4)
