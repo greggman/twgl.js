@@ -52,8 +52,11 @@
     
         
             <div class="description"><p>Low level attribute and buffer related functions</p>
-<p>You should generally not need to use these functions. They are provided<br>for those cases where you're doing something out of the ordinary<br>and you need lower level access.</p>
-<p>For backward compatibily they are available at both <code>twgl.attributes</code> and <code>twgl</code><br>itself</p>
+<p>You should generally not need to use these functions. They are provided<br>
+for those cases where you're doing something out of the ordinary<br>
+and you need lower level access.</p>
+<p>For backward compatibily they are available at both <code>twgl.attributes</code> and <code>twgl</code><br>
+itself</p>
 <p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
         
 
@@ -159,33 +162,43 @@
 <div class="description">
     <p>Creates a set of attribute data and WebGLBuffers from set of arrays</p>
 <p>Given</p>
-<pre class="prettyprint source"><code> var arrays = {
+<pre><code> var arrays = {
    position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
    texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
    normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
    color:    { numComponents: 4, data: [255, 255, 255, 255, 255, 0, 0, 255, 0, 0, 255, 255], type: Uint8Array, },
    indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
- };</code></pre><p>returns something like</p>
-<pre class="prettyprint source"><code> var attribs = {
+ };
+</code></pre>
+<p>returns something like</p>
+<pre><code> var attribs = {
    position: { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
    texcoord: { numComponents: 2, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
    normal:   { numComponents: 3, type: gl.FLOAT,         normalize: false, buffer: WebGLBuffer, },
    color:    { numComponents: 4, type: gl.UNSIGNED_BYTE, normalize: true,  buffer: WebGLBuffer, },
- };</code></pre><p>notes:</p>
+ };
+</code></pre>
+<p>notes:</p>
 <ul>
-<li><p>Arrays can take various forms</p>
+<li>
+<p>Arrays can take various forms</p>
 <p>Bare JavaScript Arrays</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
    position: [-1, 1, 0],
    normal: [0, 1, 0],
    ...
-}</code></pre><p>Bare TypedArrays</p>
-<pre class="prettyprint source"><code>var arrays = {
+}
+</code></pre>
+<p>Bare TypedArrays</p>
+<pre><code>var arrays = {
    position: new Float32Array([-1, 1, 0]),
    color: new Uint8Array([255, 128, 64, 255]),
    ...
-}</code></pre></li>
-<li><p>Will guess at <code>numComponents</code> if not specified based on name.</p>
+}
+</code></pre>
+</li>
+<li>
+<p>Will guess at <code>numComponents</code> if not specified based on name.</p>
 <p>If <code>coord</code> is in the name assumes <code>numComponents = 2</code></p>
 <p>If <code>color</code> is in the name assumes <code>numComponents = 4</code></p>
 <p>otherwise assumes <code>numComponents = 3</code></p>
@@ -362,7 +375,9 @@
             
 
             <td class="description last">
-                <p>a BufferInfo to copy from<br>  This lets you share buffers. Any arrays you supply will override<br>  the buffers from srcBufferInfo.</p>
+                <p>a BufferInfo to copy from<br>
+This lets you share buffers. Any arrays you supply will override<br>
+the buffers from srcBufferInfo.</p>
                 
             </td>
         </tr>
@@ -427,12 +442,18 @@
 <div class="description">
     <p>Creates a buffer from an array, typed array, or array spec</p>
 <p>Given something like this</p>
-<pre class="prettyprint source"><code>[1, 2, 3],</code></pre><p>or</p>
-<pre class="prettyprint source"><code>new Uint16Array([1,2,3]);</code></pre><p>or</p>
-<pre class="prettyprint source"><code>{
+<pre><code>[1, 2, 3],
+</code></pre>
+<p>or</p>
+<pre><code>new Uint16Array([1,2,3]);
+</code></pre>
+<p>or</p>
+<pre><code>{
    data: [1, 2, 3],
    type: Uint8Array,
-}</code></pre><p>returns a WebGLBuffer that constains the given data.</p>
+}
+</code></pre>
+<p>returns a WebGLBuffer that constains the given data.</p>
 </div>
 
 
@@ -639,7 +660,8 @@
 
 
 <div class="description">
-    <p>Given typed array creates a WebGLBuffer and copies the typed array<br>into it.</p>
+    <p>Given typed array creates a WebGLBuffer and copies the typed array<br>
+into it.</p>
 </div>
 
 
@@ -920,15 +942,18 @@
 
 <div class="description">
     <p>Creates a BufferInfo from an object of arrays.</p>
-<p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br><code>module:twgl:drawBufferInfo</code>.</p>
+<p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br>
+<code>module:twgl:drawBufferInfo</code>.</p>
 <p>Given an object like</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
   position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
   texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
   normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
   indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
-};</code></pre><p> Creates an BufferInfo like this</p>
-<pre class="prettyprint source"><code>bufferInfo = {
+};
+</code></pre>
+<p>Creates an BufferInfo like this</p>
+<pre><code>bufferInfo = {
   numElements: 4,        // or whatever the number of elements is
   indices: WebGLBuffer,  // this property will not exist if there are no indices
   attribs: {
@@ -936,20 +961,27 @@
     a_normal:   { buffer: WebGLBuffer, numComponents: 3, },
     a_texcoord: { buffer: WebGLBuffer, numComponents: 2, },
   },
-};</code></pre><p> The properties of arrays can be JavaScript arrays in which case the number of components<br> will be guessed.</p>
-<pre class="prettyprint source"><code>var arrays = {
+};
+</code></pre>
+<p>The properties of arrays can be JavaScript arrays in which case the number of components<br>
+will be guessed.</p>
+<pre><code>var arrays = {
    position: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0],
    texcoord: [0, 0, 0, 1, 1, 0, 1, 1],
    normal:   [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
    indices:  [0, 1, 2, 1, 2, 3],
-};</code></pre><p> They can also by TypedArrays</p>
-<pre class="prettyprint source"><code>var arrays = {
+};
+</code></pre>
+<p>They can also by TypedArrays</p>
+<pre><code>var arrays = {
    position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
    texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
    normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
    indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
-};</code></pre><p> Or augmentedTypedArrays</p>
-<pre class="prettyprint source"><code>var positions = createAugmentedTypedArray(3, 4);
+};
+</code></pre>
+<p>Or augmentedTypedArrays</p>
+<pre><code>var positions = createAugmentedTypedArray(3, 4);
 var texcoords = createAugmentedTypedArray(2, 4);
 var normals   = createAugmentedTypedArray(3, 4);
 var indices   = createAugmentedTypedArray(3, 2, Uint16Array);
@@ -964,8 +996,10 @@ var arrays = {
    texcoord: texcoords,
    normal:   normals,
    indices:  indices,
-};</code></pre><p>For the last example it is equivalent to</p>
-<pre class="prettyprint source"><code>var bufferInfo = {
+};
+</code></pre>
+<p>For the last example it is equivalent to</p>
+<pre><code>var bufferInfo = {
   attribs: {
     a_position: { numComponents: 3, buffer: gl.createBuffer(), },
     a_texcoods: { numComponents: 2, buffer: gl.createBuffer(), },
@@ -1154,7 +1188,11 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             
 
             <td class="description last">
-                <p>An existing<br>       buffer info to start from. WebGLBuffers etc specified<br>       in the srcBufferInfo will be used in a new BufferInfo<br>       with any arrays specfied overriding the ones in<br>       srcBufferInfo.</p>
+                <p>An existing<br>
+buffer info to start from. WebGLBuffers etc specified<br>
+in the srcBufferInfo will be used in a new BufferInfo<br>
+with any arrays specfied overriding the ones in<br>
+srcBufferInfo.</p>
                 
             </td>
         </tr>
@@ -1219,14 +1257,18 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
 <div class="description">
     <p>Creates buffers from arrays or typed arrays</p>
 <p>Given something like this</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
    positions: [1, 2, 3],
    normals: [0, 0, 1],
-}</code></pre><p>returns something like</p>
-<pre class="prettyprint source"><code>buffers = {
+}
+</code></pre>
+<p>returns something like</p>
+<pre><code>buffers = {
   positions: WebGLBuffer,
   normals: WebGLBuffer,
-}</code></pre><p>If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.</p>
+}
+</code></pre>
+<p>If the buffer is named 'indices' it will be made an ELEMENT_ARRAY_BUFFER.</p>
 </div>
 
 
@@ -1410,14 +1452,16 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
     <p>Sets the contents of a buffer attached to an attribInfo</p>
 <p>This is helper function to dynamically update a buffer.</p>
 <p>Let's say you make a bufferInfo</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
    position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
    texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
    normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
    indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
 };
-var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre><p> And you want to dynamically upate the positions. You could do this</p>
-<pre class="prettyprint source"><code>// assuming arrays.position has already been updated with new data.
+var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+</code></pre>
+<p>And you want to dynamically upate the positions. You could do this</p>
+<pre><code>// assuming arrays.position has already been updated with new data.
 twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);</code></pre>
 </div>
 
@@ -1554,7 +1598,8 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix<br>  the name of the attribute will include the prefix.</p>
+                <p>The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix<br>
+the name of the attribute will include the prefix.</p>
                 
             </td>
         </tr>
@@ -1588,7 +1633,9 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>Note: it is arguably ineffient to pass in anything but a typed array because anything<br>   else will have to be converted to a typed array before it can be used by WebGL. During init time that<br>   inefficiency is usually not important but if you're updating data dynamically best to be efficient.</p>
+                <p>Note: it is arguably ineffient to pass in anything but a typed array because anything<br>
+else will have to be converted to a typed array before it can be used by WebGL. During init time that<br>
+inefficiency is usually not important but if you're updating data dynamically best to be efficient.</p>
                 
             </td>
         </tr>
@@ -1624,9 +1671,13 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>an optional offset into the buffer. This is only an offset into the WebGL buffer<br>   not the array. To pass in an offset into the array itself use a typed array and create an <code>ArrayBufferView</code><br>   for the portion of the array you want to use.</p>
-<pre class="prettyprint source"><code>   var someArray = new Float32Array(1000); // an array with 1000 floats
-   var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray</code></pre><p>   Now you can pass <code>someSubArray</code> into setAttribInfoBufferFromArray`</p>
+                <p>an optional offset into the buffer. This is only an offset into the WebGL buffer<br>
+not the array. To pass in an offset into the array itself use a typed array and create an <code>ArrayBufferView</code><br>
+for the portion of the array you want to use.</p>
+<pre><code>   var someArray = new Float32Array(1000); // an array with 1000 floats
+   var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray
+</code></pre>
+<p>Now you can pass <code>someSubArray</code> into setAttribInfoBufferFromArray`</p>
                 
             </td>
         </tr>
@@ -1665,13 +1716,16 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
 
 <div class="description">
     <p>Sets the default attrib prefix</p>
-<p>When writing shaders I prefer to name attributes with <code>a_</code>, uniforms with <code>u_</code> and varyings with <code>v_</code><br>as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.</p>
+<p>When writing shaders I prefer to name attributes with <code>a_</code>, uniforms with <code>u_</code> and varyings with <code>v_</code><br>
+as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.</p>
 <p>In otherwords I'll create arrays of geometry like this</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
   position: ...
   normal: ...
   texcoord: ...
-};</code></pre><p>But need those mapped to attributes and my attributes start with <code>a_</code>.</p>
+};
+</code></pre>
+<p>But need those mapped to attributes and my attributes start with <code>a_</code>.</p>
 </div>
 
 
@@ -1808,7 +1862,7 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.10.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.11.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1180,6 +1180,8 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  * @property {number} [target] The texture target for `gl.framebufferTexture2D`.
  *   Defaults to `gl.TEXTURE_2D`. Set to appropriate face for cube maps.
  * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
+ * @property {number} [layer] layer for `gl.framebufferTextureLayer`. Defaults to undefined.
+ *   If set then `gl.framebufferTextureLayer` is called, if not then `gl.framebufferTexture2D`
  * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
  *    If provided will attach this Object. This allows you to share
  *    attachemnts across framebuffers.
@@ -1250,7 +1252,7 @@ function isRenderbufferFormat(format) {
  *     const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
  *
  * **Note!!** It is up to you to check if the framebuffer is renderable by calling `gl.checkFramebufferStatus`.
- * [WebGL only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
+ * [WebGL1 only guarantees 3 combinations of attachments work](https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6).
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.AttachmentOptions[]} [attachments] which attachments to create. If not provided the default is a framebuffer with an
@@ -1310,7 +1312,11 @@ function createFramebufferInfo(gl, attachments, width, height) {
     if (helper.isRenderbuffer(gl, attachment)) {
       gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
     } else if (helper.isTexture(gl, attachment)) {
-      gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
+      if (attachmentOptions.layer !== undefined) {
+        gl.framebufferTextureLayer(target, attachmentPoint, attachment, attachmentOptions.level || 0, attachmentOptions.layer);
+      } else {
+        gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || gl.TEXTURE_2D, attachment, attachmentOptions.level || 0);
+      }
     } else {
       throw new Error('unknown attachment type');
     }

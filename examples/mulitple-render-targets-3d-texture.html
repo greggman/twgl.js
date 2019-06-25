@@ -71,7 +71,6 @@
 "use strict";
 
 function main() {
-  const m4 = twgl.m4;
   const gl = document.getElementById("c").getContext("webgl2");
   if (!gl) {
     document.querySelector("#no-webgl2").style.display = "";
@@ -141,7 +140,7 @@ function main() {
 
   const pointProgramInfo = twgl.createProgramInfo(gl, [pointVS, pointFS]);
   const rtProgramInfo = twgl.createProgramInfo(gl, [rtVS, rtFS]);
-  
+
   const size = 4;
   const numPoints = size * size * size;
   const tex = twgl.createTexture(gl, {
@@ -150,14 +149,14 @@ function main() {
     height: size,
     depth: size,
   });
-  
+
   const clipspaceFullSizeQuadBufferInfo = twgl.createBufferInfoFromArrays(gl, {
     position: {
       data: [
         -1, -1,
          1, -1,
         -1,  1,
-        
+
         -1,  1,
          1, -1,
          1,  1,
@@ -165,14 +164,14 @@ function main() {
       numComponents: 2,
     },
   });
-  
+
   const fbi = twgl.createFramebufferInfo(gl, [
     { attachment: tex, target: gl.TEXTURE_3D, layer: 0, },
     { attachment: tex, target: gl.TEXTURE_3D, layer: 1, },
     { attachment: tex, target: gl.TEXTURE_3D, layer: 2, },
     { attachment: tex, target: gl.TEXTURE_3D, layer: 3, },
   ], 4, 4);
-  
+
   gl.drawBuffers([
      gl.COLOR_ATTACHMENT0,
      gl.COLOR_ATTACHMENT1,

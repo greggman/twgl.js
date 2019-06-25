@@ -52,8 +52,11 @@
     
         
             <div class="description"><p>Low level shader program related functions</p>
-<p>You should generally not need to use these functions. They are provided<br>for those cases where you're doing something out of the ordinary<br>and you need lower level access.</p>
-<p>For backward compatibily they are available at both <code>twgl.programs</code> and <code>twgl</code><br>itself</p>
+<p>You should generally not need to use these functions. They are provided<br>
+for those cases where you're doing something out of the ordinary<br>
+and you need lower level access.</p>
+<p>For backward compatibily they are available at both <code>twgl.programs</code> and <code>twgl</code><br>
+itself</p>
 <p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
         
 
@@ -157,8 +160,11 @@
 
 
 <div class="description">
-    <p>Binds a unform block to the matching uniform block point.<br>Matches by blocks by name so blocks must have the same name not just the same<br>structure.</p>
-<p>If you have changed any values and you upload the valus into the corresponding WebGLBuffer<br>call <a href="module-twgl.html#.setUniformBlock"><code>module:twgl.setUniformBlock</code></a> instead.</p>
+    <p>Binds a unform block to the matching uniform block point.<br>
+Matches by blocks by name so blocks must have the same name not just the same<br>
+structure.</p>
+<p>If you have changed any values and you upload the valus into the corresponding WebGLBuffer<br>
+call <a href="module-twgl.html#.setUniformBlock"><code>module:twgl.setUniformBlock</code></a> instead.</p>
 </div>
 
 
@@ -279,7 +285,9 @@
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
+                <p>a <code>ProgramInfo</code><br>
+as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>
+returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
                 
             </td>
         </tr>
@@ -305,7 +313,8 @@
             
 
             <td class="description last">
-                <p>a <code>UniformBlockInfo</code> as returned from<br>    <a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
+                <p>a <code>UniformBlockInfo</code> as returned from<br>
+<a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
                 
             </td>
         </tr>
@@ -346,7 +355,8 @@
 
 
 <div class="param-desc">
-    <p>true if buffer was bound. If the programInfo has no block with the same block name<br>    no buffer is bound.</p>
+    <p>true if buffer was bound. If the programInfo has no block with the same block name<br>
+no buffer is bound.</p>
 </div>
 
     
@@ -368,7 +378,8 @@
 
 
 <div class="description">
-    <p>Creates setter functions for all attributes of a shader<br>program. You can pass this to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> to set all your buffers and attributes.</p>
+    <p>Creates setter functions for all attributes of a shader<br>
+program. You can pass this to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> to set all your buffers and attributes.</p>
 </div>
 
 
@@ -530,9 +541,10 @@
 
 
 <div class="description">
-    <p>Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the<br>program and calls useProgram.</p>
+    <p>Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the<br>
+program and calls useProgram.</p>
 <p>NOTE: There are 4 signatures for this function</p>
-<pre class="prettyprint source"><code>twgl.createProgram(gl, [vs, fs], options);
+<pre><code>twgl.createProgram(gl, [vs, fs], options);
 twgl.createProgram(gl, [vs, fs], opt_errFunc);
 twgl.createProgram(gl, [vs, fs], opt_attribs, opt_errFunc);
 twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
@@ -788,7 +800,8 @@ twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code
             
 
             <td class="description last">
-                <p>callback for errors. By default it just prints an error to the console<br>       on error. If you want something else pass an callback. It's passed an error message.</p>
+                <p>callback for errors. By default it just prints an error to the console<br>
+on error. If you want something else pass an callback. It's passed an error message.</p>
                 
             </td>
         </tr>
@@ -853,7 +866,7 @@ twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code
 <div class="description">
     <p>Creates a program from 2 script tags.</p>
 <p>NOTE: There are 4 signatures for this function</p>
-<pre class="prettyprint source"><code>twgl.createProgramFromScripts(gl, [vs, fs], opt_options);
+<pre><code>twgl.createProgramFromScripts(gl, [vs, fs], opt_options);
 twgl.createProgramFromScripts(gl, [vs, fs], opt_errFunc);
 twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_errFunc);
 twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
@@ -958,7 +971,8 @@ twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errF
             
 
             <td class="description last">
-                <p>The WebGLRenderingContext<br>       to use.</p>
+                <p>The WebGLRenderingContext<br>
+to use.</p>
                 
             </td>
         </tr>
@@ -992,7 +1006,9 @@ twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errF
             
 
             <td class="description last">
-                <p>Array of ids of the script<br>       tags for the shaders. The first is assumed to be the<br>       vertex shader, the second the fragment shader.</p>
+                <p>Array of ids of the script<br>
+tags for the shaders. The first is assumed to be the<br>
+vertex shader, the second the fragment shader.</p>
                 
             </td>
         </tr>
@@ -1106,7 +1122,8 @@ twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errF
             
 
             <td class="description last">
-                <p>callback for errors. By default it just prints an error to the console<br>       on error. If you want something else pass an callback. It's passed an error message.</p>
+                <p>callback for errors. By default it just prints an error to the console<br>
+on error. If you want something else pass an callback. It's passed an error message.</p>
                 
             </td>
         </tr>
@@ -1171,7 +1188,7 @@ twgl.createProgramFromScripts(gl, [vs, fs], opt_attribs, opt_locations, opt_errF
 <div class="description">
     <p>Creates a program from 2 sources.</p>
 <p>NOTE: There are 4 signatures for this function</p>
-<pre class="prettyprint source"><code>twgl.createProgramFromSource(gl, [vs, fs], opt_options);
+<pre><code>twgl.createProgramFromSource(gl, [vs, fs], opt_options);
 twgl.createProgramFromSource(gl, [vs, fs], opt_errFunc);
 twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_errFunc);
 twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
@@ -1276,7 +1293,8 @@ twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFu
             
 
             <td class="description last">
-                <p>The WebGLRenderingContext<br>       to use.</p>
+                <p>The WebGLRenderingContext<br>
+to use.</p>
                 
             </td>
         </tr>
@@ -1310,7 +1328,9 @@ twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFu
             
 
             <td class="description last">
-                <p>Array of sources for the<br>       shaders. The first is assumed to be the vertex shader,<br>       the second the fragment shader.</p>
+                <p>Array of sources for the<br>
+shaders. The first is assumed to be the vertex shader,<br>
+the second the fragment shader.</p>
                 
             </td>
         </tr>
@@ -1424,7 +1444,8 @@ twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFu
             
 
             <td class="description last">
-                <p>callback for errors. By default it just prints an error to the console<br>       on error. If you want something else pass an callback. It's passed an error message.</p>
+                <p>callback for errors. By default it just prints an error to the console<br>
+on error. If you want something else pass an callback. It's passed an error message.</p>
                 
             </td>
         </tr>
@@ -1489,12 +1510,14 @@ twgl.createProgramFromSource(gl, [vs, fs], opt_attribs, opt_locations, opt_errFu
 <div class="description">
     <p>Creates a ProgramInfo from 2 sources.</p>
 <p>A ProgramInfo contains</p>
-<pre class="prettyprint source"><code>programInfo = {
+<pre><code>programInfo = {
    program: WebGLProgram,
    uniformSetters: object of setters as returned from createUniformSetters,
    attribSetters: object of setters as returned from createAttribSetters,
-}</code></pre><p>NOTE: There are 4 signatures for this function</p>
-<pre class="prettyprint source"><code>twgl.createProgramInfo(gl, [vs, fs], options);
+}
+</code></pre>
+<p>NOTE: There are 4 signatures for this function</p>
+<pre><code>twgl.createProgramInfo(gl, [vs, fs], options);
 twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
 twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
 twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
@@ -1599,7 +1622,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>The WebGLRenderingContext<br>       to use.</p>
+                <p>The WebGLRenderingContext<br>
+to use.</p>
                 
             </td>
         </tr>
@@ -1633,7 +1657,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>Array of sources for the<br>       shaders or ids. The first is assumed to be the vertex shader,<br>       the second the fragment shader.</p>
+                <p>Array of sources for the<br>
+shaders or ids. The first is assumed to be the vertex shader,<br>
+the second the fragment shader.</p>
                 
             </td>
         </tr>
@@ -1747,7 +1773,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>callback for errors. By default it just prints an error to the console<br>       on error. If you want something else pass an callback. It's passed an error message.</p>
+                <p>callback for errors. By default it just prints an error to the console<br>
+on error. If you want something else pass an callback. It's passed an error message.</p>
                 
             </td>
         </tr>
@@ -1812,7 +1839,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 <div class="description">
     <p>Creates a ProgramInfo from an existing program.</p>
 <p>A ProgramInfo contains</p>
-<pre class="prettyprint source"><code>programInfo = {
+<pre><code>programInfo = {
    program: WebGLProgram,
    uniformSetters: object of setters as returned from createUniformSetters,
    attribSetters: object of setters as returned from createAttribSetters,
@@ -1908,7 +1935,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>The WebGLRenderingContext<br>       to use.</p>
+                <p>The WebGLRenderingContext<br>
+to use.</p>
                 
             </td>
         </tr>
@@ -1998,7 +2026,11 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Creates a <code>UniformBlockInfo</code> for the specified block</p>
-<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br><code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>it is common to comment out large portions of a shader or for example set<br>the final output to a constant. When that happens blocks get optimized out.<br>If this function did not create dummy blocks your code would crash when debugging.</p>
+<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br>
+<code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>
+it is common to comment out large portions of a shader or for example set<br>
+the final output to a constant. When that happens blocks get optimized out.<br>
+If this function did not create dummy blocks your code would crash when debugging.</p>
 </div>
 
 
@@ -2116,7 +2148,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a></p>
+                <p>a <code>ProgramInfo</code><br>
+as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a></p>
                 
             </td>
         </tr>
@@ -2206,7 +2239,11 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Creates a <code>UniformBlockInfo</code> for the specified block</p>
-<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br><code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>it is common to comment out large portions of a shader or for example set<br>the final output to a constant. When that happens blocks get optimized out.<br>If this function did not create dummy blocks your code would crash when debugging.</p>
+<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br>
+<code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>
+it is common to comment out large portions of a shader or for example set<br>
+the final output to a constant. When that happens blocks get optimized out.<br>
+If this function did not create dummy blocks your code would crash when debugging.</p>
 </div>
 
 
@@ -2350,7 +2387,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>A UniformBlockSpec as returned<br>    from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
+                <p>A UniformBlockSpec as returned<br>
+from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
                 
             </td>
         </tr>
@@ -2440,7 +2478,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Creates a UniformBlockSpec for the given program.</p>
-<p>A UniformBlockSpec represents the data needed to create and bind<br>UniformBlockObjects</p>
+<p>A UniformBlockSpec represents the data needed to create and bind<br>
+UniformBlockObjects</p>
 </div>
 
 
@@ -2621,7 +2660,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 
 <div class="description">
-    <p>Creates setter functions for all uniforms of a shader<br>program.</p>
+    <p>Creates setter functions for all uniforms of a shader<br>
+program.</p>
 </div>
 
 
@@ -2785,7 +2825,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 <div class="description">
     <p>Sets attributes and binds buffers (deprecated... use <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a>)</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>const program = createProgramFromScripts(
+<pre><code>const program = createProgramFromScripts(
     gl, [&quot;some-vs&quot;, &quot;some-fs&quot;);
 
 const attribSetters = createAttributeSetters(program);
@@ -2798,8 +2838,14 @@ const attribs = {
   a_texcoord: {buffer: texcoordBuffer, numComponents: 2},
 };
 
-gl.useProgram(program);</code></pre><p>This will automatically bind the buffers AND set the<br>attributes.</p>
-<pre class="prettyprint source"><code>setAttributes(attribSetters, attribs);</code></pre><p>Properties of attribs. For each attrib you can add<br>properties:</p>
+gl.useProgram(program);
+</code></pre>
+<p>This will automatically bind the buffers AND set the<br>
+attributes.</p>
+<pre><code>setAttributes(attribSetters, attribs);
+</code></pre>
+<p>Properties of attribs. For each attrib you can add<br>
+properties:</p>
 <ul>
 <li>type: the type of data in the buffer. Default = gl.FLOAT</li>
 <li>normalize: whether or not to normalize the data. Default = false</li>
@@ -2807,8 +2853,10 @@ gl.useProgram(program);</code></pre><p>This will automatically bind the buffers 
 <li>offset: offset into the buffer. Default = 0</li>
 <li>divisor: the divisor for instances. Default = undefined</li>
 </ul>
-<p>For example if you had 3 value float positions, 2 value<br>float texcoord and 4 value uint8 colors you'd setup your<br>attribs like this</p>
-<pre class="prettyprint source"><code>const attribs = {
+<p>For example if you had 3 value float positions, 2 value<br>
+float texcoord and 4 value uint8 colors you'd setup your<br>
+attribs like this</p>
+<pre><code>const attribs = {
   a_position: {buffer: positionBuffer, numComponents: 3},
   a_texcoord: {buffer: texcoordBuffer, numComponents: 2},
   a_color: {
@@ -3093,20 +3141,25 @@ gl.useProgram(program);</code></pre><p>This will automatically bind the buffers 
             
 
             <td class="description last">
-                <p>A uniform name to value map where the value is correct for the given<br>   type of uniform. So for example given a block like</p>
-<pre class="prettyprint source"><code>  uniform SomeBlock {
+                <p>A uniform name to value map where the value is correct for the given<br>
+type of uniform. So for example given a block like</p>
+<pre><code>  uniform SomeBlock {
     float someFloat;
     vec2 someVec2;
     vec3 someVec3Array[2];
     int someInt;
-  }</code></pre><p> You can set the values of the uniform block with</p>
-<pre class="prettyprint source"><code>  twgl.setBlockUniforms(someBlockInfo, {
+  }
+</code></pre>
+<p>You can set the values of the uniform block with</p>
+<pre><code>  twgl.setBlockUniforms(someBlockInfo, {
      someFloat: 12.3,
      someVec2: [1, 2],
      someVec3Array: [1, 2, 3, 4, 5, 6],
      someInt: 5,
-  }</code></pre><p> Arrays can be JavaScript arrays or typed arrays</p>
-<p> Any name that doesn't match will be ignored</p>
+  }
+</code></pre>
+<p>Arrays can be JavaScript arrays or typed arrays</p>
+<p>Any name that doesn't match will be ignored</p>
                 
             </td>
         </tr>
@@ -3146,7 +3199,7 @@ gl.useProgram(program);</code></pre><p>This will automatically bind the buffers 
 <div class="description">
     <p>Sets attributes and buffers including the <code>ELEMENT_ARRAY_BUFFER</code> if appropriate</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>const programInfo = createProgramInfo(
+<pre><code>const programInfo = createProgramInfo(
     gl, [&quot;some-vs&quot;, &quot;some-fs&quot;);
 
 const arrays = {
@@ -3156,9 +3209,14 @@ const arrays = {
 
 const bufferInfo = createBufferInfoFromArrays(gl, arrays);
 
-gl.useProgram(programInfo.program);</code></pre><p>This will automatically bind the buffers AND set the<br>attributes.</p>
-<pre class="prettyprint source"><code>setBuffersAndAttributes(gl, programInfo, bufferInfo);</code></pre><p>For the example above it is equivilent to</p>
-<pre class="prettyprint source"><code>gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.useProgram(programInfo.program);
+</code></pre>
+<p>This will automatically bind the buffers AND set the<br>
+attributes.</p>
+<pre><code>setBuffersAndAttributes(gl, programInfo, bufferInfo);
+</code></pre>
+<p>For the example above it is equivilent to</p>
+<pre><code>gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 gl.enableVertexAttribArray(a_positionLocation);
 gl.vertexAttribPointer(a_positionLocation, 3, gl.FLOAT, false, 0, 0);
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
@@ -3313,7 +3371,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>a <code>BufferInfo</code> as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.<br>  or a <code>VertexArrayInfo</code> as returned from <code>module:twgl.createVertexArrayInfo</code></p>
+                <p>a <code>BufferInfo</code> as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.<br>
+or a <code>VertexArrayInfo</code> as returned from <code>module:twgl.createVertexArrayInfo</code></p>
                 
             </td>
         </tr>
@@ -3351,8 +3410,10 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
 
 <div class="description">
-    <p>Uploads the current uniform values to the corresponding WebGLBuffer<br>and binds that buffer to the program's corresponding bind point for the uniform block object.</p>
-<p>If you haven't changed any values and you only need to bind the uniform block object<br>call <a href="module-twgl.html#.bindUniformBlock"><code>module:twgl.bindUniformBlock</code></a> instead.</p>
+    <p>Uploads the current uniform values to the corresponding WebGLBuffer<br>
+and binds that buffer to the program's corresponding bind point for the uniform block object.</p>
+<p>If you haven't changed any values and you only need to bind the uniform block object<br>
+call <a href="module-twgl.html#.bindUniformBlock"><code>module:twgl.bindUniformBlock</code></a> instead.</p>
 </div>
 
 
@@ -3473,7 +3534,9 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
+                <p>a <code>ProgramInfo</code><br>
+as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>
+returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
                 
             </td>
         </tr>
@@ -3499,7 +3562,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>a <code>UniformBlockInfo</code> as returned from<br>    <a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
+                <p>a <code>UniformBlockInfo</code> as returned from<br>
+<a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
                 
             </td>
         </tr>
@@ -3539,7 +3603,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 <div class="description">
     <p>Set uniforms and binds related textures.</p>
 <p>example:</p>
-<pre class="prettyprint source"><code>const programInfo = createProgramInfo(
+<pre><code>const programInfo = createProgramInfo(
     gl, [&quot;some-vs&quot;, &quot;some-fs&quot;]);
 
 const tex1 = gl.createTexture();
@@ -3560,9 +3624,14 @@ const uniforms = {
   ],
 };
 
-gl.useProgram(program);</code></pre><p>This will automatically bind the textures AND set the<br>uniforms.</p>
-<pre class="prettyprint source"><code>twgl.setUniforms(programInfo, uniforms);</code></pre><p>For the example above it is equivalent to</p>
-<pre class="prettyprint source"><code>var texUnit = 0;
+gl.useProgram(program);
+</code></pre>
+<p>This will automatically bind the textures AND set the<br>
+uniforms.</p>
+<pre><code>twgl.setUniforms(programInfo, uniforms);
+</code></pre>
+<p>For the example above it is equivalent to</p>
+<pre><code>var texUnit = 0;
 gl.activeTexture(gl.TEXTURE0 + texUnit);
 gl.bindTexture(gl.TEXTURE_2D, tex1);
 gl.uniform1i(u_someSamplerLocation, texUnit++);
@@ -3576,8 +3645,10 @@ gl.uniformMatrix4fv(u_someMatrix, false, [
     0,1,0,0,
     0,0,1,0,
     0,0,0,0,
-  ]);</code></pre><p>Note it is perfectly reasonable to call <code>setUniforms</code> multiple times. For example</p>
-<pre class="prettyprint source"><code>const uniforms = {
+  ]);
+</code></pre>
+<p>Note it is perfectly reasonable to call <code>setUniforms</code> multiple times. For example</p>
+<pre><code>const uniforms = {
   u_someSampler: tex1,
   u_someOtherSampler: tex2,
 };
@@ -3594,13 +3665,18 @@ const moreUniforms {
 };
 
 twgl.setUniforms(programInfo, uniforms);
-twgl.setUniforms(programInfo, moreUniforms);</code></pre><p>You can also add WebGLSamplers to uniform samplers as in</p>
-<pre class="prettyprint source"><code>const uniforms = {
+twgl.setUniforms(programInfo, moreUniforms);
+</code></pre>
+<p>You can also add WebGLSamplers to uniform samplers as in</p>
+<pre><code>const uniforms = {
   u_someSampler: {
     texture: someWebGLTexture,
     sampler: someWebGLSampler,
   },
-};</code></pre><p>In which case both the sampler and texture will be bound to the<br>same unit.</p>
+};
+</code></pre>
+<p>In which case both the sampler and texture will be bound to the<br>
+same unit.</p>
 </div>
 
 
@@ -3695,7 +3771,8 @@ twgl.setUniforms(programInfo, moreUniforms);</code></pre><p>You can also add Web
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code> as returned from <code>createProgramInfo</code> or the setters returned from<br>       <code>createUniformSetters</code>.</p>
+                <p>a <code>ProgramInfo</code> as returned from <code>createProgramInfo</code> or the setters returned from<br>
+<code>createUniformSetters</code>.</p>
                 
             </td>
         </tr>
@@ -3721,8 +3798,10 @@ twgl.setUniforms(programInfo, moreUniforms);</code></pre><p>You can also add Web
             
 
             <td class="description last">
-                <p>an object with values for the<br>       uniforms.<br>  You can pass multiple objects by putting them in an array or by calling with more arguments.For example</p>
-<pre class="prettyprint source"><code>const sharedUniforms = {
+                <p>an object with values for the<br>
+uniforms.<br>
+You can pass multiple objects by putting them in an array or by calling with more arguments.For example</p>
+<pre><code>const sharedUniforms = {
   u_fogNear: 10,
   u_projection: ...
   ...
@@ -3863,7 +3942,7 @@ twgl.setUniforms(programInfo, localUniforms};</code></pre>
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

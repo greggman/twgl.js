@@ -52,7 +52,8 @@
     
         
             <div class="description"><p>Framebuffer related functions</p>
-<p>For backward compatibily they are available at both <code>twgl.framebuffer</code> and <code>twgl</code><br>itself</p>
+<p>For backward compatibily they are available at both <code>twgl.framebuffer</code> and <code>twgl</code><br>
+itself</p>
 <p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
         
 
@@ -157,9 +158,12 @@
 
 <div class="description">
     <p>Binds a framebuffer</p>
-<p>This function pretty much soley exists because I spent hours<br>trying to figure out why something I wrote wasn't working only<br>to realize I forget to set the viewport dimensions.<br>My hope is this function will fix that.</p>
+<p>This function pretty much soley exists because I spent hours<br>
+trying to figure out why something I wrote wasn't working only<br>
+to realize I forget to set the viewport dimensions.<br>
+My hope is this function will fix that.</p>
 <p>It is effectively the same as</p>
-<pre class="prettyprint source"><code>gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
+<pre><code>gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
 gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code></pre>
 </div>
 
@@ -298,7 +302,8 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
             
 
             <td class="description last">
-                <p>a framebufferInfo as returned from <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a>.<br>  If not passed will bind the canvas.</p>
+                <p>a framebufferInfo as returned from <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a>.<br>
+If not passed will bind the canvas.</p>
                 
             </td>
         </tr>
@@ -375,17 +380,24 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
     <p>Creates a framebuffer and attachments.</p>
 <p>This returns a <a href="module-twgl.html#.FramebufferInfo"><code>module:twgl.FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.</p>
 <p>The simplest usage</p>
-<pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
-const fbi = twgl.createFramebufferInfo(gl);</code></pre><p>More complex usage</p>
-<pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+<pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+const fbi = twgl.createFramebufferInfo(gl);
+</code></pre>
+<p>More complex usage</p>
+<pre><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
 const attachments = [
   { format: RGB565, mag: NEAREST },
   { format: STENCIL_INDEX8 },
 ]
-const fbi = twgl.createFramebufferInfo(gl, attachments);</code></pre><p>Passing in a specific size</p>
-<pre class="prettyprint source"><code>const width = 256;
+const fbi = twgl.createFramebufferInfo(gl, attachments);
+</code></pre>
+<p>Passing in a specific size</p>
+<pre><code>const width = 256;
 const height = 256;
-const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></pre><p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br><a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL only guarantees 3 combinations of attachments work</a>.</p>
+const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
+</code></pre>
+<p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br>
+<a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL1 only guarantees 3 combinations of attachments work</a>.</p>
 </div>
 
 
@@ -523,7 +535,8 @@ const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></
             
 
             <td class="description last">
-                <p>which attachments to create. If not provided the default is a framebuffer with an<br>   <code>RGBA</code>, <code>UNSIGNED_BYTE</code> texture <code>COLOR_ATTACHMENT0</code> and a <code>DEPTH_STENCIL</code> renderbuffer <code>DEPTH_STENCIL_ATTACHMENT</code>.</p>
+                <p>which attachments to create. If not provided the default is a framebuffer with an<br>
+<code>RGBA</code>, <code>UNSIGNED_BYTE</code> texture <code>COLOR_ATTACHMENT0</code> and a <code>DEPTH_STENCIL</code> renderbuffer <code>DEPTH_STENCIL_ATTACHMENT</code>.</p>
                 
             </td>
         </tr>
@@ -659,9 +672,10 @@ const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></
 
 <div class="description">
     <p>Resizes the attachments of a framebuffer.</p>
-<p>You need to pass in the same <code>attachments</code> as you passed in <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a><br>because TWGL has no idea the format/type of each attachment.</p>
+<p>You need to pass in the same <code>attachments</code> as you passed in <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a><br>
+because TWGL has no idea the format/type of each attachment.</p>
 <p>The simplest usage</p>
-<pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+<pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
 const fbi = twgl.createFramebufferInfo(gl);
 
 ...
@@ -670,8 +684,10 @@ function render() {
   if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
     // resize the attachments
     twgl.resizeFramebufferInfo(gl, fbi);
-  }</code></pre><p>More complex usage</p>
-<pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+  }
+</code></pre>
+<p>More complex usage</p>
+<pre><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
 const attachments = [
   { format: RGB565, mag: NEAREST },
   { format: STENCIL_INDEX8 },
@@ -971,7 +987,7 @@ function render() {
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

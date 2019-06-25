@@ -54,18 +54,29 @@
             <div class="description"><p>Various functions to make simple primitives</p>
 <p>note: Most primitive functions come in 3 styles</p>
 <ul>
-<li><p><code>createSomeShapeBufferInfo</code></p>
-<p>These functions are almost always the functions you want to call. They<br>create vertices then make WebGLBuffers and create <a href="module-twgl.html#.AttribInfo"><code>module:twgl.AttribInfo</code></a>s<br>returing a <a href="module-twgl.html#.BufferInfo"><code>module:twgl.BufferInfo</code></a> you can pass to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a><br>and <a href="module-twgl.html#.drawBufferInfo"><code>module:twgl.drawBufferInfo</code></a> etc...</p>
+<li>
+<p><code>createSomeShapeBufferInfo</code></p>
+<p>These functions are almost always the functions you want to call. They<br>
+create vertices then make WebGLBuffers and create <a href="module-twgl.html#.AttribInfo"><code>module:twgl.AttribInfo</code></a>s<br>
+returing a <a href="module-twgl.html#.BufferInfo"><code>module:twgl.BufferInfo</code></a> you can pass to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a><br>
+and <a href="module-twgl.html#.drawBufferInfo"><code>module:twgl.drawBufferInfo</code></a> etc...</p>
 </li>
-<li><p><code>createSomeShapeBuffers</code></p>
-<p>These create WebGLBuffers and put your data in them but nothing else.<br>It's a shortcut to doing it yourself if you don't want to use<br>the higher level functions.</p>
+<li>
+<p><code>createSomeShapeBuffers</code></p>
+<p>These create WebGLBuffers and put your data in them but nothing else.<br>
+It's a shortcut to doing it yourself if you don't want to use<br>
+the higher level functions.</p>
 </li>
-<li><p><code>createSomeShapeVertices</code></p>
-<p>These just create vertices, no buffers. This allows you to manipulate the vertices<br>or add more data before generating a <a href="module-twgl.html#.BufferInfo"><code>module:twgl.BufferInfo</code></a>. Once you're finished<br>manipulating the vertices call <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.</p>
+<li>
+<p><code>createSomeShapeVertices</code></p>
+<p>These just create vertices, no buffers. This allows you to manipulate the vertices<br>
+or add more data before generating a <a href="module-twgl.html#.BufferInfo"><code>module:twgl.BufferInfo</code></a>. Once you're finished<br>
+manipulating the vertices call <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.</p>
 <p>example:</p>
-<pre class="prettyprint source"><code>const arrays = twgl.primitives.createPlaneArrays(1);
+<pre><code>const arrays = twgl.primitives.createPlaneArrays(1);
 twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
-const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre></li>
+const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
+</li>
 </ul></div>
         
 
@@ -170,9 +181,12 @@ const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre></li
 
 <div class="description">
     <p>Concatinates sets of vertices</p>
-<p>Assumes the vertices match in composition. For example<br>if one set of vertices has positions, normals, and indices<br>all sets of vertices must have positions, normals, and indices<br>and of the same type.</p>
+<p>Assumes the vertices match in composition. For example<br>
+if one set of vertices has positions, normals, and indices<br>
+all sets of vertices must have positions, normals, and indices<br>
+and of the same type.</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code> const cubeVertices = twgl.primtiives.createCubeVertices(2);
+<pre><code> const cubeVertices = twgl.primtiives.createCubeVertices(2);
  const sphereVertices = twgl.primitives.createSphereVertices(1, 10, 10);
  // move the sphere 2 units up
  twgl.primitives.reorientVertices(
@@ -336,7 +350,9 @@ const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre></li
 
 
 <div class="description">
-    <p>Creates 3D 'F' BufferInfo.<br>An 'F' is useful because you can easily tell which way it is oriented.<br>The created 'F' has position, normal, texcoord, and color buffers.</p>
+    <p>Creates 3D 'F' BufferInfo.<br>
+An 'F' is useful because you can easily tell which way it is oriented.<br>
+The created 'F' has position, normal, texcoord, and color buffers.</p>
 </div>
 
 
@@ -491,7 +507,9 @@ const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre></li
 
 
 <div class="description">
-    <p>Creates 3D 'F' buffers.<br>An 'F' is useful because you can easily tell which way it is oriented.<br>The created 'F' has position, normal, texcoord, and color buffers.</p>
+    <p>Creates 3D 'F' buffers.<br>
+An 'F' is useful because you can easily tell which way it is oriented.<br>
+The created 'F' has position, normal, texcoord, and color buffers.</p>
 </div>
 
 
@@ -646,7 +664,9 @@ const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre></li
 
 
 <div class="description">
-    <p>Creates 3D 'F' vertices.<br>An 'F' is useful because you can easily tell which way it is oriented.<br>The created 'F' has position, normal, texcoord, and color arrays.</p>
+    <p>Creates 3D 'F' vertices.<br>
+An 'F' is useful because you can easily tell which way it is oriented.<br>
+The created 'F' has position, normal, texcoord, and color arrays.</p>
 </div>
 
 
@@ -749,13 +769,17 @@ const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre></li
 
 
 <div class="description">
-    <p>creates a typed array with a <code>push</code> function attached<br>so that you can easily <em>push</em> values.</p>
-<p><code>push</code> can take multiple arguments. If an argument is an array each element<br>of the array will be added to the typed array.</p>
+    <p>creates a typed array with a <code>push</code> function attached<br>
+so that you can easily <em>push</em> values.</p>
+<p><code>push</code> can take multiple arguments. If an argument is an array each element<br>
+of the array will be added to the typed array.</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>const array = createAugmentedTypedArray(3, 2);  // creates a Float32Array with 6 values
+<pre><code>const array = createAugmentedTypedArray(3, 2);  // creates a Float32Array with 6 values
 array.push(1, 2, 3);
 array.push([4, 5, 6]);
-// array now contains [1, 2, 3, 4, 5, 6]</code></pre><p>Also has <code>numComponents</code> and <code>numElements</code> properties.</p>
+// array now contains [1, 2, 3, 4, 5, 6]
+</code></pre>
+<p>Also has <code>numComponents</code> and <code>numElements</code> properties.</p>
 </div>
 
 
@@ -2721,7 +2745,8 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates cylinder BufferInfo. The cylinder will be created around the origin<br>along the y-axis.</p>
+    <p>Creates cylinder BufferInfo. The cylinder will be created around the origin<br>
+along the y-axis.</p>
 </div>
 
 
@@ -3094,7 +3119,8 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates cylinder buffers. The cylinder will be created around the origin<br>along the y-axis.</p>
+    <p>Creates cylinder buffers. The cylinder will be created around the origin<br>
+along the y-axis.</p>
 </div>
 
 
@@ -3467,7 +3493,8 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates cylinder vertices. The cylinder will be created around the origin<br>along the y-axis.</p>
+    <p>Creates cylinder vertices. The cylinder will be created around the origin<br>
+along the y-axis.</p>
 </div>
 
 
@@ -3806,7 +3833,21 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates a disc BufferInfo. The disc will be in the xz plane, centered at<br>the origin. When creating, at least 3 divisions, or pie<br>pieces, need to be specified, otherwise the triangles making<br>up the disc will be degenerate. You can also specify the<br>number of radial pieces <code>stacks</code>. A value of 1 for<br>stacks will give you a simple disc of pie pieces.  If you<br>want to create an annulus you can set <code>innerRadius</code> to a<br>value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths<br>increase or decrease as you move away from the center. This<br>is particularly useful when using the disc as a ground plane<br>with a fixed camera such that you don't need the resolution<br>of small triangles near the perimeter. For example, a value<br>of 2 will produce stacks whose ouside radius increases with<br>the square of the stack index. A value of 1 will give uniform<br>stacks.</p>
+    <p>Creates a disc BufferInfo. The disc will be in the xz plane, centered at<br>
+the origin. When creating, at least 3 divisions, or pie<br>
+pieces, need to be specified, otherwise the triangles making<br>
+up the disc will be degenerate. You can also specify the<br>
+number of radial pieces <code>stacks</code>. A value of 1 for<br>
+stacks will give you a simple disc of pie pieces.  If you<br>
+want to create an annulus you can set <code>innerRadius</code> to a<br>
+value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths<br>
+increase or decrease as you move away from the center. This<br>
+is particularly useful when using the disc as a ground plane<br>
+with a fixed camera such that you don't need the resolution<br>
+of small triangles near the perimeter. For example, a value<br>
+of 2 will produce stacks whose ouside radius increases with<br>
+the square of the stack index. A value of 1 will give uniform<br>
+stacks.</p>
 </div>
 
 
@@ -4147,7 +4188,21 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates disc buffers. The disc will be in the xz plane, centered at<br>the origin. When creating, at least 3 divisions, or pie<br>pieces, need to be specified, otherwise the triangles making<br>up the disc will be degenerate. You can also specify the<br>number of radial pieces <code>stacks</code>. A value of 1 for<br>stacks will give you a simple disc of pie pieces.  If you<br>want to create an annulus you can set <code>innerRadius</code> to a<br>value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths<br>increase or decrease as you move away from the center. This<br>is particularly useful when using the disc as a ground plane<br>with a fixed camera such that you don't need the resolution<br>of small triangles near the perimeter. For example, a value<br>of 2 will produce stacks whose ouside radius increases with<br>the square of the stack index. A value of 1 will give uniform<br>stacks.</p>
+    <p>Creates disc buffers. The disc will be in the xz plane, centered at<br>
+the origin. When creating, at least 3 divisions, or pie<br>
+pieces, need to be specified, otherwise the triangles making<br>
+up the disc will be degenerate. You can also specify the<br>
+number of radial pieces <code>stacks</code>. A value of 1 for<br>
+stacks will give you a simple disc of pie pieces.  If you<br>
+want to create an annulus you can set <code>innerRadius</code> to a<br>
+value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths<br>
+increase or decrease as you move away from the center. This<br>
+is particularly useful when using the disc as a ground plane<br>
+with a fixed camera such that you don't need the resolution<br>
+of small triangles near the perimeter. For example, a value<br>
+of 2 will produce stacks whose ouside radius increases with<br>
+the square of the stack index. A value of 1 will give uniform<br>
+stacks.</p>
 </div>
 
 
@@ -4488,7 +4543,21 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates disc vertices. The disc will be in the xz plane, centered at<br>the origin. When creating, at least 3 divisions, or pie<br>pieces, need to be specified, otherwise the triangles making<br>up the disc will be degenerate. You can also specify the<br>number of radial pieces <code>stacks</code>. A value of 1 for<br>stacks will give you a simple disc of pie pieces.  If you<br>want to create an annulus you can set <code>innerRadius</code> to a<br>value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths<br>increase or decrease as you move away from the center. This<br>is particularly useful when using the disc as a ground plane<br>with a fixed camera such that you don't need the resolution<br>of small triangles near the perimeter. For example, a value<br>of 2 will produce stacks whose ouside radius increases with<br>the square of the stack index. A value of 1 will give uniform<br>stacks.</p>
+    <p>Creates disc vertices. The disc will be in the xz plane, centered at<br>
+the origin. When creating, at least 3 divisions, or pie<br>
+pieces, need to be specified, otherwise the triangles making<br>
+up the disc will be degenerate. You can also specify the<br>
+number of radial pieces <code>stacks</code>. A value of 1 for<br>
+stacks will give you a simple disc of pie pieces.  If you<br>
+want to create an annulus you can set <code>innerRadius</code> to a<br>
+value &gt; 0. Finally, <code>stackPower</code> allows you to have the widths<br>
+increase or decrease as you move away from the center. This<br>
+is particularly useful when using the disc as a ground plane<br>
+with a fixed camera such that you don't need the resolution<br>
+of small triangles near the perimeter. For example, a value<br>
+of 2 will produce stacks whose ouside radius increases with<br>
+the square of the stack index. A value of 1 will give uniform<br>
+stacks.</p>
 </div>
 
 
@@ -6040,7 +6109,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to start the<br>    top of the sphere. Default = 0.</p>
+                <p>where to start the<br>
+top of the sphere. Default = 0.</p>
                 
             </td>
         </tr>
@@ -6076,7 +6146,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>Where to end the<br>    bottom of the sphere. Default = Math.PI.</p>
+                <p>Where to end the<br>
+bottom of the sphere. Default = Math.PI.</p>
                 
             </td>
         </tr>
@@ -6112,7 +6183,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to start<br>    wrapping the sphere. Default = 0.</p>
+                <p>where to start<br>
+wrapping the sphere. Default = 0.</p>
                 
             </td>
         </tr>
@@ -6148,7 +6220,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to end<br>    wrapping the sphere. Default = 2 * Math.PI.</p>
+                <p>where to end<br>
+wrapping the sphere. Default = 2 * Math.PI.</p>
                 
             </td>
         </tr>
@@ -6452,7 +6525,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to start the<br>    top of the sphere. Default = 0.</p>
+                <p>where to start the<br>
+top of the sphere. Default = 0.</p>
                 
             </td>
         </tr>
@@ -6488,7 +6562,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>Where to end the<br>    bottom of the sphere. Default = Math.PI.</p>
+                <p>Where to end the<br>
+bottom of the sphere. Default = Math.PI.</p>
                 
             </td>
         </tr>
@@ -6524,7 +6599,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to start<br>    wrapping the sphere. Default = 0.</p>
+                <p>where to start<br>
+wrapping the sphere. Default = 0.</p>
                 
             </td>
         </tr>
@@ -6560,7 +6636,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to end<br>    wrapping the sphere. Default = 2 * Math.PI.</p>
+                <p>where to end<br>
+wrapping the sphere. Default = 2 * Math.PI.</p>
                 
             </td>
         </tr>
@@ -6830,7 +6907,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to start the<br>    top of the sphere. Default = 0.</p>
+                <p>where to start the<br>
+top of the sphere. Default = 0.</p>
                 
             </td>
         </tr>
@@ -6866,7 +6944,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>Where to end the<br>    bottom of the sphere. Default = Math.PI.</p>
+                <p>Where to end the<br>
+bottom of the sphere. Default = Math.PI.</p>
                 
             </td>
         </tr>
@@ -6902,7 +6981,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to start<br>    wrapping the sphere. Default = 0.</p>
+                <p>where to start<br>
+wrapping the sphere. Default = 0.</p>
                 
             </td>
         </tr>
@@ -6938,7 +7018,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>where to end<br>    wrapping the sphere. Default = 2 * Math.PI.</p>
+                <p>where to end<br>
+wrapping the sphere. Default = 2 * Math.PI.</p>
                 
             </td>
         </tr>
@@ -8086,7 +8167,11 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates a BufferInfo for a truncated cone, which is like a cylinder<br>except that it has different top and bottom radii. A truncated cone<br>can also be used to create cylinders and regular cones. The<br>truncated cone will be created centered about the origin, with the<br>y axis as its vertical axis.</p>
+    <p>Creates a BufferInfo for a truncated cone, which is like a cylinder<br>
+except that it has different top and bottom radii. A truncated cone<br>
+can also be used to create cylinders and regular cones. The<br>
+truncated cone will be created centered about the origin, with the<br>
+y axis as its vertical axis.</p>
 </div>
 
 
@@ -8324,7 +8409,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>The number of subdivisions around the<br>    truncated cone.</p>
+                <p>The number of subdivisions around the<br>
+truncated cone.</p>
                 
             </td>
         </tr>
@@ -8358,7 +8444,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>The number of subdivisions down the<br>    truncated cone.</p>
+                <p>The number of subdivisions down the<br>
+truncated cone.</p>
                 
             </td>
         </tr>
@@ -8493,7 +8580,11 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates buffers for a truncated cone, which is like a cylinder<br>except that it has different top and bottom radii. A truncated cone<br>can also be used to create cylinders and regular cones. The<br>truncated cone will be created centered about the origin, with the<br>y axis as its vertical axis.</p>
+    <p>Creates buffers for a truncated cone, which is like a cylinder<br>
+except that it has different top and bottom radii. A truncated cone<br>
+can also be used to create cylinders and regular cones. The<br>
+truncated cone will be created centered about the origin, with the<br>
+y axis as its vertical axis.</p>
 </div>
 
 
@@ -8731,7 +8822,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>The number of subdivisions around the<br>    truncated cone.</p>
+                <p>The number of subdivisions around the<br>
+truncated cone.</p>
                 
             </td>
         </tr>
@@ -8765,7 +8857,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>The number of subdivisions down the<br>    truncated cone.</p>
+                <p>The number of subdivisions down the<br>
+truncated cone.</p>
                 
             </td>
         </tr>
@@ -8900,7 +8993,11 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates vertices for a truncated cone, which is like a cylinder<br>except that it has different top and bottom radii. A truncated cone<br>can also be used to create cylinders and regular cones. The<br>truncated cone will be created centered about the origin, with the<br>y axis as its vertical axis. .</p>
+    <p>Creates vertices for a truncated cone, which is like a cylinder<br>
+except that it has different top and bottom radii. A truncated cone<br>
+can also be used to create cylinders and regular cones. The<br>
+truncated cone will be created centered about the origin, with the<br>
+y axis as its vertical axis. .</p>
 </div>
 
 
@@ -9104,7 +9201,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>The number of subdivisions around the<br>    truncated cone.</p>
+                <p>The number of subdivisions around the<br>
+truncated cone.</p>
                 
             </td>
         </tr>
@@ -9138,7 +9236,8 @@ array.push([4, 5, 6]);
             
 
             <td class="description last">
-                <p>The number of subdivisions down the<br>    truncated cone.</p>
+                <p>The number of subdivisions down the<br>
+truncated cone.</p>
                 
             </td>
         </tr>
@@ -9274,9 +9373,12 @@ array.push([4, 5, 6]);
 
 <div class="description">
     <p>Creates XY quad BufferInfo</p>
-<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
-<pre class="prettyprint source"><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);</code></pre><p>If you want a unit quad centered above 0,0 you'd call it with</p>
-<pre class="prettyprint source"><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);
+</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
 </div>
 
 
@@ -9550,9 +9652,12 @@ array.push([4, 5, 6]);
 
 <div class="description">
     <p>Creates XY quad Buffers</p>
-<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
-<pre class="prettyprint source"><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);</code></pre><p>If you want a unit quad centered above 0,0 you'd call it with</p>
-<pre class="prettyprint source"><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);
+</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
 </div>
 
 
@@ -9826,9 +9931,12 @@ array.push([4, 5, 6]);
 
 <div class="description">
     <p>Creates XY quad vertices</p>
-<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
-<pre class="prettyprint source"><code>twgl.primitives.createXYQuadVertices(1, 0.5, 0.5);</code></pre><p>If you want a unit quad centered above 0,0 you'd call it with</p>
-<pre class="prettyprint source"><code>twgl.primitives.createXYQuadVertices(1, 0, 0.5);</code></pre>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadVertices(1, 0.5, 0.5);
+</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadVertices(1, 0, 0.5);</code></pre>
 </div>
 
 
@@ -10223,7 +10331,8 @@ array.push([4, 5, 6]);
 
 <div class="description">
     <p>Creates a duplicate set of vertices</p>
-<p>This is useful for calling reorientVertices when you<br>also want to keep the original available</p>
+<p>This is useful for calling reorientVertices when you<br>
+also want to keep the original available</p>
 </div>
 
 
@@ -10533,7 +10642,10 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Creates an augmentedTypedArray of random vertex colors.<br>If the vertices are indexed (have an indices array) then will<br>just make random colors. Otherwise assumes they are triangles<br>and makes one random color for every 3 vertices.</p>
+    <p>Creates an augmentedTypedArray of random vertex colors.<br>
+If the vertices are indexed (have an indices array) then will<br>
+just make random colors. Otherwise assumes they are triangles<br>
+and makes one random color for every 3 vertices.</p>
 </div>
 
 
@@ -10921,7 +11033,8 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Reorients normals by the inverse-transpose of the given<br>matrix..</p>
+    <p>Reorients normals by the inverse-transpose of the given<br>
+matrix..</p>
 </div>
 
 
@@ -11108,7 +11221,8 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Reorients positions by the given matrix. In other words, it<br>multiplies each vertex by the given matrix.</p>
+    <p>Reorients positions by the given matrix. In other words, it<br>
+multiplies each vertex by the given matrix.</p>
 </div>
 
 
@@ -11295,7 +11409,9 @@ array.push([4, 5, 6]);
 
 
 <div class="description">
-    <p>Reorients arrays by the given matrix. Assumes arrays have<br>names that contains 'pos' could be reoriented as positions,<br>'binorm' or 'tan' as directions, and 'norm' as normals.</p>
+    <p>Reorients arrays by the given matrix. Assumes arrays have<br>
+names that contains 'pos' could be reoriented as positions,<br>
+'binorm' or 'tan' as directions, and 'norm' as normals.</p>
 </div>
 
 
@@ -11979,7 +12095,7 @@ array.push([4, 5, 6]);
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

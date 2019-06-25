@@ -52,12 +52,18 @@
     
         
             <div class="description"><p>Vec3 math math functions.</p>
-<p>Almost all functions take an optional <code>dst</code> argument. If it is not passed in the<br>functions will create a new Vec3. In other words you can do this</p>
-<pre class="prettyprint source"><code>var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.</code></pre><p>or</p>
-<pre class="prettyprint source"><code>var v3 = v3.create();
-v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>The first style is often easier but depending on where it's used it generates garbage where<br>as there is almost never allocation with the second style.</p>
+<p>Almost all functions take an optional <code>dst</code> argument. If it is not passed in the<br>
+functions will create a new Vec3. In other words you can do this</p>
+<pre><code>var v = v3.cross(v1, v2);  // Creates a new Vec3 with the cross product of v1 x v2.
+</code></pre>
+<p>or</p>
+<pre><code>var v3 = v3.create();
+v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v
+</code></pre>
+<p>The first style is often easier but depending on where it's used it generates garbage where<br>
+as there is almost never allocation with the second style.</p>
 <p>It is always save to pass any vector as the destination. So for example</p>
-<pre class="prettyprint source"><code>v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1</code></pre></div>
+<pre><code>v3.cross(v1, v2, v1);  // Puts the cross product of v1 x v2 in v1</code></pre></div>
         
 
         
@@ -699,7 +705,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Computes the cross product of two vectors; assumes both vectors have<br>three entries.</p>
+    <p>Computes the cross product of two vectors; assumes both vectors have<br>
+three entries.</p>
 </div>
 
 
@@ -1296,7 +1303,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Divides a vector by another vector (component-wise); assumes a and<br>b have the same length.</p>
+    <p>Divides a vector by another vector (component-wise); assumes a and<br>
+b have the same length.</p>
 </div>
 
 
@@ -1509,7 +1517,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="param-desc">
-    <p>The vector of quotients of entries of a and<br>    b.</p>
+    <p>The vector of quotients of entries of a and<br>
+b.</p>
 </div>
 
     
@@ -1766,7 +1775,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Computes the dot product of two vectors; assumes both vectors have<br>three entries.</p>
+    <p>Computes the dot product of two vectors; assumes both vectors have<br>
+three entries.</p>
 </div>
 
 
@@ -2257,7 +2267,9 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Performs linear interpolation on two vectors.<br>Given vectors a and b and interpolation coefficient t, returns<br>a + t * (b - a).</p>
+    <p>Performs linear interpolation on two vectors.<br>
+Given vectors a and b and interpolation coefficient t, returns<br>
+a + t * (b - a).</p>
 </div>
 
 
@@ -2526,7 +2538,9 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Performs linear interpolation on two vectors.<br>Given vectors a and b and interpolation coefficient vector t, returns<br>a + t * (b - a).</p>
+    <p>Performs linear interpolation on two vectors.<br>
+Given vectors a and b and interpolation coefficient vector t, returns<br>
+a + t * (b - a).</p>
 </div>
 
 
@@ -2795,7 +2809,9 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Return max values of two vectors.<br>Given vectors a and b returns<br>[max(a[0], b[0]), max(a[1], b[1]), max(a[2], b[2])].</p>
+    <p>Return max values of two vectors.<br>
+Given vectors a and b returns<br>
+[max(a[0], b[0]), max(a[1], b[1]), max(a[2], b[2])].</p>
 </div>
 
 
@@ -3030,7 +3046,9 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Return min values of two vectors.<br>Given vectors a and b returns<br>[min(a[0], b[0]), min(a[1], b[1]), min(a[2], b[2])].</p>
+    <p>Return min values of two vectors.<br>
+Given vectors a and b returns<br>
+[min(a[0], b[0]), min(a[1], b[1]), min(a[2], b[2])].</p>
 </div>
 
 
@@ -3500,7 +3518,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>Multiplies a vector by another vector (component-wise); assumes a and<br>b have the same length.</p>
+    <p>Multiplies a vector by another vector (component-wise); assumes a and<br>
+b have the same length.</p>
 </div>
 
 
@@ -3713,7 +3732,8 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="param-desc">
-    <p>The vector of products of entries of a and<br>    b.</p>
+    <p>The vector of products of entries of a and<br>
+b.</p>
 </div>
 
     
@@ -4529,7 +4549,9 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 
 
 <div class="description">
-    <p>A JavaScript array with 3 values or a Float32Array with 3 values.<br>When created by the library will create the default type which is <code>Float32Array</code><br>but can be set by calling <a href="module-twgl_v3.html#.setDefaultType"><code>module:twgl/v3.setDefaultType</code></a>.</p>
+    <p>A JavaScript array with 3 values or a Float32Array with 3 values.<br>
+When created by the library will create the default type which is <code>Float32Array</code><br>
+but can be set by calling <a href="module-twgl_v3.html#.setDefaultType"><code>module:twgl/v3.setDefaultType</code></a>.</p>
 </div>
 
 
@@ -4608,7 +4630,7 @@ v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v</code></pre><p>T
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

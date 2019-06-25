@@ -52,7 +52,8 @@
     
         
             <div class="description"><p>The main TWGL module.</p>
-<p>For most use cases you shouldn't need anything outside this module.<br>Exceptions between the stuff added to twgl-full (v3, m4, primitives)</p></div>
+<p>For most use cases you shouldn't need anything outside this module.<br>
+Exceptions between the stuff added to twgl-full (v3, m4, primitives)</p></div>
         
 
         
@@ -155,8 +156,10 @@
 
 
 <div class="description">
-    <p>Attempts to enable all of the following extensions<br>and add their functions and constants to the<br><code>WebGLRenderingContext</code> using their normal non-extension like names.</p>
-<pre class="prettyprint source"><code> ANGLE_instanced_arrays
+    <p>Attempts to enable all of the following extensions<br>
+and add their functions and constants to the<br>
+<code>WebGLRenderingContext</code> using their normal non-extension like names.</p>
+<pre><code> ANGLE_instanced_arrays
  EXT_blend_minmax
  EXT_color_buffer_float
  EXT_color_buffer_half_float
@@ -180,9 +183,19 @@
  WEBGL_compressed_texture_s3tc
  WEBGL_compressed_texture_s3tc_srgb
  WEBGL_depth_texture
- WEBGL_draw_buffers</code></pre><p>For example if <code>ANGLE_instanced_arrays</code> exists then the functions<br><code>drawArraysInstanced</code>, <code>drawElementsInstanced</code>, <code>vertexAttribDivisor</code><br>and the constant <code>VERTEX_ATTRIB_ARRAY_DIVISOR</code> are added to the<br><code>WebGLRenderingContext</code>.</p>
-<p>Note that if you want to know if the extension exists you should<br>probably call <code>gl.getExtension</code> for each extension. Alternatively<br>you can check for the existance of the functions or constants that<br>are expected to be added. For example</p>
-<p>   if (gl.drawBuffers) {<br>     // Either WEBGL_draw_buffers was enabled OR you're running in WebGL2<br>     ....</p>
+ WEBGL_draw_buffers
+</code></pre>
+<p>For example if <code>ANGLE_instanced_arrays</code> exists then the functions<br>
+<code>drawArraysInstanced</code>, <code>drawElementsInstanced</code>, <code>vertexAttribDivisor</code><br>
+and the constant <code>VERTEX_ATTRIB_ARRAY_DIVISOR</code> are added to the<br>
+<code>WebGLRenderingContext</code>.</p>
+<p>Note that if you want to know if the extension exists you should<br>
+probably call <code>gl.getExtension</code> for each extension. Alternatively<br>
+you can check for the existance of the functions or constants that<br>
+are expected to be added. For example</p>
+<p>if (gl.drawBuffers) {<br>
+// Either WEBGL_draw_buffers was enabled OR you're running in WebGL2<br>
+....</p>
 </div>
 
 
@@ -313,9 +326,12 @@
 
 <div class="description">
     <p>Binds a framebuffer</p>
-<p>This function pretty much soley exists because I spent hours<br>trying to figure out why something I wrote wasn't working only<br>to realize I forget to set the viewport dimensions.<br>My hope is this function will fix that.</p>
+<p>This function pretty much soley exists because I spent hours<br>
+trying to figure out why something I wrote wasn't working only<br>
+to realize I forget to set the viewport dimensions.<br>
+My hope is this function will fix that.</p>
 <p>It is effectively the same as</p>
-<pre class="prettyprint source"><code>gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
+<pre><code>gl.bindFramebuffer(gl.FRAMEBUFFER, someFramebufferInfo.framebuffer);
 gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code></pre>
 </div>
 
@@ -454,7 +470,8 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
             
 
             <td class="description last">
-                <p>a framebufferInfo as returned from <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a>.<br>  If not passed will bind the canvas.</p>
+                <p>a framebufferInfo as returned from <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a>.<br>
+If not passed will bind the canvas.</p>
                 
             </td>
         </tr>
@@ -744,8 +761,11 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
 
 <div class="description">
-    <p>Binds a unform block to the matching uniform block point.<br>Matches by blocks by name so blocks must have the same name not just the same<br>structure.</p>
-<p>If you have changed any values and you upload the valus into the corresponding WebGLBuffer<br>call <a href="module-twgl.html#.setUniformBlock"><code>module:twgl.setUniformBlock</code></a> instead.</p>
+    <p>Binds a unform block to the matching uniform block point.<br>
+Matches by blocks by name so blocks must have the same name not just the same<br>
+structure.</p>
+<p>If you have changed any values and you upload the valus into the corresponding WebGLBuffer<br>
+call <a href="module-twgl.html#.setUniformBlock"><code>module:twgl.setUniformBlock</code></a> instead.</p>
 </div>
 
 
@@ -866,7 +886,9 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
+                <p>a <code>ProgramInfo</code><br>
+as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>
+returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
                 
             </td>
         </tr>
@@ -892,7 +914,8 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
             
 
             <td class="description last">
-                <p>a <code>UniformBlockInfo</code> as returned from<br>    <a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
+                <p>a <code>UniformBlockInfo</code> as returned from<br>
+<a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
                 
             </td>
         </tr>
@@ -933,7 +956,8 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
 
 <div class="param-desc">
-    <p>true if buffer was bound. If the programInfo has no block with the same block name<br>    no buffer is bound.</p>
+    <p>true if buffer was bound. If the programInfo has no block with the same block name<br>
+no buffer is bound.</p>
 </div>
 
     
@@ -956,15 +980,18 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
 
 <div class="description">
     <p>Creates a BufferInfo from an object of arrays.</p>
-<p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br><code>module:twgl:drawBufferInfo</code>.</p>
+<p>This can be passed to <a href="module-twgl.html#.setBuffersAndAttributes"><code>module:twgl.setBuffersAndAttributes</code></a> and to<br>
+<code>module:twgl:drawBufferInfo</code>.</p>
 <p>Given an object like</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
   position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
   texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
   normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
   indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],                       },
-};</code></pre><p> Creates an BufferInfo like this</p>
-<pre class="prettyprint source"><code>bufferInfo = {
+};
+</code></pre>
+<p>Creates an BufferInfo like this</p>
+<pre><code>bufferInfo = {
   numElements: 4,        // or whatever the number of elements is
   indices: WebGLBuffer,  // this property will not exist if there are no indices
   attribs: {
@@ -972,20 +999,27 @@ gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);</code>
     a_normal:   { buffer: WebGLBuffer, numComponents: 3, },
     a_texcoord: { buffer: WebGLBuffer, numComponents: 2, },
   },
-};</code></pre><p> The properties of arrays can be JavaScript arrays in which case the number of components<br> will be guessed.</p>
-<pre class="prettyprint source"><code>var arrays = {
+};
+</code></pre>
+<p>The properties of arrays can be JavaScript arrays in which case the number of components<br>
+will be guessed.</p>
+<pre><code>var arrays = {
    position: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0],
    texcoord: [0, 0, 0, 1, 1, 0, 1, 1],
    normal:   [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
    indices:  [0, 1, 2, 1, 2, 3],
-};</code></pre><p> They can also by TypedArrays</p>
-<pre class="prettyprint source"><code>var arrays = {
+};
+</code></pre>
+<p>They can also by TypedArrays</p>
+<pre><code>var arrays = {
    position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
    texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
    normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
    indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
-};</code></pre><p> Or augmentedTypedArrays</p>
-<pre class="prettyprint source"><code>var positions = createAugmentedTypedArray(3, 4);
+};
+</code></pre>
+<p>Or augmentedTypedArrays</p>
+<pre><code>var positions = createAugmentedTypedArray(3, 4);
 var texcoords = createAugmentedTypedArray(2, 4);
 var normals   = createAugmentedTypedArray(3, 4);
 var indices   = createAugmentedTypedArray(3, 2, Uint16Array);
@@ -1000,8 +1034,10 @@ var arrays = {
    texcoord: texcoords,
    normal:   normals,
    indices:  indices,
-};</code></pre><p>For the last example it is equivalent to</p>
-<pre class="prettyprint source"><code>var bufferInfo = {
+};
+</code></pre>
+<p>For the last example it is equivalent to</p>
+<pre><code>var bufferInfo = {
   attribs: {
     a_position: { numComponents: 3, buffer: gl.createBuffer(), },
     a_texcoods: { numComponents: 2, buffer: gl.createBuffer(), },
@@ -1190,7 +1226,11 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
             
 
             <td class="description last">
-                <p>An existing<br>       buffer info to start from. WebGLBuffers etc specified<br>       in the srcBufferInfo will be used in a new BufferInfo<br>       with any arrays specfied overriding the ones in<br>       srcBufferInfo.</p>
+                <p>An existing<br>
+buffer info to start from. WebGLBuffers etc specified<br>
+in the srcBufferInfo will be used in a new BufferInfo<br>
+with any arrays specfied overriding the ones in<br>
+srcBufferInfo.</p>
                 
             </td>
         </tr>
@@ -1256,17 +1296,24 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></
     <p>Creates a framebuffer and attachments.</p>
 <p>This returns a <a href="module-twgl.html#.FramebufferInfo"><code>module:twgl.FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.</p>
 <p>The simplest usage</p>
-<pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
-const fbi = twgl.createFramebufferInfo(gl);</code></pre><p>More complex usage</p>
-<pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+<pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+const fbi = twgl.createFramebufferInfo(gl);
+</code></pre>
+<p>More complex usage</p>
+<pre><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
 const attachments = [
   { format: RGB565, mag: NEAREST },
   { format: STENCIL_INDEX8 },
 ]
-const fbi = twgl.createFramebufferInfo(gl, attachments);</code></pre><p>Passing in a specific size</p>
-<pre class="prettyprint source"><code>const width = 256;
+const fbi = twgl.createFramebufferInfo(gl, attachments);
+</code></pre>
+<p>Passing in a specific size</p>
+<pre><code>const width = 256;
 const height = 256;
-const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></pre><p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br><a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL only guarantees 3 combinations of attachments work</a>.</p>
+const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
+</code></pre>
+<p><strong>Note!!</strong> It is up to you to check if the framebuffer is renderable by calling <code>gl.checkFramebufferStatus</code>.<br>
+<a href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#6.6">WebGL1 only guarantees 3 combinations of attachments work</a>.</p>
 </div>
 
 
@@ -1404,7 +1451,8 @@ const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></
             
 
             <td class="description last">
-                <p>which attachments to create. If not provided the default is a framebuffer with an<br>   <code>RGBA</code>, <code>UNSIGNED_BYTE</code> texture <code>COLOR_ATTACHMENT0</code> and a <code>DEPTH_STENCIL</code> renderbuffer <code>DEPTH_STENCIL_ATTACHMENT</code>.</p>
+                <p>which attachments to create. If not provided the default is a framebuffer with an<br>
+<code>RGBA</code>, <code>UNSIGNED_BYTE</code> texture <code>COLOR_ATTACHMENT0</code> and a <code>DEPTH_STENCIL</code> renderbuffer <code>DEPTH_STENCIL_ATTACHMENT</code>.</p>
                 
             </td>
         </tr>
@@ -1541,12 +1589,14 @@ const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);</code></
 <div class="description">
     <p>Creates a ProgramInfo from 2 sources.</p>
 <p>A ProgramInfo contains</p>
-<pre class="prettyprint source"><code>programInfo = {
+<pre><code>programInfo = {
    program: WebGLProgram,
    uniformSetters: object of setters as returned from createUniformSetters,
    attribSetters: object of setters as returned from createAttribSetters,
-}</code></pre><p>NOTE: There are 4 signatures for this function</p>
-<pre class="prettyprint source"><code>twgl.createProgramInfo(gl, [vs, fs], options);
+}
+</code></pre>
+<p>NOTE: There are 4 signatures for this function</p>
+<pre><code>twgl.createProgramInfo(gl, [vs, fs], options);
 twgl.createProgramInfo(gl, [vs, fs], opt_errFunc);
 twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_errFunc);
 twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code></pre>
@@ -1651,7 +1701,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>The WebGLRenderingContext<br>       to use.</p>
+                <p>The WebGLRenderingContext<br>
+to use.</p>
                 
             </td>
         </tr>
@@ -1685,7 +1736,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>Array of sources for the<br>       shaders or ids. The first is assumed to be the vertex shader,<br>       the second the fragment shader.</p>
+                <p>Array of sources for the<br>
+shaders or ids. The first is assumed to be the vertex shader,<br>
+the second the fragment shader.</p>
                 
             </td>
         </tr>
@@ -1799,7 +1852,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>callback for errors. By default it just prints an error to the console<br>       on error. If you want something else pass an callback. It's passed an error message.</p>
+                <p>callback for errors. By default it just prints an error to the console<br>
+on error. If you want something else pass an callback. It's passed an error message.</p>
                 
             </td>
         </tr>
@@ -2101,7 +2155,7 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 <div class="description">
     <p>Creates a bunch of textures based on the passed in options.</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>const textures = twgl.createTextures(gl, {
+<pre><code>const textures = twgl.createTextures(gl, {
   // a power of 2 image
   hftIcon: { src: &quot;images/hft-icon-16.png&quot;, mag: gl.NEAREST },
   // a non-power of 2 image
@@ -2153,7 +2207,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
     ]),
     width: 1,
   },
-});</code></pre><p>Now</p>
+});
+</code></pre>
+<p>Now</p>
 <ul>
 <li><code>textures.hftIcon</code> will be a 2d texture</li>
 <li><code>textures.clover</code> will be a 2d texture</li>
@@ -2813,7 +2869,11 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Creates a <code>UniformBlockInfo</code> for the specified block</p>
-<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br><code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>it is common to comment out large portions of a shader or for example set<br>the final output to a constant. When that happens blocks get optimized out.<br>If this function did not create dummy blocks your code would crash when debugging.</p>
+<p>Note: <strong>If the blockName matches no existing blocks a warning is printed to the console and a dummy<br>
+<code>UniformBlockInfo</code> is returned</strong>. This is because when debugging GLSL<br>
+it is common to comment out large portions of a shader or for example set<br>
+the final output to a constant. When that happens blocks get optimized out.<br>
+If this function did not create dummy blocks your code would crash when debugging.</p>
 </div>
 
 
@@ -2931,7 +2991,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a></p>
+                <p>a <code>ProgramInfo</code><br>
+as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a></p>
                 
             </td>
         </tr>
@@ -3021,7 +3082,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Calls <code>gl.drawElements</code> or <code>gl.drawArrays</code>, whichever is appropriate</p>
-<p>normally you'd call <code>gl.drawElements</code> or <code>gl.drawArrays</code> yourself<br>but calling this means if you switch from indexed data to non-indexed<br>data you don't have to remember to update your draw call.</p>
+<p>normally you'd call <code>gl.drawElements</code> or <code>gl.drawArrays</code> yourself<br>
+but calling this means if you switch from indexed data to non-indexed<br>
+data you don't have to remember to update your draw call.</p>
 </div>
 
 
@@ -3160,7 +3223,8 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
             
 
             <td class="description last">
-                <p>A BufferInfo as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> or<br>  a VertexArrayInfo as returned from <code>module:twgl.createVertexArrayInfo</code></p>
+                <p>A BufferInfo as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> or<br>
+a VertexArrayInfo as returned from <code>module:twgl.createVertexArrayInfo</code></p>
                 
             </td>
         </tr>
@@ -3500,8 +3564,12 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 <div class="description">
     <p>Gets a WebGL context.  Will create a WebGL2 context if possible.</p>
 <p>You can check if it's WebGL2 with</p>
-<p>   function isWebGL2(gl) {<br>     return gl.getParameter(gl.VERSION).indexOf(&quot;WebGL 2.0 &quot;) == 0;<br>   }</p>
-<p>Note: For a WebGL1 context will attempt to enable Vertex Array Objects<br>and add WebGL2 entry points. (unless you first set defaults with<br><code>twgl.setDefaults({enableVertexArrayObjects: false})</code>;</p>
+<p>function isWebGL2(gl) {<br>
+return gl.getParameter(gl.VERSION).indexOf(&quot;WebGL 2.0 &quot;) == 0;<br>
+}</p>
+<p>Note: For a WebGL1 context will attempt to enable Vertex Array Objects<br>
+and add WebGL2 entry points. (unless you first set defaults with<br>
+<code>twgl.setDefaults({enableVertexArrayObjects: false})</code>;</p>
 </div>
 
 
@@ -3703,7 +3771,9 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Gets a WebGL1 context.</p>
-<p>Note: Will attempt to enable Vertex Array Objects<br>and add WebGL2 entry points. (unless you first set defaults with<br><code>twgl.setDefaults({enableVertexArrayObjects: false})</code>;</p>
+<p>Note: Will attempt to enable Vertex Array Objects<br>
+and add WebGL2 entry points. (unless you first set defaults with<br>
+<code>twgl.setDefaults({enableVertexArrayObjects: false})</code>;</p>
 </div>
 
 
@@ -3905,24 +3975,40 @@ twgl.createProgramInfo(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</
 
 <div class="description">
     <p>Gets a string for WebGL enum</p>
-<p>Note: Several enums are the same. Without more<br>context (which function) it's impossible to always<br>give the correct enum. As it is, for matching values<br>it gives all enums. Checking the WebGL2RenderingContext<br>that means</p>
-<pre class="prettyprint source"><code> 0     = ZERO | POINT | NONE | NO_ERROR
+<p>Note: Several enums are the same. Without more<br>
+context (which function) it's impossible to always<br>
+give the correct enum. As it is, for matching values<br>
+it gives all enums. Checking the WebGL2RenderingContext<br>
+that means</p>
+<pre><code> 0     = ZERO | POINT | NONE | NO_ERROR
  1     = ONE | LINES | SYNC_FLUSH_COMMANDS_BIT
  32777 = BLEND_EQUATION_RGB | BLEND_EQUATION_RGB
  36662 = COPY_READ_BUFFER | COPY_READ_BUFFER_BINDING
  36663 = COPY_WRITE_BUFFER | COPY_WRITE_BUFFER_BINDING
- 36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING</code></pre><p>It's also not useful for bits really unless you pass in individual bits.<br>In other words</p>
-<pre class="prettyprint source"><code>const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
-twgl.glEnumToString(gl, bits);  // not going to work</code></pre><p>Note that some enums only exist on extensions. If you<br>want them to show up you need to pass the extension at least<br>once. For example</p>
-<pre class="prettyprint source"><code>const ext = gl.getExtension('WEBGL_compressed_texture_s3tc');
+ 36006 = FRAMEBUFFER_BINDING | DRAW_FRAMEBUFFER_BINDING
+</code></pre>
+<p>It's also not useful for bits really unless you pass in individual bits.<br>
+In other words</p>
+<pre><code>const bits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
+twgl.glEnumToString(gl, bits);  // not going to work
+</code></pre>
+<p>Note that some enums only exist on extensions. If you<br>
+want them to show up you need to pass the extension at least<br>
+once. For example</p>
+<pre><code>const ext = gl.getExtension('WEBGL_compressed_texture_s3tc');
 if (ext) {
    twgl.glEnumToString(ext, 0);  // just prime the function
 
    ..later..
 
    const internalFormat = ext.COMPRESSED_RGB_S3TC_DXT1_EXT;
-   console.log(twgl.glEnumToString(gl, internalFormat));</code></pre><p>Notice I didn't have to pass the extension the second time. This means<br>you can have place that generically gets an enum for texture formats for example.<br>and as long as you primed the function with the extensions</p>
-<p>If you're using <code>twgl.addExtensionsToContext</code> to enable your extensions<br>then twgl will automatically get the extension's enums.</p>
+   console.log(twgl.glEnumToString(gl, internalFormat));
+</code></pre>
+<p>Notice I didn't have to pass the extension the second time. This means<br>
+you can have place that generically gets an enum for texture formats for example.<br>
+and as long as you primed the function with the extensions</p>
+<p>If you're using <code>twgl.addExtensionsToContext</code> to enable your extensions<br>
+then twgl will automatically get the extension's enums.</p>
 </div>
 
 
@@ -4615,9 +4701,10 @@ if (ext) {
 
 <div class="description">
     <p>Resizes the attachments of a framebuffer.</p>
-<p>You need to pass in the same <code>attachments</code> as you passed in <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a><br>because TWGL has no idea the format/type of each attachment.</p>
+<p>You need to pass in the same <code>attachments</code> as you passed in <a href="module-twgl.html#.createFramebufferInfo"><code>module:twgl.createFramebufferInfo</code></a><br>
+because TWGL has no idea the format/type of each attachment.</p>
 <p>The simplest usage</p>
-<pre class="prettyprint source"><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
+<pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
 const fbi = twgl.createFramebufferInfo(gl);
 
 ...
@@ -4626,8 +4713,10 @@ function render() {
   if (twgl.resizeCanvasToDisplaySize(gl.canvas)) {
     // resize the attachments
     twgl.resizeFramebufferInfo(gl, fbi);
-  }</code></pre><p>More complex usage</p>
-<pre class="prettyprint source"><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
+  }
+</code></pre>
+<p>More complex usage</p>
+<pre><code>// create an RGB565 renderbuffer and a STENCIL_INDEX8 renderbuffer
 const attachments = [
   { format: RGB565, mag: NEAREST },
   { format: STENCIL_INDEX8 },
@@ -4923,7 +5012,11 @@ function render() {
 
 <div class="description">
     <p>Resizes a texture based on the options passed in.</p>
-<p>Note: This is not a generic resize anything function.<br>It's mostly used by <a href="module-twgl.html#.resizeFramebufferInfo"><code>module:twgl.resizeFramebufferInfo</code></a><br>It will use <code>options.src</code> if it exists to try to determine a <code>type</code><br>otherwise it will assume <code>gl.UNSIGNED_BYTE</code>. No data is provided<br>for the texture. Texture parameters will be set accordingly</p>
+<p>Note: This is not a generic resize anything function.<br>
+It's mostly used by <a href="module-twgl.html#.resizeFramebufferInfo"><code>module:twgl.resizeFramebufferInfo</code></a><br>
+It will use <code>options.src</code> if it exists to try to determine a <code>type</code><br>
+otherwise it will assume <code>gl.UNSIGNED_BYTE</code>. No data is provided<br>
+for the texture. Texture parameters will be set accordingly</p>
 </div>
 
 
@@ -5206,14 +5299,16 @@ function render() {
     <p>Sets the contents of a buffer attached to an attribInfo</p>
 <p>This is helper function to dynamically update a buffer.</p>
 <p>Let's say you make a bufferInfo</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
    position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
    texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
    normal:   new Float32Array([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
    indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
 };
-var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre><p> And you want to dynamically upate the positions. You could do this</p>
-<pre class="prettyprint source"><code>// assuming arrays.position has already been updated with new data.
+var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+</code></pre>
+<p>And you want to dynamically upate the positions. You could do this</p>
+<pre><code>// assuming arrays.position has already been updated with new data.
 twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);</code></pre>
 </div>
 
@@ -5350,7 +5445,8 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix<br>  the name of the attribute will include the prefix.</p>
+                <p>The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix<br>
+the name of the attribute will include the prefix.</p>
                 
             </td>
         </tr>
@@ -5384,7 +5480,9 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>Note: it is arguably ineffient to pass in anything but a typed array because anything<br>   else will have to be converted to a typed array before it can be used by WebGL. During init time that<br>   inefficiency is usually not important but if you're updating data dynamically best to be efficient.</p>
+                <p>Note: it is arguably ineffient to pass in anything but a typed array because anything<br>
+else will have to be converted to a typed array before it can be used by WebGL. During init time that<br>
+inefficiency is usually not important but if you're updating data dynamically best to be efficient.</p>
                 
             </td>
         </tr>
@@ -5420,9 +5518,13 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>an optional offset into the buffer. This is only an offset into the WebGL buffer<br>   not the array. To pass in an offset into the array itself use a typed array and create an <code>ArrayBufferView</code><br>   for the portion of the array you want to use.</p>
-<pre class="prettyprint source"><code>   var someArray = new Float32Array(1000); // an array with 1000 floats
-   var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray</code></pre><p>   Now you can pass <code>someSubArray</code> into setAttribInfoBufferFromArray`</p>
+                <p>an optional offset into the buffer. This is only an offset into the WebGL buffer<br>
+not the array. To pass in an offset into the array itself use a typed array and create an <code>ArrayBufferView</code><br>
+for the portion of the array you want to use.</p>
+<pre><code>   var someArray = new Float32Array(1000); // an array with 1000 floats
+   var someSubArray = new Float32Array(someArray.buffer, offsetInBytes, sizeInUnits); // a view into someArray
+</code></pre>
+<p>Now you can pass <code>someSubArray</code> into setAttribInfoBufferFromArray`</p>
                 
             </td>
         </tr>
@@ -5578,20 +5680,25 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
             
 
             <td class="description last">
-                <p>A uniform name to value map where the value is correct for the given<br>   type of uniform. So for example given a block like</p>
-<pre class="prettyprint source"><code>  uniform SomeBlock {
+                <p>A uniform name to value map where the value is correct for the given<br>
+type of uniform. So for example given a block like</p>
+<pre><code>  uniform SomeBlock {
     float someFloat;
     vec2 someVec2;
     vec3 someVec3Array[2];
     int someInt;
-  }</code></pre><p> You can set the values of the uniform block with</p>
-<pre class="prettyprint source"><code>  twgl.setBlockUniforms(someBlockInfo, {
+  }
+</code></pre>
+<p>You can set the values of the uniform block with</p>
+<pre><code>  twgl.setBlockUniforms(someBlockInfo, {
      someFloat: 12.3,
      someVec2: [1, 2],
      someVec3Array: [1, 2, 3, 4, 5, 6],
      someInt: 5,
-  }</code></pre><p> Arrays can be JavaScript arrays or typed arrays</p>
-<p> Any name that doesn't match will be ignored</p>
+  }
+</code></pre>
+<p>Arrays can be JavaScript arrays or typed arrays</p>
+<p>Any name that doesn't match will be ignored</p>
                 
             </td>
         </tr>
@@ -5631,7 +5738,7 @@ twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.positi
 <div class="description">
     <p>Sets attributes and buffers including the <code>ELEMENT_ARRAY_BUFFER</code> if appropriate</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>const programInfo = createProgramInfo(
+<pre><code>const programInfo = createProgramInfo(
     gl, [&quot;some-vs&quot;, &quot;some-fs&quot;);
 
 const arrays = {
@@ -5641,9 +5748,14 @@ const arrays = {
 
 const bufferInfo = createBufferInfoFromArrays(gl, arrays);
 
-gl.useProgram(programInfo.program);</code></pre><p>This will automatically bind the buffers AND set the<br>attributes.</p>
-<pre class="prettyprint source"><code>setBuffersAndAttributes(gl, programInfo, bufferInfo);</code></pre><p>For the example above it is equivilent to</p>
-<pre class="prettyprint source"><code>gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.useProgram(programInfo.program);
+</code></pre>
+<p>This will automatically bind the buffers AND set the<br>
+attributes.</p>
+<pre><code>setBuffersAndAttributes(gl, programInfo, bufferInfo);
+</code></pre>
+<p>For the example above it is equivilent to</p>
+<pre><code>gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 gl.enableVertexAttribArray(a_positionLocation);
 gl.vertexAttribPointer(a_positionLocation, 3, gl.FLOAT, false, 0, 0);
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
@@ -5798,7 +5910,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>a <code>BufferInfo</code> as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.<br>  or a <code>VertexArrayInfo</code> as returned from <code>module:twgl.createVertexArrayInfo</code></p>
+                <p>a <code>BufferInfo</code> as returned from <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.<br>
+or a <code>VertexArrayInfo</code> as returned from <code>module:twgl.createVertexArrayInfo</code></p>
                 
             </td>
         </tr>
@@ -5837,7 +5950,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
 <div class="description">
     <p>Sets various defaults for twgl.</p>
-<p>In the interest of terseness which is kind of the point<br>of twgl I've integrated a few of the older functions here</p>
+<p>In the interest of terseness which is kind of the point<br>
+of twgl I've integrated a few of the older functions here</p>
 </div>
 
 
@@ -5967,7 +6081,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
 
 <div class="description">
-    <p>Sets a texture from an array or typed array. If the width or height is not provided will attempt to<br>guess the size. See <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p>
+    <p>Sets a texture from an array or typed array. If the width or height is not provided will attempt to<br>
+guess the size. See <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p>
 </div>
 
 
@@ -6176,7 +6291,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p>
+                <p>A TextureOptions object with whatever parameters you want set.<br>
+This is often the same options you passed in when you created the texture.</p>
                 
             </td>
         </tr>
@@ -6214,8 +6330,10 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 
 
 <div class="description">
-    <p>Uploads the current uniform values to the corresponding WebGLBuffer<br>and binds that buffer to the program's corresponding bind point for the uniform block object.</p>
-<p>If you haven't changed any values and you only need to bind the uniform block object<br>call <a href="module-twgl.html#.bindUniformBlock"><code>module:twgl.bindUniformBlock</code></a> instead.</p>
+    <p>Uploads the current uniform values to the corresponding WebGLBuffer<br>
+and binds that buffer to the program's corresponding bind point for the uniform block object.</p>
+<p>If you haven't changed any values and you only need to bind the uniform block object<br>
+call <a href="module-twgl.html#.bindUniformBlock"><code>module:twgl.bindUniformBlock</code></a> instead.</p>
 </div>
 
 
@@ -6336,7 +6454,9 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code><br>    as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>    returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
+                <p>a <code>ProgramInfo</code><br>
+as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl.createProgramInfo</code></a> or or <code>UniformBlockSpec</code> as<br>
+returned from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
                 
             </td>
         </tr>
@@ -6362,7 +6482,8 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
             
 
             <td class="description last">
-                <p>a <code>UniformBlockInfo</code> as returned from<br>    <a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
+                <p>a <code>UniformBlockInfo</code> as returned from<br>
+<a href="module-twgl.html#.createUniformBlockInfo"><code>module:twgl.createUniformBlockInfo</code></a>.</p>
                 
             </td>
         </tr>
@@ -6402,7 +6523,7 @@ gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);</code></pr
 <div class="description">
     <p>Set uniforms and binds related textures.</p>
 <p>example:</p>
-<pre class="prettyprint source"><code>const programInfo = createProgramInfo(
+<pre><code>const programInfo = createProgramInfo(
     gl, [&quot;some-vs&quot;, &quot;some-fs&quot;]);
 
 const tex1 = gl.createTexture();
@@ -6423,9 +6544,14 @@ const uniforms = {
   ],
 };
 
-gl.useProgram(program);</code></pre><p>This will automatically bind the textures AND set the<br>uniforms.</p>
-<pre class="prettyprint source"><code>twgl.setUniforms(programInfo, uniforms);</code></pre><p>For the example above it is equivalent to</p>
-<pre class="prettyprint source"><code>var texUnit = 0;
+gl.useProgram(program);
+</code></pre>
+<p>This will automatically bind the textures AND set the<br>
+uniforms.</p>
+<pre><code>twgl.setUniforms(programInfo, uniforms);
+</code></pre>
+<p>For the example above it is equivalent to</p>
+<pre><code>var texUnit = 0;
 gl.activeTexture(gl.TEXTURE0 + texUnit);
 gl.bindTexture(gl.TEXTURE_2D, tex1);
 gl.uniform1i(u_someSamplerLocation, texUnit++);
@@ -6439,8 +6565,10 @@ gl.uniformMatrix4fv(u_someMatrix, false, [
     0,1,0,0,
     0,0,1,0,
     0,0,0,0,
-  ]);</code></pre><p>Note it is perfectly reasonable to call <code>setUniforms</code> multiple times. For example</p>
-<pre class="prettyprint source"><code>const uniforms = {
+  ]);
+</code></pre>
+<p>Note it is perfectly reasonable to call <code>setUniforms</code> multiple times. For example</p>
+<pre><code>const uniforms = {
   u_someSampler: tex1,
   u_someOtherSampler: tex2,
 };
@@ -6457,13 +6585,18 @@ const moreUniforms {
 };
 
 twgl.setUniforms(programInfo, uniforms);
-twgl.setUniforms(programInfo, moreUniforms);</code></pre><p>You can also add WebGLSamplers to uniform samplers as in</p>
-<pre class="prettyprint source"><code>const uniforms = {
+twgl.setUniforms(programInfo, moreUniforms);
+</code></pre>
+<p>You can also add WebGLSamplers to uniform samplers as in</p>
+<pre><code>const uniforms = {
   u_someSampler: {
     texture: someWebGLTexture,
     sampler: someWebGLSampler,
   },
-};</code></pre><p>In which case both the sampler and texture will be bound to the<br>same unit.</p>
+};
+</code></pre>
+<p>In which case both the sampler and texture will be bound to the<br>
+same unit.</p>
 </div>
 
 
@@ -6558,7 +6691,8 @@ twgl.setUniforms(programInfo, moreUniforms);</code></pre><p>You can also add Web
             
 
             <td class="description last">
-                <p>a <code>ProgramInfo</code> as returned from <code>createProgramInfo</code> or the setters returned from<br>       <code>createUniformSetters</code>.</p>
+                <p>a <code>ProgramInfo</code> as returned from <code>createProgramInfo</code> or the setters returned from<br>
+<code>createUniformSetters</code>.</p>
                 
             </td>
         </tr>
@@ -6584,8 +6718,10 @@ twgl.setUniforms(programInfo, moreUniforms);</code></pre><p>You can also add Web
             
 
             <td class="description last">
-                <p>an object with values for the<br>       uniforms.<br>  You can pass multiple objects by putting them in an array or by calling with more arguments.For example</p>
-<pre class="prettyprint source"><code>const sharedUniforms = {
+                <p>an object with values for the<br>
+uniforms.<br>
+You can pass multiple objects by putting them in an array or by calling with more arguments.For example</p>
+<pre><code>const sharedUniforms = {
   u_fogNear: 10,
   u_projection: ...
   ...
@@ -6646,7 +6782,7 @@ twgl.setUniforms(programInfo, localUniforms};</code></pre>
     <p>Creates a webgl context.</p>
 <p>Will return a WebGL2 context if possible.</p>
 <p>You can check if it's WebGL2 with</p>
-<pre class="prettyprint source"><code>twgl.isWebGL2(gl);</code></pre>
+<pre><code>twgl.isWebGL2(gl);</code></pre>
 </div>
 
 
@@ -6738,7 +6874,9 @@ twgl.setUniforms(programInfo, localUniforms};</code></pre>
             
 
             <td class="description last">
-                <p>The canvas tag to get<br>    context from. If one is not passed in one will be<br>    created.</p>
+                <p>The canvas tag to get<br>
+context from. If one is not passed in one will be<br>
+created.</p>
                 
             </td>
         </tr>
@@ -6803,8 +6941,9 @@ twgl.setUniforms(programInfo, localUniforms};</code></pre>
 
 
 <div class="description">
-    <p>This is a JavaScript object of arrays by name. The names should match your shader's attributes. If your<br>attributes have a common prefix you can specify it by calling <code>module:twgl.setAttributePrefix</code>.</p>
-<pre class="prettyprint source"><code>Bare JavaScript Arrays
+    <p>This is a JavaScript object of arrays by name. The names should match your shader's attributes. If your<br>
+attributes have a common prefix you can specify it by calling <code>module:twgl.setAttributePrefix</code>.</p>
+<pre><code>Bare JavaScript Arrays
 
     var arrays = {
        position: [-1, 1, 0],
@@ -6818,15 +6957,18 @@ Bare TypedArrays
        position: new Float32Array([-1, 1, 0]),
        color: new Uint8Array([255, 128, 64, 255]),
        ...
-    }</code></pre><ul>
-<li><p>Will guess at <code>numComponents</code> if not specified based on name.</p>
+    }
+</code></pre>
+<ul>
+<li>
+<p>Will guess at <code>numComponents</code> if not specified based on name.</p>
 <p>If <code>coord</code> is in the name assumes <code>numComponents = 2</code></p>
 <p>If <code>color</code> is in the name assumes <code>numComponents = 4</code></p>
 <p>otherwise assumes <code>numComponents = 3</code></p>
 </li>
 </ul>
 <p>Objects with various fields. See <a href="module-twgl.html#.FullArraySpec"><code>module:twgl.FullArraySpec</code></a>.</p>
-<pre class="prettyprint source"><code>var arrays = {
+<pre><code>var arrays = {
   position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
   texcoord: { numComponents: 2, data: [0, 0, 0, 1, 1, 0, 1, 1],                 },
   normal:   { numComponents: 3, data: [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],     },
@@ -6901,7 +7043,9 @@ Bare TypedArrays
 
 <div class="description">
     <p>An individual array in <a href="module-twgl.html#.Arrays"><code>module:twgl.Arrays</code></a></p>
-<p>When passed to <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> if an ArraySpec is <code>number[]</code> or <code>ArrayBufferView</code><br>the types will be guessed based on the name. <code>indices</code> will be <code>Uint16Array</code>, everything else will<br>be <code>Float32Array</code>. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.</p>
+<p>When passed to <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a> if an ArraySpec is <code>number[]</code> or <code>ArrayBufferView</code><br>
+the types will be guessed based on the name. <code>indices</code> will be <code>Uint16Array</code>, everything else will<br>
+be <code>Float32Array</code>. If an ArraySpec is a number it's the number of floats for an empty (zeroed) buffer.</p>
 </div>
 
 
@@ -6980,7 +7124,11 @@ Bare TypedArrays
 
 <div class="description">
     <p>The options for a framebuffer attachment.</p>
-<p>Note: For a <code>format</code> that is a texture include all the texture<br>options from <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a> for example<br><code>min</code>, <code>mag</code>, <code>clamp</code>, etc... Note that unlike <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a><br><code>auto</code> defaults to <code>false</code> for attachment textures but <code>min</code> and <code>mag</code> default<br>to <code>gl.LINEAR</code> and <code>wrap</code> defaults to <code>CLAMP_TO_EDGE</code></p>
+<p>Note: For a <code>format</code> that is a texture include all the texture<br>
+options from <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a> for example<br>
+<code>min</code>, <code>mag</code>, <code>clamp</code>, etc... Note that unlike <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a><br>
+<code>auto</code> defaults to <code>false</code> for attachment textures but <code>min</code> and <code>mag</code> default<br>
+to <code>gl.LINEAR</code> and <code>wrap</code> defaults to <code>CLAMP_TO_EDGE</code></p>
 </div>
 
 
@@ -7039,7 +7187,10 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>The attachment point. Defaults<br>  to <code>gl.COLOR_ATTACTMENT0 + ndx</code> unless type is a depth or stencil type<br>  then it's gl.DEPTH_ATTACHMENT or <code>gl.DEPTH_STENCIL_ATTACHMENT</code> depending<br>  on the format or attachment type.</p></td>
+            <td class="description last"><p>The attachment point. Defaults<br>
+to <code>gl.COLOR_ATTACTMENT0 + ndx</code> unless type is a depth or stencil type<br>
+then it's gl.DEPTH_ATTACHMENT or <code>gl.DEPTH_STENCIL_ATTACHMENT</code> depending<br>
+on the format or attachment type.</p></td>
         </tr>
 
         
@@ -7072,7 +7223,10 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>The format. If one of <code>gl.RGBA4</code>,<br>  <code>gl.RGB565</code>, <code>gl.RGB5_A1</code>, <code>gl.DEPTH_COMPONENT16</code>,<br>  <code>gl.STENCIL_INDEX8</code> or <code>gl.DEPTH_STENCIL</code> then will create a<br>  renderbuffer. Otherwise will create a texture. Default = <code>gl.RGBA</code></p></td>
+            <td class="description last"><p>The format. If one of <code>gl.RGBA4</code>,<br>
+<code>gl.RGB565</code>, <code>gl.RGB5_A1</code>, <code>gl.DEPTH_COMPONENT16</code>,<br>
+<code>gl.STENCIL_INDEX8</code> or <code>gl.DEPTH_STENCIL</code> then will create a<br>
+renderbuffer. Otherwise will create a texture. Default = <code>gl.RGBA</code></p></td>
         </tr>
 
         
@@ -7138,7 +7292,8 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>The texture target for <code>gl.framebufferTexture2D</code>.<br>  Defaults to <code>gl.TEXTURE_2D</code>. Set to appropriate face for cube maps.</p></td>
+            <td class="description last"><p>The texture target for <code>gl.framebufferTexture2D</code>.<br>
+Defaults to <code>gl.TEXTURE_2D</code>. Set to appropriate face for cube maps.</p></td>
         </tr>
 
         
@@ -7180,6 +7335,40 @@ Bare TypedArrays
 
         <tr>
             
+                <td class="name"><code>layer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>layer for <code>gl.framebufferTextureLayer</code>. Defaults to undefined.<br>
+If set then <code>gl.framebufferTextureLayer</code> is called, if not then <code>gl.framebufferTexture2D</code></p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
                 <td class="name"><code>attachment</code></td>
             
 
@@ -7204,7 +7393,9 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>An existing renderbuffer or texture.<br>   If provided will attach this Object. This allows you to share<br>   attachemnts across framebuffers.</p></td>
+            <td class="description last"><p>An existing renderbuffer or texture.<br>
+If provided will attach this Object. This allows you to share<br>
+attachemnts across framebuffers.</p></td>
         </tr>
 
         
@@ -7278,7 +7469,8 @@ Bare TypedArrays
 
 
 <div class="description">
-    <p>The info for an attribute. This is effectively just the arguments to <code>gl.vertexAttribPointer</code> plus the WebGLBuffer<br>for the attribute.</p>
+    <p>The info for an attribute. This is effectively just the arguments to <code>gl.vertexAttribPointer</code> plus the WebGLBuffer<br>
+for the attribute.</p>
 </div>
 
 
@@ -7340,7 +7532,8 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>a constant value for the attribute. Note: if this is set the attribute will be<br>   disabled and set to this constant value and all other values will be ignored.</p></td>
+            <td class="description last"><p>a constant value for the attribute. Note: if this is set the attribute will be<br>
+disabled and set to this constant value and all other values will be ignored.</p></td>
         </tr>
 
         
@@ -7571,7 +7764,8 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>   where as anything else = do call it with this value</p></td>
+            <td class="description last"><p>the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>
+where as anything else = do call it with this value</p></td>
         </tr>
 
         
@@ -7808,7 +8002,8 @@ Bare TypedArrays
 
             
 
-            <td class="description last"><p>The indices of the uniforms used by the block. These indices<br>   correspond to entries in a UniformData array in the <a href="module-twgl.html#.UniformBlockSpec"><code>module:twgl.UniformBlockSpec</code></a>.</p></td>
+            <td class="description last"><p>The indices of the uniforms used by the block. These indices<br>
+correspond to entries in a UniformData array in the <a href="module-twgl.html#.UniformBlockSpec"><code>module:twgl.UniformBlockSpec</code></a>.</p></td>
         </tr>
 
         
@@ -8367,9 +8562,11 @@ Bare TypedArrays
 <div class="description">
     <p>Various default settings for twgl.</p>
 <p>Note: You can call this any number of times. Example:</p>
-<pre class="prettyprint source"><code>twgl.setDefaults({ textureColor: [1, 0, 0, 1] });
-twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
-<pre class="prettyprint source"><code>twgl.setDefaults({
+<pre><code>twgl.setDefaults({ textureColor: [1, 0, 0, 1] });
+twgl.setDefaults({ attribPrefix: 'a_' });
+</code></pre>
+<p>is equivalent to</p>
+<pre><code>twgl.setDefaults({
   textureColor: [1, 0, 0, 1],
   attribPrefix: 'a_',
 });</code></pre>
@@ -8432,14 +8629,17 @@ twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
             
 
             <td class="description last"><p>The prefix to stick on attributes</p>
-<p>  When writing shaders I prefer to name attributes with <code>a_</code>, uniforms with <code>u_</code> and varyings with <code>v_</code><br>  as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.</p>
-<p>  In otherwords I'll create arrays of geometry like this</p>
-<pre class="prettyprint source"><code>  const arrays = {
+<p>When writing shaders I prefer to name attributes with <code>a_</code>, uniforms with <code>u_</code> and varyings with <code>v_</code><br>
+as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.</p>
+<p>In otherwords I'll create arrays of geometry like this</p>
+<pre><code>  const arrays = {
     position: ...
     normal: ...
     texcoord: ...
-  };</code></pre><p>  But need those mapped to attributes and my attributes start with <code>a_</code>.</p>
-<p>  Default: <code>&quot;&quot;</code></p></td>
+  };
+</code></pre>
+<p>But need those mapped to attributes and my attributes start with <code>a_</code>.</p>
+<p>Default: <code>&quot;&quot;</code></p></td>
         </tr>
 
         
@@ -8473,8 +8673,12 @@ twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
             
 
             <td class="description last"><p>Array of 4 values in the range 0 to 1</p>
-<p>  The default texture color is used when loading textures from<br>  urls. Because the URL will be loaded async we'd like to be<br>  able to use the texture immediately. By putting a 1x1 pixel<br>  color in the texture we can start using the texture before<br>  the URL has loaded.</p>
-<p>  Default: <code>[0.5, 0.75, 1, 1]</code></p></td>
+<p>The default texture color is used when loading textures from<br>
+urls. Because the URL will be loaded async we'd like to be<br>
+able to use the texture immediately. By putting a 1x1 pixel<br>
+color in the texture we can start using the texture before<br>
+the URL has loaded.</p>
+<p>Default: <code>[0.5, 0.75, 1, 1]</code></p></td>
         </tr>
 
         
@@ -8507,8 +8711,9 @@ twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
 
             
 
-            <td class="description last"><p>If not undefined sets the crossOrigin attribute on images<br>  that twgl creates when downloading images for textures.</p>
-<p>  Also see <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p></td>
+            <td class="description last"><p>If not undefined sets the crossOrigin attribute on images<br>
+that twgl creates when downloading images for textures.</p>
+<p>Also see <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p></td>
         </tr>
 
         
@@ -8541,7 +8746,12 @@ twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
 
             
 
-            <td class="description last"><p>If true, then, when twgl will try to add any supported WebGL extensions<br>  directly to the context under their normal GL names. For example<br>  if ANGLE_instances_arrays exists then twgl would enable it,<br>  add the functions <code>vertexAttribDivisor</code>, <code>drawArraysInstanced</code>,<br>  <code>drawElementsInstanced</code>, and the constant <code>VERTEX_ATTRIB_ARRAY_DIVISOR</code><br>  to the <code>WebGLRenderingContext</code>.</p></td>
+            <td class="description last"><p>If true, then, when twgl will try to add any supported WebGL extensions<br>
+directly to the context under their normal GL names. For example<br>
+if ANGLE_instances_arrays exists then twgl would enable it,<br>
+add the functions <code>vertexAttribDivisor</code>, <code>drawArraysInstanced</code>,<br>
+<code>drawElementsInstanced</code>, and the constant <code>VERTEX_ATTRIB_ARRAY_DIVISOR</code><br>
+to the <code>WebGLRenderingContext</code>.</p></td>
         </tr>
 
         
@@ -8836,8 +9046,9 @@ twgl.setDefaults({ attribPrefix: 'a_' });</code></pre><p>is equivalent to</p>
 
             
 
-            <td class="description last"><p>The values for the uniforms.<br>  You can pass multiple objects by putting them in an array. For example</p>
-<pre class="prettyprint source"><code>var sharedUniforms = {
+            <td class="description last"><p>The values for the uniforms.<br>
+You can pass multiple objects by putting them in an array. For example</p>
+<pre><code>var sharedUniforms = {
   u_fogNear: 10,
   u_projection: ...
   ...
@@ -9406,7 +9617,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>a constant value for the attribute. Note: if this is set the attribute will be<br>   disabled and set to this constant value and all other values will be ignored.</p></td>
+            <td class="description last"><p>a constant value for the attribute. Note: if this is set the attribute will be<br>
+disabled and set to this constant value and all other values will be ignored.</p></td>
         </tr>
 
         
@@ -9476,7 +9688,10 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>number of components for <code>vertexAttribPointer</code>. Default is based on the name of the array.<br>   If <code>coord</code> is in the name assumes <code>numComponents = 2</code>.<br>   If <code>color</code> is in the name assumes <code>numComponents = 4</code>.<br>   otherwise assumes <code>numComponents = 3</code></p></td>
+            <td class="description last"><p>number of components for <code>vertexAttribPointer</code>. Default is based on the name of the array.<br>
+If <code>coord</code> is in the name assumes <code>numComponents = 2</code>.<br>
+If <code>color</code> is in the name assumes <code>numComponents = 4</code>.<br>
+otherwise assumes <code>numComponents = 3</code></p></td>
         </tr>
 
         
@@ -9509,7 +9724,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>type. This is only used if <code>data</code> is a JavaScript array. It is the constructor for the typedarray. (eg. <code>Uint8Array</code>).<br>For example if you want colors in a <code>Uint8Array</code> you might have a <code>FullArraySpec</code> like <code>{ type: Uint8Array, data: [255,0,255,255, ...], }</code>.</p></td>
+            <td class="description last"><p>type. This is only used if <code>data</code> is a JavaScript array. It is the constructor for the typedarray. (eg. <code>Uint8Array</code>).<br>
+For example if you want colors in a <code>Uint8Array</code> you might have a <code>FullArraySpec</code> like <code>{ type: Uint8Array, data: [255,0,255,255, ...], }</code>.</p></td>
         </tr>
 
         
@@ -9674,7 +9890,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>divisor for <code>vertexAttribDivisor</code>. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>   where as anything else = do call it with this value</p></td>
+            <td class="description last"><p>divisor for <code>vertexAttribDivisor</code>. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>
+where as anything else = do call it with this value</p></td>
         </tr>
 
         
@@ -9806,8 +10023,10 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>Buffer to use for this attribute. This lets you use your own buffer<br>   but you will need to supply <code>numComponents</code> and <code>type</code>. You can effectively pass an <code>AttribInfo</code><br>   to provide this. Example:</p>
-<pre class="prettyprint source"><code>    const bufferInfo1 = twgl.createBufferInfoFromArrays(gl, {
+            <td class="description last"><p>Buffer to use for this attribute. This lets you use your own buffer<br>
+but you will need to supply <code>numComponents</code> and <code>type</code>. You can effectively pass an <code>AttribInfo</code><br>
+to provide this. Example:</p>
+<pre><code>    const bufferInfo1 = twgl.createBufferInfoFromArrays(gl, {
       position: [1, 2, 3, ... ],
     });
     const bufferInfo2 = twgl.createBufferInfoFromArrays(gl, {
@@ -10235,7 +10454,9 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>If passed<br>  a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise<br>  you can pass an array of names.</p></td>
+            <td class="description last"><p>If passed<br>
+a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise<br>
+you can pass an array of names.</p></td>
         </tr>
 
         
@@ -10523,8 +10744,10 @@ var drawObj = {
 
 
 <div class="description">
-    <p>Texture options passed to most texture functions. Each function will use whatever options<br>are appropriate for its needs. This lets you pass the same options to all functions.</p>
-<p>Note: A <code>TexImageSource</code> is defined in the WebGL spec as a <code>HTMLImageElement</code>, <code>HTMLVideoElement</code>,<br><code>HTMLCanvasElement</code>, <code>ImageBitmap</code>, or <code>ImageData</code>.</p>
+    <p>Texture options passed to most texture functions. Each function will use whatever options<br>
+are appropriate for its needs. This lets you pass the same options to all functions.</p>
+<p>Note: A <code>TexImageSource</code> is defined in the WebGL spec as a <code>HTMLImageElement</code>, <code>HTMLVideoElement</code>,<br>
+<code>HTMLCanvasElement</code>, <code>ImageBitmap</code>, or <code>ImageData</code>.</p>
 </div>
 
 
@@ -10748,7 +10971,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>the min filter setting (eg. <code>gl.LINEAR</code>). Defaults to <code>gl.NEAREST_MIPMAP_LINEAR</code><br>    or if texture is not a power of 2 on both dimensions then defaults to <code>gl.LINEAR</code>.</p></td>
+            <td class="description last"><p>the min filter setting (eg. <code>gl.LINEAR</code>). Defaults to <code>gl.NEAREST_MIPMAP_LINEAR</code><br>
+or if texture is not a power of 2 on both dimensions then defaults to <code>gl.LINEAR</code>.</p></td>
         </tr>
 
         
@@ -10913,7 +11137,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>type for texture. Defaults to <code>gl.UNSIGNED_BYTE</code> unless <code>src</code> is ArrayBufferView. If <code>src</code><br>    is ArrayBufferView defaults to type that matches ArrayBufferView type.</p></td>
+            <td class="description last"><p>type for texture. Defaults to <code>gl.UNSIGNED_BYTE</code> unless <code>src</code> is ArrayBufferView. If <code>src</code><br>
+is ArrayBufferView defaults to type that matches ArrayBufferView type.</p></td>
         </tr>
 
         
@@ -11246,7 +11471,9 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>Color to initialize this texture with if loading an image asynchronously.<br>    The default use a blue 1x1 pixel texture. You can set another default by calling <code>twgl.setDefaults</code><br>    or you can set an individual texture's initial color by setting this property. Example: <code>[1, .5, .5, 1]</code> = pink</p></td>
+            <td class="description last"><p>Color to initialize this texture with if loading an image asynchronously.<br>
+The default use a blue 1x1 pixel texture. You can set another default by calling <code>twgl.setDefaults</code><br>
+or you can set an individual texture's initial color by setting this property. Example: <code>[1, .5, .5, 1]</code> = pink</p></td>
         </tr>
 
         
@@ -11279,7 +11506,9 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>Whether or not to premultiply alpha. Defaults to whatever the current setting is.<br>    This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>    the current setting for specific textures.</p></td>
+            <td class="description last"><p>Whether or not to premultiply alpha. Defaults to whatever the current setting is.<br>
+This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>
+the current setting for specific textures.</p></td>
         </tr>
 
         
@@ -11312,7 +11541,9 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>Whether or not to flip the texture vertically on upload. Defaults to whatever the current setting is.<br>    This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>    the current setting for specific textures.</p></td>
+            <td class="description last"><p>Whether or not to flip the texture vertically on upload. Defaults to whatever the current setting is.<br>
+This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>
+the current setting for specific textures.</p></td>
         </tr>
 
         
@@ -11345,7 +11576,9 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.<br>    This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>    the current setting for specific textures.</p></td>
+            <td class="description last"><p>Whether or not to let the browser do colorspace conversion of the texture on upload. Defaults to whatever the current setting is.<br>
+This lets you set it once before calling <code>twgl.createTexture</code> or <code>twgl.createTextures</code> and only override<br>
+the current setting for specific textures.</p></td>
         </tr>
 
         
@@ -11378,7 +11611,9 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>If <code>undefined</code> or <code>true</code>, in WebGL1, texture filtering is set automatically for non-power of 2 images and<br>   mips are generated for power of 2 images. In WebGL2 mips are generated if they can be. Note: if <code>level</code> is set above<br>   then then <code>auto</code> is assumed to be <code>false</code> unless explicity set to <code>true</code>.</p></td>
+            <td class="description last"><p>If <code>undefined</code> or <code>true</code>, in WebGL1, texture filtering is set automatically for non-power of 2 images and<br>
+mips are generated for power of 2 images. In WebGL2 mips are generated if they can be. Note: if <code>level</code> is set above<br>
+then then <code>auto</code> is assumed to be <code>false</code> unless explicity set to <code>true</code>.</p></td>
         </tr>
 
         
@@ -11412,7 +11647,7 @@ var drawObj = {
             
 
             <td class="description last"><p>The order that cube faces are pulled out of an img or set of images. The default is</p>
-<pre class="prettyprint source"><code>[gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+<pre><code>[gl.TEXTURE_CUBE_MAP_POSITIVE_X,
  gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
  gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
  gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
@@ -11469,19 +11704,32 @@ var drawObj = {
             
 
             <td class="description last"><p>source for texture</p>
-<p>   If <code>string</code> then it's assumed to be a URL to an image. The image will be downloaded async. A usable<br>   1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.<br>   If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.<br>   The pieces will be uploaded in <code>cubeFaceOrder</code></p>
-<p>   If <code>string[]</code> or <code>TexImageSource[]</code> and target is <code>gl.TEXTURE_CUBE_MAP</code> then it must have 6 entries, one for each face of a cube map.</p>
-<p>   If <code>string[]</code> or <code>TexImageSource[]</code> and target is <code>gl.TEXTURE_2D_ARRAY</code> then eact entry is a slice of the a 2d array texture<br>   and will be scaled to the specified width and height OR to the size of the first image that loads.</p>
-<p>   If <code>TexImageSource</code> then it wil be used immediately to create the contents of the texture. Examples <code>HTMLImageElement</code>,<br>   <code>HTMLCanvasElement</code>, <code>HTMLVideoElement</code>.</p>
-<p>   If <code>number[]</code> or <code>ArrayBufferView</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>   not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponents</code><br>   where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>   by 6. Then</p>
+<p>If <code>string</code> then it's assumed to be a URL to an image. The image will be downloaded async. A usable<br>
+1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.<br>
+If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.<br>
+The pieces will be uploaded in <code>cubeFaceOrder</code></p>
+<p>If <code>string[]</code> or <code>TexImageSource[]</code> and target is <code>gl.TEXTURE_CUBE_MAP</code> then it must have 6 entries, one for each face of a cube map.</p>
+<p>If <code>string[]</code> or <code>TexImageSource[]</code> and target is <code>gl.TEXTURE_2D_ARRAY</code> then eact entry is a slice of the a 2d array texture<br>
+and will be scaled to the specified width and height OR to the size of the first image that loads.</p>
+<p>If <code>TexImageSource</code> then it wil be used immediately to create the contents of the texture. Examples <code>HTMLImageElement</code>,<br>
+<code>HTMLCanvasElement</code>, <code>HTMLVideoElement</code>.</p>
+<p>If <code>number[]</code> or <code>ArrayBufferView</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>
+not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponents</code><br>
+where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>
+by 6. Then</p>
 <ul>
-<li><p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer then width and height<br>are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
+<li>
+<p>If neither <code>width</code> nor <code>height</code> are specified and <code>sqrt(numElements)</code> is an integer then width and height<br>
+are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</code> and <code>height = 1</code>.</p>
 </li>
-<li><p>If only one of <code>width</code> or <code>height</code> is specified then the other equals <code>numElements / specifiedDimension</code>.</p>
+<li>
+<p>If only one of <code>width</code> or <code>height</code> is specified then the other equals <code>numElements / specifiedDimension</code>.</p>
 </li>
 </ul>
 <p>If <code>number[]</code> will be converted to <code>type</code>.</p>
-<p>If <code>src</code> is a function it will be called with a <code>WebGLRenderingContext</code> and these options.<br>Whatever it returns is subject to these rules. So it can return a string url, an <code>HTMLElement</code><br>an array etc...</p>
+<p>If <code>src</code> is a function it will be called with a <code>WebGLRenderingContext</code> and these options.<br>
+Whatever it returns is subject to these rules. So it can return a string url, an <code>HTMLElement</code><br>
+an array etc...</p>
 <p>If <code>src</code> is undefined then an empty texture will be created of size <code>width</code> by <code>height</code>.</p></td>
         </tr>
 
@@ -11515,7 +11763,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>What to set the crossOrigin property of images when they are downloaded.<br>   default: undefined. Also see <a href="module-twgl.html#.setDefaults"><code>module:twgl.setDefaults</code></a>.</p></td>
+            <td class="description last"><p>What to set the crossOrigin property of images when they are downloaded.<br>
+default: undefined. Also see <a href="module-twgl.html#.setDefaults"><code>module:twgl.setDefaults</code></a>.</p></td>
         </tr>
 
         
@@ -11772,7 +12021,10 @@ var drawObj = {
 
 <div class="description">
     <p>The src image(s) used to create a texture.</p>
-<p>When you call <a href="module-twgl.html#.createTexture"><code>module:twgl.createTexture</code></a> or <a href="module-twgl.html#.createTextures"><code>module:twgl.createTextures</code></a><br>you can pass in urls for images to load into the textures. If it's a single url<br>then this will be a single HTMLImageElement. If it's an array of urls used for a cubemap<br>this will be a corresponding array of images for the cubemap.</p>
+<p>When you call <a href="module-twgl.html#.createTexture"><code>module:twgl.createTexture</code></a> or <a href="module-twgl.html#.createTextures"><code>module:twgl.createTextures</code></a><br>
+you can pass in urls for images to load into the textures. If it's a single url<br>
+then this will be a single HTMLImageElement. If it's an array of urls used for a cubemap<br>
+this will be a corresponding array of images for the cubemap.</p>
 </div>
 
 
@@ -12377,7 +12629,8 @@ var drawObj = {
 
 
 <div class="description">
-    <p>Represents a UniformBlockObject including an ArrayBuffer with all the uniform values<br>and a corresponding WebGLBuffer to hold those values on the GPU</p>
+    <p>Represents a UniformBlockObject including an ArrayBuffer with all the uniform values<br>
+and a corresponding WebGLBuffer to hold those values on the GPU</p>
 </div>
 
 
@@ -12496,7 +12749,8 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>A float view on the array buffer. This is useful<br>   inspecting the contents of the buffer in the debugger.</p></td>
+            <td class="description last"><p>A float view on the array buffer. This is useful<br>
+inspecting the contents of the buffer in the debugger.</p></td>
         </tr>
 
         
@@ -12591,7 +12845,11 @@ var drawObj = {
 
             
 
-            <td class="description last"><p>A uniform name to ArrayBufferView map.<br>  each Uniform has a correctly typed <code>ArrayBufferView</code> into array at the correct offset<br>  and length of that uniform. So for example a float uniform would have a 1 float <code>Float32Array</code><br>  view. A single mat4 would have a 16 element <code>Float32Array</code> view. An ivec2 would have an<br>  <code>Int32Array</code> view, etc.</p></td>
+            <td class="description last"><p>A uniform name to ArrayBufferView map.<br>
+each Uniform has a correctly typed <code>ArrayBufferView</code> into array at the correct offset<br>
+and length of that uniform. So for example a float uniform would have a 1 float <code>Float32Array</code><br>
+view. A single mat4 would have a 16 element <code>Float32Array</code> view. An ivec2 would have an<br>
+<code>Int32Array</code> view, etc.</p></td>
         </tr>
 
         
@@ -12665,7 +12923,8 @@ var drawObj = {
 
 
 <div class="description">
-    <p>A <code>UniformBlockSpec</code> represents the data needed to create and bind<br>UniformBlockObjects for a given program</p>
+    <p>A <code>UniformBlockSpec</code> represents the data needed to create and bind<br>
+UniformBlockObjects for a given program</p>
 </div>
 
 
@@ -13202,7 +13461,7 @@ var drawObj = {
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

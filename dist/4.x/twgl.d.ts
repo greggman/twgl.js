@@ -69,6 +69,7 @@ export type AttachmentOptions = {
     type?: number;
     target?: number;
     level?: number;
+    layer?: number;
     attachment?: WebGLObject;
 };
 export type FramebufferInfo = {

@@ -52,12 +52,18 @@
     
         
             <div class="description"><p>4x4 Matrix math math functions.</p>
-<p>Almost all functions take an optional <code>dst</code> argument. If it is not passed in the<br>functions will create a new matrix. In other words you can do this</p>
-<pre class="prettyprint source"><code>const mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix</code></pre><p>or</p>
-<pre class="prettyprint source"><code>const mat = m4.create();
-m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.</code></pre><p>The first style is often easier but depending on where it's used it generates garbage where<br>as there is almost never allocation with the second style.</p>
+<p>Almost all functions take an optional <code>dst</code> argument. If it is not passed in the<br>
+functions will create a new matrix. In other words you can do this</p>
+<pre><code>const mat = m4.translation([1, 2, 3]);  // Creates a new translation matrix
+</code></pre>
+<p>or</p>
+<pre><code>const mat = m4.create();
+m4.translation([1, 2, 3], mat);  // Puts translation matrix in mat.
+</code></pre>
+<p>The first style is often easier but depending on where it's used it generates garbage where<br>
+as there is almost never allocation with the second style.</p>
 <p>It is always save to pass any matrix as the destination. So for example</p>
-<pre class="prettyprint source"><code>const mat = m4.identity();
+<pre><code>const mat = m4.identity();
 const trans = m4.translation([1, 2, 3]);
 m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.</code></pre></div>
         
@@ -162,7 +168,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Modifies the given 4-by-4 matrix by rotation around the given axis by the<br>given angle.</p>
+    <p>Modifies the given 4-by-4 matrix by rotation around the given axis by the<br>
+given angle.</p>
 </div>
 
 
@@ -298,7 +305,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The axis<br>    about which to rotate.</p>
+                <p>The axis<br>
+about which to rotate.</p>
                 
             </td>
         </tr>
@@ -431,7 +439,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Creates a 4-by-4 matrix which rotates around the given axis by the given<br>angle.</p>
+    <p>Creates a 4-by-4 matrix which rotates around the given axis by the given<br>
+angle.</p>
 </div>
 
 
@@ -533,7 +542,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The axis<br>    about which to rotate.</p>
+                <p>The axis<br>
+about which to rotate.</p>
                 
             </td>
         </tr>
@@ -644,7 +654,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="param-desc">
-    <p>A matrix which rotates angle radians<br>    around the axis.</p>
+    <p>A matrix which rotates angle radians<br>
+around the axis.</p>
 </div>
 
     
@@ -867,7 +878,14 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Computes a 4-by-4 perspective transformation matrix given the left, right,<br>top, bottom, near and far clipping planes. The arguments define a frustum<br>extending in the negative z direction. The arguments near and far are the<br>distances to the near and far clipping planes. Note that near and far are not<br>z coordinates, but rather they are distances along the negative z-axis. The<br>matrix generated sends the viewing frustum to the unit box. We assume a unit<br>box extending from -1 to 1 in the x and y dimensions and from 0 to 1 in the z<br>dimension.</p>
+    <p>Computes a 4-by-4 perspective transformation matrix given the left, right,<br>
+top, bottom, near and far clipping planes. The arguments define a frustum<br>
+extending in the negative z direction. The arguments near and far are the<br>
+distances to the near and far clipping planes. Note that near and far are not<br>
+z coordinates, but rather they are distances along the negative z-axis. The<br>
+matrix generated sends the viewing frustum to the unit box. We assume a unit<br>
+box extending from -1 to 1 in the x and y dimensions and from 0 to 1 in the z<br>
+dimension.</p>
 </div>
 
 
@@ -1439,7 +1457,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Returns the translation component of a 4-by-4 matrix as a vector with 3<br>entries.</p>
+    <p>Returns the translation component of a 4-by-4 matrix as a vector with 3<br>
+entries.</p>
 </div>
 
 
@@ -2009,7 +2028,9 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 <div class="description">
     <p>Computes a 4-by-4 look-at transformation.</p>
-<p>This is a matrix which positions the camera itself. If you want<br>a view matrix (a matrix which moves things in front of the camera)<br>take the inverse of this.</p>
+<p>This is a matrix which positions the camera itself. If you want<br>
+a view matrix (a matrix which moves things in front of the camera)<br>
+take the inverse of this.</p>
 </div>
 
 
@@ -2714,7 +2735,9 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Computes a 4-by-4 othogonal transformation matrix given the left, right,<br>bottom, and top dimensions of the near clipping plane as well as the<br>near and far clipping plane distances.</p>
+    <p>Computes a 4-by-4 othogonal transformation matrix given the left, right,<br>
+bottom, and top dimensions of the near clipping plane as well as the<br>
+near and far clipping plane distances.</p>
 </div>
 
 
@@ -2952,7 +2975,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The depth (negative z coordinate)<br>    of the near clipping plane.</p>
+                <p>The depth (negative z coordinate)<br>
+of the near clipping plane.</p>
                 
             </td>
         </tr>
@@ -2986,7 +3010,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The depth (negative z coordinate)<br>    of the far clipping plane.</p>
+                <p>The depth (negative z coordinate)<br>
+of the far clipping plane.</p>
                 
             </td>
         </tr>
@@ -3085,7 +3110,16 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Computes a 4-by-4 perspective transformation matrix given the angular height<br>of the frustum, the aspect ratio, and the near and far clipping planes.  The<br>arguments define a frustum extending in the negative z direction.  The given<br>angle is the vertical angle of the frustum, and the horizontal angle is<br>determined to produce the given aspect ratio.  The arguments near and far are<br>the distances to the near and far clipping planes.  Note that near and far<br>are not z coordinates, but rather they are distances along the negative<br>z-axis.  The matrix generated sends the viewing frustum to the unit box.<br>We assume a unit box extending from -1 to 1 in the x and y dimensions and<br>from 0 to 1 in the z dimension.</p>
+    <p>Computes a 4-by-4 perspective transformation matrix given the angular height<br>
+of the frustum, the aspect ratio, and the near and far clipping planes.  The<br>
+arguments define a frustum extending in the negative z direction.  The given<br>
+angle is the vertical angle of the frustum, and the horizontal angle is<br>
+determined to produce the given aspect ratio.  The arguments near and far are<br>
+the distances to the near and far clipping planes.  Note that near and far<br>
+are not z coordinates, but rather they are distances along the negative<br>
+z-axis.  The matrix generated sends the viewing frustum to the unit box.<br>
+We assume a unit box extending from -1 to 1 in the x and y dimensions and<br>
+from 0 to 1 in the z dimension.</p>
 </div>
 
 
@@ -3255,7 +3289,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The depth (negative z coordinate)<br>    of the near clipping plane.</p>
+                <p>The depth (negative z coordinate)<br>
+of the near clipping plane.</p>
                 
             </td>
         </tr>
@@ -3289,7 +3324,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The depth (negative z coordinate)<br>    of the far clipping plane.</p>
+                <p>The depth (negative z coordinate)<br>
+of the far clipping plane.</p>
                 
             </td>
         </tr>
@@ -3388,7 +3424,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given<br>angle.</p>
+    <p>Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given<br>
+angle.</p>
 </div>
 
 
@@ -3623,7 +3660,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given<br>angle.</p>
+    <p>Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given<br>
+angle.</p>
 </div>
 
 
@@ -3858,7 +3896,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given<br>angle.</p>
+    <p>Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given<br>
+angle.</p>
 </div>
 
 
@@ -4696,7 +4735,9 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Modifies the given 4-by-4 matrix, scaling in each dimension by an amount<br>given by the corresponding entry in the given vector; assumes the vector has<br>three entries.</p>
+    <p>Modifies the given 4-by-4 matrix, scaling in each dimension by an amount<br>
+given by the corresponding entry in the given vector; assumes the vector has<br>
+three entries.</p>
 </div>
 
 
@@ -4832,7 +4873,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>A vector of three entries specifying the<br>    factor by which to scale in each dimension.</p>
+                <p>A vector of three entries specifying the<br>
+factor by which to scale in each dimension.</p>
                 
             </td>
         </tr>
@@ -4931,7 +4973,9 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Creates a 4-by-4 matrix which scales in each dimension by an amount given by<br>the corresponding entry in the given vector; assumes the vector has three<br>entries.</p>
+    <p>Creates a 4-by-4 matrix which scales in each dimension by an amount given by<br>
+the corresponding entry in the given vector; assumes the vector has three<br>
+entries.</p>
 </div>
 
 
@@ -5033,7 +5077,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>A vector of<br>    three entries specifying the factor by which to scale in each dimension.</p>
+                <p>A vector of<br>
+three entries specifying the factor by which to scale in each dimension.</p>
                 
             </td>
         </tr>
@@ -5522,7 +5567,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Sets the translation component of a 4-by-4 matrix to the given<br>vector.</p>
+    <p>Sets the translation component of a 4-by-4 matrix to the given<br>
+vector.</p>
 </div>
 
 
@@ -5757,7 +5803,12 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Takes a 4-by-4 matrix and a vector with 3 entries, interprets the vector as a<br>direction, transforms that direction by the matrix, and returns the result;<br>assumes the transformation of 3-dimensional space represented by the matrix<br>is parallel-preserving, i.e. any combination of rotation, scaling and<br>translation, but not a perspective distortion. Returns a vector with 3<br>entries.</p>
+    <p>Takes a 4-by-4 matrix and a vector with 3 entries, interprets the vector as a<br>
+direction, transforms that direction by the matrix, and returns the result;<br>
+assumes the transformation of 3-dimensional space represented by the matrix<br>
+is parallel-preserving, i.e. any combination of rotation, scaling and<br>
+translation, but not a perspective distortion. Returns a vector with 3<br>
+entries.</p>
 </div>
 
 
@@ -5992,7 +6043,14 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Takes a 4-by-4 matrix m and a vector v with 3 entries, interprets the vector<br>as a normal to a surface, and computes a vector which is normal upon<br>transforming that surface by the matrix. The effect of this function is the<br>same as transforming v (as a direction) by the inverse-transpose of m.  This<br>function assumes the transformation of 3-dimensional space represented by the<br>matrix is parallel-preserving, i.e. any combination of rotation, scaling and<br>translation, but not a perspective distortion.  Returns a vector with 3<br>entries.</p>
+    <p>Takes a 4-by-4 matrix m and a vector v with 3 entries, interprets the vector<br>
+as a normal to a surface, and computes a vector which is normal upon<br>
+transforming that surface by the matrix. The effect of this function is the<br>
+same as transforming v (as a direction) by the inverse-transpose of m.  This<br>
+function assumes the transformation of 3-dimensional space represented by the<br>
+matrix is parallel-preserving, i.e. any combination of rotation, scaling and<br>
+translation, but not a perspective distortion.  Returns a vector with 3<br>
+entries.</p>
 </div>
 
 
@@ -6227,7 +6285,9 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>Takes a 4-by-4 matrix and a vector with 3 entries,<br>interprets the vector as a point, transforms that point by the matrix, and<br>returns the result as a vector with 3 entries.</p>
+    <p>Takes a 4-by-4 matrix and a vector with 3 entries,<br>
+interprets the vector as a point, transforms that point by the matrix, and<br>
+returns the result as a vector with 3 entries.</p>
 </div>
 
 
@@ -6598,7 +6658,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The vector by<br>    which to translate.</p>
+                <p>The vector by<br>
+which to translate.</p>
                 
             </td>
         </tr>
@@ -6799,7 +6860,8 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
             
 
             <td class="description last">
-                <p>The vector by<br>    which to translate.</p>
+                <p>The vector by<br>
+which to translate.</p>
                 
             </td>
         </tr>
@@ -7101,7 +7163,9 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 
 
 <div class="description">
-    <p>A JavaScript array with 16 values or a Float32Array with 16 values.<br>When created by the library will create the default type which is <code>Float32Array</code><br>but can be set by calling <a href="module-twgl_m4.html#.setDefaultType"><code>module:twgl/m4.setDefaultType</code></a>.</p>
+    <p>A JavaScript array with 16 values or a Float32Array with 16 values.<br>
+When created by the library will create the default type which is <code>Float32Array</code><br>
+but can be set by calling <a href="module-twgl_m4.html#.setDefaultType"><code>module:twgl/m4.setDefaultType</code></a>.</p>
 </div>
 
 
@@ -7180,7 +7244,7 @@ m4.multiply(mat, trans, mat);  // Multiplies mat * trans and puts result in mat.
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

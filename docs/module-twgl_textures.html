@@ -52,8 +52,11 @@
     
         
             <div class="description"><p>Low level texture related functions</p>
-<p>You should generally not need to use these functions. They are provided<br>for those cases where you're doing something out of the ordinary<br>and you need lower level access.</p>
-<p>For backward compatibily they are available at both <code>twgl.textures</code> and <code>twgl</code><br>itself</p>
+<p>You should generally not need to use these functions. They are provided<br>
+for those cases where you're doing something out of the ordinary<br>
+and you need lower level access.</p>
+<p>For backward compatibily they are available at both <code>twgl.textures</code> and <code>twgl</code><br>
+itself</p>
 <p>See <a href="module-twgl.html"><code>module:twgl</code></a> for core functions</p></div>
         
 
@@ -312,7 +315,8 @@
 
 
 <div class="description">
-    <p>Gets whether or not we can generate mips for the given<br>internal format.</p>
+    <p>Gets whether or not we can generate mips for the given<br>
+internal format.</p>
 </div>
 
 
@@ -784,7 +788,7 @@
 <div class="description">
     <p>Creates a bunch of textures based on the passed in options.</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>const textures = twgl.createTextures(gl, {
+<pre><code>const textures = twgl.createTextures(gl, {
   // a power of 2 image
   hftIcon: { src: &quot;images/hft-icon-16.png&quot;, mag: gl.NEAREST },
   // a non-power of 2 image
@@ -836,7 +840,9 @@
     ]),
     width: 1,
   },
-});</code></pre><p>Now</p>
+});
+</code></pre>
+<p>Now</p>
 <ul>
 <li><code>textures.hftIcon</code> will be a 2d texture</li>
 <li><code>textures.clover</code> will be a 2d texture</li>
@@ -1571,7 +1577,8 @@
 
 
 <div class="description">
-    <p>Loads a cubemap from 6 urls or TexImageSources as specified in <code>options.src</code>. Will set the cubemap to a 1x1 pixel color<br>so that it is usable immediately unless <code>option.color === false</code>.</p>
+    <p>Loads a cubemap from 6 urls or TexImageSources as specified in <code>options.src</code>. Will set the cubemap to a 1x1 pixel color<br>
+so that it is usable immediately unless <code>option.color === false</code>.</p>
 </div>
 
 
@@ -1777,7 +1784,8 @@
             
 
             <td class="description last">
-                <p>A function to be called when all the images have finished loading. err will<br>   be non null if there was an error.</p>
+                <p>A function to be called when all the images have finished loading. err will<br>
+be non null if there was an error.</p>
                 
             </td>
         </tr>
@@ -1815,9 +1823,14 @@
 
 
 <div class="description">
-    <p>Loads a 2d array or 3d texture from urls OR TexImageSources as specified in <code>options.src</code>.<br>Will set the texture to a 1x1 pixel color<br>so that it is usable immediately unless <code>option.color === false</code>.</p>
-<p>If the width and height is not specified the width and height of the first<br>image loaded will be used. Note that since images are loaded async<br>which image downloads first is unknown.</p>
-<p>If an image is not the same size as the width and height it will be scaled<br>to that width and height.</p>
+    <p>Loads a 2d array or 3d texture from urls OR TexImageSources as specified in <code>options.src</code>.<br>
+Will set the texture to a 1x1 pixel color<br>
+so that it is usable immediately unless <code>option.color === false</code>.</p>
+<p>If the width and height is not specified the width and height of the first<br>
+image loaded will be used. Note that since images are loaded async<br>
+which image downloads first is unknown.</p>
+<p>If an image is not the same size as the width and height it will be scaled<br>
+to that width and height.</p>
 </div>
 
 
@@ -2023,7 +2036,8 @@
             
 
             <td class="description last">
-                <p>A function to be called when all the images have finished loading. err will<br>   be non null if there was an error.</p>
+                <p>A function to be called when all the images have finished loading. err will<br>
+be non null if there was an error.</p>
                 
             </td>
         </tr>
@@ -2061,7 +2075,10 @@
 
 
 <div class="description">
-    <p>Loads a texture from an image from a Url as specified in <code>options.src</code><br>If <code>options.color !== false</code> will set the texture to a 1x1 pixel color so that the texture is<br>immediately useable. It will be updated with the contents of the image once the image has finished<br>downloading. Filtering options will be set as approriate for image unless <code>options.auto === false</code>.</p>
+    <p>Loads a texture from an image from a Url as specified in <code>options.src</code><br>
+If <code>options.color !== false</code> will set the texture to a 1x1 pixel color so that the texture is<br>
+immediately useable. It will be updated with the contents of the image once the image has finished<br>
+downloading. Filtering options will be set as approriate for image unless <code>options.auto === false</code>.</p>
 </div>
 
 
@@ -2269,7 +2286,8 @@
             
 
             <td class="description last">
-                <p>A function to be called when the image has finished loading. err will<br>   be non null if there was an error.</p>
+                <p>A function to be called when the image has finished loading. err will<br>
+be non null if there was an error.</p>
                 
             </td>
         </tr>
@@ -2333,7 +2351,11 @@
 
 <div class="description">
     <p>Resizes a texture based on the options passed in.</p>
-<p>Note: This is not a generic resize anything function.<br>It's mostly used by <a href="module-twgl.html#.resizeFramebufferInfo"><code>module:twgl.resizeFramebufferInfo</code></a><br>It will use <code>options.src</code> if it exists to try to determine a <code>type</code><br>otherwise it will assume <code>gl.UNSIGNED_BYTE</code>. No data is provided<br>for the texture. Texture parameters will be set accordingly</p>
+<p>Note: This is not a generic resize anything function.<br>
+It's mostly used by <a href="module-twgl.html#.resizeFramebufferInfo"><code>module:twgl.resizeFramebufferInfo</code></a><br>
+It will use <code>options.src</code> if it exists to try to determine a <code>type</code><br>
+otherwise it will assume <code>gl.UNSIGNED_BYTE</code>. No data is provided<br>
+for the texture. Texture parameters will be set accordingly</p>
 </div>
 
 
@@ -2614,7 +2636,11 @@
 
 <div class="description">
     <p>Sets the default texture color.</p>
-<p>The default texture color is used when loading textures from<br>urls. Because the URL will be loaded async we'd like to be<br>able to use the texture immediately. By putting a 1x1 pixel<br>color in the texture we can start using the texture before<br>the URL has loaded.</p>
+<p>The default texture color is used when loading textures from<br>
+urls. Because the URL will be loaded async we'd like to be<br>
+able to use the texture immediately. By putting a 1x1 pixel<br>
+color in the texture we can start using the texture before<br>
+the URL has loaded.</p>
 </div>
 
 
@@ -2746,7 +2772,8 @@
 
 
 <div class="description">
-    <p>Sets a texture with no contents of a certain size. In other words calls <code>gl.texImage2D</code> with <code>null</code>.<br>You must set <code>options.width</code> and <code>options.height</code>.</p>
+    <p>Sets a texture with no contents of a certain size. In other words calls <code>gl.texImage2D</code> with <code>null</code>.<br>
+You must set <code>options.width</code> and <code>options.height</code>.</p>
 </div>
 
 
@@ -3110,7 +3137,8 @@
 
 
 <div class="description">
-    <p>Sets filtering or generates mips for texture based on width or height<br>If width or height is not passed in uses <code>options.width</code> and//or <code>options.height</code></p>
+    <p>Sets filtering or generates mips for texture based on width or height<br>
+If width or height is not passed in uses <code>options.width</code> and//or <code>options.height</code></p>
 </div>
 
 
@@ -3282,7 +3310,8 @@
             
 
             <td class="description last">
-                <p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p>
+                <p>A TextureOptions object with whatever parameters you want set.<br>
+This is often the same options you passed in when you created the texture.</p>
                 
             </td>
         </tr>
@@ -3464,7 +3493,8 @@
 
 
 <div class="description">
-    <p>Sets a texture from an array or typed array. If the width or height is not provided will attempt to<br>guess the size. See <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p>
+    <p>Sets a texture from an array or typed array. If the width or height is not provided will attempt to<br>
+guess the size. See <a href="module-twgl.html#.TextureOptions"><code>module:twgl.TextureOptions</code></a>.</p>
 </div>
 
 
@@ -3673,7 +3703,8 @@
             
 
             <td class="description last">
-                <p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p>
+                <p>A TextureOptions object with whatever parameters you want set.<br>
+This is often the same options you passed in when you created the texture.</p>
                 
             </td>
         </tr>
@@ -3711,7 +3742,10 @@
 
 
 <div class="description">
-    <p>Set a texture from the contents of an element. Will also set<br>texture filtering or generate mips based on the dimensions of the element<br>unless <code>options.auto === false</code>. If <code>target === gl.TEXTURE_CUBE_MAP</code> will<br>attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
+    <p>Set a texture from the contents of an element. Will also set<br>
+texture filtering or generate mips based on the dimensions of the element<br>
+unless <code>options.auto === false</code>. If <code>target === gl.TEXTURE_CUBE_MAP</code> will<br>
+attempt to slice image into 1x6, 2x3, 3x2, or 6x1 images, one for each face.</p>
 </div>
 
 
@@ -3917,7 +3951,8 @@
             
 
             <td class="description last">
-                <p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p>
+                <p>A TextureOptions object with whatever parameters you want set.<br>
+This is often the same options you passed in when you created the texture.</p>
                 
             </td>
         </tr>
@@ -4099,7 +4134,8 @@
             
 
             <td class="description last">
-                <p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p>
+                <p>A TextureOptions object with whatever parameters you want set.<br>
+This is often the same options you passed in when you created the texture.</p>
                 
             </td>
         </tr>
@@ -4137,7 +4173,8 @@
 
 
 <div class="description">
-    <p>Sets a texture to a 1x1 pixel color. If <code>options.color === false</code> is nothing happens. If it's not set<br>the default texture color is used which can be set by calling <code>setDefaultTextureColor</code>.</p>
+    <p>Sets a texture to a 1x1 pixel color. If <code>options.color === false</code> is nothing happens. If it's not set<br>
+the default texture color is used which can be set by calling <code>setDefaultTextureColor</code>.</p>
 </div>
 
 
@@ -4309,7 +4346,8 @@
             
 
             <td class="description last">
-                <p>A TextureOptions object with whatever parameters you want set.<br>  This is often the same options you passed in when you created the texture.</p>
+                <p>A TextureOptions object with whatever parameters you want set.<br>
+This is often the same options you passed in when you created the texture.</p>
                 
             </td>
         </tr>
@@ -4349,7 +4387,8 @@
 
 
 <div class="description">
-    <p>Info related to a specific texture internalFormat as returned<br>from <a href="module-twgl_textures.html#.getFormatAndTypeForInternalFormat"><code>module:twgl/textures.getFormatAndTypeForInternalFormat</code></a>.</p>
+    <p>Info related to a specific texture internalFormat as returned<br>
+from <a href="module-twgl_textures.html#.getFormatAndTypeForInternalFormat"><code>module:twgl/textures.getFormatAndTypeForInternalFormat</code></a>.</p>
 </div>
 
 
@@ -4504,7 +4543,7 @@
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
