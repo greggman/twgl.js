@@ -84,7 +84,8 @@ void main() {
     const video = document.createElement("video");
     video.autoPlay = true;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
             video.addEventListener('playing', () => {
                 playing = true;
             });
@@ -92,6 +93,9 @@ void main() {
             video.onloadedmetadata = () => {
                 video.play();
             };
+        })
+        .catch(function(error) {
+          console.error(error); // eslint-disable-line
         });
     }
 
