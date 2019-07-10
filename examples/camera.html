@@ -86,10 +86,12 @@ void main() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
             video.addEventListener('playing', () => {
-              playing = true;
+                playing = true;
             });
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
+            video.srcObject = stream;
+            video.onloadedmetadata = () => {
+                video.play();
+            };
         });
     }
 
