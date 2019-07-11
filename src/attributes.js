@@ -102,11 +102,14 @@ function isIndices(name) {
   return name === "indices";
 }
 
+const BYTE = 5120;
+const UNSIGNED_BYTE = 5121;
+
 // This is really just a guess. Though I can't really imagine using
 // anything else? Maybe for some compression?
-function getNormalizationForTypedArray(typedArray) {
-  if (typedArray instanceof Int8Array)    { return true; }  // eslint-disable-line
-  if (typedArray instanceof Uint8Array)   { return true; }  // eslint-disable-line
+function getNormalizationForGLType(glType) {
+  if (glType === BYTE)          { return true; }  // eslint-disable-line
+  if (glType === UNSIGNED_BYTE) { return true; }  // eslint-disable-line
   return false;
 }
 
@@ -340,6 +343,7 @@ function makeTypedArray(array, name) {
  */
 function createAttribsFromArrays(gl, arrays) {
   const attribs = {};
+  const sourceToWebGLBufferTypeMap = new Map();
   Object.keys(arrays).forEach(function(arrayName) {
     if (!isIndices(arrayName)) {
       const array = arrays[arrayName];
@@ -372,10 +376,24 @@ function createAttribsFromArrays(gl, arrays) {
           gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
           gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
         } else {
-          const typedArray = makeTypedArray(array, arrayName);
-          buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
-          type = typedArrays.getGLTypeForTypedArray(typedArray);
-          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
+          const src = Array.isArray(array) || typedArrays.isArrayBuffer(array)
+              ? array
+              : Array.isArray(array.data) || typedArrays.isArrayBuffer(array.data)
+                  ? array.data
+                  : null;
+          const bufferType = sourceToWebGLBufferTypeMap.get(src);
+          if (bufferType) {
+            buffer = bufferType.buffer;
+            type = bufferType.type;
+          } else {
+            const typedArray = makeTypedArray(array, arrayName);
+            buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
+            type = typedArrays.getGLTypeForTypedArray(typedArray);
+            if (src) {
+              sourceToWebGLBufferTypeMap.set(src, {buffer, type});
+            }
+          }
+          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForGLType(type);
           numComponents = getNumComponents(array, arrayName);
         }
         attribs[attribName] = {
@@ -452,20 +470,24 @@ function getBytesPerValueForGLType(gl, type) {
   return 0;
 }
 
-// Tries to get the number of elements from a set of arrays.
-const positionKeys = ['position', 'positions', 'a_position'];
-function getNumElementsFromNonIndexedArrays(arrays) {
-  let key;
-  let ii;
-  for (ii = 0; ii < positionKeys.length; ++ii) {
-    key = positionKeys[ii];
-    if (key in arrays) {
-      break;
+function getAttribNameForNumElements(obj) {
+  const positionKeys = [
+    'position',
+    'positions',
+    `${defaults.attribPrefix}position`,
+    `${defaults.attribPrefix}s`,
+  ];
+  for (const key of positionKeys) {
+    if (key in obj) {
+      return key;
     }
   }
-  if (ii === positionKeys.length) {
-    key = Object.keys(arrays)[0];
-  }
+  return Object.keys(obj)[0];
+}
+
+// Tries to get the number of elements from a set of arrays.
+function getNumElementsFromNonIndexedArrays(arrays) {
+  const key = getAttribNameForNumElements(arrays);
   const array = arrays[key];
   const length = getArray(array).length;
   const numComponents = getNumComponents(array, key);
@@ -477,31 +499,15 @@ function getNumElementsFromNonIndexedArrays(arrays) {
 }
 
 function getNumElementsFromAttributes(gl, attribs) {
-  let key;
-  let ii;
-  for (ii = 0; ii < positionKeys.length; ++ii) {
-    key = positionKeys[ii];
-    if (key in attribs) {
-      break;
-    }
-    key = defaults.attribPrefix + key;
-    if (key in attribs) {
-      break;
-    }
-  }
-  if (ii === positionKeys.length) {
-    key = Object.keys(attribs)[0];
-  }
+  const key = getAttribNameForNumElements(attribs);
   const attrib = attribs[key];
   gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
   const numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  const bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
-  const totalElements = numBytes / bytesPerValue;
   const numComponents = attrib.numComponents || attrib.size;
-  // TODO: check stride
-  const numElements = totalElements / numComponents;
+  const bytesPerValue = attrib.stride || getBytesPerValueForGLType(gl, attrib.type) * numComponents;
+  const numElements = numBytes / bytesPerValue;
   if (numElements % 1 !== 0) {
     throw new Error(`numComponents ${numComponents} not correct for length ${length}`);
   }
