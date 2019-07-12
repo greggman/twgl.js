@@ -31,7 +31,7 @@
  *
  * or
  *
- *     var v3 = v3.create();
+ *     var v = v3.create();
  *     v3.cross(v1, v2, v);  // Puts the cross product of v1 x v2 in v
  *
  * The first style is often easier but depending on where it's used it generates garbage where
