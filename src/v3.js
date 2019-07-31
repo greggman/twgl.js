@@ -68,6 +68,9 @@ function setDefaultType(ctor) {
 
 /**
  * Creates a vec3; may be called with x, y, z to set initial values.
+ * @param {number} [x] Initial x value.
+ * @param {number} [y] Initial y value.
+ * @param {number} [z] Initial z value.
  * @return {module:twgl/v3.Vec3} the created vector
  * @memberOf module:twgl/v3
  */
