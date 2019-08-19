@@ -138,6 +138,7 @@ export type ProgramInfo = {
     attribSetters: {
         [key: string]: (...params: any[]) => any;
     };
+    uniformBlockSpace?: UniformBlockSpec;
     transformFeedbackInfo?: {
         [key: string]: TransformFeedbackInfo;
     };
@@ -174,7 +175,7 @@ export type TextureOptions = {
     crossOrigin?: string;
 };
 export type TextureSrc = HTMLImageElement | HTMLImageElement[];
-export type TextureReadyCallback = (err: any, texture: WebGLTexture, souce: TextureSrc) => void;
+export type TextureReadyCallback = (err: any, texture: WebGLTexture, source: TextureSrc) => void;
 export type TexturesReadyCallback = (err: any, textures: {
     [key: string]: WebGLTexture;
 }, sources: {
@@ -248,7 +249,7 @@ export function getBindPointForSamplerType(): void;
 export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
-export function createUniformSetters(program: WebGLProgram): {
+export function createUniformSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };
 export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram): UniformBlockSpec;
@@ -264,7 +265,7 @@ export function setUniforms(setters: ProgramInfo | {
 }, values: {
     [key: string]: any;
 }): void;
-export function createAttributeSetters(program: WebGLProgram): {
+export function createAttributeSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };
 export function setAttributes(setters: {
@@ -326,7 +327,7 @@ export function createVAOFromBufferInfo(gl: WebGLRenderingContext, programInfo: 
 declare module v3 {
     export type Vec3 = number[] | Float32Array;
     export function setDefaultType(ctor: Function): Function;
-    export function create(): v3.Vec3;
+    export function create(x?: number, y?: number, z?: number): v3.Vec3;
     export function add(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
     export function subtract(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
     export function lerp(a: v3.Vec3, b: v3.Vec3, t: number, dst?: v3.Vec3): v3.Vec3;
@@ -448,7 +449,14 @@ declare module primitives {
     export function createCresentBuffers(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
         [key: string]: WebGLBuffer;
     };
-    export function createCresentVertices(verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
+    export function createCresentBuffers(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
+        [key: string]: WebGLBuffer;
+    };
+    export function createCrescentBufferInfo(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): BufferInfo;
+    export function createCrescentBuffers(gl: WebGLRenderingContext, verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
+        [key: string]: WebGLBuffer;
+    };
+    export function createCrescentVertices(verticalRadius: number, outerRadius: number, innerRadius: number, thickness: number, subdivisionsDown: number, startOffset?: number, endOffset?: number): {
         [key: string]: TypedArray;
     };
     export function createCylinderBufferInfo(gl: WebGLRenderingContext, radius: number, height: number, radialSubdivisions: number, verticalSubdivisions: number, topCap?: boolean, bottomCap?: boolean): BufferInfo;

@@ -138,6 +138,7 @@ export type ProgramInfo = {
     attribSetters: {
         [key: string]: (...params: any[]) => any;
     };
+    uniformBlockSpace?: UniformBlockSpec;
     transformFeedbackInfo?: {
         [key: string]: TransformFeedbackInfo;
     };
@@ -174,7 +175,7 @@ export type TextureOptions = {
     crossOrigin?: string;
 };
 export type TextureSrc = HTMLImageElement | HTMLImageElement[];
-export type TextureReadyCallback = (err: any, texture: WebGLTexture, souce: TextureSrc) => void;
+export type TextureReadyCallback = (err: any, texture: WebGLTexture, source: TextureSrc) => void;
 export type TexturesReadyCallback = (err: any, textures: {
     [key: string]: WebGLTexture;
 }, sources: {
@@ -248,7 +249,7 @@ export function getBindPointForSamplerType(): void;
 export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
-export function createUniformSetters(program: WebGLProgram): {
+export function createUniformSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };
 export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram): UniformBlockSpec;
@@ -264,7 +265,7 @@ export function setUniforms(setters: ProgramInfo | {
 }, values: {
     [key: string]: any;
 }): void;
-export function createAttributeSetters(program: WebGLProgram): {
+export function createAttributeSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };
 export function setAttributes(setters: {

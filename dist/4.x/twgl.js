@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.11.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.11.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -158,7 +158,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.attributes` and `twgl`
+ * For backward compatibility they are available at both `twgl.attributes` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -175,9 +175,9 @@ var defaults = {
  * Sets the default attrib prefix
  *
  * When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
- * as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+ * as it makes it clear where they came from. But, when building geometry I prefer using un-prefixed names.
  *
- * In otherwords I'll create arrays of geometry like this
+ * In other words I'll create arrays of geometry like this
  *
  *     var arrays = {
  *       position: ...
@@ -341,7 +341,7 @@ function makeTypedArray(array, name) {
  */
 
 /**
- * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
+ * Use this type of array spec when TWGL can't guess the type or number of components of an array
  * @typedef {Object} FullArraySpec
  * @property {number[]|ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
  *    disabled and set to this constant value and all other values will be ignored.
@@ -562,7 +562,7 @@ function createAttribsFromArrays(gl, arrays) {
  *     };
  *     var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
  *
- *  And you want to dynamically upate the positions. You could do this
+ *  And you want to dynamically update the positions. You could do this
  *
  *     // assuming arrays.position has already been updated with new data.
  *     twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);
@@ -570,7 +570,7 @@ function createAttribsFromArrays(gl, arrays) {
  * @param {WebGLRenderingContext} gl
  * @param {AttribInfo} attribInfo The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix
  *   the name of the attribute will include the prefix.
- * @param {ArraySpec} array Note: it is arguably ineffient to pass in anything but a typed array because anything
+ * @param {ArraySpec} array Note: it is arguably inefficient to pass in anything but a typed array because anything
  *    else will have to be converted to a typed array before it can be used by WebGL. During init time that
  *    inefficiency is usually not important but if you're updating data dynamically best to be efficient.
  * @param {number} [offset] an optional offset into the buffer. This is only an offset into the WebGL buffer
@@ -688,7 +688,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
  * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
  * @property {WebGLBuffer} [indices] The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
- * @property {Object.<string, module:twgl.AttribInfo>} [attribs] The attribs approriate to call `setAttributes`
+ * @property {Object.<string, module:twgl.AttribInfo>} [attribs] The attribs appropriate to call `setAttributes`
  * @memberOf module:twgl
  */
 
@@ -762,7 +762,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  *     var bufferInfo = {
  *       attribs: {
  *         a_position: { numComponents: 3, buffer: gl.createBuffer(), },
- *         a_texcoods: { numComponents: 2, buffer: gl.createBuffer(), },
+ *         a_texcoords: { numComponents: 2, buffer: gl.createBuffer(), },
  *         a_normals: { numComponents: 3, buffer: gl.createBuffer(), },
  *       },
  *       indices: gl.createBuffer(),
@@ -783,7 +783,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @param {module:twgl.BufferInfo} [srcBufferInfo] An existing
  *        buffer info to start from. WebGLBuffers etc specified
  *        in the srcBufferInfo will be used in a new BufferInfo
- *        with any arrays specfied overriding the ones in
+ *        with any arrays specified overriding the ones in
  *        srcBufferInfo.
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
@@ -825,11 +825,11 @@ function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
  *        type: Uint8Array,
  *     }
  *
- * returns a WebGLBuffer that constains the given data.
+ * returns a WebGLBuffer that contains the given data.
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
  * @param {module:twgl.ArraySpec} array an array, typed array, or array spec.
- * @param {string} arrayName name of array. Used to guess the type if type can not be dervied other wise.
+ * @param {string} arrayName name of array. Used to guess the type if type can not be derived otherwise.
  * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
  * @memberOf module:twgl/attributes
  */
@@ -927,7 +927,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 /**
  * Drawing related functions
  *
- * For backward compatibily they are available at both `twgl.draw` and `twgl`
+ * For backward compatibility they are available at both `twgl.draw` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -978,7 +978,7 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
  * You need either a `BufferInfo` or a `VertexArrayInfo`.
  *
  * @typedef {Object} DrawObject
- * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
+ * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In other words `undefined` = `true`
  * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
  * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
  * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
@@ -1003,7 +1003,7 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
  *     };
  *
  * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
- * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
+ * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to bufferInfo.numElements.
  * @property {number} [instanceCount] the number of instances. Defaults to undefined.
  * @memberOf module:twgl
  */
@@ -1108,7 +1108,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 /**
  * Framebuffer related functions
  *
- * For backward compatibily they are available at both `twgl.framebuffer` and `twgl`
+ * For backward compatibility they are available at both `twgl.framebuffer` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -1169,7 +1169,7 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  *
  * @typedef {Object} AttachmentOptions
  * @property {number} [attach] The attachment point. Defaults
- *   to `gl.COLOR_ATTACTMENT0 + ndx` unless type is a depth or stencil type
+ *   to `gl.COLOR_ATTACHMENT0 + ndx` unless type is a depth or stencil type
  *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
  *   on the format or attachment type.
  * @property {number} [format] The format. If one of `gl.RGBA4`,
@@ -1184,7 +1184,7 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  *   If set then `gl.framebufferTextureLayer` is called, if not then `gl.framebufferTexture2D`
  * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
  *    If provided will attach this Object. This allows you to share
- *    attachemnts across framebuffers.
+ *    attachments across framebuffers.
  * @memberOf module:twgl
  */
 
@@ -1258,7 +1258,7 @@ function isRenderbufferFormat(format) {
  * @param {module:twgl.AttachmentOptions[]} [attachments] which attachments to create. If not provided the default is a framebuffer with an
  *    `RGBA`, `UNSIGNED_BYTE` texture `COLOR_ATTACHMENT0` and a `DEPTH_STENCIL` renderbuffer `DEPTH_STENCIL_ATTACHMENT`.
  * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
- * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+ * @param {number} [height] the height for the attachments. Default = size of drawingBuffer
  * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
  * @memberOf module:twgl/framebuffers
  */
@@ -1365,7 +1365,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
  * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebufferInfo}.
  * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
- * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+ * @param {number} [height] the height for the attachments. Default = size of drawingBuffer
  * @memberOf module:twgl/framebuffers
  */
 
@@ -1393,7 +1393,7 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
 /**
  * Binds a framebuffer
  *
- * This function pretty much soley exists because I spent hours
+ * This function pretty much solely exists because I spent hours
  * trying to figure out why something I wrote wasn't working only
  * to realize I forget to set the viewport dimensions.
  * My hope is this function will fix that.
@@ -1596,7 +1596,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.programs` and `twgl`
+ * For backward compatibility they are available at both `twgl.programs` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -2374,7 +2374,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
+ * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments passed in
  * @private
  */
 
@@ -2674,6 +2674,7 @@ function isBuiltIn(info) {
  *
  * @see {@link module:twgl.setUniforms}
  *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLProgram} program the program to create setters for.
  * @returns {Object.<string, function>} an object with a setter by name for each uniform
  * @memberOf module:twgl/programs
@@ -2846,9 +2847,9 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * @property {number} size The size in bytes needed for the block
  * @property {number[]} uniformIndices The indices of the uniforms used by the block. These indices
  *    correspond to entries in a UniformData array in the {@link module:twgl.UniformBlockSpec}.
- * @property {bool} usedByVertexShader Self explanitory
- * @property {bool} usedByFragmentShader Self explanitory
- * @property {bool} used Self explanitory
+ * @property {bool} usedByVertexShader Self explanatory
+ * @property {bool} usedByFragmentShader Self explanatory
+ * @property {bool} used Self explanatory
  * @memberOf module:twgl
  */
 
@@ -2913,7 +2914,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
       size: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_DATA_SIZE),
       uniformIndices: gl.getActiveUniformBlockParameter(program, _ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES)
     };
-    blockSpec.used = blockSpec.usedByVertexSahder || blockSpec.usedByFragmentShader;
+    blockSpec.used = blockSpec.usedByVertexShader || blockSpec.usedByFragmentShader;
     blockSpecs[name] = blockSpec;
   }
 
@@ -2955,7 +2956,7 @@ var arraySuffixRE = /\[\d+\]\.$/; // better way to check?
  *
  * @param {WebGL2RenderingContext} gl A WebGL2RenderingContext
  * @param {WebGLProgram} program A WebGLProgram
- * @param {module:twgl.UniformBlockSpec} uinformBlockSpec. A UniformBlockSpec as returned
+ * @param {module:twgl.UniformBlockSpec} uniformBlockSpec. A UniformBlockSpec as returned
  *     from {@link module:twgl.createUniformBlockSpecFromProgram}.
  * @param {string} blockName The name of the block.
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
@@ -3031,11 +3032,11 @@ function createUniformBlockInfo(gl, programInfo, blockName) {
   return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
 }
 /**
- * Binds a unform block to the matching uniform block point.
+ * Binds a uniform block to the matching uniform block point.
  * Matches by blocks by name so blocks must have the same name not just the same
  * structure.
  *
- * If you have changed any values and you upload the valus into the corresponding WebGLBuffer
+ * If you have changed any values and you upload the values into the corresponding WebGLBuffer
  * call {@link module:twgl.setUniformBlock} instead.
  *
  * @param {WebGL2RenderingContext} gl A WebGL 2 rendering context.
@@ -3252,21 +3253,21 @@ function setUniforms(setters, values) {
   var actualSetters = setters.uniformSetters || setters;
   var numArgs = arguments.length;
 
-  for (var andx = 1; andx < numArgs; ++andx) {
-    var vals = arguments[andx];
+  for (var aNdx = 1; aNdx < numArgs; ++aNdx) {
+    var _values = arguments[aNdx];
 
-    if (Array.isArray(vals)) {
-      var numValues = vals.length;
+    if (Array.isArray(_values)) {
+      var numValues = _values.length;
 
       for (var ii = 0; ii < numValues; ++ii) {
-        setUniforms(actualSetters, vals[ii]);
+        setUniforms(actualSetters, _values[ii]);
       }
     } else {
-      for (var name in vals) {
+      for (var name in _values) {
         var setter = actualSetters[name];
 
         if (setter) {
-          setter(vals[name]);
+          setter(_values[name]);
         }
       }
     }
@@ -3277,6 +3278,7 @@ function setUniforms(setters, values) {
  * program. You can pass this to {@link module:twgl.setBuffersAndAttributes} to set all your buffers and attributes.
  *
  * @see {@link module:twgl.setAttributes} for example
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLProgram} program the program to create setters for.
  * @return {Object.<string, function>} an object with a setter for each attribute by name.
  * @memberOf module:twgl/programs
@@ -3390,7 +3392,7 @@ function setAttributes(setters, buffers) {
  *
  *     setBuffersAndAttributes(gl, programInfo, bufferInfo);
  *
- * For the example above it is equivilent to
+ * For the example above it is equivalent to
  *
  *     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
  *     gl.enableVertexAttribArray(a_positionLocation);
@@ -3400,7 +3402,7 @@ function setAttributes(setters, buffers) {
  *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
- * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
+ * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgramInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
  * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
  *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
  * @memberOf module:twgl/programs
@@ -3423,7 +3425,7 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @property {WebGLProgram} program A shader program
  * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
  * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
- * @propetty {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+ * @property {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
  * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
  * @memberOf module:twgl
  */
@@ -3597,7 +3599,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.textures` and `twgl`
+ * For backward compatibility they are available at both `twgl.textures` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -3620,7 +3622,7 @@ var ctx = typeof document !== 'undefined' && document.createElement ? document.c
 //  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
 // NOTE: We can maybe remove some of the need for the 2d canvas. In WebGL2
 // we can use the various unpack settings. Otherwise we could try using
-// the ability of an imagebitmap to be cut. Unfortunately cutting an imagebitmap
+// the ability of an ImageBitmap to be cut. Unfortunately cutting an ImageBitmap
 // is async and the current TWGL code expects a non-Async result though that
 // might not be a problem. ImageBitmap though is not available in Edge or Safari
 // as of 2018-01-02
@@ -3790,7 +3792,7 @@ var formatInfo = {};
  * @property {number} textureFormat format to pass texImage2D and similar functions.
  * @property {boolean} colorRenderable true if you can render to this format of texture.
  * @property {boolean} textureFilterable true if you can filter the texture, false if you can ony use `NEAREST`.
- * @property {number[]} type Array of possible types you can pass to teximage2D and similar function
+ * @property {number[]} type Array of possible types you can pass to texImage2D and similar function
  * @property {Object.<number,number>} bytesPerElementMap A map of types to bytes per element
  * @private
  */
@@ -4337,7 +4339,7 @@ function canFilter(internalFormat
   return info.textureFilterable;
 }
 /**
- * Gets the number of compontents for a given image format.
+ * Gets the number of components for a given image format.
  * @param {number} format the format.
  * @return {number} the number of components for the format.
  * @memberOf module:twgl/textures
@@ -4434,7 +4436,7 @@ function setDefaults(newDefaults) {
  * @callback TextureFunc
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {module:twgl.TextureOptions} options the texture options
- * @return {*} Returns any of the things documentented for `src` for {@link module:twgl.TextureOptions}.
+ * @return {*} Returns any of the things documented for `src` for {@link module:twgl.TextureOptions}.
  * @memberOf module:twgl
  */
 
@@ -4495,13 +4497,13 @@ function setDefaults(newDefaults) {
  * @property {(number[]|ArrayBufferView|TexImageSource|TexImageSource[]|string|string[]|module:twgl.TextureFunc)} [src] source for texture
  *
  *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
- *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
+ *    1x1 pixel texture will be returned immediately. The texture will be updated once the image has downloaded.
  *    If `target` is `gl.TEXTURE_CUBE_MAP` will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
  *    The pieces will be uploaded in `cubeFaceOrder`
  *
  *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_CUBE_MAP` then it must have 6 entries, one for each face of a cube map.
  *
- *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_2D_ARRAY` then eact entry is a slice of the a 2d array texture
+ *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_2D_ARRAY` then each entry is a slice of the a 2d array texture
  *    and will be scaled to the specified width and height OR to the size of the first image that loads.
  *
  *    If `TexImageSource` then it wil be used immediately to create the contents of the texture. Examples `HTMLImageElement`,
@@ -4626,7 +4628,7 @@ function restoreSkipState(gl) {
  * Sets the parameters of a texture or sampler
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {number|WebGLSampler} target texture target or sampler
- * @param {function()} parameteriFn texParamteri or samplerParameteri fn
+ * @param {function()} parameteriFn texParameteri or samplerParameteri fn
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
@@ -4864,7 +4866,7 @@ function getCubeFaceOrder(gl, options) {
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
- * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundent but
+ * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundant but
  *    it's needed internally to sort the array of `ndx` properties by `face`.
  * @private
  */
@@ -4964,7 +4966,7 @@ function setTextureFromElement(gl, tex, element, options) {
         // the type across all faces where as with a 2D one there's only one face
         // so we're replacing everything all at once. It also has to be the correct size.
         // On the other hand we need all faces to be the same size so as one face loads
-        // the rest match else the texture will be unrenderable.
+        // the rest match else the texture will be un-renderable.
 
         gl.texImage2D(f.face, level, internalFormat, size, size, 0, format, type, null);
         createImageBitmap(element, xOffset, yOffset, size, size, {
@@ -5222,7 +5224,7 @@ function setTextureTo1PixelColor(gl, tex, options) {
  * @callback TextureReadyCallback
  * @param {*} err If truthy there was an error.
  * @param {WebGLTexture} texture the texture.
- * @param {module:twgl.TextureSrc} souce image(s) used to as the src for the texture
+ * @param {module:twgl.TextureSrc} source image(s) used to as the src for the texture
  * @memberOf module:twgl
  */
 
@@ -5257,7 +5259,7 @@ function setTextureTo1PixelColor(gl, tex, options) {
  * Loads a texture from an image from a Url as specified in `options.src`
  * If `options.color !== false` will set the texture to a 1x1 pixel color so that the texture is
  * immediately useable. It will be updated with the contents of the image once the image has finished
- * downloading. Filtering options will be set as approriate for image unless `options.auto === false`.
+ * downloading. Filtering options will be set as appropriate for image unless `options.auto === false`.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
@@ -5620,7 +5622,7 @@ function createTexture(gl, options, callback) {
   gl.bindTexture(target, tex);
 
   if (target === gl.TEXTURE_CUBE_MAP) {
-    // this should have been the default for CUBEMAPS :(
+    // this should have been the default for cubemaps :(
     gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
@@ -5841,8 +5843,7 @@ function createTextures(gl, textureOptions, callback) {
 
   callCallbackIfReady();
   return textures;
-} // Using quotes prevents Uglify from changing the names.
-// No speed diff AFAICT.
+}
 
 /***/ }),
 
@@ -6033,9 +6034,9 @@ var defaults = {
  * @property {string} [attribPrefix] The prefix to stick on attributes
  *
  *   When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
- *   as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+ *   as it makes it clear where they came from. But, when building geometry I prefer using un-prefixed names.
  *
- *   In otherwords I'll create arrays of geometry like this
+ *   In other words I'll create arrays of geometry like this
  *
  *       const arrays = {
  *         position: ...
@@ -6191,7 +6192,7 @@ var supportedExtensions = ['ANGLE_instanced_arrays', 'EXT_blend_minmax', 'EXT_co
  *
  * Note that if you want to know if the extension exists you should
  * probably call `gl.getExtension` for each extension. Alternatively
- * you can check for the existance of the functions or constants that
+ * you can check for the existence of the functions or constants that
  * are expected to be added. For example
  *
  *    if (gl.drawBuffers) {
@@ -6382,7 +6383,7 @@ exports.isArrayBuffer = void 0;
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.typedArray` and `twgl`
+ * For backward compatibility they are available at both `twgl.typedArray` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -6763,7 +6764,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.attributes` and `twgl`
+ * For backward compatibility they are available at both `twgl.attributes` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
