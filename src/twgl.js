@@ -78,9 +78,9 @@ const defaults = {
  * @property {string} [attribPrefix] The prefix to stick on attributes
  *
  *   When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
- *   as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+ *   as it makes it clear where they came from. But, when building geometry I prefer using un-prefixed names.
  *
- *   In otherwords I'll create arrays of geometry like this
+ *   In other words I'll create arrays of geometry like this
  *
  *       const arrays = {
  *         position: ...
@@ -254,7 +254,7 @@ const supportedExtensions = [
  *
  * Note that if you want to know if the extension exists you should
  * probably call `gl.getExtension` for each extension. Alternatively
- * you can check for the existance of the functions or constants that
+ * you can check for the existence of the functions or constants that
  * are expected to be added. For example
  *
  *    if (gl.drawBuffers) {

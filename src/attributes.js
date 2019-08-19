@@ -30,7 +30,7 @@ import * as helper from './helper.js';
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.attributes` and `twgl`
+ * For backward compatibility they are available at both `twgl.attributes` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -48,9 +48,9 @@ const defaults = {
  * Sets the default attrib prefix
  *
  * When writing shaders I prefer to name attributes with `a_`, uniforms with `u_` and varyings with `v_`
- * as it makes it clear where they came from. But, when building geometry I prefer using unprefixed names.
+ * as it makes it clear where they came from. But, when building geometry I prefer using un-prefixed names.
  *
- * In otherwords I'll create arrays of geometry like this
+ * In other words I'll create arrays of geometry like this
  *
  *     var arrays = {
  *       position: ...
@@ -193,7 +193,7 @@ function makeTypedArray(array, name) {
  */
 
 /**
- * Use this type of array spec when TWGL can't guess the type or number of compoments of an array
+ * Use this type of array spec when TWGL can't guess the type or number of components of an array
  * @typedef {Object} FullArraySpec
  * @property {number[]|ArrayBufferView} [value] a constant value for the attribute. Note: if this is set the attribute will be
  *    disabled and set to this constant value and all other values will be ignored.
@@ -410,7 +410,7 @@ function createAttribsFromArrays(gl, arrays) {
  *     };
  *     var bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
  *
- *  And you want to dynamically upate the positions. You could do this
+ *  And you want to dynamically update the positions. You could do this
  *
  *     // assuming arrays.position has already been updated with new data.
  *     twgl.setAttribInfoBufferFromArray(gl, bufferInfo.attribs.position, arrays.position);
@@ -418,7 +418,7 @@ function createAttribsFromArrays(gl, arrays) {
  * @param {WebGLRenderingContext} gl
  * @param {AttribInfo} attribInfo The attribInfo who's buffer contents to set. NOTE: If you have an attribute prefix
  *   the name of the attribute will include the prefix.
- * @param {ArraySpec} array Note: it is arguably ineffient to pass in anything but a typed array because anything
+ * @param {ArraySpec} array Note: it is arguably inefficient to pass in anything but a typed array because anything
  *    else will have to be converted to a typed array before it can be used by WebGL. During init time that
  *    inefficiency is usually not important but if you're updating data dynamically best to be efficient.
  * @param {number} [offset] an optional offset into the buffer. This is only an offset into the WebGL buffer
@@ -513,7 +513,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
  * @property {number} [elementType] The type of indices `UNSIGNED_BYTE`, `UNSIGNED_SHORT` etc..
  * @property {WebGLBuffer} [indices] The indices `ELEMENT_ARRAY_BUFFER` if any indices exist.
- * @property {Object.<string, module:twgl.AttribInfo>} [attribs] The attribs approriate to call `setAttributes`
+ * @property {Object.<string, module:twgl.AttribInfo>} [attribs] The attribs appropriate to call `setAttributes`
  * @memberOf module:twgl
  */
 
@@ -587,7 +587,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  *     var bufferInfo = {
  *       attribs: {
  *         a_position: { numComponents: 3, buffer: gl.createBuffer(), },
- *         a_texcoods: { numComponents: 2, buffer: gl.createBuffer(), },
+ *         a_texcoords: { numComponents: 2, buffer: gl.createBuffer(), },
  *         a_normals: { numComponents: 3, buffer: gl.createBuffer(), },
  *       },
  *       indices: gl.createBuffer(),
@@ -608,7 +608,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  * @param {module:twgl.BufferInfo} [srcBufferInfo] An existing
  *        buffer info to start from. WebGLBuffers etc specified
  *        in the srcBufferInfo will be used in a new BufferInfo
- *        with any arrays specfied overriding the ones in
+ *        with any arrays specified overriding the ones in
  *        srcBufferInfo.
  * @return {module:twgl.BufferInfo} A BufferInfo
  * @memberOf module:twgl/attributes
@@ -648,11 +648,11 @@ function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
  *        type: Uint8Array,
  *     }
  *
- * returns a WebGLBuffer that constains the given data.
+ * returns a WebGLBuffer that contains the given data.
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
  * @param {module:twgl.ArraySpec} array an array, typed array, or array spec.
- * @param {string} arrayName name of array. Used to guess the type if type can not be dervied other wise.
+ * @param {string} arrayName name of array. Used to guess the type if type can not be derived otherwise.
  * @return {WebGLBuffer} a WebGLBuffer containing the data in array.
  * @memberOf module:twgl/attributes
  */

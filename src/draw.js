@@ -25,7 +25,7 @@ import * as programs from './programs.js';
 /**
  * Drawing related functions
  *
- * For backward compatibily they are available at both `twgl.draw` and `twgl`
+ * For backward compatibility they are available at both `twgl.draw` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -76,7 +76,7 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
  * You need either a `BufferInfo` or a `VertexArrayInfo`.
  *
  * @typedef {Object} DrawObject
- * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In otherwords `undefined` = `true`
+ * @property {boolean} [active] whether or not to draw. Default = `true` (must be `false` to be not true). In other words `undefined` = `true`
  * @property {number} [type] type to draw eg. `gl.TRIANGLES`, `gl.LINES`, etc...
  * @property {module:twgl.ProgramInfo} programInfo A ProgramInfo as returned from {@link module:twgl.createProgramInfo}
  * @property {module:twgl.BufferInfo} [bufferInfo] A BufferInfo as returned from {@link module:twgl.createBufferInfoFromArrays}
@@ -101,7 +101,7 @@ function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
  *     };
  *
  * @property {number} [offset] the offset to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to 0.
- * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElemnts`. Defaults to bufferInfo.numElements.
+ * @property {number} [count] the count to pass to `gl.drawArrays` or `gl.drawElements`. Defaults to bufferInfo.numElements.
  * @property {number} [instanceCount] the number of instances. Defaults to undefined.
  * @memberOf module:twgl
  */

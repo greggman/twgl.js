@@ -30,7 +30,7 @@ import * as helper from './helper.js';
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.programs` and `twgl`
+ * For backward compatibility they are available at both `twgl.programs` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -555,7 +555,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  * @param {number[]} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments pased on
+ * @return {module:twgl.ProgramOptions} an instance of ProgramOptions based on the arguments passed in
  * @private
  */
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
@@ -831,6 +831,7 @@ function isBuiltIn(info) {
  *
  * @see {@link module:twgl.setUniforms}
  *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLProgram} program the program to create setters for.
  * @returns {Object.<string, function>} an object with a setter by name for each uniform
  * @memberOf module:twgl/programs
@@ -984,9 +985,9 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * @property {number} size The size in bytes needed for the block
  * @property {number[]} uniformIndices The indices of the uniforms used by the block. These indices
  *    correspond to entries in a UniformData array in the {@link module:twgl.UniformBlockSpec}.
- * @property {bool} usedByVertexShader Self explanitory
- * @property {bool} usedByFragmentShader Self explanitory
- * @property {bool} used Self explanitory
+ * @property {bool} usedByVertexShader Self explanatory
+ * @property {bool} usedByFragmentShader Self explanatory
+ * @property {bool} used Self explanatory
  * @memberOf module:twgl
  */
 
@@ -1052,7 +1053,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
       size: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_DATA_SIZE),
       uniformIndices: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES),
     };
-    blockSpec.used = blockSpec.usedByVertexSahder || blockSpec.usedByFragmentShader;
+    blockSpec.used = blockSpec.usedByVertexShader || blockSpec.usedByFragmentShader;
     blockSpecs[name] = blockSpec;
   }
 
@@ -1094,7 +1095,7 @@ const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
  *
  * @param {WebGL2RenderingContext} gl A WebGL2RenderingContext
  * @param {WebGLProgram} program A WebGLProgram
- * @param {module:twgl.UniformBlockSpec} uinformBlockSpec. A UniformBlockSpec as returned
+ * @param {module:twgl.UniformBlockSpec} uniformBlockSpec. A UniformBlockSpec as returned
  *     from {@link module:twgl.createUniformBlockSpecFromProgram}.
  * @param {string} blockName The name of the block.
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
@@ -1163,11 +1164,11 @@ function createUniformBlockInfo(gl, programInfo, blockName) {
 }
 
 /**
- * Binds a unform block to the matching uniform block point.
+ * Binds a uniform block to the matching uniform block point.
  * Matches by blocks by name so blocks must have the same name not just the same
  * structure.
  *
- * If you have changed any values and you upload the valus into the corresponding WebGLBuffer
+ * If you have changed any values and you upload the values into the corresponding WebGLBuffer
  * call {@link module:twgl.setUniformBlock} instead.
  *
  * @param {WebGL2RenderingContext} gl A WebGL 2 rendering context.
@@ -1372,18 +1373,18 @@ function setBlockUniforms(uniformBlockInfo, values) {
 function setUniforms(setters, values) {  // eslint-disable-line
   const actualSetters = setters.uniformSetters || setters;
   const numArgs = arguments.length;
-  for (let andx = 1; andx < numArgs; ++andx) {
-    const vals = arguments[andx];
-    if (Array.isArray(vals)) {
-      const numValues = vals.length;
+  for (let aNdx = 1; aNdx < numArgs; ++aNdx) {
+    const values = arguments[aNdx];
+    if (Array.isArray(values)) {
+      const numValues = values.length;
       for (let ii = 0; ii < numValues; ++ii) {
-        setUniforms(actualSetters, vals[ii]);
+        setUniforms(actualSetters, values[ii]);
       }
     } else {
-      for (const name in vals) {
+      for (const name in values) {
         const setter = actualSetters[name];
         if (setter) {
-          setter(vals[name]);
+          setter(values[name]);
         }
       }
     }
@@ -1395,6 +1396,7 @@ function setUniforms(setters, values) {  // eslint-disable-line
  * program. You can pass this to {@link module:twgl.setBuffersAndAttributes} to set all your buffers and attributes.
  *
  * @see {@link module:twgl.setAttributes} for example
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLProgram} program the program to create setters for.
  * @return {Object.<string, function>} an object with a setter for each attribute by name.
  * @memberOf module:twgl/programs
@@ -1504,7 +1506,7 @@ function setAttributes(setters, buffers) {
  *
  *     setBuffersAndAttributes(gl, programInfo, bufferInfo);
  *
- * For the example above it is equivilent to
+ * For the example above it is equivalent to
  *
  *     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
  *     gl.enableVertexAttribArray(a_positionLocation);
@@ -1514,7 +1516,7 @@ function setAttributes(setters, buffers) {
  *     gl.vertexAttribPointer(a_texcoordLocation, 4, gl.FLOAT, false, 0, 0);
  *
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext.
- * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgrmaInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
+ * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters A `ProgramInfo` as returned from {@link module:twgl.createProgramInfo} or Attribute setters as returned from {@link module:twgl.createAttributeSetters}
  * @param {(module:twgl.BufferInfo|module:twgl.VertexArrayInfo)} buffers a `BufferInfo` as returned from {@link module:twgl.createBufferInfoFromArrays}.
  *   or a `VertexArrayInfo` as returned from {@link module:twgl.createVertexArrayInfo}
  * @memberOf module:twgl/programs
@@ -1535,7 +1537,7 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @property {WebGLProgram} program A shader program
  * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
  * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
- * @propetty {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+ * @property {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
  * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
  * @memberOf module:twgl
  */

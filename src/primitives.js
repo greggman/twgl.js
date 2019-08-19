@@ -29,7 +29,7 @@
  *
  *    These functions are almost always the functions you want to call. They
  *    create vertices then make WebGLBuffers and create {@link module:twgl.AttribInfo}s
- *    returing a {@link module:twgl.BufferInfo} you can pass to {@link module:twgl.setBuffersAndAttributes}
+ *    returning a {@link module:twgl.BufferInfo} you can pass to {@link module:twgl.setBuffersAndAttributes}
  *    and {@link module:twgl.drawBufferInfo} etc...
  *
  * *  `createSomeShapeBuffers`
@@ -131,7 +131,7 @@ function allButIndices(name) {
 }
 
 /**
- * Given indexed vertices creates a new set of vertices unindexed by expanding the indexed vertices.
+ * Given indexed vertices creates a new set of vertices un-indexed by expanding the indexed vertices.
  * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex
  * @return {Object.<string, TypedArray>} The deindexed vertices
  * @memberOf module:twgl/primitives
@@ -1323,14 +1323,14 @@ function create3DFVertices() {
 }
 
 /**
- * Creates cresent BufferInfo.
+ * Creates crescent BufferInfo.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} verticalRadius The vertical radius of the cresent.
- * @param {number} outerRadius The outer radius of the cresent.
- * @param {number} innerRadius The inner radius of the cresent.
- * @param {number} thickness The thickness of the cresent.
- * @param {number} subdivisionsDown number of steps around the cresent.
+ * @param {number} verticalRadius The vertical radius of the crescent.
+ * @param {number} outerRadius The outer radius of the crescent.
+ * @param {number} innerRadius The inner radius of the crescent.
+ * @param {number} thickness The thickness of the crescent.
+ * @param {number} subdivisionsDown number of steps around the crescent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
  * @return {module:twgl.BufferInfo} The created BufferInfo.
@@ -1339,14 +1339,14 @@ function create3DFVertices() {
  */
 
 /**
- * Creates cresent buffers.
+ * Creates crescent buffers.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} verticalRadius The vertical radius of the cresent.
- * @param {number} outerRadius The outer radius of the cresent.
- * @param {number} innerRadius The inner radius of the cresent.
- * @param {number} thickness The thickness of the cresent.
- * @param {number} subdivisionsDown number of steps around the cresent.
+ * @param {number} verticalRadius The vertical radius of the crescent.
+ * @param {number} outerRadius The outer radius of the crescent.
+ * @param {number} innerRadius The inner radius of the crescent.
+ * @param {number} thickness The thickness of the crescent.
+ * @param {number} subdivisionsDown number of steps around the crescent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
  * @return {Object.<string, WebGLBuffer>} The created buffers.
@@ -1355,19 +1355,66 @@ function create3DFVertices() {
  */
 
 /**
- * Creates cresent vertices.
+ * Creates crescent vertices.
  *
- * @param {number} verticalRadius The vertical radius of the cresent.
- * @param {number} outerRadius The outer radius of the cresent.
- * @param {number} innerRadius The inner radius of the cresent.
- * @param {number} thickness The thickness of the cresent.
- * @param {number} subdivisionsDown number of steps around the cresent.
+ * @param {number} verticalRadius The vertical radius of the crescent.
+ * @param {number} outerRadius The outer radius of the crescent.
+ * @param {number} innerRadius The inner radius of the crescent.
+ * @param {number} thickness The thickness of the crescent.
+ * @param {number} subdivisionsDown number of steps around the crescent.
+ * @param {number} [startOffset] Where to start arc. Default 0.
+ * @param {number} [endOffset] Where to end arg. Default 1.
+ * @return {Object.<string, TypedArray>} The created vertices.
+ * @memberOf module:twgl/primitives
+ * @function createCresentBuffers
+ */
+
+/**
+ * Creates crescent BufferInfo.
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+ * @param {number} verticalRadius The vertical radius of the crescent.
+ * @param {number} outerRadius The outer radius of the crescent.
+ * @param {number} innerRadius The inner radius of the crescent.
+ * @param {number} thickness The thickness of the crescent.
+ * @param {number} subdivisionsDown number of steps around the crescent.
+ * @param {number} [startOffset] Where to start arc. Default 0.
+ * @param {number} [endOffset] Where to end arg. Default 1.
+ * @return {module:twgl.BufferInfo} The created BufferInfo.
+ * @memberOf module:twgl/primitives
+ * @function createCrescentBufferInfo
+ */
+
+/**
+ * Creates crescent buffers.
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
+ * @param {number} verticalRadius The vertical radius of the crescent.
+ * @param {number} outerRadius The outer radius of the crescent.
+ * @param {number} innerRadius The inner radius of the crescent.
+ * @param {number} thickness The thickness of the crescent.
+ * @param {number} subdivisionsDown number of steps around the crescent.
+ * @param {number} [startOffset] Where to start arc. Default 0.
+ * @param {number} [endOffset] Where to end arg. Default 1.
+ * @return {Object.<string, WebGLBuffer>} The created buffers.
+ * @memberOf module:twgl/primitives
+ * @function createCrescentBuffers
+ */
+
+/**
+ * Creates crescent vertices.
+ *
+ * @param {number} verticalRadius The vertical radius of the crescent.
+ * @param {number} outerRadius The outer radius of the crescent.
+ * @param {number} innerRadius The inner radius of the crescent.
+ * @param {number} thickness The thickness of the crescent.
+ * @param {number} subdivisionsDown number of steps around the crescent.
  * @param {number} [startOffset] Where to start arc. Default 0.
  * @param {number} [endOffset] Where to end arg. Default 1.
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
- function createCresentVertices(
+ function createCrescentVertices(
     verticalRadius,
     outerRadius,
     innerRadius,
@@ -1647,7 +1694,7 @@ function createTorusVertices(
  * is particularly useful when using the disc as a ground plane
  * with a fixed camera such that you don't need the resolution
  * of small triangles near the perimeter. For example, a value
- * of 2 will produce stacks whose ouside radius increases with
+ * of 2 will produce stacks whose outside radius increases with
  * the square of the stack index. A value of 1 will give uniform
  * stacks.
  *
@@ -1675,7 +1722,7 @@ function createTorusVertices(
  * is particularly useful when using the disc as a ground plane
  * with a fixed camera such that you don't need the resolution
  * of small triangles near the perimeter. For example, a value
- * of 2 will produce stacks whose ouside radius increases with
+ * of 2 will produce stacks whose outside radius increases with
  * the square of the stack index. A value of 1 will give uniform
  * stacks.
  *
@@ -1703,7 +1750,7 @@ function createTorusVertices(
  * is particularly useful when using the disc as a ground plane
  * with a fixed camera such that you don't need the resolution
  * of small triangles near the perimeter. For example, a value
- * of 2 will produce stacks whose ouside radius increases with
+ * of 2 will produce stacks whose outside radius increases with
  * the square of the stack index. A value of 1 will give uniform
  * stacks.
  *
@@ -1819,15 +1866,15 @@ function randInt(range) {
 function makeRandomVertexColors(vertices, options) {
   options = options || {};
   const numElements = vertices.position.numElements;
-  const vcolors = createAugmentedTypedArray(4, numElements, Uint8Array);
+  const vColors = createAugmentedTypedArray(4, numElements, Uint8Array);
   const rand = options.rand || function(ndx, channel) {
     return channel < 3 ? randInt(256) : 255;
   };
-  vertices.color = vcolors;
+  vertices.color = vColors;
   if (vertices.indices) {
     // just make random colors if index
     for (let ii = 0; ii < numElements; ++ii) {
-      vcolors.push(rand(ii, 0), rand(ii, 1), rand(ii, 2), rand(ii, 3));
+      vColors.push(rand(ii, 0), rand(ii, 1), rand(ii, 2), rand(ii, 3));
     }
   } else {
     // make random colors per triangle
@@ -1836,7 +1883,7 @@ function makeRandomVertexColors(vertices, options) {
     for (let ii = 0; ii < numSets; ++ii) {  // eslint-disable-line
       const color = [rand(ii, 0), rand(ii, 1), rand(ii, 2), rand(ii, 3)];
       for (let jj = 0; jj < numVertsPerColor; ++jj) {
-        vcolors.push(color);
+        vColors.push(color);
       }
     }
   }
@@ -1908,11 +1955,11 @@ function createArrayOfSameType(srcArray, length) {
   const arraySrc = getArray(srcArray);
   const newArray = new arraySrc.constructor(length);
   let newArraySpec = newArray;
-  // If it appears to have been augmented make new one augemented
+  // If it appears to have been augmented make new one augmented
   if (arraySrc.numComponents && arraySrc.numElements) {
     augmentTypedArray(newArray, arraySrc.numComponents);
   }
-  // If it was a fullspec make new one a fullspec
+  // If it was a full spec make new one a full spec
   if (srcArray.data) {
     newArraySpec = {
       data: newArray,
@@ -1923,7 +1970,7 @@ function createArrayOfSameType(srcArray, length) {
 }
 
 /**
- * Concatinates sets of vertices
+ * Concatenates sets of vertices
  *
  * Assumes the vertices match in composition. For example
  * if one set of vertices has positions, normals, and indices
@@ -1932,7 +1979,7 @@ function createArrayOfSameType(srcArray, length) {
  *
  * Example:
  *
- *      const cubeVertices = twgl.primtiives.createCubeVertices(2);
+ *      const cubeVertices = twgl.primitives.createCubeVertices(2);
  *      const sphereVertices = twgl.primitives.createSphereVertices(1, 10, 10);
  *      // move the sphere 2 units up
  *      twgl.primitives.reorientVertices(
@@ -1944,7 +1991,7 @@ function createArrayOfSameType(srcArray, length) {
  *      const bufferInfo = twgl.createBufferInfoFromArrays(gl, cubeSphereVertices);
  *
  * @param {module:twgl.Arrays[]} arrays Array of arrays of vertices
- * @return {module:twgl.Arrays} The concatinated vertices.
+ * @return {module:twgl.Arrays} The concatenated vertices.
  * @memberOf module:twgl/primitives
  */
 function concatVertices(arrayOfArrays) {
@@ -2025,7 +2072,7 @@ function concatVertices(arrayOfArrays) {
  * also want to keep the original available
  *
  * @param {module:twgl.Arrays} arrays of vertices
- * @return {module:twgl.Arrays} The dupilicated vertices.
+ * @return {module:twgl.Arrays} The duplicated vertices.
  * @memberOf module:twgl/primitives
  */
 function duplicateVertices(arrays) {
@@ -2052,14 +2099,19 @@ const createTruncatedConeBufferInfo = createBufferInfoFunc(createTruncatedConeVe
 const createTruncatedConeBuffers = createBufferFunc(createTruncatedConeVertices);
 const createXYQuadBufferInfo = createBufferInfoFunc(createXYQuadVertices);
 const createXYQuadBuffers = createBufferFunc(createXYQuadVertices);
-const createCresentBufferInfo = createBufferInfoFunc(createCresentVertices);
-const createCresentBuffers = createBufferFunc(createCresentVertices);
+const createCrescentBufferInfo = createBufferInfoFunc(createCrescentVertices);
+const createCrescentBuffers = createBufferFunc(createCrescentVertices);
 const createCylinderBufferInfo = createBufferInfoFunc(createCylinderVertices);
 const createCylinderBuffers = createBufferFunc(createCylinderVertices);
 const createTorusBufferInfo = createBufferInfoFunc(createTorusVertices);
 const createTorusBuffers = createBufferFunc(createTorusVertices);
 const createDiscBufferInfo = createBufferInfoFunc(createDiscVertices);
 const createDiscBuffers = createBufferFunc(createDiscVertices);
+
+// these were mis-spelled until 4.12
+const createCresentBufferInfo = createCrescentBufferInfo;
+const createCresentBuffers = createCrescentBuffers;
+const createCresentVertices = createCrescentVertices;
 
 export {
   create3DFBufferInfo,
@@ -2084,6 +2136,9 @@ export {
   createCresentBufferInfo,
   createCresentBuffers,
   createCresentVertices,
+  createCrescentBufferInfo,
+  createCrescentBuffers,
+  createCrescentVertices,
   createCylinderBufferInfo,
   createCylinderBuffers,
   createCylinderVertices,

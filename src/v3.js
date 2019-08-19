@@ -207,7 +207,7 @@ function min(a, b, dst) {
 }
 
 /**
- * Mutiplies a vector by a scalar.
+ * Multiplies a vector by a scalar.
  * @param {module:twgl/v3.Vec3} v The vector.
  * @param {number} k The scalar.
  * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..

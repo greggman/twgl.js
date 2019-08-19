@@ -26,7 +26,7 @@ import * as helper from './helper.js';
 /**
  * Framebuffer related functions
  *
- * For backward compatibily they are available at both `twgl.framebuffer` and `twgl`
+ * For backward compatibility they are available at both `twgl.framebuffer` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -82,7 +82,7 @@ const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
  *
  * @typedef {Object} AttachmentOptions
  * @property {number} [attach] The attachment point. Defaults
- *   to `gl.COLOR_ATTACTMENT0 + ndx` unless type is a depth or stencil type
+ *   to `gl.COLOR_ATTACHMENT0 + ndx` unless type is a depth or stencil type
  *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
  *   on the format or attachment type.
  * @property {number} [format] The format. If one of `gl.RGBA4`,
@@ -97,7 +97,7 @@ const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
  *   If set then `gl.framebufferTextureLayer` is called, if not then `gl.framebufferTexture2D`
  * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
  *    If provided will attach this Object. This allows you to share
- *    attachemnts across framebuffers.
+ *    attachments across framebuffers.
  * @memberOf module:twgl
  */
 
@@ -169,7 +169,7 @@ function isRenderbufferFormat(format) {
  * @param {module:twgl.AttachmentOptions[]} [attachments] which attachments to create. If not provided the default is a framebuffer with an
  *    `RGBA`, `UNSIGNED_BYTE` texture `COLOR_ATTACHMENT0` and a `DEPTH_STENCIL` renderbuffer `DEPTH_STENCIL_ATTACHMENT`.
  * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
- * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+ * @param {number} [height] the height for the attachments. Default = size of drawingBuffer
  * @return {module:twgl.FramebufferInfo} the framebuffer and attachments.
  * @memberOf module:twgl/framebuffers
  */
@@ -279,7 +279,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
  * @param {module:twgl.FramebufferInfo} framebufferInfo a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
  * @param {module:twgl.AttachmentOptions[]} [attachments] the same attachments options as passed to {@link module:twgl.createFramebufferInfo}.
  * @param {number} [width] the width for the attachments. Default = size of drawingBuffer
- * @param {number} [height] the height for the attachments. Defautt = size of drawingBuffer
+ * @param {number} [height] the height for the attachments. Default = size of drawingBuffer
  * @memberOf module:twgl/framebuffers
  */
 function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) {
@@ -305,7 +305,7 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
 /**
  * Binds a framebuffer
  *
- * This function pretty much soley exists because I spent hours
+ * This function pretty much solely exists because I spent hours
  * trying to figure out why something I wrote wasn't working only
  * to realize I forget to set the viewport dimensions.
  * My hope is this function will fix that.

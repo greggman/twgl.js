@@ -530,7 +530,7 @@ function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
 }
 
 /**
- * Computes a 4-by-4 othogonal transformation matrix given the left, right,
+ * Computes a 4-by-4 orthogonal transformation matrix given the left, right,
  * bottom, and top dimensions of the near clipping plane as well as the
  * near and far clipping plane distances.
  * @param {number} left Left side of the near clipping plane viewport.

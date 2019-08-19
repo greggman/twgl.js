@@ -31,7 +31,7 @@ import * as helper from './helper.js';
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.textures` and `twgl`
+ * For backward compatibility they are available at both `twgl.textures` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
@@ -60,7 +60,7 @@ const ctx = (typeof document !== 'undefined' && document.createElement)
 
 // NOTE: We can maybe remove some of the need for the 2d canvas. In WebGL2
 // we can use the various unpack settings. Otherwise we could try using
-// the ability of an imagebitmap to be cut. Unfortunately cutting an imagebitmap
+// the ability of an ImageBitmap to be cut. Unfortunately cutting an ImageBitmap
 // is async and the current TWGL code expects a non-Async result though that
 // might not be a problem. ImageBitmap though is not available in Edge or Safari
 // as of 2018-01-02
@@ -196,7 +196,7 @@ const formatInfo = {};
  * @property {number} textureFormat format to pass texImage2D and similar functions.
  * @property {boolean} colorRenderable true if you can render to this format of texture.
  * @property {boolean} textureFilterable true if you can filter the texture, false if you can ony use `NEAREST`.
- * @property {number[]} type Array of possible types you can pass to teximage2D and similar function
+ * @property {number[]} type Array of possible types you can pass to texImage2D and similar function
  * @property {Object.<number,number>} bytesPerElementMap A map of types to bytes per element
  * @private
  */
@@ -373,7 +373,7 @@ function canFilter(internalFormat /*, type */) {
 }
 
 /**
- * Gets the number of compontents for a given image format.
+ * Gets the number of components for a given image format.
  * @param {number} format the format.
  * @return {number} the number of components for the format.
  * @memberOf module:twgl/textures
@@ -458,7 +458,7 @@ function setDefaults(newDefaults) {
  * @callback TextureFunc
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @param {module:twgl.TextureOptions} options the texture options
- * @return {*} Returns any of the things documentented for `src` for {@link module:twgl.TextureOptions}.
+ * @return {*} Returns any of the things documented for `src` for {@link module:twgl.TextureOptions}.
  * @memberOf module:twgl
  */
 
@@ -519,13 +519,13 @@ function setDefaults(newDefaults) {
  * @property {(number[]|ArrayBufferView|TexImageSource|TexImageSource[]|string|string[]|module:twgl.TextureFunc)} [src] source for texture
  *
  *    If `string` then it's assumed to be a URL to an image. The image will be downloaded async. A usable
- *    1x1 pixel texture will be returned immediatley. The texture will be updated once the image has downloaded.
+ *    1x1 pixel texture will be returned immediately. The texture will be updated once the image has downloaded.
  *    If `target` is `gl.TEXTURE_CUBE_MAP` will attempt to divide image into 6 square pieces. 1x6, 6x1, 3x2, 2x3.
  *    The pieces will be uploaded in `cubeFaceOrder`
  *
  *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_CUBE_MAP` then it must have 6 entries, one for each face of a cube map.
  *
- *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_2D_ARRAY` then eact entry is a slice of the a 2d array texture
+ *    If `string[]` or `TexImageSource[]` and target is `gl.TEXTURE_2D_ARRAY` then each entry is a slice of the a 2d array texture
  *    and will be scaled to the specified width and height OR to the size of the first image that loads.
  *
  *    If `TexImageSource` then it wil be used immediately to create the contents of the texture. Examples `HTMLImageElement`,
@@ -642,7 +642,7 @@ function restoreSkipState(gl) {
  * Sets the parameters of a texture or sampler
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {number|WebGLSampler} target texture target or sampler
- * @param {function()} parameteriFn texParamteri or samplerParameteri fn
+ * @param {function()} parameteriFn texParameteri or samplerParameteri fn
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
@@ -865,7 +865,7 @@ function getCubeFaceOrder(gl, options) {
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
- * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundent but
+ * @return {FaceInfo[]} cubemap face infos. Arguably the `face` property of each element is redundant but
  *    it's needed internally to sort the array of `ndx` properties by `face`.
  * @private
  */
@@ -957,7 +957,7 @@ function setTextureFromElement(gl, tex, element, options) {
         // the type across all faces where as with a 2D one there's only one face
         // so we're replacing everything all at once. It also has to be the correct size.
         // On the other hand we need all faces to be the same size so as one face loads
-        // the rest match else the texture will be unrenderable.
+        // the rest match else the texture will be un-renderable.
         gl.texImage2D(f.face, level, internalFormat, size, size, 0, format, type, null);
         createImageBitmap(element, xOffset, yOffset, size, size, {
           premultiplyAlpha: 'none',
@@ -1198,7 +1198,7 @@ function setTextureTo1PixelColor(gl, tex, options) {
  * @callback TextureReadyCallback
  * @param {*} err If truthy there was an error.
  * @param {WebGLTexture} texture the texture.
- * @param {module:twgl.TextureSrc} souce image(s) used to as the src for the texture
+ * @param {module:twgl.TextureSrc} source image(s) used to as the src for the texture
  * @memberOf module:twgl
  */
 
@@ -1233,7 +1233,7 @@ function setTextureTo1PixelColor(gl, tex, options) {
  * Loads a texture from an image from a Url as specified in `options.src`
  * If `options.color !== false` will set the texture to a 1x1 pixel color so that the texture is
  * immediately useable. It will be updated with the contents of the image once the image has finished
- * downloading. Filtering options will be set as approriate for image unless `options.auto === false`.
+ * downloading. Filtering options will be set as appropriate for image unless `options.auto === false`.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
@@ -1569,7 +1569,7 @@ function createTexture(gl, options, callback) {
   let type = options.type || formatType.type;
   gl.bindTexture(target, tex);
   if (target === gl.TEXTURE_CUBE_MAP) {
-    // this should have been the default for CUBEMAPS :(
+    // this should have been the default for cubemaps :(
     gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   }
@@ -1786,8 +1786,6 @@ function createTextures(gl, textureOptions, callback) {
   return textures;
 }
 
-// Using quotes prevents Uglify from changing the names.
-// No speed diff AFAICT.
 export {
   setDefaults as setTextureDefaults_,
 

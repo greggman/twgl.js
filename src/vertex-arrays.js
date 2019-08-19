@@ -29,7 +29,7 @@ import * as programs from './programs.js';
  * for those cases where you're doing something out of the ordinary
  * and you need lower level access.
  *
- * For backward compatibily they are available at both `twgl.attributes` and `twgl`
+ * For backward compatibility they are available at both `twgl.attributes` and `twgl`
  * itself
  *
  * See {@link module:twgl} for core functions
