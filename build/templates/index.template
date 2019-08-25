@@ -125,7 +125,7 @@ void main(void)
     gl_FragColor = u_color;
 }
 </script>
-<script src="/dist/2.x/twgl-full.min.js"></script>
+<script src="/dist/4.x/twgl-full.min.js"></script>
 <script src="/3rdparty/prettify.js"></script>
 <script src="/resources/js/background.js"></script>
 <script src="/resources/js/index.js"></script>
