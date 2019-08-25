@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.11.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.11.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5884,16 +5884,26 @@ var _exportNames = {
   getContext: true,
   getWebGLContext: true,
   resizeCanvasToDisplaySize: true,
-  setDefaults: true
+  setDefaults: true,
+  attributes: true,
+  textures: true,
+  utils: true,
+  draw: true,
+  framebuffers: true,
+  programs: true,
+  typedarrays: true,
+  vertexArrays: true
 };
 exports.addExtensionsToContext = addExtensionsToContext;
 exports.getContext = getContext;
 exports.getWebGLContext = getWebGLContext;
 exports.resizeCanvasToDisplaySize = resizeCanvasToDisplaySize;
 exports.setDefaults = setDefaults;
+exports.vertexArrays = exports.typedarrays = exports.programs = exports.framebuffers = exports.draw = exports.utils = exports.textures = exports.attributes = void 0;
 
 var attributes = _interopRequireWildcard(__webpack_require__(/*! ./attributes.js */ "./src/attributes.js"));
 
+exports.attributes = attributes;
 Object.keys(attributes).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
@@ -5902,6 +5912,7 @@ Object.keys(attributes).forEach(function (key) {
 
 var textures = _interopRequireWildcard(__webpack_require__(/*! ./textures.js */ "./src/textures.js"));
 
+exports.textures = textures;
 Object.keys(textures).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
@@ -5912,50 +5923,56 @@ var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./s
 
 var utils = _interopRequireWildcard(__webpack_require__(/*! ./utils.js */ "./src/utils.js"));
 
+exports.utils = utils;
 Object.keys(utils).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
   exports[key] = utils[key];
 });
 
-var _draw = __webpack_require__(/*! ./draw.js */ "./src/draw.js");
+var draw = _interopRequireWildcard(__webpack_require__(/*! ./draw.js */ "./src/draw.js"));
 
-Object.keys(_draw).forEach(function (key) {
+exports.draw = draw;
+Object.keys(draw).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  exports[key] = _draw[key];
+  exports[key] = draw[key];
 });
 
-var _framebuffers = __webpack_require__(/*! ./framebuffers.js */ "./src/framebuffers.js");
+var framebuffers = _interopRequireWildcard(__webpack_require__(/*! ./framebuffers.js */ "./src/framebuffers.js"));
 
-Object.keys(_framebuffers).forEach(function (key) {
+exports.framebuffers = framebuffers;
+Object.keys(framebuffers).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  exports[key] = _framebuffers[key];
+  exports[key] = framebuffers[key];
 });
 
-var _programs = __webpack_require__(/*! ./programs.js */ "./src/programs.js");
+var programs = _interopRequireWildcard(__webpack_require__(/*! ./programs.js */ "./src/programs.js"));
 
-Object.keys(_programs).forEach(function (key) {
+exports.programs = programs;
+Object.keys(programs).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  exports[key] = _programs[key];
+  exports[key] = programs[key];
 });
 
-var _typedarrays = __webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js");
+var typedarrays = _interopRequireWildcard(__webpack_require__(/*! ./typedarrays.js */ "./src/typedarrays.js"));
 
-Object.keys(_typedarrays).forEach(function (key) {
+exports.typedarrays = typedarrays;
+Object.keys(typedarrays).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  exports[key] = _typedarrays[key];
+  exports[key] = typedarrays[key];
 });
 
-var _vertexArrays = __webpack_require__(/*! ./vertex-arrays.js */ "./src/vertex-arrays.js");
+var vertexArrays = _interopRequireWildcard(__webpack_require__(/*! ./vertex-arrays.js */ "./src/vertex-arrays.js"));
 
-Object.keys(_vertexArrays).forEach(function (key) {
+exports.vertexArrays = vertexArrays;
+Object.keys(vertexArrays).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  exports[key] = _vertexArrays[key];
+  exports[key] = vertexArrays[key];
 });
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
