@@ -25,6 +25,12 @@ import * as textures from './textures.js';
 import * as helper from './helper.js';
 import * as utils from './utils.js';
 
+import * as draw from './draw.js';
+import * as framebuffers from './framebuffers.js';
+import * as programs from './programs.js';
+import * as typedarrays from './typedarrays.js';
+import * as vertexArrays from './vertex-arrays.js';
+
 /**
  * The main TWGL module.
  *
@@ -388,6 +394,15 @@ export {
   getWebGLContext,
   resizeCanvasToDisplaySize,
   setDefaults,
+
+  attributes,
+  draw,
+  framebuffers,
+  programs,
+  textures,
+  typedarrays,
+  utils,
+  vertexArrays,
 };
 
 // function notPrivate(name) {
