@@ -3,6 +3,7 @@
   "version": "4.11.2",
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl-full.js",
+  "module": "src/twgl-full.js",
   "types": "dist/4.x/twgl-full.d.ts",
   "scripts": {
     "test": "npm run testjs && npm run testts",
@@ -37,7 +38,8 @@
     "dist/4.x/twgl-full.js",
     "dist/4.x/twgl.js",
     "dist/4.x/twgl-full.d.ts",
-    "dist/4.x/twgl.d.ts"
+    "dist/4.x/twgl.d.ts",
+    "src/*"
   ],
   "devDependencies": {
     "@babel/core": "^7.2.2",

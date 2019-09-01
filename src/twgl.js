@@ -405,16 +405,44 @@ export {
   vertexArrays,
 };
 
-// function notPrivate(name) {
-//   return name[name.length - 1] !== '_';
-// }
-//
-// function copyPublicProperties(src, dst) {
-//   Object.keys(src).filter(notPrivate).forEach(function(key) {
-//     dst[key] = src[key];
-//   });
-//   return dst;
-// }
+
+function notPrivate(name) {
+  return name[name.length - 1] !== '_';
+}
+function copyPublicProperties(src, dst) {
+  Object.keys(src).filter(notPrivate).forEach(function(key) {
+    dst[key] = src[key];
+  });
+  return dst;
+}
+
+const api = {
+  addExtensionsToContext,
+  getContext,
+  getWebGLContext,
+  resizeCanvasToDisplaySize,
+  setDefaults,
+
+  attributes,
+  draw,
+  framebuffers,
+  programs,
+  textures,
+  typedarrays,
+  utils,
+  vertexArrays,
+};
+
+copyPublicProperties(attributes, api);
+copyPublicProperties(draw, api);
+copyPublicProperties(framebuffers, api);
+copyPublicProperties(programs, api);
+copyPublicProperties(textures, api);
+copyPublicProperties(typedarrays, api);
+copyPublicProperties(utils, api);
+copyPublicProperties(vertexArrays, api);
+
+export default api;
 
 export * from './attributes.js';
 export * from './draw.js';
