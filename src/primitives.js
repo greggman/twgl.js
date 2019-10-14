@@ -324,7 +324,7 @@ function reorientVertices(arrays, matrix) {
  * @param {number} [yOffset] the amount to offset the quad in Y
  * @return {Object.<string, WebGLBuffer>} the created XY Quad BufferInfo
  * @memberOf module:twgl/primitives
- * @function createXYQuadBufferInfo
+ * @function createXYQuadBuffers
  */
 
 /**
@@ -345,7 +345,7 @@ function reorientVertices(arrays, matrix) {
  * @param {number} [yOffset] the amount to offset the quad in Y
  * @return {module:twgl.BufferInfo} the created XY Quad buffers
  * @memberOf module:twgl/primitives
- * @function createXYQuadBuffers
+ * @function createXYQuadBufferInfo
  */
 
 /**
