@@ -197,7 +197,7 @@ export function drawBufferInfo(gl: WebGLRenderingContext, bufferInfo: BufferInfo
 export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObject[]): void;
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
 export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
-export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo, target?: number): void;
+export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo | null, target?: number): void;
 export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): ProgramInfo;
 export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
 export function bindUniformBlock(gl: WebGL2RenderingContext, programInfo: ProgramInfo | UniformBlockSpec, uniformBlockInfo: UniformBlockInfo): boolean;
@@ -242,7 +242,7 @@ export function drawObjectList(gl: WebGLRenderingContext, objectsToDraw: DrawObj
 
 export function createFramebufferInfo(gl: WebGLRenderingContext, attachments?: AttachmentOptions[], width?: number, height?: number): FramebufferInfo;
 export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo: FramebufferInfo, attachments?: AttachmentOptions[], width?: number, height?: number): void;
-export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo, target?: number): void;
+export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo | null, target?: number): void;
 
 
 export function getBindPointForSamplerType(): void;
@@ -403,10 +403,10 @@ declare module primitives {
     }, matrix: m4.Mat4): {
         [key: string]: NativeArrayOrTypedArray;
     };
-    export function createXYQuadBufferInfo(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): {
+    export function createXYQuadBuffers(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): {
         [key: string]: WebGLBuffer;
     };
-    export function createXYQuadBuffers(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): BufferInfo;
+    export function createXYQuadBufferInfo(gl: WebGLRenderingContext, size?: number, xOffset?: number, yOffset?: number): BufferInfo;
     export function createXYQuadVertices(size?: number, xOffset?: number, yOffset?: number): {
         [key: string]: TypedArray;
     };

@@ -10552,286 +10552,7 @@ truncated cone.</p>
 
     
 
-    <h4 class="name" id=".createXYQuadBufferInfo"><span class="type-signature">(static) </span>createXYQuadBufferInfo<span class="signature">(gl, size<span class="signature-attributes">opt</span>, xOffset<span class="signature-attributes">opt</span>, yOffset<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Creates XY quad BufferInfo</p>
-<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>
-If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
-<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);
-</code></pre>
-<p>If you want a unit quad centered above 0,0 you'd call it with</p>
-<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gl</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>WebGLRenderingContext</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                <p>The WebGLRenderingContext.</p>
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>size</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>number</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                <p>the size across the quad. Defaults to 2 which means vertices will go from -1 to +1</p>
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>xOffset</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>number</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                <p>the amount to offset the quad in X</p>
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>yOffset</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>number</code></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">
-                <p>the amount to offset the quad in Y</p>
-                
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="section-returns">
-<h5>Returns:</h5>
-
-        
-
-<dl class="param-type">
-    <dt>
-        Type:
-    </dt>
-    <dd>
-        
-<span class="param-type"><code>Object.&lt;string, WebGLBuffer></code></span>
-
-
-    </dd>
-</dl>
-
-
-<div class="param-desc">
-    <p>the created XY Quad BufferInfo</p>
-</div>
-
-    
-</div>
-
-
-
-</div>
-        
-            
-<div class="section-method">
-
-    
-
-    <h4 class="name" id=".createXYQuadBuffers"><span class="type-signature">(static) </span>createXYQuadBuffers<span class="signature">(gl, size<span class="signature-attributes">opt</span>, xOffset<span class="signature-attributes">opt</span>, yOffset<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
+    <h4 class="name" id=".createXYQuadBufferInfo"><span class="type-signature">(static) </span>createXYQuadBufferInfo<span class="signature">(gl, size<span class="signature-attributes">opt</span>, xOffset<span class="signature-attributes">opt</span>, yOffset<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.BufferInfo">module:twgl.BufferInfo</a>}</span></h4>
 
     
 
@@ -11096,6 +10817,285 @@ If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
 
 <div class="param-desc">
     <p>the created XY Quad buffers</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id=".createXYQuadBuffers"><span class="type-signature">(static) </span>createXYQuadBuffers<span class="signature">(gl, size<span class="signature-attributes">opt</span>, xOffset<span class="signature-attributes">opt</span>, yOffset<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object.&lt;string, WebGLBuffer>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates XY quad BufferInfo</p>
+<p>The default with no parameters will return a 2x2 quad with values from -1 to +1.<br>
+If you want a unit quad with that goes from 0 to 1 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0.5, 0.5);
+</code></pre>
+<p>If you want a unit quad centered above 0,0 you'd call it with</p>
+<pre><code>twgl.primitives.createXYQuadBufferInfo(gl, 1, 0, 0.5);</code></pre>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>WebGLRenderingContext</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The WebGLRenderingContext.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>the size across the quad. Defaults to 2 which means vertices will go from -1 to +1</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>the amount to offset the quad in X</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>yOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>the amount to offset the quad in Y</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>Object.&lt;string, WebGLBuffer></code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>the created XY Quad BufferInfo</p>
 </div>
 
     
