@@ -1,5 +1,11 @@
 #Changelist
 
+*   4.11.4
+
+    *   add `null` as parameter to `bindFramebufferInfo`
+
+    *   fix return types of `createXYQuadBufferInfo` and `createXYQuadBuffers`
+
 *   4.11.3
 
     *   fix issues with TEXTURE_2D_ARRAY and arrays
