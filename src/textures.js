@@ -1466,7 +1466,7 @@ function setTextureFromArray(gl, tex, src, options) {
     throw "length wrong size for format: " + utils.glEnumToString(gl, format);
   }
   let dimensions;
-  if (target === gl.TEXTURE_3D) {
+  if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     if (!width && !height && !depth) {
       const size = Math.cbrt(numElements);
       if (size % 1 !== 0) {
@@ -1505,7 +1505,7 @@ function setTextureFromArray(gl, tex, src, options) {
       const data = src.subarray(offset, offset + faceSize);
       gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
     });
-  } else if (target === gl.TEXTURE_3D) {
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
@@ -1541,7 +1541,7 @@ function setEmptyTexture(gl, tex, options) {
     for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
     }
-  } else if (target === gl.TEXTURE_3D) {
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
