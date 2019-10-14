@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.11.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.11.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5510,7 +5510,7 @@ function setTextureFromArray(gl, tex, src, options) {
 
   var dimensions;
 
-  if (target === gl.TEXTURE_3D) {
+  if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     if (!width && !height && !depth) {
       var size = Math.cbrt(numElements);
 
@@ -5552,7 +5552,7 @@ function setTextureFromArray(gl, tex, src, options) {
       var data = src.subarray(offset, offset + faceSize);
       gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
     });
-  } else if (target === gl.TEXTURE_3D) {
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
@@ -5591,7 +5591,7 @@ function setEmptyTexture(gl, tex, options) {
     for (var ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
     }
-  } else if (target === gl.TEXTURE_3D) {
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
