@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.11.3
+
+    *   fix issues with TEXTURE_2D_ARRAY and arrays
+
 *   4.11.0
 
     *   Support `layer` attachment option for `createFramebufferInfo`
