@@ -316,7 +316,7 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
  *     gl.viewport(0, 0, someFramebufferInfo.width, someFramebufferInfo.height);
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @param {module:twgl.FramebufferInfo} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
+ * @param {module:twgl.FramebufferInfo|null} [framebufferInfo] a framebufferInfo as returned from {@link module:twgl.createFramebufferInfo}.
  *   If not passed will bind the canvas.
  * @param {number} [target] The target. If not passed `gl.FRAMEBUFFER` will be used.
  * @memberOf module:twgl/framebuffers
