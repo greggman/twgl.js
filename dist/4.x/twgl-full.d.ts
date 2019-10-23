@@ -360,7 +360,7 @@ declare module m4 {
     export function setTranslation(a: m4.Mat4, v: v3.Vec3, dst?: m4.Mat4): m4.Mat4;
     export function getTranslation(m: m4.Mat4, dst?: v3.Vec3): v3.Vec3;
     export function getAxis(m: m4.Mat4, axis: number): void;
-    export function setAxis(v: v3.Vec3, axis: number, dst?: m4.Mat4): m4.Mat4;
+    export function setAxis(m: m4.Mat4, v: v3.Vec3, axis: number, dst?: m4.Mat4): m4.Mat4;
     export function perspective(fieldOfViewYInRadians: number, aspect: number, zNear: number, zFar: number, dst?: m4.Mat4): m4.Mat4;
     export function ortho(left: number, right: number, bottom: number, top: number, near: number, far: number, dst?: m4.Mat4): m4.Mat4;
     export function frustum(left: number, right: number, bottom: number, top: number, near: number, far: number, dst?: m4.Mat4): m4.Mat4;
