@@ -75,7 +75,7 @@ function setDefaultType(ctor) {
 /**
  * Negates a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} -m.
  * @memberOf module:twgl/m4
  */
@@ -105,7 +105,7 @@ function negate(m, dst) {
 /**
  * Copies a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] The matrix.
+ * @param {module:twgl/m4.Mat4} [dst] The matrix. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} A copy of m.
  * @memberOf module:twgl/m4
  */
@@ -135,7 +135,7 @@ function copy(m, dst) {
 /**
  * Creates an n-by-n identity matrix.
  *
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} An n-by-n identity matrix.
  * @memberOf module:twgl/m4
  */
@@ -165,7 +165,7 @@ function identity(dst) {
 /**
  * Takes the transpose of a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The transpose of m.
  * @memberOf module:twgl/m4
  */
@@ -240,7 +240,7 @@ function identity(dst) {
 /**
  * Computes the inverse of a 4-by-4 matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The inverse of m.
  * @memberOf module:twgl/m4
  */
@@ -335,7 +335,7 @@ function inverse(m, dst) {
  * Multiplies two 4-by-4 matrices with a on the left and b on the right
  * @param {module:twgl/m4.Mat4} a The matrix on the left.
  * @param {module:twgl/m4.Mat4} b The matrix on the right.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The matrix product of a and b.
  * @memberOf module:twgl/m4
  */
@@ -400,8 +400,8 @@ function multiply(a, b, dst) {
  * vector.
  * @param {module:twgl/m4.Mat4} a The matrix.
  * @param {module:twgl/v3.Vec3} v The vector.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none, a new one is created.
- * @return {module:twgl/m4.Mat4} a once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The matrix with translation set.
  * @memberOf module:twgl/m4
  */
 function setTranslation(a, v, dst) {
@@ -431,7 +431,7 @@ function setTranslation(a, v, dst) {
  * Returns the translation component of a 4-by-4 matrix as a vector with 3
  * entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
- * @param {module:twgl/v3.Vec3} [dst] vector.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not passed a new one is created.
  * @return {module:twgl/v3.Vec3} The translation component of m.
  * @memberOf module:twgl/m4
  */
@@ -462,10 +462,11 @@ function getAxis(m, axis, dst) {
 
 /**
  * Sets an axis of a 4x4 matrix as a vector with 3 entries
+ * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v the axis vector
  * @param {number} axis The axis  0 = x, 1 = y, 2 = z;
- * @param {module:twgl/m4.Mat4} [dst] The matrix to set. If none, a new one is created.
- * @return {module:twgl/m4.Mat4} dst
+ * @param {module:twgl/m4.Mat4} [dst] The matrix to set. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The matrix with axis set.
  * @memberOf module:twgl/m4
  */
 function setAxis(a, v, axis, dst) {
@@ -496,7 +497,7 @@ function setAxis(a, v, axis, dst) {
  *     of the near clipping plane.
  * @param {number} zFar The depth (negative z coordinate)
  *     of the far clipping plane.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The perspective matrix.
  * @memberOf module:twgl/m4
  */
@@ -541,7 +542,7 @@ function perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
  *     of the near clipping plane.
  * @param {number} far The depth (negative z coordinate)
  *     of the far clipping plane.
- * @param {module:twgl/m4.Mat4} [dst] Output matrix.
+ * @param {module:twgl/m4.Mat4} [dst] Output matrix. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The perspective matrix.
  * @memberOf module:twgl/m4
  */
@@ -586,7 +587,7 @@ function ortho(left, right, bottom, top, near, far, dst) {
  * @param {number} top The y coordinate of the right plane of the box.
  * @param {number} near The negative z coordinate of the near plane of the box.
  * @param {number} far The negative z coordinate of the far plane of the box.
- * @param {module:twgl/m4.Mat4} [dst] Output matrix.
+ * @param {module:twgl/m4.Mat4} [dst] Output matrix. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The perspective projection matrix.
  * @memberOf module:twgl/m4
  */
@@ -627,7 +628,7 @@ function frustum(left, right, bottom, top, near, far, dst) {
  * @param {module:twgl/v3.Vec3} eye The position of the eye.
  * @param {module:twgl/v3.Vec3} target The position meant to be viewed.
  * @param {module:twgl/v3.Vec3} up A vector pointing up.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The look-at matrix.
  * @memberOf module:twgl/m4
  */
@@ -667,7 +668,7 @@ function lookAt(eye, target, up, dst) {
  * Creates a 4-by-4 matrix which translates by the given vector v.
  * @param {module:twgl/v3.Vec3} v The vector by
  *     which to translate.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The translation matrix.
  * @memberOf module:twgl/m4
  */
@@ -694,12 +695,12 @@ function translation(v, dst) {
 }
 
 /**
- * Modifies the given 4-by-4 matrix by translation by the given vector v.
+ * Translates the given 4-by-4 matrix by the given vector v.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The vector by
  *     which to translate.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The translated matrix.
  * @memberOf module:twgl/m4
  */
 function translate(m, v, dst) {
@@ -751,7 +752,7 @@ function translate(m, v, dst) {
 /**
  * Creates a 4-by-4 matrix which rotates around the x-axis by the given angle.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The rotation matrix.
  * @memberOf module:twgl/m4
  */
@@ -782,12 +783,12 @@ function rotationX(angleInRadians, dst) {
 }
 
 /**
- * Modifies the given 4-by-4 matrix by a rotation around the x-axis by the given
+ * Rotates the given 4-by-4 matrix around the x-axis by the given
  * angle.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The rotated matrix.
  * @memberOf module:twgl/m4
  */
 function rotateX(m, angleInRadians, dst) {
@@ -830,7 +831,7 @@ function rotateX(m, angleInRadians, dst) {
 /**
  * Creates a 4-by-4 matrix which rotates around the y-axis by the given angle.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The rotation matrix.
  * @memberOf module:twgl/m4
  */
@@ -861,12 +862,12 @@ function rotationY(angleInRadians, dst) {
 }
 
 /**
- * Modifies the given 4-by-4 matrix by a rotation around the y-axis by the given
+ * Rotates the given 4-by-4 matrix around the y-axis by the given
  * angle.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The rotated matrix.
  * @memberOf module:twgl/m4
  */
 function rotateY(m, angleInRadians, dst) {
@@ -909,7 +910,7 @@ function rotateY(m, angleInRadians, dst) {
 /**
  * Creates a 4-by-4 matrix which rotates around the z-axis by the given angle.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The rotation matrix.
  * @memberOf module:twgl/m4
  */
@@ -940,12 +941,12 @@ function rotationZ(angleInRadians, dst) {
 }
 
 /**
- * Modifies the given 4-by-4 matrix by a rotation around the z-axis by the given
+ * Rotates the given 4-by-4 matrix around the z-axis by the given
  * angle.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The rotated matrix.
  * @memberOf module:twgl/m4
  */
 function rotateZ(m, angleInRadians, dst) {
@@ -991,7 +992,7 @@ function rotateZ(m, angleInRadians, dst) {
  * @param {module:twgl/v3.Vec3} axis The axis
  *     about which to rotate.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} A matrix which rotates angle radians
  *     around the axis.
  * @memberOf module:twgl/m4
@@ -1034,14 +1035,14 @@ function axisRotation(axis, angleInRadians, dst) {
 }
 
 /**
- * Modifies the given 4-by-4 matrix by rotation around the given axis by the
+ * Rotates the given 4-by-4 matrix around the given axis by the
  * given angle.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} axis The axis
  *     about which to rotate.
  * @param {number} angleInRadians The angle by which to rotate (in radians).
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The rotated matrix.
  * @memberOf module:twgl/m4
  */
 function axisRotate(m, axis, angleInRadians, dst) {
@@ -1113,7 +1114,7 @@ function axisRotate(m, axis, angleInRadians, dst) {
  * entries.
  * @param {module:twgl/v3.Vec3} v A vector of
  *     three entries specifying the factor by which to scale in each dimension.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
  * @return {module:twgl/m4.Mat4} The scaling matrix.
  * @memberOf module:twgl/m4
  */
@@ -1141,14 +1142,14 @@ function scaling(v, dst) {
 }
 
 /**
- * Modifies the given 4-by-4 matrix, scaling in each dimension by an amount
+ * Scales the given 4-by-4 matrix in each dimension by an amount
  * given by the corresponding entry in the given vector; assumes the vector has
  * three entries.
  * @param {module:twgl/m4.Mat4} m The matrix to be modified.
  * @param {module:twgl/v3.Vec3} v A vector of three entries specifying the
  *     factor by which to scale in each dimension.
- * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If none new one is created..
- * @return {module:twgl/m4.Mat4} m once modified.
+ * @param {module:twgl/m4.Mat4} [dst] matrix to hold result. If not passed a new one is created.
+ * @return {module:twgl/m4.Mat4} The scaled matrix.
  * @memberOf module:twgl/m4
  */
 function scale(m, v, dst) {
@@ -1187,8 +1188,8 @@ function scale(m, v, dst) {
  * returns the result as a vector with 3 entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The point.
- * @param {module:twgl/v3.Vec3} [dst] optional vec3 to store result
- * @return {module:twgl/v3.Vec3} dst or new vec3 if not provided
+ * @param {module:twgl/v3.Vec3} [dst] optional vec3 to store result. If not passed a new one is created.
+ * @return {module:twgl/v3.Vec3} The transformed point.
  * @memberOf module:twgl/m4
  */
 function transformPoint(m, v, dst) {
@@ -1214,8 +1215,8 @@ function transformPoint(m, v, dst) {
  * entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The direction.
- * @param {module:twgl/v3.Vec3} [dst] optional Vec3 to store result
- * @return {module:twgl/v3.Vec3} dst or new Vec3 if not provided
+ * @param {module:twgl/v3.Vec3} [dst] optional Vec3 to store result. If not passed a new one is created.
+ * @return {module:twgl/v3.Vec3} The transformed direction.
  * @memberOf module:twgl/m4
  */
 function transformDirection(m, v, dst) {
@@ -1243,8 +1244,8 @@ function transformDirection(m, v, dst) {
  * entries.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/v3.Vec3} v The normal.
- * @param {module:twgl/v3.Vec3} [dst] The direction.
- * @return {module:twgl/v3.Vec3} The transformed direction.
+ * @param {module:twgl/v3.Vec3} [dst] The direction. If not passed a new one is created.
+ * @return {module:twgl/v3.Vec3} The transformed normal.
  * @memberOf module:twgl/m4
  */
 function transformNormal(m, v, dst) {

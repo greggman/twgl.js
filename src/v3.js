@@ -92,8 +92,8 @@ function create(x, y, z) {
  * Adds two vectors; assumes a and b have the same dimension.
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} the created vector
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} A vector tha tis the sum of a and b.
  * @memberOf module:twgl/v3
  */
 function add(a, b, dst) {
@@ -110,8 +110,8 @@ function add(a, b, dst) {
  * Subtracts two vectors.
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} the created vector
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} A vector that is the difference of a and b.
  * @memberOf module:twgl/v3
  */
 function subtract(a, b, dst) {
@@ -131,8 +131,8 @@ function subtract(a, b, dst) {
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {number} t Interpolation coefficient.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} the created vector
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} The linear interpolated result.
  * @memberOf module:twgl/v3
  */
 function lerp(a, b, t, dst) {
@@ -152,8 +152,8 @@ function lerp(a, b, t, dst) {
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
  * @param {module:twgl/v3.Vec3} t Interpolation coefficients vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} the created vector
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} the linear interpolated result.
  * @memberOf module:twgl/v3
  */
 function lerpV(a, b, t, dst) {
@@ -172,8 +172,8 @@ function lerpV(a, b, t, dst) {
  * [max(a[0], b[0]), max(a[1], b[1]), max(a[2], b[2])].
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} the created vector
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} The max components vector.
  * @memberOf module:twgl/v3
  */
 function max(a, b, dst) {
@@ -192,8 +192,8 @@ function max(a, b, dst) {
  * [min(a[0], b[0]), min(a[1], b[1]), min(a[2], b[2])].
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} the created vector
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} The min components vector.
  * @memberOf module:twgl/v3
  */
 function min(a, b, dst) {
@@ -210,8 +210,8 @@ function min(a, b, dst) {
  * Multiplies a vector by a scalar.
  * @param {module:twgl/v3.Vec3} v The vector.
  * @param {number} k The scalar.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} dst.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} The scaled vector.
  * @memberOf module:twgl/v3
  */
 function mulScalar(v, k, dst) {
@@ -228,8 +228,8 @@ function mulScalar(v, k, dst) {
  * Divides a vector by a scalar.
  * @param {module:twgl/v3.Vec3} v The vector.
  * @param {number} k The scalar.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} dst.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} The scaled vector.
  * @memberOf module:twgl/v3
  */
 function divScalar(v, k, dst) {
@@ -247,8 +247,8 @@ function divScalar(v, k, dst) {
  * three entries.
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
- * @return {module:twgl/v3.Vec3} The vector a cross b.
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
+ * @return {module:twgl/v3.Vec3} The vector of a cross b.
  * @memberOf module:twgl/v3
  */
 function cross(a, b, dst) {
@@ -326,7 +326,7 @@ function distanceSq(a, b) {
 /**
  * Divides a vector by its Euclidean length and returns the quotient.
  * @param {module:twgl/v3.Vec3} a The vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
  * @return {module:twgl/v3.Vec3} The normalized vector.
  * @memberOf module:twgl/v3
  */
@@ -351,7 +351,7 @@ function normalize(a, dst) {
 /**
  * Negates a vector.
  * @param {module:twgl/v3.Vec3} v The vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
  * @return {module:twgl/v3.Vec3} -v.
  * @memberOf module:twgl/v3
  */
@@ -368,7 +368,7 @@ function negate(v, dst) {
 /**
  * Copies a vector.
  * @param {module:twgl/v3.Vec3} v The vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
  * @return {module:twgl/v3.Vec3} A copy of v.
  * @memberOf module:twgl/v3
  */
@@ -387,7 +387,7 @@ function copy(v, dst) {
  * b have the same length.
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
  * @return {module:twgl/v3.Vec3} The vector of products of entries of a and
  *     b.
  * @memberOf module:twgl/v3
@@ -407,7 +407,7 @@ function multiply(a, b, dst) {
  * b have the same length.
  * @param {module:twgl/v3.Vec3} a Operand vector.
  * @param {module:twgl/v3.Vec3} b Operand vector.
- * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created..
+ * @param {module:twgl/v3.Vec3} [dst] vector to hold result. If not new one is created.
  * @return {module:twgl/v3.Vec3} The vector of quotients of entries of a and
  *     b.
  * @memberOf module:twgl/v3
