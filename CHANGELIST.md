@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.11.5
+
+    *   Fix type info for `m4.setAxis`
+
 *   4.11.4
 
     *   add `null` as parameter to `bindFramebufferInfo`
