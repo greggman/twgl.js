@@ -1,6 +1,7 @@
-import * as twgl from '../../src/twgl.js';
-import * as m4 from '../../src/m4.js';
-import * as primitives from '../../src/primitives.js';
+import * as twgl from '../../dist/4.x/twgl-full.module.js';
+
+const m4 = twgl.m4;
+const primitives = twgl.primitives;
 
 twgl.setDefaults({attribPrefix: "a_"});
 var gl = document.querySelector("#c").getContext("webgl");
