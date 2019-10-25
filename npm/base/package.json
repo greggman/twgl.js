@@ -4,6 +4,7 @@
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl.js",
   "types": "dist/4.x/twgl-full.d.ts",
+  "module": "dist/4.x/twgl-full.module.js",
   "scripts": {},
   "repository": {
     "type": "git",

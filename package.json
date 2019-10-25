@@ -47,7 +47,6 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.3",
     "@types/node": "^12.11.6",
-    "@types/webgl2": "0.0.5",
     "almond": "^0.3.3",
     "babel-loader": "^8.0.6",
     "eslint": "^6.5.1",
