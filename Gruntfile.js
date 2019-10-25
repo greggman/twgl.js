@@ -453,6 +453,7 @@ module.exports = function(grunt) {
       'eslint:lib',
       'clean:dist',
       'webpack',
+      'rollup',
       'buildts',
       'ts',
       'copy',
