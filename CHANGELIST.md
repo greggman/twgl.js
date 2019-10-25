@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.12.0
+
+    *   Add es6 module
+
 *   4.11.5
 
     *   Fix type info for `m4.setAxis`
