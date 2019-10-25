@@ -4,5 +4,13 @@
   },
   "rules": {
     "strict": [2, "global"]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["modules-full.html"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    }
+  ]
 }

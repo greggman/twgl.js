@@ -2,8 +2,9 @@
 
 /* global require */
 
-const twgl = require('../../dist/4.x/twgl-full');   // this would be require('twgl') in a real example
-const chroma = require('../../3rdparty/chroma.min');
+// this would be require('twgl') in a real example
+const twgl = require('../../dist/4.x/twgl-full');  /* eslint-disable-line */
+const chroma = require('../../3rdparty/chroma.min'); /* eslint-disable-line */
 const m4 = twgl.m4;
 const primitives = twgl.primitives;
 
