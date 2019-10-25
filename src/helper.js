@@ -54,21 +54,13 @@ function copyExistingProperties(src, dst) {
   });
 }
 
-const error =
-    ( typeof console !== 'undefined'
-      && console.error
-      && typeof console.error === "function"
-    )
-    ? console.error.bind(console)
-    : function() { };
+function error(...args) {
+  console.error(...args);
+}
 
-const warn =
-    ( typeof console !== 'undefined'
-      && console.warn
-      && typeof console.warn === "function"
-    )
-    ? console.warn.bind(console)
-    : function() { };
+function warn(...args) {
+  console.warn(...args);
+}
 
 function isBuffer(gl, t) {
   return typeof WebGLBuffer !== 'undefined' && t instanceof WebGLBuffer;

@@ -48,9 +48,9 @@ import * as v3 from './v3.js';
  */
 let MatType = Float32Array;
 
-const tempV3a = v3.create();
-const tempV3b = v3.create();
-const tempV3c = v3.create();
+let tempV3a;
+let tempV3b;
+let tempV3c;
 
 /**
  * A JavaScript array with 16 values or a Float32Array with 16 values.
@@ -635,9 +635,9 @@ function frustum(left, right, bottom, top, near, far, dst) {
 function lookAt(eye, target, up, dst) {
   dst = dst || new MatType(16);
 
-  const xAxis = tempV3a;
-  const yAxis = tempV3b;
-  const zAxis = tempV3c;
+  const xAxis = tempV3a || v3.create();
+  const yAxis = tempV3b || v3.create();
+  const zAxis = tempV3c || v3.create();
 
   v3.normalize(
       v3.subtract(eye, target, zAxis), zAxis);

@@ -40,11 +40,11 @@ import * as helper from './helper.js';
 
 const error = helper.error;
 const warn = helper.warn;
-const getElementById = (typeof document !== 'undefined' && document.getElementById)
-  ? document.getElementById.bind(document)
-  : function() {
-    return null;
-};
+function getElementById(id) {
+  return (typeof document !== 'undefined' && document.getElementById)
+      ? document.getElementById(id)
+      : null;
+}
 
 const FLOAT                         = 0x1406;
 const FLOAT_VEC2                    = 0x8B50;
