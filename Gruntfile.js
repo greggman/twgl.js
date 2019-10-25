@@ -235,6 +235,19 @@ module.exports = function(grunt) {
         },
       },
     },
+    rollup: {
+      options: {
+        plugins: [
+        ],
+        format: 'es',
+        indent: '  ',
+        banner: `/* ${getLicense(pkg)} */`,
+      },
+      files: {
+        src: 'src/twgl-full.js',
+        dest: `dist/${verDir}/twgl-full.module.js`,
+      },
+    },
     eslint: {
       lib: {
         src: [
