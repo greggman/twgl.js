@@ -281,7 +281,7 @@ for (let ii = 0; ii < numObjects; ++ii) {
 
 function render(time) {
   time *= 0.001;
-  twgl.resizeCanvasToDisplaySize(gl.canvas);
+  twgl.resizeCanvasToDisplaySize(<HTMLCanvasElement>gl.canvas);
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
   gl.enable(gl.DEPTH_TEST);
@@ -291,7 +291,7 @@ function render(time) {
 
   const radius = 20;
   const orbitSpeed = time * 0.1;
-  const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+  const projection = m4.perspective(30 * Math.PI / 180, (<HTMLCanvasElement>gl.canvas).clientWidth / (<HTMLCanvasElement>gl.canvas).clientHeight, 0.5, 100);
   const eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
   const target = [0, 0, 0];
   const up = [0, 1, 0];
