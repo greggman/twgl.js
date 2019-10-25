@@ -5,3 +5,4 @@
 node_modules
 package-lock.json
 test/src/ts/dist/*
+dist/**/*.LICENSE
