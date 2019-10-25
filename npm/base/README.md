@@ -445,10 +445,11 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 
 See the examples. Otherwise there's a few different versions
 
+*   `twgl-full.module.js` the es6 module version
 *   `twgl-full.min.js` the minified full version
-*   `twgl-full.js` the concatinated full version
+*   `twgl-full.js` the concatenated full version
 *   `twgl.min.js` the minimum version (no 3d math, no primitives)
-*   `twgl.js` the concatinated minimum version (no 3d math, no primitives)
+*   `twgl.js` the concatenated minimum version (no 3d math, no primitives)
 
 ## Download
 
