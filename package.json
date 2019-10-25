@@ -4,6 +4,7 @@
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl-full.js",
   "types": "dist/4.x/twgl-full.d.ts",
+  "module": "dist/4.x/twgl-full.module.js",
   "scripts": {
     "test": "npm run testjs && npm run testts",
     "testjs": "node node_modules/mocha/bin/mocha --recursive 'test/src/js/*-harness.js'",
