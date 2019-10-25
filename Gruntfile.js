@@ -116,7 +116,7 @@ module.exports = function(grunt) {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         query: {
           presets: ['@babel/preset-env'],
           plugins: [
@@ -130,7 +130,13 @@ module.exports = function(grunt) {
   const optimization = {
     minimizer: [
       new TerserPlugin({
+        extractComments: {
+          banner: false, //getLicense(pkg),
+        },
         terserOptions: {
+          output: {
+            comments: /@license/i,
+          },
           mangle: {
             properties: {
               keep_quoted: true,
@@ -169,7 +175,7 @@ module.exports = function(grunt) {
         mode: 'development',
         devtool: 'source-map',
         plugins: [
-          new webpack.BannerPlugin(getLicense(pkg)),
+          new webpack.BannerPlugin({banner: getLicense(pkg)}),
         ],
         module: babelOptionsForWebpack,
         output: {
@@ -185,7 +191,7 @@ module.exports = function(grunt) {
         mode: 'development',
         devtool: 'source-map',
         plugins: [
-          new webpack.BannerPlugin(getLicense(pkg)),
+          new webpack.BannerPlugin({banner: getLicense(pkg)}),
         ],
         module: babelOptionsForWebpack,
         output: {
@@ -200,7 +206,7 @@ module.exports = function(grunt) {
         entry: './src/twgl-full.js',
         mode: 'production',
         plugins: [
-          new webpack.BannerPlugin(getLicense(pkg)),
+          new webpack.BannerPlugin({banner: getLicense(pkg)}),
         ],
         optimization,
         module: babelOptionsForWebpack,
@@ -216,7 +222,7 @@ module.exports = function(grunt) {
         entry: './src/twgl-base.js',
         mode: 'production',
         plugins: [
-          new webpack.BannerPlugin(getLicense(pkg)),
+          new webpack.BannerPlugin({banner: getLicense(pkg)}),
         ],
         optimization,
         module: babelOptionsForWebpack,
