@@ -48,7 +48,7 @@ function copyNamedProperties(names, src, dst) {
  */
 function copyExistingProperties(src, dst) {
   Object.keys(dst).forEach(function(key) {
-    if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {
+    if (dst.hasOwnProperty(key) && src.hasOwnProperty(key)) {  /* eslint no-prototype-builtins: 0 */
       dst[key] = src[key];
     }
   });
