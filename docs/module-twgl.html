@@ -998,9 +998,9 @@ no buffer is bound.</p>
   numElements: 4,        // or whatever the number of elements is
   indices: WebGLBuffer,  // this property will not exist if there are no indices
   attribs: {
-    a_position: { buffer: WebGLBuffer, numComponents: 3, },
-    a_normal:   { buffer: WebGLBuffer, numComponents: 3, },
-    a_texcoord: { buffer: WebGLBuffer, numComponents: 2, },
+    position: { buffer: WebGLBuffer, numComponents: 3, },
+    normal:   { buffer: WebGLBuffer, numComponents: 3, },
+    texcoord: { buffer: WebGLBuffer, numComponents: 2, },
   },
 };
 </code></pre>
@@ -1013,7 +1013,7 @@ will be guessed.</p>
    indices:  [0, 1, 2, 1, 2, 3],
 };
 </code></pre>
-<p>They can also by TypedArrays</p>
+<p>They can also be TypedArrays</p>
 <pre><code>var arrays = {
    position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
    texcoord: new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]),
@@ -1021,7 +1021,7 @@ will be guessed.</p>
    indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
 };
 </code></pre>
-<p>Or augmentedTypedArrays</p>
+<p>Or AugmentedTypedArrays</p>
 <pre><code>var positions = createAugmentedTypedArray(3, 4);
 var texcoords = createAugmentedTypedArray(2, 4);
 var normals   = createAugmentedTypedArray(3, 4);
@@ -1042,19 +1042,19 @@ var arrays = {
 <p>For the last example it is equivalent to</p>
 <pre><code>var bufferInfo = {
   attribs: {
-    a_position: { numComponents: 3, buffer: gl.createBuffer(), },
-    a_texcoords: { numComponents: 2, buffer: gl.createBuffer(), },
-    a_normals: { numComponents: 3, buffer: gl.createBuffer(), },
+    position: { numComponents: 3, buffer: gl.createBuffer(), },
+    texcoord: { numComponents: 2, buffer: gl.createBuffer(), },
+    normal: { numComponents: 3, buffer: gl.createBuffer(), },
   },
   indices: gl.createBuffer(),
   numElements: 6,
 };
 
-gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_position.buffer);
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.position.buffer);
 gl.bufferData(gl.ARRAY_BUFFER, arrays.position, gl.STATIC_DRAW);
-gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_texcoord.buffer);
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.texcoord.buffer);
 gl.bufferData(gl.ARRAY_BUFFER, arrays.texcoord, gl.STATIC_DRAW);
-gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_normal.buffer);
+gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.normal.buffer);
 gl.bufferData(gl.ARRAY_BUFFER, arrays.normal, gl.STATIC_DRAW);
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bufferInfo.indices);
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);</code></pre>
@@ -5007,7 +5007,7 @@ function render() {
 
     
 
-    <h4 class="name" id=".resizeTexture"><span class="type-signature">(static) </span>resizeTexture<span class="signature">(gl, tex, options, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".resizeTexture"><span class="type-signature">(static) </span>resizeTexture<span class="signature">(gl, tex, options, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>, depth<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -5262,6 +5262,42 @@ for the texture. Texture parameters will be set accordingly</p>
 
             <td class="description last">
                 <p>the new height. If not passed in will use <code>options.height</code></p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>depth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>the new depth. If not passed in will use <code>options.depth</code></p>
                 
             </td>
         </tr>

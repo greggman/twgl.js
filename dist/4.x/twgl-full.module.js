@@ -2474,9 +2474,9 @@ function getNumElementsFromAttributes(gl, attribs) {
  *       numElements: 4,        // or whatever the number of elements is
  *       indices: WebGLBuffer,  // this property will not exist if there are no indices
  *       attribs: {
- *         a_position: { buffer: WebGLBuffer, numComponents: 3, },
- *         a_normal:   { buffer: WebGLBuffer, numComponents: 3, },
- *         a_texcoord: { buffer: WebGLBuffer, numComponents: 2, },
+ *         position: { buffer: WebGLBuffer, numComponents: 3, },
+ *         normal:   { buffer: WebGLBuffer, numComponents: 3, },
+ *         texcoord: { buffer: WebGLBuffer, numComponents: 2, },
  *       },
  *     };
  *
@@ -2490,7 +2490,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  *        indices:  [0, 1, 2, 1, 2, 3],
  *     };
  *
- *  They can also by TypedArrays
+ *  They can also be TypedArrays
  *
  *     var arrays = {
  *        position: new Float32Array([0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0]),
@@ -2499,7 +2499,7 @@ function getNumElementsFromAttributes(gl, attribs) {
  *        indices:  new Uint16Array([0, 1, 2, 1, 2, 3]),
  *     };
  *
- *  Or augmentedTypedArrays
+ *  Or AugmentedTypedArrays
  *
  *     var positions = createAugmentedTypedArray(3, 4);
  *     var texcoords = createAugmentedTypedArray(2, 4);
@@ -2522,19 +2522,19 @@ function getNumElementsFromAttributes(gl, attribs) {
  *
  *     var bufferInfo = {
  *       attribs: {
- *         a_position: { numComponents: 3, buffer: gl.createBuffer(), },
- *         a_texcoords: { numComponents: 2, buffer: gl.createBuffer(), },
- *         a_normals: { numComponents: 3, buffer: gl.createBuffer(), },
+ *         position: { numComponents: 3, buffer: gl.createBuffer(), },
+ *         texcoord: { numComponents: 2, buffer: gl.createBuffer(), },
+ *         normal: { numComponents: 3, buffer: gl.createBuffer(), },
  *       },
  *       indices: gl.createBuffer(),
  *       numElements: 6,
  *     };
  *
- *     gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_position.buffer);
+ *     gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.position.buffer);
  *     gl.bufferData(gl.ARRAY_BUFFER, arrays.position, gl.STATIC_DRAW);
- *     gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_texcoord.buffer);
+ *     gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.texcoord.buffer);
  *     gl.bufferData(gl.ARRAY_BUFFER, arrays.texcoord, gl.STATIC_DRAW);
- *     gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.a_normal.buffer);
+ *     gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.attribs.normal.buffer);
  *     gl.bufferData(gl.ARRAY_BUFFER, arrays.normal, gl.STATIC_DRAW);
  *     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bufferInfo.indices);
  *     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, arrays.indices, gl.STATIC_DRAW);
@@ -6523,11 +6523,13 @@ function createTexture(gl, options, callback) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {number} [width] the new width. If not passed in will use `options.width`
  * @param {number} [height] the new height. If not passed in will use `options.height`
+ * @param {number} [depth] the new depth. If not passed in will use `options.depth`
  * @memberOf module:twgl/textures
  */
-function resizeTexture(gl, tex, options, width, height) {
+function resizeTexture(gl, tex, options, width, height, depth) {
   width = width || options.width;
   height = height || options.height;
+  depth = depth || options.depth;
   const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
   const level = options.level || 0;
@@ -6547,6 +6549,8 @@ function resizeTexture(gl, tex, options, width, height) {
     for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
     }
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+    gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
   }

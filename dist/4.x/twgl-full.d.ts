@@ -215,7 +215,7 @@ export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: Prog
 }, buffers: BufferInfo | VertexArrayInfo): void;
 export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBufferView, options?: TextureOptions): void;
 export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
-export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number): void;
+export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number, depth?: number): void;
 export function createTextures(gl: WebGLRenderingContext, options: {
     [key: string]: TextureOptions;
 }, callback?: TexturesReadyCallback): {
@@ -301,7 +301,7 @@ export function loadSlicesFromUrls(gl: WebGLRenderingContext, tex: WebGLTexture,
 export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBufferView, options?: TextureOptions): void;
 export function setEmptyTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions): void;
 export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
-export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number): void;
+export function resizeTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, width?: number, height?: number, depth?: number): void;
 export function createTextures(gl: WebGLRenderingContext, options: {
     [key: string]: TextureOptions;
 }, callback?: TexturesReadyCallback): {

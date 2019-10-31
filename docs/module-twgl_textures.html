@@ -2343,7 +2343,7 @@ be non null if there was an error.</p>
 
     
 
-    <h4 class="name" id=".resizeTexture"><span class="type-signature">(static) </span>resizeTexture<span class="signature">(gl, tex, options, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".resizeTexture"><span class="type-signature">(static) </span>resizeTexture<span class="signature">(gl, tex, options, width<span class="signature-attributes">opt</span>, height<span class="signature-attributes">opt</span>, depth<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -2598,6 +2598,42 @@ for the texture. Texture parameters will be set accordingly</p>
 
             <td class="description last">
                 <p>the new height. If not passed in will use <code>options.height</code></p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>depth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>the new depth. If not passed in will use <code>options.depth</code></p>
                 
             </td>
         </tr>
