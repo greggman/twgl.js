@@ -1640,11 +1640,13 @@ function createTexture(gl, options, callback) {
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {number} [width] the new width. If not passed in will use `options.width`
  * @param {number} [height] the new height. If not passed in will use `options.height`
+ * @param {number} [depth] the new depth. If not passed in will use `options.depth`
  * @memberOf module:twgl/textures
  */
-function resizeTexture(gl, tex, options, width, height) {
+function resizeTexture(gl, tex, options, width, height, depth) {
   width = width || options.width;
   height = height || options.height;
+  depth = depth || options.depth;
   const target = options.target || gl.TEXTURE_2D;
   gl.bindTexture(target, tex);
   const level = options.level || 0;
@@ -1664,6 +1666,8 @@ function resizeTexture(gl, tex, options, width, height) {
     for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
     }
+  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+    gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
   }
