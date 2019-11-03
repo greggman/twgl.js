@@ -405,6 +405,10 @@ module.exports = function(grunt) {
     content = content.replace(/module:twgl(\/\w+)?\./g, '');
     // Replace "function", "type" declarations with "export function", "export type"
     content = content.replace(/^(\s*)(function|type) /mg, '$1export $2 ');
+
+    // hack for AttachmentOptions. Should really try to fix tsd-jsdoc to handle @mixins
+    content = content.replace('export type AttachmentOptions = {', 'export type AttachmentOptions = TextureOptions & {');
+
     // Break the file down into a list of modules
     const modules = content.match(/^declare module twgl(\/(\w+))? \{[\s\S]*?^\}/mg);
     // Split into core modules and extra (only in twgl-full) modules
