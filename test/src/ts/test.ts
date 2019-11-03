@@ -31,6 +31,11 @@ window.addEventListener("onload", function() {
       twgl.primitives.createDiscBufferInfo(gl, 1, 24),
       twgl.primitives.createTorusBufferInfo(gl, 1, 0.4, 24, 12),
     ];
+
+    twgl.createFramebufferInfo(gl, [
+      { format: gl.RGBA, minMag: gl.NEAREST },
+    ]);
+    twgl.bindFramebufferInfo(gl, null);
     
     function render(time: number) {
         twgl.resizeCanvasToDisplaySize(canvas);
