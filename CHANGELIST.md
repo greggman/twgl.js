@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.13.1
+
+    *   Make AttachmentOptions extend TextureOptions
+
 *   4.13.0
 
     *   Made `resizeTexture` handle `3D` and `2D_ARRAY`.
