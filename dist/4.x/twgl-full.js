@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.13.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.13.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1192,6 +1192,7 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  *    If provided will attach this Object. This allows you to share
  *    attachments across framebuffers.
  * @memberOf module:twgl
+ * @mixes module:twgl.TextureOptions
  */
 
 var defaultAttachments = [{
@@ -5460,6 +5461,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
 
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   var transformFeedbackVaryings;
+  var transformFeedbackMode;
 
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
@@ -5480,11 +5482,13 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
     transformFeedbackVaryings = opt.transformFeedbackVaryings;
+    transformFeedbackMode = opt.transformFeedbackMode;
   }
 
   var options = {
     errorCallback: opt_errorCallback || error,
-    transformFeedbackVaryings: transformFeedbackVaryings
+    transformFeedbackVaryings: transformFeedbackVaryings,
+    transformFeedbackMode: transformFeedbackMode
   };
 
   if (opt_attribs) {

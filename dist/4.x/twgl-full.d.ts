@@ -63,7 +63,7 @@ export type DrawObject = {
     count?: number;
     instanceCount?: number;
 };
-export type AttachmentOptions = {
+export type AttachmentOptions = TextureOptions & {
     attach?: number;
     format?: number;
     type?: number;

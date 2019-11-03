@@ -1,4 +1,4 @@
-/* @license twgl.js 4.12.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.13.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7264,6 +7264,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  */
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   let transformFeedbackVaryings;
+  let transformFeedbackMode;
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
     opt_locations = undefined;
@@ -7281,11 +7282,13 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
     transformFeedbackVaryings = opt.transformFeedbackVaryings;
+    transformFeedbackMode = opt.transformFeedbackMode;
   }
 
   const options = {
     errorCallback: opt_errorCallback || error$1,
     transformFeedbackVaryings: transformFeedbackVaryings,
+    transformFeedbackMode: transformFeedbackMode,
   };
 
   if (opt_attribs) {
@@ -8595,6 +8598,7 @@ const LINEAR                         = 0x2601;
  *    If provided will attach this Object. This allows you to share
  *    attachments across framebuffers.
  * @memberOf module:twgl
+ * @mixes module:twgl.TextureOptions
  */
 
 const defaultAttachments = [
