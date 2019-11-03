@@ -99,6 +99,7 @@ const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
  *    If provided will attach this Object. This allows you to share
  *    attachments across framebuffers.
  * @memberOf module:twgl
+ * @mixes module:twgl.TextureOptions
  */
 
 const defaultAttachments = [
