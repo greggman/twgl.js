@@ -122,7 +122,7 @@ module.exports = function(grunt) {
           plugins: [
             ['@babel/plugin-transform-modules-commonjs', {loose: true}],
           ],
-        }
+        },
       },
     ],
   };
