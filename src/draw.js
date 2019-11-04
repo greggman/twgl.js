@@ -153,7 +153,7 @@ function drawObjectList(gl, objectsToDraw) {
     drawBufferInfo(gl, bufferInfo, type, object.count, object.offset, object.instanceCount);
   });
 
-  if (lastUsedBufferInfo.vertexArrayObject) {
+  if (lastUsedBufferInfo && lastUsedBufferInfo.vertexArrayObject) {
     gl.bindVertexArray(null);
   }
 }
