@@ -2,6 +2,7 @@
 
 *   4.14.0
 
+    *   try lgtm
     *   Use constants everywhere. eg `TEXTURE_2D` instead of `gl.TEXTURE_2D`
 
 *   4.13.1
@@ -32,7 +33,8 @@
 
 *   4.11.0
 
-    *   Support `layer` attachment option for `createFramebufferInfo`
+
+        *   try lgtm*   Support `layer` attachment option for `createFramebufferInfo`
 
 *   4.10.0
 
