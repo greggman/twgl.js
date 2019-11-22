@@ -265,6 +265,11 @@ export function setUniforms(setters: ProgramInfo | {
 }, values: {
     [key: string]: any;
 }): void;
+export function setUniformsAndBindTextures(setters: ProgramInfo | {
+    [key: string]: (...params: any[]) => any;
+}, values: {
+    [key: string]: any;
+}): void;
 export function createAttributeSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };
@@ -292,7 +297,7 @@ export function getNumComponentsForFormat(format: number): number;
 export function setDefaultTextureColor(color: number[]): void;
 export function setTextureParameters(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions): void;
 export function setSamplerParameters(gl: WebGLRenderingContext, sampler: WebGLSampler, options: TextureOptions): void;
-export function setTextureFilteringForSize(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions, width?: number, height?: number, internalFormat?: number, type?: number): void;
+export function setTextureFilteringForSize(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions, width?: number, height?: number, internalFormat?: number): void;
 export function setTextureFromElement(gl: WebGLRenderingContext, tex: WebGLTexture, element: HTMLElement, options?: TextureOptions): void;
 export function setTextureTo1PixelColor(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions): void;
 export function loadTextureFromUrl(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions, callback?: TextureReadyCallback): HTMLImageElement;
