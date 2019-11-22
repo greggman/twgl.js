@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.14.0
+
+    *   Use constants everywhere. eg `TEXTURE_2D` instead of `gl.TEXTURE_2D`
+
 *   4.13.1
 
     *   Make AttachmentOptions extend TextureOptions
