@@ -1,0 +1,12 @@
+path_classifiers:
+  docs:
+    - docs
+  test:
+    - test
+  generated:
+    - dist
+    - npm
+  examples:
+    - examples
+    - resources
+
