@@ -60,7 +60,7 @@ import * as vertexArrays from './vertex-arrays.js';
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
 const defaults = {
   addExtensionsToContext: true,
 };

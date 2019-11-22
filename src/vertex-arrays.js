@@ -37,6 +37,8 @@ import * as programs from './programs.js';
  * @module twgl/vertexArrays
  */
 
+const ELEMENT_ARRAY_BUFFER           = 0x8893;
+
 /**
  * @typedef {Object} VertexArrayInfo
  * @property {number} numElements The number of elements to pass to `gl.drawArrays` or `gl.drawElements`.
@@ -112,7 +114,7 @@ function createVAOAndSetAttributes(gl, setters, attribs, indices) {
   gl.bindVertexArray(vao);
   programs.setAttributes(setters, attribs);
   if (indices) {
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indices);
+    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indices);
   }
   // We unbind this because otherwise any change to ELEMENT_ARRAY_BUFFER
   // like when creating buffers for other stuff will mess up this VAO's binding

@@ -35,7 +35,11 @@ import * as helper from './helper.js';
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
+
+const FRAMEBUFFER                    = 0x8d40;
+const RENDERBUFFER                   = 0x8d41;
+const TEXTURE_2D                     = 0x0de1;
 
 const UNSIGNED_BYTE                  = 0x1401;
 
@@ -175,7 +179,7 @@ function isRenderbufferFormat(format) {
  * @memberOf module:twgl/framebuffers
  */
 function createFramebufferInfo(gl, attachments, width, height) {
-  const target = gl.FRAMEBUFFER;
+  const target = FRAMEBUFFER;
   const fb = gl.createFramebuffer();
   gl.bindFramebuffer(target, fb);
   width  = width  || gl.drawingBufferWidth;
@@ -198,24 +202,24 @@ function createFramebufferInfo(gl, attachments, width, height) {
     if (!attachment) {
       if (isRenderbufferFormat(format)) {
         attachment = gl.createRenderbuffer();
-        gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
-        gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
+        gl.bindRenderbuffer(RENDERBUFFER, attachment);
+        gl.renderbufferStorage(RENDERBUFFER, format, width, height);
       } else {
         const textureOptions = Object.assign({}, attachmentOptions);
         textureOptions.width = width;
         textureOptions.height = height;
         if (textureOptions.auto === undefined) {
           textureOptions.auto = false;
-          textureOptions.min = textureOptions.min || textureOptions.minMag || gl.LINEAR;
-          textureOptions.mag = textureOptions.mag || textureOptions.minMag || gl.LINEAR;
-          textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || gl.CLAMP_TO_EDGE;
-          textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || gl.CLAMP_TO_EDGE;
+          textureOptions.min = textureOptions.min || textureOptions.minMag || LINEAR;
+          textureOptions.mag = textureOptions.mag || textureOptions.minMag || LINEAR;
+          textureOptions.wrapS = textureOptions.wrapS || textureOptions.wrap || CLAMP_TO_EDGE;
+          textureOptions.wrapT = textureOptions.wrapT || textureOptions.wrap || CLAMP_TO_EDGE;
         }
         attachment = textures.createTexture(gl, textureOptions);
       }
     }
     if (helper.isRenderbuffer(gl, attachment)) {
-      gl.framebufferRenderbuffer(target, attachmentPoint, gl.RENDERBUFFER, attachment);
+      gl.framebufferRenderbuffer(target, attachmentPoint, RENDERBUFFER, attachment);
     } else if (helper.isTexture(gl, attachment)) {
       if (attachmentOptions.layer !== undefined) {
         gl.framebufferTextureLayer(
@@ -228,7 +232,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
         gl.framebufferTexture2D(
             target,
             attachmentPoint,
-            attachmentOptions.texTarget || gl.TEXTURE_2D,
+            attachmentOptions.texTarget || TEXTURE_2D,
             attachment,
             attachmentOptions.level || 0);
       }
@@ -293,8 +297,8 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
     const attachment = framebufferInfo.attachments[ndx];
     const format = attachmentOptions.format;
     if (helper.isRenderbuffer(gl, attachment)) {
-      gl.bindRenderbuffer(gl.RENDERBUFFER, attachment);
-      gl.renderbufferStorage(gl.RENDERBUFFER, format, width, height);
+      gl.bindRenderbuffer(RENDERBUFFER, attachment);
+      gl.renderbufferStorage(RENDERBUFFER, format, width, height);
     } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
@@ -324,7 +328,7 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
  */
 
 function bindFramebufferInfo(gl, framebufferInfo, target) {
-  target = target || gl.FRAMEBUFFER;
+  target = target || FRAMEBUFFER;
   if (framebufferInfo) {
     gl.bindFramebuffer(target, framebufferInfo.framebuffer);
     gl.viewport(0, 0, framebufferInfo.width, framebufferInfo.height);

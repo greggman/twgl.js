@@ -40,7 +40,7 @@ import * as helper from './helper.js';
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
 const defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
@@ -80,17 +80,56 @@ const DEPTH_COMPONENT                = 0x1902;
 const DEPTH_STENCIL                  = 0x84F9;
 
 /* TextureWrapMode */
-const REPEAT                         = 0x2901;  // eslint-disable-line
-const MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
+// const REPEAT                         = 0x2901;
+// const MIRRORED_REPEAT                = 0x8370;
+const CLAMP_TO_EDGE                  = 0x812f;
 
 /* TextureMagFilter */
-const NEAREST                        = 0x2600;  // eslint-disable-line
+const NEAREST                        = 0x2600;
+const LINEAR                         = 0x2601;
 
 /* TextureMinFilter */
-const NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
-const LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
-const NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
-const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
+// const NEAREST_MIPMAP_NEAREST         = 0x2700;
+// const LINEAR_MIPMAP_NEAREST          = 0x2701;
+// const NEAREST_MIPMAP_LINEAR          = 0x2702;
+// const LINEAR_MIPMAP_LINEAR           = 0x2703;
+
+/* Texture Target */
+const TEXTURE_2D                     = 0x0de1;
+const TEXTURE_CUBE_MAP               = 0x8513;
+const TEXTURE_3D                     = 0x806f;
+const TEXTURE_2D_ARRAY               = 0x8c1a;
+
+/* Cubemap Targets */
+const TEXTURE_CUBE_MAP_POSITIVE_X    = 0x8515;
+const TEXTURE_CUBE_MAP_NEGATIVE_X    = 0x8516;
+const TEXTURE_CUBE_MAP_POSITIVE_Y    = 0x8517;
+const TEXTURE_CUBE_MAP_NEGATIVE_Y    = 0x8518;
+const TEXTURE_CUBE_MAP_POSITIVE_Z    = 0x8519;
+const TEXTURE_CUBE_MAP_NEGATIVE_Z    = 0x851a;
+
+/* Texture Parameters */
+const TEXTURE_MIN_FILTER             = 0x2801;
+const TEXTURE_MAG_FILTER             = 0x2800;
+const TEXTURE_WRAP_S                 = 0x2802;
+const TEXTURE_WRAP_T                 = 0x2803;
+const TEXTURE_WRAP_R                 = 0x8072;
+const TEXTURE_MIN_LOD                = 0x813a;
+const TEXTURE_MAX_LOD                = 0x813b;
+const TEXTURE_BASE_LEVEL             = 0x813c;
+const TEXTURE_MAX_LEVEL              = 0x813d;
+
+
+/* Pixel store */
+const UNPACK_ALIGNMENT                   = 0x0cf5;
+const UNPACK_ROW_LENGTH                  = 0x0cf2;
+const UNPACK_IMAGE_HEIGHT                = 0x806e;
+const UNPACK_SKIP_PIXELS                 = 0x0cf4;
+const UNPACK_SKIP_ROWS                   = 0x0cf3;
+const UNPACK_SKIP_IMAGES                 = 0x806d;
+const UNPACK_COLORSPACE_CONVERSION_WEBGL = 0x9243;
+const UNPACK_PREMULTIPLY_ALPHA_WEBGL     = 0x9241;
+const UNPACK_FLIP_Y_WEBGL                = 0x9240;
 
 const R8                           = 0x8229;
 const R8_SNORM                     = 0x8F94;
@@ -356,7 +395,7 @@ function isPowerOf2(value) {
  * @return {boolean} true if we can generate mips
  * @memberOf module:twgl/textures
  */
-function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
+function canGenerateMipmap(gl, width, height, internalFormat) {
   if (!utils.isWebGL2(gl)) {
     return isPowerOf2(width) && isPowerOf2(height);
   }
@@ -373,7 +412,7 @@ function canGenerateMipmap(gl, width, height, internalFormat /*, type */) {
  * @return {boolean} true if we can generate mips
  * @memberOf module:twgl/textures
  */
-function canFilter(internalFormat /*, type */) {
+function canFilter(internalFormat) {
   const info = getTextureInternalFormatInfo(internalFormat);
   if (!info) {
     throw "unknown internal format";
@@ -405,7 +444,7 @@ function getTextureTypeForArrayType(gl, src, defaultType) {
   if (isArrayBuffer(src)) {
     return typedArrays.getGLTypeForTypedArray(src);
   }
-  return defaultType || gl.UNSIGNED_BYTE;
+  return defaultType || UNSIGNED_BYTE;
 }
 
 function guessDimensions(gl, target, width, height, numElements) {
@@ -413,7 +452,7 @@ function guessDimensions(gl, target, width, height, numElements) {
     throw "can't guess dimensions";
   }
   if (!width && !height) {
-    const size = Math.sqrt(numElements / (target === gl.TEXTURE_CUBE_MAP ? 6 : 1));
+    const size = Math.sqrt(numElements / (target === TEXTURE_CUBE_MAP ? 6 : 1));
     if (size % 1 === 0) {
       width = size;
       height = size;
@@ -583,16 +622,16 @@ const lastPackState = {};
  */
 function savePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
-    lastPackState.colorspaceConversion = gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL);
-    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
+    lastPackState.colorspaceConversion = gl.getParameter(UNPACK_COLORSPACE_CONVERSION_WEBGL);
+    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
   }
   if (options.premultiplyAlpha !== undefined) {
-    lastPackState.premultiplyAlpha = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
+    lastPackState.premultiplyAlpha = gl.getParameter(UNPACK_PREMULTIPLY_ALPHA_WEBGL);
+    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
   }
   if (options.flipY !== undefined) {
-    lastPackState.flipY = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, options.flipY);
+    lastPackState.flipY = gl.getParameter(UNPACK_FLIP_Y_WEBGL);
+    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY);
   }
 }
 
@@ -604,13 +643,13 @@ function savePackState(gl, options) {
  */
 function restorePackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
-    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
+    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
   }
   if (options.premultiplyAlpha !== undefined) {
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
+    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
   }
   if (options.flipY !== undefined) {
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
+    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
   }
 }
 
@@ -620,13 +659,13 @@ function restorePackState(gl, options) {
  * @private
  */
 function saveSkipState(gl) {
-  lastPackState.unpackAlignment   = gl.getParameter(gl.UNPACK_ALIGNMENT);
+  lastPackState.unpackAlignment   = gl.getParameter(UNPACK_ALIGNMENT);
   if (utils.isWebGL2(gl)) {
-    lastPackState.unpackRowLength   = gl.getParameter(gl.UNPACK_ROW_LENGTH);
-    lastPackState.unpackImageHeight = gl.getParameter(gl.UNPACK_IMAGE_HEIGHT);
-    lastPackState.unpackSkipPixels  = gl.getParameter(gl.UNPACK_SKIP_PIXELS);
-    lastPackState.unpackSkipRows    = gl.getParameter(gl.UNPACK_SKIP_ROWS);
-    lastPackState.unpackSkipImages  = gl.getParameter(gl.UNPACK_SKIP_IMAGES);
+    lastPackState.unpackRowLength   = gl.getParameter(UNPACK_ROW_LENGTH);
+    lastPackState.unpackImageHeight = gl.getParameter(UNPACK_IMAGE_HEIGHT);
+    lastPackState.unpackSkipPixels  = gl.getParameter(UNPACK_SKIP_PIXELS);
+    lastPackState.unpackSkipRows    = gl.getParameter(UNPACK_SKIP_ROWS);
+    lastPackState.unpackSkipImages  = gl.getParameter(UNPACK_SKIP_IMAGES);
   }
 }
 
@@ -636,13 +675,13 @@ function saveSkipState(gl) {
  * @private
  */
 function restoreSkipState(gl) {
-  gl.pixelStorei(gl.UNPACK_ALIGNMENT,    lastPackState.unpackAlignment);
+  gl.pixelStorei(UNPACK_ALIGNMENT,    lastPackState.unpackAlignment);
   if (utils.isWebGL2(gl)) {
-    gl.pixelStorei(gl.UNPACK_ROW_LENGTH,   lastPackState.unpackRowLength);
-    gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, lastPackState.unpackImageHeight);
-    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS,  lastPackState.unpackSkipPixels);
-    gl.pixelStorei(gl.UNPACK_SKIP_ROWS,    lastPackState.unpackSkipRows);
-    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES,  lastPackState.unpackSkipImages);
+    gl.pixelStorei(UNPACK_ROW_LENGTH,   lastPackState.unpackRowLength);
+    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, lastPackState.unpackImageHeight);
+    gl.pixelStorei(UNPACK_SKIP_PIXELS,  lastPackState.unpackSkipPixels);
+    gl.pixelStorei(UNPACK_SKIP_ROWS,    lastPackState.unpackSkipRows);
+    gl.pixelStorei(UNPACK_SKIP_IMAGES,  lastPackState.unpackSkipImages);
   }
 }
 
@@ -659,42 +698,42 @@ function restoreSkipState(gl) {
  */
 function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.minMag) {
-    parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.minMag);
-    parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.minMag);
+    parameteriFn.call(gl, target, TEXTURE_MIN_FILTER, options.minMag);
+    parameteriFn.call(gl, target, TEXTURE_MAG_FILTER, options.minMag);
   }
   if (options.min) {
-    parameteriFn.call(gl, target, gl.TEXTURE_MIN_FILTER, options.min);
+    parameteriFn.call(gl, target, TEXTURE_MIN_FILTER, options.min);
   }
   if (options.mag) {
-    parameteriFn.call(gl, target, gl.TEXTURE_MAG_FILTER, options.mag);
+    parameteriFn.call(gl, target, TEXTURE_MAG_FILTER, options.mag);
   }
   if (options.wrap) {
-    parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrap);
-    parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrap);
-    if (target === gl.TEXTURE_3D || helper.isSampler(gl, target)) {
-      parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrap);
+    parameteriFn.call(gl, target, TEXTURE_WRAP_S, options.wrap);
+    parameteriFn.call(gl, target, TEXTURE_WRAP_T, options.wrap);
+    if (target === TEXTURE_3D || helper.isSampler(gl, target)) {
+      parameteriFn.call(gl, target, TEXTURE_WRAP_R, options.wrap);
     }
   }
   if (options.wrapR) {
-    parameteriFn.call(gl, target, gl.TEXTURE_WRAP_R, options.wrapR);
+    parameteriFn.call(gl, target, TEXTURE_WRAP_R, options.wrapR);
   }
   if (options.wrapS) {
-    parameteriFn.call(gl, target, gl.TEXTURE_WRAP_S, options.wrapS);
+    parameteriFn.call(gl, target, TEXTURE_WRAP_S, options.wrapS);
   }
   if (options.wrapT) {
-    parameteriFn.call(gl, target, gl.TEXTURE_WRAP_T, options.wrapT);
+    parameteriFn.call(gl, target, TEXTURE_WRAP_T, options.wrapT);
   }
   if (options.minLod) {
-    parameteriFn.call(gl, target, gl.TEXTURE_MIN_LOD, options.minLod);
+    parameteriFn.call(gl, target, TEXTURE_MIN_LOD, options.minLod);
   }
   if (options.maxLod) {
-    parameteriFn.call(gl, target, gl.TEXTURE_MAX_LOD, options.maxLod);
+    parameteriFn.call(gl, target, TEXTURE_MAX_LOD, options.maxLod);
   }
   if (options.baseLevel) {
-    parameteriFn.call(gl, target, gl.TEXTURE_BASE_LEVEL, options.baseLevel);
+    parameteriFn.call(gl, target, TEXTURE_BASE_LEVEL, options.baseLevel);
   }
   if (options.maxLevel) {
-    parameteriFn.call(gl, target, gl.TEXTURE_MAX_LEVEL, options.maxLevel);
+    parameteriFn.call(gl, target, TEXTURE_MAX_LEVEL, options.maxLevel);
   }
 }
 
@@ -707,7 +746,7 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
  * @memberOf module:twgl/textures
  */
 function setTextureParameters(gl, tex, options) {
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   gl.bindTexture(target, tex);
   setTextureSamplerParameters(gl, target, gl.texParameteri, options);
 }
@@ -812,25 +851,23 @@ function make1Pixel(color) {
  * @param {number} [width] width of texture
  * @param {number} [height] height of texture
  * @param {number} [internalFormat] The internalFormat parameter from texImage2D etc..
- * @param {number} [type] The type parameter for texImage2D etc..
  * @memberOf module:twgl/textures
  */
-function setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type) {
+function setTextureFilteringForSize(gl, tex, options, width, height, internalFormat) {
   options = options || defaults.textureOptions;
-  internalFormat = internalFormat || gl.RGBA;
-  type = type || gl.UNSIGNED_BYTE;
-  const target = options.target || gl.TEXTURE_2D;
+  internalFormat = internalFormat || RGBA;
+  const target = options.target || TEXTURE_2D;
   width = width || options.width;
   height = height || options.height;
   gl.bindTexture(target, tex);
-  if (canGenerateMipmap(gl, width, height, internalFormat, type)) {
+  if (canGenerateMipmap(gl, width, height, internalFormat)) {
     gl.generateMipmap(target);
   } else {
-    const filtering = canFilter(internalFormat, type) ? gl.LINEAR : gl.NEAREST;
-    gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, filtering);
-    gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, filtering);
-    gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const filtering = canFilter(internalFormat) ? LINEAR : NEAREST;
+    gl.texParameteri(target, TEXTURE_MIN_FILTER, filtering);
+    gl.texParameteri(target, TEXTURE_MAG_FILTER, filtering);
+    gl.texParameteri(target, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
+    gl.texParameteri(target, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
   }
 }
 
@@ -849,12 +886,12 @@ function shouldAutomaticallySetTextureFilteringForSize(options) {
 function getCubeFaceOrder(gl, options) {
   options = options || {};
   return options.cubeFaceOrder || [
-      gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-      gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-      gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-      gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-      gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-      gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+      TEXTURE_CUBE_MAP_POSITIVE_X,
+      TEXTURE_CUBE_MAP_NEGATIVE_X,
+      TEXTURE_CUBE_MAP_POSITIVE_Y,
+      TEXTURE_CUBE_MAP_NEGATIVE_Y,
+      TEXTURE_CUBE_MAP_POSITIVE_Z,
+      TEXTURE_CUBE_MAP_NEGATIVE_Z,
     ];
 }
 
@@ -905,17 +942,17 @@ function getCubeFacesWithNdx(gl, options) {
  */
 function setTextureFromElement(gl, tex, element, options) {
   options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   const level = options.level || 0;
   let width = element.width;
   let height = element.height;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const internalFormat = options.internalFormat || options.format || RGBA;
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || formatType.type;
   savePackState(gl, options);
   gl.bindTexture(target, tex);
-  if (target === gl.TEXTURE_CUBE_MAP) {
+  if (target === TEXTURE_CUBE_MAP) {
     // guess the parts
     const imgWidth  = element.width;
     const imgHeight = element.height;
@@ -979,12 +1016,12 @@ function setTextureFromElement(gl, tex, element, options) {
           gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
           restorePackState(gl, options);
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-            setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
+            setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
           }
         });
       });
     }
-  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
     const smallest = Math.min(element.width, element.height);
     const largest = Math.max(element.width, element.height);
     const depth = largest / smallest;
@@ -994,16 +1031,16 @@ function setTextureFromElement(gl, tex, element, options) {
     const xMult = element.width  === largest ? 1 : 0;
     const yMult = element.height === largest ? 1 : 0;
     saveSkipState(gl);
-    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-    gl.pixelStorei(gl.UNPACK_ROW_LENGTH, element.width);
-    gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, 0);
-    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES, 0);
+    gl.pixelStorei(UNPACK_ALIGNMENT, 1);
+    gl.pixelStorei(UNPACK_ROW_LENGTH, element.width);
+    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
+    gl.pixelStorei(UNPACK_SKIP_IMAGES, 0);
     gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
     for (let d = 0; d < depth; ++d) {
       const srcX = d * smallest * xMult;
       const srcY = d * smallest * yMult;
-      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, srcX);
-      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, srcY);
+      gl.pixelStorei(UNPACK_SKIP_PIXELS, srcX);
+      gl.pixelStorei(UNPACK_SKIP_ROWS, srcY);
       gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
     }
     restoreSkipState(gl);
@@ -1012,7 +1049,7 @@ function setTextureFromElement(gl, tex, element, options) {
   }
   restorePackState(gl, options);
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-    setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
+    setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
   }
   setTextureParameters(gl, tex, options);
 }
@@ -1172,7 +1209,7 @@ function loadAndUseImage(obj, crossOrigin, callback) {
  */
 function setTextureTo1PixelColor(gl, tex, options) {
   options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   gl.bindTexture(target, tex);
   if (options.color === false) {
     return;
@@ -1180,14 +1217,14 @@ function setTextureTo1PixelColor(gl, tex, options) {
   // Assume it's a URL
   // Put 1x1 pixels in texture. That makes it renderable immediately regardless of filtering.
   const color = make1Pixel(options.color);
-  if (target === gl.TEXTURE_CUBE_MAP) {
+  if (target === TEXTURE_CUBE_MAP) {
     for (let ii = 0; ii < 6; ++ii) {
-      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
+      gl.texImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, RGBA, 1, 1, 0, RGBA, UNSIGNED_BYTE, color);
     }
-  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
-    gl.texImage3D(target, 0, gl.RGBA, 1, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
+  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
+    gl.texImage3D(target, 0, RGBA, 1, 1, 1, 0, RGBA, UNSIGNED_BYTE, color);
   } else {
-    gl.texImage2D(target, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, color);
+    gl.texImage2D(target, 0, RGBA, 1, 1, 0, RGBA, UNSIGNED_BYTE, color);
   }
 }
 
@@ -1286,12 +1323,12 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
     throw "there must be 6 urls for a cubemap";
   }
   const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const internalFormat = options.internalFormat || options.format || RGBA;
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
-  const type = options.type || gl.UNSIGNED_BYTE;
-  const target = options.target || gl.TEXTURE_2D;
-  if (target !== gl.TEXTURE_CUBE_MAP) {
+  const type = options.type || UNSIGNED_BYTE;
+  const target = options.target || TEXTURE_2D;
+  if (target !== TEXTURE_CUBE_MAP) {
     throw "target must be TEXTURE_CUBE_MAP";
   }
   setTextureTo1PixelColor(gl, tex, options);
@@ -1366,12 +1403,12 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
 function loadSlicesFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
   const urls = options.src;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const internalFormat = options.internalFormat || options.format || RGBA;
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
-  const type = options.type || gl.UNSIGNED_BYTE;
-  const target = options.target || gl.TEXTURE_2D_ARRAY;
-  if (target !== gl.TEXTURE_3D && target !== gl.TEXTURE_2D_ARRAY) {
+  const type = options.type || UNSIGNED_BYTE;
+  const target = options.target || TEXTURE_2D_ARRAY;
+  if (target !== TEXTURE_3D && target !== TEXTURE_2D_ARRAY) {
     throw "target must be TEXTURE_3D or TEXTURE_2D_ARRAY";
   }
   setTextureTo1PixelColor(gl, tex, options);
@@ -1455,13 +1492,13 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
  */
 function setTextureFromArray(gl, tex, src, options) {
   options = options || defaults.textureOptions;
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   gl.bindTexture(target, tex);
   let width = options.width;
   let height = options.height;
   let depth = options.depth;
   const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const internalFormat = options.internalFormat || options.format || RGBA;
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || getTextureTypeForArrayType(gl, src, formatType.type);
@@ -1478,7 +1515,7 @@ function setTextureFromArray(gl, tex, src, options) {
     throw "length wrong size for format: " + utils.glEnumToString(gl, format);
   }
   let dimensions;
-  if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+  if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
     if (!width && !height && !depth) {
       const size = Math.cbrt(numElements);
       if (size % 1 !== 0) {
@@ -1506,9 +1543,9 @@ function setTextureFromArray(gl, tex, src, options) {
     height = dimensions.height;
   }
   saveSkipState(gl);
-  gl.pixelStorei(gl.UNPACK_ALIGNMENT, options.unpackAlignment || 1);
+  gl.pixelStorei(UNPACK_ALIGNMENT, options.unpackAlignment || 1);
   savePackState(gl, options);
-  if (target === gl.TEXTURE_CUBE_MAP) {
+  if (target === TEXTURE_CUBE_MAP) {
     const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
     const faceSize = numElements / 6 * elementsPerElement;
 
@@ -1517,7 +1554,7 @@ function setTextureFromArray(gl, tex, src, options) {
       const data = src.subarray(offset, offset + faceSize);
       gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
     });
-  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
@@ -1541,19 +1578,19 @@ function setTextureFromArray(gl, tex, src, options) {
  * @memberOf module:twgl/textures
  */
 function setEmptyTexture(gl, tex, options) {
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   gl.bindTexture(target, tex);
   const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const internalFormat = options.internalFormat || options.format || RGBA;
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || formatType.type;
   savePackState(gl, options);
-  if (target === gl.TEXTURE_CUBE_MAP) {
+  if (target === TEXTURE_CUBE_MAP) {
     for (let ii = 0; ii < 6; ++ii) {
-      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
+      gl.texImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
     }
-  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
@@ -1573,17 +1610,15 @@ function createTexture(gl, options, callback) {
   callback = callback || noop;
   options = options || defaults.textureOptions;
   const tex = gl.createTexture();
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   let width  = options.width  || 1;
   let height = options.height || 1;
-  const internalFormat = options.internalFormat || gl.RGBA;
-  const formatType = getFormatAndTypeForInternalFormat(internalFormat);
-  let type = options.type || formatType.type;
+  const internalFormat = options.internalFormat || RGBA;
   gl.bindTexture(target, tex);
-  if (target === gl.TEXTURE_CUBE_MAP) {
+  if (target === TEXTURE_CUBE_MAP) {
     // this should have been the default for cubemaps :(
-    gl.texParameteri(target, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(target, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(target, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
+    gl.texParameteri(target, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
   }
   let src = options.src;
   if (src) {
@@ -1602,9 +1637,8 @@ function createTexture(gl, options, callback) {
       const dimensions = setTextureFromArray(gl, tex, src, options);
       width  = dimensions.width;
       height = dimensions.height;
-      type   = dimensions.type;
     } else if (Array.isArray(src) && (typeof (src[0]) === 'string' || isTexImageSource(src[0]))) {
-      if (target === gl.TEXTURE_CUBE_MAP) {
+      if (target === TEXTURE_CUBE_MAP) {
         loadCubemapFromUrls(gl, tex, options, callback);
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
@@ -1620,7 +1654,7 @@ function createTexture(gl, options, callback) {
     setEmptyTexture(gl, tex, options);
   }
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-    setTextureFilteringForSize(gl, tex, options, width, height, internalFormat, type);
+    setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
   }
   setTextureParameters(gl, tex, options);
   return tex;
@@ -1647,10 +1681,10 @@ function resizeTexture(gl, tex, options, width, height, depth) {
   width = width || options.width;
   height = height || options.height;
   depth = depth || options.depth;
-  const target = options.target || gl.TEXTURE_2D;
+  const target = options.target || TEXTURE_2D;
   gl.bindTexture(target, tex);
   const level = options.level || 0;
-  const internalFormat = options.internalFormat || options.format || gl.RGBA;
+  const internalFormat = options.internalFormat || options.format || RGBA;
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   let type;
@@ -1662,11 +1696,11 @@ function resizeTexture(gl, tex, options, width, height, depth) {
   } else {
     type = options.type || formatType.type;
   }
-  if (target === gl.TEXTURE_CUBE_MAP) {
+  if (target === TEXTURE_CUBE_MAP) {
     for (let ii = 0; ii < 6; ++ii) {
-      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
+      gl.texImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, width, height, 0, format, type, null);
     }
-  } else if (target === gl.TEXTURE_3D || target === gl.TEXTURE_2D_ARRAY) {
+  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
     gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);

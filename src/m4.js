@@ -48,10 +48,6 @@ import * as v3 from './v3.js';
  */
 let MatType = Float32Array;
 
-let tempV3a;
-let tempV3b;
-let tempV3c;
-
 /**
  * A JavaScript array with 16 values or a Float32Array with 16 values.
  * When created by the library will create the default type which is `Float32Array`
@@ -618,6 +614,10 @@ function frustum(left, right, bottom, top, near, far, dst) {
   return dst;
 }
 
+let xAxis;
+let yAxis;
+let zAxis;
+
 /**
  * Computes a 4-by-4 look-at transformation.
  *
@@ -635,9 +635,9 @@ function frustum(left, right, bottom, top, near, far, dst) {
 function lookAt(eye, target, up, dst) {
   dst = dst || new MatType(16);
 
-  const xAxis = tempV3a || v3.create();
-  const yAxis = tempV3b || v3.create();
-  const zAxis = tempV3c || v3.create();
+  xAxis = xAxis || v3.create();
+  yAxis = yAxis || v3.create();
+  zAxis = zAxis || v3.create();
 
   v3.normalize(
       v3.subtract(eye, target, zAxis), zAxis);

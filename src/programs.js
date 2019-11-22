@@ -46,6 +46,31 @@ function getElementById(id) {
       : null;
 }
 
+const TEXTURE0                       = 0x84c0;
+const DYNAMIC_DRAW                   = 0x88e8;
+
+const ARRAY_BUFFER                   = 0x8892;
+const ELEMENT_ARRAY_BUFFER           = 0x8893;
+const UNIFORM_BUFFER                 = 0x8a11;
+const TRANSFORM_FEEDBACK_BUFFER      = 0x8c8e;
+
+const TRANSFORM_FEEDBACK             = 0x8e22;
+
+const COMPILE_STATUS                 = 0x8b81;
+const LINK_STATUS                    = 0x8b82;
+const FRAGMENT_SHADER                = 0x8b30;
+const VERTEX_SHADER                  = 0x8b31;
+const SEPARATE_ATTRIBS               = 0x8c8d;
+
+const ACTIVE_UNIFORMS                = 0x8b86;
+const ACTIVE_ATTRIBUTES              = 0x8b89;
+const TRANSFORM_FEEDBACK_VARYINGS    = 0x8c83;
+const ACTIVE_UNIFORM_BLOCKS          = 0x8a36;
+const UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER   = 0x8a44;
+const UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 0x8a46;
+const UNIFORM_BLOCK_DATA_SIZE                     = 0x8a40;
+const UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES        = 0x8a43;
+
 const FLOAT                         = 0x1406;
 const FLOAT_VEC2                    = 0x8B50;
 const FLOAT_VEC3                    = 0x8B51;
@@ -261,12 +286,12 @@ function samplerSetter(gl, type, unit, location) {
       sampler = textureOrPair.sampler;
     }
     gl.uniform1i(location, unit);
-    gl.activeTexture(gl.TEXTURE0 + unit);
+    gl.activeTexture(TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
     gl.bindSampler(unit, sampler);
   } : function(texture) {
     gl.uniform1i(location, unit);
-    gl.activeTexture(gl.TEXTURE0 + unit);
+    gl.activeTexture(TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
   };
 }
@@ -281,7 +306,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
   return utils.isWebGL2(gl) ? function(textures) {
     gl.uniform1iv(location, units);
     textures.forEach(function(textureOrPair, index) {
-      gl.activeTexture(gl.TEXTURE0 + units[index]);
+      gl.activeTexture(TEXTURE0 + units[index]);
       let texture;
       let sampler;
       if (helper.isTexture(gl, textureOrPair)) {
@@ -297,7 +322,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
   } : function(textures) {
     gl.uniform1iv(location, units);
     textures.forEach(function(texture, index) {
-      gl.activeTexture(gl.TEXTURE0 + units[index]);
+      gl.activeTexture(TEXTURE0 + units[index]);
       gl.bindTexture(bindPoint, texture);
     });
   };
@@ -365,10 +390,10 @@ function floatAttribSetter(gl, index) {
           throw new Error('the length of a float constant value must be between 1 and 4!');
       }
     } else {
-      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.bindBuffer(ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
       gl.vertexAttribPointer(
-          index, b.numComponents || b.size, b.type || gl.FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
+          index, b.numComponents || b.size, b.type || FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index, b.divisor);
       }
@@ -386,10 +411,10 @@ function intAttribSetter(gl, index) {
         throw new Error('The length of an integer constant value must be 4!');
       }
     } else {
-      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.bindBuffer(ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(
-          index, b.numComponents || b.size, b.type || gl.INT, b.stride || 0, b.offset || 0);
+          index, b.numComponents || b.size, b.type || INT, b.stride || 0, b.offset || 0);
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index, b.divisor);
       }
@@ -407,10 +432,10 @@ function uintAttribSetter(gl, index) {
         throw new Error('The length of an unsigned integer constant value must be 4!');
       }
     } else {
-      gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+      gl.bindBuffer(ARRAY_BUFFER, b.buffer);
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(
-          index, b.numComponents || b.size, b.type || gl.UNSIGNED_INT, b.stride || 0, b.offset || 0);
+          index, b.numComponents || b.size, b.type || UNSIGNED_INT, b.stride || 0, b.offset || 0);
       if (b.divisor !== undefined) {
         gl.vertexAttribDivisor(index, b.divisor);
       }
@@ -423,10 +448,10 @@ function matAttribSetter(gl, index, typeInfo) {
   const count = typeInfo.count;
 
   return function(b) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, b.buffer);
+    gl.bindBuffer(ARRAY_BUFFER, b.buffer);
     const numComponents = b.size || b.numComponents || defaultSize;
     const size = numComponents / count;
-    const type = b.type || gl.FLOAT;
+    const type = b.type || FLOAT;
     const typeInfo = typeMap[type];
     const stride = typeInfo.size * numComponents;
     const normalize = b.normalize || false;
@@ -467,7 +492,7 @@ attrTypeMap[FLOAT_MAT3]        = { size:  9, setter: matAttribSetter,   count: 3
 attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4, };
 
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
 
 /**
  * Error Callback
@@ -526,7 +551,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   gl.compileShader(shader);
 
   // Check the compile status
-  const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  const compiled = gl.getShaderParameter(shader, COMPILE_STATUS);
   if (!compiled) {
     // Something went wrong during compilation; get the error
     const lastError = gl.getShaderInfoLog(shader);
@@ -609,9 +634,9 @@ const defaultShaderType = [
 
 function getShaderTypeFromScriptType(gl, scriptType) {
   if (scriptType.indexOf("frag") >= 0) {
-    return gl.FRAGMENT_SHADER;
+    return FRAGMENT_SHADER;
   } else if (scriptType.indexOf("vert") >= 0) {
-    return gl.VERTEX_SHADER;
+    return VERTEX_SHADER;
   }
   return undefined;
 }
@@ -687,12 +712,12 @@ function createProgram(
     if (!Array.isArray(varyings)) {
       varyings = Object.keys(varyings);
     }
-    gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || gl.SEPARATE_ATTRIBS);
+    gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || SEPARATE_ATTRIBS);
   }
   gl.linkProgram(program);
 
   // Check the link status
-  const linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+  const linked = gl.getProgramParameter(program, LINK_STATUS);
   if (!linked) {
     // something went wrong with the link
     const lastError = gl.getProgramInfoLog(program);
@@ -879,7 +904,7 @@ function createUniformSetters(gl, program) {
   }
 
   const uniformSetters = { };
-  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  const numUniforms = gl.getProgramParameter(program, ACTIVE_UNIFORMS);
 
   for (let ii = 0; ii < numUniforms; ++ii) {
     const uniformInfo = gl.getActiveUniform(program, ii);
@@ -914,7 +939,7 @@ function createUniformSetters(gl, program) {
  */
 function createTransformFeedbackInfo(gl, program) {
   const info = {};
-  const numVaryings = gl.getProgramParameter(program, gl.TRANSFORM_FEEDBACK_VARYINGS);
+  const numVaryings = gl.getProgramParameter(program, TRANSFORM_FEEDBACK_VARYINGS);
   for (let ii = 0; ii < numVaryings; ++ii) {
     const varying = gl.getTransformFeedbackVarying(program, ii);
     info[varying.name] = {
@@ -946,9 +971,9 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
     if (varying) {
       const buf = bufferInfo[name];
       if (buf.offset) {
-        gl.bindBufferRange(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
+        gl.bindBufferRange(TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer, buf.offset, buf.size);
       } else {
-        gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer);
+        gl.bindBufferBase(TRANSFORM_FEEDBACK_BUFFER, varying.index, buf.buffer);
       }
     }
   }
@@ -964,10 +989,10 @@ function bindTransformFeedbackInfo(gl, transformFeedbackInfo, bufferInfo) {
  */
 function createTransformFeedback(gl, programInfo, bufferInfo) {
   const tf = gl.createTransformFeedback();
-  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
+  gl.bindTransformFeedback(TRANSFORM_FEEDBACK, tf);
   gl.useProgram(programInfo.program);
   bindTransformFeedbackInfo(gl, programInfo, bufferInfo);
-  gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
+  gl.bindTransformFeedback(TRANSFORM_FEEDBACK, null);
   return tf;
 }
 
@@ -1016,7 +1041,7 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * @memberOf module:twgl/programs
  */
 function createUniformBlockSpecFromProgram(gl, program) {
-  const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  const numUniforms = gl.getProgramParameter(program, ACTIVE_UNIFORMS);
   const uniformData = [];
   const uniformIndices = [];
 
@@ -1046,15 +1071,15 @@ function createUniformBlockSpecFromProgram(gl, program) {
 
   const blockSpecs = {};
 
-  const numUniformBlocks = gl.getProgramParameter(program, gl.ACTIVE_UNIFORM_BLOCKS);
+  const numUniformBlocks = gl.getProgramParameter(program, ACTIVE_UNIFORM_BLOCKS);
   for (let ii = 0; ii < numUniformBlocks; ++ii) {
     const name = gl.getActiveUniformBlockName(program, ii);
     const blockSpec = {
       index: ii,
-      usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
-      usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
-      size: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_DATA_SIZE),
-      uniformIndices: gl.getActiveUniformBlockParameter(program, ii, gl.UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES),
+      usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
+      usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
+      size: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_DATA_SIZE),
+      uniformIndices: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES),
     };
     blockSpec.used = blockSpec.usedByVertexShader || blockSpec.usedByFragmentShader;
     blockSpecs[name] = blockSpec;
@@ -1118,7 +1143,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
   const array = new ArrayBuffer(blockSpec.size);
   const buffer = gl.createBuffer();
   const uniformBufferIndex = blockSpec.index;
-  gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
+  gl.bindBuffer(UNIFORM_BUFFER, buffer);
   gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
 
   let prefix = blockName + ".";
@@ -1189,7 +1214,7 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
   const blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
   if (blockSpec) {
     const bufferBindIndex = blockSpec.index;
-    gl.bindBufferRange(gl.UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
+    gl.bindBufferRange(UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
     return true;
   }
   return false;
@@ -1212,7 +1237,7 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
  */
 function setUniformBlock(gl, programInfo, uniformBlockInfo) {
   if (bindUniformBlock(gl, programInfo, uniformBlockInfo)) {
-    gl.bufferData(gl.UNIFORM_BUFFER, uniformBlockInfo.array, gl.DYNAMIC_DRAW);
+    gl.bufferData(UNIFORM_BUFFER, uniformBlockInfo.array, DYNAMIC_DRAW);
   }
 }
 
@@ -1395,6 +1420,16 @@ function setUniforms(setters, values) {  // eslint-disable-line
 }
 
 /**
+ * Alias for `setUniforms`
+ * @function
+ * @param {(module:twgl.ProgramInfo|Object.<string, function>)} setters a `ProgramInfo` as returned from `createProgramInfo` or the setters returned from
+ *        `createUniformSetters`.
+ * @param {Object.<string, ?>} values an object with values for the
+ * @memberOf module:twgl/programs
+ */
+const setUniformsAndBindTextures = setUniforms;
+
+/**
  * Creates setter functions for all attributes of a shader
  * program. You can pass this to {@link module:twgl.setBuffersAndAttributes} to set all your buffers and attributes.
  *
@@ -1408,7 +1443,7 @@ function createAttributeSetters(gl, program) {
   const attribSetters = {
   };
 
-  const numAttribs = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+  const numAttribs = gl.getProgramParameter(program, ACTIVE_ATTRIBUTES);
   for (let ii = 0; ii < numAttribs; ++ii) {
     const attribInfo = gl.getActiveAttrib(program, ii);
     if (isBuiltIn(attribInfo)) {
@@ -1530,7 +1565,7 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
   } else {
     setAttributes(programInfo.attribSetters || programInfo, buffers.attribs);
     if (buffers.indices) {
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+      gl.bindBuffer(ELEMENT_ARRAY_BUFFER, buffers.indices);
     }
   }
 }
@@ -1656,6 +1691,7 @@ export {
   setAttributes,
   setBuffersAndAttributes,
   setUniforms,
+  setUniformsAndBindTextures,
   setUniformBlock,
   setBlockUniforms,
   bindUniformBlock,

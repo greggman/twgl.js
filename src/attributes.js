@@ -23,6 +23,19 @@
 import * as typedArrays from './typedarrays.js';
 import * as helper from './helper.js';
 
+const STATIC_DRAW                  = 0x88e4;
+const ARRAY_BUFFER                 = 0x8892;
+const ELEMENT_ARRAY_BUFFER         = 0x8893;
+const BUFFER_SIZE                  = 0x8764;
+
+const BYTE                         = 0x1400;
+const UNSIGNED_BYTE                = 0x1401;
+const SHORT                        = 0x1402;
+const UNSIGNED_SHORT               = 0x1403;
+const INT                          = 0x1404;
+const UNSIGNED_INT                 = 0x1405;
+const FLOAT                        = 0x1406;
+
 /**
  * Low level attribute and buffer related functions
  *
@@ -39,7 +52,7 @@ import * as helper from './helper.js';
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
 const defaults = {
   attribPrefix: "",
 };
@@ -74,7 +87,7 @@ function setDefaults(newDefaults) {
 
 function setBufferFromTypedArray(gl, type, buffer, array, drawType) {
   gl.bindBuffer(type, buffer);
-  gl.bufferData(type, array, drawType || gl.STATIC_DRAW);
+  gl.bufferData(type, array, drawType || STATIC_DRAW);
 }
 
 /**
@@ -92,7 +105,7 @@ function createBufferFromTypedArray(gl, typedArray, type, drawType) {
   if (helper.isBuffer(gl, typedArray)) {
     return typedArray;
   }
-  type = type || gl.ARRAY_BUFFER;
+  type = type || ARRAY_BUFFER;
   const buffer = gl.createBuffer();
   setBufferFromTypedArray(gl, type, buffer, typedArray, drawType);
   return buffer;
@@ -369,8 +382,8 @@ function createAttribsFromArrays(gl, arrays) {
           normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
           numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
           buffer = gl.createBuffer();
-          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-          gl.bufferData(gl.ARRAY_BUFFER, numBytes, array.drawType || gl.STATIC_DRAW);
+          gl.bindBuffer(ARRAY_BUFFER, buffer);
+          gl.bufferData(ARRAY_BUFFER, numBytes, array.drawType || STATIC_DRAW);
         } else {
           const typedArray = makeTypedArray(array, arrayName);
           buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
@@ -391,7 +404,7 @@ function createAttribsFromArrays(gl, arrays) {
       }
     }
   });
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  gl.bindBuffer(ARRAY_BUFFER, null);
   return attribs;
 }
 
@@ -434,21 +447,21 @@ function createAttribsFromArrays(gl, arrays) {
 function setAttribInfoBufferFromArray(gl, attribInfo, array, offset) {
   array = makeTypedArray(array);
   if (offset !== undefined) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, attribInfo.buffer);
-    gl.bufferSubData(gl.ARRAY_BUFFER, offset, array);
+    gl.bindBuffer(ARRAY_BUFFER, attribInfo.buffer);
+    gl.bufferSubData(ARRAY_BUFFER, offset, array);
   } else {
-    setBufferFromTypedArray(gl, gl.ARRAY_BUFFER, attribInfo.buffer, array, attribInfo.drawType);
+    setBufferFromTypedArray(gl, ARRAY_BUFFER, attribInfo.buffer, array, attribInfo.drawType);
   }
 }
 
 function getBytesPerValueForGLType(gl, type) {
-  if (type === gl.BYTE)           return 1;  // eslint-disable-line
-  if (type === gl.UNSIGNED_BYTE)  return 1;  // eslint-disable-line
-  if (type === gl.SHORT)          return 2;  // eslint-disable-line
-  if (type === gl.UNSIGNED_SHORT) return 2;  // eslint-disable-line
-  if (type === gl.INT)            return 4;  // eslint-disable-line
-  if (type === gl.UNSIGNED_INT)   return 4;  // eslint-disable-line
-  if (type === gl.FLOAT)          return 4;  // eslint-disable-line
+  if (type === BYTE)           return 1;  // eslint-disable-line
+  if (type === UNSIGNED_BYTE)  return 1;  // eslint-disable-line
+  if (type === SHORT)          return 2;  // eslint-disable-line
+  if (type === UNSIGNED_SHORT) return 2;  // eslint-disable-line
+  if (type === INT)            return 4;  // eslint-disable-line
+  if (type === UNSIGNED_INT)   return 4;  // eslint-disable-line
+  if (type === FLOAT)          return 4;  // eslint-disable-line
   return 0;
 }
 
@@ -493,9 +506,9 @@ function getNumElementsFromAttributes(gl, attribs) {
     key = Object.keys(attribs)[0];
   }
   const attrib = attribs[key];
-  gl.bindBuffer(gl.ARRAY_BUFFER, attrib.buffer);
-  const numBytes = gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  gl.bindBuffer(ARRAY_BUFFER, attrib.buffer);
+  const numBytes = gl.getBufferParameter(ARRAY_BUFFER, BUFFER_SIZE);
+  gl.bindBuffer(ARRAY_BUFFER, null);
 
   const bytesPerValue = getBytesPerValueForGLType(gl, attrib.type);
   const totalElements = numBytes / bytesPerValue;
@@ -620,7 +633,7 @@ function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
   const indices = arrays.indices;
   if (indices) {
     const newIndices = makeTypedArray(indices, "indices");
-    bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, gl.ELEMENT_ARRAY_BUFFER);
+    bufferInfo.indices = createBufferFromTypedArray(gl, newIndices, ELEMENT_ARRAY_BUFFER);
     bufferInfo.numElements = newIndices.length;
     bufferInfo.elementType = typedArrays.getGLTypeForTypedArray(newIndices);
   } else if (!bufferInfo.numElements) {
@@ -657,7 +670,7 @@ function createBufferInfoFromArrays(gl, arrays, srcBufferInfo) {
  * @memberOf module:twgl/attributes
  */
 function createBufferFromArray(gl, array, arrayName) {
-  const type = arrayName === "indices" ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+  const type = arrayName === "indices" ? ELEMENT_ARRAY_BUFFER : ARRAY_BUFFER;
   const typedArray = makeTypedArray(array, arrayName);
   return createBufferFromTypedArray(gl, typedArray, type);
 }

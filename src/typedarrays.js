@@ -36,7 +36,7 @@
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  // eslint-disable-line
+const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
 
 /* DataType */
 const BYTE                           = 0x1400;

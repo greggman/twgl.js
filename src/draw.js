@@ -22,6 +22,9 @@
 
 import * as programs from './programs.js';
 
+const TRIANGLES                      = 0x0004;
+const UNSIGNED_SHORT                 = 0x1403;
+
 /**
  * Drawing related functions
  *
@@ -50,16 +53,16 @@ import * as programs from './programs.js';
  * @memberOf module:twgl/draw
  */
 function drawBufferInfo(gl, bufferInfo, type, count, offset, instanceCount) {
-  type = type === undefined ? gl.TRIANGLES : type;
+  type = type === undefined ? TRIANGLES : type;
   const indices = bufferInfo.indices;
   const elementType = bufferInfo.elementType;
   const numElements = count === undefined ? bufferInfo.numElements : count;
   offset = offset === undefined ? 0 : offset;
   if (elementType || indices) {
     if (instanceCount !== undefined) {
-      gl.drawElementsInstanced(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
+      gl.drawElementsInstanced(type, numElements, elementType === undefined ? UNSIGNED_SHORT : bufferInfo.elementType, offset, instanceCount);
     } else {
-      gl.drawElements(type, numElements, elementType === undefined ? gl.UNSIGNED_SHORT : bufferInfo.elementType, offset);
+      gl.drawElements(type, numElements, elementType === undefined ? UNSIGNED_SHORT : bufferInfo.elementType, offset);
     }
   } else {
     if (instanceCount !== undefined) {
@@ -124,7 +127,7 @@ function drawObjectList(gl, objectsToDraw) {
     const programInfo = object.programInfo;
     const bufferInfo = object.vertexArrayInfo || object.bufferInfo;
     let bindBuffers = false;
-    const type = object.type === undefined ? gl.TRIANGLES : object.type;
+    const type = object.type === undefined ? TRIANGLES : object.type;
 
     if (programInfo !== lastUsedProgramInfo) {
       lastUsedProgramInfo = programInfo;
