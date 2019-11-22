@@ -26,7 +26,6 @@ module.exports = {
     "no-caller": 2,
     "no-catch-shadow": 2,
     "no-const-assign": 2,
-    "no-labels": 2,
     "no-eval": 2,
     "no-extend-native": 2,
     "no-extra-bind": 2,
