@@ -1,6 +1,8 @@
 path_classifiers:
   docs:
     - docs
+  build:
+    - build
   test:
     - test
   generated:
