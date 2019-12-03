@@ -241,7 +241,7 @@ module.exports = function(grunt) {
         ],
         format: 'es',
         indent: '  ',
-        banner: `/* ${getLicense(pkg)} */`,
+        banner: () => `/* ${getLicense(pkg)} */`,
       },
       files: {
         src: 'src/twgl-full.js',
