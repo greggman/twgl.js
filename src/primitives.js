@@ -880,7 +880,7 @@ function createTruncatedConeVertices(
         normals.push(0, -1, 0);
       } else if (yy > verticalSubdivisions) {
         normals.push(0, 1, 0);
-      } else if (ringRadius == 0.0) {
+      } else if (ringRadius === 0.0) {
         normals.push(0, 0, 0);
       } else {
         normals.push(sin * cosSlant, sinSlant, cos * cosSlant);
