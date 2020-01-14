@@ -139,6 +139,8 @@ function isRenderbufferFormat(format) {
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
  * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @property {number} width The width of the framebuffer and its attachments
+ * @property {number} height The width of the framebuffer and its attachments
  * @memberOf module:twgl
  */
 
