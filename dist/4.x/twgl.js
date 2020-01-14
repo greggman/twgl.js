@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.14.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.14.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1252,6 +1252,8 @@ function isRenderbufferFormat(format) {
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
  * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @property {number} width The width of the framebuffer and its attachments
+ * @property {number} height The width of the framebuffer and its attachments
  * @memberOf module:twgl
  */
 

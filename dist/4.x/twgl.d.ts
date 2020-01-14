@@ -75,6 +75,8 @@ export type AttachmentOptions = TextureOptions & {
 export type FramebufferInfo = {
     framebuffer: WebGLFramebuffer;
     attachments: WebGLObject[];
+    width: number;
+    height: number;
 };
 export type ErrorCallback = (msg: string, lineOffset?: number) => void;
 export type ProgramOptions = {

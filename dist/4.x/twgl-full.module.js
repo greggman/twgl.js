@@ -1,4 +1,4 @@
-/* @license twgl.js 4.14.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.14.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -3510,10 +3510,15 @@ function createTruncatedConeVertices(
       const sin = Math.sin(ii * Math.PI * 2 / radialSubdivisions);
       const cos = Math.cos(ii * Math.PI * 2 / radialSubdivisions);
       positions.push(sin * ringRadius, y, cos * ringRadius);
-      normals.push(
-          (yy < 0 || yy > verticalSubdivisions) ? 0 : (sin * cosSlant),
-          (yy < 0) ? -1 : (yy > verticalSubdivisions ? 1 : sinSlant),
-          (yy < 0 || yy > verticalSubdivisions) ? 0 : (cos * cosSlant));
+      if (yy < 0) {
+        normals.push(0, -1, 0);
+      } else if (yy > verticalSubdivisions) {
+        normals.push(0, 1, 0);
+      } else if (ringRadius === 0.0) {
+        normals.push(0, 0, 0);
+      } else {
+        normals.push(sin * cosSlant, sinSlant, cos * cosSlant);
+      }
       texcoords.push((ii / radialSubdivisions), 1 - v);
     }
   }
@@ -8741,6 +8746,8 @@ function isRenderbufferFormat(format) {
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
  * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @property {number} width The width of the framebuffer and its attachments
+ * @property {number} height The width of the framebuffer and its attachments
  * @memberOf module:twgl
  */
 
