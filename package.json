@@ -1,6 +1,6 @@
 {
   "name": "twgl.js",
-  "version": "4.14.1",
+  "version": "4.14.2",
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl-full.js",
   "types": "dist/4.x/twgl-full.d.ts",
@@ -74,10 +74,10 @@
     "rollup": "^1.25.2",
     "semver": "^6.3.0",
     "should": "^13.2.0",
-    "terser-webpack-plugin": "^2.2.1",
+    "terser-webpack-plugin": "^2.3.2",
     "tsd-jsdoc": "^2.1.2",
     "typescript": "^3.6.4",
-    "webpack": "^4.41.2"
+    "webpack": "^4.41.5"
   },
   "dependencies": {}
 }

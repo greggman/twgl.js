@@ -1,5 +1,10 @@
 #Changelist
 
+*   4.14.2
+
+    *   Add width and height to FrameBufferInfo docs
+    *   Adjust normals on cone
+
 *   4.14.0
 
     *   Use constants everywhere. eg `TEXTURE_2D` instead of `gl.TEXTURE_2D`
