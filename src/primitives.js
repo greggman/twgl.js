@@ -838,7 +838,7 @@ function createTruncatedConeVertices(
   const positions = createAugmentedTypedArray(3, numVertices);
   const normals   = createAugmentedTypedArray(3, numVertices);
   const texcoords = createAugmentedTypedArray(2, numVertices);
-  const indices   = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  const indices   = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra / 2) * 2, Uint16Array);
 
   const vertsAroundEdge = radialSubdivisions + 1;
 
@@ -884,6 +884,9 @@ function createTruncatedConeVertices(
   }
 
   for (let yy = 0; yy < verticalSubdivisions + extra; ++yy) {  // eslint-disable-line
+    if (yy === 1 && topCap || yy === verticalSubdivisions + extra - 2 && bottomCap) {
+      continue;
+    }
     for (let ii = 0; ii < radialSubdivisions; ++ii) {  // eslint-disable-line
       indices.push(vertsAroundEdge * (yy + 0) + 0 + ii,
                    vertsAroundEdge * (yy + 0) + 1 + ii,
