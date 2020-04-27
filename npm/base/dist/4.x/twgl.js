@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.14.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.15.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5774,12 +5774,11 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (isTexImageSource(src)) {
+    } else {
+      // if (isTexImageSource(src))
       setTextureFromElement(gl, tex, src, options);
       width = src.width;
       height = src.height;
-    } else {
-      throw "unsupported src type";
     }
   } else {
     setEmptyTexture(gl, tex, options);

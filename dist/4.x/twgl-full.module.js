@@ -1,4 +1,4 @@
-/* @license twgl.js 4.14.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.15.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -3473,7 +3473,7 @@ function createTruncatedConeVertices(
   const positions = createAugmentedTypedArray(3, numVertices);
   const normals   = createAugmentedTypedArray(3, numVertices);
   const texcoords = createAugmentedTypedArray(2, numVertices);
-  const indices   = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  const indices   = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra / 2) * 2, Uint16Array);
 
   const vertsAroundEdge = radialSubdivisions + 1;
 
@@ -3524,6 +3524,9 @@ function createTruncatedConeVertices(
   }
 
   for (let yy = 0; yy < verticalSubdivisions + extra; ++yy) {  // eslint-disable-line
+    if (yy === 1 && topCap || yy === verticalSubdivisions + extra - 2 && bottomCap) {
+      continue;
+    }
     for (let ii = 0; ii < radialSubdivisions; ++ii) {  // eslint-disable-line
       indices.push(vertsAroundEdge * (yy + 0) + 0 + ii,
                    vertsAroundEdge * (yy + 0) + 1 + ii,
@@ -6561,12 +6564,10 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (isTexImageSource(src)) {
+    } else { // if (isTexImageSource(src))
       setTextureFromElement(gl, tex, src, options);
       width  = src.width;
       height = src.height;
-    } else {
-      throw "unsupported src type";
     }
   } else {
     setEmptyTexture(gl, tex, options);

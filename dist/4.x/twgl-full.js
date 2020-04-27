@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.14.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.15.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3637,7 +3637,7 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
   var texcoords = createAugmentedTypedArray(2, numVertices);
-  var indices = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  var indices = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra / 2) * 2, Uint16Array);
   var vertsAroundEdge = radialSubdivisions + 1; // The slant of the cone is constant across its surface
 
   var slant = Math.atan2(bottomRadius - topRadius, height);
@@ -3691,6 +3691,10 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
 
   for (var _yy = 0; _yy < verticalSubdivisions + extra; ++_yy) {
     // eslint-disable-line
+    if (_yy === 1 && topCap || _yy === verticalSubdivisions + extra - 2 && bottomCap) {
+      continue;
+    }
+
     for (var _ii = 0; _ii < radialSubdivisions; ++_ii) {
       // eslint-disable-line
       indices.push(vertsAroundEdge * (_yy + 0) + 0 + _ii, vertsAroundEdge * (_yy + 0) + 1 + _ii, vertsAroundEdge * (_yy + 1) + 1 + _ii);
@@ -8844,12 +8848,11 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (isTexImageSource(src)) {
+    } else {
+      // if (isTexImageSource(src))
       setTextureFromElement(gl, tex, src, options);
       width = src.width;
       height = src.height;
-    } else {
-      throw "unsupported src type";
     }
   } else {
     setEmptyTexture(gl, tex, options);
