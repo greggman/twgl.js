@@ -1643,12 +1643,10 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (isTexImageSource(src)) {
+    } else { // if (isTexImageSource(src))
       setTextureFromElement(gl, tex, src, options);
       width  = src.width;
       height = src.height;
-    } else {
-      throw "unsupported src type";
     }
   } else {
     setEmptyTexture(gl, tex, options);
