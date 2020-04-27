@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.15.0
+
+    *   Allow anything not otherwise handled to be sent to `texImage2D` as a `TexImageSource`
+
 *   4.14.2
 
     *   Add width and height to FrameBufferInfo docs
