@@ -1,4 +1,4 @@
-/* @license twgl.js 4.15.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.15.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7648,8 +7648,7 @@ function createUniformSetters(gl, program) {
    * @param {WebGLUniformInfo} uniformInfo
    * @returns {function} the created setter.
    */
-  function createUniformSetter(program, uniformInfo) {
-    const location = gl.getUniformLocation(program, uniformInfo.name);
+  function createUniformSetter(program, uniformInfo, location) {
     const isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
     const type = uniformInfo.type;
     const typeInfo = typeMap[type];
@@ -7690,8 +7689,11 @@ function createUniformSetters(gl, program) {
     if (name.substr(-3) === "[0]") {
       name = name.substr(0, name.length - 3);
     }
-    const setter = createUniformSetter(program, uniformInfo);
-    uniformSetters[name] = setter;
+    const location = gl.getUniformLocation(program, uniformInfo.name);
+    // the uniform will have no location if it's in a uniform block
+    if (location) {
+      uniformSetters[name] = createUniformSetter(program, uniformInfo, location);
+    }
   }
   return uniformSetters;
 }
@@ -7849,7 +7851,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
   for (let ii = 0; ii < numUniformBlocks; ++ii) {
     const name = gl.getActiveUniformBlockName(program, ii);
     const blockSpec = {
-      index: ii,
+      index: gl.getUniformBlockIndex(program, name),
       usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
       usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
       size: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_DATA_SIZE),
