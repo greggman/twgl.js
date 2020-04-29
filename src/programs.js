@@ -1077,7 +1077,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
   for (let ii = 0; ii < numUniformBlocks; ++ii) {
     const name = gl.getActiveUniformBlockName(program, ii);
     const blockSpec = {
-      index: ii,
+      index: gl.getUniformBlockIndex(program, name),
       usedByVertexShader: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
       usedByFragmentShader: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
       size: gl.getActiveUniformBlockParameter(program, ii, UNIFORM_BLOCK_DATA_SIZE),
