@@ -874,8 +874,7 @@ function createUniformSetters(gl, program) {
    * @param {WebGLUniformInfo} uniformInfo
    * @returns {function} the created setter.
    */
-  function createUniformSetter(program, uniformInfo) {
-    const location = gl.getUniformLocation(program, uniformInfo.name);
+  function createUniformSetter(program, uniformInfo, location) {
     const isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
     const type = uniformInfo.type;
     const typeInfo = typeMap[type];
@@ -916,8 +915,11 @@ function createUniformSetters(gl, program) {
     if (name.substr(-3) === "[0]") {
       name = name.substr(0, name.length - 3);
     }
-    const setter = createUniformSetter(program, uniformInfo);
-    uniformSetters[name] = setter;
+    const location = gl.getUniformLocation(program, uniformInfo.name);
+    // the uniform will have no location if it's in a uniform block
+    if (location) {
+      uniformSetters[name] = createUniformSetter(program, uniformInfo, location);
+    }
   }
   return uniformSetters;
 }
