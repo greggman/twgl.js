@@ -1,9 +1,9 @@
 {
   "parserOptions": {
-    "sourceType": "script"
+    "sourceType": "module"
   },
   "rules": {
-    "strict": [2, "global"]
+    "strict": [0, "global"]
   },
   "overrides": [
     {
