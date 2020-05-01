@@ -81,7 +81,7 @@ h2,h3 {
     margin-top: 1.5em;
 }
 
-#pronouce {
+#pronounce {
     position: absolute;
     font-size: xx-small;
     bottom: 0em;
@@ -202,3 +202,50 @@ pre.prettyprint, code.prettyprint {
 }
 }
 
+@media (prefers-color-scheme: dark) {
+  #frame {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #ddd;
+  }
+
+  a {
+    color: #8AF;
+  }
+
+  a:visited {
+    color: #CAF;
+  }
+
+  code {
+      background-color: #444;
+      color: #ddd;
+  }
+
+  pre {
+      background-color: #CCC;
+  }
+
+  .lang-javascript {
+      background-color: #CCC;
+  }
+
+  pre.prettyprint, code.prettyprint {
+    color: #CCC;
+    background: #333;
+    box-shadow: 3px 3px 10px #000;
+  }
+
+  pre.prettyprint .str { color: #b9ca4a } /* string          */
+  pre.prettyprint .kwd { color: #c397d8 } /* keyword         */
+  pre.prettyprint .com { color: #f3efb2 } /* comment         */
+  pre.prettyprint .typ { color: #7aa6da } /* type            */
+  pre.prettyprint .lit { color: #45e7a6 } /* literal         */
+  pre.prettyprint .pun { color: #7ecce0 } /* punctuation     */
+  pre.prettyprint .pln { color: #eaeaea } /* plaintext       */
+  pre.prettyprint .tag { color: #d54e53 } /* html/xml tag    */
+  pre.prettyprint .atn { color: #e78c45 } /* attribute name  */
+  pre.prettyprint .atv { color: #70c0b1 } /* attribute value */
+  pre.prettyprint .dec { color: #e78c45 } /* decimal         */
+  pre.prettyprint .var { color: #d54e53 } /* variable name   */
+  pre.prettyprint .fun { color: #7aa6da } /* function name   */
+}
