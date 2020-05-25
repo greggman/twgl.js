@@ -234,7 +234,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
         gl.framebufferTexture2D(
             target,
             attachmentPoint,
-            attachmentOptions.texTarget || TEXTURE_2D,
+            attachmentOptions.target || TEXTURE_2D,
             attachment,
             attachmentOptions.level || 0);
       }
