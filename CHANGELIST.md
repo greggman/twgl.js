@@ -1,5 +1,9 @@
 #Changelist
 
+*   4.15.2
+
+    *   fix s/texTarget/target/ on use of AttachmentOptions
+
 *   4.15.0
 
     *   Allow anything not otherwise handled to be sent to `texImage2D` as a `TexImageSource`
