@@ -1,4 +1,4 @@
-/* @license twgl.js 4.15.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.15.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -8844,7 +8844,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
         gl.framebufferTexture2D(
             target,
             attachmentPoint,
-            attachmentOptions.texTarget || TEXTURE_2D$2,
+            attachmentOptions.target || TEXTURE_2D$2,
             attachment,
             attachmentOptions.level || 0);
       }

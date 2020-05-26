@@ -1,13 +1,9 @@
-TWGL: A Tiny WebGL helper Library<div id="pronouce" style="font-size: xx-small;">[rhymes with wiggle]</div>
+TWGL: A Tiny WebGL helper Library<div id="pronounce" style="font-size: xx-small;">[rhymes with wiggle]</div>
 =====================================================
 
 [![Build Status](https://travis-ci.org/greggman/twgl.js.svg?branch=master)](https://travis-ci.org/greggman/twgl.js)
 
 This library's sole purpose is to make using the WebGL API less verbose.
-
-## Note: Minor API Changes in 2.x
-
-[See Changelist](https://github.com/greggman/twgl.js/blob/master/CHANGELIST.md)
 
 ## TL;DR
 
