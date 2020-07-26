@@ -76,9 +76,8 @@ void main() {
   gl_FragColor = vec4( vec3( color * 0.5, sin( color + time / 2.5 ) * 0.75, color ), 1.0 );
 }
   </script>
-  <script src="../dist/4.x/twgl.min.js"></script>
-  <script>
-    "use strict";
+  <script type="module">
+    import * as twgl from '../dist/4.x/twgl-full.module.js';
     const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 

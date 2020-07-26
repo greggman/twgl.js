@@ -75,9 +75,8 @@ void main() {
   gl_FragColor = texture2D(u_texture, v_texcoord) * v_color;
 }
  </script>
-  <script src="../dist/4.x/twgl.min.js"></script>
-  <script>
-    "use strict";
+  <script type="module">
+    import * as twgl from '../dist/4.x/twgl-full.module.js';
     const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 

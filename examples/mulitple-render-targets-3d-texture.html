@@ -66,9 +66,8 @@
       <div>Sorry but your browser doesn't appear to support WebGL2</div>
     </div>
   </body>
-  <script src="../dist/4.x/twgl-full.min.js"></script>
-  <script>
-"use strict";
+  <script type="module">
+import * as twgl from '../dist/4.x/twgl-full.module.js';
 
 function main() {
   const gl = document.getElementById("c").getContext("webgl2");

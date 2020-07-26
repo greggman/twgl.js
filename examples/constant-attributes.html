@@ -72,8 +72,8 @@ void main() {
 }
   </script>
   <script src="../dist/4.x/twgl-full.js"></script>
-  <script>
-    "use strict";
+  <script type="module">
+    import * as twgl from '../dist/4.x/twgl-full.module.js';
     const m4 = twgl.m4;
     const gl = document.querySelector("#c").getContext("webgl", { alpha: false });
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);

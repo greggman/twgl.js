@@ -190,10 +190,9 @@ void main() {
   outColor.rbg *= outColor.a;
 }
   </script>
-  <script src="../dist/4.x/twgl-full.min.js"></script>
   <script src="../3rdparty/chroma.min.js"></script>
-  <script>
-"use strict";
+  <script type="module">
+import * as twgl from '../dist/4.x/twgl-full.module.js';
 
 // adapted from http://stackoverflow.com/a/6162687/128511
 const toHalf = (function() {
