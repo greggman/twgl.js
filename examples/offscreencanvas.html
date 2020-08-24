@@ -81,7 +81,7 @@ function main() {
   }
   const offscreen = canvas.transferControlToOffscreen();
 
-  const worker = new Worker("js/offscreencanvas.js");
+  const worker = new Worker("js/offscreencanvas.js", {type: 'module'});
   worker.onmessage = function(evt) {
     document.querySelector('#no-msg').textContent = evt.data;
     document.querySelector("#no-webgl").style.display = "";
