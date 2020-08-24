@@ -49,14 +49,16 @@ const defaults = {
 const isArrayBuffer = typedArrays.isArrayBuffer;
 
 // Should we make this on demand?
-let s_ctx;
-function getShared2DContext() {
-  s_ctx = s_ctx ||
-      ((typeof document !== 'undefined' && document.createElement)
-        ? document.createElement("canvas").getContext("2d")
-        : null);
-  return s_ctx;
-}
+const getShared2DContext = function() {
+  let s_ctx;
+  return function getShared2DContext() {
+    s_ctx = s_ctx ||
+        ((typeof document !== 'undefined' && document.createElement)
+          ? document.createElement("canvas").getContext("2d")
+          : null);
+    return s_ctx;
+  };
+}();
 
 // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
 //       not only does Firefox NOT support it but Firefox freezes immediately
