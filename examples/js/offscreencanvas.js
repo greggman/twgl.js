@@ -92,7 +92,6 @@ function main(gl) {
   }
 
   // Shared values
-  const baseHue = rand(360);
   const camera = m4.identity();
   const view = m4.identity();
   const viewProjection = m4.identity();
