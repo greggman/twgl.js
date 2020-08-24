@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.15.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.16.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -3716,12 +3716,13 @@ var defaults = {
 };
 var isArrayBuffer = typedArrays.isArrayBuffer; // Should we make this on demand?
 
-var s_ctx;
-
-function getShared2DContext() {
-  s_ctx = s_ctx || (typeof document !== 'undefined' && document.createElement ? document.createElement("canvas").getContext("2d") : null);
-  return s_ctx;
-} // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
+var getShared2DContext = function () {
+  var s_ctx;
+  return function getShared2DContext() {
+    s_ctx = s_ctx || (typeof document !== 'undefined' && document.createElement ? document.createElement("canvas").getContext("2d") : null);
+    return s_ctx;
+  };
+}(); // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
 //       not only does Firefox NOT support it but Firefox freezes immediately
 //       if you try to create one instead of just returning null and continuing.
 //  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
@@ -3975,6 +3976,13 @@ function getTextureInternalFormatInfo(internalFormat) {
       textureFilterable: true,
       bytesPerElement: [4, 8, 8, 16, 2, 2],
       type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1]
+    };
+    t[DEPTH_COMPONENT] = {
+      textureFormat: DEPTH_COMPONENT,
+      colorRenderable: true,
+      textureFilterable: false,
+      bytesPerElement: [2, 4],
+      type: [UNSIGNED_INT, UNSIGNED_SHORT]
     }; // sized formats
 
     t[R8] = {

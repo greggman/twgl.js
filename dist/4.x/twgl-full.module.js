@@ -1,4 +1,4 @@
-/* @license twgl.js 4.15.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.16.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -4970,14 +4970,16 @@ const defaults$1 = {
 const isArrayBuffer$1 = isArrayBuffer;
 
 // Should we make this on demand?
-let s_ctx;
-function getShared2DContext() {
-  s_ctx = s_ctx ||
-      ((typeof document !== 'undefined' && document.createElement)
-        ? document.createElement("canvas").getContext("2d")
-        : null);
-  return s_ctx;
-}
+const getShared2DContext = function() {
+  let s_ctx;
+  return function getShared2DContext() {
+    s_ctx = s_ctx ||
+        ((typeof document !== 'undefined' && document.createElement)
+          ? document.createElement("canvas").getContext("2d")
+          : null);
+    return s_ctx;
+  };
+}();
 
 // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
 //       not only does Firefox NOT support it but Firefox freezes immediately
@@ -5177,6 +5179,7 @@ function getTextureInternalFormatInfo(internalFormat) {
     t[LUMINANCE_ALPHA]    = { textureFormat: LUMINANCE_ALPHA, colorRenderable: true,  textureFilterable: true,  bytesPerElement: [2, 4, 4, 8],        type: [UNSIGNED_BYTE$2, HALF_FLOAT$1, HALF_FLOAT_OES, FLOAT$2], };
     t[RGB]                = { textureFormat: RGB,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [3, 6, 6, 12, 2],    type: [UNSIGNED_BYTE$2, HALF_FLOAT$1, HALF_FLOAT_OES, FLOAT$2, UNSIGNED_SHORT_5_6_5$1], };
     t[RGBA]               = { textureFormat: RGBA,            colorRenderable: true,  textureFilterable: true,  bytesPerElement: [4, 8, 8, 16, 2, 2], type: [UNSIGNED_BYTE$2, HALF_FLOAT$1, HALF_FLOAT_OES, FLOAT$2, UNSIGNED_SHORT_4_4_4_4$1, UNSIGNED_SHORT_5_5_5_1$1], };
+    t[DEPTH_COMPONENT]    = { textureFormat: DEPTH_COMPONENT, colorRenderable: true,  textureFilterable: false, bytesPerElement: [2, 4],              type: [UNSIGNED_INT$2, UNSIGNED_SHORT$2], };
 
     // sized formats
     t[R8]                 = { textureFormat: RED,             colorRenderable: true,  textureFilterable: true,  bytesPerElement: [1],        type: [UNSIGNED_BYTE$2], };
