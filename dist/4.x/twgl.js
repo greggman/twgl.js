@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.16.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.16.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -2771,7 +2771,7 @@ function createUniformSetters(gl, program) {
    */
 
   function createUniformSetter(program, uniformInfo, location) {
-    var isArray = uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]";
+    var isArray = uniformInfo.name.endsWith("[0]");
     var type = uniformInfo.type;
     var typeInfo = typeMap[type];
 
@@ -2815,7 +2815,7 @@ function createUniformSetters(gl, program) {
 
     var name = uniformInfo.name; // remove the array suffix.
 
-    if (name.substr(-3) === "[0]") {
+    if (name.endsWith("[0]")) {
       name = name.substr(0, name.length - 3);
     }
 
