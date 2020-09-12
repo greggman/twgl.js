@@ -1,5 +1,9 @@
 # Change List
 
+*   4.16.1
+
+    *   fix how twgl figures out a uniform is an array
+
 *   4.16.0
 
     *   support WebGL1 depth textures 😅
