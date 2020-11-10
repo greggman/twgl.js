@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.16.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.16.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -9601,9 +9601,8 @@ function getContext(canvas, opt_attribs) {
 function resizeCanvasToDisplaySize(canvas, multiplier) {
   multiplier = multiplier || 1;
   multiplier = Math.max(0, multiplier);
-  var rect = canvas.getBoundingClientRect();
-  var width = Math.round(rect.width * multiplier);
-  var height = Math.round(rect.height * multiplier);
+  var width = canvas.clientWidth * multiplier | 0;
+  var height = canvas.clientHeight * multiplier | 0;
 
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width;
