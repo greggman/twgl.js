@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.16.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.17.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1618,27 +1618,17 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-/*
- * Copyright 2019 Gregg Tavares
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- */
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 /**
  * Low level shader program related functions
@@ -2367,6 +2357,27 @@ var gl = undefined;
 
 /* lgtm [js/unused-local-variable] */
 
+var errorRE = /ERROR:\s*\d+:(\d+)/gi;
+
+function addLineNumbersWithError(src) {
+  var log = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var lineOffset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+  // Note: Error message formats are not defined by any spec so this may or may not work.
+  var matches = _toConsumableArray(log.matchAll(errorRE));
+
+  var lineNoToErrorMap = new Map(matches.map(function (m, ndx) {
+    var lineNo = parseInt(m[1]);
+    var next = matches[ndx + 1];
+    var end = next ? next.index : log.length;
+    var msg = log.substring(m.index, end);
+    return [lineNo - 1, msg];
+  }));
+  return src.split('\n').map(function (line, lineNo) {
+    var err = lineNoToErrorMap.get(lineNo);
+    return "".concat(lineNo + 1 + lineOffset, ": ").concat(line).concat(err ? "\n\n^^^ ".concat(err) : '');
+  }).join('\n');
+}
 /**
  * Error Callback
  * @callback ErrorCallback
@@ -2375,13 +2386,6 @@ var gl = undefined;
  * @memberOf module:twgl
  */
 
-function addLineNumbers(src, lineOffset) {
-  lineOffset = lineOffset || 0;
-  ++lineOffset;
-  return src.split("\n").map(function (line, ndx) {
-    return ndx + lineOffset + ": " + line;
-  }).join("\n");
-}
 
 var spaceRE = /^[ \t]*\n/;
 /**
@@ -2426,7 +2430,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   if (!compiled) {
     // Something went wrong during compilation; get the error
     var lastError = gl.getShaderInfoLog(shader);
-    errFn(addLineNumbers(shaderSource, lineOffset) + "\n*** Error compiling shader: " + lastError);
+    errFn("".concat(addLineNumbersWithError(shaderSource, lastError, lineOffset), "\nError compiling ").concat(utils.glEnumToString(gl, shaderType), ": ").concat(lastError));
     gl.deleteShader(shader);
     return null;
   }
@@ -2607,7 +2611,11 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
   if (!linked) {
     // something went wrong with the link
     var lastError = gl.getProgramInfoLog(program);
-    progOptions.errorCallback("Error in program linking:" + lastError);
+    progOptions.errorCallback("".concat(realShaders.map(function (shader) {
+      var src = addLineNumbersWithError(gl.getShaderSource(shader), '', 0);
+      var type = gl.getShaderParameter(shader, gl.SHADER_TYPE);
+      return "".concat(utils.glEnumToString(gl, type), "\n").concat(src, "}");
+    }).join('\n'), "\nError in program linking: ").concat(lastError));
     gl.deleteProgram(program);
     deleteShaders(gl, newShaders);
     return null;

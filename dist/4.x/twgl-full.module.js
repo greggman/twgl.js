@@ -1,4 +1,4 @@
-/* @license twgl.js 4.16.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.17.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7271,6 +7271,23 @@ attrTypeMap[FLOAT_MAT2]        = { size:  4, setter: matAttribSetter,   count: 2
 attrTypeMap[FLOAT_MAT3]        = { size:  9, setter: matAttribSetter,   count: 3, };
 attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4, };
 
+const errorRE = /ERROR:\s*\d+:(\d+)/gi;
+function addLineNumbersWithError(src, log = '', lineOffset = 0) {
+  // Note: Error message formats are not defined by any spec so this may or may not work.
+  const matches = [...log.matchAll(errorRE)];
+  const lineNoToErrorMap = new Map(matches.map((m, ndx) => {
+    const lineNo = parseInt(m[1]);
+    const next = matches[ndx + 1];
+    const end = next ? next.index : log.length;
+    const msg = log.substring(m.index, end);
+    return [lineNo - 1, msg];
+  }));
+  return src.split('\n').map((line, lineNo) => {
+    const err = lineNoToErrorMap.get(lineNo);
+    return `${lineNo + 1 + lineOffset}: ${line}${err ? `\n\n^^^ ${err}` : ''}`;
+  }).join('\n');
+}
+
 /**
  * Error Callback
  * @callback ErrorCallback
@@ -7278,15 +7295,6 @@ attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4
  * @param {number} [lineOffset] amount to add to line number
  * @memberOf module:twgl
  */
-
-function addLineNumbers(src, lineOffset) {
-  lineOffset = lineOffset || 0;
-  ++lineOffset;
-
-  return src.split("\n").map(function(line, ndx) {
-    return (ndx + lineOffset) + ": " + line;
-  }).join("\n");
-}
 
 const spaceRE = /^[ \t]*\n/;
 
@@ -7332,7 +7340,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
   if (!compiled) {
     // Something went wrong during compilation; get the error
     const lastError = gl.getShaderInfoLog(shader);
-    errFn(addLineNumbers(shaderSource, lineOffset) + "\n*** Error compiling shader: " + lastError);
+    errFn(`${addLineNumbersWithError(shaderSource, lastError, lineOffset)}\nError compiling ${glEnumToString(gl, shaderType)}: ${lastError}`);
     gl.deleteShader(shader);
     return null;
   }
@@ -7498,7 +7506,13 @@ function createProgram(
   if (!linked) {
     // something went wrong with the link
     const lastError = gl.getProgramInfoLog(program);
-    progOptions.errorCallback("Error in program linking:" + lastError);
+    progOptions.errorCallback(`${
+      realShaders.map(shader => {
+        const src = addLineNumbersWithError(gl.getShaderSource(shader), '', 0);
+        const type = gl.getShaderParameter(shader, gl.SHADER_TYPE);
+        return `${glEnumToString(gl, type)}\n${src}}`;
+      }).join('\n')
+    }\nError in program linking: ${lastError}`);
 
     gl.deleteProgram(program);
     deleteShaders(gl, newShaders);
