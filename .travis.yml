@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-  - "14"
-script:
-  - grunt eslint
-  - npm test
-
-before_install: npm install -g grunt-cli
