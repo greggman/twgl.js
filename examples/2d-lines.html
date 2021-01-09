@@ -55,47 +55,49 @@
     <canvas id="c"></canvas>
     <div id="b"><a href="http://twgljs.org">twgl.js - 2d lines</a></div>
   </body>
-  <script id="vs" type="notjs">
-uniform mat4 u_matrix;
-uniform vec4 u_offsets;
-uniform vec4 u_centers;
-uniform vec4 u_mult;
-
-attribute vec2 a_position;
-attribute vec4 a_color;
-
-varying vec4 v_color;
-
-#define PI 3.14159
-
-void main() {
-  vec2 offset = mix(u_offsets.xz, u_offsets.yw, a_position.y);
-  float a = u_mult.x * a_position.x * PI * 2.0 + offset.x;//mix(u_offsets.x, u_offsets.y, a_position.y);
-  float c = cos(a * u_mult.y);
-  vec2 xy = vec2(
-    cos(a),
-    sin(a)) * c * offset.y +
-    mix(u_centers.xy, u_centers.zw, a_position.y);
-  gl_Position = u_matrix * vec4(xy, 0, 1);
-  v_color = a_color;
-}
-  </script>
-  <script id="fs" type="notjs">
-precision mediump float;
-
-varying vec4 v_color;
-
-void main() {
-  gl_FragColor = v_color;
-}
-  </script>
   <script src="../3rdparty/chroma.min.js"></script>
   <script type="module">
     import * as twgl from '../dist/4.x/twgl-full.module.js';
     const m4 = twgl.m4;
     twgl.setDefaults({attribPrefix: "a_"});
     const gl = document.getElementById("c").getContext("webgl");
-    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    const vs = `
+      uniform mat4 u_matrix;
+      uniform vec4 u_offsets;
+      uniform vec4 u_centers;
+      uniform vec4 u_mult;
+
+      attribute vec2 a_position;
+      attribute vec4 a_color;
+
+      varying vec4 v_color;
+
+      #define PI 3.14159
+
+      void main() {
+        vec2 offset = mix(u_offsets.xz, u_offsets.yw, a_position.y);
+        float a = u_mult.x * a_position.x * PI * 2.0 + offset.x;//mix(u_offsets.x, u_offsets.y, a_position.y);
+        float c = cos(a * u_mult.y);
+        vec2 xy = vec2(
+          cos(a),
+          sin(a)) * c * offset.y +
+          mix(u_centers.xy, u_centers.zw, a_position.y);
+        gl_Position = u_matrix * vec4(xy, 0, 1);
+        v_color = a_color;
+      }
+    `;
+    const fs = `
+      precision mediump float;
+
+      varying vec4 v_color;
+
+      void main() {
+        gl_FragColor = v_color;
+      }
+    `;
+
+    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
     const numLines = 100;
     const arrays = {

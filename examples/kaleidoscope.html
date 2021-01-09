@@ -51,39 +51,6 @@
     <canvas id="c"></canvas>
     <div id="b"><a href="http://twgljs.org">twgl.js</a> - kaleidoscope</div>
   </body>
-  <script id="kaleid-vs" type="notjs">
-    attribute vec4 a_position;
-    attribute vec2 a_id;
-    varying vec2 v_texcoord;
-    uniform mat4 u_matrix;
-    uniform mat4 u_projection;
-    uniform float u_angleTime;
-    uniform float u_angleScale;
-    void main() {
-      vec4 localPosition = u_matrix * a_position;
-      float angle = a_id.x * u_angleScale + u_angleTime;
-      float radius = localPosition.y;
-      float c = cos(angle);
-      float s = sin(angle);
-      mat4 m = mat4(
-          vec4(c, s, 0, 0),
-          vec4(-s, c, 0, 0),
-          vec4(0, 0, 1, 0),
-          vec4(0, 0, 0, 1));
-      gl_Position = u_projection * m * localPosition;
-      v_texcoord = a_position.xy * 0.5 + 0.5;
-    }
-  </script>
-  <script id="kaleid-fs" type="notjs">
-    precision mediump float;
-
-    varying vec2 v_texcoord;
-    uniform sampler2D u_texture;
-
-    void main() {
-      gl_FragColor = texture2D(u_texture, v_texcoord);
-    }
-  </script>
   <script id="vs" type="notjs">
 uniform mat4 u_worldViewProjection;
 uniform vec3 u_lightWorldPos;
@@ -157,11 +124,45 @@ void main() {
   <script type="module">
     /*eslint no-unused-vars:0*/
     import * as twgl from '../dist/4.x/twgl-full.module.js';
+ 
     twgl.setDefaults({attribPrefix: "a_"});
     const m4 = twgl.m4;
     const gl = document.querySelector("#c").getContext("webgl");
     const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-    const kaleidProgramInfo = twgl.createProgramInfo(gl, ["kaleid-vs", "kaleid-fs"]);
+    const kaleidVS = `
+      attribute vec4 a_position;
+      attribute vec2 a_id;
+      varying vec2 v_texcoord;
+      uniform mat4 u_matrix;
+      uniform mat4 u_projection;
+      uniform float u_angleTime;
+      uniform float u_angleScale;
+      void main() {
+        vec4 localPosition = u_matrix * a_position;
+        float angle = a_id.x * u_angleScale + u_angleTime;
+        float radius = localPosition.y;
+        float c = cos(angle);
+        float s = sin(angle);
+        mat4 m = mat4(
+            vec4(c, s, 0, 0),
+            vec4(-s, c, 0, 0),
+            vec4(0, 0, 1, 0),
+            vec4(0, 0, 0, 1));
+        gl_Position = u_projection * m * localPosition;
+        v_texcoord = a_position.xy * 0.5 + 0.5;
+      }
+    `;
+    const kaleidFS = `
+      precision mediump float;
+
+      varying vec2 v_texcoord;
+      uniform sampler2D u_texture;
+
+      void main() {
+        gl_FragColor = texture2D(u_texture, v_texcoord);
+      }
+     `;
+    const kaleidProgramInfo = twgl.createProgramInfo(gl, [kaleidVS, kaleidFS]);
 
     function createUnitQuadsBufferInfo(gl, across, down) {
       const numQuads    = across * down;

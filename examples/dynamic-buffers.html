@@ -102,32 +102,6 @@
       <div>loading...</div>
     </div>
   </body>
-  <script id="vs" type="notjs">
-attribute float a_spread;
-attribute float a_height;
-
-varying vec4 v_color;
-
-vec3 hsv2rgb(vec3 c) {
-  c = vec3(c.x, clamp(c.yz, 0.0, 1.0));
-  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
-void main() {
-  gl_Position = vec4(a_spread, a_height * 2.0 - 1.0, 0, 1);
-  v_color = vec4(hsv2rgb(vec3(a_spread * 0.5 + 0.5, a_height, 1)), 1);
-}
-  </script>
-  <script id="fs" type="notjs">
-precision mediump float;
-
-varying vec4 v_color;
-void main() {
-  gl_FragColor = v_color;
-}
-  </script>
   <script src="../3rdparty/audiostreamsource.min.js"></script>
   <script type="module">
     import * as twgl from '../dist/4.x/twgl-full.module.js';
@@ -144,15 +118,43 @@ void main() {
 
     twgl.setDefaults({attribPrefix: "a_"});
     const gl = document.querySelector("#c").getContext("webgl");
-    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+    const vs = `
+    attribute float a_spread;
+    attribute float a_height;
+
+    varying vec4 v_color;
+
+    vec3 hsv2rgb(vec3 c) {
+      c = vec3(c.x, clamp(c.yz, 0.0, 1.0));
+      vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+      vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+      return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+
+    void main() {
+      gl_Position = vec4(a_spread, a_height * 2.0 - 1.0, 0, 1);
+      v_color = vec4(hsv2rgb(vec3(a_spread * 0.5 + 0.5, a_height, 1)), 1);
+    }
+    `;
+    const fs = `
+    precision mediump float;
+
+    varying vec4 v_color;
+    void main() {
+      gl_FragColor = v_color;
+    }
+    `;
+
+    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
     // If it's a shitty browser (like Safari) then we can't stream so we load
-    // a very lo-fi version of the song that has no frequences above 11.5k
+    // a very lo-fi version of the song that has no frequencies above 11.5k
     const numPoints = analyser.frequencyBinCount * (shittyBrowser ? 0.25 : 1) | 0;
     const spreadArray = new Float32Array(numPoints);
     const heightArray = new Uint8Array(numPoints);
     for (let ii = 0; ii < numPoints; ++ii) {
-      spreadArray[ii] = ii / numPoints * 2 - 1;  // make clipspace positions
+      spreadArray[ii] = ii / numPoints * 2 - 1;  // make clip space positions
     }
     const arrays = {
       spread: { data: spreadArray, numComponents: 1 },
