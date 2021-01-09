@@ -1109,6 +1109,8 @@ function createUniformBlockSpecFromProgram(gl, program) {
 
 const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
 
+const pad = (v, padding) => ((v + (padding - 1)) / padding | 0) * padding;
+
 /**
  * Represents a UniformBlockObject including an ArrayBuffer with all the uniform values
  * and a corresponding WebGLBuffer to hold those values on the GPU
@@ -1171,7 +1173,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     const data = uniformData[uniformNdx];
     const typeInfo = typeMap[data.type];
     const Type = typeInfo.Type;
-    const length = data.size * typeInfo.size;
+    const length = typeInfo.size + (data.size - 1) * pad(typeInfo.size, 16);
     let name = data.name;
     if (name.substr(0, prefix.length) === prefix) {
       name = name.substr(prefix.length);
