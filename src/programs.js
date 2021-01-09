@@ -1175,7 +1175,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     const Type = typeInfo.Type;
     const length = typeInfo.size + (data.size - 1) * pad(typeInfo.size, 16);
     let name = data.name;
-    if (name.substr(0, prefix.length) === prefix) {
+    if (name.startsWith(prefix)) {
       name = name.substr(prefix.length);
     }
     uniforms[name] = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
