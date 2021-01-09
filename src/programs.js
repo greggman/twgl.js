@@ -1068,8 +1068,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
     if (isBuiltIn(uniformInfo)) {
       break;
     }
-    // REMOVE [0]
-    uniformData[ii].name = uniformInfo.name.replace(/\[0\]$/, '');
+    uniformData[ii].name = uniformInfo.name;
   }
 
   [
