@@ -131,6 +131,9 @@ export type UniformBlockInfo = {
     uniforms: {
         [key: string]: ArrayBufferView;
     };
+    setters: {
+        [key: string]: (...params: any[]) => any;
+    };
 };
 export type ProgramInfo = {
     program: WebGLProgram;

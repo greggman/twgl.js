@@ -1,4 +1,4 @@
-/* @license twgl.js 4.17.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.18.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7845,7 +7845,6 @@ function createUniformBlockSpecFromProgram(gl, program) {
     if (isBuiltIn(uniformInfo)) {
       break;
     }
-    // REMOVE [0]?
     uniformData[ii].name = uniformInfo.name;
   }
 
@@ -7886,6 +7885,32 @@ function createUniformBlockSpecFromProgram(gl, program) {
 
 const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
 
+const pad = (v, padding) => ((v + (padding - 1)) / padding | 0) * padding;
+
+function createUniformBlockUniformSetter(view, Type, typeSize, paddedSize, isArray) {
+  if (isArray) {
+    const numElements = typeSize / Type.BYTES_PER_ELEMENT;
+    const numPaddedElements = paddedSize / Type.BYTES_PER_ELEMENT;
+    return function(value) {
+      let dst = 0;
+      for (let src = 0; src < value.length; src += numElements) {
+        for (let i = 0; i < numElements; ++i) {
+          view[dst + i] = value[src + i];
+        }
+        dst += numPaddedElements;
+      }
+    };
+  } else {
+    return function(value) {
+      if (value.length) {
+        view.set(value);
+      } else {
+        view[0] = value;
+      }
+    };
+  }
+}
+
 /**
  * Represents a UniformBlockObject including an ArrayBuffer with all the uniform values
  * and a corresponding WebGLBuffer to hold those values on the GPU
@@ -7897,11 +7922,19 @@ const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
  *    inspecting the contents of the buffer in the debugger.
  * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
  * @property {number} [offset] offset into buffer
- * @property {Object.<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
+ * @property {Object<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
  *   each Uniform has a correctly typed `ArrayBufferView` into array at the correct offset
  *   and length of that uniform. So for example a float uniform would have a 1 float `Float32Array`
  *   view. A single mat4 would have a 16 element `Float32Array` view. An ivec2 would have an
  *   `Int32Array` view, etc.
+ * @property {Object<string, function>} setters A setter for this uniform.
+ *   The reason to use setters is elements of arrays are padded to vec4 sizes which
+ *   means if you want to set an array of 4 floats you'd need to set 16 values
+ *   (or set elements 0, 4, 8, 12). In other words
+ *   `someBlockInfo.uniforms.some4FloatArrayUniform.set([0, , , , 1, , , , 2, , , , 3])`
+ *   where as the setter handles just passing in [0, 1, 2, 3] either directly as in
+ *   `someBlockInfo.setter.some4FloatArrayUniform.set([0, 1, 2, 3])` (not recommended)
+ *   or via {@link module:twgl.setBlockUniforms}
  * @memberOf module:twgl
  */
 
@@ -7944,23 +7977,32 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     prefix = prefix.replace(arraySuffixRE, ".");
   }
   const uniforms = {};
+  const setters = {};
   blockSpec.uniformIndices.forEach(function(uniformNdx) {
     const data = uniformData[uniformNdx];
     const typeInfo = typeMap[data.type];
     const Type = typeInfo.Type;
-    const length = data.size * typeInfo.size;
+    const paddedSize = pad(typeInfo.size, 16);
+    const length = typeInfo.size + (data.size - 1) * paddedSize;
     let name = data.name;
-    if (name.substr(0, prefix.length) === prefix) {
+    if (name.startsWith(prefix)) {
       name = name.substr(prefix.length);
     }
-    uniforms[name] = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
+    const isArray = name.endsWith('[0]');
+    if (isArray) {
+      name = name.substr(0, name.length - 3);
+    }
+    const uniformView = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
+    uniforms[name] = uniformView;
+    setters[name] = createUniformBlockUniformSetter(uniformView, Type, typeInfo.size, paddedSize, isArray);
   });
   return {
     name: blockName,
-    array: array,
+    array,
     asFloat: new Float32Array(array),  // for debugging
-    buffer: buffer,
-    uniforms: uniforms,
+    buffer,
+    uniforms,
+    setters,
   };
 }
 
@@ -8063,16 +8105,12 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  * @memberOf module:twgl/programs
  */
 function setBlockUniforms(uniformBlockInfo, values) {
-  const uniforms = uniformBlockInfo.uniforms;
+  const setters = uniformBlockInfo.setters;
   for (const name in values) {
-    const array = uniforms[name];
-    if (array) {
+    const setter = setters[name];
+    if (setter) {
       const value = values[name];
-      if (value.length) {
-        array.set(value);
-      } else {
-        array[0] = value;
-      }
+      setter(value);
     }
   }
 }
