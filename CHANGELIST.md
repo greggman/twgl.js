@@ -1,5 +1,13 @@
 # Change List
 
+*   4.18.0
+
+    *   Fixed padding issue with arrays in uniform blocks
+
+*   4.17.0
+
+    *   better errors for shaders
+
 *   4.16.1
 
     *   fix how twgl figures out a uniform is an array
