@@ -46,6 +46,10 @@ const UNSIGNED_BYTE                  = 0x1401;
 /* PixelFormat */
 const DEPTH_COMPONENT                = 0x1902;
 const RGBA                           = 0x1908;
+const DEPTH_COMPONENT24              = 0x81a6;
+const DEPTH_COMPONENT32F             = 0x8cac;
+const DEPTH24_STENCIL8               = 0x88f0;
+const DEPTH32F_STENCIL8              = 0x8cad;
 
 /* Framebuffer Object. */
 const RGBA4                          = 0x8056;
@@ -61,19 +65,10 @@ const STENCIL_ATTACHMENT             = 0x8D20;
 const DEPTH_STENCIL_ATTACHMENT       = 0x821A;
 
 /* TextureWrapMode */
-const REPEAT                         = 0x2901;  // eslint-disable-line
 const CLAMP_TO_EDGE                  = 0x812F;
-const MIRRORED_REPEAT                = 0x8370;  // eslint-disable-line
 
 /* TextureMagFilter */
-const NEAREST                        = 0x2600;  // eslint-disable-line
 const LINEAR                         = 0x2601;
-
-/* TextureMinFilter */
-const NEAREST_MIPMAP_NEAREST         = 0x2700;  // eslint-disable-line
-const LINEAR_MIPMAP_NEAREST          = 0x2701;  // eslint-disable-line
-const NEAREST_MIPMAP_LINEAR          = 0x2702;  // eslint-disable-line
-const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
 
 /**
  * The options for a framebuffer attachment.
@@ -85,7 +80,7 @@ const LINEAR_MIPMAP_LINEAR           = 0x2703;  // eslint-disable-line
  * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
  *
  * @typedef {Object} AttachmentOptions
- * @property {number} [attach] The attachment point. Defaults
+ * @property {number} [attachmentPoint] The attachment point. Defaults
  *   to `gl.COLOR_ATTACHMENT0 + ndx` unless type is a depth or stencil type
  *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
  *   on the format or attachment type.
@@ -117,9 +112,13 @@ attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT] = DEPTH_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT16] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT24] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT32F] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH24_STENCIL8] = DEPTH_STENCIL_ATTACHMENT;
+attachmentsByFormat[DEPTH32F_STENCIL8] = DEPTH_STENCIL_ATTACHMENT;
 
-function getAttachmentPointForFormat(format) {
-  return attachmentsByFormat[format];
+function getAttachmentPointForFormat(format, internalFormat) {
+  return attachmentsByFormat[format] || attachmentsByFormat[internalFormat];
 }
 
 const renderbufferFormats = {};
@@ -197,7 +196,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
   attachments.forEach(function(attachmentOptions) {
     let attachment = attachmentOptions.attachment;
     const format = attachmentOptions.format;
-    let attachmentPoint = getAttachmentPointForFormat(format);
+    let attachmentPoint = attachmentOptions.attachmentPoint || getAttachmentPointForFormat(format, attachmentOptions.internalFormat);
     if (!attachmentPoint) {
       attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
     }
