@@ -35,7 +35,7 @@ import * as helper from './helper.js';
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
+const gl = undefined;  /* eslint-disable-line */
 
 const FRAMEBUFFER                    = 0x8d40;
 const RENDERBUFFER                   = 0x8d41;

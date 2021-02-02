@@ -52,7 +52,7 @@ const FLOAT                        = 0x1406;
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
+const gl = undefined;  /* eslint-disable-line */
 const defaults = {
   attribPrefix: "",
 };

@@ -492,7 +492,7 @@ attrTypeMap[FLOAT_MAT3]        = { size:  9, setter: matAttribSetter,   count: 3
 attrTypeMap[FLOAT_MAT4]        = { size: 16, setter: matAttribSetter,   count: 4, };
 
 // make sure we don't see a global gl
-const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
+const gl = undefined;  /* eslint-disable-line */
 
 const errorRE = /ERROR:\s*\d+:(\d+)/gi;
 function addLineNumbersWithError(src, log = '', lineOffset = 0) {

@@ -40,7 +40,7 @@ import * as helper from './helper.js';
  */
 
 // make sure we don't see a global gl
-const gl = undefined;  /* eslint-disable-line */ /* lgtm [js/unused-local-variable] */
+const gl = undefined;  /* eslint-disable-line */
 const defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
