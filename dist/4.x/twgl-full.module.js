@@ -1,4 +1,4 @@
-/* @license twgl.js 4.18.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.18.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -8724,6 +8724,10 @@ const UNSIGNED_BYTE$3                  = 0x1401;
 /* PixelFormat */
 const DEPTH_COMPONENT$1                = 0x1902;
 const RGBA$1                           = 0x1908;
+const DEPTH_COMPONENT24$1              = 0x81a6;
+const DEPTH_COMPONENT32F$1             = 0x8cac;
+const DEPTH24_STENCIL8$1               = 0x88f0;
+const DEPTH32F_STENCIL8$1              = 0x8cad;
 
 /* Framebuffer Object. */
 const RGBA4$1                          = 0x8056;
@@ -8737,7 +8741,11 @@ const COLOR_ATTACHMENT0              = 0x8CE0;
 const DEPTH_ATTACHMENT               = 0x8D00;
 const STENCIL_ATTACHMENT             = 0x8D20;
 const DEPTH_STENCIL_ATTACHMENT       = 0x821A;
+
+/* TextureWrapMode */
 const CLAMP_TO_EDGE$1                  = 0x812F;
+
+/* TextureMagFilter */
 const LINEAR$1                         = 0x2601;
 
 /**
@@ -8750,7 +8758,7 @@ const LINEAR$1                         = 0x2601;
  * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
  *
  * @typedef {Object} AttachmentOptions
- * @property {number} [attach] The attachment point. Defaults
+ * @property {number} [attachmentPoint] The attachment point. Defaults
  *   to `gl.COLOR_ATTACHMENT0 + ndx` unless type is a depth or stencil type
  *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
  *   on the format or attachment type.
@@ -8782,9 +8790,13 @@ attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT$1] = DEPTH_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT16$1] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT24$1] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT32F$1] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH24_STENCIL8$1] = DEPTH_STENCIL_ATTACHMENT;
+attachmentsByFormat[DEPTH32F_STENCIL8$1] = DEPTH_STENCIL_ATTACHMENT;
 
-function getAttachmentPointForFormat(format) {
-  return attachmentsByFormat[format];
+function getAttachmentPointForFormat(format, internalFormat) {
+  return attachmentsByFormat[format] || attachmentsByFormat[internalFormat];
 }
 
 const renderbufferFormats = {};
@@ -8862,7 +8874,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
   attachments.forEach(function(attachmentOptions) {
     let attachment = attachmentOptions.attachment;
     const format = attachmentOptions.format;
-    let attachmentPoint = getAttachmentPointForFormat(format);
+    let attachmentPoint = attachmentOptions.attachmentPoint || getAttachmentPointForFormat(format, attachmentOptions.internalFormat);
     if (!attachmentPoint) {
       attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
     }

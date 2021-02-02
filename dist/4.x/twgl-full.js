@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.18.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.18.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -183,8 +183,6 @@ var FLOAT = 0x1406;
 
 var gl = undefined;
 /* eslint-disable-line */
-
-/* lgtm [js/unused-local-variable] */
 
 var defaults = {
   attribPrefix: ""
@@ -1147,8 +1145,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var gl = undefined;
 /* eslint-disable-line */
 
-/* lgtm [js/unused-local-variable] */
-
 var FRAMEBUFFER = 0x8d40;
 var RENDERBUFFER = 0x8d41;
 var TEXTURE_2D = 0x0de1;
@@ -1157,6 +1153,10 @@ var UNSIGNED_BYTE = 0x1401;
 
 var DEPTH_COMPONENT = 0x1902;
 var RGBA = 0x1908;
+var DEPTH_COMPONENT24 = 0x81a6;
+var DEPTH_COMPONENT32F = 0x8cac;
+var DEPTH24_STENCIL8 = 0x88f0;
+var DEPTH32F_STENCIL8 = 0x8cad;
 /* Framebuffer Object. */
 
 var RGBA4 = 0x8056;
@@ -1172,26 +1172,10 @@ var STENCIL_ATTACHMENT = 0x8D20;
 var DEPTH_STENCIL_ATTACHMENT = 0x821A;
 /* TextureWrapMode */
 
-var REPEAT = 0x2901; // eslint-disable-line
-
 var CLAMP_TO_EDGE = 0x812F;
-var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
-
 /* TextureMagFilter */
 
-var NEAREST = 0x2600; // eslint-disable-line
-
 var LINEAR = 0x2601;
-/* TextureMinFilter */
-
-var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
-
-var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
-
-var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
-
-var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
-
 /**
  * The options for a framebuffer attachment.
  *
@@ -1202,7 +1186,7 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
  *
  * @typedef {Object} AttachmentOptions
- * @property {number} [attach] The attachment point. Defaults
+ * @property {number} [attachmentPoint] The attachment point. Defaults
  *   to `gl.COLOR_ATTACHMENT0 + ndx` unless type is a depth or stencil type
  *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
  *   on the format or attachment type.
@@ -1237,9 +1221,13 @@ attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT] = DEPTH_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT16] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT24] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT32F] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH24_STENCIL8] = DEPTH_STENCIL_ATTACHMENT;
+attachmentsByFormat[DEPTH32F_STENCIL8] = DEPTH_STENCIL_ATTACHMENT;
 
-function getAttachmentPointForFormat(format) {
-  return attachmentsByFormat[format];
+function getAttachmentPointForFormat(format, internalFormat) {
+  return attachmentsByFormat[format] || attachmentsByFormat[internalFormat];
 }
 
 var renderbufferFormats = {};
@@ -1318,7 +1306,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
   attachments.forEach(function (attachmentOptions) {
     var attachment = attachmentOptions.attachment;
     var format = attachmentOptions.format;
-    var attachmentPoint = getAttachmentPointForFormat(format);
+    var attachmentPoint = attachmentOptions.attachmentPoint || getAttachmentPointForFormat(format, attachmentOptions.internalFormat);
 
     if (!attachmentPoint) {
       attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
@@ -5433,8 +5421,6 @@ attrTypeMap[FLOAT_MAT4] = {
 var gl = undefined;
 /* eslint-disable-line */
 
-/* lgtm [js/unused-local-variable] */
-
 var errorRE = /ERROR:\s*\d+:(\d+)/gi;
 
 function addLineNumbersWithError(src) {
@@ -6835,8 +6821,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // make sure we don't see a global gl
 var gl = undefined;
 /* eslint-disable-line */
-
-/* lgtm [js/unused-local-variable] */
 
 var defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
@@ -9338,8 +9322,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var gl = undefined;
 /* eslint-disable-line */
 
-/* lgtm [js/unused-local-variable] */
-
 var defaults = {
   addExtensionsToContext: true
 };
@@ -9721,8 +9703,6 @@ exports.isArrayBuffer = void 0;
 // make sure we don't see a global gl
 var gl = undefined;
 /* eslint-disable-line */
-
-/* lgtm [js/unused-local-variable] */
 
 /* DataType */
 
