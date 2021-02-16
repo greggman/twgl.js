@@ -606,88 +606,39 @@ function setDefaults(newDefaults) {
  * @memberOf module:twgl
  */
 
-// NOTE: While querying GL is considered slow it's not remotely as slow
-// as uploading a texture. On top of that you're unlikely to call this in
-// a perf critical loop. Even if upload a texture every frame that's unlikely
-// to be more than 1 or 2 textures a frame. In other words, the benefits of
-// making the API easy to use outweigh any supposed perf benefits
-//
-// Also note I get that having one global of these is bad practice.
-// As long as it's used correctly it means no garbage which probably
-// doesn't matter when dealing with textures but old habits die hard.
-const lastPackState = {};
-
 /**
- * Saves any packing state that will be set based on the options.
+ * Sets any packing state that will be set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
-function savePackState(gl, options) {
+function setPackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
-    lastPackState.colorspaceConversion = gl.getParameter(UNPACK_COLORSPACE_CONVERSION_WEBGL);
     gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
   }
   if (options.premultiplyAlpha !== undefined) {
-    lastPackState.premultiplyAlpha = gl.getParameter(UNPACK_PREMULTIPLY_ALPHA_WEBGL);
     gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
   }
   if (options.flipY !== undefined) {
-    lastPackState.flipY = gl.getParameter(UNPACK_FLIP_Y_WEBGL);
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY);
   }
 }
 
 /**
- * Restores any packing state that was set based on the options.
- * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+ * Set skip state to defaults
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
-function restorePackState(gl, options) {
-  if (options.colorspaceConversion !== undefined) {
-    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
-  }
-  if (options.premultiplyAlpha !== undefined) {
-    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
-  }
-  if (options.flipY !== undefined) {
-    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
-  }
-}
-
-/**
- * Saves state related to data size
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @private
- */
-function saveSkipState(gl) {
-  lastPackState.unpackAlignment   = gl.getParameter(UNPACK_ALIGNMENT);
+function setSkipStateToDefault(gl) {
+  gl.pixelStorei(UNPACK_ALIGNMENT, 4);
   if (utils.isWebGL2(gl)) {
-    lastPackState.unpackRowLength   = gl.getParameter(UNPACK_ROW_LENGTH);
-    lastPackState.unpackImageHeight = gl.getParameter(UNPACK_IMAGE_HEIGHT);
-    lastPackState.unpackSkipPixels  = gl.getParameter(UNPACK_SKIP_PIXELS);
-    lastPackState.unpackSkipRows    = gl.getParameter(UNPACK_SKIP_ROWS);
-    lastPackState.unpackSkipImages  = gl.getParameter(UNPACK_SKIP_IMAGES);
+    gl.pixelStorei(UNPACK_ROW_LENGTH, 0);
+    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
+    gl.pixelStorei(UNPACK_SKIP_PIXELS, 0);
+    gl.pixelStorei(UNPACK_SKIP_ROWS, 0);
+    gl.pixelStorei(UNPACK_SKIP_IMAGES, 0);
   }
 }
-
-/**
- * Restores state related to data size
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @private
- */
-function restoreSkipState(gl) {
-  gl.pixelStorei(UNPACK_ALIGNMENT,    lastPackState.unpackAlignment);
-  if (utils.isWebGL2(gl)) {
-    gl.pixelStorei(UNPACK_ROW_LENGTH,   lastPackState.unpackRowLength);
-    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, lastPackState.unpackImageHeight);
-    gl.pixelStorei(UNPACK_SKIP_PIXELS,  lastPackState.unpackSkipPixels);
-    gl.pixelStorei(UNPACK_SKIP_ROWS,    lastPackState.unpackSkipRows);
-    gl.pixelStorei(UNPACK_SKIP_IMAGES,  lastPackState.unpackSkipImages);
-  }
-}
-
 
 /**
  * Sets the parameters of a texture or sampler
@@ -953,7 +904,7 @@ function setTextureFromElement(gl, tex, element, options) {
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || formatType.type;
-  savePackState(gl, options);
+  setPackState(gl, options);
   gl.bindTexture(target, tex);
   if (target === TEXTURE_CUBE_MAP) {
     // guess the parts
@@ -1014,10 +965,9 @@ function setTextureFromElement(gl, tex, element, options) {
           colorSpaceConversion: 'none',
         })
         .then(function(imageBitmap) {
-          savePackState(gl, options);
+          setPackState(gl, options);
           gl.bindTexture(target, tex);
           gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
-          restorePackState(gl, options);
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
           }
@@ -1033,7 +983,6 @@ function setTextureFromElement(gl, tex, element, options) {
     }
     const xMult = element.width  === largest ? 1 : 0;
     const yMult = element.height === largest ? 1 : 0;
-    saveSkipState(gl);
     gl.pixelStorei(UNPACK_ALIGNMENT, 1);
     gl.pixelStorei(UNPACK_ROW_LENGTH, element.width);
     gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
@@ -1046,11 +995,10 @@ function setTextureFromElement(gl, tex, element, options) {
       gl.pixelStorei(UNPACK_SKIP_ROWS, srcY);
       gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
     }
-    restoreSkipState(gl);
+    setSkipStateToDefault(gl);
   } else {
     gl.texImage2D(target, level, internalFormat, format, type, element);
   }
-  restorePackState(gl, options);
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
   }
@@ -1351,7 +1299,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
         if (img.width !== img.height) {
           errors.push("cubemap face img is not a square: " + img.src);
         } else {
-          savePackState(gl, options);
+          setPackState(gl, options);
           gl.bindTexture(target, tex);
 
           // So assuming this is the first image we now have one face that's img sized
@@ -1366,7 +1314,6 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
             gl.texImage2D(faceTarget, level, internalFormat, format, type, img);
           }
 
-          restorePackState(gl, options);
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             gl.generateMipmap(target);
           }
@@ -1432,7 +1379,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
       if (err) {
         errors.push(err);
       } else {
-        savePackState(gl, options);
+        setPackState(gl, options);
         gl.bindTexture(target, tex);
 
         if (firstImage) {
@@ -1466,7 +1413,6 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
           }
         }
 
-        restorePackState(gl, options);
         if (shouldAutomaticallySetTextureFilteringForSize(options)) {
           gl.generateMipmap(target);
         }
@@ -1545,9 +1491,9 @@ function setTextureFromArray(gl, tex, src, options) {
     width = dimensions.width;
     height = dimensions.height;
   }
-  saveSkipState(gl);
+  setSkipStateToDefault(gl);
   gl.pixelStorei(UNPACK_ALIGNMENT, options.unpackAlignment || 1);
-  savePackState(gl, options);
+  setPackState(gl, options);
   if (target === TEXTURE_CUBE_MAP) {
     const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
     const faceSize = numElements / 6 * elementsPerElement;
@@ -1562,8 +1508,6 @@ function setTextureFromArray(gl, tex, src, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
   }
-  restorePackState(gl, options);
-  restoreSkipState(gl);
   return {
     width: width,
     height: height,
@@ -1588,7 +1532,7 @@ function setEmptyTexture(gl, tex, options) {
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || formatType.type;
-  savePackState(gl, options);
+  setPackState(gl, options);
   if (target === TEXTURE_CUBE_MAP) {
     for (let ii = 0; ii < 6; ++ii) {
       gl.texImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
@@ -1598,11 +1542,14 @@ function setEmptyTexture(gl, tex, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
   }
-  restorePackState(gl, options);
 }
 
 /**
  * Creates a texture based on the options passed in.
+ *
+ * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
+ * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
+ *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
