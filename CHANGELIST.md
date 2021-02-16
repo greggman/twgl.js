@@ -1,5 +1,9 @@
 # Change List
 
+*   4.19.0
+
+    *   Reset UNPACK_SKIP_etc... state to defaults
+
 *   4.18.0
 
     *   Fixed padding issue with arrays in uniform blocks
