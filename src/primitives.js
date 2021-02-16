@@ -590,7 +590,7 @@ function createSphereVertices(
   const numVertices = (subdivisionsAxis + 1) * (subdivisionsHeight + 1);
   const positions = createAugmentedTypedArray(3, numVertices);
   const normals   = createAugmentedTypedArray(3, numVertices);
-  const texcoords = createAugmentedTypedArray(2 , numVertices);
+  const texcoords = createAugmentedTypedArray(2, numVertices);
 
   // Generate the individual vertices in our vertex buffer.
   for (let y = 0; y <= subdivisionsHeight; y++) {
