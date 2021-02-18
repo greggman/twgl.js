@@ -1,4 +1,4 @@
-/* @license twgl.js 4.19.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.19.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -4930,7 +4930,7 @@ const glEnumToString = (function() {
 
   return function glEnumToString(gl, value) {
     addEnums(gl);
-    return enums[value] || ("0x" + value.toString(16));
+    return enums[value] || (typeof value === 'number' ? `0x${value.toString(16)}` : value);
   };
 }());
 
