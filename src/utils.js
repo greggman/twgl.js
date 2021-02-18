@@ -126,7 +126,7 @@ const glEnumToString = (function() {
 
   return function glEnumToString(gl, value) {
     addEnums(gl);
-    return enums[value] || ("0x" + value.toString(16));
+    return enums[value] || (typeof value === 'number' ? `0x${value.toString(16)}` : value);
   };
 }());
 
