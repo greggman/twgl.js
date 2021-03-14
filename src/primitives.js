@@ -507,9 +507,9 @@ function createPlaneVertices(
  * The created sphere has position, normal, and texcoord data
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} radius radius of the sphere.
- * @param {number} subdivisionsAxis number of steps around the sphere.
- * @param {number} subdivisionsHeight number of vertically on the sphere.
+ * @param {number} [radius] radius of the sphere. (Default = 1)
+ * @param {number} [subdivisionsAxis] number of steps around the sphere. (Default = 24)
+ * @param {number} [subdivisionsHeight] number of vertically on the sphere. (Default = 12)
  * @param {number} [opt_startLatitudeInRadians] where to start the
  *     top of the sphere. Default = 0.
  * @param {number} [opt_endLatitudeInRadians] Where to end the
@@ -518,6 +518,7 @@ function createPlaneVertices(
  *     wrapping the sphere. Default = 0.
  * @param {number} [opt_endLongitudeInRadians] where to end
  *     wrapping the sphere. Default = 2 * Math.PI.
+ * @param {boolean} [capEnds] cap the ends (Default = false)
  * @return {module:twgl.BufferInfo} The created sphere BufferInfo.
  * @memberOf module:twgl/primitives
  * @function createSphereBufferInfo
@@ -529,9 +530,9 @@ function createPlaneVertices(
  * The created sphere has position, normal, and texcoord data
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} radius radius of the sphere.
- * @param {number} subdivisionsAxis number of steps around the sphere.
- * @param {number} subdivisionsHeight number of vertically on the sphere.
+ * @param {number} [radius] radius of the sphere. (Default 1)
+ * @param {number} [subdivisionsAxis] number of steps around the sphere. (Default = 24)
+ * @param {number} [subdivisionsHeight] number of vertically on the sphere. (Default = 12)
  * @param {number} [opt_startLatitudeInRadians] where to start the
  *     top of the sphere. Default = 0.
  * @param {number} [opt_endLatitudeInRadians] Where to end the
@@ -540,6 +541,7 @@ function createPlaneVertices(
  *     wrapping the sphere. Default = 0.
  * @param {number} [opt_endLongitudeInRadians] where to end
  *     wrapping the sphere. Default = 2 * Math.PI.
+ * @param {boolean} [capEnds] cap the ends (Default = false)
  * @return {Object.<string, WebGLBuffer>} The created sphere buffers.
  * @memberOf module:twgl/primitives
  * @function createSphereBuffers
@@ -550,9 +552,9 @@ function createPlaneVertices(
  *
  * The created sphere has position, normal, and texcoord data
  *
- * @param {number} radius radius of the sphere.
- * @param {number} subdivisionsAxis number of steps around the sphere.
- * @param {number} subdivisionsHeight number of vertically on the sphere.
+ * @param {number} [radius] radius of the sphere (Default = 1).
+ * @param {number} [subdivisionsAxis] number of steps around the sphere. (Default = 24)
+ * @param {number} [subdivisionsHeight] number of vertically on the sphere. (Default = 12)
  * @param {number} [opt_startLatitudeInRadians] where to start the
  *     top of the sphere. Default = 0.
  * @param {number} [opt_endLatitudeInRadians] Where to end the
@@ -561,25 +563,22 @@ function createPlaneVertices(
  *     wrapping the sphere. Default = 0.
  * @param {number} [opt_endLongitudeInRadians] where to end
  *     wrapping the sphere. Default = 2 * Math.PI.
+ * @param {boolean} [capEnds] cap the ends (Default = false)
  * @return {Object.<string, TypedArray>} The created sphere vertices.
  * @memberOf module:twgl/primitives
  */
 function createSphereVertices(
-    radius,
-    subdivisionsAxis,
-    subdivisionsHeight,
-    opt_startLatitudeInRadians,
-    opt_endLatitudeInRadians,
-    opt_startLongitudeInRadians,
-    opt_endLongitudeInRadians) {
+    radius = 1,
+    subdivisionsAxis = 24,
+    subdivisionsHeight = 12,
+    opt_startLatitudeInRadians = 0,
+    opt_endLatitudeInRadians = Math.PI,
+    opt_startLongitudeInRadians = 0,
+    opt_endLongitudeInRadians = Math.PI * 2,
+    capEnds = false) {
   if (subdivisionsAxis <= 0 || subdivisionsHeight <= 0) {
     throw new Error('subdivisionAxis and subdivisionHeight must be > 0');
   }
-
-  opt_startLatitudeInRadians = opt_startLatitudeInRadians || 0;
-  opt_endLatitudeInRadians = opt_endLatitudeInRadians || Math.PI;
-  opt_startLongitudeInRadians = opt_startLongitudeInRadians || 0;
-  opt_endLongitudeInRadians = opt_endLongitudeInRadians || (Math.PI * 2);
 
   const latRange = opt_endLatitudeInRadians - opt_startLatitudeInRadians;
   const longRange = opt_endLongitudeInRadians - opt_startLongitudeInRadians;
@@ -631,12 +630,112 @@ function createSphereVertices(
     }
   }
 
-  return {
+  function createDiscVertices2(side) {
+    const arrays = createDiscVertices(radius, subdivisionsHeight, 1, 0, 1, opt_startLatitudeInRadians * side, opt_endLatitudeInRadians * side);
+    const position = [];
+    const normal = [];
+    const texcoord = [];
+    const indices = [];
+    const pointsPerStack = subdivisionsHeight + 1;
+    let ndx = 0;
+
+    function addVert(i) {
+      const p = arrays.position.subarray(i * 3, i * 3 + 3);
+      const n = arrays.normal.subarray(i * 3, i * 3 + 3);
+      const t = arrays.texcoord.subarray(i * 2, i * 2 + 2);
+      position.push(...p, p[0], 0, 0, 0, 0, 0);
+      normal.push(...n, ...n, ...n);
+      texcoord.push(...t, t[0], 0, 0, 0);
+      indices.push(ndx, ndx + 1, ndx + 2);
+      ndx += 3;
+    }
+
+    if (opt_startLatitudeInRadians > 0 && opt_startLatitudeInRadians < Math.PI * 0.5) {
+      addVert(pointsPerStack);
+    }
+    if (opt_endLatitudeInRadians > Math.PI * 0.5 && opt_endLatitudeInRadians < Math.PI) {
+      addVert(pointsPerStack * 2 - 1);
+    }
+    return position.length
+        ? concatVertices([
+            arrays, 
+            {
+              position, 
+              normal, 
+              texcoord, 
+              indices,
+            },
+          ])
+        : arrays;
+  }
+
+  const arrays = {
     position: positions,
     normal: normals,
     texcoord: texcoords,
     indices: indices,
   };
+  const parts = [arrays];
+
+  const capSlices = capEnds && Math.abs(longRange - Math.PI * 2) > Number.EPSILON;
+  const capTop = capEnds && Math.abs(opt_startLatitudeInRadians - 0) > Number.EPSILON;
+  const capBottom = capEnds && Math.abs(opt_endLatitudeInRadians - Math.PI) > Number.EPSILON;
+
+  if (capSlices) {
+    let m1 = m4.identity();
+    m1 = m4.rotateY(m1, opt_startLongitudeInRadians);
+    m1 = m4.rotateX(m1, Math.PI * 0.5);
+    m1 = m4.rotateY(m1, Math.PI * 0.5);
+
+    let m2 = m4.identity();
+    m2 = m4.rotateY(m2, -opt_endLongitudeInRadians);
+    m2 = m4.rotateX(m2, Math.PI * 0.5);
+    m2 = m4.rotateY(m2, Math.PI * 0.5);
+
+    parts.push(
+      reorientVertices(createDiscVertices2( 1), m1),
+      reorientVertices(createDiscVertices2(-1), m2),
+    );
+  }
+
+  if (capTop) {
+    let m1 = m4.identity();
+    const phi = opt_startLatitudeInRadians;
+    const cosPhi = Math.cos(phi);
+    const sinPhi = Math.sin(phi);
+    const uy = cosPhi;
+    const ux = sinPhi;
+
+    m1 = m4.translate(m1, [0, uy * radius, 0]);
+    m1 = m4.scale(m1, [ux * radius, 1, ux * radius]);
+    parts.push(
+      reorientVertices(
+        createDiscVertices(radius, subdivisionsAxis, 1, 0, 1, opt_startLongitudeInRadians, opt_endLongitudeInRadians),
+        m1),
+    );
+  }
+
+
+  if (capBottom) {
+    let m1 = m4.identity();
+    const phi = opt_endLatitudeInRadians;
+    const cosPhi = Math.cos(phi);
+    const sinPhi = Math.sin(phi);
+    const uy = cosPhi;
+    const ux = sinPhi;
+
+    m1 = m4.translate(m1, [0, uy * radius, 0]);
+    m1 = m4.scale(m1, [ux * radius, 1, ux * radius]);
+    m1 = m4.rotateX(m1, Math.PI);
+    m1 = m4.rotateY(m1, Math.PI * -0.5);
+    parts.push(
+      reorientVertices(
+        createDiscVertices(radius, subdivisionsAxis, 1, 0, 1, opt_startLongitudeInRadians, opt_endLongitudeInRadians),
+        m1),
+    );
+  }
+
+  return parts.length > 1 ? concatVertices(parts) : arrays;
 }
 
 /**
@@ -659,7 +758,7 @@ const CUBE_FACE_INDICES = [
  * The cube is created around the origin. (-size / 2, size / 2).
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} [size] width, height and depth of the cube.
+ * @param {number} [size] width, height and depth of the cube (Default = 1).
  * @return {module:twgl.BufferInfo} The created BufferInfo.
  * @memberOf module:twgl/primitives
  * @function createCubeBufferInfo
@@ -671,7 +770,7 @@ const CUBE_FACE_INDICES = [
  * The cube is created around the origin. (-size / 2, size / 2).
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} [size] width, height and depth of the cube.
+ * @param {number} [size] width, height and depth of the cube (Default = 1).
  * @return {Object.<string, WebGLBuffer>} The created buffers.
  * @memberOf module:twgl/primitives
  * @function createCubeBuffers
@@ -682,12 +781,11 @@ const CUBE_FACE_INDICES = [
  *
  * The cube is created around the origin. (-size / 2, size / 2).
  *
- * @param {number} [size] width, height and depth of the cube.
+ * @param {number} [size] width, height and depth of the cube (Default = 1).
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
-function createCubeVertices(size) {
-  size = size || 1;
+function createCubeVertices(size = 1) {
   const k = size / 2;
 
   const cornerVertices = [
@@ -1707,11 +1805,13 @@ function createTorusVertices(
  * stacks.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} radius Radius of the ground plane.
- * @param {number} divisions Number of triangles in the ground plane (at least 3).
+ * @param {number} [radius] Radius of the disc (Default = 1)
+ * @param {number} [divisions] Number of triangles in the ground plane (at least 3, Default = 24).
  * @param {number} [stacks] Number of radial divisions (default=1).
  * @param {number} [innerRadius] Default 0.
  * @param {number} [stackPower] Power to raise stack size to for decreasing width.
+ * @param {number} [startAngleRadians] default 0
+ * @param {number} [endAngleRadians] default Math.PI * 2
  * @return {module:twgl.BufferInfo} The created BufferInfo.
  * @memberOf module:twgl/primitives
  * @function createDiscBufferInfo
@@ -1735,11 +1835,13 @@ function createTorusVertices(
  * stacks.
  *
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext.
- * @param {number} radius Radius of the ground plane.
- * @param {number} divisions Number of triangles in the ground plane (at least 3).
+ * @param {number} [radius] Radius of the disc (Default = 1)
+ * @param {number} [divisions] Number of triangles in the ground plane (at least 3, Default = 24).
  * @param {number} [stacks] Number of radial divisions (default=1).
  * @param {number} [innerRadius] Default 0.
  * @param {number} [stackPower] Power to raise stack size to for decreasing width.
+ * @param {number} [startAngleRadians] default 0
+ * @param {number} [endAngleRadians] default Math.PI * 2
  * @return {Object.<string, WebGLBuffer>} The created buffers.
  * @memberOf module:twgl/primitives
  * @function createDiscBuffers
@@ -1762,20 +1864,24 @@ function createTorusVertices(
  * the square of the stack index. A value of 1 will give uniform
  * stacks.
  *
- * @param {number} radius Radius of the ground plane.
- * @param {number} divisions Number of triangles in the ground plane (at least 3).
- * @param {number} [stacks] Number of radial divisions (default=1).
+ * @param {number} [radius] Radius of the disc (Default = 1)
+ * @param {number} [divisions] Number of triangles in the ground plane (at least 3, Default = 24).
+ * @param {number} [stacks] Number of radial divisions (default = 1).
  * @param {number} [innerRadius] Default 0.
  * @param {number} [stackPower] Power to raise stack size to for decreasing width.
+ * @param {number} [startAngleRadians] default 0
+ * @param {number} [endAngleRadians] default Math.PI * 2
  * @return {Object.<string, TypedArray>} The created vertices.
  * @memberOf module:twgl/primitives
  */
 function createDiscVertices(
-    radius,
-    divisions,
-    stacks,
-    innerRadius,
-    stackPower) {
+    radius = 1,
+    divisions = 24,
+    stacks = 1,
+    innerRadius = 0,
+    stackPower = 1,
+    startAngleRadians = 0,
+    endAngleRadians = Math.PI * 2) {
   if (divisions < 3) {
     throw new Error('divisions must be at least 3');
   }
@@ -1796,13 +1902,14 @@ function createDiscVertices(
   let firstIndex = 0;
   const radiusSpan = radius - innerRadius;
   const pointsPerStack = divisions + 1;
+  const angleRange = endAngleRadians - startAngleRadians;
 
   // Build the disk one stack at a time.
   for (let stack = 0; stack <= stacks; ++stack) {
     const stackRadius = innerRadius + radiusSpan * Math.pow(stack / stacks, stackPower);
 
     for (let i = 0; i <= divisions; ++i) {
-      const theta = 2.0 * Math.PI * i / divisions;
+      const theta = angleRange * i / divisions + startAngleRadians;
       const x = stackRadius * Math.cos(theta);
       const z = stackRadius * Math.sin(theta);
 
