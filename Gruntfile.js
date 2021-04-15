@@ -461,6 +461,7 @@ module.exports = function(grunt) {
       'buildts',
       'ts',
       'copy',
+      'docs',
       'npmpackage',
   ]);
   grunt.registerTask('bumppatch', [
