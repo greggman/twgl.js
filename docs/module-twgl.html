@@ -1916,6 +1916,8 @@ on error. If you want something else pass an callback. It's passed an error mess
 
 <div class="description">
     <p>Creates a texture based on the options passed in.</p>
+<p>Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES<br>
+UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS</p>
 </div>
 
 
@@ -7198,7 +7200,7 @@ to <code>gl.LINEAR</code> and <code>wrap</code> defaults to <code>CLAMP_TO_EDGE<
 
         <tr>
             
-                <td class="name"><code>attach</code></td>
+                <td class="name"><code>attachmentPoint</code></td>
             
 
             <td class="type">
@@ -12976,6 +12978,44 @@ each Uniform has a correctly typed <code>ArrayBufferView</code> into array at th
 and length of that uniform. So for example a float uniform would have a 1 float <code>Float32Array</code><br>
 view. A single mat4 would have a 16 element <code>Float32Array</code> view. An ivec2 would have an<br>
 <code>Int32Array</code> view, etc.</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object.&lt;string, function()></code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A setter for this uniform.<br>
+The reason to use setters is elements of arrays are padded to vec4 sizes which<br>
+means if you want to set an array of 4 floats you'd need to set 16 values<br>
+(or set elements 0, 4, 8, 12). In other words<br>
+<code>someBlockInfo.uniforms.some4FloatArrayUniform.set([0, , , , 1, , , , 2, , , , 3])</code><br>
+where as the setter handles just passing in [0, 1, 2, 3] either directly as in<br>
+<code>someBlockInfo.setter.some4FloatArrayUniform.set([0, 1, 2, 3])</code> (not recommended)<br>
+or via <a href="module-twgl.html#.setBlockUniforms"><code>module:twgl.setBlockUniforms</code></a></p></td>
         </tr>
 
         

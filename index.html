@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-@license twgl.js 4.15.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+@license twgl.js 4.19.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details
 -->
@@ -43,7 +43,7 @@ see: http://github.com/greggman/twgl.js for details
     </ul>
   </div>
   <div id="content">
-    <h1 id="twgl-a-tiny-webgl-helper-librarydiv-idpronounce-stylefont-size-xx-smallrhymes-with-wigglediv">TWGL: A Tiny WebGL helper Library<div id="pronounce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1>
+    <h1 id="twgl-a-tiny-webgl-helper-libraryrhymes-with-wiggle">TWGL: A Tiny WebGL helper Library<div id="pronounce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1>
 <p><a href="https://travis-ci.org/greggman/twgl.js"><img src="https://travis-ci.org/greggman/twgl.js.svg?branch=master" alt="Build Status"></a></p>
 <p>This library&#39;s sole purpose is to make using the WebGL API less verbose.</p>
 <h2 id="tldr">TL;DR</h2>
@@ -305,7 +305,7 @@ gl.generateMipmaps(gl.TEXTURE_CUBE_MAP);
 // A 2x2 pixel texture from a JavaScript array
 const checkerTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
-gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([
     255,255,255,255,
     192,192,192,255,
     192,192,192,255,
@@ -318,7 +318,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 const stripeTex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, gl.LUMINANCE, gl.UNSIGNED_BYTE, new Uint8Array([
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, 1, 8, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, new Uint8Array([
     255,
     128,
     255,
