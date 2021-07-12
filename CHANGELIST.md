@@ -1,5 +1,10 @@
 # Change List
 
+*   4.19.2
+
+    *   WebGLObject -> WebGLTexture|WebGLRenderbuffer for typescript
+    *   Fix glEnumToString for non-number
+
 *   4.19.0
 
     *   Reset UNPACK_SKIP_etc... state to defaults
