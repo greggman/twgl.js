@@ -70,11 +70,11 @@ export type AttachmentOptions = TextureOptions & {
     target?: number;
     level?: number;
     layer?: number;
-    attachment?: WebGLObject;
+    attachment?: WebGLRenderbuffer | WebGLTexture;
 };
 export type FramebufferInfo = {
     framebuffer: WebGLFramebuffer;
-    attachments: WebGLObject[];
+    attachments: (WebGLRenderbuffer | WebGLTexture)[];
     width: number;
     height: number;
 };

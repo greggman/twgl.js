@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.19.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.19.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1200,7 +1200,7 @@ var LINEAR = 0x2601;
  * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
  * @property {number} [layer] layer for `gl.framebufferTextureLayer`. Defaults to undefined.
  *   If set then `gl.framebufferTextureLayer` is called, if not then `gl.framebufferTexture2D`
- * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
+ * @property {(WebGLRenderbuffer | WebGLTexture)} [attachment] An existing renderbuffer or texture.
  *    If provided will attach this Object. This allows you to share
  *    attachments across framebuffers.
  * @memberOf module:twgl
@@ -1245,7 +1245,7 @@ function isRenderbufferFormat(format) {
 /**
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
- * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @property {Array.<(WebGLRenderbuffer | WebGLTexture)>} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
  * @property {number} width The width of the framebuffer and its attachments
  * @property {number} height The width of the framebuffer and its attachments
  * @memberOf module:twgl

@@ -1,6 +1,6 @@
 {
   "name": "twgl-base.js",
-  "version": "4.19.1",
+  "version": "4.19.2",
   "description": "A Tiny WebGL helper library",
   "main": "dist/4.x/twgl.js",
   "types": "dist/4.x/twgl-full.d.ts",
@@ -12,7 +12,9 @@
   },
   "keywords": [
     "WebGL",
-    "twgl"
+    "twgl",
+    "util",
+    "helper"
   ],
   "author": "Greggman",
   "license": "MIT",
