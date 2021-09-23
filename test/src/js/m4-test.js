@@ -1,8 +1,12 @@
+/* global before */
+/* global describe */
+/* global it */
+/* global should */
 import * as m4 from '../../../src/m4.js';
 
 function check(Type) {
   describe('using ' + Type, function() {
-    var m = [
+    const m = [
        0,  1,  2,  3,
        4,  5,  6,  7,
        8,  9, 10, 11,
@@ -14,14 +18,14 @@ function check(Type) {
     });
 
     function testM4WithoutDest(func, expected) {
-      var d = func();
+      const d = func();
       d.should.eql(expected);
     }
 
     function testM4WithDest(func, expected) {
       expected = new Float32Array(expected);
-      var d = new Float32Array(16);
-      var c = func(d);
+      const d = new Float32Array(16);
+      const c = func(d);
       c.should.be.equal(d);
       c.should.be.eql(expected);
     }
@@ -35,13 +39,13 @@ function check(Type) {
     }
 
     function testV3WithoutDest(func, expected) {
-      var d = func();
+      const d = func();
       d.should.eql(expected);
     }
 
     function testV3WithDest(func, expected) {
-      var d = new Float32Array(3);
-      var c = func(d);
+      const d = new Float32Array(3);
+      const c = func(d);
       c.should.be.equal(d);
       c.should.be.eql(expected);
     }
@@ -55,14 +59,14 @@ function check(Type) {
     function shouldBeCloseArray(a, b) {
       const l = a.length;
       l.should.be.equal(b.length);
-      for (var i = 0; i < l; ++i) {
+      for (let i = 0; i < l; ++i) {
         const v = a[i];
         v.should.be.approximately(b[i], 0.000001);
       }
     }
 
     it('should negate', function() {
-      var expected = [
+      const expected = [
         -0,  -1,  -2,  -3,
         -4,  -5,  -6,  -7,
         -8,  -9, -10, -11,
@@ -74,16 +78,16 @@ function check(Type) {
     });
 
     it('should copy', function() {
-      var expected = m;
+      const expected = m;
       testM4WithAndWithoutDest(function(dst) {
-        var result = m4.copy(m, dst);
+        const result = m4.copy(m, dst);
         should.notStrictEqual(result, m);
         return result;
       }, expected);
     });
 
     it('should make identity', function() {
-      var expected = [
+      const expected = [
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
@@ -95,7 +99,7 @@ function check(Type) {
     });
 
     it('should transpose', function() {
-      var expected = [
+      const expected = [
         0, 4, 8, 12,
         1, 5, 9, 13,
         2, 6, 10, 14,
@@ -107,13 +111,13 @@ function check(Type) {
     });
 
     it('should multiply', function() {
-      var m2 = [
+      const m2 = [
         4, 5, 6, 7,
         1, 2, 3, 4,
         9, 10, 11, 12,
         -1, -2, -3, -4,
       ];
-      var expected = [
+      const expected = [
         m2[0 * 4 + 0] * m[0 * 4 + 0] + m2[0 * 4 + 1] * m[1 * 4 + 0] + m2[0 * 4 + 2] * m[2 * 4 + 0] + m2[0 * 4 + 3] * m[3 * 4 + 0],
         m2[0 * 4 + 0] * m[0 * 4 + 1] + m2[0 * 4 + 1] * m[1 * 4 + 1] + m2[0 * 4 + 2] * m[2 * 4 + 1] + m2[0 * 4 + 3] * m[3 * 4 + 1],
         m2[0 * 4 + 0] * m[0 * 4 + 2] + m2[0 * 4 + 1] * m[1 * 4 + 2] + m2[0 * 4 + 2] * m[2 * 4 + 2] + m2[0 * 4 + 3] * m[3 * 4 + 2],
@@ -137,13 +141,13 @@ function check(Type) {
     });
 
     it('should inverse', function() {
-      var m = [
+      const m = [
         2, 1, 3, 0,
         1, 2, 1, 0,
         3, 1, 2, 0,
         4, 5, 6, 1,
       ];
-      var expected = [
+      const expected = [
         -0.375,
         -0.125,
         0.625,
@@ -167,7 +171,7 @@ function check(Type) {
     });
 
     it('should set translation', function() {
-      var expected = [
+      const expected = [
         0,  1,  2,  3,
         4,  5,  6,  7,
         8,  9, 10, 11,
@@ -179,14 +183,14 @@ function check(Type) {
     });
 
     it('should get translation', function() {
-      var expected = [12, 13, 14];
+      const expected = [12, 13, 14];
       testV3WithAndWithoutDest(function(dst) {
         return m4.getTranslation(m, dst);
       }, expected);
     });
 
     it('should get axis', function() {
-      var expected = [
+      [
         [0, 1, 2],
         [4, 5, 6],
         [8, 9, 10],
@@ -198,7 +202,7 @@ function check(Type) {
     });
 
     it('should set axis', function() {
-      var expected = [
+      [
         [
           11, 22, 33,  3,
            4,  5,  6,  7,
@@ -225,13 +229,13 @@ function check(Type) {
     });
 
     it('should compute perspective', function() {
-      var fov = 2;
-      var aspect = 4;
-      var zNear = 10;
-      var zFar = 30;
-      var f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
-      var rangeInv = 1.0 / (zNear - zFar);
-      var expected = [
+      const fov = 2;
+      const aspect = 4;
+      const zNear = 10;
+      const zFar = 30;
+      const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
+      const rangeInv = 1.0 / (zNear - zFar);
+      const expected = [
         f / aspect,
         0,
         0,
@@ -258,13 +262,13 @@ function check(Type) {
     });
 
     it('should compute ortho', function() {
-      var left = 2;
-      var right = 4;
-      var top = 10;
-      var bottom = 30;
-      var near = 15;
-      var far = 25;
-      var expected = [
+      const left = 2;
+      const right = 4;
+      const top = 10;
+      const bottom = 30;
+      const near = 15;
+      const far = 25;
+      const expected = [
         2 / (right - left),
         0,
         0,
@@ -291,30 +295,30 @@ function check(Type) {
     });
 
     it('should compute correct ortho', function() {
-      var left = -2;
-      var right = 4;
-      var top = 10;
-      var bottom = 30;
-      var near = 15;
-      var far = 25;
+      const left = -2;
+      const right = 4;
+      const top = 10;
+      const bottom = 30;
+      const near = 15;
+      const far = 25;
       const m = m4.ortho(left, right, bottom, top, near, far);
       shouldBeCloseArray(m4.transformPoint(m, [left, bottom, -near]), [-1, -1, -1]);
       shouldBeCloseArray(m4.transformPoint(m, [right, top, -far]), [1, 1, 1]);
     });
 
     it('should compute frustum', function() {
-      var left = 2;
-      var right = 4;
-      var top = 10;
-      var bottom = 30;
-      var near = 15;
-      var far = 25;
+      const left = 2;
+      const right = 4;
+      const top = 10;
+      const bottom = 30;
+      const near = 15;
+      const far = 25;
 
-      var dx = (right - left);
-      var dy = (top - bottom);
-      var dz = (near - far);
+      const dx = (right - left);
+      const dy = (top - bottom);
+      const dz = (near - far);
 
-      var expected = [
+      const expected = [
         2 * near / dx,
         0,
         0,
@@ -338,10 +342,10 @@ function check(Type) {
     });
 
     it('should make lookAt matrix', function() {
-      var eye = [1, 2, 3];
-      var target = [11, 22, 33];
-      var up = [-4, -5, -6];
-      var expected = [
+      const eye = [1, 2, 3];
+      const target = [11, 22, 33];
+      const up = [-4, -5, -6];
+      const expected = [
         0.40824833512306213,
         -0.8164966106414795,
         0.40824824571609497,
@@ -365,7 +369,7 @@ function check(Type) {
     });
 
     it('should make translation matrix', function() {
-      var expected = [
+      const expected = [
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
@@ -377,7 +381,7 @@ function check(Type) {
     });
 
     it('should translate', function() {
-      var expected = [
+      const expected = [
         0,  1,  2,  3,
         4,  5,  6,  7,
         8,  9, 10, 11,
@@ -392,14 +396,14 @@ function check(Type) {
     });
 
     it('should make x rotation matrix', function() {
-      var angle = 1.23;
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      var expected = [
-        1, 0, 0, 0,
-        0, c, s, 0,
-        0,-s, c, 0,
-        0, 0, 0, 1,
+      const angle = 1.23;
+      const c = Math.cos(angle);
+      const s = Math.sin(angle);
+      const expected = [
+        1,  0, 0, 0,
+        0,  c, s, 0,
+        0, -s, c, 0,
+        0,  0, 0, 1,
       ];
       testM4WithAndWithoutDest(function(dst) {
         return m4.rotationX(angle, dst);
@@ -407,10 +411,10 @@ function check(Type) {
     });
 
     it('should rotate x', function() {
-      var angle = 1.23;
+      const angle = 1.23;
       // switch to Array type to keep precision high for expected
-      var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m, m4.rotationX(angle));
+      const oldType = m4.setDefaultType(Array);
+      const expected = m4.multiply(m, m4.rotationX(angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -419,14 +423,14 @@ function check(Type) {
     });
 
     it('should make y rotation matrix', function() {
-      var angle = 1.23;
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      var expected = [
-        c, 0,-s, 0,
-        0, 1, 0, 0,
-        s, 0, c, 0,
-        0, 0, 0, 1,
+      const angle = 1.23;
+      const c = Math.cos(angle);
+      const s = Math.sin(angle);
+      const expected = [
+        c, 0, -s, 0,
+        0, 1,  0, 0,
+        s, 0,  c, 0,
+        0, 0,  0, 1,
       ];
       testM4WithAndWithoutDest(function(dst) {
         return m4.rotationY(angle, dst);
@@ -434,10 +438,10 @@ function check(Type) {
     });
 
     it('should rotate y', function() {
-      var angle = 1.23;
+      const angle = 1.23;
       // switch to Array type to keep precision high for expected
-      var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m, m4.rotationY(angle));
+      const oldType = m4.setDefaultType(Array);
+      const expected = m4.multiply(m, m4.rotationY(angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -446,10 +450,10 @@ function check(Type) {
     });
 
     it('should make z rotation matrix', function() {
-      var angle = 1.23;
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      var expected = [
+      const angle = 1.23;
+      const c = Math.cos(angle);
+      const s = Math.sin(angle);
+      const expected = [
         c, s, 0, 0,
        -s, c, 0, 0,
         0, 0, 1, 0,
@@ -461,10 +465,10 @@ function check(Type) {
     });
 
     it('should rotate z', function() {
-      var angle = 1.23;
+      const angle = 1.23;
       // switch to Array type to keep precision high for expected
-      var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m, m4.rotationZ(angle));
+      const oldType = m4.setDefaultType(Array);
+      const expected = m4.multiply(m, m4.rotationZ(angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -473,22 +477,22 @@ function check(Type) {
     });
 
     it('should make axis rotation matrix', function() {
-      var axis = [0.5, 0.6, -0.7];
-      var angle = 1.23;
-      var x = axis[0];
-      var y = axis[1];
-      var z = axis[2];
-      var n = Math.sqrt(x * x + y * y + z * z);
+      const axis = [0.5, 0.6, -0.7];
+      const angle = 1.23;
+      let x = axis[0];
+      let y = axis[1];
+      let z = axis[2];
+      const n = Math.sqrt(x * x + y * y + z * z);
       x /= n;
       y /= n;
       z /= n;
-      var xx = x * x;
-      var yy = y * y;
-      var zz = z * z;
-      var c = Math.cos(angle);
-      var s = Math.sin(angle);
-      var oneMinusCosine = 1 - c;
-      var expected = [
+      const xx = x * x;
+      const yy = y * y;
+      const zz = z * z;
+      const c = Math.cos(angle);
+      const s = Math.sin(angle);
+      const oneMinusCosine = 1 - c;
+      const expected = [
         xx + (1 - xx) * c,
         x * y * oneMinusCosine + z * s,
         x * z * oneMinusCosine - y * s,
@@ -512,11 +516,11 @@ function check(Type) {
     });
 
     it('should axis rotate', function() {
-      var axis = [0.5, 0.6, -0.7];
-      var angle = 1.23;
+      const axis = [0.5, 0.6, -0.7];
+      const angle = 1.23;
       // switch to Array type to keep precision high for expected
-      var oldType = m4.setDefaultType(Array);
-      var expected = m4.multiply(m, m4.axisRotation(axis, angle));
+      const oldType = m4.setDefaultType(Array);
+      const expected = m4.multiply(m, m4.axisRotation(axis, angle));
       m4.setDefaultType(oldType);
 
       testM4WithAndWithoutDest(function(dst) {
@@ -525,7 +529,7 @@ function check(Type) {
     });
 
     it('should make scaling matrix', function() {
-      var expected = [
+      const expected = [
         2, 0, 0, 0,
         0, 3, 0, 0,
         0, 0, 4, 0,
@@ -537,7 +541,7 @@ function check(Type) {
     });
 
     it('should scale', function() {
-      var expected = [
+      const expected = [
          0,  2,  4,  6,
         12, 15, 18, 21,
         32, 36, 40, 44,
@@ -549,11 +553,11 @@ function check(Type) {
     });
 
     it('should transform point', function() {
-      var v0 = 2;
-      var v1 = 3;
-      var v2 = 4;
-      var d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
-      var expected = [
+      const v0 = 2;
+      const v1 = 3;
+      const v2 = 4;
+      const d = v0 * m[0 * 4 + 3] + v1 * m[1 * 4 + 3] + v2 * m[2 * 4 + 3] + m[3 * 4 + 3];
+      const expected = [
         (v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0] + m[3 * 4 + 0]) / d,
         (v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1] + m[3 * 4 + 1]) / d,
         (v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2] + m[3 * 4 + 2]) / d,
@@ -564,10 +568,10 @@ function check(Type) {
     });
 
     it('should transform direction', function() {
-      var v0 = 2;
-      var v1 = 3;
-      var v2 = 4;
-      var expected = [
+      const v0 = 2;
+      const v1 = 3;
+      const v2 = 4;
+      const expected = [
         v0 * m[0 * 4 + 0] + v1 * m[1 * 4 + 0] + v2 * m[2 * 4 + 0],
         v0 * m[0 * 4 + 1] + v1 * m[1 * 4 + 1] + v2 * m[2 * 4 + 1],
         v0 * m[0 * 4 + 2] + v1 * m[1 * 4 + 2] + v2 * m[2 * 4 + 2],
@@ -578,12 +582,12 @@ function check(Type) {
     });
 
     it('should transform normal', function() {
-      var m  = m4.translate(m4.scaling([0.1, 0.2, 0.3]), [1, 2, 3]);
-      var mi = m4.inverse(m);
-      var v0 = 2;
-      var v1 = 3;
-      var v2 = 4;
-      var expected = [
+      const m  = m4.translate(m4.scaling([0.1, 0.2, 0.3]), [1, 2, 3]);
+      const mi = m4.inverse(m);
+      const v0 = 2;
+      const v1 = 3;
+      const v2 = 4;
+      const expected = [
         v0 * mi[0 * 4 + 0] + v1 * mi[0 * 4 + 1] + v2 * mi[0 * 4 + 2],
         v0 * mi[1 * 4 + 0] + v1 * mi[1 * 4 + 1] + v2 * mi[1 * 4 + 2],
         v0 * mi[2 * 4 + 0] + v1 * mi[2 * 4 + 1] + v2 * mi[2 * 4 + 2],
@@ -600,7 +604,7 @@ describe('m4', function() {
 
   it('should set default type', function() {
     m4.setDefaultType(Array);
-    var d = m4.identity();
+    let d = m4.identity();
     d.should.be.Array();
     m4.setDefaultType(Float32Array);
     d = m4.identity();

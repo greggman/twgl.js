@@ -1,8 +1,12 @@
+/* global before */
+/* global describe */
+/* global it */
+/* global should */
 import * as v3 from '../../../src/v3.js';
 
 function check(Type) {
   describe('using ' + Type, function() {
-    var v = [1, 2, 3];
+    const v = [1, 2, 3];
 
     before(function() {
       v3.setDefaultType(Type);
@@ -10,28 +14,28 @@ function check(Type) {
 
     function elementsEqual(a, b) {
       should(a.length).equal(b.length);
-      for (var i = 0; i < a.length; ++i) {
-        var diff = Math.abs(a[i] - b[i]);
+      for (let i = 0; i < a.length; ++i) {
+        const diff = Math.abs(a[i] - b[i]);
         diff.should.be.lessThan(0.0000001);
       }
     }
 
     function testV3WithoutDest(func, expected, b) {
-      var d = func(v.slice(), b);
+      const d = func(v.slice(), b);
       d.should.eql(expected);
       d.should.be.instanceOf(Type);
     }
 
     function testV3WithoutDest1(func, expected) {
-      var d = func(v.slice());
+      const d = func(v.slice());
       d.should.eql(expected);
       d.should.be.instanceOf(Type);
     }
 
     function testV3WithDest(func, expected, b) {
       expected = new Float32Array(expected);
-      var d = new Float32Array(3);
-      var c = func(v.slice(), b, d);
+      let d = new Float32Array(3);
+      let c = func(v.slice(), b, d);
       c.should.be.equal(d);
       c.should.be.eql(expected);
 
@@ -50,8 +54,8 @@ function check(Type) {
 
     function testV3WithDest1(func, expected) {
       expected = new Float32Array(expected);
-      var d = new Float32Array(3);
-      var c = func(v.slice(), d);
+      let d = new Float32Array(3);
+      let c = func(v.slice(), d);
       c.should.be.equal(d);
       c.should.be.eql(expected);
 
@@ -77,7 +81,7 @@ function check(Type) {
     }
 
     it('should add', function() {
-      var expected = [
+      const expected = [
         3, 5, 7,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -86,7 +90,7 @@ function check(Type) {
     });
 
     it('should subtract', function() {
-      var expected = [
+      const expected = [
         -1, -2, -3,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -95,7 +99,7 @@ function check(Type) {
     });
 
     it('should lerp', function() {
-      var expected = [
+      const expected = [
         1.5, 3, 4.5,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -104,7 +108,7 @@ function check(Type) {
     });
 
     it('should lerp under 0', function() {
-      var expected = [
+      const expected = [
         0.5, 1, 1.5,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -113,7 +117,7 @@ function check(Type) {
     });
 
     it('should lerp over 0', function() {
-      var expected = [
+      const expected = [
         2.5, 5, 7.5,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -122,7 +126,7 @@ function check(Type) {
     });
 
     it('should multiply by scalar', function() {
-      var expected = [
+      const expected = [
         2, 4, 6,
       ];
       testV3WithAndWithoutDest1(function(a, dst) {
@@ -131,7 +135,7 @@ function check(Type) {
     });
 
     it('should divide by scalar', function() {
-      var expected = [
+      const expected = [
         0.5, 1, 1.5,
       ];
       testV3WithAndWithoutDest1(function(a, dst) {
@@ -140,7 +144,7 @@ function check(Type) {
     });
 
     it('should cross', function() {
-      var expected = [
+      const expected = [
         2 * 6 - 3 * 4,
         3 * 2 - 1 * 6,
         1 * 4 - 2 * 2,
@@ -151,38 +155,38 @@ function check(Type) {
     });
 
     it('should compute dot product', function() {
-      var expected = 1 * 2 + 2 * 4 + 3 * 6;
-      var value = v3.dot(v, [2, 4, 6]);
+      const expected = 1 * 2 + 2 * 4 + 3 * 6;
+      const value = v3.dot(v, [2, 4, 6]);
       value.should.be.equal(expected);
     });
 
     it('should compute length', function() {
-      var expected = Math.sqrt(1 * 1 + 2 * 2 + 3 * 3);
-      var value = v3.length(v);
+      const expected = Math.sqrt(1 * 1 + 2 * 2 + 3 * 3);
+      const value = v3.length(v);
       value.should.be.equal(expected);
     });
 
     it('should compute length squared', function() {
-      var expected = 1 * 1 + 2 * 2 + 3 * 3;
-      var value = v3.lengthSq(v);
+      const expected = 1 * 1 + 2 * 2 + 3 * 3;
+      const value = v3.lengthSq(v);
       value.should.be.equal(expected);
     });
 
     it('should compute distance', function() {
-      var expected = Math.sqrt(2 * 2 + 3 * 3 + 4 * 4);
-      var value = v3.distance(v, [3, 5, 7]);
+      const expected = Math.sqrt(2 * 2 + 3 * 3 + 4 * 4);
+      const value = v3.distance(v, [3, 5, 7]);
       value.should.be.equal(expected);
     });
 
     it('should compute distance squared', function() {
-      var expected = 2 * 2 + 3 * 3 + 4 * 4;
-      var value = v3.distanceSq(v, [3, 5, 7]);
+      const expected = 2 * 2 + 3 * 3 + 4 * 4;
+      const value = v3.distanceSq(v, [3, 5, 7]);
       value.should.be.equal(expected);
     });
 
     it('should normalize', function() {
-      var length = Math.sqrt(1 * 1 + 2 * 2 + 3 * 3);
-      var expected = [
+      const length = Math.sqrt(1 * 1 + 2 * 2 + 3 * 3);
+      const expected = [
         1 / length,
         2 / length,
         3 / length,
@@ -193,7 +197,7 @@ function check(Type) {
     });
 
     it('should negate', function() {
-      var expected = [
+      const expected = [
         -1, -2, -3,
       ];
       testV3WithAndWithoutDest1(function(a, dst) {
@@ -202,18 +206,18 @@ function check(Type) {
     });
 
     it('should copy', function() {
-      var expected = [
+      const expected = [
         1, 2, 3,
       ];
       testV3WithAndWithoutDest1(function(a, dst) {
-        var result = v3.copy(a, dst);
+        const result = v3.copy(a, dst);
         should.notStrictEqual(result, v);
         return result;
       }, expected);
     });
 
     it('should multiply', function() {
-      var expected = [
+      const expected = [
         2, 8, 18,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -222,7 +226,7 @@ function check(Type) {
     });
 
     it('should divide', function() {
-      var expected = [
+      const expected = [
         1 / 2, 2 / 3, 3 / 4,
       ];
       testV3WithAndWithoutDest(function(a, b, dst) {
@@ -236,7 +240,7 @@ describe('v3', function() {
 
   it('should set default type', function() {
     v3.setDefaultType(Array);
-    var d = v3.create(1, 2, 3);
+    let d = v3.create(1, 2, 3);
     d.should.be.Array();
     v3.setDefaultType(Float32Array);
     d = v3.create(1, 2, 3);

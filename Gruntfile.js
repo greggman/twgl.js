@@ -252,6 +252,9 @@ module.exports = function(grunt) {
       lib: {
         src: [
           'src/*',
+          'test/**/*.js',
+          '!test/mocha.js',
+          '!test/src/ts/**',
         ],
         options: {
           //configFile: 'build/conf/eslint.json',
