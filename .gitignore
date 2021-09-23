@@ -5,4 +5,7 @@
 node_modules
 package-lock.json
 test/src/ts/dist/*
+examples/textures-typescript.js
+examples/textures-typescript.js.map
 dist/**/*.LICENSE
+dist/**/*.LICENSE.txt
