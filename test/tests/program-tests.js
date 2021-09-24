@@ -1,15 +1,11 @@
 import {assertArrayEqual, assertTruthy, assertFalsy, assertEqual} from '../assert.js';
-import {describe, it} from '../mocha-support.js';
-import {createContext2} from '../webgl.js';
+import {describe} from '../mocha-support.js';
+import {itWebGL2, createContext2} from '../webgl.js';
 
 describe('program tests', () => {
 
-  it('test uniform block', async() => {
+  itWebGL2('test uniform block', async() => {
     const {gl} = createContext2();
-    if (!gl) {
-      return;
-    }
-
     const vs = `#version 300 es
     void main() {
       gl_Position = vec4(0, 0, 0, 1);
@@ -196,15 +192,10 @@ describe('program tests', () => {
     assertArrayEqual(data, expected);
   });
 
-  it('test built in uniform', () => {
+  itWebGL2('test built in uniform', ['WEBGL_multi_draw'], () => {
     const {gl} = createContext2();
-    if (!gl) {
-      return;
-    }
     const ext = gl.getExtension('WEBGL_multi_draw');
-    if (!ext) {
-      return;
-    }
+    assertTruthy(ext);
 
     const vs = `#version 300 es
     #extension GL_ANGLE_multi_draw : require
