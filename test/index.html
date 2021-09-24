@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TWGL Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mocha.css">
+    <style>
+      #mocha #other {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mocha">
+    </div>
+    <script>
+      // this is here for puppeteer. It's resolved in index.js
+      // so we can await on window.testPromiseInfo
+      function makePromise() {
+        const info = {};
+        const promise = new Promise((resolve, reject) => {
+          Object.assign(info, {resolve, reject});
+        });
+        info.promise = promise;
+        return info;
+      }
+
+      window.testsPromiseInfo = makePromise();
+    </script>
+    <script src="mocha.js"></script>
+    <script type="module">
+    /* global document */
+    /* global mocha */
+    /* global URLSearchParams */
+    /* global window */
+    import {setConfig} from './assert.js';
+
+    async function main() {
+      mocha.setup('bdd');
+      mocha.fullTrace();
+      mocha.timeout(0);
+      const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+      if (query.timeout !== undefined) {
+        mocha.timeout(query.timeout);
+      }
+      const lint = query.lint !== 'false';
+      const throwOnError = !query.warn;
+
+      const src = query.src ? '../src/twgl-full.js' : '../dist/4.x/twgl-full.module.js';
+
+      try {
+        window.twgl = await import(src);
+        loadScript('index.js', 'module');
+      } catch (e) {
+        console.err(e);
+      }
+    }
+
+    function loadScript(url, type = 'text/javascript') {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.onload = resolve;
+        script.onerror = reject;
+        script.type = type;
+        script.src = url;
+        document.head.appendChild(script);
+      });
+    }
+
+    main();
+    </script>
+  </body>
+</html>
