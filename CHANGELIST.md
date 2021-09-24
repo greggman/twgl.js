@@ -1,5 +1,11 @@
 # Change List
 
+*   4.19.4
+
+    *   Fix JSDocs for blockspec and related stuff
+    *   Fix more Uniform Block padding issues.
+    *   Add browser testing infrastructure.
+
 *   4.19.2
 
     *   WebGLObject -> WebGLTexture|WebGLRenderbuffer for typescript
