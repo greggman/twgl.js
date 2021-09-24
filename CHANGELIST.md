@@ -1,5 +1,9 @@
 # Change List
 
+*   4.19.5
+
+    *   Fix issue with uniform blocks and built-in uniforms
+
 *   4.19.4
 
     *   Fix JSDocs for blockspec and related stuff
