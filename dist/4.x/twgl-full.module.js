@@ -1,4 +1,4 @@
-/* @license twgl.js 4.19.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.19.5 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7646,7 +7646,7 @@ function createUniformSetters(gl, program) {
   for (let ii = 0; ii < numUniforms; ++ii) {
     const uniformInfo = gl.getActiveUniform(program, ii);
     if (isBuiltIn(uniformInfo)) {
-        continue;
+      continue;
     }
     let name = uniformInfo.name;
     // remove the array suffix.
@@ -7790,9 +7790,6 @@ function createUniformBlockSpecFromProgram(gl, program) {
     uniformIndices.push(ii);
     uniformData.push({});
     const uniformInfo = gl.getActiveUniform(program, ii);
-    if (isBuiltIn(uniformInfo)) {
-      break;
-    }
     uniformData[ii].name = uniformInfo.name;
   }
 
@@ -8240,7 +8237,7 @@ function createAttributeSetters(gl, program) {
   for (let ii = 0; ii < numAttribs; ++ii) {
     const attribInfo = gl.getActiveAttrib(program, ii);
     if (isBuiltIn(attribInfo)) {
-        continue;
+      continue;
     }
     const index = gl.getAttribLocation(program, attribInfo.name);
     const typeInfo = attrTypeMap[attribInfo.type];
