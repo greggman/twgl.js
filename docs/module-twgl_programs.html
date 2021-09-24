@@ -3207,6 +3207,15 @@ type of uniform. So for example given a block like</p>
   }
 </code></pre>
 <p>Arrays can be JavaScript arrays or typed arrays</p>
+<p><strong>IMPORTANT!</strong>, packing in a UniformBlock is unintuitive.<br>
+For example the actual layout of <code>someVec3Array</code> above in memory<br>
+is <code>1, 2, 3, unused, 4, 5, 6, unused</code>. twgl takes in 6 values<br>
+as shown about and copies them, skipping the padding. This might<br>
+be confusing if you're already familiar with Uniform blocks.</p>
+<p>If you want to deal with the padding yourself you can access the array<br>
+buffer views directly. eg:</p>
+<pre><code> someBlockInfo.someVec3Array.set([1, 2, 3, 0, 4, 5, 6, 0]);
+</code></pre>
 <p>Any name that doesn't match will be ignored</p>
                 
             </td>

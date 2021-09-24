@@ -5735,6 +5735,15 @@ type of uniform. So for example given a block like</p>
   }
 </code></pre>
 <p>Arrays can be JavaScript arrays or typed arrays</p>
+<p><strong>IMPORTANT!</strong>, packing in a UniformBlock is unintuitive.<br>
+For example the actual layout of <code>someVec3Array</code> above in memory<br>
+is <code>1, 2, 3, unused, 4, 5, 6, unused</code>. twgl takes in 6 values<br>
+as shown about and copies them, skipping the padding. This might<br>
+be confusing if you're already familiar with Uniform blocks.</p>
+<p>If you want to deal with the padding yourself you can access the array<br>
+buffer views directly. eg:</p>
+<pre><code> someBlockInfo.someVec3Array.set([1, 2, 3, 0, 4, 5, 6, 0]);
+</code></pre>
 <p>Any name that doesn't match will be ignored</p>
                 
             </td>
@@ -10327,7 +10336,7 @@ to provide this. Example:</p>
 
         <tr>
             
-                <td class="name"><code>uniformBlockSpace</code></td>
+                <td class="name"><code>uniformBlockSpec</code></td>
             
 
             <td class="type">
@@ -13126,10 +13135,15 @@ UniformBlockObjects for a given program</p>
 
         <tr>
             
-                <td class="name"><code>{Object.<string,</code></td>
+                <td class="name"><code>blockSpecs</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type"><code>Object.&lt;string, <a href="module-twgl.html#.BlockSpec">module:twgl.BlockSpec</a>></code></span>
+
+
             
             </td>
 
@@ -13137,7 +13151,7 @@ UniformBlockObjects for a given program</p>
 
             
 
-            <td class="description last"><p>module:twgl.BlockSpec&gt; blockSpecs The BlockSpec for each block by block name</p></td>
+            <td class="description last"><p>The BlockSpec for each block by block name</p></td>
         </tr>
 
         
@@ -13261,6 +13275,31 @@ UniformBlockObjects for a given program</p>
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>string</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the uniform</p></td>
+        </tr>
+
+        
+
     
 
         <tr>

@@ -1,4 +1,4 @@
-/* @license twgl.js 4.19.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.19.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7056,30 +7056,30 @@ function samplerArraySetter(gl, type, unit, location, size) {
 }
 
 typeMap[FLOAT$3]                         = { Type: Float32Array, size:  4, setter: floatSetter,      arraySetter: floatArraySetter, };
-typeMap[FLOAT_VEC2]                    = { Type: Float32Array, size:  8, setter: floatVec2Setter,  };
-typeMap[FLOAT_VEC3]                    = { Type: Float32Array, size: 12, setter: floatVec3Setter,  };
-typeMap[FLOAT_VEC4]                    = { Type: Float32Array, size: 16, setter: floatVec4Setter,  };
+typeMap[FLOAT_VEC2]                    = { Type: Float32Array, size:  8, setter: floatVec2Setter,  cols: 2, };
+typeMap[FLOAT_VEC3]                    = { Type: Float32Array, size: 12, setter: floatVec3Setter,  cols: 3, };
+typeMap[FLOAT_VEC4]                    = { Type: Float32Array, size: 16, setter: floatVec4Setter,  cols: 4, };
 typeMap[INT$3]                           = { Type: Int32Array,   size:  4, setter: intSetter,        arraySetter: intArraySetter, };
-typeMap[INT_VEC2]                      = { Type: Int32Array,   size:  8, setter: intVec2Setter,    };
-typeMap[INT_VEC3]                      = { Type: Int32Array,   size: 12, setter: intVec3Setter,    };
-typeMap[INT_VEC4]                      = { Type: Int32Array,   size: 16, setter: intVec4Setter,    };
+typeMap[INT_VEC2]                      = { Type: Int32Array,   size:  8, setter: intVec2Setter,    cols: 2, };
+typeMap[INT_VEC3]                      = { Type: Int32Array,   size: 12, setter: intVec3Setter,    cols: 3, };
+typeMap[INT_VEC4]                      = { Type: Int32Array,   size: 16, setter: intVec4Setter,    cols: 4, };
 typeMap[UNSIGNED_INT$3]                  = { Type: Uint32Array,  size:  4, setter: uintSetter,       arraySetter: uintArraySetter, };
-typeMap[UNSIGNED_INT_VEC2]             = { Type: Uint32Array,  size:  8, setter: uintVec2Setter,   };
-typeMap[UNSIGNED_INT_VEC3]             = { Type: Uint32Array,  size: 12, setter: uintVec3Setter,   };
-typeMap[UNSIGNED_INT_VEC4]             = { Type: Uint32Array,  size: 16, setter: uintVec4Setter,   };
+typeMap[UNSIGNED_INT_VEC2]             = { Type: Uint32Array,  size:  8, setter: uintVec2Setter,   cols: 2, };
+typeMap[UNSIGNED_INT_VEC3]             = { Type: Uint32Array,  size: 12, setter: uintVec3Setter,   cols: 3, };
+typeMap[UNSIGNED_INT_VEC4]             = { Type: Uint32Array,  size: 16, setter: uintVec4Setter,   cols: 4, };
 typeMap[BOOL]                          = { Type: Uint32Array,  size:  4, setter: intSetter,        arraySetter: intArraySetter, };
-typeMap[BOOL_VEC2]                     = { Type: Uint32Array,  size:  8, setter: intVec2Setter,    };
-typeMap[BOOL_VEC3]                     = { Type: Uint32Array,  size: 12, setter: intVec3Setter,    };
-typeMap[BOOL_VEC4]                     = { Type: Uint32Array,  size: 16, setter: intVec4Setter,    };
-typeMap[FLOAT_MAT2]                    = { Type: Float32Array, size: 16, setter: floatMat2Setter,  };
-typeMap[FLOAT_MAT3]                    = { Type: Float32Array, size: 36, setter: floatMat3Setter,  };
-typeMap[FLOAT_MAT4]                    = { Type: Float32Array, size: 64, setter: floatMat4Setter,  };
-typeMap[FLOAT_MAT2x3]                  = { Type: Float32Array, size: 24, setter: floatMat23Setter, };
-typeMap[FLOAT_MAT2x4]                  = { Type: Float32Array, size: 32, setter: floatMat24Setter, };
-typeMap[FLOAT_MAT3x2]                  = { Type: Float32Array, size: 24, setter: floatMat32Setter, };
-typeMap[FLOAT_MAT3x4]                  = { Type: Float32Array, size: 48, setter: floatMat34Setter, };
-typeMap[FLOAT_MAT4x2]                  = { Type: Float32Array, size: 32, setter: floatMat42Setter, };
-typeMap[FLOAT_MAT4x3]                  = { Type: Float32Array, size: 48, setter: floatMat43Setter, };
+typeMap[BOOL_VEC2]                     = { Type: Uint32Array,  size:  8, setter: intVec2Setter,    cols: 2, };
+typeMap[BOOL_VEC3]                     = { Type: Uint32Array,  size: 12, setter: intVec3Setter,    cols: 3, };
+typeMap[BOOL_VEC4]                     = { Type: Uint32Array,  size: 16, setter: intVec4Setter,    cols: 4, };
+typeMap[FLOAT_MAT2]                    = { Type: Float32Array, size: 32, setter: floatMat2Setter,  rows: 2, cols: 2, };
+typeMap[FLOAT_MAT3]                    = { Type: Float32Array, size: 48, setter: floatMat3Setter,  rows: 3, cols: 3, };
+typeMap[FLOAT_MAT4]                    = { Type: Float32Array, size: 64, setter: floatMat4Setter,  rows: 4, cols: 4, };
+typeMap[FLOAT_MAT2x3]                  = { Type: Float32Array, size: 32, setter: floatMat23Setter, rows: 2, cols: 3, };
+typeMap[FLOAT_MAT2x4]                  = { Type: Float32Array, size: 32, setter: floatMat24Setter, rows: 2, cols: 4, };
+typeMap[FLOAT_MAT3x2]                  = { Type: Float32Array, size: 48, setter: floatMat32Setter, rows: 3, cols: 2, };
+typeMap[FLOAT_MAT3x4]                  = { Type: Float32Array, size: 48, setter: floatMat34Setter, rows: 3, cols: 4, };
+typeMap[FLOAT_MAT4x2]                  = { Type: Float32Array, size: 64, setter: floatMat42Setter, rows: 4, cols: 2, };
+typeMap[FLOAT_MAT4x3]                  = { Type: Float32Array, size: 64, setter: floatMat43Setter, rows: 4, cols: 3, };
 typeMap[SAMPLER_2D]                    = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_2D$1,       };
 typeMap[SAMPLER_CUBE]                  = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_CUBE_MAP$1, };
 typeMap[SAMPLER_3D]                    = { Type: null,         size:  0, setter: samplerSetter,    arraySetter: samplerArraySetter, bindPoint: TEXTURE_3D$1,       };
@@ -7738,6 +7738,7 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
 
 /**
  * @typedef {Object} UniformData
+ * @property {string} name The name of the uniform
  * @property {number} type The WebGL type enum for this uniform
  * @property {number} size The number of elements for this uniform
  * @property {number} blockNdx The block index this uniform appears in
@@ -7764,7 +7765,7 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * UniformBlockObjects for a given program
  *
  * @typedef {Object} UniformBlockSpec
- * @property {Object.<string, module:twgl.BlockSpec> blockSpecs The BlockSpec for each block by block name
+ * @property {Object.<string, module:twgl.BlockSpec>} blockSpecs The BlockSpec for each block by block name
  * @property {UniformData[]} uniformData An array of data for each uniform by uniform index.
  * @memberOf module:twgl
  */
@@ -7834,17 +7835,19 @@ const arraySuffixRE = /\[\d+\]\.$/;  // better way to check?
 
 const pad = (v, padding) => ((v + (padding - 1)) / padding | 0) * padding;
 
-function createUniformBlockUniformSetter(view, Type, typeSize, paddedSize, isArray) {
-  if (isArray) {
-    const numElements = typeSize / Type.BYTES_PER_ELEMENT;
-    const numPaddedElements = paddedSize / Type.BYTES_PER_ELEMENT;
+function createUniformBlockUniformSetter(view, isArray, rows, cols) {
+  if (isArray || rows) {
+    cols = cols || 1;
+    const numElements = view.length;
+    const totalRows = numElements / 4;
     return function(value) {
       let dst = 0;
-      for (let src = 0; src < value.length; src += numElements) {
-        for (let i = 0; i < numElements; ++i) {
-          view[dst + i] = value[src + i];
+      let src = 0;
+      for (let row = 0; row < totalRows; ++row) {
+        for (let col = 0; col < cols; ++col) {
+          view[dst++] = value[src++];
         }
-        dst += numPaddedElements;
+        dst += 4 - cols;
       }
     };
   } else {
@@ -7927,10 +7930,6 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
   const setters = {};
   blockSpec.uniformIndices.forEach(function(uniformNdx) {
     const data = uniformData[uniformNdx];
-    const typeInfo = typeMap[data.type];
-    const Type = typeInfo.Type;
-    const paddedSize = pad(typeInfo.size, 16);
-    const length = typeInfo.size + (data.size - 1) * paddedSize;
     let name = data.name;
     if (name.startsWith(prefix)) {
       name = name.substr(prefix.length);
@@ -7939,9 +7938,14 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     if (isArray) {
       name = name.substr(0, name.length - 3);
     }
-    const uniformView = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
+    const typeInfo = typeMap[data.type];
+    const Type = typeInfo.Type;
+    const byteLength = isArray
+        ? pad(typeInfo.size, 16) * data.size
+        : typeInfo.size * data.size;
+    const uniformView = new Type(array, data.offset, byteLength / Type.BYTES_PER_ELEMENT);
     uniforms[name] = uniformView;
-    setters[name] = createUniformBlockUniformSetter(uniformView, Type, typeInfo.size, paddedSize, isArray);
+    setters[name] = createUniformBlockUniformSetter(uniformView, isArray, typeInfo.rows, typeInfo.cols);
   });
   return {
     name: blockName,
@@ -8047,6 +8051,17 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  *       }
  *
  *  Arrays can be JavaScript arrays or typed arrays
+ *
+ *  **IMPORTANT!**, packing in a UniformBlock is unintuitive.
+ *  For example the actual layout of `someVec3Array` above in memory
+ *  is `1, 2, 3, unused, 4, 5, 6, unused`. twgl takes in 6 values
+ *  as shown about and copies them, skipping the padding. This might
+ *  be confusing if you're already familiar with Uniform blocks.
+ *
+ *  If you want to deal with the padding yourself you can access the array
+ *  buffer views directly. eg:
+ *
+ *      someBlockInfo.someVec3Array.set([1, 2, 3, 0, 4, 5, 6, 0]);
  *
  *  Any name that doesn't match will be ignored
  * @memberOf module:twgl/programs
@@ -8353,7 +8368,7 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @property {WebGLProgram} program A shader program
  * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
  * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
- * @property {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+ * @property {module:twgl.UniformBlockSpec} [uniformBlockSpec] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
  * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
  * @memberOf module:twgl
  */

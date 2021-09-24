@@ -106,6 +106,7 @@ export function createTransformFeedback(gl: WebGLRenderingContext, programInfo: 
     [key: string]: AttribInfo;
 }): WebGLTransformFeedback;
 export type UniformData = {
+    name: string;
     type: number;
     size: number;
     blockNdx: number;
@@ -120,6 +121,9 @@ export type BlockSpec = {
     used: boolean;
 };
 export type UniformBlockSpec = {
+    blockSpecs: {
+        [key: string]: BlockSpec;
+    };
     uniformData: UniformData[];
 };
 export type UniformBlockInfo = {
@@ -143,7 +147,7 @@ export type ProgramInfo = {
     attribSetters: {
         [key: string]: (...params: any[]) => any;
     };
-    uniformBlockSpace?: UniformBlockSpec;
+    uniformBlockSpec?: UniformBlockSpec;
     transformFeedbackInfo?: {
         [key: string]: TransformFeedbackInfo;
     };
