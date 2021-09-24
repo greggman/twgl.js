@@ -229,7 +229,6 @@ describe('program tests', () => {
     }`;
 
     const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
-    console.log(programInfo);
 
     // this isn't much of a test. Mostly twgl used to have issues here
     assertTruthy(programInfo.uniformSetters.foo);
