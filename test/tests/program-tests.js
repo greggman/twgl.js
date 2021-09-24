@@ -1,4 +1,4 @@
-import {assertArrayEqual, assertTruthy} from '../assert.js';
+import {assertArrayEqual, assertTruthy, assertFalsy, assertEqual} from '../assert.js';
 import {describe, it} from '../mocha-support.js';
 import {createContext2} from '../webgl.js';
 
@@ -194,6 +194,50 @@ describe('program tests', () => {
       //],
     ]);
     assertArrayEqual(data, expected);
+  });
+
+  it('test built in uniform', () => {
+    const {gl} = createContext2();
+    if (!gl) {
+      return;
+    }
+    const ext = gl.getExtension('WEBGL_multi_draw');
+    if (!ext) {
+      return;
+    }
+
+    const vs = `#version 300 es
+    #extension GL_ANGLE_multi_draw : require
+
+    uniform float foo;
+    uniform float moo;
+    uniform MyBlock {
+      float bar;
+    };
+    void main() {
+        gl_Position = vec4(gl_DrawID, foo, moo, bar);
+    }
+    `;
+
+    const fs = `#version 300 es
+    precision highp float;
+    out vec4 outColor;
+
+    void main()
+    {
+        outColor = vec4(0, 1, 0, 1);
+    }`;
+
+    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+    console.log(programInfo);
+
+    // this isn't much of a test. Mostly twgl used to have issues here
+    assertTruthy(programInfo.uniformSetters.foo);
+    assertTruthy(programInfo.uniformSetters.moo);
+    assertFalsy(programInfo.uniformSetters.gl_DrawID);
+    assertTruthy(programInfo.uniformBlockSpec.uniformData.length >= 3);  // foo, bar, moo
+
+    assertEqual(gl.getError(), gl.NONE);
   });
 
 });
