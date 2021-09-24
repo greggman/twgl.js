@@ -7,7 +7,7 @@
   "module": "dist/4.x/twgl-full.module.js",
   "scripts": {
     "check-ci": "npm run lint && npm run build && npm test",
-    "test": "npm run testjs && npm run testts",
+    "test": "npm run testjs && npm run testts && npm run testbrowser",
     "testjs": "node node_modules/mocha/bin/mocha --recursive 'test/src/js/*-harness.js'",
     "testts": "tsc --project test/src/ts/",
     "testbrowser": "node test/puppeteer.js",
