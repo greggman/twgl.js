@@ -430,8 +430,7 @@ gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDE
 
 *   Includes some optional 3d math functions (full version)
 
-    You are welcome to use any math library as long as it stores matrices as flat Float32Array
-    or JavaScript arrays.
+    You are welcome to use any math library as long as it stores matrices as flat Float32Array or JavaScript arrays.
 
 *   Includes some optional primitive generators (full version)
 
