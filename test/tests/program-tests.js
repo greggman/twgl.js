@@ -1,6 +1,16 @@
-import {assertArrayEqual, assertTruthy, assertFalsy, assertEqual} from '../assert.js';
-import {describe} from '../mocha-support.js';
-import {itWebGL2, createContext2} from '../webgl.js';
+import {
+  assertArrayEqual,
+  assertTruthy,
+  assertFalsy,
+  assertEqual,
+} from '../assert.js';
+import {describe, it} from '../mocha-support.js';
+import {
+  itWebGL2,
+  createContext,
+  createContext2,
+  checkColor,
+} from '../webgl.js';
 
 describe('program tests', () => {
 
@@ -230,4 +240,82 @@ describe('program tests', () => {
     assertEqual(gl.getError(), gl.NONE);
   });
 
+  it('test struct setter', () => {
+    const {gl} = createContext();
+
+    gl.canvas.width = 1;
+    gl.canvas.height = 1;
+    gl.viewport(0, 0, 1, 1);
+
+    const vs = `
+    struct Extra {
+      float f;
+      vec4 v4;
+      vec3 v3;
+    };
+    struct Light {
+      float intensity;
+      vec4 color;
+      float nearFar[2];
+      Extra extra[2];
+    };
+    uniform Light lights[2];
+    varying vec4 v_out;
+
+    vec4 getLight(Light l) {
+      return
+          vec4(l.intensity) +
+          vec4(l.color) +
+          vec4(l.nearFar[0], l.nearFar[1], 0, 0) +
+          vec4(l.extra[0].f) +
+          vec4(l.extra[0].v4) +
+          vec4(l.extra[0].v3, 0) +
+          vec4(l.extra[1].f) +
+          vec4(l.extra[1].v4) +
+          vec4(l.extra[1].v3, 0);
+    }
+    void main() {
+      gl_Position = vec4(0, 0, 0, 1);
+      gl_PointSize = 1.0;
+      v_out = getLight(lights[0]) + getLight(lights[1]);
+    }
+    `;
+
+    const fs = `
+    precision mediump float;
+    varying vec4 v_out;
+    void main() {
+      gl_FragColor = v_out / 255.0;
+    }
+    `;
+
+    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+
+    gl.useProgram(programInfo.program);
+
+    twgl.setUniformTree(programInfo, {
+      lights: [
+        {
+          extra: [
+            { v4: [11, 22, 33, 44] },
+          ],
+        },
+      ],
+    });
+    gl.drawArrays(gl.POINTS, 0, 1);
+    checkColor(gl, [11, 22, 33, 44]);
+
+    twgl.setUniformTree(programInfo, {
+      lights: [
+        {
+          extra: [
+            { v4: [11, 22, 33, 44] },
+            { v3: [10, 20, 30] },
+          ],
+        },
+      ],
+    });
+    gl.drawArrays(gl.POINTS, 0, 1);
+    checkColor(gl, [21, 42, 63, 44]);
+  });
 });

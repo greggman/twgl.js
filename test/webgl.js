@@ -1,4 +1,5 @@
 import {it} from './mocha-support.js';
+import {assertArrayEqual} from './assert.js';
 
 export function createContext() {
   const gl = document.createElement('canvas').getContext('webgl');
@@ -32,6 +33,12 @@ export function resetContexts(context) {
     gl2.bindVertexArray(null);
     resetContext(gl2);
   }
+}
+
+export function checkColor(gl, color) {
+  const p = new Uint8Array(4);
+  gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, p);
+  assertArrayEqual(p, color);
 }
 
 export function escapeRE(str) {

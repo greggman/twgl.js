@@ -878,7 +878,7 @@ function isBuiltIn(info) {
  * @returns {Object.<string, function>} an object with a setter by name for each uniform
  * @memberOf module:twgl/programs
  */
-function createUniformSetters(gl, program) {
+function createUniformSettersAndUniformTree(gl, program) {
   let textureUnit = 0;
 
   /**
@@ -916,7 +916,37 @@ function createUniformSetters(gl, program) {
     return setter;
   }
 
-  const uniformSetters = { };
+  const tokenRE = /(?=[.[\]])|(?<=[.[\]])/g;
+  const isDigit = s => s >= '0' && s <= '9';
+  function addSetterToUniformTree(path, setter, node) {
+    const tokens = path.split(tokenRE);
+    let tokenNdx = 0;
+
+    for (;;) {
+      const token = tokens[tokenNdx++];  // has to be name or number
+      const isArrayIndex = isDigit(token[0]);
+      const accessor = isArrayIndex
+          ? parseInt(token)
+          : token;
+      if (isArrayIndex) {
+        ++tokenNdx;  // skip ']'
+      }
+      const isLastToken = tokenNdx === tokens.length;
+      if (isLastToken) {
+        node[accessor] = setter;
+        break;
+      } else {
+        const token = tokens[tokenNdx++];  // has to be . or [
+        const isArray = token === '[';
+        const child = node[accessor] || (isArray ? [] : {});
+        node[accessor] = child;
+        node = child;
+      }
+    }
+  }
+
+  const uniformSetters = {};
+  const uniformTree = {};
   const numUniforms = gl.getProgramParameter(program, ACTIVE_UNIFORMS);
 
   for (let ii = 0; ii < numUniforms; ++ii) {
@@ -932,9 +962,56 @@ function createUniformSetters(gl, program) {
     const location = gl.getUniformLocation(program, uniformInfo.name);
     // the uniform will have no location if it's in a uniform block
     if (location) {
-      uniformSetters[name] = createUniformSetter(program, uniformInfo, location);
+      /*
+       struct Light {
+         vec4 color;
+         float strength;
+         float nearFar[2];
+       }
+       uniform Light lights[4];
+
+       --
+       tw
+       setters: {
+         lights: fn[
+           { color: fn, strength: fn },
+           { color: fn, strength: fn },
+           {}
+         ]
+       }
+
+       twgl.setUniforms(programInfo, {
+         lights: [
+           { color: [1, 0, 0, 1], strength: 1, nearFar: 2},
+           { color: [1, 0, 0, 1], strength: 1, nearFar: 2},
+         ],
+       })
+
+       lights[0].color
+       lights[0].strength;
+       lights[0].nearFar[0]   size = 2;
+      */
+      const setter = createUniformSetter(program, uniformInfo, location);
+      uniformSetters[name] = setter;
+      addSetterToUniformTree(name, setter, uniformTree);
     }
   }
+  return { uniformSetters, uniformTree };
+}
+
+/**
+ * Creates setter functions for all uniforms of a shader
+ * program.
+ *
+ * @see {@link module:twgl.setUniforms}
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {WebGLProgram} program the program to create setters for.
+ * @returns {Object.<string, function>} an object with a setter by name for each uniform
+ * @memberOf module:twgl/programs
+ */
+function createUniformSetters(gl, program) {
+  const {uniformSetters} = createUniformSettersAndUniformTree(gl, program);
   return uniformSetters;
 }
 
@@ -1485,6 +1562,22 @@ function setUniforms(setters, values) {  // eslint-disable-line
   }
 }
 
+function setTree(tree, values) {
+  for (const name in values) {
+    const prop = tree[name];
+    if (typeof prop === 'function') {
+      prop(values[name]);
+    } else {
+      setTree(tree[name], values[name]);
+    }
+  }
+}
+
+export function setUniformTree(programInfo, values) {
+  const tree = programInfo.uniformTree;
+  setTree(tree, values);
+}
+
 /**
  * Alias for `setUniforms`
  * @function
@@ -1664,12 +1757,13 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @memberOf module:twgl/programs
  */
 function createProgramInfoFromProgram(gl, program) {
-  const uniformSetters = createUniformSetters(gl, program);
+  const {uniformSetters, uniformTree} = createUniformSettersAndUniformTree(gl, program);
   const attribSetters = createAttributeSetters(gl, program);
   const programInfo = {
-    program: program,
-    uniformSetters: uniformSetters,
-    attribSetters: attribSetters,
+    program,
+    uniformSetters,
+    attribSetters,
+    uniformTree,
   };
 
   if (utils.isWebGL2(gl)) {
