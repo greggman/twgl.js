@@ -240,7 +240,7 @@ describe('program tests', () => {
     assertEqual(gl.getError(), gl.NONE);
   });
 
-  it('test struct setter', () => {
+  it('test uniform tree', () => {
     const {gl} = createContext();
 
     gl.canvas.width = 1;
@@ -293,7 +293,7 @@ describe('program tests', () => {
 
     gl.useProgram(programInfo.program);
 
-    twgl.setUniformTree(programInfo, {
+    twgl.setUniforms(programInfo, {
       lights: [
         {
           extra: [
@@ -305,7 +305,7 @@ describe('program tests', () => {
     gl.drawArrays(gl.POINTS, 0, 1);
     checkColor(gl, [11, 22, 33, 44]);
 
-    twgl.setUniformTree(programInfo, {
+    twgl.setUniforms(programInfo, {
       lights: [
         {
           extra: [
@@ -318,4 +318,112 @@ describe('program tests', () => {
     gl.drawArrays(gl.POINTS, 0, 1);
     checkColor(gl, [21, 42, 63, 44]);
   });
+
+  itWebGL2('test uniformblock tree', () => {
+    const {gl} = createContext2();
+
+    const vs = `#version 300 es
+    struct Extra {
+      float f;
+      vec4 v4;
+      vec3 v3;
+    };
+    struct Light {
+      float intensity;
+      vec4 color;
+      float nearFar[2];
+      Extra extra[2];
+    };
+    uniform Lights {
+      Light lights[2];
+    };
+    out vec4 v_out;
+
+    vec4 getLight(Light l) {
+      return
+          vec4(l.intensity) +
+          vec4(l.color) +
+          vec4(l.nearFar[0], l.nearFar[1], 0, 0) +
+          vec4(l.extra[0].f) +
+          vec4(l.extra[0].v4) +
+          vec4(l.extra[0].v3, 0) +
+          vec4(l.extra[1].f) +
+          vec4(l.extra[1].v4) +
+          vec4(l.extra[1].v3, 0);
+    }
+    void main() {
+      gl_Position = vec4(0, 0, 0, 1);
+      gl_PointSize = 1.0;
+      v_out = getLight(lights[0]) + getLight(lights[1]);
+    }
+    `;
+
+    const fs = `#version 300 es
+    precision mediump float;
+    in vec4 v_out;
+    out vec4 outColor;
+    void main() {
+      outColor = v_out / 255.0;
+    }
+    `;
+
+    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+    const uboInfo = twgl.createUniformBlockInfo(gl, programInfo, "Lights");
+
+    twgl.setBlockUniforms(uboInfo, {
+      lights: [
+        { intensity: 11, color: [12, 13, 14, 15], nearFar: [16, 17], extra: [
+            { f: 18, v4: [110, 111, 112, 113], v3: [114, 115, 116]},
+            { f: 19, v4: [117, 118, 119, 120], v3: [121, 122, 123]},
+          ],
+        },
+        { intensity: 21, color: [22, 23, 24, 25], nearFar: [26, 27], extra: [
+            { f: 28, v4: [210, 211, 212, 213], v3: [214, 215, 216]},
+            { f: 29, v4: [217, 218, 219, 220], v3: [221, 222, 223]},
+          ],
+        },
+      ],
+    });
+
+    const expected = new Float32Array([
+                          // lights[0]
+      11,                 //   intensity
+      0, 0, 0,            //   padding
+      12, 13, 14, 15,     //   color
+      16, 0, 0, 0,        //   nearFar[0] + padding
+      17, 0, 0, 0,        //   nearFar[1] + padding
+                          //   extra[0]
+      18,                 //     f
+      0, 0, 0,            //     padding
+      110, 111, 112, 113, //     v4
+      114, 115, 116,      //     v3
+      0,                  //     padding
+                          //   extra[1]
+      19,                 //     f
+      0, 0, 0,            //     padding
+      117, 118, 119, 120, //     v4
+      121, 122, 123,      //     v3
+      0,                  //     padding
+                          // lights[1]
+      21,                 //   intensity
+      0, 0, 0,            //   padding
+      22, 23, 24, 25,     //   color
+      26, 0, 0, 0,        //   nearFar[0] + padding
+      27, 0, 0, 0,        //   nearFar[1] + padding
+                          //   extra[0]
+      28,                 //     f
+      0, 0, 0,            //     padding
+      210, 211, 212, 213, //     v4
+      214, 215, 216,      //     v3
+      0,                  //     padding
+                          //   extra[1]
+      29,                 //     f
+      0, 0, 0,            //     padding
+      217, 218, 219, 220, //     v4
+      221, 222, 223,      //     v3
+      0,                  //     padding
+    ]);
+    assertArrayEqual(uboInfo.asFloat, expected);
+  });
+
 });
