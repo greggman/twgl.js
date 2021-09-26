@@ -1,5 +1,10 @@
 # Change List
 
+*   4.20.0
+
+    *   Add support for more easily setting uniform and 
+        uniform block structures and arrays
+
 *   4.19.5
 
     *   Fix issue with uniform blocks and built-in uniforms
