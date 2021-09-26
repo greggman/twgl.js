@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-@license twgl.js 4.19.5 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+@license twgl.js 4.20.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details
 -->
@@ -352,6 +352,38 @@ const rb = gl.createRenderbuffer();
 gl.bindRenderbuffer(gl.RENDERBUFFER, rb);
 gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, gl.drawingBufferWidth, gl.drawingBufferHeight);
 gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb);</code></pre>
+<h3 id="setting-uniform-and-uniformblock-structures-and-arrays">Setting uniform and uniformblock structures and arrays</h3>
+<p>Given an array of GLSL structures like this</p>
+<pre><code class="language-glsl">struct Light {
+  float intensity;
+  float shininess;
+  vec4 color;
+}
+uniform Light lights[2];</code></pre>
+<p>TWGL</p>
+<pre><code class="language-javascript">const progInfo = twgl.createProgramInfo(gl, [vs, fs]);
+...
+twgl.setUniforms(progInfo, {
+  lights: [
+    { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
+    { intensity: 2.0, shininess:  50, color: [0, 0, 1, 1] },
+  ],
+})</code></pre>
+<p>WebGL</p>
+<pre><code class="language-javascript">// assuming we already compiled and linked the program
+const light0IntensityLoc = gl.getUniformLocation(&#39;lights[0].intensity&#39;);
+const light0ShininessLoc = gl.getUniformLocation(&#39;lights[0].shininess&#39;);
+const light0ColorLoc = gl.getUniformLocation(&#39;lights[0].color&#39;);
+const light1IntensityLoc = gl.getUniformLocation(&#39;lights[1].intensity&#39;);
+const light1ShininessLoc = gl.getUniformLocation(&#39;lights[1].shininess&#39;);
+const light1ColorLoc = gl.getUniformLocation(&#39;lights[1].color&#39;);
+...
+gl.uniform1f(light0IntensityLoc, 5.0);
+gl.uniform1f(light0ShininessLoc, 100);
+gl.uniform4fv(light0ColorLoc, [1, 0, 0, 1]);
+gl.uniform1f(light1IntensityLoc, 2.0);
+gl.uniform1f(light1ShininessLoc, 50);
+gl.uniform4fv(light1ColorLoc, [0, 0, 1, 1]);</code></pre>
 <h3 id="compare">Compare</h3>
 <p><a href="/examples/twgl-cube.html">TWGL example</a> vs <a href="/examples/webgl-cube.html">WebGL example</a></p>
 <h2 id="examples">Examples</h2>

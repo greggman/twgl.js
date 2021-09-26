@@ -376,6 +376,51 @@ gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, gl.drawingBufferWidth,
 gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb);
 ```
 
+### Setting uniform and uniformblock structures and arrays
+
+Given an array of GLSL structures like this
+
+```glsl
+struct Light {
+  float intensity;
+  float shininess;
+  vec4 color;
+}
+uniform Light lights[2];
+```
+
+TWGL
+
+```javascript
+const progInfo = twgl.createProgramInfo(gl, [vs, fs]);
+...
+twgl.setUniforms(progInfo, {
+  lights: [
+    { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
+    { intensity: 2.0, shininess:  50, color: [0, 0, 1, 1] },
+  ],
+})
+```
+
+WebGL
+
+```javascript
+// assuming we already compiled and linked the program
+const light0IntensityLoc = gl.getUniformLocation('lights[0].intensity');
+const light0ShininessLoc = gl.getUniformLocation('lights[0].shininess');
+const light0ColorLoc = gl.getUniformLocation('lights[0].color');
+const light1IntensityLoc = gl.getUniformLocation('lights[1].intensity');
+const light1ShininessLoc = gl.getUniformLocation('lights[1].shininess');
+const light1ColorLoc = gl.getUniformLocation('lights[1].color');
+...
+gl.uniform1f(light0IntensityLoc, 5.0);
+gl.uniform1f(light0ShininessLoc, 100);
+gl.uniform4fv(light0ColorLoc, [1, 0, 0, 1]);
+gl.uniform1f(light1IntensityLoc, 2.0);
+gl.uniform1f(light1ShininessLoc, 50);
+gl.uniform4fv(light1ColorLoc, [0, 0, 1, 1]);
+```
+
 ### Compare
 
 [TWGL example](http://twgljs.org/examples/twgl-cube.html) vs [WebGL example](http://twgljs.org/examples/webgl-cube.html)
