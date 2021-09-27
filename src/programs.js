@@ -867,10 +867,10 @@ function isBuiltIn(info) {
   return name.startsWith("gl_") || name.startsWith("webgl_");
 }
 
-const tokenRE = /(?=[.[\]])|(?<=[.[\]])/g;
+const tokenRE = /(\.|\[|]|\w+)/g;
 const isDigit = s => s >= '0' && s <= '9';
 function addSetterToUniformTree(fullPath, setter, node, uniformSetters) {
-  const tokens = fullPath.split(tokenRE);
+  const tokens = fullPath.split(tokenRE).filter(s => s !== '');
   let tokenNdx = 0;
   let path = '';
 
