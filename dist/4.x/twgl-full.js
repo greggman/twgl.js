@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.20.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.21.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -5856,18 +5856,20 @@ var isDigit = function isDigit(s) {
   return s >= '0' && s <= '9';
 };
 
-function addSetterToUniformTree(path, setter, node) {
-  var tokens = path.split(tokenRE);
+function addSetterToUniformTree(fullPath, setter, node, uniformSetters) {
+  var tokens = fullPath.split(tokenRE);
   var tokenNdx = 0;
+  var path = '';
 
   for (;;) {
     var token = tokens[tokenNdx++]; // has to be name or number
 
+    path += token;
     var isArrayIndex = isDigit(token[0]);
     var accessor = isArrayIndex ? parseInt(token) : token;
 
     if (isArrayIndex) {
-      ++tokenNdx; // skip ']'
+      path += tokens[tokenNdx++]; // skip ']'
     }
 
     var isLastToken = tokenNdx === tokens.length;
@@ -5882,6 +5884,14 @@ function addSetterToUniformTree(path, setter, node) {
       var child = node[accessor] || (isArray ? [] : {});
       node[accessor] = child;
       node = child;
+
+      uniformSetters[path] = uniformSetters[path] || function (node) {
+        return function (value) {
+          setUniformTree(node, value);
+        };
+      }(child);
+
+      path += _token;
     }
   }
 }
@@ -5898,7 +5908,7 @@ function addSetterToUniformTree(path, setter, node) {
  */
 
 
-function createUniformSettersAndUniformTree(gl, program) {
+function createUniformSetters(gl, program) {
   var textureUnit = 0;
   /**
    * Creates a setter for a uniform of the given program with it's
@@ -5963,31 +5973,9 @@ function createUniformSettersAndUniformTree(gl, program) {
     if (location) {
       var setter = createUniformSetter(program, uniformInfo, location);
       uniformSetters[name] = setter;
-      addSetterToUniformTree(name, setter, uniformTree);
+      addSetterToUniformTree(name, setter, uniformTree, uniformSetters);
     }
   }
-
-  return {
-    uniformSetters: uniformSetters,
-    uniformTree: uniformTree
-  };
-}
-/**
- * Creates setter functions for all uniforms of a shader
- * program.
- *
- * @see {@link module:twgl.setUniforms}
- *
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
- * @param {WebGLProgram} program the program to create setters for.
- * @returns {Object.<string, function>} an object with a setter by name for each uniform
- * @memberOf module:twgl/programs
- */
-
-
-function createUniformSetters(gl, program) {
-  var _createUniformSetters = createUniformSettersAndUniformTree(gl, program),
-      uniformSetters = _createUniformSetters.uniformSetters;
 
   return uniformSetters;
 }
@@ -6315,7 +6303,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
 
     var setter = createUniformBlockUniformSetter(uniformView, isArray, typeInfo.rows, typeInfo.cols);
     setters[name] = setter;
-    addSetterToUniformTree(name, setter, setterTree);
+    addSetterToUniformTree(name, setter, setterTree, setters);
   });
   return {
     name: blockName,
@@ -6324,8 +6312,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     // for debugging
     buffer: buffer,
     uniforms: uniforms,
-    setters: setters,
-    setterTree: setterTree
+    setters: setters
   };
 }
 /**
@@ -6458,6 +6445,14 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  *       "lights[1].color": [0, 0, 1, 1],
  *     });
  *
+ *   You can also specify partial paths
+ *
+ *     twgl.setBlockUniforms(someBlockInfo, {
+ *       'lights[1]: { intensity: 5.0, color: [1, 0, 0, 1] },
+ *     });
+ *
+ *   But you can not specify leaf array indices.
+ *
  *  **IMPORTANT!**, packing in a UniformBlock is unintuitive.
  *  For example the actual layout of `someVec3Array` above in memory
  *  is `1, 2, 3, unused, 4, 5, 6, unused`. twgl takes in 6 values
@@ -6476,7 +6471,6 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
 
 function setBlockUniforms(uniformBlockInfo, values) {
   var setters = uniformBlockInfo.setters;
-  var setterTree = uniformBlockInfo.setterTree;
 
   for (var name in values) {
     var setter = setters[name];
@@ -6484,14 +6478,6 @@ function setBlockUniforms(uniformBlockInfo, values) {
     if (setter) {
       var value = values[name];
       setter(value);
-    } else {
-      // NOTE: I'm not totally happy that there are 2 paths
-      // here but I didn't want to change the API.
-      var treeSetter = setterTree[name];
-
-      if (treeSetter) {
-        setUniformTree(treeSetter, values[name]);
-      }
     }
   }
 }
@@ -6638,7 +6624,7 @@ function setUniformTree(tree, values) {
  *       ],
  *     });
  *
- *     // or the more traditional way
+ *   or the more traditional way
  *
  *     twgl.setUniforms(programInfo, {
  *       "lights[0].intensity": 5.0,
@@ -6647,6 +6633,14 @@ function setUniformTree(tree, values) {
  *       "lights[1].color": [0, 0, 1, 1],
  *     });
  *
+ *   You can also specify partial paths
+ *
+ *     twgl.setUniforms(programInfo, {
+ *       'lights[1]: { intensity: 5.0, color: [1, 0, 0, 1] },
+ *     });
+ *
+ *   But you can not specify leaf array indices
+ *
  * @memberOf module:twgl/programs
  */
 
@@ -6654,7 +6648,6 @@ function setUniformTree(tree, values) {
 function setUniforms(setters) {
   // eslint-disable-line
   var actualSetters = setters.uniformSetters || setters;
-  var tree = setters.uniformTree;
   var numArgs = arguments.length <= 1 ? 0 : arguments.length - 1;
 
   for (var aNdx = 0; aNdx < numArgs; ++aNdx) {
@@ -6672,14 +6665,6 @@ function setUniforms(setters) {
 
         if (setter) {
           setter(values[name]);
-        } else if (tree) {
-          // NOTE: I'm not totally happy that there are 2 paths
-          // here but I didn't want to change the API.
-          var treeSetter = tree[name];
-
-          if (treeSetter) {
-            setUniformTree(treeSetter, values[name]);
-          }
         }
       }
     }
@@ -6874,16 +6859,12 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
 
 
 function createProgramInfoFromProgram(gl, program) {
-  var _createUniformSetters2 = createUniformSettersAndUniformTree(gl, program),
-      uniformSetters = _createUniformSetters2.uniformSetters,
-      uniformTree = _createUniformSetters2.uniformTree;
-
+  var uniformSetters = createUniformSetters(gl, program);
   var attribSetters = createAttributeSetters(gl, program);
   var programInfo = {
     program: program,
     uniformSetters: uniformSetters,
-    attribSetters: attribSetters,
-    uniformTree: uniformTree
+    attribSetters: attribSetters
   };
 
   if (utils.isWebGL2(gl)) {

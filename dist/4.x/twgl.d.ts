@@ -258,9 +258,6 @@ export function getBindPointForSamplerType(): void;
 export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
-export function createUniformSettersAndUniformTree(gl: WebGLRenderingContext, program: WebGLProgram): {
-    [key: string]: (...params: any[]) => any;
-};
 export function createUniformSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };

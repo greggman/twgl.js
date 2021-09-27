@@ -399,7 +399,7 @@ twgl.setUniforms(progInfo, {
     { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
     { intensity: 2.0, shininess:  50, color: [0, 0, 1, 1] },
   ],
-})
+});
 ```
 
 WebGL
@@ -419,6 +419,16 @@ gl.uniform4fv(light0ColorLoc, [1, 0, 0, 1]);
 gl.uniform1f(light1IntensityLoc, 2.0);
 gl.uniform1f(light1ShininessLoc, 50);
 gl.uniform4fv(light1ColorLoc, [0, 0, 1, 1]);
+```
+
+If you just want to set the 2nd light in TWGL you can do this
+
+```javascript
+const progInfo = twgl.createProgramInfo(gl, [vs, fs]);
+...
+twgl.setUniforms(progInfo, {
+  lights[1]: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
+});
 ```
 
 ### Compare

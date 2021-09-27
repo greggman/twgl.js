@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-@license twgl.js 4.20.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+@license twgl.js 4.21.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details
 -->
@@ -368,7 +368,7 @@ twgl.setUniforms(progInfo, {
     { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
     { intensity: 2.0, shininess:  50, color: [0, 0, 1, 1] },
   ],
-})</code></pre>
+});</code></pre>
 <p>WebGL</p>
 <pre><code class="language-javascript">// assuming we already compiled and linked the program
 const light0IntensityLoc = gl.getUniformLocation(&#39;lights[0].intensity&#39;);
@@ -384,6 +384,12 @@ gl.uniform4fv(light0ColorLoc, [1, 0, 0, 1]);
 gl.uniform1f(light1IntensityLoc, 2.0);
 gl.uniform1f(light1ShininessLoc, 50);
 gl.uniform4fv(light1ColorLoc, [0, 0, 1, 1]);</code></pre>
+<p>If you just want to set the 2nd light in TWGL you can do this</p>
+<pre><code class="language-javascript">const progInfo = twgl.createProgramInfo(gl, [vs, fs]);
+...
+twgl.setUniforms(progInfo, {
+  lights[1]: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
+});</code></pre>
 <h3 id="compare">Compare</h3>
 <p><a href="/examples/twgl-cube.html">TWGL example</a> vs <a href="/examples/webgl-cube.html">WebGL example</a></p>
 <h2 id="examples">Examples</h2>
