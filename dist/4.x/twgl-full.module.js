@@ -1,4 +1,4 @@
-/* @license twgl.js 4.21.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.21.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -7591,10 +7591,10 @@ function isBuiltIn(info) {
   return name.startsWith("gl_") || name.startsWith("webgl_");
 }
 
-const tokenRE = /(?=[.[\]])|(?<=[.[\]])/g;
+const tokenRE = /(\.|\[|]|\w+)/g;
 const isDigit = s => s >= '0' && s <= '9';
 function addSetterToUniformTree(fullPath, setter, node, uniformSetters) {
-  const tokens = fullPath.split(tokenRE);
+  const tokens = fullPath.split(tokenRE).filter(s => s !== '');
   let tokenNdx = 0;
   let path = '';
 
