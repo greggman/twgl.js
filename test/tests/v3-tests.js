@@ -1,8 +1,14 @@
-/* global before */
-/* global describe */
-/* global it */
-/* global should */
-import * as v3 from '../../../src/v3.js';
+import {
+  assertEqual,
+  assertInstanceOf,
+  assertLessThan,
+  assertStrictEqual,
+  assertStrictNotEqual,
+  assertIsArray,
+} from '../assert.js';
+import {describe, it, before} from '../mocha-support.js';
+
+const v3 = twgl.v3;
 
 function check(Type) {
   describe('using ' + Type, function() {
@@ -13,51 +19,51 @@ function check(Type) {
     });
 
     function elementsEqual(a, b) {
-      should(a.length).equal(b.length);
+      assertStrictEqual(a.length, b.length);
       for (let i = 0; i < a.length; ++i) {
         const diff = Math.abs(a[i] - b[i]);
-        diff.should.be.lessThan(0.0000001);
+        assertLessThan(diff, 0.0000001);
       }
     }
 
     function testV3WithoutDest(func, expected, b) {
       const d = func(v.slice(), b);
-      d.should.eql(expected);
-      d.should.be.instanceOf(Type);
+      assertEqual(d, expected);
+      assertInstanceOf(d, Type);
     }
 
     function testV3WithoutDest1(func, expected) {
       const d = func(v.slice());
-      d.should.eql(expected);
-      d.should.be.instanceOf(Type);
+      assertEqual(d, expected);
+      assertInstanceOf(d, Type);
     }
 
     function testV3WithDest(func, expected, b) {
       expected = new Float32Array(expected);
       let d = new Float32Array(3);
       let c = func(v.slice(), b, d);
-      c.should.be.equal(d);
-      c.should.be.eql(expected);
+      assertStrictEqual(c, d);
+      assertEqual(c, expected);
 
       d = v.slice();
       const bOrig = b.slice();
       c = func(d, b, d);
       elementsEqual(c, expected);
-      b.should.be.eql(bOrig);
+      assertEqual(b, bOrig);
 
       d = b.slice();
       const vOrig = v.slice();
       c = func(v, d, d);
       elementsEqual(c, expected);
-      v.should.be.eql(vOrig);
+      assertEqual(v, vOrig);
     }
 
     function testV3WithDest1(func, expected) {
       expected = new Float32Array(expected);
       let d = new Float32Array(3);
       let c = func(v.slice(), d);
-      c.should.be.equal(d);
-      c.should.be.eql(expected);
+      assertStrictEqual(c, d);
+      assertEqual(c, expected);
 
       d = v.slice();
       c = func(d, d);
@@ -157,31 +163,31 @@ function check(Type) {
     it('should compute dot product', function() {
       const expected = 1 * 2 + 2 * 4 + 3 * 6;
       const value = v3.dot(v, [2, 4, 6]);
-      value.should.be.equal(expected);
+      assertStrictEqual(value, expected);
     });
 
     it('should compute length', function() {
       const expected = Math.sqrt(1 * 1 + 2 * 2 + 3 * 3);
       const value = v3.length(v);
-      value.should.be.equal(expected);
+      assertStrictEqual(value, expected);
     });
 
     it('should compute length squared', function() {
       const expected = 1 * 1 + 2 * 2 + 3 * 3;
       const value = v3.lengthSq(v);
-      value.should.be.equal(expected);
+      assertStrictEqual(value, expected);
     });
 
     it('should compute distance', function() {
       const expected = Math.sqrt(2 * 2 + 3 * 3 + 4 * 4);
       const value = v3.distance(v, [3, 5, 7]);
-      value.should.be.equal(expected);
+      assertStrictEqual(value, expected);
     });
 
     it('should compute distance squared', function() {
       const expected = 2 * 2 + 3 * 3 + 4 * 4;
       const value = v3.distanceSq(v, [3, 5, 7]);
-      value.should.be.equal(expected);
+      assertStrictEqual(value, expected);
     });
 
     it('should normalize', function() {
@@ -211,7 +217,7 @@ function check(Type) {
       ];
       testV3WithAndWithoutDest1(function(a, dst) {
         const result = v3.copy(a, dst);
-        should.notStrictEqual(result, v);
+        assertStrictNotEqual(result, v);
         return result;
       }, expected);
     });
@@ -241,10 +247,10 @@ describe('v3', function() {
   it('should set default type', function() {
     v3.setDefaultType(Array);
     let d = v3.create(1, 2, 3);
-    d.should.be.Array();
+    assertIsArray(d);
     v3.setDefaultType(Float32Array);
     d = v3.create(1, 2, 3);
-    d.should.be.instanceOf(Float32Array);
+    assertInstanceOf(d, Float32Array);
   });
 
   check(Array);

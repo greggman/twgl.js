@@ -1,8 +1,14 @@
-/* global before */
-/* global describe */
-/* global it */
-/* global should */
-import * as m4 from '../../../src/m4.js';
+import {
+  assertEqual,
+  assertEqualApproximately,
+  assertIsArray,
+  assertInstanceOf,
+  assertStrictEqual,
+  assertStrictNotEqual,
+} from '../assert.js';
+import {describe, it, before} from '../mocha-support.js';
+
+const m4 = twgl.m4;
 
 function check(Type) {
   describe('using ' + Type, function() {
@@ -19,15 +25,15 @@ function check(Type) {
 
     function testM4WithoutDest(func, expected) {
       const d = func();
-      d.should.eql(expected);
+      assertEqual(d, expected);
     }
 
     function testM4WithDest(func, expected) {
       expected = new Float32Array(expected);
       const d = new Float32Array(16);
       const c = func(d);
-      c.should.be.equal(d);
-      c.should.be.eql(expected);
+      assertStrictEqual(c, d);
+      assertEqual(c, expected);
     }
 
     function testM4WithAndWithoutDest(func, expected) {
@@ -40,14 +46,14 @@ function check(Type) {
 
     function testV3WithoutDest(func, expected) {
       const d = func();
-      d.should.eql(expected);
+      assertEqual(d, expected);
     }
 
     function testV3WithDest(func, expected) {
       const d = new Float32Array(3);
       const c = func(d);
-      c.should.be.equal(d);
-      c.should.be.eql(expected);
+      assertStrictEqual(c, d);
+      assertEqual(c, expected);
     }
 
     function testV3WithAndWithoutDest(func, expected) {
@@ -58,10 +64,10 @@ function check(Type) {
 
     function shouldBeCloseArray(a, b) {
       const l = a.length;
-      l.should.be.equal(b.length);
+      assertStrictEqual(l, b.length);
       for (let i = 0; i < l; ++i) {
         const v = a[i];
-        v.should.be.approximately(b[i], 0.000001);
+        assertEqualApproximately(v, b[i], 0.000001);
       }
     }
 
@@ -81,7 +87,7 @@ function check(Type) {
       const expected = m;
       testM4WithAndWithoutDest(function(dst) {
         const result = m4.copy(m, dst);
-        should.notStrictEqual(result, m);
+        assertStrictNotEqual(result, m);
         return result;
       }, expected);
     });
@@ -605,10 +611,10 @@ describe('m4', function() {
   it('should set default type', function() {
     m4.setDefaultType(Array);
     let d = m4.identity();
-    d.should.be.Array();
+    assertIsArray(d);
     m4.setDefaultType(Float32Array);
     d = m4.identity();
-    d.should.be.instanceOf(Float32Array);
+    assertInstanceOf(d, Float32Array);
   });
 
   check(Array);

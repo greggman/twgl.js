@@ -9,31 +9,71 @@ function formatMsg(msg) {
 }
 
 export function assertTruthy(actual, msg = '') {
-  if (!config.noLint && !actual) {
+  if (!actual) {
     throw new Error(`${formatMsg(msg)}expected: truthy, actual: ${actual}`);
   }
 }
 
 export function assertFalsy(actual, msg = '') {
-  if (!config.noLint && actual) {
+  if (actual) {
     throw new Error(`${formatMsg(msg)}expected: falsy, actual: ${actual}`);
   }
 }
 
 export function assertStringMatchesRegEx(actual, regex, msg = '') {
-  if (!config.noLint && !regex.test(actual)) {
+  if (!regex.test(actual)) {
     throw new Error(`${formatMsg(msg)}expected: ${regex}, actual: ${actual}`);
   }
 }
 
+export function assertLessThan(actual, expected, msg = '') {
+  if (actual >= expected) {
+    throw new Error(`${formatMsg(msg)}expected: ${actual} to be less than: ${expected}`);
+  }
+}
+
+export function assertEqualApproximately(actual, expected, range, msg = '') {
+  const diff = Math.abs(actual - expected);
+  if (diff > range) {
+    throw new Error(`${formatMsg(msg)}expected: ${actual} to be less ${range} different than: ${expected}`);
+  }
+}
+
+export function assertInstanceOf(actual, expectedType, msg = '') {
+  if (!(actual instanceof expectedType)) {
+    throw new Error(`${formatMsg(msg)}expected: ${actual} to be of type: ${expectedType.constructor.name}`);
+  }
+}
+
+export function assertIsArray(actual, msg = '') {
+  if (!Array.isArray(actual)) {
+    throw new Error(`${formatMsg(msg)}expected: ${actual} to be an Array`);
+  }
+}
+
 export function assertEqual(actual, expected, msg = '') {
-  if (!config.noLint && actual !== expected) {
+  // I'm sure this is not sufficient
+  if (actual.length && expected.length) {
+    assertArrayEqual(actual, expected);
+  } else if (actual !== expected) {
+    throw new Error(`${formatMsg(msg)}expected: ${expected} to equal actual: ${actual}`);
+  }
+}
+
+export function assertStrictEqual(actual, expected, msg = '') {
+  if (actual !== expected) {
     throw new Error(`${formatMsg(msg)}expected: ${expected} to equal actual: ${actual}`);
   }
 }
 
 export function assertNotEqual(actual, expected, msg = '') {
-  if (!config.noLint && actual === expected) {
+  if (actual === expected) {
+    throw new Error(`${formatMsg(msg)}expected: ${expected} to not equal actual: ${actual}`);
+  }
+}
+
+export function assertStrictNotEqual(actual, expected, msg = '') {
+  if (actual === expected) {
     throw new Error(`${formatMsg(msg)}expected: ${expected} to not equal actual: ${actual}`);
   }
 }
