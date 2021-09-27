@@ -240,7 +240,7 @@ describe('program tests', () => {
     assertEqual(gl.getError(), gl.NONE);
   });
 
-  it('test uniform tree', () => {
+  it('test uniform struct/array', () => {
     const {gl} = createContext();
 
     gl.canvas.width = 1;
@@ -317,9 +317,30 @@ describe('program tests', () => {
     });
     gl.drawArrays(gl.POINTS, 0, 1);
     checkColor(gl, [21, 42, 63, 44]);
+
+    twgl.setUniforms(programInfo, {
+      'lights[0].extra': [
+        { v4: [1, 2, 3, 4], },
+      ],
+      'lights[1].intensity': 100,
+    });
+    gl.drawArrays(gl.POINTS, 0, 1);
+    checkColor(gl, [111, 122, 133, 104]);
+
+    /*
+    TWGL does not currently support
+    setting random elements of leaf
+    arrays
+
+    twgl.setUniforms(programInfo, {
+      'lights[0].nearFar[1]': 1000,
+    });
+    checkColor(gl, [111, 1022, 133, 104]);
+    */
+
   });
 
-  itWebGL2('test uniformblock tree', () => {
+  itWebGL2('test uniformblock struct/array', () => {
     const {gl} = createContext2();
 
     const vs = `#version 300 es
@@ -423,6 +444,12 @@ describe('program tests', () => {
       221, 222, 223,      //     v3
       0,                  //     padding
     ]);
+    assertArrayEqual(uboInfo.asFloat, expected);
+
+    twgl.setBlockUniforms(uboInfo, {
+      'lights[1].extra[1]': { v4: [301, 302, 303, 304] },
+    });
+    expected.set([301, 302, 303, 304], expected.indexOf(217));
     assertArrayEqual(uboInfo.asFloat, expected);
   });
 
