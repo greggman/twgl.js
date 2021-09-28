@@ -5741,6 +5741,7 @@ shortcut. Example</p>
 struct Light {
   float intensity;
   vec4 color;
+  float nearFar[2];
 };
 uniform Lights {
   Light lights[2];
@@ -5750,26 +5751,32 @@ uniform Lights {
 
 twgl.setBlockUniforms(someBlockInfo, {
   lights: [
-    { intensity: 5.0, color: [1, 0, 0, 1] },
-    { intensity: 2.0, color: [0, 0, 1, 1] },
+    { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.1, 10] },
+    { intensity: 2.0, color: [0, 0, 1, 1], nearFar[0.2, 15] },
   ],
 });
-
-// or the more traditional way
-
-twgl.setBlockUniforms(someBlockInfo, {
+</code></pre>
+<p>or the more traditional way</p>
+<pre><code>twgl.setBlockUniforms(someBlockInfo, {
   &quot;lights[0].intensity&quot;: 5.0,
   &quot;lights[0].color&quot;: [1, 0, 0, 1],
+  &quot;lights[0].nearFar&quot;: [0.1, 10],
   &quot;lights[1].intensity&quot;: 2.0,
   &quot;lights[1].color&quot;: [0, 0, 1, 1],
+  &quot;lights[1].nearFar&quot;: [0.2, 15],
 });
 </code></pre>
 <p>You can also specify partial paths</p>
 <pre><code>twgl.setBlockUniforms(someBlockInfo, {
-  'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1] },
+  'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.2, 15] },
 });
 </code></pre>
 <p>But you can not specify leaf array indices.</p>
+<pre><code>twgl.setBlockUniforms(someBlockInfo, {
+  'lights[1].nearFar[1]': 15,     // BAD! nearFar is a leaf
+  'lights[1].nearFar': [0.2, 15], // GOOD
+});
+</code></pre>
 <p><strong>IMPORTANT!</strong>, packing in a UniformBlock is unintuitive.<br>
 For example the actual layout of <code>someVec3Array</code> above in memory<br>
 is <code>1, 2, 3, unused, 4, 5, 6, unused</code>. twgl takes in 6 values<br>
@@ -6830,6 +6837,7 @@ shortcut. Example</p>
 struct Light {
   float intensity;
   vec4 color;
+  float nearFar[2];
 };
 uniform Light lights[2];
 
@@ -6837,8 +6845,8 @@ uniform Light lights[2];
 
 twgl.setUniforms(programInfo, {
   lights: [
-    { intensity: 5.0, color: [1, 0, 0, 1] },
-    { intensity: 2.0, color: [0, 0, 1, 1] },
+    { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.1, 10] },
+    { intensity: 2.0, color: [0, 0, 1, 1], nearFar[0.2, 15] },
   ],
 });
 </code></pre>
@@ -6846,16 +6854,22 @@ twgl.setUniforms(programInfo, {
 <pre><code>twgl.setUniforms(programInfo, {
   &quot;lights[0].intensity&quot;: 5.0,
   &quot;lights[0].color&quot;: [1, 0, 0, 1],
+  &quot;lights[0].nearFar&quot;: [0.1, 10],
   &quot;lights[1].intensity&quot;: 2.0,
   &quot;lights[1].color&quot;: [0, 0, 1, 1],
+  &quot;lights[1].nearFar&quot;: [0.2, 15],
 });
 </code></pre>
 <p>You can also specify partial paths</p>
 <pre><code>twgl.setUniforms(programInfo, {
-  'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1] },
+  'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.2, 15] },
 });
 </code></pre>
 <p>But you can not specify leaf array indices</p>
+<pre><code>twgl.setUniforms(programInfo, {
+  'lights[1].nearFar[1]': 15,     // BAD! nearFar is a leaf
+  'lights[1].nearFar': [0.2, 15], // GOOD
+});</code></pre>
                 
             </td>
         </tr>
