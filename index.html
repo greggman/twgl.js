@@ -388,7 +388,7 @@ gl.uniform4fv(light1ColorLoc, [0, 0, 1, 1]);</code></pre>
 <pre><code class="language-javascript">const progInfo = twgl.createProgramInfo(gl, [vs, fs]);
 ...
 twgl.setUniforms(progInfo, {
-  lights[1]: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
+  `lights[1]`: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
 });</code></pre>
 <h3 id="compare">Compare</h3>
 <p><a href="/examples/twgl-cube.html">TWGL example</a> vs <a href="/examples/webgl-cube.html">WebGL example</a></p>

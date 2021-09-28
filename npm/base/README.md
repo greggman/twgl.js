@@ -427,7 +427,7 @@ If you just want to set the 2nd light in TWGL you can do this
 const progInfo = twgl.createProgramInfo(gl, [vs, fs]);
 ...
 twgl.setUniforms(progInfo, {
-  lights[1]: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
+  `lights[1]`: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
 });
 ```
 
