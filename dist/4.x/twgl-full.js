@@ -6450,7 +6450,7 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  *   You can also specify partial paths
  *
  *     twgl.setBlockUniforms(someBlockInfo, {
- *       'lights[1]: { intensity: 5.0, color: [1, 0, 0, 1] },
+ *       'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1] },
  *     });
  *
  *   But you can not specify leaf array indices.
@@ -6638,7 +6638,7 @@ function setUniformTree(tree, values) {
  *   You can also specify partial paths
  *
  *     twgl.setUniforms(programInfo, {
- *       'lights[1]: { intensity: 5.0, color: [1, 0, 0, 1] },
+ *       'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1] },
  *     });
  *
  *   But you can not specify leaf array indices
