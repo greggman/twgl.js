@@ -518,7 +518,7 @@ function getNumElementsFromAttributes(gl, attribs) {
   if (numElements % 1 !== 0) {
     console.warn(`numComponents ${numComponents} not correct for length ${length}`);
   }
-  return numElements;
+  return Math.floor(numElements);
 }
 
 /**
