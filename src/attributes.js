@@ -516,7 +516,7 @@ function getNumElementsFromAttributes(gl, attribs) {
   // TODO: check stride
   const numElements = totalElements / numComponents;
   if (numElements % 1 !== 0) {
-    throw new Error(`numComponents ${numComponents} not correct for length ${length}`);
+    console.warn(`numComponents ${numComponents} not correct for length ${length}`);
   }
   return numElements;
 }
