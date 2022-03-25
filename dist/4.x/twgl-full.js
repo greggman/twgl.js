@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 4.21.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 4.22.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1197,6 +1197,7 @@ var LINEAR = 0x2601;
  * @property {number} [type] The type. Used for texture. Default = `gl.UNSIGNED_BYTE`.
  * @property {number} [target] The texture target for `gl.framebufferTexture2D`.
  *   Defaults to `gl.TEXTURE_2D`. Set to appropriate face for cube maps.
+ * @property {number} [samples] The number of samples. Default = 1
  * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
  * @property {number} [layer] layer for `gl.framebufferTextureLayer`. Defaults to undefined.
  *   If set then `gl.framebufferTextureLayer` is called, if not then `gl.framebufferTexture2D`
@@ -1305,6 +1306,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
   };
   attachments.forEach(function (attachmentOptions) {
     var attachment = attachmentOptions.attachment;
+    var samples = attachmentOptions.samples;
     var format = attachmentOptions.format;
     var attachmentPoint = attachmentOptions.attachmentPoint || getAttachmentPointForFormat(format, attachmentOptions.internalFormat);
 
@@ -1313,10 +1315,15 @@ function createFramebufferInfo(gl, attachments, width, height) {
     }
 
     if (!attachment) {
-      if (isRenderbufferFormat(format)) {
+      if (samples !== undefined || isRenderbufferFormat(format)) {
         attachment = gl.createRenderbuffer();
         gl.bindRenderbuffer(RENDERBUFFER, attachment);
-        gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+
+        if (samples > 1) {
+          gl.renderbufferStorageMultisample(RENDERBUFFER, samples, format, width, height);
+        } else {
+          gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+        }
       } else {
         var textureOptions = Object.assign({}, attachmentOptions);
         textureOptions.width = width;
@@ -1404,10 +1411,16 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
   attachments.forEach(function (attachmentOptions, ndx) {
     var attachment = framebufferInfo.attachments[ndx];
     var format = attachmentOptions.format;
+    var samples = attachmentOptions.samples;
 
-    if (helper.isRenderbuffer(gl, attachment)) {
+    if (samples !== undefined || helper.isRenderbuffer(gl, attachment)) {
       gl.bindRenderbuffer(RENDERBUFFER, attachment);
-      gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+
+      if (samples > 1) {
+        gl.renderbufferStorageMultisample(RENDERBUFFER, samples, format, width, height);
+      } else {
+        gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+      }
     } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {

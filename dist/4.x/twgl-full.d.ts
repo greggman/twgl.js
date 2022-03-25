@@ -68,6 +68,7 @@ export type AttachmentOptions = TextureOptions & {
     format?: number;
     type?: number;
     target?: number;
+    samples?: number;
     level?: number;
     layer?: number;
     attachment?: WebGLRenderbuffer | WebGLTexture;
