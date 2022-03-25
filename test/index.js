@@ -1,5 +1,6 @@
 /* global mocha */
 
+import './tests/framebuffer-tests.js';
 import './tests/m4-tests.js';
 import './tests/program-tests.js';
 import './tests/v3-tests.js';
