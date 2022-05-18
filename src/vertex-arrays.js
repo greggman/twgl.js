@@ -107,6 +107,9 @@ function createVertexArrayInfo(gl, programInfos, bufferInfo) {
  * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
  * @param {Object.<string, module:twgl.AttribInfo>} attribs AttribInfos mapped by attribute name.
  * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+ *
+ * @return {WebGLVertexArrayObject|null} The created WebGLVertexArrayObject
+ *
  * @memberOf module:twgl/vertexArrays
  */
 function createVAOAndSetAttributes(gl, setters, attribs, indices) {
@@ -131,6 +134,9 @@ function createVAOAndSetAttributes(gl, setters, attribs, indices) {
  * @param {Object.<string, function>| module:twgl.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
  * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
  * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+ *
+ * @return {WebGLVertexArrayObject|null} The created WebGLVertexArrayObject
+ *
  * @memberOf module:twgl/vertexArrays
  */
 function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
