@@ -1,5 +1,9 @@
 # Change List
 
+*   4.22.0
+
+    *   Add samples to attachment options
+
 *   4.21.0
 
     *   Add support for partial uniform paths.
