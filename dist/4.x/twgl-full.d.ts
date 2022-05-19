@@ -334,10 +334,10 @@ export function createVAOAndSetAttributes(gl: WebGLRenderingContext, setters: {
     [key: string]: (...params: any[]) => any;
 }, attribs: {
     [key: string]: AttribInfo;
-}, indices?: WebGLBuffer): void;
+}, indices?: WebGLBuffer): WebGLVertexArrayObject | null;
 export function createVAOFromBufferInfo(gl: WebGLRenderingContext, programInfo: {
     [key: string]: (...params: any[]) => any;
-} | ProgramInfo, bufferInfo: BufferInfo, indices?: WebGLBuffer): void;
+} | ProgramInfo, bufferInfo: BufferInfo, indices?: WebGLBuffer): WebGLVertexArrayObject | null;
 
 declare module v3 {
     export type Vec3 = number[] | Float32Array;
