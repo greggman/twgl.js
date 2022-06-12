@@ -89,6 +89,7 @@ export type ProgramOptions = {
         [key: string]: AttribInfo;
     } | string[];
     transformFeedbackMode?: number;
+    callback?: ProgramCallback;
 };
 export type TransformFeedbackInfo = {
     index: number;
@@ -256,7 +257,14 @@ export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?:
 
 
 export function getBindPointForSamplerType(): void;
+export type ProgramCallback = (err?: string, result?: WebGLProgram | ProgramInfo) => void;
+export function prepShaderSource(shaderSource: string): any;
+export function checkShaderStatus(gl: WebGLRenderingContext, shader: WebGLShader, errFn?: ErrorCallback): boolean;
 export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
+export function createProgramAsync(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<WebGLProgram>;
+export function createProgramInfoAsync(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<ProgramInfo>;
+export function checkForProgramLinkCompletionAsync(gl: WebGLRenderingContext, program: WebGLProgram, progOptions: ProgramOptions): void;
+export function checkProgramStatus(gl: WebGLRenderingContext, program: WebGLProgram, errFn?: ErrorCallback): boolean;
 export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createUniformSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
