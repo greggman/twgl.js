@@ -1,12 +1,5 @@
 # Change List
 
-*   4.23.0
-
-    *   Added async compilation. You can either pass a callback
-        to `createProgramInfo` and `createProgram`, or you can
-        use `createProgramInfoAsync` and `createProgramAsync` for
-        a version that return a promise.
-
 *   4.22.0
 
     *   Add samples to attachment options
