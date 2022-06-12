@@ -99,6 +99,15 @@ function negate(m, dst) {
 }
 
 /**
+ * Creates a matrix.
+ * @return {module:twgl/m4.Mat4} A new matrix.
+ * @memberOf module:twgl/m4
+ */
+function create() {
+  return new MatType(16).fill(0);
+}
+
+/**
  * Copies a matrix.
  * @param {module:twgl/m4.Mat4} m The matrix.
  * @param {module:twgl/m4.Mat4} [dst] The matrix. If not passed a new one is created.
@@ -1266,6 +1275,7 @@ export {
   axisRotate,
   axisRotation,
   copy,
+  create,
   frustum,
   getAxis,
   getTranslation,
