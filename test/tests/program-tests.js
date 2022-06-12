@@ -10,6 +10,7 @@ import {
   createContext,
   createContext2,
   checkColor,
+  itWebGL,
 } from '../webgl.js';
 
 describe('program tests', () => {
@@ -451,6 +452,192 @@ describe('program tests', () => {
     });
     expected.set([301, 302, 303, 304], expected.indexOf(217));
     assertArrayEqual(uboInfo.asFloat, expected);
+  });
+
+  itWebGL('compiles program async with callback', function(done) {
+    const {gl} = createContext();
+    const program = twgl.createProgram(gl, [
+      `void main() { gl_Position = vec4(0); }`,
+      `precision mediump float; void main() { gl_FragColor = vec4(0); }`,
+    ], {
+      callback(err, program) {
+        assertFalsy(err);
+        assertTruthy(program instanceof WebGLProgram);
+        assertTruthy(gl.getProgramParameter(program, gl.LINK_STATUS));
+        gl.useProgram(program);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        assertEqual(gl.getError(), gl.NONE);
+        done();
+      },
+    });
+    assertFalsy(program);  // nothing is returned if callback
+  });
+
+  itWebGL('compiles program async with callback with error', function(done) {
+    const {gl} = createContext();
+    const msgs = [];
+    const program = twgl.createProgram(gl, [
+      `void main() { gl_Position = vec4(0); }`,
+      `precision mediump float; void main() { gl_Frag Color = vec4(0); }`,
+    ], {
+      errorCallback(msg) {
+        msgs.push(msg);
+      },
+      callback(err, program) {
+        assertTruthy(err);
+        assertFalsy(program);
+        assertTruthy(msgs.length > 0);
+        done();
+      },
+    });
+    assertFalsy(program);  // nothing is returned if callback
+  });
+
+  itWebGL('createProgramInfo works async with callback', function(done) {
+    const {gl} = createContext();
+    const programInfo = twgl.createProgramInfo(gl, [
+      `void main() {gl_Position = vec4(0); }`,
+      `precision mediump float;
+       uniform vec4 u_foo;
+       void main() {
+         gl_FragColor = u_foo;
+       }`,
+    ], {
+      callback(err, programInfo) {
+        assertFalsy(err);
+        assertTruthy(programInfo);
+        assertTruthy(programInfo.program instanceof WebGLProgram);
+        assertTruthy(gl.getProgramParameter(programInfo.program, gl.LINK_STATUS));
+        gl.useProgram(programInfo.program);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        done();
+      },
+    });
+    assertFalsy(programInfo);
+  });
+
+  itWebGL('createProgramInfo works with error async with callback', function(done) {
+    const {gl} = createContext();
+    const msgs = [];
+    const programInfo = twgl.createProgramInfo(gl, [
+      `void main() {gl_Position = vec4(0); }`,
+      `precision mediump float;
+       uniform vec4 u_foo;
+       void main() {
+         gl_Frag Color = u_foo;
+       }`,
+    ], {
+      errorCallback(msg) {
+        msgs.push(msg);
+      },
+      callback(err, programInfo) {
+        assertTruthy(err);
+        assertFalsy(programInfo);
+        assertTruthy(msgs.length > 0);
+        done();
+      },
+    });
+    assertFalsy(programInfo);
+  });
+
+  itWebGL('compiles program async with promise', async() => {
+    const {gl} = createContext();
+    const program = await twgl.createProgramAsync(gl, [
+      `void main() { gl_Position = vec4(0); }`,
+      `precision mediump float; void main() { gl_FragColor = vec4(0); }`,
+    ]);
+    assertTruthy(program instanceof WebGLProgram);
+    assertTruthy(gl.getProgramParameter(program, gl.LINK_STATUS));
+    gl.useProgram(program);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    assertEqual(gl.getError(), gl.NONE);
+  });
+
+  itWebGL('compiles program with error async with promise', async() => {
+    const {gl} = createContext();
+    const msgs = [];
+    let err;
+    try {
+      await twgl.createProgramAsync(gl, [
+        `void main() { gl_Position = vec4(0); }`,
+        `precision mediump float; void main() { gl_Frag Color = vec4(0); }`,
+      ], {
+        errorCallback(msg) {
+          msgs.push(msg);
+        },
+      });
+    } catch (e) {
+      err = e;
+    }
+
+    assertTruthy(err);
+    assertTruthy(msgs.length > 0);
+  });
+
+  itWebGL('createProgramInfo works async with promise', async() => {
+    const {gl} = createContext();
+    const programInfo = await twgl.createProgramInfoAsync(gl, [
+      `void main() {gl_Position = vec4(0); }`,
+      `precision mediump float;
+       uniform vec4 u_foo;
+       void main() {
+         gl_FragColor = u_foo;
+       }`,
+    ]);
+    assertTruthy(programInfo);
+    assertTruthy(programInfo.program instanceof WebGLProgram);
+    assertTruthy(gl.getProgramParameter(programInfo.program, gl.LINK_STATUS));
+    gl.useProgram(programInfo.program);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    assertEqual(gl.getError(), gl.NONE);
+  });
+
+  itWebGL('createProgramInfo works async with promise with error', async() => {
+    const {gl} = createContext();
+    const msgs = [];
+    let err;
+    let programInfo;
+    try {
+      programInfo = await twgl.createProgramInfoAsync(gl, [
+        `void main() {gl_Position = vec4(0); }`,
+        `precision mediump float;
+         uniform vec4 u_foo;
+         void main() {
+           gl_Frag Color = u_foo;
+         }`,
+      ], {
+        errorCallback(msg) {
+          msgs.push(msg);
+        },
+      });
+    } catch (e) {
+      err = e;
+    }
+    assertTruthy(err);
+    assertFalsy(programInfo);
+    assertTruthy(msgs.length > 0);
+  });
+
+  itWebGL('createProgramInfo works async with promise bad id', async() => {
+    const {gl} = createContext();
+    const msgs = [];
+    let err;
+    let programInfo;
+    try {
+      programInfo = await twgl.createProgramInfoAsync(gl, [
+        `idThatDoesNotExist`,
+        'anotherIdThatDoesNotExist',
+      ], {
+        errorCallback(msg) {
+          msgs.push(msg);
+        },
+      });
+    } catch (e) {
+      err = e;
+    }
+    assertTruthy(err);
+    assertFalsy(programInfo);
+    assertTruthy(msgs.length > 0);
   });
 
 });
