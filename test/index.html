@@ -12,6 +12,9 @@
     </style>
   </head>
   <body>
+    <div id="timeout" style="display: none; color: red;">
+    warning: timeout = 0
+    </div>
     <div id="mocha">
     </div>
     <script>
@@ -39,11 +42,15 @@
     async function main() {
       mocha.setup('bdd');
       mocha.fullTrace();
-      mocha.timeout(0);
       const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+      let timeout = query.src ? 0 : 1000;
       if (query.timeout !== undefined) {
-        mocha.timeout(query.timeout);
+        timeout = parseInt(query.timeout);
       }
+      if (timeout === 0) {
+        document.querySelector('#timeout').style.display = '';
+      }
+      mocha.timeout(timeout);
       const lint = query.lint !== 'false';
       const throwOnError = !query.warn;
 
