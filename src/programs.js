@@ -553,14 +553,31 @@ function prepShaderSource(shaderSource) {
 }
 
 /**
+ * @param {module:twgl.ProgramOptions} progOptions
+ * @param {string} msg
+ * @return null
+ * @private
+ */
+function reportError(progOptions, msg) {
+  progOptions.errorCallback(msg);
+  if (progOptions.callback) {
+    setTimeout(() => {
+      progOptions.callback(`${msg}\n${progOptions.errors.join('\n')}`);
+    });
+  }
+  return null;
+}
+
+/**
  * Loads a shader.
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {string} shaderSource The shader source.
  * @param {number} shaderType The type of shader.
+ * @param {module:twgl.ProgramOptions} progOptions
  * @return {WebGLShader} The created shader.
  * @private
  */
-function loadShader(gl, shaderSource, shaderType) {
+function loadShader(gl, shaderSource, shaderType, progOptions) {
   // Create the shader object
   const shader = gl.createShader(shaderType);
 
@@ -570,15 +587,22 @@ function loadShader(gl, shaderSource, shaderType) {
   // Compile the shader
   gl.compileShader(shader);
 
+  if (!progOptions.callback && !checkShaderStatus(gl, shaderType, shader, progOptions.errorCallback)) {
+    gl.deleteShader(shader);
+    return null;
+  }
+
   return shader;
 }
 
 /**
  * Check Shader status
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {number} shaderType The shader type
  * @param {WebGLShader} shader The shader
  * @param {ErrorCallback} [errFn] function to receive error message.
- * @returns {bool} true if shader is ok.
+ * @return {bool} true if shader is ok.
+ * @private
  */
 function checkShaderStatus(gl, shaderType, shader, errFn) {
   errFn = errFn || error;
@@ -587,7 +611,6 @@ function checkShaderStatus(gl, shaderType, shader, errFn) {
   if (!compiled) {
     // Something went wrong during compilation; get the error
     const lastError = gl.getShaderInfoLog(shader);
-    const shaderType = gl.getShaderParameter(shader, gl.SHADER_TYPE);
     const {lineOffset, shaderSource} = prepShaderSource(gl.getShaderSource(shader));
     errFn(`${addLineNumbersWithError(shaderSource, lastError, lineOffset)}\nError compiling ${utils.glEnumToString(gl, shaderType)}: ${lastError}`);
   }
@@ -629,7 +652,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   } else if (opt_attribs && !Array.isArray(opt_attribs)) {
     // If we have an errorCallback we can just return this object
     // Otherwise we need to construct one with default errorCallback
-    if (opt_attribs.errorCallback) {
+    if (opt_attribs.errorCallback && opt_attribs.errors) {
       return opt_attribs;
     }
     const opt = opt_attribs;
@@ -640,11 +663,17 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     callback = opt.callback;
   }
 
+  const errorCallback = opt_errorCallback || error;
+  const errors = [];
   const options = {
-    errorCallback: opt_errorCallback || error,
+    errorCallback(msg, ...args) {
+      errors.push(msg);
+      errorCallback(msg, ...args);
+    },
     transformFeedbackVaryings,
     transformFeedbackMode,
     callback,
+    errors,
   };
 
   if (opt_attribs) {
@@ -686,7 +715,7 @@ const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
- * program and calls useProgram.
+ * program.
  *
  * NOTE: There are 4 signatures for this function
  *
@@ -701,7 +730,7 @@ const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
  * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram?} the created program or null if error.
+ * @return {WebGLProgram?} the created program or null if error of a callback was provided.
  * @memberOf module:twgl/programs
  */
 function createProgram(
@@ -720,11 +749,7 @@ function createProgram(
       if (elem && elem.type) {
         type = getShaderTypeFromScriptType(gl, elem.type) || type;
       }
-      shader = loadShader(gl, src, type);
-      if (!progOptions.callback && !checkShaderStatus(gl, shader, opt_errorCallback)) {
-        gl.deleteShader(shader);
-        shader = null;
-      }
+      shader = loadShader(gl, src, type, progOptions);
       newShaders.push(shader);
     }
     if (helper.isShader(gl, shader)) {
@@ -733,9 +758,8 @@ function createProgram(
   }
 
   if (realShaders.length !== shaders.length) {
-    progOptions.errorCallback("not enough shaders for program");
     deleteShaders(gl, newShaders);
-    return null;
+    return reportError(progOptions, "not enough shaders for program");
   }
 
   const program = gl.createProgram();
@@ -801,7 +825,7 @@ function createProgramAsync(gl, shaders, ...args) {
         resolve(program);
       }
     };
-    twgl.createProgram(gl, shaders, programOptions);
+    createProgram(gl, shaders, programOptions);
   });
 }
 
@@ -829,7 +853,7 @@ function createProgramInfoAsync(gl, shaders, ...args) {
         resolve(programInfo);
       }
     };
-    twgl.createProgramInfo(gl, shaders, programOptions);
+    createProgramInfo(gl, shaders, programOptions);
   });
 }
 
@@ -841,6 +865,7 @@ function createProgramInfoAsync(gl, shaders, ...args) {
  * @param {WebGLRenderingContext} gl The context
  * @param {WebGLProgram} program The program
  * @param {module:twgl.ProgramOptions} progOptions Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @private
  */
 async function checkForProgramLinkCompletionAsync(gl, program, progOptions) {
   const ext = gl.getExtension('KHR_parallel_shader_compile');
@@ -854,9 +879,8 @@ async function checkForProgramLinkCompletionAsync(gl, program, progOptions) {
     waitTime = 1000 / 60;
   } while (!checkFn(gl, program));
 
-  const errMsgs = [];
-  const success = checkProgramStatus(gl, program, (msg) => errMsgs.push(msg));
-  const err = success ? undefined : errMsgs.join('\n');
+  const success = checkProgramStatus(gl, program, progOptions.errorCallback);
+  const err = success ? undefined : progOptions.errors.join('\n');
   if (!success) {
     const errFn = progOptions.errorCallback || error;
     errFn(err);
@@ -874,6 +898,7 @@ async function checkForProgramLinkCompletionAsync(gl, program, progOptions) {
  * @param {WebGLProgram} program Program to check
  * @param {ErrorCallback} [errFn] func for errors
  * @return {bool} true if program is ok
+ * @private
  */
 function checkProgramStatus(gl, program, errFn) {
   errFn = errFn || error;
@@ -882,15 +907,7 @@ function checkProgramStatus(gl, program, errFn) {
   if (!linked) {
     // something went wrong with the link
     const lastError = gl.getProgramInfoLog(program);
-    errFn(`${
-      gl.getAttachedShaders(program).map(shader => {
-        const {lineOffset, shaderSource} = prepShaderSource(gl.getShaderSource(shader));
-        const shaderError = gl.getShaderInfoLog(shader);
-        const src = addLineNumbersWithError(shaderSource, shaderError, lineOffset);
-        const type = gl.getShaderParameter(shader, gl.SHADER_TYPE);
-        return `${utils.glEnumToString(gl, type)}\n${src}}`;
-      }).join('\n')
-    }\nError in program linking: ${lastError}`);
+    errFn(`Error in program linking: ${lastError}`);
   }
   return linked;
 }
@@ -901,25 +918,25 @@ function checkProgramStatus(gl, program, errFn) {
  * @param {string} scriptId The id of the script tag.
  * @param {number} [opt_shaderType] The type of shader. If not passed in it will
  *     be derived from the type of the script tag.
- * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors.
+ * @param {module:twgl.ProgramOptions} [progOptions] callback for errors.
  * @return {WebGLShader?} The created shader or null if error.
  * @private
  */
 function createShaderFromScript(
-    gl, scriptId, opt_shaderType, opt_errorCallback) {
+    gl, scriptId, opt_shaderType, progOptions) {
   let shaderSource = "";
   const shaderScript = getElementById(scriptId);
   if (!shaderScript) {
-    throw new Error(`unknown script element: ${scriptId}`);
+    return reportError(progOptions, `unknown script element: ${scriptId}`);
   }
   shaderSource = shaderScript.text;
 
   const shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
   if (!shaderType) {
-    throw new Error('unknown shader type');
+    return reportError(progOptions, 'unknown shader type');
   }
 
-  return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
+  return loadShader(gl, shaderSource, shaderType, progOptions);
 }
 
 /**
@@ -941,7 +958,7 @@ function createShaderFromScript(
  * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram?} the created program or null if error.
+ * @return {WebGLProgram?} the created program or null if error or a callback was provided.
  * @memberOf module:twgl/programs
  */
 function createProgramFromScripts(
@@ -950,7 +967,7 @@ function createProgramFromScripts(
   const shaders = [];
   for (let ii = 0; ii < shaderScriptIds.length; ++ii) {
     const shader = createShaderFromScript(
-        gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+        gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions);
     if (!shader) {
       return null;
     }
@@ -978,7 +995,7 @@ function createProgramFromScripts(
  * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram?} the created program or null if error.
+ * @return {WebGLProgram?} the created program or null if error or a callback was provided.
  * @memberOf module:twgl/programs
  */
 function createProgramFromSources(
@@ -986,9 +1003,8 @@ function createProgramFromSources(
   const progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   const shaders = [];
   for (let ii = 0; ii < shaderSources.length; ++ii) {
-    const shader = loadShader(
-        gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
-    if (!shader) {
+    const shader = loadShader(gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions);
+    if (!progOptions.callback && !shader) {
       return null;
     }
     shaders.push(shader);
@@ -2052,10 +2068,7 @@ function createProgramInfo(
     return source;
   });
   if (errors.length) {
-    if (progOptions.callback) {
-      progOptions.callback(errors.join('\n'));
-    }
-    return null;
+    return reportError(progOptions, '');
   }
   const origCallback = progOptions.callback;
   if (origCallback) {
@@ -2069,7 +2082,6 @@ function createProgramInfo(
   }
   const program = createProgramFromSources(gl, shaderSources, progOptions);
   if (!program) {
-    // we should never get if if we have a callback
     return null;
   }
   return createProgramInfoFromProgram(gl, program);
