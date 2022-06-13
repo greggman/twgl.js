@@ -1157,6 +1157,7 @@ function loadAndUseImage(obj, crossOrigin, callback) {
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
+ * @private
  */
 function setTextureTo1PixelColor(gl, tex, options) {
   options = options || defaults.textureOptions;
@@ -1266,6 +1267,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  * @param {module:twgl.CubemapReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 function loadCubemapFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
@@ -1349,6 +1351,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  * @param {module:twgl.ThreeDReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 function loadSlicesFromUrls(gl, tex, options, callback) {
   callback = callback || noop;

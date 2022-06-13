@@ -4814,6 +4814,7 @@ var TEXTURE_2D_ARRAY = 0x8C1A;
 var typeMap = {};
 /**
  * Returns the corresponding bind point for a given sampler type
+ * @private
  */
 
 function getBindPointForSamplerType(gl, type) {
@@ -5533,6 +5534,7 @@ var spaceRE = /^[ \t]*\n/;
  *
  * @param {string} shaderSource The source of the shader
  * @returns {{shaderSource: string, lineOffset: number}}
+ * @private
  */
 
 function prepShaderSource(shaderSource) {
@@ -7062,6 +7064,7 @@ function createAttributeSetters(gl, program) {
  * @param {Object.<string, module:twgl.AttribInfo>} buffers AttribInfos mapped by attribute name.
  * @memberOf module:twgl/programs
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
+ * @private
  */
 
 
@@ -8898,6 +8901,7 @@ function loadAndUseImage(obj, crossOrigin, callback) {
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
+ * @private
  */
 
 
@@ -9012,6 +9016,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  * @param {module:twgl.CubemapReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 
 
@@ -9100,6 +9105,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  * @param {module:twgl.ThreeDReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 
 
@@ -10009,6 +10015,8 @@ function create3DContext(canvas, opt_attribs) {
  * @param {WebGLContextAttributes} [opt_attribs] optional webgl context creation attributes
  * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
+ * @deprecated
+ * @private
  */
 
 

@@ -7,7 +7,6 @@ export type Defaults = {
 };
 export function setDefaults(newDefaults: Defaults): void;
 export function addExtensionsToContext(gl: WebGLRenderingContext): void;
-export function getWebGLContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function createContext(canvas: HTMLCanvasElement): WebGLRenderingContext;
 export function getContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext;
 export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, multiplier?: number): boolean;
@@ -256,9 +255,7 @@ export function resizeFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo
 export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?: FramebufferInfo | null, target?: number): void;
 
 
-export function getBindPointForSamplerType(): void;
 export type ProgramCallback = (err?: string, result?: WebGLProgram | ProgramInfo) => void;
-export function prepShaderSource(shaderSource: string): any;
 export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 export function createProgramAsync(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<WebGLProgram>;
 export function createProgramInfoAsync(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<ProgramInfo>;
@@ -288,11 +285,6 @@ export function setUniformsAndBindTextures(setters: ProgramInfo | {
 export function createAttributeSetters(gl: WebGLRenderingContext, program: WebGLProgram): {
     [key: string]: (...params: any[]) => any;
 };
-export function setAttributes(setters: {
-    [key: string]: (...params: any[]) => any;
-}, buffers: {
-    [key: string]: AttribInfo;
-}): void;
 export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: ProgramInfo | {
     [key: string]: (...params: any[]) => any;
 }, buffers: BufferInfo | VertexArrayInfo): void;
@@ -314,10 +306,7 @@ export function setTextureParameters(gl: WebGLRenderingContext, tex: WebGLTextur
 export function setSamplerParameters(gl: WebGLRenderingContext, sampler: WebGLSampler, options: TextureOptions): void;
 export function setTextureFilteringForSize(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions, width?: number, height?: number, internalFormat?: number): void;
 export function setTextureFromElement(gl: WebGLRenderingContext, tex: WebGLTexture, element: HTMLElement, options?: TextureOptions): void;
-export function setTextureTo1PixelColor(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions): void;
 export function loadTextureFromUrl(gl: WebGLRenderingContext, tex: WebGLTexture, options?: TextureOptions, callback?: TextureReadyCallback): HTMLImageElement;
-export function loadCubemapFromUrls(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, callback?: CubemapReadyCallback): void;
-export function loadSlicesFromUrls(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions, callback?: ThreeDReadyCallback): void;
 export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture, src: number[] | ArrayBufferView, options?: TextureOptions): void;
 export function setEmptyTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions): void;
 export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;

@@ -121,6 +121,7 @@ const typeMap = {};
 
 /**
  * Returns the corresponding bind point for a given sampler type
+ * @private
  */
 function getBindPointForSamplerType(gl, type) {
   return typeMap[type].bindPoint;
@@ -542,6 +543,7 @@ const spaceRE = /^[ \t]*\n/;
  *
  * @param {string} shaderSource The source of the shader
  * @returns {{shaderSource: string, lineOffset: number}}
+ * @private
  */
 function prepShaderSource(shaderSource) {
   let lineOffset = 0;
@@ -1915,6 +1917,7 @@ function createAttributeSetters(gl, program) {
  * @param {Object.<string, module:twgl.AttribInfo>} buffers AttribInfos mapped by attribute name.
  * @memberOf module:twgl/programs
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
+ * @private
  */
 function setAttributes(setters, buffers) {
   for (const name in buffers) {

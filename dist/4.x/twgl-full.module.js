@@ -6088,6 +6088,7 @@ function loadAndUseImage(obj, crossOrigin, callback) {
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
+ * @private
  */
 function setTextureTo1PixelColor(gl, tex, options) {
   options = options || defaults$1.textureOptions;
@@ -6197,6 +6198,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  * @param {module:twgl.CubemapReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 function loadCubemapFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
@@ -6280,6 +6282,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  * @param {module:twgl.ThreeDReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 function loadSlicesFromUrls(gl, tex, options, callback) {
   callback = callback || noop;
@@ -6858,6 +6861,7 @@ const typeMap = {};
 
 /**
  * Returns the corresponding bind point for a given sampler type
+ * @private
  */
 function getBindPointForSamplerType(gl, type) {
   return typeMap[type].bindPoint;
@@ -7276,6 +7280,7 @@ const spaceRE = /^[ \t]*\n/;
  *
  * @param {string} shaderSource The source of the shader
  * @returns {{shaderSource: string, lineOffset: number}}
+ * @private
  */
 function prepShaderSource(shaderSource) {
   let lineOffset = 0;
@@ -8649,6 +8654,7 @@ function createAttributeSetters(gl, program) {
  * @param {Object.<string, module:twgl.AttribInfo>} buffers AttribInfos mapped by attribute name.
  * @memberOf module:twgl/programs
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
+ * @private
  */
 function setAttributes(setters, buffers) {
   for (const name in buffers) {
@@ -9776,6 +9782,8 @@ function create3DContext(canvas, opt_attribs) {
  * @param {WebGLContextAttributes} [opt_attribs] optional webgl context creation attributes
  * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
+ * @deprecated
+ * @private
  */
 function getWebGLContext(canvas, opt_attribs) {
   const gl = create3DContext(canvas, opt_attribs);
