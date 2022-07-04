@@ -1,4 +1,4 @@
-/* @license twgl.js 4.23.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.23.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -2431,6 +2431,9 @@ function getNumElementsFromNonIndexedArrays(arrays) {
   }
   const array = arrays[key];
   const length = getArray(array).length;
+  if (length === undefined) {
+    return 1;   // There's no arrays
+  }
   const numComponents = getNumComponents(array, key);
   const numElements = length / numComponents;
   if (length % numComponents > 0) {
@@ -2456,6 +2459,9 @@ function getNumElementsFromAttributes(gl, attribs) {
     key = Object.keys(attribs)[0];
   }
   const attrib = attribs[key];
+  if (!attrib.buffer) {
+    return 1; // There's no buffer
+  }
   gl.bindBuffer(ARRAY_BUFFER, attrib.buffer);
   const numBytes = gl.getBufferParameter(ARRAY_BUFFER, BUFFER_SIZE);
   gl.bindBuffer(ARRAY_BUFFER, null);
