@@ -1,5 +1,14 @@
 import {it} from './mocha-support.js';
-import {assertArrayEqual} from './assert.js';
+import {assertArrayEqual, assertEqual} from './assert.js';
+
+export function assertWebGLError(gl, expected, msg = '') {
+  const err = gl.getError();
+  assertEqual(err, expected, `${twgl.glEnumToString(gl, err)} === ${twgl.glEnumToString(gl, expected)}: ${msg}`);
+}
+
+export function assertNoWebGLError(gl, msg = '') {
+  assertWebGLError(gl, gl.NO_ERROR, msg);
+}
 
 export function createContext() {
   const gl = document.createElement('canvas').getContext('webgl');
