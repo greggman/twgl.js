@@ -1,5 +1,13 @@
 # Change List
 
+*   4.24.0
+
+    *   Have createFramebufferInfo call drawBuffers
+
+*   4.23.0
+
+    *   Add async shader compilation support
+
 *   4.22.0
 
     *   Add samples to attachment options
