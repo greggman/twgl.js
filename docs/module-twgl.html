@@ -1293,7 +1293,10 @@ srcBufferInfo.</p>
 
 <div class="description">
     <p>Creates a framebuffer and attachments.</p>
-<p>This returns a <a href="module-twgl.html#.FramebufferInfo"><code>module:twgl.FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.</p>
+<p>This returns a <a href="module-twgl.html#.FramebufferInfo"><code>module:twgl.FramebufferInfo</code></a> because it needs to return the attachments as well as the framebuffer.<br>
+It also leaves the framebuffer it just created as the currently bound <code>FRAMEBUFFER</code>.<br>
+Note: If this is WebGL2 or if you called <a href="module-twgl.html#.addExtensionsToContext"><code>module:twgl.addExtensionsToContext</code></a> then it will set the drawBuffers<br>
+to <code>[COLOR_ATTACHMENT0, COLOR_ATTACHMENT1, ...]</code> for how ever many color attachments were created.</p>
 <p>The simplest usage</p>
 <pre><code>// create an RGBA/UNSIGNED_BYTE texture and DEPTH_STENCIL renderbuffer
 const fbi = twgl.createFramebufferInfo(gl);

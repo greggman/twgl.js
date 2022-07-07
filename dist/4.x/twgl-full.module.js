@@ -1,4 +1,4 @@
-/* @license twgl.js 4.23.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 4.24.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -9146,6 +9146,12 @@ function isRenderbufferFormat(format) {
   return renderbufferFormats[format];
 }
 
+const MAX_COLOR_ATTACHMENT_POINTS = 32;  // even an 3090 only supports 8 but WebGL/OpenGL ES define constants for 32
+
+function isColorAttachmentPoint(attachmentPoint) {
+  return attachmentPoint >= COLOR_ATTACHMENT0 && attachmentPoint < COLOR_ATTACHMENT0 + MAX_COLOR_ATTACHMENT_POINTS;
+}
+
 /**
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
@@ -9159,6 +9165,9 @@ function isRenderbufferFormat(format) {
  * Creates a framebuffer and attachments.
  *
  * This returns a {@link module:twgl.FramebufferInfo} because it needs to return the attachments as well as the framebuffer.
+ * It also leaves the framebuffer it just created as the currently bound `FRAMEBUFFER`.
+ * Note: If this is WebGL2 or if you called {@link module:twgl.addExtensionsToContext} then it will set the drawBuffers
+ * to `[COLOR_ATTACHMENT0, COLOR_ATTACHMENT1, ...]` for how ever many color attachments were created.
  *
  * The simplest usage
  *
@@ -9198,20 +9207,24 @@ function createFramebufferInfo(gl, attachments, width, height) {
   width  = width  || gl.drawingBufferWidth;
   height = height || gl.drawingBufferHeight;
   attachments = attachments || defaultAttachments;
-  let colorAttachmentCount = 0;
+  const usedColorAttachmentsPoints = [];
   const framebufferInfo = {
     framebuffer: fb,
     attachments: [],
     width: width,
     height: height,
   };
-  attachments.forEach(function(attachmentOptions) {
+
+  attachments.forEach(function(attachmentOptions, i) {
     let attachment = attachmentOptions.attachment;
     const samples = attachmentOptions.samples;
     const format = attachmentOptions.format;
     let attachmentPoint = attachmentOptions.attachmentPoint || getAttachmentPointForFormat(format, attachmentOptions.internalFormat);
     if (!attachmentPoint) {
-      attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
+      attachmentPoint = COLOR_ATTACHMENT0 + i;
+    }
+    if (isColorAttachmentPoint(attachmentPoint)) {
+      usedColorAttachmentsPoints.push(attachmentPoint);
     }
     if (!attachment) {
       if (samples !== undefined || isRenderbufferFormat(format)) {
@@ -9259,6 +9272,9 @@ function createFramebufferInfo(gl, attachments, width, height) {
     }
     framebufferInfo.attachments.push(attachment);
   });
+  if (gl.drawBuffers) {
+    gl.drawBuffers(usedColorAttachmentsPoints);
+  }
   return framebufferInfo;
 }
 
