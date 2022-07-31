@@ -120,7 +120,7 @@
 
   const mousepos = [0.5, 0.5];
   const canvas = document.getElementById('canvasgl');
-  const gl = twgl.getContext(canvas, { depth: false, antialiasing: false });
+  const gl = canvas.getContext('webgl', { depth: false, antialiasing: false });
 
   const programInit = twgl.createProgramInfo(gl, [vInit, fInit]);
   const programPhysics = twgl.createProgramInfo(gl, [vPhysics, fPhysics]);

@@ -60,7 +60,7 @@
     }`;
 
   const canvas = document.getElementById('canvasgl');
-  const gl = twgl.getContext(canvas, {depth: false });
+  const gl = canvas.getContext('webgl', {depth: false});
   const programInfo = twgl.createProgramInfo(gl, [vsource, fsource]);
 
   gl.useProgram(programInfo.program);

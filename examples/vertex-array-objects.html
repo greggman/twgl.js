@@ -179,7 +179,7 @@ void main() {
     import * as twgl from '../dist/4.x/twgl-full.module.js';
     twgl.setDefaults({attribPrefix: "a_"});
     const m4 = twgl.m4;
-    const gl = twgl.getContext(document.getElementById("c"));
+    const gl = document.getElementById("c").getContext('webgl2');
     if (!gl.createVertexArray) {
       alert("requires OES_vertex_array_object extension or WebGL 2");  // eslint-disable-line
     }

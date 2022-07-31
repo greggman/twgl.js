@@ -145,7 +145,7 @@ import * as twgl from '../dist/4.x/twgl-full.module.js';
 function main() {
   const m4 = twgl.m4;
   twgl.setDefaults({attribPrefix: "a_"});
-  const gl = twgl.getContext(document.getElementById("c"));
+  const gl = document.getElementById("c").getContext('webgl2');
   console.log("using:" + gl.getParameter(gl.VERSION));  // eslint-disable-line
   if (!twgl.isWebGL2(gl)) {
     alert("Sorry, this example requires WebGL 2.0");  // eslint-disable-line
