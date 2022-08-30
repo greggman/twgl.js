@@ -46,7 +46,7 @@
  *
  *    example:
  *
- *        const arrays = twgl.primitives.createPlaneArrays(1);
+ *        const arrays = twgl.primitives.createPlaneVertices(1);
  *        twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
  *        const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
  *
