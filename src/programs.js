@@ -395,9 +395,7 @@ function floatAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribPointer(
           index, b.numComponents || b.size, b.type || FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
-      }
+      gl.vertexAttribDivisor(index, b.divisor || 0);
     }
   };
 }
@@ -416,9 +414,7 @@ function intAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(
           index, b.numComponents || b.size, b.type || INT, b.stride || 0, b.offset || 0);
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
-      }
+      gl.vertexAttribDivisor(index, b.divisor || 0);
     }
   };
 }
@@ -437,9 +433,7 @@ function uintAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(
           index, b.numComponents || b.size, b.type || UNSIGNED_INT, b.stride || 0, b.offset || 0);
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
-      }
+      gl.vertexAttribDivisor(index, b.divisor || 0);
     }
   };
 }
@@ -462,9 +456,7 @@ function matAttribSetter(gl, index, typeInfo) {
       gl.enableVertexAttribArray(index + i);
       gl.vertexAttribPointer(
           index + i, size, type, normalize, stride, offset + rowOffset * i);
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index + i, b.divisor);
-      }
+      gl.vertexAttribDivisor(index + i, b.divisor || 0);
     }
   };
 }
