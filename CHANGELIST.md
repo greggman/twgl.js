@@ -1,5 +1,12 @@
 # Change List
 
+*   5.0.0
+
+    *   Always set attribute divisor if it exists
+
+        This is a breaking change since before twgl didn't set
+        the divisors if you didn't assign an divisor to an attribute.
+
 *   4.24.0
 
     *   Have createFramebufferInfo call drawBuffers
