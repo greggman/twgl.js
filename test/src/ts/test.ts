@@ -1,7 +1,7 @@
 // Ensure that TypeScript can successfully compile with twgl as a dependency.
 // You probably want to run `npm run buildts` before running this test.
 
-import * as twgl from "../../../dist/4.x/twgl-full";
+import * as twgl from "../../../dist/5.x/twgl-full";
 
 window.addEventListener("onload", function() {
     const canvas = <HTMLCanvasElement> document.getElementById("myCanvas");

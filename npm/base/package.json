@@ -3,8 +3,8 @@
   "version": "5.0.0",
   "description": "A Tiny WebGL helper library",
   "main": "dist/5.x/twgl.js",
-  "types": "dist/4.x/twgl-full.d.ts",
-  "module": "dist/4.x/twgl-full.module.js",
+  "types": "dist/5.x/twgl-full.d.ts",
+  "module": "dist/5.x/twgl-full.module.js",
   "scripts": {},
   "repository": {
     "type": "git",

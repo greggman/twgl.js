@@ -1,28 +1,5 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-/** echo  * @license echo  * while read i do echo  *  done echo
-*/
-!function(){var Color,K,PITHIRD,TWOPI,X,Y,Z,bezier,brewer,chroma,clip_rgb,colors,cos,css2rgb,hex2rgb,hsi2rgb,hsl2rgb,hsv2rgb,lab2lch,lab2rgb,lab_xyz,lch2lab,lch2rgb,limit,luminance,luminance_x,rgb2hex,rgb2hsi,rgb2hsl,rgb2hsv,rgb2lab,rgb2lch,rgb_xyz,root,type,unpack,xyz_lab,xyz_rgb,_ref;chroma=function(x,y,z,m){return new Color(x,y,z,m)};if(typeof module!=="undefined"&&module!==null&&module.exports!=null){module.exports=chroma}if(typeof define==="function"&&define.amd){define([],function(){return chroma})}else{root=typeof exports!=="undefined"&&exports!==null?exports:this;root.chroma=chroma}chroma.color=function(x,y,z,m){return new Color(x,y,z,m)};chroma.hsl=function(h,s,l,a){return new Color(h,s,l,a,"hsl")};chroma.hsv=function(h,s,v,a){return new Color(h,s,v,a,"hsv")};chroma.rgb=function(r,g,b,a){return new Color(r,g,b,a,"rgb")};chroma.hex=function(x){return new Color(x)};chroma.css=function(x){return new Color(x)};chroma.lab=function(l,a,b){return new Color(l,a,b,"lab")};chroma.lch=function(l,c,h){return new Color(l,c,h,"lch")};chroma.hsi=function(h,s,i){return new Color(h,s,i,"hsi")};chroma.gl=function(r,g,b,a){return new Color(r*255,g*255,b*255,a,"gl")};chroma.interpolate=function(a,b,f,m){if(a==null||b==null){return"#000"}if(type(a)==="string"){a=new Color(a)}if(type(b)==="string"){b=new Color(b)}return a.interpolate(f,b,m)};chroma.mix=chroma.interpolate;chroma.contrast=function(a,b){var l1,l2;if(type(a)==="string"){a=new Color(a)}if(type(b)==="string"){b=new Color(b)}l1=a.luminance();l2=b.luminance();if(l1>l2){return(l1+.05)/(l2+.05)}else{return(l2+.05)/(l1+.05)}};chroma.luminance=function(color){return chroma(color).luminance()};chroma._Color=Color;Color=function(){function Color(){var a,arg,args,m,me,me_rgb,x,y,z,_i,_len,_ref,_ref1,_ref2,_ref3,_ref4;me=this;args=[];for(_i=0,_len=arguments.length;_i<_len;_i++){arg=arguments[_i];if(arg!=null){args.push(arg)}}if(args.length===0){_ref=[255,0,255,1,"rgb"],x=_ref[0],y=_ref[1],z=_ref[2],a=_ref[3],m=_ref[4]}else if(type(args[0])==="array"){if(args[0].length===3){_ref1=args[0],x=_ref1[0],y=_ref1[1],z=_ref1[2];a=1}else if(args[0].length===4){_ref2=args[0],x=_ref2[0],y=_ref2[1],z=_ref2[2],a=_ref2[3]}else{throw"unknown input argument"}m=(_ref3=args[1])!=null?_ref3:"rgb"}else if(type(args[0])==="string"){x=args[0];m="hex"}else if(type(args[0])==="object"){_ref4=args[0]._rgb,x=_ref4[0],y=_ref4[1],z=_ref4[2],a=_ref4[3];m="rgb"}else if(args.length>=3){x=args[0];y=args[1];z=args[2]}if(args.length===3){m="rgb";a=1}else if(args.length===4){if(type(args[3])==="string"){m=args[3];a=1}else if(type(args[3])==="number"){m="rgb";a=args[3]}}else if(args.length===5){a=args[3];m=args[4]}if(a==null){a=1}if(m==="rgb"){me._rgb=[x,y,z,a]}else if(m==="gl"){me._rgb=[x*255,y*255,z*255,a]}else if(m==="hsl"){me._rgb=hsl2rgb(x,y,z);me._rgb[3]=a}else if(m==="hsv"){me._rgb=hsv2rgb(x,y,z);me._rgb[3]=a}else if(m==="hex"){me._rgb=hex2rgb(x)}else if(m==="lab"){me._rgb=lab2rgb(x,y,z);me._rgb[3]=a}else if(m==="lch"){me._rgb=lch2rgb(x,y,z);me._rgb[3]=a}else if(m==="hsi"){me._rgb=hsi2rgb(x,y,z);me._rgb[3]=a}me_rgb=clip_rgb(me._rgb)}Color.prototype.rgb=function(){return this._rgb.slice(0,3)};Color.prototype.rgba=function(){return this._rgb};Color.prototype.hex=function(){return rgb2hex(this._rgb)};Color.prototype.toString=function(){return this.name()};Color.prototype.hsl=function(){return rgb2hsl(this._rgb)};Color.prototype.hsv=function(){return rgb2hsv(this._rgb)};Color.prototype.lab=function(){return rgb2lab(this._rgb)};Color.prototype.lch=function(){return rgb2lch(this._rgb)};Color.prototype.hsi=function(){return rgb2hsi(this._rgb)};Color.prototype.gl=function(){return[this._rgb[0]/255,this._rgb[1]/255,this._rgb[2]/255,this._rgb[3]]};Color.prototype.luminance=function(lum,mode){var cur_lum,eps,max_iter,test;if(mode==null){mode="rgb"}if(!arguments.length){return luminance(this._rgb)}if(lum===0){this._rgb=[0,0,0,this._rgb[3]]}if(lum===1){this._rgb=[255,255,255,this._rgb[3]]}cur_lum=luminance(this._rgb);eps=1e-7;max_iter=20;test=function(l,h){var lm,m;m=l.interpolate(.5,h,mode);lm=m.luminance();if(Math.abs(lum-lm)<eps||!max_iter--){return m}if(lm>lum){return test(l,m)}return test(m,h)};this._rgb=(cur_lum>lum?test(new Color("black"),this):test(this,new Color("white"))).rgba();return this};Color.prototype.name=function(){var h,k;h=this.hex();for(k in chroma.colors){if(h===chroma.colors[k]){return k}}return h};Color.prototype.alpha=function(alpha){if(arguments.length){this._rgb[3]=alpha;return this}return this._rgb[3]};Color.prototype.css=function(mode){var hsl,me,rgb,rnd;if(mode==null){mode="rgb"}me=this;rgb=me._rgb;if(mode.length===3&&rgb[3]<1){mode+="a"}if(mode==="rgb"){return mode+"("+rgb.slice(0,3).map(Math.round).join(",")+")"}else if(mode==="rgba"){return mode+"("+rgb.slice(0,3).map(Math.round).join(",")+","+rgb[3]+")"}else if(mode==="hsl"||mode==="hsla"){hsl=me.hsl();rnd=function(a){return Math.round(a*100)/100};hsl[0]=rnd(hsl[0]);hsl[1]=rnd(hsl[1]*100)+"%";hsl[2]=rnd(hsl[2]*100)+"%";if(mode.length===4){hsl[3]=rgb[3]}return mode+"("+hsl.join(",")+")"}};Color.prototype.interpolate=function(f,col,m){var dh,hue,hue0,hue1,lbv,lbv0,lbv1,me,res,sat,sat0,sat1,xyz0,xyz1;me=this;if(m==null){m="rgb"}if(type(col)==="string"){col=new Color(col)}if(m==="hsl"||m==="hsv"||m==="lch"||m==="hsi"){if(m==="hsl"){xyz0=me.hsl();xyz1=col.hsl()}else if(m==="hsv"){xyz0=me.hsv();xyz1=col.hsv()}else if(m==="hsi"){xyz0=me.hsi();xyz1=col.hsi()}else if(m==="lch"){xyz0=me.lch();xyz1=col.lch()}if(m.substr(0,1)==="h"){hue0=xyz0[0],sat0=xyz0[1],lbv0=xyz0[2];hue1=xyz1[0],sat1=xyz1[1],lbv1=xyz1[2]}else{lbv0=xyz0[0],sat0=xyz0[1],hue0=xyz0[2];lbv1=xyz1[0],sat1=xyz1[1],hue1=xyz1[2]}if(!isNaN(hue0)&&!isNaN(hue1)){if(hue1>hue0&&hue1-hue0>180){dh=hue1-(hue0+360)}else if(hue1<hue0&&hue0-hue1>180){dh=hue1+360-hue0}else{dh=hue1-hue0}hue=hue0+f*dh}else if(!isNaN(hue0)){hue=hue0;if((lbv1===1||lbv1===0)&&m!=="hsv"){sat=sat0}}else if(!isNaN(hue1)){hue=hue1;if((lbv0===1||lbv0===0)&&m!=="hsv"){sat=sat1}}else{hue=Number.NaN}if(sat==null){sat=sat0+f*(sat1-sat0)}lbv=lbv0+f*(lbv1-lbv0);if(m.substr(0,1)==="h"){res=new Color(hue,sat,lbv,m)}else{res=new Color(lbv,sat,hue,m)}}else if(m==="rgb"){xyz0=me._rgb;xyz1=col._rgb;res=new Color(xyz0[0]+f*(xyz1[0]-xyz0[0]),xyz0[1]+f*(xyz1[1]-xyz0[1]),xyz0[2]+f*(xyz1[2]-xyz0[2]),m)}else if(m==="lab"){xyz0=me.lab();xyz1=col.lab();res=new Color(xyz0[0]+f*(xyz1[0]-xyz0[0]),xyz0[1]+f*(xyz1[1]-xyz0[1]),xyz0[2]+f*(xyz1[2]-xyz0[2]),m)}else{throw"color mode "+m+" is not supported"}res.alpha(me.alpha()+f*(col.alpha()-me.alpha()));return res};Color.prototype.premultiply=function(){var a,rgb;rgb=this.rgb();a=this.alpha();return chroma(rgb[0]*a,rgb[1]*a,rgb[2]*a,a)};Color.prototype.darken=function(amount){var lch,me;if(amount==null){amount=20}me=this;lch=me.lch();lch[0]-=amount;return chroma.lch(lch).alpha(me.alpha())};Color.prototype.darker=function(amount){return this.darken(amount)};Color.prototype.brighten=function(amount){if(amount==null){amount=20}return this.darken(-amount)};Color.prototype.brighter=function(amount){return this.brighten(amount)};Color.prototype.saturate=function(amount){var lch,me;if(amount==null){amount=20}me=this;lch=me.lch();lch[1]+=amount;return chroma.lch(lch).alpha(me.alpha())};Color.prototype.desaturate=function(amount){if(amount==null){amount=20}return this.saturate(-amount)};return Color}();clip_rgb=function(rgb){var i;for(i in rgb){if(i<3){if(rgb[i]<0){rgb[i]=0}if(rgb[i]>255){rgb[i]=255}}else if(i===3){if(rgb[i]<0){rgb[i]=0}if(rgb[i]>1){rgb[i]=1}}}return rgb};css2rgb=function(css){var hsl,i,m,rgb,_i,_j,_k,_l;css=css.toLowerCase();if(chroma.colors!=null&&chroma.colors[css]){return hex2rgb(chroma.colors[css])}if(m=css.match(/rgb\(\s*(\-?\d+),\s*(\-?\d+)\s*,\s*(\-?\d+)\s*\)/)){rgb=m.slice(1,4);for(i=_i=0;_i<=2;i=++_i){rgb[i]=+rgb[i]}rgb[3]=1}else if(m=css.match(/rgba\(\s*(\-?\d+),\s*(\-?\d+)\s*,\s*(\-?\d+)\s*,\s*([01]|[01]?\.\d+)\)/)){rgb=m.slice(1,5);for(i=_j=0;_j<=3;i=++_j){rgb[i]=+rgb[i]}}else if(m=css.match(/rgb\(\s*(\-?\d+(?:\.\d+)?)%,\s*(\-?\d+(?:\.\d+)?)%\s*,\s*(\-?\d+(?:\.\d+)?)%\s*\)/)){rgb=m.slice(1,4);for(i=_k=0;_k<=2;i=++_k){rgb[i]=Math.round(rgb[i]*2.55)}rgb[3]=1}else if(m=css.match(/rgba\(\s*(\-?\d+(?:\.\d+)?)%,\s*(\-?\d+(?:\.\d+)?)%\s*,\s*(\-?\d+(?:\.\d+)?)%\s*,\s*([01]|[01]?\.\d+)\)/)){rgb=m.slice(1,5);for(i=_l=0;_l<=2;i=++_l){rgb[i]=Math.round(rgb[i]*2.55)}rgb[3]=+rgb[3]}else if(m=css.match(/hsl\(\s*(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)%\s*,\s*(\-?\d+(?:\.\d+)?)%\s*\)/)){hsl=m.slice(1,4);hsl[1]*=.01;hsl[2]*=.01;rgb=hsl2rgb(hsl);rgb[3]=1}else if(m=css.match(/hsla\(\s*(\-?\d+(?:\.\d+)?),\s*(\-?\d+(?:\.\d+)?)%\s*,\s*(\-?\d+(?:\.\d+)?)%\s*,\s*([01]|[01]?\.\d+)\)/)){hsl=m.slice(1,4);hsl[1]*=.01;hsl[2]*=.01;rgb=hsl2rgb(hsl);rgb[3]=+m[4]}return rgb};hex2rgb=function(hex){var a,b,g,r,rgb,u;if(hex.match(/^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)){if(hex.length===4||hex.length===7){hex=hex.substr(1)}if(hex.length===3){hex=hex.split("");hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2]}u=parseInt(hex,16);r=u>>16;g=u>>8&255;b=u&255;return[r,g,b,1]}if(hex.match(/^#?([A-Fa-f0-9]{8})$/)){if(hex.length===9){hex=hex.substr(1)}u=parseInt(hex,16);r=u>>24&255;g=u>>16&255;b=u>>8&255;a=u&255;return[r,g,b,a]}if(rgb=css2rgb(hex)){return rgb}throw"unknown color: "+hex};hsi2rgb=function(h,s,i){var b,g,r,_ref;_ref=unpack(arguments),h=_ref[0],s=_ref[1],i=_ref[2];h/=360;if(h<1/3){b=(1-s)/3;r=(1+s*cos(TWOPI*h)/cos(PITHIRD-TWOPI*h))/3;g=1-(b+r)}else if(h<2/3){h-=1/3;r=(1-s)/3;g=(1+s*cos(TWOPI*h)/cos(PITHIRD-TWOPI*h))/3;b=1-(r+g)}else{h-=2/3;g=(1-s)/3;b=(1+s*cos(TWOPI*h)/cos(PITHIRD-TWOPI*h))/3;r=1-(g+b)}r=limit(i*r*3);g=limit(i*g*3);b=limit(i*b*3);return[r*255,g*255,b*255]};hsl2rgb=function(){var b,c,g,h,i,l,r,s,t1,t2,t3,_i,_ref,_ref1;_ref=unpack(arguments),h=_ref[0],s=_ref[1],l=_ref[2];if(s===0){r=g=b=l*255}else{t3=[0,0,0];c=[0,0,0];t2=l<.5?l*(1+s):l+s-l*s;t1=2*l-t2;h/=360;t3[0]=h+1/3;t3[1]=h;t3[2]=h-1/3;for(i=_i=0;_i<=2;i=++_i){if(t3[i]<0){t3[i]+=1}if(t3[i]>1){t3[i]-=1}if(6*t3[i]<1){c[i]=t1+(t2-t1)*6*t3[i]}else if(2*t3[i]<1){c[i]=t2}else if(3*t3[i]<2){c[i]=t1+(t2-t1)*(2/3-t3[i])*6}else{c[i]=t1}}_ref1=[Math.round(c[0]*255),Math.round(c[1]*255),Math.round(c[2]*255)],r=_ref1[0],g=_ref1[1],b=_ref1[2]}return[r,g,b]};hsv2rgb=function(){var b,f,g,h,i,p,q,r,s,t,v,_ref,_ref1,_ref2,_ref3,_ref4,_ref5,_ref6;_ref=unpack(arguments),h=_ref[0],s=_ref[1],v=_ref[2];v*=255;if(s===0){r=g=b=v}else{if(h===360){h=0}if(h>360){h-=360}if(h<0){h+=360}h/=60;i=Math.floor(h);f=h-i;p=v*(1-s);q=v*(1-s*f);t=v*(1-s*(1-f));switch(i){case 0:_ref1=[v,t,p],r=_ref1[0],g=_ref1[1],b=_ref1[2];break;case 1:_ref2=[q,v,p],r=_ref2[0],g=_ref2[1],b=_ref2[2];break;case 2:_ref3=[p,v,t],r=_ref3[0],g=_ref3[1],b=_ref3[2];break;case 3:_ref4=[p,q,v],r=_ref4[0],g=_ref4[1],b=_ref4[2];break;case 4:_ref5=[t,p,v],r=_ref5[0],g=_ref5[1],b=_ref5[2];break;case 5:_ref6=[v,p,q],r=_ref6[0],g=_ref6[1],b=_ref6[2]}}r=Math.round(r);g=Math.round(g);b=Math.round(b);return[r,g,b]};K=18;X=.95047;Y=1;Z=1.08883;lab2lch=function(){var a,b,c,h,l,_ref;_ref=unpack(arguments),l=_ref[0],a=_ref[1],b=_ref[2];c=Math.sqrt(a*a+b*b);h=Math.atan2(b,a)/Math.PI*180;return[l,c,h]};lab2rgb=function(l,a,b){var g,r,x,y,z,_ref,_ref1;if(l!==void 0&&l.length===3){_ref=l,l=_ref[0],a=_ref[1],b=_ref[2]}if(l!==void 0&&l.length===3){_ref1=l,l=_ref1[0],a=_ref1[1],b=_ref1[2]}y=(l+16)/116;x=y+a/500;z=y-b/200;x=lab_xyz(x)*X;y=lab_xyz(y)*Y;z=lab_xyz(z)*Z;r=xyz_rgb(3.2404542*x-1.5371385*y-.4985314*z);g=xyz_rgb(-.969266*x+1.8760108*y+.041556*z);b=xyz_rgb(.0556434*x-.2040259*y+1.0572252*z);return[limit(r,0,255),limit(g,0,255),limit(b,0,255),1]};lab_xyz=function(x){if(x>.206893034){return x*x*x}else{return(x-4/29)/7.787037}};xyz_rgb=function(r){return Math.round(255*(r<=.00304?12.92*r:1.055*Math.pow(r,1/2.4)-.055))};lch2lab=function(){var c,h,l,_ref;_ref=unpack(arguments),l=_ref[0],c=_ref[1],h=_ref[2];h=h*Math.PI/180;return[l,Math.cos(h)*c,Math.sin(h)*c]};lch2rgb=function(l,c,h){var L,a,b,g,r,_ref,_ref1;_ref=lch2lab(l,c,h),L=_ref[0],a=_ref[1],b=_ref[2];_ref1=lab2rgb(L,a,b),r=_ref1[0],g=_ref1[1],b=_ref1[2];return[limit(r,0,255),limit(g,0,255),limit(b,0,255)]};luminance=function(r,g,b){var _ref;_ref=unpack(arguments),r=_ref[0],g=_ref[1],b=_ref[2];r=luminance_x(r);g=luminance_x(g);b=luminance_x(b);return.2126*r+.7152*g+.0722*b};luminance_x=function(x){x/=255;if(x<=.03928){return x/12.92}else{return Math.pow((x+.055)/1.055,2.4)}};rgb2hex=function(){var b,g,r,str,u,_ref;_ref=unpack(arguments),r=_ref[0],g=_ref[1],b=_ref[2];u=r<<16|g<<8|b;str="000000"+u.toString(16);return"#"+str.substr(str.length-6)};rgb2hsi=function(){var TWOPI,b,g,h,i,min,r,s,_ref;_ref=unpack(arguments),r=_ref[0],g=_ref[1],b=_ref[2];TWOPI=Math.PI*2;r/=255;g/=255;b/=255;min=Math.min(r,g,b);i=(r+g+b)/3;s=1-min/i;if(s===0){h=0}else{h=(r-g+(r-b))/2;h/=Math.sqrt((r-g)*(r-g)+(r-b)*(g-b));h=Math.acos(h);if(b>g){h=TWOPI-h}h/=TWOPI}return[h*360,s,i]};rgb2hsl=function(r,g,b){var h,l,max,min,s,_ref;if(r!==void 0&&r.length>=3){_ref=r,r=_ref[0],g=_ref[1],b=_ref[2]}r/=255;g/=255;b/=255;min=Math.min(r,g,b);max=Math.max(r,g,b);l=(max+min)/2;if(max===min){s=0;h=Number.NaN}else{s=l<.5?(max-min)/(max+min):(max-min)/(2-max-min)}if(r===max){h=(g-b)/(max-min)}else if(g===max){h=2+(b-r)/(max-min)}else if(b===max){h=4+(r-g)/(max-min)}h*=60;if(h<0){h+=360}return[h,s,l]};rgb2hsv=function(){var b,delta,g,h,max,min,r,s,v,_ref;_ref=unpack(arguments),r=_ref[0],g=_ref[1],b=_ref[2];min=Math.min(r,g,b);max=Math.max(r,g,b);delta=max-min;v=max/255;if(max===0){h=Number.NaN;s=0}else{s=delta/max;if(r===max){h=(g-b)/delta}if(g===max){h=2+(b-r)/delta}if(b===max){h=4+(r-g)/delta}h*=60;if(h<0){h+=360}}return[h,s,v]};rgb2lab=function(){var b,g,r,x,y,z,_ref;_ref=unpack(arguments),r=_ref[0],g=_ref[1],b=_ref[2];r=rgb_xyz(r);g=rgb_xyz(g);b=rgb_xyz(b);x=xyz_lab((.4124564*r+.3575761*g+.1804375*b)/X);y=xyz_lab((.2126729*r+.7151522*g+.072175*b)/Y);z=xyz_lab((.0193339*r+.119192*g+.9503041*b)/Z);return[116*y-16,500*(x-y),200*(y-z)]};rgb_xyz=function(r){if((r/=255)<=.04045){return r/12.92}else{return Math.pow((r+.055)/1.055,2.4)}};xyz_lab=function(x){if(x>.008856){return Math.pow(x,1/3)}else{return 7.787037*x+4/29}};rgb2lch=function(){var a,b,g,l,r,_ref,_ref1;_ref=unpack(arguments),r=_ref[0],g=_ref[1],b=_ref[2];_ref1=rgb2lab(r,g,b),l=_ref1[0],a=_ref1[1],b=_ref1[2];return lab2lch(l,a,b)};chroma.scale=function(colors,positions){var classifyValue,f,getClass,getColor,resetCache,setColors,setDomain,tmap,_colorCache,_colors,_correctLightness,_domain,_fixed,_max,_min,_mode,_nacol,_numClasses,_out,_pos,_spread;_mode="rgb";_nacol=chroma("#ccc");_spread=0;_fixed=false;_domain=[0,1];_colors=[];_out=false;_pos=[];_min=0;_max=1;_correctLightness=false;_numClasses=0;_colorCache={};setColors=function(colors,positions){var c,col,_i,_j,_ref,_ref1,_ref2;if(colors==null){colors=["#ddd","#222"]}if(colors!=null&&type(colors)==="string"&&((_ref=chroma.brewer)!=null?_ref[colors]:void 0)!=null){colors=chroma.brewer[colors]}if(type(colors)==="array"){colors=colors.slice(0);for(c=_i=0,_ref1=colors.length-1;0<=_ref1?_i<=_ref1:_i>=_ref1;c=0<=_ref1?++_i:--_i){col=colors[c];if(type(col)==="string"){colors[c]=chroma(col)}}if(positions!=null){_pos=positions}else{_pos=[];for(c=_j=0,_ref2=colors.length-1;0<=_ref2?_j<=_ref2:_j>=_ref2;c=0<=_ref2?++_j:--_j){_pos.push(c/(colors.length-1))}}}resetCache();return _colors=colors};setDomain=function(domain){if(domain==null){domain=[]}_domain=domain;_min=domain[0];_max=domain[domain.length-1];resetCache();if(domain.length===2){return _numClasses=0}else{return _numClasses=domain.length-1}};getClass=function(value){var i,n;if(_domain!=null){n=_domain.length-1;i=0;while(i<n&&value>=_domain[i]){i++}return i-1}return 0};tmap=function(t){return t};classifyValue=function(value){var i,maxc,minc,n,val;val=value;if(_domain.length>2){n=_domain.length-1;i=getClass(value);minc=_domain[0]+(_domain[1]-_domain[0])*(0+_spread*.5);maxc=_domain[n-1]+(_domain[n]-_domain[n-1])*(1-_spread*.5);val=_min+(_domain[i]+(_domain[i+1]-_domain[i])*.5-minc)/(maxc-minc)*(_max-_min)}return val};getColor=function(val,bypassMap){var c,col,f0,i,k,p,t,_i,_ref;if(bypassMap==null){bypassMap=false}if(isNaN(val)){return _nacol}if(!bypassMap){if(_domain.length>2){c=getClass(val);t=c/(_numClasses-1)}else{t=f0=_min!==_max?(val-_min)/(_max-_min):0;t=f0=(val-_min)/(_max-_min);t=Math.min(1,Math.max(0,t))}}else{t=val}if(!bypassMap){t=tmap(t)}k=Math.floor(t*1e4);if(_colorCache[k]){col=_colorCache[k]}else{if(type(_colors)==="array"){for(i=_i=0,_ref=_pos.length-1;0<=_ref?_i<=_ref:_i>=_ref;i=0<=_ref?++_i:--_i){p=_pos[i];if(t<=p){col=_colors[i];break}if(t>=p&&i===_pos.length-1){col=_colors[i];break}if(t>p&&t<_pos[i+1]){t=(t-p)/(_pos[i+1]-p);col=chroma.interpolate(_colors[i],_colors[i+1],t,_mode);break}}}else if(type(_colors)==="function"){col=_colors(t)}_colorCache[k]=col}return col};resetCache=function(){return _colorCache={}};setColors(colors,positions);f=function(v){var c;c=getColor(v);if(_out&&c[_out]){return c[_out]()}else{return c}};f.domain=function(domain,classes,mode,key){var d;if(mode==null){mode="e"}if(!arguments.length){return _domain}if(classes!=null){d=chroma.analyze(domain,key);if(classes===0){domain=[d.min,d.max]}else{domain=chroma.limits(d,mode,classes)}}setDomain(domain);return f};f.mode=function(_m){if(!arguments.length){return _mode}_mode=_m;resetCache();return f};f.range=function(colors,_pos){setColors(colors,_pos);return f};f.out=function(_o){_out=_o;return f};f.spread=function(val){if(!arguments.length){return _spread}_spread=val;return f};f.correctLightness=function(v){if(!arguments.length){return _correctLightness}_correctLightness=v;resetCache();if(_correctLightness){tmap=function(t){var L0,L1,L_actual,L_diff,L_ideal,max_iter,pol,t0,t1;L0=getColor(0,true).lab()[0];L1=getColor(1,true).lab()[0];pol=L0>L1;L_actual=getColor(t,true).lab()[0];L_ideal=L0+(L1-L0)*t;L_diff=L_actual-L_ideal;t0=0;t1=1;max_iter=20;while(Math.abs(L_diff)>.01&&max_iter-->0){!function(){if(pol){L_diff*=-1}if(L_diff<0){t0=t;t+=(t1-t)*.5}else{t1=t;t+=(t0-t)*.5}L_actual=getColor(t,true).lab()[0];return L_diff=L_actual-L_ideal}()}return t}}else{tmap=function(t){return t}}return f};f.colors=function(out){var i,samples,_i,_j,_len,_ref;if(out==null){out="hex"}colors=[];samples=[];if(_domain.length>2){for(i=_i=1,_ref=_domain.length;1<=_ref?_i<_ref:_i>_ref;i=1<=_ref?++_i:--_i){samples.push((_domain[i-1]+_domain[i])*.5)}}else{samples=_domain}for(_j=0,_len=samples.length;_j<_len;_j++){i=samples[_j];colors.push(f(i)[out]())}return colors};return f};if((_ref=chroma.scales)==null){chroma.scales={}}chroma.scales.cool=function(){return chroma.scale([chroma.hsl(180,1,.9),chroma.hsl(250,.7,.4)])};chroma.scales.hot=function(){return chroma.scale(["#000","#f00","#ff0","#fff"],[0,.25,.75,1]).mode("rgb")};chroma.analyze=function(data,key,filter){var add,k,r,val,visit,_i,_len;r={min:Number.MAX_VALUE,max:Number.MAX_VALUE*-1,sum:0,values:[],count:0};if(filter==null){filter=function(){return true}}add=function(val){if(val!=null&&!isNaN(val)){r.values.push(val);r.sum+=val;if(val<r.min){r.min=val}if(val>r.max){r.max=val}r.count+=1}};visit=function(val,k){if(filter(val,k)){if(key!=null&&type(key)==="function"){return add(key(val))}else if(key!=null&&type(key)==="string"||type(key)==="number"){return add(val[key])}else{return add(val)}}};if(type(data)==="array"){for(_i=0,_len=data.length;_i<_len;_i++){val=data[_i];visit(val)}}else{for(k in data){val=data[k];visit(val,k)}}r.domain=[r.min,r.max];r.limits=function(mode,num){return chroma.limits(r,mode,num)};return r};chroma.limits=function(data,mode,num){var assignments,best,centroids,cluster,clusterSizes,dist,i,j,kClusters,limits,max,max_log,min,min_log,mindist,n,nb_iters,newCentroids,p,pb,pr,repeat,sum,tmpKMeansBreaks,value,values,_i,_j,_k,_l,_m,_n,_o,_p,_q,_r,_ref1,_ref10,_ref11,_ref12,_ref13,_ref14,_ref15,_ref2,_ref3,_ref4,_ref5,_ref6,_ref7,_ref8,_ref9,_s,_t,_u,_v,_w;if(mode==null){mode="equal"}if(num==null){num=7}if(type(data)==="array"){data=chroma.analyze(data)}min=data.min;max=data.max;sum=data.sum;values=data.values.sort(function(a,b){return a-b});limits=[];if(mode.substr(0,1)==="c"){limits.push(min);limits.push(max)}if(mode.substr(0,1)==="e"){limits.push(min);for(i=_i=1,_ref1=num-1;1<=_ref1?_i<=_ref1:_i>=_ref1;i=1<=_ref1?++_i:--_i){limits.push(min+i/num*(max-min))}limits.push(max)}else if(mode.substr(0,1)==="l"){if(min<=0){throw"Logarithmic scales are only possible for values > 0"}min_log=Math.LOG10E*Math.log(min);max_log=Math.LOG10E*Math.log(max);limits.push(min);for(i=_j=1,_ref2=num-1;1<=_ref2?_j<=_ref2:_j>=_ref2;i=1<=_ref2?++_j:--_j){limits.push(Math.pow(10,min_log+i/num*(max_log-min_log)))}limits.push(max)}else if(mode.substr(0,1)==="q"){limits.push(min);for(i=_k=1,_ref3=num-1;1<=_ref3?_k<=_ref3:_k>=_ref3;i=1<=_ref3?++_k:--_k){p=values.length*i/num;pb=Math.floor(p);if(pb===p){limits.push(values[pb])}else{pr=p-pb;limits.push(values[pb]*pr+values[pb+1]*(1-pr))}}limits.push(max)}else if(mode.substr(0,1)==="k"){n=values.length;assignments=new Array(n);clusterSizes=new Array(num);repeat=true;nb_iters=0;centroids=null;centroids=[];centroids.push(min);for(i=_l=1,_ref4=num-1;1<=_ref4?_l<=_ref4:_l>=_ref4;i=1<=_ref4?++_l:--_l){centroids.push(min+i/num*(max-min))}centroids.push(max);while(repeat){for(j=_m=0,_ref5=num-1;0<=_ref5?_m<=_ref5:_m>=_ref5;j=0<=_ref5?++_m:--_m){clusterSizes[j]=0}for(i=_n=0,_ref6=n-1;0<=_ref6?_n<=_ref6:_n>=_ref6;i=0<=_ref6?++_n:--_n){value=values[i];mindist=Number.MAX_VALUE;for(j=_o=0,_ref7=num-1;0<=_ref7?_o<=_ref7:_o>=_ref7;j=0<=_ref7?++_o:--_o){dist=Math.abs(centroids[j]-value);if(dist<mindist){mindist=dist;best=j}}clusterSizes[best]++;assignments[i]=best}newCentroids=new Array(num);for(j=_p=0,_ref8=num-1;0<=_ref8?_p<=_ref8:_p>=_ref8;j=0<=_ref8?++_p:--_p){newCentroids[j]=null}for(i=_q=0,_ref9=n-1;0<=_ref9?_q<=_ref9:_q>=_ref9;i=0<=_ref9?++_q:--_q){cluster=assignments[i];if(newCentroids[cluster]===null){newCentroids[cluster]=values[i]}else{newCentroids[cluster]+=values[i]}}for(j=_r=0,_ref10=num-1;0<=_ref10?_r<=_ref10:_r>=_ref10;j=0<=_ref10?++_r:--_r){newCentroids[j]*=1/clusterSizes[j]}repeat=false;for(j=_s=0,_ref11=num-1;0<=_ref11?_s<=_ref11:_s>=_ref11;j=0<=_ref11?++_s:--_s){if(newCentroids[j]!==centroids[i]){repeat=true;break}}centroids=newCentroids;nb_iters++;if(nb_iters>200){repeat=false}}kClusters={};for(j=_t=0,_ref12=num-1;0<=_ref12?_t<=_ref12:_t>=_ref12;j=0<=_ref12?++_t:--_t){kClusters[j]=[]}for(i=_u=0,_ref13=n-1;0<=_ref13?_u<=_ref13:_u>=_ref13;i=0<=_ref13?++_u:--_u){cluster=assignments[i];kClusters[cluster].push(values[i])}tmpKMeansBreaks=[];for(j=_v=0,_ref14=num-1;0<=_ref14?_v<=_ref14:_v>=_ref14;j=0<=_ref14?++_v:--_v){tmpKMeansBreaks.push(kClusters[j][0]);tmpKMeansBreaks.push(kClusters[j][kClusters[j].length-1])}tmpKMeansBreaks=tmpKMeansBreaks.sort(function(a,b){return a-b});limits.push(tmpKMeansBreaks[0]);for(i=_w=1,_ref15=tmpKMeansBreaks.length-1;_w<=_ref15;i=_w+=2){if(!isNaN(tmpKMeansBreaks[i])){limits.push(tmpKMeansBreaks[i])}}}return limits};/**
-  	ColorBrewer colors for chroma.js
-  
-  	Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The 
-  	Pennsylvania State University.
-  
-  	Licensed under the Apache License, Version 2.0 (the "License"); 
-  	you may not use this file except in compliance with the License.
-  	You may obtain a copy of the License at	
-  	http://www.apache.org/licenses/LICENSE-2.0
-  
-  	Unless required by applicable law or agreed to in writing, software distributed
-  	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-  	CONDITIONS OF ANY KIND, either express or implied. See the License for the
-  	specific language governing permissions and limitations under the License.
-  
-      @preserve
-  */
-chroma.brewer=brewer={OrRd:["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000"],PuBu:["#fff7fb","#ece7f2","#d0d1e6","#a6bddb","#74a9cf","#3690c0","#0570b0","#045a8d","#023858"],BuPu:["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#810f7c","#4d004b"],Oranges:["#fff5eb","#fee6ce","#fdd0a2","#fdae6b","#fd8d3c","#f16913","#d94801","#a63603","#7f2704"],BuGn:["#f7fcfd","#e5f5f9","#ccece6","#99d8c9","#66c2a4","#41ae76","#238b45","#006d2c","#00441b"],YlOrBr:["#ffffe5","#fff7bc","#fee391","#fec44f","#fe9929","#ec7014","#cc4c02","#993404","#662506"],YlGn:["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"],Reds:["#fff5f0","#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],RdPu:["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"],Greens:["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#00441b"],YlGnBu:["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"],Purples:["#fcfbfd","#efedf5","#dadaeb","#bcbddc","#9e9ac8","#807dba","#6a51a3","#54278f","#3f007d"],GnBu:["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081"],Greys:["#ffffff","#f0f0f0","#d9d9d9","#bdbdbd","#969696","#737373","#525252","#252525","#000000"],YlOrRd:["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"],PuRd:["#f7f4f9","#e7e1ef","#d4b9da","#c994c7","#df65b0","#e7298a","#ce1256","#980043","#67001f"],Blues:["#f7fbff","#deebf7","#c6dbef","#9ecae1","#6baed6","#4292c6","#2171b5","#08519c","#08306b"],PuBuGn:["#fff7fb","#ece2f0","#d0d1e6","#a6bddb","#67a9cf","#3690c0","#02818a","#016c59","#014636"],Spectral:["#9e0142","#d53e4f","#f46d43","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"],RdYlGn:["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"],RdBu:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#f7f7f7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"],PiYG:["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#f7f7f7","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"],PRGn:["#40004b","#762a83","#9970ab","#c2a5cf","#e7d4e8","#f7f7f7","#d9f0d3","#a6dba0","#5aae61","#1b7837","#00441b"],RdYlBu:["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"],BrBG:["#543005","#8c510a","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5","#80cdc1","#35978f","#01665e","#003c30"],RdGy:["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#ffffff","#e0e0e0","#bababa","#878787","#4d4d4d","#1a1a1a"],PuOr:["#7f3b08","#b35806","#e08214","#fdb863","#fee0b6","#f7f7f7","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b"],Set2:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"],Accent:["#7fc97f","#beaed4","#fdc086","#ffff99","#386cb0","#f0027f","#bf5b17","#666666"],Set1:["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"],Set3:["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"],Dark2:["#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d","#666666"],Paired:["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"],Pastel2:["#b3e2cd","#fdcdac","#cbd5e8","#f4cae4","#e6f5c9","#fff2ae","#f1e2cc","#cccccc"],Pastel1:["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec","#f2f2f2"]};chroma.colors=colors={indigo:"#4b0082",gold:"#ffd700",hotpink:"#ff69b4",firebrick:"#b22222",indianred:"#cd5c5c",yellow:"#ffff00",mistyrose:"#ffe4e1",darkolivegreen:"#556b2f",olive:"#808000",darkseagreen:"#8fbc8f",pink:"#ffc0cb",tomato:"#ff6347",lightcoral:"#f08080",orangered:"#ff4500",navajowhite:"#ffdead",lime:"#00ff00",palegreen:"#98fb98",darkslategrey:"#2f4f4f",greenyellow:"#adff2f",burlywood:"#deb887",seashell:"#fff5ee",mediumspringgreen:"#00fa9a",fuchsia:"#ff00ff",papayawhip:"#ffefd5",blanchedalmond:"#ffebcd",chartreuse:"#7fff00",dimgray:"#696969",black:"#000000",peachpuff:"#ffdab9",springgreen:"#00ff7f",aquamarine:"#7fffd4",white:"#ffffff",orange:"#ffa500",lightsalmon:"#ffa07a",darkslategray:"#2f4f4f",brown:"#a52a2a",ivory:"#fffff0",dodgerblue:"#1e90ff",peru:"#cd853f",lawngreen:"#7cfc00",chocolate:"#d2691e",crimson:"#dc143c",forestgreen:"#228b22",darkgrey:"#a9a9a9",lightseagreen:"#20b2aa",cyan:"#00ffff",mintcream:"#f5fffa",silver:"#c0c0c0",antiquewhite:"#faebd7",mediumorchid:"#ba55d3",skyblue:"#87ceeb",gray:"#808080",darkturquoise:"#00ced1",goldenrod:"#daa520",darkgreen:"#006400",floralwhite:"#fffaf0",darkviolet:"#9400d3",darkgray:"#a9a9a9",moccasin:"#ffe4b5",saddlebrown:"#8b4513",grey:"#808080",darkslateblue:"#483d8b",lightskyblue:"#87cefa",lightpink:"#ffb6c1",mediumvioletred:"#c71585",slategrey:"#708090",red:"#ff0000",deeppink:"#ff1493",limegreen:"#32cd32",darkmagenta:"#8b008b",palegoldenrod:"#eee8aa",plum:"#dda0dd",turquoise:"#40e0d0",lightgrey:"#d3d3d3",lightgoldenrodyellow:"#fafad2",darkgoldenrod:"#b8860b",lavender:"#e6e6fa",maroon:"#800000",yellowgreen:"#9acd32",sandybrown:"#f4a460",thistle:"#d8bfd8",violet:"#ee82ee",navy:"#000080",magenta:"#ff00ff",dimgrey:"#696969",tan:"#d2b48c",rosybrown:"#bc8f8f",olivedrab:"#6b8e23",blue:"#0000ff",lightblue:"#add8e6",ghostwhite:"#f8f8ff",honeydew:"#f0fff0",cornflowerblue:"#6495ed",slateblue:"#6a5acd",linen:"#faf0e6",darkblue:"#00008b",powderblue:"#b0e0e6",seagreen:"#2e8b57",darkkhaki:"#bdb76b",snow:"#fffafa",sienna:"#a0522d",mediumblue:"#0000cd",royalblue:"#4169e1",lightcyan:"#e0ffff",green:"#008000",mediumpurple:"#9370db",midnightblue:"#191970",cornsilk:"#fff8dc",paleturquoise:"#afeeee",bisque:"#ffe4c4",slategray:"#708090",darkcyan:"#008b8b",khaki:"#f0e68c",wheat:"#f5deb3",teal:"#008080",darkorchid:"#9932cc",deepskyblue:"#00bfff",salmon:"#fa8072",darkred:"#8b0000",steelblue:"#4682b4",palevioletred:"#db7093",lightslategray:"#778899",aliceblue:"#f0f8ff",lightslategrey:"#778899",lightgreen:"#90ee90",orchid:"#da70d6",gainsboro:"#dcdcdc",mediumseagreen:"#3cb371",lightgray:"#d3d3d3",mediumturquoise:"#48d1cc",lemonchiffon:"#fffacd",cadetblue:"#5f9ea0",lightyellow:"#ffffe0",lavenderblush:"#fff0f5",coral:"#ff7f50",purple:"#800080",aqua:"#00ffff",whitesmoke:"#f5f5f5",mediumslateblue:"#7b68ee",darkorange:"#ff8c00",mediumaquamarine:"#66cdaa",darksalmon:"#e9967a",beige:"#f5f5dc",blueviolet:"#8a2be2",azure:"#f0ffff",lightsteelblue:"#b0c4de",oldlace:"#fdf5e6"};type=function(){var classToType,name,_i,_len,_ref1;classToType={};_ref1="Boolean Number String Function Array Date RegExp Undefined Null".split(" ");for(_i=0,_len=_ref1.length;_i<_len;_i++){name=_ref1[_i];classToType["[object "+name+"]"]=name.toLowerCase()}return function(obj){var strType;strType=Object.prototype.toString.call(obj);return classToType[strType]||"object"}}();limit=function(x,min,max){if(min==null){min=0}if(max==null){max=1}if(x<min){x=min}if(x>max){x=max}return x};unpack=function(args){if(args.length>=3){return args}else{return args[0]}};TWOPI=Math.PI*2;PITHIRD=Math.PI/3;cos=Math.cos;bezier=function(colors){var I,I0,I1,c,lab0,lab1,lab2,lab3,_ref1,_ref2,_ref3;colors=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(chroma(c))}return _results}();if(colors.length===2){_ref1=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref1[0],lab1=_ref1[1];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push(lab0[i]+t*(lab1[i]-lab0[i]))}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===3){_ref2=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref2[0],lab1=_ref2[1],lab2=_ref2[2];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*lab0[i]+2*(1-t)*t*lab1[i]+t*t*lab2[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===4){_ref3=function(){var _i,_len,_results;_results=[];for(_i=0,_len=colors.length;_i<_len;_i++){c=colors[_i];_results.push(c.lab())}return _results}(),lab0=_ref3[0],lab1=_ref3[1],lab2=_ref3[2],lab3=_ref3[3];I=function(t){var i,lab;lab=function(){var _i,_results;_results=[];for(i=_i=0;_i<=2;i=++_i){_results.push((1-t)*(1-t)*(1-t)*lab0[i]+3*(1-t)*(1-t)*t*lab1[i]+3*(1-t)*t*t*lab2[i]+t*t*t*lab3[i])}return _results}();return chroma.lab.apply(chroma,lab)}}else if(colors.length===5){I0=bezier(colors.slice(0,3));I1=bezier(colors.slice(2,5));I=function(t){if(t<.5){return I0(t*2)}else{return I1((t-.5)*2)}}}return I};chroma.interpolate.bezier=bezier}.call(this);
-},{}],2:[function(require,module,exports){
 /*!
- * @license twgl.js 4.14.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 5.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -134,6 +111,8 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.createAttribsFromArrays = createAttribsFromArrays;
 exports.createBuffersFromArrays = createBuffersFromArrays;
@@ -152,7 +131,7 @@ var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./s
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -204,8 +183,6 @@ var FLOAT = 0x1406;
 
 var gl = undefined;
 /* eslint-disable-line */
-
-/* lgtm [js/unused-local-variable] */
 
 var defaults = {
   attribPrefix: ""
@@ -372,8 +349,9 @@ function makeTypedArray(array, name) {
  * @property {boolean} [normalize] whether or not to normalize the data. Default = false
  * @property {number} [offset] offset into buffer in bytes. Default = 0
  * @property {number} [stride] the stride in bytes per element. Default = 0
- * @property {number} [divisor] the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
- *    where as anything else = do call it with this value
+ * @property {number} [divisor] the divisor in instances. Default = 0.
+ *    Requires WebGL2 or the ANGLE_instanced_arrays extension.
+ *    and, if you using WebGL1 you must have called {@link module:twgl.addExtensionsToContext}
  * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
  * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
  * @memberOf module:twgl
@@ -395,8 +373,9 @@ function makeTypedArray(array, name) {
  * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
  * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
  * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
- * @property {number} [divisor] divisor for `vertexAttribDivisor`. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
- *    where as anything else = do call it with this value
+ * @property {number} [divisor] divisor for `vertexAttribDivisor`. Default = 0.
+ *     Requires WebGL2 or the ANGLE_instanced_arrays extension.
+ *     and, if you using WebGL1 you must have called {@link module:twgl.addExtensionsToContext}
  * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
  * @property {string} [name] synonym for `attrib`.
  * @property {string} [attribName] synonym for `attrib`.
@@ -674,6 +653,11 @@ function getNumElementsFromNonIndexedArrays(arrays) {
 
   var array = arrays[key];
   var length = getArray(array).length;
+
+  if (length === undefined) {
+    return 1; // There's no arrays
+  }
+
   var numComponents = getNumComponents(array, key);
   var numElements = length / numComponents;
 
@@ -707,6 +691,11 @@ function getNumElementsFromAttributes(gl, attribs) {
   }
 
   var attrib = attribs[key];
+
+  if (!attrib.buffer) {
+    return 1; // There's no buffer
+  }
+
   gl.bindBuffer(ARRAY_BUFFER, attrib.buffer);
   var numBytes = gl.getBufferParameter(ARRAY_BUFFER, BUFFER_SIZE);
   gl.bindBuffer(ARRAY_BUFFER, null);
@@ -933,6 +922,8 @@ function createBuffersFromArrays(gl, arrays) {
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.drawBufferInfo = drawBufferInfo;
 exports.drawObjectList = drawObjectList;
@@ -941,7 +932,7 @@ var programs = _interopRequireWildcard(__webpack_require__(/*! ./programs.js */ 
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -1115,6 +1106,8 @@ function drawObjectList(gl, objectsToDraw) {
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.bindFramebufferInfo = bindFramebufferInfo;
 exports.createFramebufferInfo = createFramebufferInfo;
@@ -1126,7 +1119,7 @@ var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./s
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -1164,8 +1157,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var gl = undefined;
 /* eslint-disable-line */
 
-/* lgtm [js/unused-local-variable] */
-
 var FRAMEBUFFER = 0x8d40;
 var RENDERBUFFER = 0x8d41;
 var TEXTURE_2D = 0x0de1;
@@ -1174,6 +1165,10 @@ var UNSIGNED_BYTE = 0x1401;
 
 var DEPTH_COMPONENT = 0x1902;
 var RGBA = 0x1908;
+var DEPTH_COMPONENT24 = 0x81a6;
+var DEPTH_COMPONENT32F = 0x8cac;
+var DEPTH24_STENCIL8 = 0x88f0;
+var DEPTH32F_STENCIL8 = 0x8cad;
 /* Framebuffer Object. */
 
 var RGBA4 = 0x8056;
@@ -1189,26 +1184,10 @@ var STENCIL_ATTACHMENT = 0x8D20;
 var DEPTH_STENCIL_ATTACHMENT = 0x821A;
 /* TextureWrapMode */
 
-var REPEAT = 0x2901; // eslint-disable-line
-
 var CLAMP_TO_EDGE = 0x812F;
-var MIRRORED_REPEAT = 0x8370; // eslint-disable-line
-
 /* TextureMagFilter */
 
-var NEAREST = 0x2600; // eslint-disable-line
-
 var LINEAR = 0x2601;
-/* TextureMinFilter */
-
-var NEAREST_MIPMAP_NEAREST = 0x2700; // eslint-disable-line
-
-var LINEAR_MIPMAP_NEAREST = 0x2701; // eslint-disable-line
-
-var NEAREST_MIPMAP_LINEAR = 0x2702; // eslint-disable-line
-
-var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
-
 /**
  * The options for a framebuffer attachment.
  *
@@ -1219,7 +1198,7 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  * to `gl.LINEAR` and `wrap` defaults to `CLAMP_TO_EDGE`
  *
  * @typedef {Object} AttachmentOptions
- * @property {number} [attach] The attachment point. Defaults
+ * @property {number} [attachmentPoint] The attachment point. Defaults
  *   to `gl.COLOR_ATTACHMENT0 + ndx` unless type is a depth or stencil type
  *   then it's gl.DEPTH_ATTACHMENT or `gl.DEPTH_STENCIL_ATTACHMENT` depending
  *   on the format or attachment type.
@@ -1230,10 +1209,11 @@ var LINEAR_MIPMAP_LINEAR = 0x2703; // eslint-disable-line
  * @property {number} [type] The type. Used for texture. Default = `gl.UNSIGNED_BYTE`.
  * @property {number} [target] The texture target for `gl.framebufferTexture2D`.
  *   Defaults to `gl.TEXTURE_2D`. Set to appropriate face for cube maps.
+ * @property {number} [samples] The number of samples. Default = 1
  * @property {number} [level] level for `gl.framebufferTexture2D`. Defaults to 0.
  * @property {number} [layer] layer for `gl.framebufferTextureLayer`. Defaults to undefined.
  *   If set then `gl.framebufferTextureLayer` is called, if not then `gl.framebufferTexture2D`
- * @property {WebGLObject} [attachment] An existing renderbuffer or texture.
+ * @property {(WebGLRenderbuffer | WebGLTexture)} [attachment] An existing renderbuffer or texture.
  *    If provided will attach this Object. This allows you to share
  *    attachments across framebuffers.
  * @memberOf module:twgl
@@ -1254,9 +1234,13 @@ attachmentsByFormat[STENCIL_INDEX] = STENCIL_ATTACHMENT;
 attachmentsByFormat[STENCIL_INDEX8] = STENCIL_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT] = DEPTH_ATTACHMENT;
 attachmentsByFormat[DEPTH_COMPONENT16] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT24] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH_COMPONENT32F] = DEPTH_ATTACHMENT;
+attachmentsByFormat[DEPTH24_STENCIL8] = DEPTH_STENCIL_ATTACHMENT;
+attachmentsByFormat[DEPTH32F_STENCIL8] = DEPTH_STENCIL_ATTACHMENT;
 
-function getAttachmentPointForFormat(format) {
-  return attachmentsByFormat[format];
+function getAttachmentPointForFormat(format, internalFormat) {
+  return attachmentsByFormat[format] || attachmentsByFormat[internalFormat];
 }
 
 var renderbufferFormats = {};
@@ -1271,10 +1255,18 @@ renderbufferFormats[STENCIL_INDEX8] = true;
 function isRenderbufferFormat(format) {
   return renderbufferFormats[format];
 }
+
+var MAX_COLOR_ATTACHMENT_POINTS = 32; // even an 3090 only supports 8 but WebGL/OpenGL ES define constants for 32
+
+function isColorAttachmentPoint(attachmentPoint) {
+  return attachmentPoint >= COLOR_ATTACHMENT0 && attachmentPoint < COLOR_ATTACHMENT0 + MAX_COLOR_ATTACHMENT_POINTS;
+}
 /**
  * @typedef {Object} FramebufferInfo
  * @property {WebGLFramebuffer} framebuffer The WebGLFramebuffer for this framebufferInfo
- * @property {WebGLObject[]} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @property {Array.<(WebGLRenderbuffer | WebGLTexture)>} attachments The created attachments in the same order as passed in to {@link module:twgl.createFramebufferInfo}.
+ * @property {number} width The width of the framebuffer and its attachments
+ * @property {number} height The width of the framebuffer and its attachments
  * @memberOf module:twgl
  */
 
@@ -1282,6 +1274,9 @@ function isRenderbufferFormat(format) {
  * Creates a framebuffer and attachments.
  *
  * This returns a {@link module:twgl.FramebufferInfo} because it needs to return the attachments as well as the framebuffer.
+ * It also leaves the framebuffer it just created as the currently bound `FRAMEBUFFER`.
+ * Note: If this is WebGL2 or if you called {@link module:twgl.addExtensionsToContext} then it will set the drawBuffers
+ * to `[COLOR_ATTACHMENT0, COLOR_ATTACHMENT1, ...]` for how ever many color attachments were created.
  *
  * The simplest usage
  *
@@ -1323,27 +1318,37 @@ function createFramebufferInfo(gl, attachments, width, height) {
   width = width || gl.drawingBufferWidth;
   height = height || gl.drawingBufferHeight;
   attachments = attachments || defaultAttachments;
-  var colorAttachmentCount = 0;
+  var usedColorAttachmentsPoints = [];
   var framebufferInfo = {
     framebuffer: fb,
     attachments: [],
     width: width,
     height: height
   };
-  attachments.forEach(function (attachmentOptions) {
+  attachments.forEach(function (attachmentOptions, i) {
     var attachment = attachmentOptions.attachment;
+    var samples = attachmentOptions.samples;
     var format = attachmentOptions.format;
-    var attachmentPoint = getAttachmentPointForFormat(format);
+    var attachmentPoint = attachmentOptions.attachmentPoint || getAttachmentPointForFormat(format, attachmentOptions.internalFormat);
 
     if (!attachmentPoint) {
-      attachmentPoint = COLOR_ATTACHMENT0 + colorAttachmentCount++;
+      attachmentPoint = COLOR_ATTACHMENT0 + i;
+    }
+
+    if (isColorAttachmentPoint(attachmentPoint)) {
+      usedColorAttachmentsPoints.push(attachmentPoint);
     }
 
     if (!attachment) {
-      if (isRenderbufferFormat(format)) {
+      if (samples !== undefined || isRenderbufferFormat(format)) {
         attachment = gl.createRenderbuffer();
         gl.bindRenderbuffer(RENDERBUFFER, attachment);
-        gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+
+        if (samples > 1) {
+          gl.renderbufferStorageMultisample(RENDERBUFFER, samples, format, width, height);
+        } else {
+          gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+        }
       } else {
         var textureOptions = Object.assign({}, attachmentOptions);
         textureOptions.width = width;
@@ -1367,7 +1372,7 @@ function createFramebufferInfo(gl, attachments, width, height) {
       if (attachmentOptions.layer !== undefined) {
         gl.framebufferTextureLayer(target, attachmentPoint, attachment, attachmentOptions.level || 0, attachmentOptions.layer);
       } else {
-        gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.texTarget || TEXTURE_2D, attachment, attachmentOptions.level || 0);
+        gl.framebufferTexture2D(target, attachmentPoint, attachmentOptions.target || TEXTURE_2D, attachment, attachmentOptions.level || 0);
       }
     } else {
       throw new Error('unknown attachment type');
@@ -1375,6 +1380,11 @@ function createFramebufferInfo(gl, attachments, width, height) {
 
     framebufferInfo.attachments.push(attachment);
   });
+
+  if (gl.drawBuffers) {
+    gl.drawBuffers(usedColorAttachmentsPoints);
+  }
+
   return framebufferInfo;
 }
 /**
@@ -1431,10 +1441,16 @@ function resizeFramebufferInfo(gl, framebufferInfo, attachments, width, height) 
   attachments.forEach(function (attachmentOptions, ndx) {
     var attachment = framebufferInfo.attachments[ndx];
     var format = attachmentOptions.format;
+    var samples = attachmentOptions.samples;
 
-    if (helper.isRenderbuffer(gl, attachment)) {
+    if (samples !== undefined || helper.isRenderbuffer(gl, attachment)) {
       gl.bindRenderbuffer(RENDERBUFFER, attachment);
-      gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+
+      if (samples > 1) {
+        gl.renderbufferStorageMultisample(RENDERBUFFER, samples, format, width, height);
+      } else {
+        gl.renderbufferStorage(RENDERBUFFER, format, width, height);
+      }
     } else if (helper.isTexture(gl, attachment)) {
       textures.resizeTexture(gl, attachment, attachmentOptions, width, height);
     } else {
@@ -1601,10 +1617,13 @@ function isSampler(gl, t) {
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.axisRotate = axisRotate;
 exports.axisRotation = axisRotation;
 exports.copy = copy;
+exports.create = create;
 exports.frustum = frustum;
 exports.getAxis = getAxis;
 exports.getTranslation = getTranslation;
@@ -1637,7 +1656,7 @@ var v3 = _interopRequireWildcard(__webpack_require__(/*! ./v3.js */ "./src/v3.js
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -1734,6 +1753,16 @@ function negate(m, dst) {
   dst[14] = -m[14];
   dst[15] = -m[15];
   return dst;
+}
+/**
+ * Creates a matrix.
+ * @return {module:twgl/m4.Mat4} A new matrix.
+ * @memberOf module:twgl/m4
+ */
+
+
+function create() {
+  return new MatType(16).fill(0);
 }
 /**
  * Copies a matrix.
@@ -2852,6 +2881,8 @@ function transformNormal(m, v, dst) {
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.create3DFVertices = create3DFVertices;
 exports.createAugmentedTypedArray = createAugmentedTypedArray;
@@ -2887,7 +2918,7 @@ var v3 = _interopRequireWildcard(__webpack_require__(/*! ./v3.js */ "./src/v3.js
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -2937,7 +2968,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  *
  *    example:
  *
- *        const arrays = twgl.primitives.createPlaneArrays(1);
+ *        const arrays = twgl.primitives.createPlaneVertices(1);
  *        twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
  *        const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
  *
@@ -3658,7 +3689,7 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
   var positions = createAugmentedTypedArray(3, numVertices);
   var normals = createAugmentedTypedArray(3, numVertices);
   var texcoords = createAugmentedTypedArray(2, numVertices);
-  var indices = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra) * 2, Uint16Array);
+  var indices = createAugmentedTypedArray(3, radialSubdivisions * (verticalSubdivisions + extra / 2) * 2, Uint16Array);
   var vertsAroundEdge = radialSubdivisions + 1; // The slant of the cone is constant across its surface
 
   var slant = Math.atan2(bottomRadius - topRadius, height);
@@ -3695,13 +3726,27 @@ function createTruncatedConeVertices(bottomRadius, topRadius, height, radialSubd
       var sin = Math.sin(ii * Math.PI * 2 / radialSubdivisions);
       var cos = Math.cos(ii * Math.PI * 2 / radialSubdivisions);
       positions.push(sin * ringRadius, y, cos * ringRadius);
-      normals.push(yy < 0 || yy > verticalSubdivisions ? 0 : sin * cosSlant, yy < 0 ? -1 : yy > verticalSubdivisions ? 1 : sinSlant, yy < 0 || yy > verticalSubdivisions ? 0 : cos * cosSlant);
+
+      if (yy < 0) {
+        normals.push(0, -1, 0);
+      } else if (yy > verticalSubdivisions) {
+        normals.push(0, 1, 0);
+      } else if (ringRadius === 0.0) {
+        normals.push(0, 0, 0);
+      } else {
+        normals.push(sin * cosSlant, sinSlant, cos * cosSlant);
+      }
+
       texcoords.push(ii / radialSubdivisions, 1 - v);
     }
   }
 
   for (var _yy = 0; _yy < verticalSubdivisions + extra; ++_yy) {
     // eslint-disable-line
+    if (_yy === 1 && topCap || _yy === verticalSubdivisions + extra - 2 && bottomCap) {
+      continue;
+    }
+
     for (var _ii = 0; _ii < radialSubdivisions; ++_ii) {
       // eslint-disable-line
       indices.push(vertsAroundEdge * (_yy + 0) + 0 + _ii, vertsAroundEdge * (_yy + 0) + 1 + _ii, vertsAroundEdge * (_yy + 1) + 1 + _ii);
@@ -4661,12 +4706,16 @@ exports.createCresentVertices = createCresentVertices;
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.createAttributeSetters = createAttributeSetters;
 exports.createProgram = createProgram;
+exports.createProgramAsync = createProgramAsync;
 exports.createProgramFromScripts = createProgramFromScripts;
 exports.createProgramFromSources = createProgramFromSources;
 exports.createProgramInfo = createProgramInfo;
+exports.createProgramInfoAsync = createProgramInfoAsync;
 exports.createProgramInfoFromProgram = createProgramInfoFromProgram;
 exports.createUniformSetters = createUniformSetters;
 exports.createUniformBlockSpecFromProgram = createUniformBlockSpecFromProgram;
@@ -4689,29 +4738,23 @@ var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./s
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-/*
- * Copyright 2019 Gregg Tavares
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- */
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 /**
  * Low level shader program related functions
@@ -4801,6 +4844,7 @@ var TEXTURE_2D_ARRAY = 0x8C1A;
 var typeMap = {};
 /**
  * Returns the corresponding bind point for a given sampler type
+ * @private
  */
 
 function getBindPointForSamplerType(gl, type) {
@@ -5022,17 +5066,20 @@ typeMap[FLOAT] = {
 typeMap[FLOAT_VEC2] = {
   Type: Float32Array,
   size: 8,
-  setter: floatVec2Setter
+  setter: floatVec2Setter,
+  cols: 2
 };
 typeMap[FLOAT_VEC3] = {
   Type: Float32Array,
   size: 12,
-  setter: floatVec3Setter
+  setter: floatVec3Setter,
+  cols: 3
 };
 typeMap[FLOAT_VEC4] = {
   Type: Float32Array,
   size: 16,
-  setter: floatVec4Setter
+  setter: floatVec4Setter,
+  cols: 4
 };
 typeMap[INT] = {
   Type: Int32Array,
@@ -5043,17 +5090,20 @@ typeMap[INT] = {
 typeMap[INT_VEC2] = {
   Type: Int32Array,
   size: 8,
-  setter: intVec2Setter
+  setter: intVec2Setter,
+  cols: 2
 };
 typeMap[INT_VEC3] = {
   Type: Int32Array,
   size: 12,
-  setter: intVec3Setter
+  setter: intVec3Setter,
+  cols: 3
 };
 typeMap[INT_VEC4] = {
   Type: Int32Array,
   size: 16,
-  setter: intVec4Setter
+  setter: intVec4Setter,
+  cols: 4
 };
 typeMap[UNSIGNED_INT] = {
   Type: Uint32Array,
@@ -5064,17 +5114,20 @@ typeMap[UNSIGNED_INT] = {
 typeMap[UNSIGNED_INT_VEC2] = {
   Type: Uint32Array,
   size: 8,
-  setter: uintVec2Setter
+  setter: uintVec2Setter,
+  cols: 2
 };
 typeMap[UNSIGNED_INT_VEC3] = {
   Type: Uint32Array,
   size: 12,
-  setter: uintVec3Setter
+  setter: uintVec3Setter,
+  cols: 3
 };
 typeMap[UNSIGNED_INT_VEC4] = {
   Type: Uint32Array,
   size: 16,
-  setter: uintVec4Setter
+  setter: uintVec4Setter,
+  cols: 4
 };
 typeMap[BOOL] = {
   Type: Uint32Array,
@@ -5085,62 +5138,83 @@ typeMap[BOOL] = {
 typeMap[BOOL_VEC2] = {
   Type: Uint32Array,
   size: 8,
-  setter: intVec2Setter
+  setter: intVec2Setter,
+  cols: 2
 };
 typeMap[BOOL_VEC3] = {
   Type: Uint32Array,
   size: 12,
-  setter: intVec3Setter
+  setter: intVec3Setter,
+  cols: 3
 };
 typeMap[BOOL_VEC4] = {
   Type: Uint32Array,
   size: 16,
-  setter: intVec4Setter
+  setter: intVec4Setter,
+  cols: 4
 };
 typeMap[FLOAT_MAT2] = {
   Type: Float32Array,
-  size: 16,
-  setter: floatMat2Setter
+  size: 32,
+  setter: floatMat2Setter,
+  rows: 2,
+  cols: 2
 };
 typeMap[FLOAT_MAT3] = {
   Type: Float32Array,
-  size: 36,
-  setter: floatMat3Setter
+  size: 48,
+  setter: floatMat3Setter,
+  rows: 3,
+  cols: 3
 };
 typeMap[FLOAT_MAT4] = {
   Type: Float32Array,
   size: 64,
-  setter: floatMat4Setter
+  setter: floatMat4Setter,
+  rows: 4,
+  cols: 4
 };
 typeMap[FLOAT_MAT2x3] = {
   Type: Float32Array,
-  size: 24,
-  setter: floatMat23Setter
+  size: 32,
+  setter: floatMat23Setter,
+  rows: 2,
+  cols: 3
 };
 typeMap[FLOAT_MAT2x4] = {
   Type: Float32Array,
   size: 32,
-  setter: floatMat24Setter
+  setter: floatMat24Setter,
+  rows: 2,
+  cols: 4
 };
 typeMap[FLOAT_MAT3x2] = {
   Type: Float32Array,
-  size: 24,
-  setter: floatMat32Setter
+  size: 48,
+  setter: floatMat32Setter,
+  rows: 3,
+  cols: 2
 };
 typeMap[FLOAT_MAT3x4] = {
   Type: Float32Array,
   size: 48,
-  setter: floatMat34Setter
+  setter: floatMat34Setter,
+  rows: 3,
+  cols: 4
 };
 typeMap[FLOAT_MAT4x2] = {
   Type: Float32Array,
-  size: 32,
-  setter: floatMat42Setter
+  size: 64,
+  setter: floatMat42Setter,
+  rows: 4,
+  cols: 2
 };
 typeMap[FLOAT_MAT4x3] = {
   Type: Float32Array,
-  size: 48,
-  setter: floatMat43Setter
+  size: 64,
+  setter: floatMat43Setter,
+  rows: 4,
+  cols: 3
 };
 typeMap[SAMPLER_2D] = {
   Type: null,
@@ -5278,8 +5352,8 @@ function floatAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index, b.divisor || 0);
       }
     }
   };
@@ -5300,8 +5374,8 @@ function intAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || INT, b.stride || 0, b.offset || 0);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index, b.divisor || 0);
       }
     }
   };
@@ -5322,8 +5396,8 @@ function uintAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || UNSIGNED_INT, b.stride || 0, b.offset || 0);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index, b.divisor || 0);
       }
     }
   };
@@ -5347,8 +5421,8 @@ function matAttribSetter(gl, index, typeInfo) {
       gl.enableVertexAttribArray(index + i);
       gl.vertexAttribPointer(index + i, size, type, normalize, stride, offset + rowOffset * i);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index + i, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index + i, b.divisor || 0);
       }
     }
   };
@@ -5438,8 +5512,27 @@ attrTypeMap[FLOAT_MAT4] = {
 var gl = undefined;
 /* eslint-disable-line */
 
-/* lgtm [js/unused-local-variable] */
+var errorRE = /ERROR:\s*\d+:(\d+)/gi;
 
+function addLineNumbersWithError(src) {
+  var log = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var lineOffset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+  // Note: Error message formats are not defined by any spec so this may or may not work.
+  var matches = _toConsumableArray(log.matchAll(errorRE));
+
+  var lineNoToErrorMap = new Map(matches.map(function (m, ndx) {
+    var lineNo = parseInt(m[1]);
+    var next = matches[ndx + 1];
+    var end = next ? next.index : log.length;
+    var msg = log.substring(m.index, end);
+    return [lineNo - 1, msg];
+  }));
+  return src.split('\n').map(function (line, lineNo) {
+    var err = lineNoToErrorMap.get(lineNo);
+    return "".concat(lineNo + 1 + lineOffset, ": ").concat(line).concat(err ? "\n\n^^^ ".concat(err) : '');
+  }).join('\n');
+}
 /**
  * Error Callback
  * @callback ErrorCallback
@@ -5448,63 +5541,118 @@ var gl = undefined;
  * @memberOf module:twgl
  */
 
-function addLineNumbers(src, lineOffset) {
-  lineOffset = lineOffset || 0;
-  ++lineOffset;
-  return src.split("\n").map(function (line, ndx) {
-    return ndx + lineOffset + ": " + line;
-  }).join("\n");
-}
+/**
+ * Program Callback
+ * @callback ProgramCallback
+ * @param {string} [err] error message, falsy if no error
+ * @param {WebGLProgram|module:twgl.ProgramInfo} [result] the program or programInfo
+ */
+
 
 var spaceRE = /^[ \t]*\n/;
 /**
- * Loads a shader.
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
- * @param {string} shaderSource The shader source.
- * @param {number} shaderType The type of shader.
- * @param {module:twgl.ErrorCallback} opt_errorCallback callback for errors.
- * @return {WebGLShader} The created shader.
+ * Remove the first end of line because WebGL 2.0 requires
+ * #version 300 es
+ * as the first line. No whitespace allowed before that line
+ * so
+ *
+ * <script>
+ * #version 300 es
+ * </script>
+ *
+ * Has one line before it which is invalid according to GLSL ES 3.00
+ *
+ * @param {string} shaderSource The source of the shader
+ * @returns {{shaderSource: string, lineOffset: number}}
  * @private
  */
 
-function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
-  var errFn = opt_errorCallback || error; // Create the shader object
-
-  var shader = gl.createShader(shaderType); // Remove the first end of line because WebGL 2.0 requires
-  // #version 300 es
-  // as the first line. No whitespace allowed before that line
-  // so
-  //
-  // <script>
-  // #version 300 es
-  // </script>
-  //
-  // Has one line before it which is invalid according to GLSL ES 3.00
-  //
-
+function prepShaderSource(shaderSource) {
   var lineOffset = 0;
 
   if (spaceRE.test(shaderSource)) {
     lineOffset = 1;
     shaderSource = shaderSource.replace(spaceRE, '');
-  } // Load the shader source
+  }
+
+  return {
+    lineOffset: lineOffset,
+    shaderSource: shaderSource
+  };
+}
+/**
+ * @param {module:twgl.ProgramOptions} progOptions
+ * @param {string} msg
+ * @return null
+ * @private
+ */
 
 
-  gl.shaderSource(shader, shaderSource); // Compile the shader
+function reportError(progOptions, msg) {
+  progOptions.errorCallback(msg);
 
-  gl.compileShader(shader); // Check the compile status
+  if (progOptions.callback) {
+    setTimeout(function () {
+      progOptions.callback("".concat(msg, "\n").concat(progOptions.errors.join('\n')));
+    });
+  }
+
+  return null;
+}
+/**
+ * Loads a shader.
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {string} shaderSource The shader source.
+ * @param {number} shaderType The type of shader.
+ * @param {module:twgl.ProgramOptions} progOptions
+ * @return {WebGLShader} The created shader.
+ * @private
+ */
+
+
+function loadShader(gl, shaderSource, shaderType, progOptions) {
+  // Create the shader object
+  var shader = gl.createShader(shaderType); // Load the shader source
+
+  gl.shaderSource(shader, prepShaderSource(shaderSource).shaderSource); // Compile the shader
+
+  gl.compileShader(shader);
+
+  if (!progOptions.callback && !checkShaderStatus(gl, shaderType, shader, progOptions.errorCallback)) {
+    gl.deleteShader(shader);
+    return null;
+  }
+
+  return shader;
+}
+/**
+ * Check Shader status
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {number} shaderType The shader type
+ * @param {WebGLShader} shader The shader
+ * @param {ErrorCallback} [errFn] function to receive error message.
+ * @return {bool} true if shader is ok.
+ * @private
+ */
+
+
+function checkShaderStatus(gl, shaderType, shader, errFn) {
+  errFn = errFn || error; // Check the compile status
 
   var compiled = gl.getShaderParameter(shader, COMPILE_STATUS);
 
   if (!compiled) {
     // Something went wrong during compilation; get the error
     var lastError = gl.getShaderInfoLog(shader);
-    errFn(addLineNumbers(shaderSource, lineOffset) + "\n*** Error compiling shader: " + lastError);
-    gl.deleteShader(shader);
-    return null;
+
+    var _prepShaderSource = prepShaderSource(gl.getShaderSource(shader)),
+        lineOffset = _prepShaderSource.lineOffset,
+        shaderSource = _prepShaderSource.shaderSource;
+
+    errFn("".concat(addLineNumbersWithError(shaderSource, lastError, lineOffset), "\nError compiling ").concat(utils.glEnumToString(gl, shaderType), ": ").concat(lastError));
   }
 
-  return shader;
+  return compiled;
 }
 /**
  * @typedef {Object} ProgramOptions
@@ -5514,6 +5662,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
  *   a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise
  *   you can pass an array of names.
  * @property {number} [transformFeedbackMode] the mode to pass `gl.transformFeedbackVaryings`. Defaults to `SEPARATE_ATTRIBS`.
+ * @property {ProgramCallback} [callback] callback for async program compilation.
  * @memberOf module:twgl
  */
 
@@ -5531,6 +5680,7 @@ function loadShader(gl, shaderSource, shaderType, opt_errorCallback) {
 function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   var transformFeedbackVaryings;
   var transformFeedbackMode;
+  var callback;
 
   if (typeof opt_locations === 'function') {
     opt_errorCallback = opt_locations;
@@ -5543,7 +5693,7 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
   } else if (opt_attribs && !Array.isArray(opt_attribs)) {
     // If we have an errorCallback we can just return this object
     // Otherwise we need to construct one with default errorCallback
-    if (opt_attribs.errorCallback) {
+    if (opt_attribs.errorCallback && opt_attribs.errors) {
       return opt_attribs;
     }
 
@@ -5552,12 +5702,26 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     opt_attribs = opt.attribLocations;
     transformFeedbackVaryings = opt.transformFeedbackVaryings;
     transformFeedbackMode = opt.transformFeedbackMode;
+    callback = opt.callback;
   }
 
+  var _errorCallback = opt_errorCallback || error;
+
+  var errors = [];
   var options = {
-    errorCallback: opt_errorCallback || error,
+    errorCallback: function errorCallback(msg) {
+      errors.push(msg);
+
+      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      _errorCallback.apply(void 0, [msg].concat(args));
+    },
     transformFeedbackVaryings: transformFeedbackVaryings,
-    transformFeedbackMode: transformFeedbackMode
+    transformFeedbackMode: transformFeedbackMode,
+    callback: callback,
+    errors: errors
   };
 
   if (opt_attribs) {
@@ -5594,9 +5758,16 @@ function deleteShaders(gl, shaders) {
     gl.deleteShader(shader);
   });
 }
+
+var wait = function wait() {
+  var ms = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  return new Promise(function (resolve) {
+    return setTimeout(resolve, ms);
+  });
+};
 /**
  * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
- * program and calls useProgram.
+ * program.
  *
  * NOTE: There are 4 signatures for this function
  *
@@ -5611,12 +5782,14 @@ function deleteShaders(gl, shaders) {
  * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram?} the created program or null if error.
+ * @return {WebGLProgram?} the created program or null if error of a callback was provided.
  * @memberOf module:twgl/programs
  */
 
 
 function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallback) {
+  // This code is really convoluted, because it may or may not be async
+  // Maybe it would be better to have a separate function
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   var realShaders = [];
   var newShaders = [];
@@ -5633,7 +5806,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
         type = getShaderTypeFromScriptType(gl, elem.type) || type;
       }
 
-      shader = loadShader(gl, src, type, progOptions.errorCallback);
+      shader = loadShader(gl, src, type, progOptions);
       newShaders.push(shader);
     }
 
@@ -5643,9 +5816,8 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
   }
 
   if (realShaders.length !== shaders.length) {
-    progOptions.errorCallback("not enough shaders for program");
     deleteShaders(gl, newShaders);
-    return null;
+    return reportError(progOptions, "not enough shaders for program");
   }
 
   var program = gl.createProgram();
@@ -5673,20 +5845,186 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
     gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || SEPARATE_ATTRIBS);
   }
 
-  gl.linkProgram(program); // Check the link status
+  gl.linkProgram(program);
+
+  if (progOptions.callback) {
+    checkForProgramLinkCompletionAsync(gl, program, progOptions);
+    return null;
+  } else {
+    if (!checkProgramStatus(gl, program, progOptions.errorCallback)) {
+      gl.deleteProgram(program);
+      deleteShaders(gl, newShaders);
+      return null;
+    }
+
+    return program;
+  }
+}
+/**
+ * Same as createProgram but returns a promise
+ *
+ * NOTE: There are 4 signatures for this function
+ *
+ *     twgl.createProgramAsync(gl, [vs, fs], options);
+ *     twgl.createProgramAsync(gl, [vs, fs], opt_errFunc);
+ *     twgl.createProgramAsync(gl, [vs, fs], opt_attribs, opt_errFunc);
+ *     twgl.createProgramAsync(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
+ *
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
+ *        on error. If you want something else pass an callback. It's passed an error message.
+ * @return {Promise<WebGLProgram>} The created program
+ * @memberOf module:twgl/programs
+ */
+
+
+function createProgramAsync(gl, shaders) {
+  for (var _len2 = arguments.length, args = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+    args[_key2 - 2] = arguments[_key2];
+  }
+
+  return new Promise(function (resolve, reject) {
+    var programOptions = getProgramOptions.apply(void 0, args);
+
+    programOptions.callback = function (err, program) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(program);
+      }
+    };
+
+    createProgram(gl, shaders, programOptions);
+  });
+}
+/**
+ * Same as createProgramInfo but returns a promise
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext
+ *        to use.
+ * @param {string[]} shaderSources Array of sources for the
+ *        shaders or ids. The first is assumed to be the vertex shader,
+ *        the second the fragment shader.
+ * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
+ *        on error. If you want something else pass an callback. It's passed an error message.
+ * @return {Promise<module:twgl.ProgramInfo>} The created ProgramInfo
+ * @memberOf module:twgl/programs
+ */
+
+
+function createProgramInfoAsync(gl, shaders) {
+  for (var _len3 = arguments.length, args = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+    args[_key3 - 2] = arguments[_key3];
+  }
+
+  return new Promise(function (resolve, reject) {
+    var programOptions = getProgramOptions.apply(void 0, args);
+
+    programOptions.callback = function (err, programInfo) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(programInfo);
+      }
+    };
+
+    createProgramInfo(gl, shaders, programOptions);
+  });
+}
+/**
+ * Asynchronously wait for program to link.
+ * Note: if 'KHR_parallel_shader_compile' extension does not
+ * exist then compilation will not be truly async.
+ * @param {WebGLRenderingContext} gl The context
+ * @param {WebGLProgram} program The program
+ * @param {module:twgl.ProgramOptions} progOptions Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
+ * @private
+ */
+
+
+function checkForProgramLinkCompletionAsync(_x, _x2, _x3) {
+  return _checkForProgramLinkCompletionAsync.apply(this, arguments);
+}
+/**
+ * Check a program's link status
+ * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+ * @param {WebGLProgram} program Program to check
+ * @param {ErrorCallback} [errFn] func for errors
+ * @return {bool} true if program is ok
+ * @private
+ */
+
+
+function _checkForProgramLinkCompletionAsync() {
+  _checkForProgramLinkCompletionAsync = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(gl, program, progOptions) {
+    var ext, checkFn, waitTime, success, err, errFn;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            ext = gl.getExtension('KHR_parallel_shader_compile');
+            checkFn = ext ? function (gl, program) {
+              return gl.getProgramParameter(program, ext.COMPLETION_STATUS_KHR);
+            } : function () {
+              return true;
+            };
+            waitTime = 0;
+
+          case 3:
+            _context.next = 5;
+            return wait(waitTime);
+
+          case 5:
+            // must wait at least once
+            waitTime = 1000 / 60;
+
+          case 6:
+            if (!checkFn(gl, program)) {
+              _context.next = 3;
+              break;
+            }
+
+          case 7:
+            success = checkProgramStatus(gl, program, progOptions.errorCallback);
+            err = success ? undefined : progOptions.errors.join('\n');
+
+            if (!success) {
+              errFn = progOptions.errorCallback || error;
+              errFn(err);
+              gl.deleteProgram(program); // TODO: delete shaders, but only shaders that were created newly for this
+              // program
+
+              program = null;
+            }
+
+            progOptions.callback(err, program);
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _checkForProgramLinkCompletionAsync.apply(this, arguments);
+}
+
+function checkProgramStatus(gl, program, errFn) {
+  errFn = errFn || error; // Check the link status
 
   var linked = gl.getProgramParameter(program, LINK_STATUS);
 
   if (!linked) {
     // something went wrong with the link
     var lastError = gl.getProgramInfoLog(program);
-    progOptions.errorCallback("Error in program linking:" + lastError);
-    gl.deleteProgram(program);
-    deleteShaders(gl, newShaders);
-    return null;
+    errFn("Error in program linking: ".concat(lastError));
   }
 
-  return program;
+  return linked;
 }
 /**
  * Loads a shader from a script tag.
@@ -5694,28 +6032,28 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
  * @param {string} scriptId The id of the script tag.
  * @param {number} [opt_shaderType] The type of shader. If not passed in it will
  *     be derived from the type of the script tag.
- * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors.
+ * @param {module:twgl.ProgramOptions} [progOptions] callback for errors.
  * @return {WebGLShader?} The created shader or null if error.
  * @private
  */
 
 
-function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback) {
+function createShaderFromScript(gl, scriptId, opt_shaderType, progOptions) {
   var shaderSource = "";
   var shaderScript = getElementById(scriptId);
 
   if (!shaderScript) {
-    throw new Error("unknown script element: ".concat(scriptId));
+    return reportError(progOptions, "unknown script element: ".concat(scriptId));
   }
 
   shaderSource = shaderScript.text;
   var shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
 
   if (!shaderType) {
-    throw new Error('unknown shader type');
+    return reportError(progOptions, 'unknown shader type');
   }
 
-  return loadShader(gl, shaderSource, shaderType, opt_errorCallback);
+  return loadShader(gl, shaderSource, shaderType, progOptions);
 }
 /**
  * Creates a program from 2 script tags.
@@ -5736,7 +6074,7 @@ function createShaderFromScript(gl, scriptId, opt_shaderType, opt_errorCallback)
  * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram?} the created program or null if error.
+ * @return {WebGLProgram?} the created program or null if error or a callback was provided.
  * @memberOf module:twgl/programs
  */
 
@@ -5746,7 +6084,7 @@ function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_location
   var shaders = [];
 
   for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
-    var shader = createShaderFromScript(gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+    var shader = createShaderFromScript(gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions);
 
     if (!shader) {
       return null;
@@ -5776,7 +6114,7 @@ function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_location
  * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
- * @return {WebGLProgram?} the created program or null if error.
+ * @return {WebGLProgram?} the created program or null if error or a callback was provided.
  * @memberOf module:twgl/programs
  */
 
@@ -5786,9 +6124,9 @@ function createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations,
   var shaders = [];
 
   for (var ii = 0; ii < shaderSources.length; ++ii) {
-    var shader = loadShader(gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions.errorCallback);
+    var shader = loadShader(gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions);
 
-    if (!shader) {
+    if (!progOptions.callback && !shader) {
       return null;
     }
 
@@ -5820,6 +6158,54 @@ function isBuiltIn(info) {
   var name = info.name;
   return name.startsWith("gl_") || name.startsWith("webgl_");
 }
+
+var tokenRE = /(\.|\[|]|\w+)/g;
+
+var isDigit = function isDigit(s) {
+  return s >= '0' && s <= '9';
+};
+
+function addSetterToUniformTree(fullPath, setter, node, uniformSetters) {
+  var tokens = fullPath.split(tokenRE).filter(function (s) {
+    return s !== '';
+  });
+  var tokenNdx = 0;
+  var path = '';
+
+  for (;;) {
+    var token = tokens[tokenNdx++]; // has to be name or number
+
+    path += token;
+    var isArrayIndex = isDigit(token[0]);
+    var accessor = isArrayIndex ? parseInt(token) : token;
+
+    if (isArrayIndex) {
+      path += tokens[tokenNdx++]; // skip ']'
+    }
+
+    var isLastToken = tokenNdx === tokens.length;
+
+    if (isLastToken) {
+      node[accessor] = setter;
+      break;
+    } else {
+      var _token = tokens[tokenNdx++]; // has to be . or [
+
+      var isArray = _token === '[';
+      var child = node[accessor] || (isArray ? [] : {});
+      node[accessor] = child;
+      node = child;
+
+      uniformSetters[path] = uniformSetters[path] || function (node) {
+        return function (value) {
+          setUniformTree(node, value);
+        };
+      }(child);
+
+      path += _token;
+    }
+  }
+}
 /**
  * Creates setter functions for all uniforms of a shader
  * program.
@@ -5843,9 +6229,8 @@ function createUniformSetters(gl, program) {
    * @returns {function} the created setter.
    */
 
-  function createUniformSetter(program, uniformInfo) {
-    var location = gl.getUniformLocation(program, uniformInfo.name);
-    var isArray = uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]";
+  function createUniformSetter(program, uniformInfo, location) {
+    var isArray = uniformInfo.name.endsWith("[0]");
     var type = uniformInfo.type;
     var typeInfo = typeMap[type];
 
@@ -5878,6 +6263,7 @@ function createUniformSetters(gl, program) {
   }
 
   var uniformSetters = {};
+  var uniformTree = {};
   var numUniforms = gl.getProgramParameter(program, ACTIVE_UNIFORMS);
 
   for (var ii = 0; ii < numUniforms; ++ii) {
@@ -5889,12 +6275,17 @@ function createUniformSetters(gl, program) {
 
     var name = uniformInfo.name; // remove the array suffix.
 
-    if (name.substr(-3) === "[0]") {
+    if (name.endsWith("[0]")) {
       name = name.substr(0, name.length - 3);
     }
 
-    var setter = createUniformSetter(program, uniformInfo);
-    uniformSetters[name] = setter;
+    var location = gl.getUniformLocation(program, uniformInfo.name); // the uniform will have no location if it's in a uniform block
+
+    if (location) {
+      var setter = createUniformSetter(program, uniformInfo, location);
+      uniformSetters[name] = setter;
+      addSetterToUniformTree(name, setter, uniformTree, uniformSetters);
+    }
   }
 
   return uniformSetters;
@@ -5984,6 +6375,7 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
 }
 /**
  * @typedef {Object} UniformData
+ * @property {string} name The name of the uniform
  * @property {number} type The WebGL type enum for this uniform
  * @property {number} size The number of elements for this uniform
  * @property {number} blockNdx The block index this uniform appears in
@@ -6010,7 +6402,7 @@ function createTransformFeedback(gl, programInfo, bufferInfo) {
  * UniformBlockObjects for a given program
  *
  * @typedef {Object} UniformBlockSpec
- * @property {Object.<string, module:twgl.BlockSpec> blockSpecs The BlockSpec for each block by block name
+ * @property {Object.<string, module:twgl.BlockSpec>} blockSpecs The BlockSpec for each block by block name
  * @property {UniformData[]} uniformData An array of data for each uniform by uniform index.
  * @memberOf module:twgl
  */
@@ -6037,12 +6429,6 @@ function createUniformBlockSpecFromProgram(gl, program) {
     uniformIndices.push(ii);
     uniformData.push({});
     var uniformInfo = gl.getActiveUniform(program, ii);
-
-    if (isBuiltIn(uniformInfo)) {
-      break;
-    } // REMOVE [0]?
-
-
     uniformData[ii].name = uniformInfo.name;
   }
 
@@ -6060,7 +6446,7 @@ function createUniformBlockSpecFromProgram(gl, program) {
   for (var _ii = 0; _ii < numUniformBlocks; ++_ii) {
     var name = gl.getActiveUniformBlockName(program, _ii);
     var blockSpec = {
-      index: _ii,
+      index: gl.getUniformBlockIndex(program, name),
       usedByVertexShader: gl.getActiveUniformBlockParameter(program, _ii, UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER),
       usedByFragmentShader: gl.getActiveUniformBlockParameter(program, _ii, UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER),
       size: gl.getActiveUniformBlockParameter(program, _ii, UNIFORM_BLOCK_DATA_SIZE),
@@ -6078,6 +6464,37 @@ function createUniformBlockSpecFromProgram(gl, program) {
 
 var arraySuffixRE = /\[\d+\]\.$/; // better way to check?
 
+var pad = function pad(v, padding) {
+  return ((v + (padding - 1)) / padding | 0) * padding;
+};
+
+function createUniformBlockUniformSetter(view, isArray, rows, cols) {
+  if (isArray || rows) {
+    cols = cols || 1;
+    var numElements = view.length;
+    var totalRows = numElements / 4;
+    return function (value) {
+      var dst = 0;
+      var src = 0;
+
+      for (var row = 0; row < totalRows; ++row) {
+        for (var col = 0; col < cols; ++col) {
+          view[dst++] = value[src++];
+        }
+
+        dst += 4 - cols;
+      }
+    };
+  } else {
+    return function (value) {
+      if (value.length) {
+        view.set(value);
+      } else {
+        view[0] = value;
+      }
+    };
+  }
+}
 /**
  * Represents a UniformBlockObject including an ArrayBuffer with all the uniform values
  * and a corresponding WebGLBuffer to hold those values on the GPU
@@ -6089,11 +6506,19 @@ var arraySuffixRE = /\[\d+\]\.$/; // better way to check?
  *    inspecting the contents of the buffer in the debugger.
  * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
  * @property {number} [offset] offset into buffer
- * @property {Object.<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
+ * @property {Object<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
  *   each Uniform has a correctly typed `ArrayBufferView` into array at the correct offset
  *   and length of that uniform. So for example a float uniform would have a 1 float `Float32Array`
  *   view. A single mat4 would have a 16 element `Float32Array` view. An ivec2 would have an
  *   `Int32Array` view, etc.
+ * @property {Object<string, function>} setters A setter for this uniform.
+ *   The reason to use setters is elements of arrays are padded to vec4 sizes which
+ *   means if you want to set an array of 4 floats you'd need to set 16 values
+ *   (or set elements 0, 4, 8, 12). In other words
+ *   `someBlockInfo.uniforms.some4FloatArrayUniform.set([0, , , , 1, , , , 2, , , , 3])`
+ *   where as the setter handles just passing in [0, 1, 2, 3] either directly as in
+ *   `someBlockInfo.setter.some4FloatArrayUniform.set([0, 1, 2, 3])` (not recommended)
+ *   or via {@link module:twgl.setBlockUniforms}
  * @memberOf module:twgl
  */
 
@@ -6114,6 +6539,7 @@ var arraySuffixRE = /\[\d+\]\.$/; // better way to check?
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
+
 
 function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
   var blockSpecs = uniformBlockSpec.blockSpecs;
@@ -6140,18 +6566,55 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
   }
 
   var uniforms = {};
+  var setters = {};
+  var setterTree = {};
   blockSpec.uniformIndices.forEach(function (uniformNdx) {
     var data = uniformData[uniformNdx];
-    var typeInfo = typeMap[data.type];
-    var Type = typeInfo.Type;
-    var length = data.size * typeInfo.size;
     var name = data.name;
 
-    if (name.substr(0, prefix.length) === prefix) {
+    if (name.startsWith(prefix)) {
       name = name.substr(prefix.length);
     }
 
-    uniforms[name] = new Type(array, data.offset, length / Type.BYTES_PER_ELEMENT);
+    var isArray = name.endsWith('[0]');
+
+    if (isArray) {
+      name = name.substr(0, name.length - 3);
+    }
+
+    var typeInfo = typeMap[data.type];
+    var Type = typeInfo.Type;
+    var byteLength = isArray ? pad(typeInfo.size, 16) * data.size : typeInfo.size * data.size;
+    var uniformView = new Type(array, data.offset, byteLength / Type.BYTES_PER_ELEMENT);
+    uniforms[name] = uniformView; // Note: I'm not sure what to do here. The original
+    // idea was to create TypedArray views into each part
+    // of the block. This is useful, for example if you have
+    // a block with { mat4: model; mat4 view; mat4 projection; }
+    // you'll get a Float32Array for each one suitable for
+    // passing to most JS math libraries including twgl's and glMatrix.js.
+    //
+    // But, if you have a an array of structures, especially if that
+    // array is large, you get a whole bunch of TypedArray views.
+    // Every one of them has overhead and switching between them all
+    // is probably a cache miss. In that case it would really be better
+    // to just have one view (asFloat) and have all the setters
+    // just reference the correct portion. But, then you can't easily
+    // treat a matrix, or a vec4, as a standalone thing like you can
+    // with all the views.
+    //
+    // Another problem with the views is they are not shared. With
+    // uniforms you have one set of setters. With UniformBlockInfo
+    // you have a set of setters *pre block instance*. That's because
+    // TypedArray views can't be mapped to different buffers.
+    //
+    // My gut right now is if you really want the speed and compactness
+    // then you should probably roll your own solution. TWGL's goal
+    // here is ease of use as AFAICT there is no simple generic efficient
+    // solution.
+
+    var setter = createUniformBlockUniformSetter(uniformView, isArray, typeInfo.rows, typeInfo.cols);
+    setters[name] = setter;
+    addSetterToUniformTree(name, setter, setterTree, setters);
   });
   return {
     name: blockName,
@@ -6159,7 +6622,8 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     asFloat: new Float32Array(array),
     // for debugging
     buffer: buffer,
-    uniforms: uniforms
+    uniforms: uniforms,
+    setters: setters
   };
 }
 /**
@@ -6262,25 +6726,89 @@ function setUniformBlock(gl, programInfo, uniformBlockInfo) {
  *
  *  Arrays can be JavaScript arrays or typed arrays
  *
+ *  You can also fill out structure and array values either via
+ *  shortcut. Example
+ *
+ *     // -- in shader --
+ *     struct Light {
+ *       float intensity;
+ *       vec4 color;
+ *       float nearFar[2];
+ *     };
+ *     uniform Lights {
+ *       Light lights[2];
+ *     };
+ *
+ *     // in JavaScript
+ *
+ *     twgl.setBlockUniforms(someBlockInfo, {
+ *       lights: [
+ *         { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.1, 10] },
+ *         { intensity: 2.0, color: [0, 0, 1, 1], nearFar[0.2, 15] },
+ *       ],
+ *     });
+ *
+ *   or the more traditional way
+ *
+ *     twgl.setBlockUniforms(someBlockInfo, {
+ *       "lights[0].intensity": 5.0,
+ *       "lights[0].color": [1, 0, 0, 1],
+ *       "lights[0].nearFar": [0.1, 10],
+ *       "lights[1].intensity": 2.0,
+ *       "lights[1].color": [0, 0, 1, 1],
+ *       "lights[1].nearFar": [0.2, 15],
+ *     });
+ *
+ *   You can also specify partial paths
+ *
+ *     twgl.setBlockUniforms(someBlockInfo, {
+ *       'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.2, 15] },
+ *     });
+ *
+ *   But you can not specify leaf array indices.
+ *
+ *     twgl.setBlockUniforms(someBlockInfo, {
+ *       'lights[1].nearFar[1]': 15,     // BAD! nearFar is a leaf
+ *       'lights[1].nearFar': [0.2, 15], // GOOD
+ *     });
+ *
+ *  **IMPORTANT!**, packing in a UniformBlock is unintuitive.
+ *  For example the actual layout of `someVec3Array` above in memory
+ *  is `1, 2, 3, unused, 4, 5, 6, unused`. twgl takes in 6 values
+ *  as shown about and copies them, skipping the padding. This might
+ *  be confusing if you're already familiar with Uniform blocks.
+ *
+ *  If you want to deal with the padding yourself you can access the array
+ *  buffer views directly. eg:
+ *
+ *      someBlockInfo.someVec3Array.set([1, 2, 3, 0, 4, 5, 6, 0]);
+ *
  *  Any name that doesn't match will be ignored
  * @memberOf module:twgl/programs
  */
 
 
 function setBlockUniforms(uniformBlockInfo, values) {
-  var uniforms = uniformBlockInfo.uniforms;
+  var setters = uniformBlockInfo.setters;
 
   for (var name in values) {
-    var array = uniforms[name];
+    var setter = setters[name];
 
-    if (array) {
+    if (setter) {
       var value = values[name];
+      setter(value);
+    }
+  }
+}
 
-      if (value.length) {
-        array.set(value);
-      } else {
-        array[0] = value;
-      }
+function setUniformTree(tree, values) {
+  for (var name in values) {
+    var prop = tree[name];
+
+    if (typeof prop === 'function') {
+      prop(values[name]);
+    } else {
+      setUniformTree(tree[name], values[name]);
     }
   }
 }
@@ -6396,30 +6924,74 @@ function setBlockUniforms(uniformBlockInfo, values) {
  *     twgl.setUniforms(programInfo, sharedUniforms);
  *     twgl.setUniforms(programInfo, localUniforms};
  *
+ *   You can also fill out structure and array values either via
+ *   shortcut. Example
+ *
+ *     // -- in shader --
+ *     struct Light {
+ *       float intensity;
+ *       vec4 color;
+ *       float nearFar[2];
+ *     };
+ *     uniform Light lights[2];
+ *
+ *     // in JavaScript
+ *
+ *     twgl.setUniforms(programInfo, {
+ *       lights: [
+ *         { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.1, 10] },
+ *         { intensity: 2.0, color: [0, 0, 1, 1], nearFar[0.2, 15] },
+ *       ],
+ *     });
+ *
+ *   or the more traditional way
+ *
+ *     twgl.setUniforms(programInfo, {
+ *       "lights[0].intensity": 5.0,
+ *       "lights[0].color": [1, 0, 0, 1],
+ *       "lights[0].nearFar": [0.1, 10],
+ *       "lights[1].intensity": 2.0,
+ *       "lights[1].color": [0, 0, 1, 1],
+ *       "lights[1].nearFar": [0.2, 15],
+ *     });
+ *
+ *   You can also specify partial paths
+ *
+ *     twgl.setUniforms(programInfo, {
+ *       'lights[1]': { intensity: 5.0, color: [1, 0, 0, 1], nearFar[0.2, 15] },
+ *     });
+ *
+ *   But you can not specify leaf array indices
+ *
+ *     twgl.setUniforms(programInfo, {
+ *       'lights[1].nearFar[1]': 15,     // BAD! nearFar is a leaf
+ *       'lights[1].nearFar': [0.2, 15], // GOOD
+ *     });
+ *
  * @memberOf module:twgl/programs
  */
 
 
-function setUniforms(setters, values) {
+function setUniforms(setters) {
   // eslint-disable-line
   var actualSetters = setters.uniformSetters || setters;
-  var numArgs = arguments.length;
+  var numArgs = arguments.length <= 1 ? 0 : arguments.length - 1;
 
-  for (var aNdx = 1; aNdx < numArgs; ++aNdx) {
-    var _values = arguments[aNdx];
+  for (var aNdx = 0; aNdx < numArgs; ++aNdx) {
+    var values = aNdx + 1 < 1 || arguments.length <= aNdx + 1 ? undefined : arguments[aNdx + 1];
 
-    if (Array.isArray(_values)) {
-      var numValues = _values.length;
+    if (Array.isArray(values)) {
+      var numValues = values.length;
 
       for (var ii = 0; ii < numValues; ++ii) {
-        setUniforms(actualSetters, _values[ii]);
+        setUniforms(actualSetters, values[ii]);
       }
     } else {
-      for (var name in _values) {
+      for (var name in values) {
         var setter = actualSetters[name];
 
         if (setter) {
-          setter(_values[name]);
+          setter(values[name]);
         }
       }
     }
@@ -6522,6 +7094,7 @@ function createAttributeSetters(gl, program) {
  * @param {Object.<string, module:twgl.AttribInfo>} buffers AttribInfos mapped by attribute name.
  * @memberOf module:twgl/programs
  * @deprecated use {@link module:twgl.setBuffersAndAttributes}
+ * @private
  */
 
 
@@ -6589,7 +7162,7 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
  * @property {WebGLProgram} program A shader program
  * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
  * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
- * @property {module:twgl.UniformBlockSpec} [uniformBlockSpace] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
+ * @property {module:twgl.UniformBlockSpec} [uniformBlockSpec] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
  * @property {Object<string, module:twgl.TransformFeedbackInfo>} [transformFeedbackInfo] info for transform feedbacks
  * @memberOf module:twgl
  */
@@ -6629,6 +7202,8 @@ function createProgramInfoFromProgram(gl, program) {
 
   return programInfo;
 }
+
+var notIdRE = /\s|{|}|;/;
 /**
  * Creates a ProgramInfo from 2 sources.
  *
@@ -6660,18 +7235,18 @@ function createProgramInfoFromProgram(gl, program) {
  * @memberOf module:twgl/programs
  */
 
-
 function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var good = true;
+  var errors = [];
   shaderSources = shaderSources.map(function (source) {
     // Lets assume if there is no \n it's an id
-    if (source.indexOf("\n") < 0) {
+    if (!notIdRE.test(source)) {
       var script = getElementById(source);
 
       if (!script) {
-        progOptions.errorCallback("no element with id: " + source);
-        good = false;
+        var err = "no element with id: ".concat(source);
+        progOptions.errorCallback(err);
+        errors.push(err);
       } else {
         source = script.text;
       }
@@ -6680,8 +7255,22 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
     return source;
   });
 
-  if (!good) {
-    return null;
+  if (errors.length) {
+    return reportError(progOptions, '');
+  }
+
+  var origCallback = progOptions.callback;
+
+  if (origCallback) {
+    progOptions.callback = function (err, program) {
+      var programInfo;
+
+      if (!err) {
+        programInfo = createProgramInfoFromProgram(gl, program);
+      }
+
+      origCallback(err, programInfo);
+    };
   }
 
   var program = createProgramFromSources(gl, shaderSources, progOptions);
@@ -6704,6 +7293,8 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
 
 "use strict";
 
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 exports.__esModule = true;
 exports.setTextureDefaults_ = setDefaults;
@@ -6734,7 +7325,7 @@ var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./s
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -6776,8 +7367,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var gl = undefined;
 /* eslint-disable-line */
 
-/* lgtm [js/unused-local-variable] */
-
 var defaults = {
   textureColor: new Uint8Array([128, 192, 255, 255]),
   textureOptions: {},
@@ -6785,12 +7374,13 @@ var defaults = {
 };
 var isArrayBuffer = typedArrays.isArrayBuffer; // Should we make this on demand?
 
-var s_ctx;
-
-function getShared2DContext() {
-  s_ctx = s_ctx || (typeof document !== 'undefined' && document.createElement ? document.createElement("canvas").getContext("2d") : null);
-  return s_ctx;
-} // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
+var getShared2DContext = function () {
+  var s_ctx;
+  return function getShared2DContext() {
+    s_ctx = s_ctx || (typeof document !== 'undefined' && document.createElement ? document.createElement("canvas").getContext("2d") : null);
+    return s_ctx;
+  };
+}(); // NOTE: Chrome supports 2D canvas in a Worker (behind flag as of v64 but
 //       not only does Firefox NOT support it but Firefox freezes immediately
 //       if you try to create one instead of just returning null and continuing.
 //  : (global.OffscreenCanvas && (new global.OffscreenCanvas(1, 1)).getContext("2d"));  // OffscreenCanvas may not support 2d
@@ -7044,6 +7634,13 @@ function getTextureInternalFormatInfo(internalFormat) {
       textureFilterable: true,
       bytesPerElement: [4, 8, 8, 16, 2, 2],
       type: [UNSIGNED_BYTE, HALF_FLOAT, HALF_FLOAT_OES, FLOAT, UNSIGNED_SHORT_4_4_4_4, UNSIGNED_SHORT_5_5_5_1]
+    };
+    t[DEPTH_COMPONENT] = {
+      textureFormat: DEPTH_COMPONENT,
+      colorRenderable: true,
+      textureFilterable: false,
+      bytesPerElement: [2, 4],
+      type: [UNSIGNED_INT, UNSIGNED_SHORT]
     }; // sized formats
 
     t[R8] = {
@@ -7741,96 +8338,44 @@ function setDefaults(newDefaults) {
  *
  * @memberOf module:twgl
  */
-// NOTE: While querying GL is considered slow it's not remotely as slow
-// as uploading a texture. On top of that you're unlikely to call this in
-// a perf critical loop. Even if upload a texture every frame that's unlikely
-// to be more than 1 or 2 textures a frame. In other words, the benefits of
-// making the API easy to use outweigh any supposed perf benefits
-//
-// Also note I get that having one global of these is bad practice.
-// As long as it's used correctly it means no garbage which probably
-// doesn't matter when dealing with textures but old habits die hard.
 
-
-var lastPackState = {};
 /**
- * Saves any packing state that will be set based on the options.
+ * Sets any packing state that will be set based on the options.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
 
-function savePackState(gl, options) {
+
+function setPackState(gl, options) {
   if (options.colorspaceConversion !== undefined) {
-    lastPackState.colorspaceConversion = gl.getParameter(UNPACK_COLORSPACE_CONVERSION_WEBGL);
     gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
   }
 
   if (options.premultiplyAlpha !== undefined) {
-    lastPackState.premultiplyAlpha = gl.getParameter(UNPACK_PREMULTIPLY_ALPHA_WEBGL);
     gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
   }
 
   if (options.flipY !== undefined) {
-    lastPackState.flipY = gl.getParameter(UNPACK_FLIP_Y_WEBGL);
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY);
   }
 }
 /**
- * Restores any packing state that was set based on the options.
- * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
+ * Set skip state to defaults
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @private
  */
 
 
-function restorePackState(gl, options) {
-  if (options.colorspaceConversion !== undefined) {
-    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, lastPackState.colorspaceConversion);
-  }
-
-  if (options.premultiplyAlpha !== undefined) {
-    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, lastPackState.premultiplyAlpha);
-  }
-
-  if (options.flipY !== undefined) {
-    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, lastPackState.flipY);
-  }
-}
-/**
- * Saves state related to data size
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @private
- */
-
-
-function saveSkipState(gl) {
-  lastPackState.unpackAlignment = gl.getParameter(UNPACK_ALIGNMENT);
+function setSkipStateToDefault(gl) {
+  gl.pixelStorei(UNPACK_ALIGNMENT, 4);
 
   if (utils.isWebGL2(gl)) {
-    lastPackState.unpackRowLength = gl.getParameter(UNPACK_ROW_LENGTH);
-    lastPackState.unpackImageHeight = gl.getParameter(UNPACK_IMAGE_HEIGHT);
-    lastPackState.unpackSkipPixels = gl.getParameter(UNPACK_SKIP_PIXELS);
-    lastPackState.unpackSkipRows = gl.getParameter(UNPACK_SKIP_ROWS);
-    lastPackState.unpackSkipImages = gl.getParameter(UNPACK_SKIP_IMAGES);
-  }
-}
-/**
- * Restores state related to data size
- * @param {WebGLRenderingContext} gl the WebGLRenderingContext
- * @private
- */
-
-
-function restoreSkipState(gl) {
-  gl.pixelStorei(UNPACK_ALIGNMENT, lastPackState.unpackAlignment);
-
-  if (utils.isWebGL2(gl)) {
-    gl.pixelStorei(UNPACK_ROW_LENGTH, lastPackState.unpackRowLength);
-    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, lastPackState.unpackImageHeight);
-    gl.pixelStorei(UNPACK_SKIP_PIXELS, lastPackState.unpackSkipPixels);
-    gl.pixelStorei(UNPACK_SKIP_ROWS, lastPackState.unpackSkipRows);
-    gl.pixelStorei(UNPACK_SKIP_IMAGES, lastPackState.unpackSkipImages);
+    gl.pixelStorei(UNPACK_ROW_LENGTH, 0);
+    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
+    gl.pixelStorei(UNPACK_SKIP_PIXELS, 0);
+    gl.pixelStorei(UNPACK_SKIP_ROWS, 0);
+    gl.pixelStorei(UNPACK_SKIP_IMAGES, 0);
   }
 }
 /**
@@ -8118,7 +8663,7 @@ function setTextureFromElement(gl, tex, element, options) {
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var format = options.format || formatType.format;
   var type = options.type || formatType.type;
-  savePackState(gl, options);
+  setPackState(gl, options);
   gl.bindTexture(target, tex);
 
   if (target === TEXTURE_CUBE_MAP) {
@@ -8182,10 +8727,9 @@ function setTextureFromElement(gl, tex, element, options) {
           premultiplyAlpha: 'none',
           colorSpaceConversion: 'none'
         }).then(function (imageBitmap) {
-          savePackState(gl, options);
+          setPackState(gl, options);
           gl.bindTexture(target, tex);
           gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
-          restorePackState(gl, options);
 
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
@@ -8204,7 +8748,6 @@ function setTextureFromElement(gl, tex, element, options) {
 
     var xMult = element.width === largest ? 1 : 0;
     var yMult = element.height === largest ? 1 : 0;
-    saveSkipState(gl);
     gl.pixelStorei(UNPACK_ALIGNMENT, 1);
     gl.pixelStorei(UNPACK_ROW_LENGTH, element.width);
     gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
@@ -8219,12 +8762,10 @@ function setTextureFromElement(gl, tex, element, options) {
       gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
     }
 
-    restoreSkipState(gl);
+    setSkipStateToDefault(gl);
   } else {
     gl.texImage2D(target, level, internalFormat, format, type, element);
   }
-
-  restorePackState(gl, options);
 
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
@@ -8390,6 +8931,7 @@ function loadAndUseImage(obj, crossOrigin, callback) {
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  *   This is often the same options you passed in when you created the texture.
  * @memberOf module:twgl/textures
+ * @private
  */
 
 
@@ -8504,6 +9046,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
  * @param {module:twgl.CubemapReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 
 
@@ -8544,7 +9087,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
         if (img.width !== img.height) {
           errors.push("cubemap face img is not a square: " + img.src);
         } else {
-          savePackState(gl, options);
+          setPackState(gl, options);
           gl.bindTexture(target, tex); // So assuming this is the first image we now have one face that's img sized
           // and 5 faces that are 1x1 pixel so size the other faces
 
@@ -8557,8 +9100,6 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
           } else {
             gl.texImage2D(faceTarget, level, internalFormat, format, type, img);
           }
-
-          restorePackState(gl, options);
 
           if (shouldAutomaticallySetTextureFilteringForSize(options)) {
             gl.generateMipmap(target);
@@ -8594,6 +9135,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
  * @param {module:twgl.ThreeDReadyCallback} [callback] A function to be called when all the images have finished loading. err will
  *    be non null if there was an error.
  * @memberOf module:twgl/textures
+ * @private
  */
 
 
@@ -8630,7 +9172,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
       if (err) {
         errors.push(err);
       } else {
-        savePackState(gl, options);
+        setPackState(gl, options);
         gl.bindTexture(target, tex);
 
         if (firstImage) {
@@ -8662,8 +9204,6 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
             ctx.canvas.height = 0;
           }
         }
-
-        restorePackState(gl, options);
 
         if (shouldAutomaticallySetTextureFilteringForSize(options)) {
           gl.generateMipmap(target);
@@ -8751,9 +9291,9 @@ function setTextureFromArray(gl, tex, src, options) {
     height = dimensions.height;
   }
 
-  saveSkipState(gl);
+  setSkipStateToDefault(gl);
   gl.pixelStorei(UNPACK_ALIGNMENT, options.unpackAlignment || 1);
-  savePackState(gl, options);
+  setPackState(gl, options);
 
   if (target === TEXTURE_CUBE_MAP) {
     var elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
@@ -8769,8 +9309,6 @@ function setTextureFromArray(gl, tex, src, options) {
     gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
   }
 
-  restorePackState(gl, options);
-  restoreSkipState(gl);
   return {
     width: width,
     height: height,
@@ -8796,7 +9334,7 @@ function setEmptyTexture(gl, tex, options) {
   var formatType = getFormatAndTypeForInternalFormat(internalFormat);
   var format = options.format || formatType.format;
   var type = options.type || formatType.type;
-  savePackState(gl, options);
+  setPackState(gl, options);
 
   if (target === TEXTURE_CUBE_MAP) {
     for (var ii = 0; ii < 6; ++ii) {
@@ -8807,11 +9345,13 @@ function setEmptyTexture(gl, tex, options) {
   } else {
     gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
   }
-
-  restorePackState(gl, options);
 }
 /**
  * Creates a texture based on the options passed in.
+ *
+ * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
+ * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
+ *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
@@ -8855,12 +9395,11 @@ function createTexture(gl, options, callback) {
       } else {
         loadSlicesFromUrls(gl, tex, options, callback);
       }
-    } else if (isTexImageSource(src)) {
+    } else {
+      // if (isTexImageSource(src))
       setTextureFromElement(gl, tex, src, options);
       width = src.width;
       height = src.height;
-    } else {
-      throw "unsupported src type";
     }
   } else {
     setEmptyTexture(gl, tex, options);
@@ -9069,6 +9608,8 @@ function createTextures(gl, textureOptions, callback) {
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 var _exportNames = {
   m4: true,
@@ -9099,7 +9640,7 @@ Object.keys(_twgl).forEach(function (key) {
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /***/ }),
 
@@ -9112,6 +9653,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 "use strict";
 
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 exports.__esModule = true;
 var _exportNames = {
@@ -9212,7 +9755,7 @@ Object.keys(vertexArrays).forEach(function (key) {
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -9266,8 +9809,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // make sure we don't see a global gl
 var gl = undefined;
 /* eslint-disable-line */
-
-/* lgtm [js/unused-local-variable] */
 
 var defaults = {
   addExtensionsToContext: true
@@ -9504,6 +10045,8 @@ function create3DContext(canvas, opt_attribs) {
  * @param {WebGLContextAttributes} [opt_attribs] optional webgl context creation attributes
  * @return {WebGLRenderingContext} The created context.
  * @memberOf module:twgl
+ * @deprecated
+ * @private
  */
 
 
@@ -9650,8 +10193,6 @@ exports.isArrayBuffer = void 0;
 // make sure we don't see a global gl
 var gl = undefined;
 /* eslint-disable-line */
-
-/* lgtm [js/unused-local-variable] */
 
 /* DataType */
 
@@ -9968,7 +10509,7 @@ var glEnumToString = function () {
 
   return function glEnumToString(gl, value) {
     addEnums(gl);
-    return enums[value] || "0x" + value.toString(16);
+    return enums[value] || (typeof value === 'number' ? "0x".concat(value.toString(16)) : value);
   };
 }();
 
@@ -10442,6 +10983,8 @@ function divide(a, b, dst) {
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 exports.__esModule = true;
 exports.createVertexArrayInfo = createVertexArrayInfo;
 exports.createVAOAndSetAttributes = createVAOAndSetAttributes;
@@ -10451,7 +10994,7 @@ var programs = _interopRequireWildcard(__webpack_require__(/*! ./programs.js */ 
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 /*
  * Copyright 2019 Gregg Tavares
@@ -10560,6 +11103,9 @@ function createVertexArrayInfo(gl, programInfos, bufferInfo) {
  * @param {Object.<string, function>} setters Attribute setters as returned from createAttributeSetters
  * @param {Object.<string, module:twgl.AttribInfo>} attribs AttribInfos mapped by attribute name.
  * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+ *
+ * @return {WebGLVertexArrayObject|null} The created WebGLVertexArrayObject
+ *
  * @memberOf module:twgl/vertexArrays
  */
 
@@ -10587,6 +11133,9 @@ function createVAOAndSetAttributes(gl, setters, attribs, indices) {
  * @param {Object.<string, function>| module:twgl.ProgramInfo} programInfo as returned from createProgramInfo or Attribute setters as returned from createAttributeSetters
  * @param {module:twgl.BufferInfo} bufferInfo BufferInfo as returned from createBufferInfoFromArrays etc...
  * @param {WebGLBuffer} [indices] an optional ELEMENT_ARRAY_BUFFER of indices
+ *
+ * @return {WebGLVertexArrayObject|null} The created WebGLVertexArrayObject
+ *
  * @memberOf module:twgl/vertexArrays
  */
 
@@ -10599,118 +11148,4 @@ function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
 
 /******/ });
 });
-
-},{}],3:[function(require,module,exports){
-"use strict";
-
-/* global require */
-
-// this would be require('twgl') in a real example
-const twgl = require('../../dist/5.x/twgl-full');  /* eslint-disable-line */
-const chroma = require('../../3rdparty/chroma.min'); /* eslint-disable-line */
-const m4 = twgl.m4;
-const primitives = twgl.primitives;
-
-twgl.setDefaults({attribPrefix: "a_"});
-const gl = document.querySelector("#c").getContext("webgl");
-const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-
-const shapes = [
-  primitives.createCubeBufferInfo(gl, 2),
-  primitives.createSphereBufferInfo(gl, 1, 24, 12),
-  primitives.createPlaneBufferInfo(gl, 2, 2),
-  primitives.createTruncatedConeBufferInfo(gl, 1, 0, 2, 24, 1),
-];
-
-function rand(min, max) {
-  return min + Math.random() * (max - min);
-}
-
-// Shared values
-const lightWorldPosition = [1, 8, -10];
-const lightColor = [1, 1, 1, 1];
-const camera = m4.identity();
-const view = m4.identity();
-const viewProjection = m4.identity();
-
-const tex = twgl.createTexture(gl, {
-  min: gl.NEAREST,
-  mag: gl.NEAREST,
-  src: [
-    255, 255, 255, 255,
-    192, 192, 192, 255,
-    192, 192, 192, 255,
-    255, 255, 255, 255,
-  ],
-});
-
-const objects = [];
-const drawObjects = [];
-const numObjects = 100;
-const baseHue = rand(0, 360);
-for (let ii = 0; ii < numObjects; ++ii) {
-  const uniforms = {
-    u_lightWorldPos: lightWorldPosition,
-    u_lightColor: lightColor,
-    u_diffuseMult: chroma.hsv((baseHue + rand(0, 60)) % 360, 0.4, 0.8).gl(),
-    u_specular: [1, 1, 1, 1],
-    u_shininess: 50,
-    u_specularFactor: 1,
-    u_diffuse: tex,
-    u_viewInverse: camera,
-    u_world: m4.identity(),
-    u_worldInverseTranspose: m4.identity(),
-    u_worldViewProjection: m4.identity(),
-  };
-  drawObjects.push({
-    programInfo: programInfo,
-    bufferInfo: shapes[ii % shapes.length],
-    uniforms: uniforms,
-  });
-  objects.push({
-    translation: [rand(-10, 10), rand(-10, 10), rand(-10, 10)],
-    ySpeed: rand(0.1, 0.3),
-    zSpeed: rand(0.1, 0.3),
-    uniforms: uniforms,
-  });
-}
-
-function render(time) {
-  time *= 0.001;
-  twgl.resizeCanvasToDisplaySize(gl.canvas);
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-  gl.enable(gl.DEPTH_TEST);
-  gl.enable(gl.CULL_FACE);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-  const projection = m4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
-  const eye = [1, 4, -20];
-  const target = [0, 0, 0];
-  const up = [0, 1, 0];
-
-  m4.lookAt(eye, target, up, camera);
-  m4.inverse(camera, view);
-  m4.multiply(projection, view, viewProjection);
-
-  objects.forEach(function(obj) {
-    const uni = obj.uniforms;
-    const world = uni.u_world;
-    m4.identity(world);
-    m4.rotateY(world, time * obj.ySpeed, world);
-    m4.rotateZ(world, time * obj.zSpeed, world);
-    m4.translate(world, obj.translation, world);
-    m4.rotateX(world, time, world);
-    m4.transpose(m4.inverse(world, uni.u_worldInverseTranspose), uni.u_worldInverseTranspose);
-    m4.multiply(viewProjection, uni.u_world, uni.u_worldViewProjection);
-  });
-
-  twgl.drawObjectList(gl, drawObjects);
-
-  requestAnimationFrame(render);
-}
-requestAnimationFrame(render);
-
-
-
-},{"../../3rdparty/chroma.min":1,"../../dist/5.x/twgl-full":2}]},{},[3]);
+//# sourceMappingURL=twgl-full.js.map
