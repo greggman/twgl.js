@@ -7735,8 +7735,9 @@ disabled and set to this constant value and all other values will be ignored.</p
 
             
 
-            <td class="description last"><p>the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>
-where as anything else = do call it with this value</p></td>
+            <td class="description last"><p>the divisor in instances. Default = 0.<br>
+Requires WebGL2 or the ANGLE_instanced_arrays extension.<br>
+and, if you using WebGL1 you must have called <a href="module-twgl.html#.addExtensionsToContext"><code>module:twgl.addExtensionsToContext</code></a></p></td>
         </tr>
 
         
@@ -9911,8 +9912,9 @@ For example if you want colors in a <code>Uint8Array</code> you might have a <co
 
             
 
-            <td class="description last"><p>divisor for <code>vertexAttribDivisor</code>. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor<br>
-where as anything else = do call it with this value</p></td>
+            <td class="description last"><p>divisor for <code>vertexAttribDivisor</code>. Default = 0.<br>
+Requires WebGL2 or the ANGLE_instanced_arrays extension.<br>
+and, if you using WebGL1 you must have called <a href="module-twgl.html#.addExtensionsToContext"><code>module:twgl.addExtensionsToContext</code></a></p></td>
         </tr>
 
         

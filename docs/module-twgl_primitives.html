@@ -69,7 +69,7 @@ the higher level functions.</p>
 or add more data before generating a <a href="module-twgl.html#.BufferInfo"><code>module:twgl.BufferInfo</code></a>. Once you're finished<br>
 manipulating the vertices call <a href="module-twgl.html#.createBufferInfoFromArrays"><code>module:twgl.createBufferInfoFromArrays</code></a>.</p>
 <p>example:</p>
-<pre><code>const arrays = twgl.primitives.createPlaneArrays(1);
+<pre><code>const arrays = twgl.primitives.createPlaneVertices(1);
 twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
 const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);</code></pre>
 </li>

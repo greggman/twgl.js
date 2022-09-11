@@ -349,8 +349,7 @@ function makeTypedArray(array, name) {
  * @property {boolean} [normalize] whether or not to normalize the data. Default = false
  * @property {number} [offset] offset into buffer in bytes. Default = 0
  * @property {number} [stride] the stride in bytes per element. Default = 0
- * @property {number} [divisor] the divisor in instances. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
- *    where as anything else = do call it with this value
+ * @property {number} [divisor] the divisor in instances. Default = 0.  Requires WebGL2 or the ANGLE_instanced_arrays extension.
  * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
  * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
  * @memberOf module:twgl
@@ -372,8 +371,7 @@ function makeTypedArray(array, name) {
  * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
  * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
  * @property {number} [offset] offset for `vertexAttribPointer`. Default = 0
- * @property {number} [divisor] divisor for `vertexAttribDivisor`. Default = undefined. Note: undefined = don't call gl.vertexAttribDivisor
- *    where as anything else = do call it with this value
+ * @property {number} [divisor] divisor for `vertexAttribDivisor`. Default = 0.  Requires WebGL2 or the ANGLE_instanced_arrays extension.
  * @property {string} [attrib] name of attribute this array maps to. Defaults to same name as array prefixed by the default attribPrefix.
  * @property {string} [name] synonym for `attrib`.
  * @property {string} [attribName] synonym for `attrib`.
@@ -2966,7 +2964,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  *
  *    example:
  *
- *        const arrays = twgl.primitives.createPlaneArrays(1);
+ *        const arrays = twgl.primitives.createPlaneVertices(1);
  *        twgl.primitives.reorientVertices(arrays, m4.rotationX(Math.PI * 0.5));
  *        const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
  *
@@ -5350,8 +5348,8 @@ function floatAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index, b.divisor || 0);
       }
     }
   };
@@ -5372,8 +5370,8 @@ function intAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || INT, b.stride || 0, b.offset || 0);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index, b.divisor || 0);
       }
     }
   };
@@ -5394,8 +5392,8 @@ function uintAttribSetter(gl, index) {
       gl.enableVertexAttribArray(index);
       gl.vertexAttribIPointer(index, b.numComponents || b.size, b.type || UNSIGNED_INT, b.stride || 0, b.offset || 0);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index, b.divisor || 0);
       }
     }
   };
@@ -5419,8 +5417,8 @@ function matAttribSetter(gl, index, typeInfo) {
       gl.enableVertexAttribArray(index + i);
       gl.vertexAttribPointer(index + i, size, type, normalize, stride, offset + rowOffset * i);
 
-      if (b.divisor !== undefined) {
-        gl.vertexAttribDivisor(index + i, b.divisor);
+      if (gl.vertexAttribDivisor) {
+        gl.vertexAttribDivisor(index + i, b.divisor || 0);
       }
     }
   };

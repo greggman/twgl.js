@@ -1,8 +1,8 @@
 {
   "name": "twgl-base.js",
-  "version": "4.24.0",
+  "version": "5.0.0",
   "description": "A Tiny WebGL helper library",
-  "main": "dist/4.x/twgl.js",
+  "main": "dist/5.x/twgl.js",
   "types": "dist/4.x/twgl-full.d.ts",
   "module": "dist/4.x/twgl-full.module.js",
   "scripts": {},
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/greggman/twgl.js",
   "files": [
-    "dist/4.x/twgl.js",
-    "dist/4.x/twgl.js.map"
+    "dist/5.x/twgl.js",
+    "dist/5.x/twgl.js.map"
   ],
   "devDependencies": {},
   "dependencies": {}
