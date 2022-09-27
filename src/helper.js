@@ -62,24 +62,29 @@ function warn(...args) {
   console.warn(...args);
 }
 
+function isType(object, type) {
+  const s = Object.prototype.toString.call(object);
+  return s.substring(8, s.length - 1) === type;
+}
+
 function isBuffer(gl, t) {
-  return typeof WebGLBuffer !== 'undefined' && t instanceof WebGLBuffer;
+  return typeof WebGLBuffer !== 'undefined' && isType(t, 'WebGLBuffer');
 }
 
 function isRenderbuffer(gl, t) {
-  return typeof WebGLRenderbuffer !== 'undefined' && t instanceof WebGLRenderbuffer;
+  return typeof WebGLRenderbuffer !== 'undefined' && isType(t, 'WebGLRenderbuffer');
 }
 
 function isShader(gl, t) {
-  return typeof WebGLShader !== 'undefined' && t instanceof WebGLShader;
+  return typeof WebGLShader !== 'undefined' && isType(t, 'WebGLShader');
 }
 
 function isTexture(gl, t) {
-  return typeof WebGLTexture !== 'undefined' && t instanceof WebGLTexture;
+  return typeof WebGLTexture !== 'undefined' && isType(t, 'WebGLTexture');
 }
 
 function isSampler(gl, t) {
-  return typeof WebGLSampler !== 'undefined' && t instanceof WebGLSampler;
+  return typeof WebGLSampler !== 'undefined' && isType(t, 'WebGLSampler');
 }
 
 export {
