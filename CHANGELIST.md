@@ -1,5 +1,9 @@
 # Change List
 
+*   5.0.2
+
+    *   Make isX functions (internal) work across realms
+
 *   5.0.0
 
     *   Always set attribute divisor if it exists
