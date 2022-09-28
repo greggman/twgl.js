@@ -62,9 +62,21 @@ function warn(...args) {
   console.warn(...args);
 }
 
+const isTypeWeakMaps = new Map();
+
 function isType(object, type) {
-  const s = Object.prototype.toString.call(object);
-  return s.substring(8, s.length - 1) === type;
+  let weakMap = isTypeWeakMaps.get(type);
+  if (!weakMap) {
+    weakMap = new WeakMap();
+    isTypeWeakMaps.set(type, weakMap);
+  }
+  let isOfType = weakMap.get(object);
+  if (isOfType === undefined) {
+    const s = Object.prototype.toString.call(object);
+    isOfType = s.substring(8, s.length - 1) === type;
+    weakMap.set(object, isOfType);
+  }
+  return isOfType;
 }
 
 function isBuffer(gl, t) {
