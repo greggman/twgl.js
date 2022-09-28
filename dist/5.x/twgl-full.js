@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 5.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 5.0.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1585,24 +1585,45 @@ function warn() {
   (_console2 = console).warn.apply(_console2, arguments);
 }
 
+var isTypeWeakMaps = new Map();
+
+function isType(object, type) {
+  var weakMap = isTypeWeakMaps.get(type);
+
+  if (!weakMap) {
+    weakMap = new WeakMap();
+    isTypeWeakMaps.set(type, weakMap);
+  }
+
+  var isOfType = weakMap.get(object);
+
+  if (isOfType === undefined) {
+    var s = Object.prototype.toString.call(object);
+    isOfType = s.substring(8, s.length - 1) === type;
+    weakMap.set(object, isOfType);
+  }
+
+  return isOfType;
+}
+
 function isBuffer(gl, t) {
-  return typeof WebGLBuffer !== 'undefined' && t instanceof WebGLBuffer;
+  return typeof WebGLBuffer !== 'undefined' && isType(t, 'WebGLBuffer');
 }
 
 function isRenderbuffer(gl, t) {
-  return typeof WebGLRenderbuffer !== 'undefined' && t instanceof WebGLRenderbuffer;
+  return typeof WebGLRenderbuffer !== 'undefined' && isType(t, 'WebGLRenderbuffer');
 }
 
 function isShader(gl, t) {
-  return typeof WebGLShader !== 'undefined' && t instanceof WebGLShader;
+  return typeof WebGLShader !== 'undefined' && isType(t, 'WebGLShader');
 }
 
 function isTexture(gl, t) {
-  return typeof WebGLTexture !== 'undefined' && t instanceof WebGLTexture;
+  return typeof WebGLTexture !== 'undefined' && isType(t, 'WebGLTexture');
 }
 
 function isSampler(gl, t) {
-  return typeof WebGLSampler !== 'undefined' && t instanceof WebGLSampler;
+  return typeof WebGLSampler !== 'undefined' && isType(t, 'WebGLSampler');
 }
 
 /***/ }),
