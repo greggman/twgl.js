@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 5.0.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 5.0.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1514,6 +1514,8 @@ exports.isShader = isShader;
 exports.isTexture = isTexture;
 exports.isSampler = isSampler;
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /*
  * Copyright 2019 Gregg Tavares
  *
@@ -1588,7 +1590,7 @@ function warn() {
 var isTypeWeakMaps = new Map();
 
 function isType(object, type) {
-  if (!object) {
+  if (!object || _typeof(object) !== 'object') {
     return false;
   }
 

@@ -1,4 +1,4 @@
-/* @license twgl.js 5.0.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 5.0.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -1952,7 +1952,7 @@ function warn(...args) {
 const isTypeWeakMaps = new Map();
 
 function isType(object, type) {
-  if (!object) {
+  if (!object || typeof object !== 'object') {
     return false;
   }
   let weakMap = isTypeWeakMaps.get(type);
