@@ -47,6 +47,7 @@ describe('helper tests', () => {
         } else {
           assertFalsy(testFn(gl, resource));
         }
+        assertFalsy(testFn(gl, gl.TEXTURE_2D));
       }
 
       assertNoWebGLError(gl);

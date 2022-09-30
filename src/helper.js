@@ -65,7 +65,7 @@ function warn(...args) {
 const isTypeWeakMaps = new Map();
 
 function isType(object, type) {
-  if (!object) {
+  if (!object || typeof object !== 'object') {
     return false;
   }
   let weakMap = isTypeWeakMaps.get(type);
