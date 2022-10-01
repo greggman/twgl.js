@@ -22,13 +22,13 @@ window.addEventListener('load', function() {
      uniform float vertexCount;
      uniform vec2 resolution;
 
-     constying vec4 v_color;
+     varying vec4 v_color;
 
      ${glsl}
    `;
    const fs = `
      precision mediump float;
-     constying vec4 v_color;
+     varying vec4 v_color;
      void main() {
        gl_FragColor = v_color;
      }

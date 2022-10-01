@@ -118,84 +118,92 @@ void main() {
   <script type="module">
     import * as twgl from '../dist/5.x/twgl-full.module.js';
     const m4 = twgl.m4;
-    const gl = document.querySelector("#c").getContext("webgl");
-    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    function makeShared(data, Type) {
-      Type = Type || Float32Array;
-      const size = Type.BYTES_PER_ELEMENT * data.length;
-      const buf = new SharedArrayBuffer(size);
-      const view = new Type(buf);
-      view.set(data);
-      return view;
-    }
+    function main() {
+      if (typeof SharedArrayBuffer === 'undefined') {
+        return;
+      }
 
-    const arrays = {
-      position: makeShared([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]),
-      normal:   makeShared([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]),
-      texcoord: makeShared([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]),
-      indices:  makeShared([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23], Uint16Array),
-    };
-    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+      const gl = document.querySelector("#c").getContext("webgl");
+      const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
-    const tex = twgl.createTexture(gl, {
-      min: gl.NEAREST,
-      mag: gl.NEAREST,
-      src: makeShared([
-        255, 255, 255, 255,
-        192, 192, 192, 255,
-        192, 192, 192, 255,
-        255, 255, 255, 255,
-      ], Uint8Array),
-    });
+      function makeShared(data, Type) {
+        Type = Type || Float32Array;
+        const size = Type.BYTES_PER_ELEMENT * data.length;
+        const buf = new SharedArrayBuffer(size);
+        const view = new Type(buf);
+        view.set(data);
+        return view;
+      }
 
-    const uniforms = {
-      u_lightWorldPos: [1, 8, -10],
-      u_lightColor: [1, 0.8, 0.8, 1],
-      u_ambient: [0, 0, 0, 1],
-      u_specular: [1, 1, 1, 1],
-      u_shininess: 50,
-      u_specularFactor: 1,
-      u_diffuse: tex,
-    };
+      const arrays = {
+        position: makeShared([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]),
+        normal:   makeShared([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]),
+        texcoord: makeShared([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]),
+        indices:  makeShared([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23], Uint16Array),
+      };
+      const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
-    function render(time) {
-      time *= 0.001;
-      twgl.resizeCanvasToDisplaySize(gl.canvas);
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      const tex = twgl.createTexture(gl, {
+        min: gl.NEAREST,
+        mag: gl.NEAREST,
+        src: makeShared([
+          255, 255, 255, 255,
+          192, 192, 192, 255,
+          192, 192, 192, 255,
+          255, 255, 255, 255,
+        ], Uint8Array),
+      });
 
-      gl.enable(gl.DEPTH_TEST);
-      gl.enable(gl.CULL_FACE);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      const uniforms = {
+        u_lightWorldPos: [1, 8, -10],
+        u_lightColor: [1, 0.8, 0.8, 1],
+        u_ambient: [0, 0, 0, 1],
+        u_specular: [1, 1, 1, 1],
+        u_shininess: 50,
+        u_specularFactor: 1,
+        u_diffuse: tex,
+      };
 
-      const fov = 30 * Math.PI / 180;
-      const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-      const zNear = 0.5;
-      const zFar = 10;
-      const projection = m4.perspective(fov, aspect, zNear, zFar);
-      const eye = [1, 4, -6];
-      const target = [0, 0, 0];
-      const up = [0, 1, 0];
+      function render(time) {
+        time *= 0.001;
+        twgl.resizeCanvasToDisplaySize(gl.canvas);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-      const camera = m4.lookAt(eye, target, up);
-      const view = m4.inverse(camera);
-      const viewProjection = m4.multiply(projection, view);
-      const world = m4.rotationY(time);
+        gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.CULL_FACE);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      uniforms.u_viewInverse = camera;
-      uniforms.u_world = world;
-      uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
-      uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
+        const fov = 30 * Math.PI / 180;
+        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        const zNear = 0.5;
+        const zFar = 10;
+        const projection = m4.perspective(fov, aspect, zNear, zFar);
+        const eye = [1, 4, -6];
+        const target = [0, 0, 0];
+        const up = [0, 1, 0];
 
-      gl.useProgram(programInfo.program);
-      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-      twgl.setUniforms(programInfo, uniforms);
-      gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+        const camera = m4.lookAt(eye, target, up);
+        const view = m4.inverse(camera);
+        const viewProjection = m4.multiply(projection, view);
+        const world = m4.rotationY(time);
 
+        uniforms.u_viewInverse = camera;
+        uniforms.u_world = world;
+        uniforms.u_worldInverseTranspose = m4.transpose(m4.inverse(world));
+        uniforms.u_worldViewProjection = m4.multiply(viewProjection, world);
+
+        gl.useProgram(programInfo.program);
+        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+        twgl.setUniforms(programInfo, uniforms);
+        gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+
+        requestAnimationFrame(render);
+      }
       requestAnimationFrame(render);
     }
-    requestAnimationFrame(render);
 
+    main();
   </script>
 </html>
 

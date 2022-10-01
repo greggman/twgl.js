@@ -4,9 +4,21 @@
 
 const puppeteer = require('puppeteer');
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
+
+const exampleInjectJS = fs.readFileSync('test/src/js/example-inject.js', {encoding: 'utf-8'});
+
+function getExamples(port) {
+  return fs.readdirSync('examples')
+      .filter(f => f.endsWith('.html'))
+      .map(f => ({
+        url: `http://localhost:${port}/examples/${f}`,
+        js: exampleInjectJS,
+      }));
+}
 
 app.use(express.static(path.dirname(__dirname)));
 const server = app.listen(port, () => {
@@ -23,7 +35,6 @@ function makePromiseInfo() {
   return info;
 }
 
-
 async function test(port) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -36,24 +47,39 @@ async function test(port) {
   let totalFailures = 0;
   let waitingPromiseInfo;
 
-  // Get the "viewport" of the page, as reported by the page.
   page.on('domcontentloaded', async() => {
     const failures = await page.evaluate(() => {
       return window.testsPromiseInfo.promise;
     });
 
     totalFailures += failures;
+    if (failures) {
+      console.error('FAILED');
+    }
 
     waitingPromiseInfo.resolve();
   });
 
-  const urls = [
-    `http://localhost:${port}/test/index.html?reporter=spec`,
+  const testPages = [
+    {url: `http://localhost:${port}/test/index.html?reporter=spec` },
+    ...getExamples(port),
   ];
 
-  for (const url of urls) {
+  for (const {url, js} of testPages) {
     waitingPromiseInfo = makePromiseInfo();
+    console.log(`===== [ ${url} ] =====`);
+    if (js) {
+      await page.evaluateOnNewDocument(js);
+    }
     await page.goto(url);
+    await page.waitForNetworkIdle();
+    if (js) {
+      await page.evaluate(() => {
+        setTimeout(() => {
+          window.testsPromiseInfo.resolve(0);
+        }, 10);
+      });
+    }
     await waitingPromiseInfo.promise;
   }
 
