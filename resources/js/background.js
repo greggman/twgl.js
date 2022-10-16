@@ -46,8 +46,53 @@
   const up = [0.2, 0.8, 0];
   const clearColor = [0.2, 0.4, 0.8, 1];
 
-  function render(time) {
-    time *= 0.001;
+  let requestId;
+  let running;
+  let then = 0;
+  let time = 0;
+  function startAnimation() {
+    running = true;
+    requestAnimation();
+  }
+
+  function stopAnimation() {
+    running = false;
+  }
+
+  function requestAnimation() {
+    if (!requestId) {
+      requestId = requestAnimationFrame(render);
+    }
+  }
+
+  const motionQuery = matchMedia('(prefers-reduced-motion)');
+  function handleReduceMotionChanged() {
+    if (motionQuery.matches) {
+      if (!time) {
+        time = 25;
+        requestAnimation();
+      }
+      stopAnimation();
+    } else {
+      startAnimation();
+    }
+  }
+  motionQuery.addEventListener('change', handleReduceMotionChanged);
+  handleReduceMotionChanged();
+  requestAnimation();
+
+  const observer = new ResizeObserver(requestAnimation);
+  observer.observe(gl.canvas);
+
+  function render(now) {
+    requestId = undefined;
+
+    const elapsed = Math.min(now - then, 1000 / 10);
+    then = now;
+    if (running) {
+      time += elapsed * 0.001;
+    }
+
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
     const fadeTime = time;
@@ -101,9 +146,11 @@
       twgl.drawBufferInfo(gl, bufferInfo, gl.LINES);
     }
 
-    requestAnimationFrame(render);
+    if (running) {
+      requestAnimation(render);
+    }
   }
-  render();
+  requestAnimation(render);
 
 }());
 
