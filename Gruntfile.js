@@ -310,9 +310,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('makeindex', function() {
-    const marked  = require('marked');
-    const fs      = require('fs');
-    marked.setOptions({ rawHtml: true });
+    const {marked} = require('marked');
+    const fs       = require('fs');
     const html = marked(fs.readFileSync('README.md', {encoding: 'utf8'}));
     const template = fs.readFileSync('build/templates/index.template', {encoding: 'utf8'});
     let content = replaceParams(template, {
