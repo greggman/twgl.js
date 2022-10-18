@@ -31,6 +31,16 @@ window.addEventListener("onload", function() {
       twgl.primitives.createDiscBufferInfo(gl, 1, 24),
       twgl.primitives.createTorusBufferInfo(gl, 1, 0.4, 24, 12),
     ];
+    const buffer: WebGLBuffer = gl.createBuffer()!;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+      position: {
+        buffer,
+        type: Uint8Array,
+      },
+    });
+    shapes.push(bufferInfo)
 
     twgl.createFramebufferInfo(gl, [
       { format: gl.RGBA, minMag: gl.NEAREST },
