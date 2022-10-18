@@ -1,5 +1,9 @@
 # Change List
 
+*   5.1.0
+
+    *   Allow FullArraySpec.type to be typedArray type or GL type
+
 *   5.0.2
 
     *   Make isX functions (internal) work across realms
