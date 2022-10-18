@@ -117,14 +117,6 @@ function isIndices(name) {
 
 // This is really just a guess. Though I can't really imagine using
 // anything else? Maybe for some compression?
-function getNormalizationForTypedArray(typedArray) {
-  if (typedArray instanceof Int8Array)    { return true; }  // eslint-disable-line
-  if (typedArray instanceof Uint8Array)   { return true; }  // eslint-disable-line
-  return false;
-}
-
-// This is really just a guess. Though I can't really imagine using
-// anything else? Maybe for some compression?
 function getNormalizationForTypedArrayType(typedArrayType) {
   if (typedArrayType === Int8Array)    { return true; }  // eslint-disable-line
   if (typedArrayType === Uint8Array)   { return true; }  // eslint-disable-line
@@ -155,8 +147,8 @@ function guessNumComponentsFromName(name, length) {
   return numComponents;
 }
 
-function getNumComponents(array, arrayName) {
-  return array.numComponents || array.size || guessNumComponentsFromName(arrayName, getArray(array).length);
+function getNumComponents(array, arrayName, numValues) {
+  return array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues || getArray(array).length);
 }
 
 function makeTypedArray(array, name) {
@@ -174,7 +166,7 @@ function makeTypedArray(array, name) {
     };
   }
 
-  let Type = array.type;
+  let Type = array.type ? typedArrayTypeFromGLTypeOrTypedArrayCtor(array.type) : undefined;
   if (!Type) {
     if (isIndices(name)) {
       Type = Uint16Array;
@@ -183,6 +175,52 @@ function makeTypedArray(array, name) {
     }
   }
   return new Type(array.data);
+}
+
+function glTypeFromGLTypeOrTypedArrayType(glTypeOrTypedArrayCtor) {
+  return typeof glTypeOrTypedArrayCtor === 'number'
+      ? glTypeOrTypedArrayCtor
+      : glTypeOrTypedArrayCtor ? typedArrays.getGLTypeForTypedArrayType(glTypeOrTypedArrayCtor) : FLOAT;
+}
+
+function typedArrayTypeFromGLTypeOrTypedArrayCtor(glTypeOrTypedArrayCtor) {
+  return typeof glTypeOrTypedArrayCtor === 'number'
+      ? typedArrays.getTypedArrayTypeForGLType(glTypeOrTypedArrayCtor)
+      : glTypeOrTypedArrayCtor || Float32Array;
+}
+
+function attribBufferFromBuffer(gl, array/*, arrayName */) {
+  return {
+    buffer: array.buffer,
+    numValues: 2 * 3 * 4,  // safely divided by 2, 3, 4
+    type: glTypeFromGLTypeOrTypedArrayType(array.type),
+    arrayType: typedArrayTypeFromGLTypeOrTypedArrayCtor(array.type),
+  };
+}
+
+function attribBufferFromSize(gl, array/*, arrayName*/) {
+  const numValues = array.data || array;
+  const arrayType = typedArrayTypeFromGLTypeOrTypedArrayCtor(array.type);
+  const numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(ARRAY_BUFFER, buffer);
+  gl.bufferData(ARRAY_BUFFER, numBytes, array.drawType || STATIC_DRAW);
+  return {
+    buffer,
+    numValues,
+    type: typedArrays.getGLTypeForTypedArrayType(arrayType),
+    arrayType,
+  };
+}
+
+function attribBufferFromArrayLike(gl, array, arrayName) {
+  const typedArray = makeTypedArray(array, arrayName);
+  return {
+    arrayType: typedArray.constructor,
+    buffer: createBufferFromTypedArray(gl, typedArray, undefined, array.drawType),
+    type: typedArrays.getGLTypeForTypedArray(typedArray),
+    numValues: 0,
+  };
 }
 
 /**
@@ -200,7 +238,7 @@ function makeTypedArray(array, name) {
  * @property {number} [stride] the stride in bytes per element. Default = 0
  * @property {number} [divisor] the divisor in instances. Default = 0.
  *    Requires WebGL2 or the ANGLE_instanced_arrays extension.
- *    and, if you using WebGL1 you must have called {@link module:twgl.addExtensionsToContext}
+ *    and, if you're using WebGL1 you must have called {@link module:twgl.addExtensionsToContext}
  * @property {WebGLBuffer} buffer the buffer that contains the data for this attribute
  * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
  * @memberOf module:twgl
@@ -216,8 +254,9 @@ function makeTypedArray(array, name) {
  *    If `coord` is in the name assumes `numComponents = 2`.
  *    If `color` is in the name assumes `numComponents = 4`.
  *    otherwise assumes `numComponents = 3`
- * @property {constructor} [type] type. This is only used if `data` is a JavaScript array. It is the constructor for the typedarray. (eg. `Uint8Array`).
- * For example if you want colors in a `Uint8Array` you might have a `FullArraySpec` like `{ type: Uint8Array, data: [255,0,255,255, ...], }`.
+ * @property {number|constructor} [type] type. This is used if `data` is a JavaScript array, or `buffer` is passed in, or `data` is a number.
+ *   It can either be the constructor for a typedarray. (eg. `Uint8Array`) OR a WebGL type, (eg `gl.UNSIGNED_BYTE`).
+ *   For example if you want colors in a `Uint8Array` you might have a `FullArraySpec` like `{ type: gl.UNSIGNED_BYTE, data: [255,0,255,255, ...], }`.
  * @property {number} [size] synonym for `numComponents`.
  * @property {boolean} [normalize] normalize for `vertexAttribPointer`. Default is true if type is `Int8Array` or `Uint8Array` otherwise false.
  * @property {number} [stride] stride for `vertexAttribPointer`. Default = 0
@@ -367,32 +406,17 @@ function createAttribsFromArrays(gl, arrays) {
           value: array.value,
         };
       } else {
-        let buffer;
-        let type;
-        let normalization;
-        let numComponents;
+        let fn;
         if (array.buffer && array.buffer instanceof WebGLBuffer) {
-          buffer = array.buffer;
-          numComponents = array.numComponents || array.size;
-          type = array.type;
-          normalization = array.normalize;
+          fn = attribBufferFromBuffer;
         } else if (typeof array === "number" || typeof array.data === "number") {
-          const numValues = array.data || array;
-          const arrayType = array.type || Float32Array;
-          const numBytes = numValues * arrayType.BYTES_PER_ELEMENT;
-          type = typedArrays.getGLTypeForTypedArrayType(arrayType);
-          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
-          numComponents = array.numComponents || array.size || guessNumComponentsFromName(arrayName, numValues);
-          buffer = gl.createBuffer();
-          gl.bindBuffer(ARRAY_BUFFER, buffer);
-          gl.bufferData(ARRAY_BUFFER, numBytes, array.drawType || STATIC_DRAW);
+          fn = attribBufferFromSize;
         } else {
-          const typedArray = makeTypedArray(array, arrayName);
-          buffer = createBufferFromTypedArray(gl, typedArray, undefined, array.drawType);
-          type = typedArrays.getGLTypeForTypedArray(typedArray);
-          normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArray(typedArray);
-          numComponents = getNumComponents(array, arrayName);
+          fn = attribBufferFromArrayLike;
         }
+        const {buffer, type, numValues, arrayType} = fn(gl, array, arrayName);
+        const normalization = array.normalize !== undefined ? array.normalize : getNormalizationForTypedArrayType(arrayType);
+        const numComponents = getNumComponents(array, arrayName, numValues);
         attribs[attribName] = {
           buffer:        buffer,
           numComponents: numComponents,
