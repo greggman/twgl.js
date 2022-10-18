@@ -24,9 +24,9 @@ export type AttribInfo = {
 };
 export type FullArraySpec = {
     value?: number[] | ArrayBufferView;
-    data: number | number[] | ArrayBufferView;
+    data?: number | number[] | ArrayBufferView;
     numComponents?: number;
-    type?: Function;
+    type?: number | TypedArrayConstructor;
     size?: number;
     normalize?: boolean;
     stride?: number;
@@ -235,6 +235,7 @@ export function createTextures(gl: WebGLRenderingContext, options: {
 
 export function setAttributePrefix(prefix: string): void;
 export function createBufferFromTypedArray(gl: WebGLRenderingContext, typedArray: ArrayBuffer | SharedArrayBuffer | ArrayBufferView | WebGLBuffer, type?: number, drawType?: number): WebGLBuffer;
+export type TypedArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Int16ArrayConstructor | Uint16ArrayConstructor | Int32ArrayConstructor | Uint32ArrayConstructor | Float32ArrayConstructor;
 export function createAttribsFromArrays(gl: WebGLRenderingContext, arrays: Arrays, srcBufferInfo?: BufferInfo): {
     [key: string]: AttribInfo;
 };

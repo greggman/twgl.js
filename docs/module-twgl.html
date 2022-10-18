@@ -7737,7 +7737,7 @@ disabled and set to this constant value and all other values will be ignored.</p
 
             <td class="description last"><p>the divisor in instances. Default = 0.<br>
 Requires WebGL2 or the ANGLE_instanced_arrays extension.<br>
-and, if you using WebGL1 you must have called <a href="module-twgl.html#.addExtensionsToContext"><code>module:twgl.addExtensionsToContext</code></a></p></td>
+and, if you're using WebGL1 you must have called <a href="module-twgl.html#.addExtensionsToContext"><code>module:twgl.addExtensionsToContext</code></a></p></td>
         </tr>
 
         
@@ -9670,6 +9670,8 @@ disabled and set to this constant value and all other values will be ignored.</p
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
 
                 
                 </td>
@@ -9728,7 +9730,10 @@ otherwise assumes <code>numComponents = 3</code></p></td>
             <td class="type">
             
                 
-<span class="param-type"><code>constructor</code></span>
+<span class="param-type"><code>number</code></span>
+|
+
+<span class="param-type"><code>TypedArrayConstructor</code></span>
 
 
             
@@ -9746,8 +9751,9 @@ otherwise assumes <code>numComponents = 3</code></p></td>
 
             
 
-            <td class="description last"><p>type. This is only used if <code>data</code> is a JavaScript array. It is the constructor for the typedarray. (eg. <code>Uint8Array</code>).<br>
-For example if you want colors in a <code>Uint8Array</code> you might have a <code>FullArraySpec</code> like <code>{ type: Uint8Array, data: [255,0,255,255, ...], }</code>.</p></td>
+            <td class="description last"><p>type. This is used if <code>data</code> is a JavaScript array, or <code>buffer</code> is passed in, or <code>data</code> is a number.<br>
+It can either be the constructor for a typedarray. (eg. <code>Uint8Array</code>) OR a WebGL type, (eg <code>gl.UNSIGNED_BYTE</code>).<br>
+For example if you want colors in a <code>Uint8Array</code> you might have a <code>FullArraySpec</code> like <code>{ type: gl.UNSIGNED_BYTE, data: [255,0,255,255, ...], }</code>.</p></td>
         </tr>
 
         
