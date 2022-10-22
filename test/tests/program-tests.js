@@ -40,6 +40,45 @@ describe('program tests', () => {
       assertFalsy(msgCapturer.hasMsgs());
     });
 
+    itWebGL('assigns attribute locations via 3rd argument', () => {
+      const {gl} = createContext();
+      const programInfo = twgl.createProgramInfo(gl, [
+        `
+        attribute vec4 foo;
+        attribute vec4 bar;
+        attribute vec4 moo;
+        void main() { gl_Position = foo + bar + moo; }
+        `,
+        'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+      ], ['bar', 'moo', 'foo']);
+      assertTruthy(programInfo);
+      assertEqual(gl.getAttribLocation(programInfo.program, 'bar'), 0);
+      assertEqual(gl.getAttribLocation(programInfo.program, 'moo'), 1);
+      assertEqual(gl.getAttribLocation(programInfo.program, 'foo'), 2);
+    });
+
+    itWebGL('assigns attribute locations via programOptions', () => {
+      const {gl} = createContext();
+      const msgCapturer = new MsgCapturer();
+      const programInfo = twgl.createProgramInfo(gl, [
+        `
+        attribute vec4 foo;
+        attribute vec4 bar;
+        attribute vec4 moo;
+        void main() { gl_Position = foo + bar + moo; }
+        `,
+        'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+      ], {
+        errorCallback: msgCapturer.cb,
+        attribLocations: ['bar', 'moo', 'foo'],
+      });
+      assertTruthy(programInfo);
+      assertFalsy(msgCapturer.hasMsgs());
+      assertEqual(gl.getAttribLocation(programInfo.program, 'bar'), 0);
+      assertEqual(gl.getAttribLocation(programInfo.program, 'moo'), 1);
+      assertEqual(gl.getAttribLocation(programInfo.program, 'foo'), 2);
+    });
+
     itWebGL('fails with bad shader', () => {
       const {gl} = createContext();
       const msgCapturer = new MsgCapturer();
@@ -129,6 +168,141 @@ describe('program tests', () => {
         },
       });
       assertFalsy(programInfo);
+    });
+
+  });
+
+  describe('createProgramInfos', () => {
+
+    itWebGL('createProgramInfos', () => {
+      const {gl} = createContext();
+      const msgCapturer = new MsgCapturer();
+      const programInfos = twgl.createProgramInfos(gl, {
+        foo: [
+          'void main() { gl_Position = vec4(0); }',
+          'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+        ],
+        bar: [
+          'void main() { gl_Position = vec4(0); }',
+          'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+        ],
+      }, {
+        errorCallback: msgCapturer.cb,
+      });
+      assertTruthy(programInfos.foo.program instanceof WebGLProgram);
+      assertTruthy(programInfos.bar.program instanceof WebGLProgram);
+      assertFalsy(msgCapturer.hasMsgs());
+    });
+
+    itWebGL('createProgramInfos sets attrib locations', () => {
+      const {gl} = createContext();
+      const msgCapturer = new MsgCapturer();
+      const programInfos = twgl.createProgramInfos(gl, {
+        foo: {
+          shaders: [
+            'attribute vec4 foo; attribute vec4 bar; void main() { gl_Position = foo + bar; }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+        },
+        bar: {
+          shaders: [
+            'attribute vec4 moo; attribute vec4 bar; void main() { gl_Position = moo + bar; }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+          attribLocations: ['bar', 'moo'],
+        },
+        moo: {
+          shaders: [
+            'attribute vec4 moo; attribute vec4 bar; void main() { gl_Position = moo + bar; }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+        },
+      }, {
+        attribLocations: ['moo', 'foo', 'bar'],
+        errorCallback: msgCapturer.cb,
+      });
+      assertTruthy(programInfos.foo.program instanceof WebGLProgram);
+      assertTruthy(programInfos.bar.program instanceof WebGLProgram);
+      assertTruthy(programInfos.moo.program instanceof WebGLProgram);
+
+      assertEqual(gl.getAttribLocation(programInfos.foo.program, 'foo'), 1);
+      assertEqual(gl.getAttribLocation(programInfos.foo.program, 'bar'), 2);
+
+      assertEqual(gl.getAttribLocation(programInfos.bar.program, 'moo'), 1);
+      assertEqual(gl.getAttribLocation(programInfos.bar.program, 'bar'), 0);
+
+      assertEqual(gl.getAttribLocation(programInfos.moo.program, 'moo'), 0);
+      assertEqual(gl.getAttribLocation(programInfos.moo.program, 'bar'), 2);
+
+      assertFalsy(msgCapturer.hasMsgs());
+    });
+
+    itWebGL('createProgramInfos calls the correct errorCallback', () => {
+      const {gl} = createContext();
+      const mainMsgCapturer = new MsgCapturer();
+      const subMsgCapturer = new MsgCapturer();
+      const programInfos = twgl.createProgramInfos(gl, {
+        foo: {
+          shaders: [
+            'void main() { gl_Position = vec4(0); }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+        },
+        bar: {
+          shaders: [
+            'void main() { gl_Position = vec4(0); }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+          attribLocations: ['bar', 'moo'],
+          errorCallback: subMsgCapturer.cb,
+        },
+        moo: {
+          shaders: [
+            'bad',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+        },
+      }, {
+        attribLocations: ['moo', 'foo', 'bar'],
+        errorCallback: mainMsgCapturer.cb,
+      });
+      assertFalsy(programInfos);
+      assertFalsy(subMsgCapturer.hasMsgs());
+      assertTruthy(mainMsgCapturer.hasMsgs());
+    });
+
+    itWebGL('createProgramInfos calls the correct errorCallback(2)', () => {
+      const {gl} = createContext();
+      const mainMsgCapturer = new MsgCapturer();
+      const subMsgCapturer = new MsgCapturer();
+      const programInfos = twgl.createProgramInfos(gl, {
+        foo: {
+          shaders: [
+            'void main() { gl_Position = vec4(0); }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+        },
+        bar: {
+          shaders: [
+            'bad',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+          attribLocations: ['bar', 'moo'],
+          errorCallback: subMsgCapturer.cb,
+        },
+        moo: {
+          shaders: [
+            'void main() { gl_Position = vec4(0); }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+        },
+      }, {
+        attribLocations: ['moo', 'foo', 'bar'],
+        errorCallback: mainMsgCapturer.cb,
+      });
+      assertFalsy(programInfos);
+      assertTruthy(subMsgCapturer.hasMsgs());
+      assertFalsy(mainMsgCapturer.hasMsgs());
     });
 
   });
@@ -963,6 +1137,54 @@ describe('program tests', () => {
         },
       });
       assertFalsy(program);  // nothing is returned if callback
+    });
+
+  });
+
+  describe('createProgramInfosAsync', () => {
+
+    itWebGL('createProgramInfosAsync', async() => {
+      const {gl} = createContext();
+      const msgCapturer = new MsgCapturer();
+      const programInfos = await twgl.createProgramInfosAsync(gl, {
+        foo: [
+          'void main() { gl_Position = vec4(0); }',
+          'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+        ],
+        bar: [
+          'void main() { gl_Position = vec4(0); }',
+          'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+        ],
+      }, {
+        errorCallback: msgCapturer.cb,
+      });
+      assertTruthy(programInfos.foo.program instanceof WebGLProgram);
+      assertTruthy(programInfos.bar.program instanceof WebGLProgram);
+      assertFalsy(msgCapturer.hasMsgs());
+    });
+
+    itWebGL('createProgramInfosAsync throws with bad shaders', async() => {
+      const {gl} = createContext();
+      const msgCapturer = new MsgCapturer();
+      let err;
+      try {
+        await twgl.createProgramInfosAsync(gl, {
+          foo: [
+            'void main() { gl_Position = vec4(0); }',
+            'precision mediump float; void main() { gl_FragColor = vec4(0); }',
+          ],
+          bar: [
+            'void main() { gl_Position = vec4(0); }',
+            'bad',
+          ],
+        }, {
+          errorCallback: msgCapturer.cb,
+        });
+      } catch (e) {
+        err = e;
+      }
+      assertTruthy(err);
+      assertTruthy(msgCapturer.hasMsgs());
     });
 
   });
