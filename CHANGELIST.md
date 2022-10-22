@@ -1,5 +1,10 @@
 # Change List
 
+*   5.2.0
+
+    *   added `createPrograms`, `createProgramInfos`, `createProgramsAsync`,
+        and `createProgramInfosAsync`
+
 *   5.1.0
 
     *   Allow FullArraySpec.type to be typedArray type or GL type
