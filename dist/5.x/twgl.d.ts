@@ -79,11 +79,24 @@ export type FramebufferInfo = {
     height: number;
 };
 export type ErrorCallback = (msg: string, lineOffset?: number) => void;
+export type FullProgramSpec = {
+    shaders: string[];
+    errorCallback?: (...params: any[]) => any;
+    attribLocations?: {
+        [key: string]: number;
+    } | string[];
+    transformFeedbackVaryings?: BufferInfo | {
+        [key: string]: AttribInfo;
+    } | string[];
+    transformFeedbackMode?: number;
+    callback?: ProgramCallback;
+};
+export type ProgramSpec = string[] | FullProgramSpec;
 export type ProgramOptions = {
     errorCallback?: (...params: any[]) => any;
     attribLocations?: {
         [key: string]: number;
-    };
+    } | string[];
     transformFeedbackVaryings?: BufferInfo | {
         [key: string]: AttribInfo;
     } | string[];
@@ -291,6 +304,26 @@ export function setBuffersAndAttributes(gl: WebGLRenderingContext, setters: Prog
 }, buffers: BufferInfo | VertexArrayInfo): void;
 export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program: WebGLProgram): ProgramInfo;
 export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): ProgramInfo;
+export function createPrograms(gl: WebGLRenderingContext, programSpecs: {
+    [key: string]: ProgramSpec;
+}, programOptions?: ProgramOptions): {
+    [key: string]: WebGLProgram;
+};
+export function createProgramInfos(gl: WebGLRenderingContext, programSpecs: {
+    [key: string]: ProgramSpec;
+}, programOptions?: ProgramOptions): {
+    [key: string]: ProgramInfo;
+};
+export function createProgramsAsync(gl: WebGLRenderingContext, programSpecs: {
+    [key: string]: ProgramSpec;
+}, programOptions?: ProgramOptions): {
+    [key: string]: WebGLProgram;
+};
+export function createProgramInfosAsync(gl: WebGLRenderingContext, programSpecs: {
+    [key: string]: ProgramSpec;
+}, programOptions?: ProgramOptions): Promise<{
+    [key: string]: ProgramInfo;
+}>;
 
 
 export function getBytesPerElementForInternalFormat(internalFormat: number, type: number): number;

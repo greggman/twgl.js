@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 5.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 5.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4551,12 +4551,16 @@ exports.bindTransformFeedbackInfo = bindTransformFeedbackInfo;
 exports.bindUniformBlock = bindUniformBlock;
 exports.createAttributeSetters = createAttributeSetters;
 exports.createProgram = createProgram;
-exports.createProgramAsync = createProgramAsync;
+exports.createProgramAsync = void 0;
 exports.createProgramFromScripts = createProgramFromScripts;
 exports.createProgramFromSources = createProgramFromSources;
 exports.createProgramInfo = createProgramInfo;
-exports.createProgramInfoAsync = createProgramInfoAsync;
+exports.createProgramInfoAsync = void 0;
 exports.createProgramInfoFromProgram = createProgramInfoFromProgram;
+exports.createProgramInfos = createProgramInfos;
+exports.createProgramInfosAsync = void 0;
+exports.createPrograms = createPrograms;
+exports.createProgramsAsync = void 0;
 exports.createTransformFeedback = createTransformFeedback;
 exports.createTransformFeedbackInfo = createTransformFeedbackInfo;
 exports.createUniformBlockInfo = createUniformBlockInfo;
@@ -4574,8 +4578,16 @@ var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./s
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5370,37 +5382,12 @@ function reportError(progOptions, msg) {
 }
 
 /**
- * Loads a shader.
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
- * @param {string} shaderSource The shader source.
- * @param {number} shaderType The type of shader.
- * @param {module:twgl.ProgramOptions} progOptions
- * @return {WebGLShader} The created shader.
- * @private
- */
-function loadShader(gl, shaderSource, shaderType, progOptions) {
-  // Create the shader object
-  var shader = gl.createShader(shaderType);
-
-  // Load the shader source
-  gl.shaderSource(shader, prepShaderSource(shaderSource).shaderSource);
-
-  // Compile the shader
-  gl.compileShader(shader);
-  if (!progOptions.callback && !checkShaderStatus(gl, shaderType, shader, progOptions.errorCallback)) {
-    gl.deleteShader(shader);
-    return null;
-  }
-  return shader;
-}
-
-/**
  * Check Shader status
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {number} shaderType The shader type
  * @param {WebGLShader} shader The shader
  * @param {ErrorCallback} [errFn] function to receive error message.
- * @return {bool} true if shader is ok.
+ * @return {string} errors or empty string
  * @private
  */
 function checkShaderStatus(gl, shaderType, shader, errFn) {
@@ -5413,15 +5400,35 @@ function checkShaderStatus(gl, shaderType, shader, errFn) {
     var _prepShaderSource = prepShaderSource(gl.getShaderSource(shader)),
       lineOffset = _prepShaderSource.lineOffset,
       shaderSource = _prepShaderSource.shaderSource;
-    errFn("".concat(addLineNumbersWithError(shaderSource, lastError, lineOffset), "\nError compiling ").concat(utils.glEnumToString(gl, shaderType), ": ").concat(lastError));
+    var _error = "".concat(addLineNumbersWithError(shaderSource, lastError, lineOffset), "\nError compiling ").concat(utils.glEnumToString(gl, shaderType), ": ").concat(lastError);
+    errFn(_error);
+    return _error;
   }
-  return compiled;
+  return '';
 }
+
+/**
+ * @typedef {Object} FullProgramSpec
+ * @property {string[]} shaders the shader source or element ids.
+ * @property {function(string)} [errorCallback] callback for errors
+ * @property {Object.<string,number>|string[]} [attribLocations] a attribute name to location map, or array of attribute names where index = location.
+ * @property {(module:twgl.BufferInfo|Object.<string,module:twgl.AttribInfo>|string[])} [transformFeedbackVaryings] If passed
+ *   a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise
+ *   you can pass an array of names.
+ * @property {number} [transformFeedbackMode] the mode to pass `gl.transformFeedbackVaryings`. Defaults to `SEPARATE_ATTRIBS`.
+ * @property {ProgramCallback} [callback] callback for async program compilation.
+ * @memberOf module:twgl
+ */
+
+/**
+ * @typedef {string[]|module:twgl.FullProgramSpec} ProgramSpec
+ * @memberOf module:twgl
+ */
 
 /**
  * @typedef {Object} ProgramOptions
  * @property {function(string)} [errorCallback] callback for errors
- * @property {Object.<string,number>} [attribLocations] a attribute name to location map
+ * @property {Object.<string,number>|string[]} [attribLocations] a attribute name to location map, or array of attribute names where index = location.
  * @property {(module:twgl.BufferInfo|Object.<string,module:twgl.AttribInfo>|string[])} [transformFeedbackVaryings] If passed
  *   a BufferInfo will use the attribs names inside. If passed an object of AttribInfos will use the names from that object. Otherwise
  *   you can pass an array of names.
@@ -5451,11 +5458,6 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     opt_errorCallback = opt_attribs;
     opt_attribs = undefined;
   } else if (opt_attribs && !Array.isArray(opt_attribs)) {
-    // If we have an errorCallback we can just return this object
-    // Otherwise we need to construct one with default errorCallback
-    if (opt_attribs.errorCallback && opt_attribs.errors) {
-      return opt_attribs;
-    }
     var opt = opt_attribs;
     opt_errorCallback = opt.errorCallback;
     opt_attribs = opt.attribLocations;
@@ -5478,14 +5480,14 @@ function getProgramOptions(opt_attribs, opt_locations, opt_errorCallback) {
     callback: callback,
     errors: errors
   };
-  if (opt_attribs) {
+  {
     var attribLocations = {};
     if (Array.isArray(opt_attribs)) {
       opt_attribs.forEach(function (attrib, ndx) {
         attribLocations[attrib] = opt_locations ? opt_locations[ndx] : ndx;
       });
     } else {
-      attribLocations = opt_attribs;
+      attribLocations = opt_attribs || {};
     }
     options.attribLocations = attribLocations;
   }
@@ -5500,10 +5502,23 @@ function getShaderTypeFromScriptType(gl, scriptType) {
   }
   return undefined;
 }
-function deleteShaders(gl, shaders) {
-  shaders.forEach(function (shader) {
-    gl.deleteShader(shader);
-  });
+function deleteProgramAndShaders(gl, program, notThese) {
+  var shaders = gl.getAttachedShaders(program);
+  var _iterator = _createForOfIteratorHelper(shaders),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var shader = _step.value;
+      if (notThese.has(shader)) {
+        gl.deleteShader(shader);
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  gl.deleteProgram(program);
 }
 var wait = function wait() {
   var ms = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -5511,6 +5526,48 @@ var wait = function wait() {
     return setTimeout(resolve, ms);
   });
 };
+function createProgramNoCheck(gl, shaders, programOptions) {
+  var program = gl.createProgram();
+  var _getProgramOptions = getProgramOptions(programOptions),
+    attribLocations = _getProgramOptions.attribLocations,
+    transformFeedbackVaryings = _getProgramOptions.transformFeedbackVaryings,
+    transformFeedbackMode = _getProgramOptions.transformFeedbackMode;
+  for (var ndx = 0; ndx < shaders.length; ++ndx) {
+    var shader = shaders[ndx];
+    if (typeof shader === 'string') {
+      var elem = getElementById(shader);
+      var src = elem ? elem.text : shader;
+      var type = gl[defaultShaderType[ndx]];
+      if (elem && elem.type) {
+        type = getShaderTypeFromScriptType(gl, elem.type) || type;
+      }
+      shader = gl.createShader(type);
+      gl.shaderSource(shader, prepShaderSource(src).shaderSource);
+      gl.compileShader(shader);
+      gl.attachShader(program, shader);
+    }
+  }
+  Object.entries(attribLocations).forEach(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      attrib = _ref2[0],
+      loc = _ref2[1];
+    return gl.bindAttribLocation(program, loc, attrib);
+  });
+  {
+    var varyings = transformFeedbackVaryings;
+    if (varyings) {
+      if (varyings.attribs) {
+        varyings = varyings.attribs;
+      }
+      if (!Array.isArray(varyings)) {
+        varyings = Object.keys(varyings);
+      }
+      gl.transformFeedbackVaryings(program, varyings, transformFeedbackMode || SEPARATE_ATTRIBS);
+    }
+  }
+  gl.linkProgram(program);
+  return program;
+}
 
 /**
  * Creates a program, attaches (and/or compiles) shaders, binds attrib locations, links the
@@ -5536,59 +5593,47 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
   // This code is really convoluted, because it may or may not be async
   // Maybe it would be better to have a separate function
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var realShaders = [];
-  var newShaders = [];
-  for (var ndx = 0; ndx < shaders.length; ++ndx) {
-    var shader = shaders[ndx];
-    if (typeof shader === 'string') {
-      var elem = getElementById(shader);
-      var src = elem ? elem.text : shader;
-      var type = gl[defaultShaderType[ndx]];
-      if (elem && elem.type) {
-        type = getShaderTypeFromScriptType(gl, elem.type) || type;
-      }
-      shader = loadShader(gl, src, type, progOptions);
-      newShaders.push(shader);
+  var shaderSet = new Set(shaders);
+  var program = createProgramNoCheck(gl, shaders, progOptions);
+  function hasErrors(gl, program) {
+    var errors = getProgramErrors(gl, program, progOptions.errorCallback);
+    if (errors) {
+      deleteProgramAndShaders(gl, program, shaderSet);
     }
-    if (helper.isShader(gl, shader)) {
-      realShaders.push(shader);
-    }
+    return errors;
   }
-  if (realShaders.length !== shaders.length) {
-    deleteShaders(gl, newShaders);
-    return reportError(progOptions, "not enough shaders for program");
-  }
-  var program = gl.createProgram();
-  realShaders.forEach(function (shader) {
-    gl.attachShader(program, shader);
-  });
-  if (progOptions.attribLocations) {
-    Object.keys(progOptions.attribLocations).forEach(function (attrib) {
-      gl.bindAttribLocation(program, progOptions.attribLocations[attrib], attrib);
-    });
-  }
-  var varyings = progOptions.transformFeedbackVaryings;
-  if (varyings) {
-    if (varyings.attribs) {
-      varyings = varyings.attribs;
-    }
-    if (!Array.isArray(varyings)) {
-      varyings = Object.keys(varyings);
-    }
-    gl.transformFeedbackVaryings(program, varyings, progOptions.transformFeedbackMode || SEPARATE_ATTRIBS);
-  }
-  gl.linkProgram(program);
   if (progOptions.callback) {
-    checkForProgramLinkCompletionAsync(gl, program, progOptions);
-    return null;
-  } else {
-    if (!checkProgramStatus(gl, program, progOptions.errorCallback)) {
-      gl.deleteProgram(program);
-      deleteShaders(gl, newShaders);
-      return null;
-    }
-    return program;
+    waitForProgramLinkCompletionAsync(gl, program).then(function () {
+      var errors = hasErrors(gl, program);
+      progOptions.callback(errors, errors ? undefined : program);
+    });
+    return undefined;
   }
+  return hasErrors(gl, program) ? undefined : program;
+}
+
+/**
+ * This only works because the functions it wraps the first 2 arguments
+ * are gl and any, followed by things that become programOptions
+ * @private
+ */
+function wrapCallbackFnToAsyncFn(fn) {
+  return function (gl, arg1) {
+    for (var _len2 = arguments.length, args = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+      args[_key2 - 2] = arguments[_key2];
+    }
+    return new Promise(function (resolve, reject) {
+      var programOptions = getProgramOptions.apply(void 0, args);
+      programOptions.callback = function (err, program) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(program);
+        }
+      };
+      fn(gl, arg1, programOptions);
+    });
+  };
 }
 
 /**
@@ -5601,6 +5646,7 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
  *     twgl.createProgramAsync(gl, [vs, fs], opt_attribs, opt_errFunc);
  *     twgl.createProgramAsync(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);
  *
+ * @function
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
@@ -5610,25 +5656,11 @@ function createProgram(gl, shaders, opt_attribs, opt_locations, opt_errorCallbac
  * @return {Promise<WebGLProgram>} The created program
  * @memberOf module:twgl/programs
  */
-function createProgramAsync(gl, shaders) {
-  for (var _len2 = arguments.length, args = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-    args[_key2 - 2] = arguments[_key2];
-  }
-  return new Promise(function (resolve, reject) {
-    var programOptions = getProgramOptions.apply(void 0, args);
-    programOptions.callback = function (err, program) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(program);
-      }
-    };
-    createProgram(gl, shaders, programOptions);
-  });
-}
+var createProgramAsync = wrapCallbackFnToAsyncFn(createProgram);
 
 /**
  * Same as createProgramInfo but returns a promise
+ * @function
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext
  *        to use.
  * @param {string[]} shaderSources Array of sources for the
@@ -5641,45 +5673,15 @@ function createProgramAsync(gl, shaders) {
  * @return {Promise<module:twgl.ProgramInfo>} The created ProgramInfo
  * @memberOf module:twgl/programs
  */
-function createProgramInfoAsync(gl, shaders) {
-  for (var _len3 = arguments.length, args = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-    args[_key3 - 2] = arguments[_key3];
-  }
-  return new Promise(function (resolve, reject) {
-    var programOptions = getProgramOptions.apply(void 0, args);
-    programOptions.callback = function (err, programInfo) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(programInfo);
-      }
-    };
-    createProgramInfo(gl, shaders, programOptions);
-  });
+exports.createProgramAsync = createProgramAsync;
+var createProgramInfoAsync = wrapCallbackFnToAsyncFn(createProgramInfo);
+exports.createProgramInfoAsync = createProgramInfoAsync;
+function waitForProgramLinkCompletionAsync(_x, _x2) {
+  return _waitForProgramLinkCompletionAsync.apply(this, arguments);
 }
-
-/**
- * Asynchronously wait for program to link.
- * Note: if 'KHR_parallel_shader_compile' extension does not
- * exist then compilation will not be truly async.
- * @param {WebGLRenderingContext} gl The context
- * @param {WebGLProgram} program The program
- * @param {module:twgl.ProgramOptions} progOptions Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @private
- */
-function checkForProgramLinkCompletionAsync(_x, _x2, _x3) {
-  return _checkForProgramLinkCompletionAsync.apply(this, arguments);
-} /**
-   * Check a program's link status
-   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
-   * @param {WebGLProgram} program Program to check
-   * @param {ErrorCallback} [errFn] func for errors
-   * @return {bool} true if program is ok
-   * @private
-   */
-function _checkForProgramLinkCompletionAsync() {
-  _checkForProgramLinkCompletionAsync = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(gl, program, progOptions) {
-    var ext, checkFn, waitTime, success, err, errFn;
+function _waitForProgramLinkCompletionAsync() {
+  _waitForProgramLinkCompletionAsync = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(gl, program) {
+    var ext, checkFn, waitTime;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -5703,27 +5705,54 @@ function _checkForProgramLinkCompletionAsync() {
               break;
             }
           case 7:
-            success = checkProgramStatus(gl, program, progOptions.errorCallback);
-            err = success ? undefined : progOptions.errors.join('\n');
-            if (!success) {
-              errFn = progOptions.errorCallback || error;
-              errFn(err);
-              gl.deleteProgram(program);
-              // TODO: delete shaders, but only shaders that were created newly for this
-              // program
-              program = null;
-            }
-            progOptions.callback(err, program);
-          case 11:
           case "end":
             return _context.stop();
         }
       }
     }, _callee);
   }));
-  return _checkForProgramLinkCompletionAsync.apply(this, arguments);
+  return _waitForProgramLinkCompletionAsync.apply(this, arguments);
 }
-function checkProgramStatus(gl, program, errFn) {
+function waitForAllProgramsLinkCompletionAsync(_x3, _x4) {
+  return _waitForAllProgramsLinkCompletionAsync.apply(this, arguments);
+} /**
+   * Check a program's link status
+   * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
+   * @param {WebGLProgram} program Program to check
+   * @param {ErrorCallback} [errFn] func for errors
+   * @return {string?} errors if program is failed, else undefined
+   * @private
+   */
+function _waitForAllProgramsLinkCompletionAsync() {
+  _waitForAllProgramsLinkCompletionAsync = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(gl, programs) {
+    var _i4, _Object$values2, program;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _i4 = 0, _Object$values2 = Object.values(programs);
+          case 1:
+            if (!(_i4 < _Object$values2.length)) {
+              _context2.next = 8;
+              break;
+            }
+            program = _Object$values2[_i4];
+            _context2.next = 5;
+            return waitForProgramLinkCompletionAsync(gl, program);
+          case 5:
+            _i4++;
+            _context2.next = 1;
+            break;
+          case 8:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _waitForAllProgramsLinkCompletionAsync.apply(this, arguments);
+}
+function getProgramErrors(gl, program, errFn) {
   errFn = errFn || error;
   // Check the link status
   var linked = gl.getProgramParameter(program, LINK_STATUS);
@@ -5731,32 +5760,16 @@ function checkProgramStatus(gl, program, errFn) {
     // something went wrong with the link
     var lastError = gl.getProgramInfoLog(program);
     errFn("Error in program linking: ".concat(lastError));
+    // print any errors from these shaders
+    var shaders = gl.getAttachedShaders(program);
+    var errors = shaders.map(function (shader) {
+      return checkShaderStatus(gl, gl.getShaderParameter(shader, gl.SHADER_TYPE), shader, errFn);
+    });
+    return "".concat(lastError, "\n").concat(errors.filter(function (_) {
+      return _;
+    }).join('\n'));
   }
-  return linked;
-}
-
-/**
- * Loads a shader from a script tag.
- * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
- * @param {string} scriptId The id of the script tag.
- * @param {number} [opt_shaderType] The type of shader. If not passed in it will
- *     be derived from the type of the script tag.
- * @param {module:twgl.ProgramOptions} [progOptions] callback for errors.
- * @return {WebGLShader?} The created shader or null if error.
- * @private
- */
-function createShaderFromScript(gl, scriptId, opt_shaderType, progOptions) {
-  var shaderSource = "";
-  var shaderScript = getElementById(scriptId);
-  if (!shaderScript) {
-    return reportError(progOptions, "unknown script element: ".concat(scriptId));
-  }
-  shaderSource = shaderScript.text;
-  var shaderType = opt_shaderType || getShaderTypeFromScriptType(gl, shaderScript.type);
-  if (!shaderType) {
-    return reportError(progOptions, 'unknown shader type');
-  }
-  return loadShader(gl, shaderSource, shaderType, progOptions);
+  return undefined;
 }
 
 /**
@@ -5784,12 +5797,21 @@ function createShaderFromScript(gl, scriptId, opt_shaderType, progOptions) {
 function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_locations, opt_errorCallback) {
   var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
   var shaders = [];
-  for (var ii = 0; ii < shaderScriptIds.length; ++ii) {
-    var shader = createShaderFromScript(gl, shaderScriptIds[ii], gl[defaultShaderType[ii]], progOptions);
-    if (!shader) {
-      return null;
+  var _iterator2 = _createForOfIteratorHelper(shaderScriptIds),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var scriptId = _step2.value;
+      var shaderScript = getElementById(scriptId);
+      if (!shaderScript) {
+        return reportError(progOptions, "unknown script element: ".concat(scriptId));
+      }
+      shaders.push(shaderScript.text);
     }
-    shaders.push(shader);
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
   }
   return createProgram(gl, shaders, progOptions);
 }
@@ -5817,16 +5839,7 @@ function createProgramFromScripts(gl, shaderScriptIds, opt_attribs, opt_location
  * @memberOf module:twgl/programs
  */
 function createProgramFromSources(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback) {
-  var progOptions = getProgramOptions(opt_attribs, opt_locations, opt_errorCallback);
-  var shaders = [];
-  for (var ii = 0; ii < shaderSources.length; ++ii) {
-    var shader = loadShader(gl, shaderSources[ii], gl[defaultShaderType[ii]], progOptions);
-    if (!progOptions.callback && !shader) {
-      return null;
-    }
-    shaders.push(shader);
-  }
-  return createProgram(gl, shaders, progOptions);
+  return createProgram(gl, shaderSources, opt_attribs, opt_locations, opt_errorCallback);
 }
 
 /**
@@ -6874,11 +6887,7 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
   var origCallback = progOptions.callback;
   if (origCallback) {
     progOptions.callback = function (err, program) {
-      var programInfo;
-      if (!err) {
-        programInfo = createProgramInfoFromProgram(gl, program);
-      }
-      origCallback(err, programInfo);
+      origCallback(err, err ? undefined : createProgramInfoFromProgram(gl, program));
     };
   }
   var program = createProgramFromSources(gl, shaderSources, progOptions);
@@ -6887,6 +6896,209 @@ function createProgramInfo(gl, shaderSources, opt_attribs, opt_locations, opt_er
   }
   return createProgramInfoFromProgram(gl, program);
 }
+function checkAllPrograms(gl, programs, programSpecs, noDeleteShadersSet, programOptions) {
+  // check errors for everything.
+  for (var _i2 = 0, _Object$entries = Object.entries(programs); _i2 < _Object$entries.length; _i2++) {
+    var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
+      name = _Object$entries$_i[0],
+      program = _Object$entries$_i[1];
+    var options = _objectSpread({}, programOptions);
+    var spec = programSpecs[name];
+    if (!Array.isArray(spec)) {
+      Object.assign(options, spec);
+    }
+    var errors = getProgramErrors(gl, program, options.errorCallback);
+    if (errors) {
+      // delete everything we created
+      for (var _i3 = 0, _Object$values = Object.values(programs); _i3 < _Object$values.length; _i3++) {
+        var _program = _Object$values[_i3];
+        var shaders = gl.getAttachedShaders(_program);
+        gl.deleteProgram(_program);
+        var _iterator3 = _createForOfIteratorHelper(shaders),
+          _step3;
+        try {
+          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+            var shader = _step3.value;
+            // Don't delete it if we didn't create it.
+            if (!noDeleteShadersSet.has(shader)) {
+              gl.deleteShader(shader);
+            }
+          }
+        } catch (err) {
+          _iterator3.e(err);
+        } finally {
+          _iterator3.f();
+        }
+      }
+      return errors;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Creates multiple programs
+ *
+ * Note: the reason this function exists is because the fastest way to create multiple
+ * programs in WebGL is to create and compile all shaders and link all programs and only
+ * afterwards check if they succeeded. In that way, giving all your shaders
+ *
+ * @see {@link module:twgl.createProgram}
+ *
+ * Example:
+ *
+ *     const programs = twgl.createPrograms(gl, {
+ *       lambert: [lambertVS, lambertFS],
+ *       phong: [phongVS, phoneFS],
+ *       particles: {
+ *         shaders: [particlesVS, particlesFS],
+ *         transformFeedbackVaryings: ['position', 'velocity'],
+ *       },
+ *     });
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string, module:twgl.ProgramSpec>} programSpecs An object of ProgramSpecs, one per program.
+ * @param {module:twgl.ProgramOptions} [programOptions] options to apply to all programs
+ * @return {Object.<string, WebGLProgram>?} the created programInfos by name
+ */
+function createPrograms(gl, programSpecs) {
+  var programOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  // Remember existing shaders so that if there is an error we don't delete them
+  var noDeleteShadersSet = new Set();
+
+  // compile and link everything
+  var programs = Object.fromEntries(Object.entries(programSpecs).map(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+      name = _ref4[0],
+      spec = _ref4[1];
+    var options = _objectSpread({}, programOptions);
+    var shaders = Array.isArray(spec) ? spec : spec.shaders;
+    if (!Array.isArray(spec)) {
+      Object.assign(options, spec);
+    }
+    shaders.forEach(noDeleteShadersSet.add, noDeleteShadersSet);
+    return [name, createProgramNoCheck(gl, shaders, options)];
+  }));
+  if (programOptions.callback) {
+    waitForAllProgramsLinkCompletionAsync(gl, programs).then(function () {
+      var errors = checkAllPrograms(gl, programs, programSpecs, noDeleteShadersSet, programOptions);
+      programOptions.callback(errors, errors ? undefined : programs);
+    });
+    return undefined;
+  }
+  var errors = checkAllPrograms(gl, programs, programSpecs, noDeleteShadersSet, programOptions);
+  return errors ? undefined : programs;
+}
+
+/**
+ * Creates multiple programInfos
+ *
+ * Note: the reason this function exists is because the fastest way to create multiple
+ * programs in WebGL is to create and compile all shaders and link all programs and only
+ * afterwards check if they succeeded. In that way, giving all your shaders
+ *
+ * @see {@link module:twgl.createProgramInfo}
+ *
+ * Examples:
+ *
+ *     const programInfos = twgl.createProgramInfos(gl, {
+ *       lambert: [lambertVS, lambertFS],
+ *       phong: [phongVS, phoneFS],
+ *       particles: {
+ *         shaders: [particlesVS, particlesFS],
+ *         transformFeedbackVaryings: ['position', 'velocity'],
+ *       },
+ *     });
+ *
+ * or
+ *
+ *     const {lambert, phong, particles} = twgl.createProgramInfos(gl, {
+ *       lambert: [lambertVS, lambertFS],
+ *       phong: [phongVS, phoneFS],
+ *       particles: {
+ *         shaders: [particlesVS, particlesFS],
+ *         transformFeedbackVaryings: ['position', 'velocity'],
+ *       },
+ *     });
+ *
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string, module:twgl.ProgramSpec>} programSpecs An object of ProgramSpecs, one per program.
+ * @param {module:twgl.ProgramOptions} [programOptions] options to apply to all programs
+ * @return {Object.<string, module:twgl.ProgramInfo>?} the created programInfos by name
+ */
+function createProgramInfos(gl, programSpecs, programOptions) {
+  programOptions = getProgramOptions(programOptions);
+  function createProgramInfosForPrograms(gl, programs) {
+    return Object.fromEntries(Object.entries(programs).map(function (_ref5) {
+      var _ref6 = _slicedToArray(_ref5, 2),
+        name = _ref6[0],
+        program = _ref6[1];
+      return [name, createProgramInfoFromProgram(gl, program)];
+    }));
+  }
+  var origCallback = programOptions.callback;
+  if (origCallback) {
+    programOptions.callback = function (err, programs) {
+      origCallback(err, err ? undefined : createProgramInfosForPrograms(gl, programs));
+    };
+  }
+  var programs = createPrograms(gl, programSpecs, programOptions);
+  if (origCallback || !programs) {
+    return undefined;
+  }
+  return createProgramInfosForPrograms(gl, programs);
+}
+
+/**
+ * Creates multiple programs asynchronously
+ *
+ * @see {@link module:twgl.createProgramAsync}
+ *
+ * Example:
+ *
+ *     const programs = await twgl.createProgramsAsync(gl, {
+ *       lambert: [lambertVS, lambertFS],
+ *       phong: [phongVS, phoneFS],
+ *       particles: {
+ *         shaders: [particlesVS, particlesFS],
+ *         transformFeedbackVaryings: ['position', 'velocity'],
+ *       },
+ *     });
+ *
+ * @function
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string, module:twgl.ProgramSpec>} programSpecs An object of ProgramSpecs, one per program.
+ * @param {module:twgl.ProgramOptions} [programOptions] options to apply to all programs
+ * @return {Object.<string, WebGLProgram>?} the created programInfos by name
+ */
+var createProgramsAsync = wrapCallbackFnToAsyncFn(createPrograms);
+
+/**
+ * Creates multiple programInfos asynchronously
+ *
+ * @see {@link module:twgl.createProgramInfoAsync}
+ *
+ * Example:
+ *
+ *     const programInfos = await twgl.createProgramInfosAsync(gl, {
+ *       lambert: [lambertVS, lambertFS],
+ *       phong: [phongVS, phoneFS],
+ *       particles: {
+ *         shaders: [particlesVS, particlesFS],
+ *         transformFeedbackVaryings: ['position', 'velocity'],
+ *       },
+ *     });
+ *
+ * @function
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string, module:twgl.ProgramSpec>} programSpecs An object of ProgramSpecs, one per program.
+ * @param {module:twgl.ProgramOptions} [programOptions] options to apply to all programs
+ * @return {Promise<Object.<string, module:twgl.ProgramInfo>>} the created programInfos by name
+ */
+exports.createProgramsAsync = createProgramsAsync;
+var createProgramInfosAsync = wrapCallbackFnToAsyncFn(createProgramInfos);
+exports.createProgramInfosAsync = createProgramInfosAsync;
 
 /***/ }),
 
