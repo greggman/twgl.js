@@ -2196,6 +2196,7 @@ function createProgramInfos(gl, programSpecs, programOptions) {
  *       },
  *     });
  *
+ * @function
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {Object.<string, module:twgl.ProgramSpec>} programSpecs An object of ProgramSpecs, one per program.
  * @param {module:twgl.ProgramOptions} [programOptions] options to apply to all programs
