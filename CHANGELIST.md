@@ -1,5 +1,9 @@
 # Change List
 
+*   5.3.0
+
+    *   Allow binding null for a texture in `setUniforms`
+
 *   5.2.0
 
     *   added `createPrograms`, `createProgramInfos`, `createProgramsAsync`,
