@@ -6,6 +6,7 @@ import {
 } from '../assert.js';
 import {beforeEach, afterEach, describe, it} from '../mocha-support.js';
 import {
+  assertNoWebGLError,
   itWebGL2,
   createContext,
   createContext2,
@@ -1185,6 +1186,41 @@ describe('program tests', () => {
       }
       assertTruthy(err);
       assertTruthy(msgCapturer.hasMsgs());
+    });
+
+  });
+
+  describe('setUniforms', () => {
+
+    function testBindingNullToTexture(gl) {
+      const programInfo = twgl.createProgramInfo(gl, [
+        `void main() {
+          gl_Position = vec4(0);
+        }
+        `,
+        `
+        precision mediump float;
+        uniform sampler2D tex;
+        void main() {
+          gl_FragColor = texture2D(tex, vec2(0));
+        }
+        `,
+      ]);
+      gl.useProgram(programInfo.program);
+      twgl.setUniforms(programInfo, {
+        tex: null,
+      });
+      assertNoWebGLError(gl);
+    }
+
+    itWebGL(`WebGL: lets you bind a null texture`, () => {
+      const {gl} = createContext();
+      testBindingNullToTexture(gl);
+    });
+
+    itWebGL2(`WebGL2: lets you bind a null texture`, () => {
+      const {gl} = createContext2();
+      testBindingNullToTexture(gl);
     });
 
   });

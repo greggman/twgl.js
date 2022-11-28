@@ -279,7 +279,7 @@ function samplerSetter(gl, type, unit, location) {
   return utils.isWebGL2(gl) ? function(textureOrPair) {
     let texture;
     let sampler;
-    if (helper.isTexture(gl, textureOrPair)) {
+    if (!textureOrPair || helper.isTexture(gl, textureOrPair)) {
       texture = textureOrPair;
       sampler = null;
     } else {
