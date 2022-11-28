@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 5.2.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 5.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1814,7 +1814,7 @@ function samplerSetter(gl, type, unit, location) {
   return utils.isWebGL2(gl) ? function (textureOrPair) {
     var texture;
     var sampler;
-    if (helper.isTexture(gl, textureOrPair)) {
+    if (!textureOrPair || helper.isTexture(gl, textureOrPair)) {
       texture = textureOrPair;
       sampler = null;
     } else {
