@@ -1258,8 +1258,6 @@ describe('program tests', () => {
       uniform mat4x2 m42;
       uniform mat4x3 m43;
 
-      // TODO arrays
-
       uniform float fArray[3];
       uniform int iArray[3];
       uniform int uiArray[3];
@@ -1341,7 +1339,7 @@ describe('program tests', () => {
       programInfo.uniformSetters.i(1);
       programInfo.uniformSetters.i(1);
       assertEqual(glSpy.uniform1i.callCount, 1, 'gl.uniform1i');
-      
+
       programInfo.uniformSetters.i2([0, 0]);
       programInfo.uniformSetters.i2([1, 2]);
       programInfo.uniformSetters.i2([1, 2]);
