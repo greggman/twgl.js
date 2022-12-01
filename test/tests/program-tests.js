@@ -1201,7 +1201,9 @@ describe('program tests', () => {
         `
         precision mediump float;
         uniform sampler2D tex;
+        uniform sampler2D texArr[1];
         void main() {
+          texArr[0];
           gl_FragColor = texture2D(tex, vec2(0));
         }
         `,
@@ -1209,6 +1211,7 @@ describe('program tests', () => {
       gl.useProgram(programInfo.program);
       twgl.setUniforms(programInfo, {
         tex: null,
+        texArr: [null],
       });
       assertNoWebGLError(gl);
     }

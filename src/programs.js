@@ -310,7 +310,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
       gl.activeTexture(TEXTURE0 + units[index]);
       let texture;
       let sampler;
-      if (helper.isTexture(gl, textureOrPair)) {
+      if (!textureOrPair || helper.isTexture(gl, textureOrPair)) {
         texture = textureOrPair;
         sampler = null;
       } else {
