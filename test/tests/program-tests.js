@@ -3,8 +3,10 @@ import {
   assertTruthy,
   assertFalsy,
   assertEqual,
+  assertLessThan,
 } from '../assert.js';
 import {beforeEach, afterEach, describe, it} from '../mocha-support.js';
+import {sinon} from '../sinon-support.js';
 import {
   assertNoWebGLError,
   itWebGL2,
@@ -1226,6 +1228,214 @@ describe('program tests', () => {
       testBindingNullToTexture(gl);
     });
 
+    itWebGL2('caches uniform values', () => {
+      const {gl} = createContext2();
+      const vs = `#version 300 es
+      precision highp float;
+      uniform float f;
+      uniform vec2 v2;
+      uniform vec3 v3;
+      uniform vec4 v4;
+      uniform int i;
+      uniform ivec2 i2;
+      uniform ivec3 i3;
+      uniform ivec4 i4;
+      uniform uint ui;
+      uniform uvec2 ui2;
+      uniform uvec3 ui3;
+      uniform uvec4 ui4;
+      uniform bool b;
+      uniform bvec2 b2;
+      uniform bvec3 b3;
+      uniform bvec4 b4;
+      uniform mat2 m2;
+      uniform mat3 m3;
+      uniform mat4 m4;
+      uniform mat2x3 m23;
+      uniform mat2x4 m24;
+      uniform mat3x2 m32;
+      uniform mat3x4 m34;
+      uniform mat4x2 m42;
+      uniform mat4x3 m43;
+
+      // TODO arrays
+
+      uniform float fArray[3];
+      uniform int iArray[3];
+      uniform int uiArray[3];
+      uniform bool bArray[3];
+
+      void main() {
+        f;
+        v2;
+        v3;
+        v4;
+        i;
+        i2;
+        i3;
+        i4;
+        ui;
+        ui2;
+        ui3;
+        ui4;
+        b;
+        b2;
+        b3;
+        b4;
+        m2;
+        m3;
+        m4;
+        m23;
+        m24;
+        m32;
+        m34;
+        m42;
+        m43;
+        gl_Position = vec4(0.0, 0.0, 0.0, 0.0);
+      }
+      `;
+
+      const fs = `#version 300 es
+      precision highp float;
+      out vec4 outColor;
+
+      uniform sampler2D t1;
+      uniform sampler2D tArr[2];
+
+      void main()
+      {
+        t1;
+        tArr;
+
+        outColor = vec4(0, 1, 0, 1);
+      }`;
+
+      const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+      console.log(programInfo);
+
+      gl.useProgram(programInfo.program);
+
+      const glSpy = sinon.spy(gl);
+
+      programInfo.uniformSetters.f(0);
+      programInfo.uniformSetters.f(1);
+      programInfo.uniformSetters.f(1);
+      assertEqual(glSpy.uniform1f.callCount, 1, 'gl.uniform1f');
+
+      programInfo.uniformSetters.v2([0, 0]);
+      programInfo.uniformSetters.v2([1, 2]);
+      programInfo.uniformSetters.v2([1, 2]);
+      assertEqual(glSpy.uniform2fv.callCount, 1, 'gl.uniform2fv');
+
+      programInfo.uniformSetters.v3([0, 0, 0]);
+      programInfo.uniformSetters.v3([1, 2, 3]);
+      programInfo.uniformSetters.v3([1, 2, 3]);
+      assertEqual(glSpy.uniform3fv.callCount, 1, 'gl.uniform3fv');
+
+      programInfo.uniformSetters.v4([0, 0, 0, 0]);
+      programInfo.uniformSetters.v4([1, 2, 3, 4]);
+      programInfo.uniformSetters.v4([1, 2, 3, 4]);
+      assertEqual(glSpy.uniform4fv.callCount, 1, 'gl.uniform4fv');
+
+      programInfo.uniformSetters.i(0);
+      programInfo.uniformSetters.i(1);
+      programInfo.uniformSetters.i(1);
+      assertEqual(glSpy.uniform1i.callCount, 1, 'gl.uniform1i');
+      
+      programInfo.uniformSetters.i2([0, 0]);
+      programInfo.uniformSetters.i2([1, 2]);
+      programInfo.uniformSetters.i2([1, 2]);
+      assertEqual(glSpy.uniform2iv.callCount, 1, 'gl.uniform2iv');
+
+      programInfo.uniformSetters.i3([0, 0, 0]);
+      programInfo.uniformSetters.i3([1, 2, 3]);
+      programInfo.uniformSetters.i3([1, 2, 3]);
+      assertEqual(glSpy.uniform3iv.callCount, 1, 'gl.uniform3iv');
+
+      programInfo.uniformSetters.i4([0, 0, 0, 0]);
+      programInfo.uniformSetters.i4([1, 2, 3, 4]);
+      programInfo.uniformSetters.i4([1, 2, 3, 4]);
+      assertEqual(glSpy.uniform4iv.callCount, 1, 'gl.uniform4iv');
+
+      programInfo.uniformSetters.ui(0);
+      programInfo.uniformSetters.ui(1);
+      programInfo.uniformSetters.ui(1);
+      assertEqual(glSpy.uniform1ui.callCount, 1, 'gl.uniform1ui');
+
+      programInfo.uniformSetters.ui2([0, 0]);
+      programInfo.uniformSetters.ui2([1, 2]);
+      programInfo.uniformSetters.ui2([1, 2]);
+      assertEqual(glSpy.uniform2uiv.callCount, 1, 'gl.uniform2uiv');
+
+      programInfo.uniformSetters.ui3([0, 0, 0]);
+      programInfo.uniformSetters.ui3([1, 2, 3]);
+      programInfo.uniformSetters.ui3([1, 2, 3]);
+      assertEqual(glSpy.uniform3uiv.callCount, 1, 'gl.uniform3uiv');
+
+      programInfo.uniformSetters.ui4([0, 0, 0, 0]);
+      programInfo.uniformSetters.ui4([1, 2, 3, 4]);
+      programInfo.uniformSetters.ui4([1, 2, 3, 4]);
+      assertEqual(glSpy.uniform4uiv.callCount, 1, 'gl.uniform4uiv');
+
+      // boolean uniform setters use int under the hood, so the first call switches the cache from int type to bool type
+      // to be more correct, the uniformSetter for bool type should NOT be directly using the int uniform setter, as
+      // the webgl spec doesn't accept booleans as uniform values.
+      gl.uniform1i.resetHistory();
+      programInfo.uniformSetters.b(true);
+      programInfo.uniformSetters.b(false);
+      programInfo.uniformSetters.b(false);
+      assertLessThan(glSpy.uniform1i.callCount, 3, 'gl.uniform1i');
+
+      gl.uniform2iv.resetHistory();
+      programInfo.uniformSetters.b2([true, false]);
+      programInfo.uniformSetters.b2([false, true]);
+      programInfo.uniformSetters.b2([false, true]);
+      assertLessThan(glSpy.uniform1i.callCount, 3, 'gl.uniform2iv');
+
+      gl.uniform3iv.resetHistory();
+      programInfo.uniformSetters.b3([true, false, true]);
+      programInfo.uniformSetters.b3([false, true, false]);
+      programInfo.uniformSetters.b3([false, true, false]);
+      assertLessThan(glSpy.uniform1i.callCount, 3, 'gl.uniform3iv');
+
+      gl.uniform4iv.resetHistory();
+      programInfo.uniformSetters.b4([true, false, true, false]);
+      programInfo.uniformSetters.b4([false, true, false, true]);
+      programInfo.uniformSetters.b4([false, true, false, true]);
+      assertLessThan(glSpy.uniform1i.callCount, 3, 'gl.uniform4iv');
+
+      programInfo.uniformSetters.m2([0, 0, 0, 0]);
+      programInfo.uniformSetters.m2([1, 2, 3, 4]);
+      programInfo.uniformSetters.m2([1, 2, 3, 4]);
+      assertEqual(glSpy.uniformMatrix2fv.callCount, 1, 'gl.uniformMatrix2fv');
+
+      programInfo.uniformSetters.m3([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      programInfo.uniformSetters.m3([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      programInfo.uniformSetters.m3([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      assertEqual(glSpy.uniformMatrix3fv.callCount, 1, 'gl.uniformMatrix3fv');
+
+      programInfo.uniformSetters.m4([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      programInfo.uniformSetters.m4([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+      programInfo.uniformSetters.m4([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+      assertEqual(glSpy.uniformMatrix4fv.callCount, 1, 'gl.uniformMatrix4fv');
+
+      const tex1 = gl.createTexture();
+      const tex2 = gl.createTexture();
+
+      glSpy.uniform1i.resetHistory();
+      programInfo.uniformSetters.t1(null);
+      programInfo.uniformSetters.t1(tex1);
+      programInfo.uniformSetters.t1(tex1);
+      // set location
+      assertEqual(glSpy.uniform1i.callCount, 1, 'gl.uniform1i');
+
+      glSpy.uniform1iv.resetHistory();
+      programInfo.uniformSetters.tArr([null, null]);
+      programInfo.uniformSetters.tArr([tex1, tex2]);
+      programInfo.uniformSetters.tArr([tex1, tex2]);
+      // set location
+      assertEqual(glSpy.uniform1i.callCount, 1, 'gl.uniform1iv');
+    });
   });
 
 });

@@ -1,0 +1,1 @@
+export const sinon = window.sinon;

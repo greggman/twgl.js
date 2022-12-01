@@ -131,151 +131,303 @@ function getBindPointForSamplerType(gl, type) {
 // this code could be a lot smaller but that is sadly really slow (T_T)
 
 function floatSetter(gl, location) {
+  let cache = 0;
   return function(v) {
+    if (v === cache) {
+      return;
+    }
+    cache = v;
     gl.uniform1f(location, v);
   };
 }
 
 function floatArraySetter(gl, location) {
+  let cache = [];
   return function(v) {
+    if (v.length === cache.length && cache.every((value, i) => value === v[i])) {
+      return;
+    }
+    v.forEach((value, i) => cache[i] = value);
     gl.uniform1fv(location, v);
   };
 }
 
 function floatVec2Setter(gl, location) {
+  let cache = [0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
     gl.uniform2fv(location, v);
   };
 }
 
 function floatVec3Setter(gl, location) {
+  let cache = [0, 0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1] && cache[2] === v[2]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
+    cache[2] = v[2];
     gl.uniform3fv(location, v);
   };
 }
 
 function floatVec4Setter(gl, location) {
+  let cache = [0, 0, 0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1] && cache[2] === v[2] && cache[3] === v[3]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
+    cache[2] = v[2];
+    cache[3] = v[3];
     gl.uniform4fv(location, v);
   };
 }
 
 function intSetter(gl, location) {
+  let cache = 0;
   return function(v) {
+    if (v === cache) {
+      return;
+    }
+    cache = v;
     gl.uniform1i(location, v);
   };
 }
 
 function intArraySetter(gl, location) {
+  let cache = [];
   return function(v) {
+    if (v.length === cache.length && cache.every((value, i) => value === v[i])) {
+      return;
+    }
+    v.forEach((value, i) => cache[i] = value);
     gl.uniform1iv(location, v);
   };
 }
 
 function intVec2Setter(gl, location) {
+  let cache = [0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
     gl.uniform2iv(location, v);
   };
 }
 
 function intVec3Setter(gl, location) {
+  let cache = [0, 0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1] && cache[2] === v[2]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
+    cache[2] = v[2];
     gl.uniform3iv(location, v);
   };
 }
 
 function intVec4Setter(gl, location) {
+  let cache = [0, 0, 0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1] && cache[2] === v[2] && cache[3] === v[3]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
+    cache[2] = v[2];
+    cache[3] = v[3];
     gl.uniform4iv(location, v);
   };
 }
 
 function uintSetter(gl, location) {
+  let cache = 0;
   return function(v) {
+    if (v === cache) {
+      return;
+    }
+    cache = v;
     gl.uniform1ui(location, v);
   };
 }
 
 function uintArraySetter(gl, location) {
+  let cache = [];
   return function(v) {
+    if (v.length === cache.length && cache.every((value, i) => value === v[i])) {
+      return;
+    }
+    v.forEach((value, i) => cache[i] = value);
     gl.uniform1uiv(location, v);
   };
 }
 
 function uintVec2Setter(gl, location) {
+  let cache = [0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
     gl.uniform2uiv(location, v);
   };
 }
 
 function uintVec3Setter(gl, location) {
+  let cache = [0, 0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1] && cache[2] === v[2]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
+    cache[2] = v[2];
     gl.uniform3uiv(location, v);
   };
 }
 
 function uintVec4Setter(gl, location) {
+  let cache = [0, 0, 0, 0];
   return function(v) {
+    if (cache[0] === v[0] && cache[1] === v[1] && cache[2] === v[2] && cache[3] === v[3]) {
+      return;
+    }
+    cache[0] = v[0];
+    cache[1] = v[1];
+    cache[2] = v[2];
+    cache[3] = v[3];
     gl.uniform4uiv(location, v);
   };
 }
 
 function floatMat2Setter(gl, location) {
+  let cache = new Float32Array(4);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] && v[3] === cache[3]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix2fv(location, false, v);
   };
 }
 
 function floatMat3Setter(gl, location) {
+  let cache = new Float32Array(9);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] &&
+        v[3] === cache[3] && v[4] === cache[4] && v[5] === cache[5] &&
+        v[6] === cache[6] && v[7] === cache[7] && v[8] === cache[8]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix3fv(location, false, v);
   };
 }
 
 function floatMat4Setter(gl, location) {
+  let cache = new Float32Array(16);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] && v[3] === cache[3] &&
+        v[4] === cache[4] && v[5] === cache[5] && v[6] === cache[6] && v[7] === cache[7] &&
+        v[8] === cache[8] && v[9] === cache[9] && v[10] === cache[10] && v[11] === cache[11] &&
+        v[12] === cache[12] && v[13] === cache[13] && v[14] === cache[14] && v[15] === cache[15]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix4fv(location, false, v);
   };
 }
 
 function floatMat23Setter(gl, location) {
+  let cache = new Float32Array(6);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] &&
+        v[3] === cache[3] && v[4] === cache[4] && v[5] === cache[5]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix2x3fv(location, false, v);
   };
 }
 
 function floatMat32Setter(gl, location) {
+  let cache = new Float32Array(6);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] &&
+        v[3] === cache[3] && v[4] === cache[4] && v[5] === cache[5]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix3x2fv(location, false, v);
   };
 }
 
 function floatMat24Setter(gl, location) {
+  let cache = new Float32Array(8);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] && v[3] === cache[3] &&
+        v[4] === cache[4] && v[5] === cache[5] && v[6] === cache[6] && v[7] === cache[7]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix2x4fv(location, false, v);
   };
 }
 
 function floatMat42Setter(gl, location) {
+  let cache = new Float32Array(8);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] && v[3] === cache[3] &&
+        v[4] === cache[4] && v[5] === cache[5] && v[6] === cache[6] && v[7] === cache[7]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix4x2fv(location, false, v);
   };
 }
 
 function floatMat34Setter(gl, location) {
+  let cache = new Float32Array(12);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] && v[3] === cache[3] &&
+        v[4] === cache[4] && v[5] === cache[5] && v[6] === cache[6] && v[7] === cache[7] &&
+        v[8] === cache[8] && v[9] === cache[9] && v[10] === cache[10] && v[11] === cache[11]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix3x4fv(location, false, v);
   };
 }
 
 function floatMat43Setter(gl, location) {
+  let cache = new Float32Array(12);
   return function(v) {
+    if (v[0] === cache[0] && v[1] === cache[1] && v[2] === cache[2] && v[3] === cache[3] &&
+        v[4] === cache[4] && v[5] === cache[5] && v[6] === cache[6] && v[7] === cache[7] &&
+        v[8] === cache[8] && v[9] === cache[9] && v[10] === cache[10] && v[11] === cache[11]) {
+      return;
+    }
+    cache.set(v);
     gl.uniformMatrix4x3fv(location, false, v);
   };
 }
 
 function samplerSetter(gl, type, unit, location) {
   const bindPoint = getBindPointForSamplerType(gl, type);
+  let unitsSet = false;
   return utils.isWebGL2(gl) ? function(textureOrPair) {
     let texture;
     let sampler;
@@ -286,12 +438,18 @@ function samplerSetter(gl, type, unit, location) {
       texture = textureOrPair.texture;
       sampler = textureOrPair.sampler;
     }
-    gl.uniform1i(location, unit);
+    if (!unitsSet) {
+      gl.uniform1i(location, unit);
+      unitsSet = true;
+    }
     gl.activeTexture(TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
     gl.bindSampler(unit, sampler);
   } : function(texture) {
-    gl.uniform1i(location, unit);
+    if (!unitsSet) {
+      gl.uniform1i(location, unit);
+      unitsSet = true;
+    }
     gl.activeTexture(TEXTURE0 + unit);
     gl.bindTexture(bindPoint, texture);
   };
@@ -304,8 +462,13 @@ function samplerArraySetter(gl, type, unit, location, size) {
     units[ii] = unit + ii;
   }
 
+  let unitsSet = false;
+
   return utils.isWebGL2(gl) ? function(textures) {
-    gl.uniform1iv(location, units);
+    if (!unitsSet) {
+      gl.uniform1iv(location, units);
+      unitsSet = true;
+    }
     textures.forEach(function(textureOrPair, index) {
       gl.activeTexture(TEXTURE0 + units[index]);
       let texture;
@@ -321,7 +484,10 @@ function samplerArraySetter(gl, type, unit, location, size) {
       gl.bindTexture(bindPoint, texture);
     });
   } : function(textures) {
-    gl.uniform1iv(location, units);
+    if (!unitsSet) {
+      gl.uniform1iv(location, units);
+      unitsSet = true;
+    }
     textures.forEach(function(texture, index) {
       gl.activeTexture(TEXTURE0 + units[index]);
       gl.bindTexture(bindPoint, texture);
