@@ -1620,7 +1620,7 @@ function setUniformTree(tree, values) {
  *       ],
  *     };
  *
- *     gl.useProgram(program);
+ *     gl.useProgram(programInfo.program);
  *
  * This will automatically bind the textures AND set the
  * uniforms.
@@ -1629,7 +1629,7 @@ function setUniformTree(tree, values) {
  *
  * For the example above it is equivalent to
  *
- *     var texUnit = 0;
+ *     let texUnit = 0;
  *     gl.activeTexture(gl.TEXTURE0 + texUnit);
  *     gl.bindTexture(gl.TEXTURE_2D, tex1);
  *     gl.uniform1i(u_someSamplerLocation, texUnit++);
