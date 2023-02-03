@@ -4162,14 +4162,14 @@ const uniforms = {
   ],
 };
 
-gl.useProgram(program);
+gl.useProgram(programInfo.program);
 </code></pre>
 <p>This will automatically bind the textures AND set the<br>
 uniforms.</p>
 <pre><code>twgl.setUniforms(programInfo, uniforms);
 </code></pre>
 <p>For the example above it is equivalent to</p>
-<pre><code>var texUnit = 0;
+<pre><code>let texUnit = 0;
 gl.activeTexture(gl.TEXTURE0 + texUnit);
 gl.bindTexture(gl.TEXTURE_2D, tex1);
 gl.uniform1i(u_someSamplerLocation, texUnit++);
