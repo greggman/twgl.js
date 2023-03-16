@@ -1,5 +1,10 @@
 # Change List
 
+*   5.3.1
+
+    *   Add missing `drawType` to FullArraySpec
+    *   Allow binding null for a texture in `setUniforms` for texture arrays
+
 *   5.3.0
 
     *   Allow binding null for a texture in `setUniforms`
