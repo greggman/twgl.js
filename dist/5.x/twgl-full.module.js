@@ -1,4 +1,4 @@
-/* @license twgl.js 5.3.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 5.3.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -2248,6 +2248,7 @@ function attribBufferFromArrayLike(gl, array, arrayName) {
  *           position: bufferInfo1.attribs.position,  // use the same buffer from bufferInfo1
  *         });
  *
+ * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
  * @memberOf module:twgl
  */
 
@@ -7102,7 +7103,7 @@ function samplerArraySetter(gl, type, unit, location, size) {
       gl.activeTexture(TEXTURE0 + units[index]);
       let texture;
       let sampler;
-      if (isTexture(gl, textureOrPair)) {
+      if (!textureOrPair || isTexture(gl, textureOrPair)) {
         texture = textureOrPair;
         sampler = null;
       } else {
@@ -8409,7 +8410,7 @@ function setUniformTree(tree, values) {
  *       ],
  *     };
  *
- *     gl.useProgram(program);
+ *     gl.useProgram(programInfo.program);
  *
  * This will automatically bind the textures AND set the
  * uniforms.
@@ -8418,7 +8419,7 @@ function setUniformTree(tree, values) {
  *
  * For the example above it is equivalent to
  *
- *     var texUnit = 0;
+ *     let texUnit = 0;
  *     gl.activeTexture(gl.TEXTURE0 + texUnit);
  *     gl.bindTexture(gl.TEXTURE_2D, tex1);
  *     gl.uniform1i(u_someSamplerLocation, texUnit++);

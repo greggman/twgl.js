@@ -36,6 +36,7 @@ export type FullArraySpec = {
     name?: string;
     attribName?: string;
     buffer?: WebGLBuffer;
+    drawType?: number;
 };
 export type ArraySpec = number | number[] | ArrayBufferView | FullArraySpec;
 export type Arrays = {
