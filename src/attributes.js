@@ -282,6 +282,7 @@ function attribBufferFromArrayLike(gl, array, arrayName) {
  *           position: bufferInfo1.attribs.position,  // use the same buffer from bufferInfo1
  *         });
  *
+ * @property {number} [drawType] the draw type passed to gl.bufferData. Default = gl.STATIC_DRAW
  * @memberOf module:twgl
  */
 
