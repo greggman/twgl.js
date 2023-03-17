@@ -72,7 +72,7 @@
     "load-grunt-tasks": "^5.1.0",
     "marked": "^4.1.1",
     "minami": "^1.2.3",
-    "puppeteer": "^19.0.0",
+    "puppeteer": "^19.6.3",
     "requirejs": "^2.3.5",
     "rollup": "^3.2.2",
     "semver": "^7.3.8",
