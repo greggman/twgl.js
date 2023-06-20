@@ -8,7 +8,28 @@
     premultipliedAlpha: false,
   });
 
-  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+  const vs = `
+  attribute vec4 a_position;
+
+  uniform mat4 u_matrix;
+
+  void main(void) {
+    gl_Position = u_matrix * a_position;
+  }
+  `;
+  const fs = `
+  precision mediump float;
+
+  uniform vec4 u_color;
+
+  void main(void)
+  {
+      gl_FragColor = u_color;
+  }
+  `;
+
+  const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
   const arrays = {
     position: [
       -1, -1, -1,

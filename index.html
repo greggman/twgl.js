@@ -33,7 +33,7 @@ see: http://github.com/greggman/twgl.js for details
 <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
 </head>
 <body>
-<canvas id="canvas"></canvas>
+<iframe src="examples/background.html"></iframe>
 <div id="frame">
   <div class="nav">
     <ul>
@@ -599,28 +599,7 @@ to make common WebGL operations easier and less verbose. Feel free to mix it wit
 </style>
 <div id="forkongithub"><a href="https://github.com/greggman/twgl.js">Fork me on GitHub</a></div>
 </body>
-<script id="vs" type="notjs">
-attribute vec4 a_position;
-
-uniform mat4 u_matrix;
-
-void main(void) {
-  gl_Position = u_matrix * a_position;
-}
-</script>
-<script id="fs" type="notjs">
-precision mediump float;
-
-uniform vec4 u_color;
-
-void main(void)
-{
-    gl_FragColor = u_color;
-}
-</script>
-<script src="/dist/5.x/twgl-full.min.js"></script>
 <script src="/3rdparty/prettify.js"></script>
-<script src="/resources/js/background.js"></script>
 <script src="/resources/js/index.js"></script>
 <script src="//cdn.webglstats.com/stat.js" defer="defer" async="async"></script>
 <script>
