@@ -1,5 +1,9 @@
 # Change List
 
+*   5.4.0
+
+    *   Keep JSDoc docstrings in .d.ts files
+
 *   5.3.1
 
     *   Add missing `drawType` to FullArraySpec
