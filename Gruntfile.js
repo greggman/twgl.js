@@ -393,7 +393,7 @@ module.exports = function(grunt) {
     // TypeScript definitions.
     let content = fs.readFileSync(`dist/${verDir}/types.d.ts`, {encoding: 'utf8'});
     // Remove docstrings (Declarations do not by convention include these)
-    content = content.replace(/\/\*\*[\s\S]*?\*\/\s*/g, '');
+    //content = content.replace(/\/\*\*[\s\S]*?\*\/\s*/g, '');
     // Docs use "?" to represent an arbitrary type; TS uses "any"
     content = content.replace(/\]: \?/g, ']: any');
     // Docs use "constructor"; TS expects something more like "Function"
