@@ -1,6 +1,6 @@
 {
   "name": "twgl-base.js",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "description": "A Tiny WebGL helper library",
   "main": "dist/5.x/twgl.js",
   "types": "dist/5.x/twgl-full.d.ts",
