@@ -3692,7 +3692,25 @@ declare module primitives {
     /**
      * @typedef {(Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array)} TypedArray
      */
+    
     export type TypedArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array;
+
+    export type AugmentedTypedArrayHelper = {
+        numComponents: number;
+        readonly numElements: number;
+        /**
+         * Push elements into typed array
+         */
+        push(...elements: (number |  TypedArray | number[])[]): void;
+        /**
+         * Reset push cursor
+         */
+        reset(index?: number): void;
+    };
+
+    export type AugmentedTypedArray<T extends TypedArray> = T & AugmentedTypedArrayHelper
+
+    
     /**
      * creates a typed array with a `push` function attached
      * so that you can easily *push* values.
@@ -3715,7 +3733,9 @@ declare module primitives {
      * @return {ArrayBufferView} A typed array.
      * @memberOf module:twgl/primitives
      */
-    export function createAugmentedTypedArray(numComponents: number, numElements: number, opt_type: Function): ArrayBufferView;
+        export function createAugmentedTypedArray<T extends TypedArrayConstructor>(numComponents: number, numElements: number, type: T): AugmentedTypedArray<InstanceType<T>>;
+    export function createAugmentedTypedArray<T extends Float32Array>(numComponents: number, numElements: number): AugmentedTypedArray<Float32Array>;
+    
     /**
      * Given indexed vertices creates a new set of vertices un-indexed by expanding the indexed vertices.
      * @param {Object.<string, TypedArray>} vertices The indexed vertices to deindex

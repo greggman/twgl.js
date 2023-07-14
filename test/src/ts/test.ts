@@ -3,6 +3,23 @@
 
 import * as twgl from "../../../dist/5.x/twgl-full";
 
+{
+  function useF32(v: Float32Array) { }
+  function useU8(v: Uint8Array) { }
+
+  const f32 = twgl.primitives.createAugmentedTypedArray(3, 5);
+  f32.push(1, 2, 3);
+  f32.push([4, 5, 6]);
+  f32.push(new Uint32Array([6,7,8]));
+
+  useF32(f32);
+
+  const u8 = twgl.primitives.createAugmentedTypedArray(4, 3, Uint8Array);
+  u8.push([5, 6, 7, 8]);
+
+  useU8(u8);
+}
+
 window.addEventListener("onload", function() {
     const canvas = <HTMLCanvasElement> document.getElementById("myCanvas");
     const gl = <WebGLRenderingContext> canvas.getContext("webgl");

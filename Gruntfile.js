@@ -411,6 +411,31 @@ module.exports = function(grunt) {
     // hack for AttachmentOptions. Should really try to fix tsd-jsdoc to handle @mixins
     content = content.replace('export type AttachmentOptions = {', 'export type AttachmentOptions = TextureOptions & {');
 
+    content = content.replace(/(export type TypedArray =.*?;)/, `
+    $1
+
+    export type AugmentedTypedArrayHelper = {
+        numComponents: number;
+        readonly numElements: number;
+        /**
+         * Push elements into typed array
+         */
+        push(...elements: (number |  TypedArray | number[])[]): void;
+        /**
+         * Reset push cursor
+         */
+        reset(index?: number): void;
+    };
+
+    export type AugmentedTypedArray<T extends TypedArray> = T & AugmentedTypedArrayHelper
+
+    `);
+
+    content = content.replace('export function createAugmentedTypedArray(numComponents: number, numElements: number, opt_type: Function): ArrayBufferView;', `\
+    export function createAugmentedTypedArray<T extends TypedArrayConstructor>(numComponents: number, numElements: number, type: T): AugmentedTypedArray<InstanceType<T>>;
+    export function createAugmentedTypedArray<T extends Float32Array>(numComponents: number, numElements: number): AugmentedTypedArray<Float32Array>;
+    `);
+
     // Break the file down into a list of modules
     const modules = content.match(/^declare module twgl(\/(\w+))? \{[\s\S]*?^\}/mg);
     // Split into core modules and extra (only in twgl-full) modules
