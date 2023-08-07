@@ -681,6 +681,8 @@ export type TextureFunc = (gl: WebGLRenderingContext, options: TextureOptions) =
  * @property {number} [maxLod] TEXTURE_MAX_LOD setting
  * @property {number} [baseLevel] TEXTURE_BASE_LEVEL setting
  * @property {number} [maxLevel] TEXTURE_MAX_LEVEL setting
+ * @property {number} [compareFunc] TEXTURE_COMPARE_FUNC setting
+ * @property {number} [compareMode] TEXTURE_COMPARE_MODE setting
  * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
  * @property {number[]|ArrayBufferView} [color] Color to initialize this texture with if loading an image asynchronously.
  *     The default use a blue 1x1 pixel texture. You can set another default by calling `twgl.setDefaults`
@@ -764,6 +766,8 @@ export type TextureOptions = {
     maxLod?: number;
     baseLevel?: number;
     maxLevel?: number;
+    compareFunc?: number;
+    compareMode?: number;
     unpackAlignment?: number;
     color?: number[] | ArrayBufferView;
     premultiplyAlpha?: number;
