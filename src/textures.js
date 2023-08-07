@@ -693,10 +693,10 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
     parameteriFn.call(gl, target, TEXTURE_MAX_LEVEL, options.maxLevel);
   }
   if (options.compareFunc !== undefined) {
-    parameteriFn.call(gl, target, TEXTURE_COMPARE_FUNC, options.maxLevel);
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_FUNC, options.compareFunc);
   }
   if (options.compareMode !== undefined) {
-    parameteriFn.call(gl, target, TEXTURE_COMPARE_MODE, options.maxLevel);
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_MODE, options.compareMode);
   }
 }
 
