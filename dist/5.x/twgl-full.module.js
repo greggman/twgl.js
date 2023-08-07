@@ -1,4 +1,4 @@
-/* @license twgl.js 5.5.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 5.5.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -5677,10 +5677,10 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
     parameteriFn.call(gl, target, TEXTURE_MAX_LEVEL, options.maxLevel);
   }
   if (options.compareFunc !== undefined) {
-    parameteriFn.call(gl, target, TEXTURE_COMPARE_FUNC, options.maxLevel);
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_FUNC, options.compareFunc);
   }
   if (options.compareMode !== undefined) {
-    parameteriFn.call(gl, target, TEXTURE_COMPARE_MODE, options.maxLevel);
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_MODE, options.compareMode);
   }
 }
 
