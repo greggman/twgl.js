@@ -1,5 +1,9 @@
 # Change List
 
+*   5.5.0
+
+    add `compareMode` and `compareFunc` to texture options
+
 *   5.4.0
 
     *   Keep JSDoc docstrings in .d.ts files
