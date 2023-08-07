@@ -120,7 +120,8 @@ const TEXTURE_MIN_LOD                = 0x813a;
 const TEXTURE_MAX_LOD                = 0x813b;
 const TEXTURE_BASE_LEVEL             = 0x813c;
 const TEXTURE_MAX_LEVEL              = 0x813d;
-
+const TEXTURE_COMPARE_MODE           = 0x884C;
+const TEXTURE_COMPARE_FUNC           = 0x884D;
 
 /* Pixel store */
 const UNPACK_ALIGNMENT                   = 0x0cf5;
@@ -542,6 +543,8 @@ function setDefaults(newDefaults) {
  * @property {number} [maxLod] TEXTURE_MAX_LOD setting
  * @property {number} [baseLevel] TEXTURE_BASE_LEVEL setting
  * @property {number} [maxLevel] TEXTURE_MAX_LEVEL setting
+ * @property {number} [compareFunc] TEXTURE_COMPARE_FUNC setting
+ * @property {number} [compareMode] TEXTURE_COMPARE_MODE setting
  * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
  * @property {number[]|ArrayBufferView} [color] Color to initialize this texture with if loading an image asynchronously.
  *     The default use a blue 1x1 pixel texture. You can set another default by calling `twgl.setDefaults`
@@ -677,17 +680,23 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.wrapT) {
     parameteriFn.call(gl, target, TEXTURE_WRAP_T, options.wrapT);
   }
-  if (options.minLod) {
+  if (options.minLod !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_MIN_LOD, options.minLod);
   }
-  if (options.maxLod) {
+  if (options.maxLod !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_MAX_LOD, options.maxLod);
   }
-  if (options.baseLevel) {
+  if (options.baseLevel !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_BASE_LEVEL, options.baseLevel);
   }
-  if (options.maxLevel) {
+  if (options.maxLevel !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_MAX_LEVEL, options.maxLevel);
+  }
+  if (options.compareFunc !== undefined) {
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_FUNC, options.maxLevel);
+  }
+  if (options.compareMode !== undefined) {
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_MODE, options.maxLevel);
   }
 }
 
