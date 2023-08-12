@@ -3,7 +3,7 @@
 (function() {
   twgl.setAttributePrefix("a_");
   const m4 = twgl.m4;
-  const gl = twgl.getWebGLContext(document.getElementById("canvas"), {
+  const gl = document.getElementById("canvas").getContext('webgl', {
     alpha: false,
     premultipliedAlpha: false,
   });

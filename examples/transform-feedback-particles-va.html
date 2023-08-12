@@ -58,6 +58,7 @@
       <div>Sorry but your browser doesn't appear to support WebGL2</div>
     </div>
   </body>
+  <script src="../3rdparty/chroma.min.js"></script>
   <script type="module">
 import * as twgl from '../dist/5.x/twgl-full.module.js';
 
@@ -74,6 +75,7 @@ void main() {
   vec2 localMult = vec2(
       sin((a_positionIn.x + a_positionIn.y) * 5.127 + u_time),
       cos(atan(a_positionIn.x, a_positionIn.y) * 2.713 + u_time * 0.791)) * 4.0;
+
   a_positionOut = mod((a_positionIn + 3.0) + a_velocity * u_deltaTime * localMult, vec2(2)) - 1.0;
   v_color = a_color;
   gl_PointSize = 4.0;
@@ -93,12 +95,9 @@ function rand(min, max) {
   return min + Math.random() * (max - min);
 }
 
+const baseHue = rand(0, 360);
 function randColor32() {
-  const r = rand(  0, 128) | 0;
-  const g = rand(128, 256) | 0;
-  const b = rand( 64, 192) | 0;
-  const a = 255;
-  return [r, g, b, a];
+  return chroma.hsv((baseHue + rand(0, 60)) % 360, rand(0.4, 1), rand(0.25, 1)).gl().map(v => v * 255 | 0);
 }
 
 function main() {
@@ -135,7 +134,7 @@ function main() {
     a_positionIn: { numComponents: 2, buffer: tfBufferInfo1.attribs.a_positionOut.buffer },
     a_positionOut: { numComponents: 2, buffer: tfBufferInfo1.attribs.a_positionIn.buffer },
     a_velocity: { numComponents: 2, buffer: tfBufferInfo1.attribs.a_velocity.buffer },
-    a_colors: { buffer: tfBufferInfo1.attribs.a_color.buffer },
+    a_color: { type: Uint8Array, buffer: tfBufferInfo1.attribs.a_color.buffer },
   });
 
   const tfVAInfo1 = twgl.createVertexArrayInfo(gl, feedbackProgramInfo, tfBufferInfo1);

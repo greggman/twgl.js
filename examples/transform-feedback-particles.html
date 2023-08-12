@@ -58,6 +58,7 @@
       <div>Sorry but your browser doesn't appear to support WebGL2</div>
     </div>
   </body>
+  <script src="../3rdparty/chroma.min.js"></script>
   <script type="module">
 import * as twgl from '../dist/5.x/twgl-full.module.js';
 
@@ -107,12 +108,9 @@ function rand(min, max) {
   return min + Math.random() * (max - min);
 }
 
+const baseHue = rand(0, 360);
 function randColor32() {
-  const r = rand(  0, 128) | 0;
-  const g = rand(128, 256) | 0;
-  const b = rand( 64, 192) | 0;
-  const a = 255;
-  return [r, g, b, a];
+  return chroma.hsv((baseHue + rand(0, 60)) % 360, rand(0.4, 1), rand(0.25, 1)).gl().map(v => v * 255 | 0);
 }
 
 function main() {
@@ -158,7 +156,7 @@ function main() {
 
   const drawBufferInfo2 = twgl.createBufferInfoFromArrays(gl, {
     a_position: { numComponents: 2, buffer: tfBufferInfo2.attribs.a_positionOut.buffer },
-    a_colors: { buffer: drawBufferInfo1.attribs.a_color.buffer },
+    a_color: { type: gl.UNSIGNED_BYTE, buffer: drawBufferInfo1.attribs.a_color.buffer },
   });
 
   const feedback1 = twgl.createTransformFeedback(gl, feedbackProgramInfo, tfBufferInfo1);
@@ -168,7 +166,7 @@ function main() {
     {
       feedback: feedback1,
       tfBufferInfo: tfBufferInfo1,
-      drawBufferInfo: drawBufferInfo1,
+      drawBufferInfo: drawBufferInfo2,
     },
     {
       feedback: feedback2,
