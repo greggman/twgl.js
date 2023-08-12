@@ -464,6 +464,8 @@ twgl.setUniforms(progInfo, {
 *   [3d texture volume no buffers](http://twgljs.org/examples/3d-texture-volume-no-buffers.html)
 *   [2d array texture](http://twgljs.org/examples/2d-array-texture.html)
 *   [transform feedback](http://twgljs.org/examples/transform-feedback.html)
+*   [transform feedback particles](http://twgljs.org/examples/transform-feedback-particles.html)
+*   [transform feedback particles vertex arrays](http://twgljs.org/examples/transform-feedback-particles-va.html)
 
 ### OffscreenCanvas Example
 
