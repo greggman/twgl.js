@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <!--
+
+    @license twgl.js Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+    Available via the MIT license.
+    see: http://github.com/greggman/twgl.js for details
+
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta property="og:title" content="TWGL.js - transform feedback particles" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://twgljs.org/examples/screenshots/transform-feedback.png" />
+    <meta property="og:description" content="TWGL.js - transform feedback" />
+    <meta property="og:url" content="http://twgljs.org" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="twgljs.org">
+    <meta name="twitter:title" content="TWGL.js - transform feedback">
+    <meta name="twitter:url" content="http://twgljs.org/examples/transform-feedback.html">
+    <meta name="twitter:description" content="TWGL.js - transform feedback">
+    <meta name="twitter:image:src" content="http://twgljs.org/examples/screenshots/transform-feedback.png">
+
+    <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
+
+    <title>twgl.js - transform feedback</title>
+    <style>
+      body {
+          margin: 0;
+          font-family: monospace;
+      }
+      canvas {
+          display: block;
+          width: 100vw;
+          height: 100vh;
+      }
+      #b {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+        color: white;
+      }
+      #b a {
+        color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="b"><a href="http://twgljs.org">twgl.js</a> - transform feedback particles</div>
+    <div id="no-webgl2" style="display: none;">
+      <div>Sorry but your browser doesn't appear to support WebGL2</div>
+    </div>
+  </body>
+  <script type="module">
+import * as twgl from '../dist/5.x/twgl-full.module.js';
+
+const tfVS = `#version 300 es
+in vec2 a_positionIn;
+in vec2 a_velocity;
+in vec4 a_color;
+out vec2 a_positionOut;
+out vec4 v_color;
+uniform float u_deltaTime;
+uniform float u_time;
+
+void main() {
+  vec2 localMult = vec2(
+      sin((a_positionIn.x + a_positionIn.y) * 5.127 + u_time),
+      cos(atan(a_positionIn.x, a_positionIn.y) * 2.713 + u_time * 0.791)) * 4.0;
+  a_positionOut = mod((a_positionIn + 3.0) + a_velocity * u_deltaTime * localMult, vec2(2)) - 1.0;
+  v_color = a_color;
+  gl_PointSize = 4.0;
+  gl_Position = vec4(a_positionOut, 0, 1);
+}
+`;
+const tfFS = `#version 300 es
+precision mediump float;
+in vec4 v_color;
+out vec4 fragColor;
+void main() {
+  fragColor = v_color;
+}
+`;
+
+function rand(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+function randColor32() {
+  const r = rand(  0, 128) | 0;
+  const g = rand(128, 256) | 0;
+  const b = rand( 64, 192) | 0;
+  const a = 255;
+  return [r, g, b, a];
+}
+
+function main() {
+  const gl = document.getElementById("c").getContext("webgl2");
+  if (!gl) {
+    document.querySelector("#no-webgl2").style.display = "";
+    return;
+  }
+
+  const feedbackProgramInfo = twgl.createProgramInfo(gl, [tfVS, tfFS], {
+    transformFeedbackVaryings: [
+      "a_positionOut",
+    ],
+  });
+
+  const numParticles = 100000;
+  const positions = [];
+  const velocities = [];
+  const colors = [];
+  for (let i = 0; i < numParticles; ++i) {
+    positions.push(rand(-1, 1), rand(-1, 1));
+    velocities.push(rand(-.1, .1), rand(-.1, .1));
+    colors.push(...randColor32());
+  }
+
+  const tfBufferInfo1 = twgl.createBufferInfoFromArrays(gl, {
+    a_positionIn: { numComponents: 2, data: new Float32Array(positions) },
+    a_positionOut: { numComponents: 2, data: positions.length },
+    a_velocity: { numComponents: 2, data: new Float32Array(velocities) },
+    a_color: new Uint8Array(colors),
+  });
+
+  const tfBufferInfo2 = twgl.createBufferInfoFromArrays(gl, {
+    a_positionIn: { numComponents: 2, buffer: tfBufferInfo1.attribs.a_positionOut.buffer },
+    a_positionOut: { numComponents: 2, buffer: tfBufferInfo1.attribs.a_positionIn.buffer },
+    a_velocity: { numComponents: 2, buffer: tfBufferInfo1.attribs.a_velocity.buffer },
+    a_colors: { buffer: tfBufferInfo1.attribs.a_color.buffer },
+  });
+
+  const tfVAInfo1 = twgl.createVertexArrayInfo(gl, feedbackProgramInfo, tfBufferInfo1);
+  const tfVAInfo2 = twgl.createVertexArrayInfo(gl, feedbackProgramInfo, tfBufferInfo2);
+
+  const feedback1 = twgl.createTransformFeedback(gl, feedbackProgramInfo, tfBufferInfo1);
+  const feedback2 = twgl.createTransformFeedback(gl, feedbackProgramInfo, tfBufferInfo2);
+
+  const sets = [
+    {
+      feedback: feedback1,
+      tfVAInfo: tfVAInfo1,
+    },
+    {
+      feedback: feedback2,
+      tfVAInfo: tfVAInfo2,
+    },
+  ];
+  let setNdx = 0;
+  let then = 0;
+
+  function render(now) {
+    now *= 0.001;
+    const deltaTime = now - then;
+    then = now;
+
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    const {feedback, tfVAInfo} = sets[setNdx];
+    setNdx = 1 - setNdx;
+
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    // update
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    gl.useProgram(feedbackProgramInfo.program);
+    twgl.setBuffersAndAttributes(gl, feedbackProgramInfo, tfVAInfo);
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, feedback);
+    gl.beginTransformFeedback(gl.POINTS);
+    twgl.setUniforms(feedbackProgramInfo, {
+      u_deltaTime: deltaTime,
+      u_time: now,
+    });
+    twgl.drawBufferInfo(gl, tfVAInfo, gl.POINTS);
+    gl.endTransformFeedback();
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+main();
+</script>
+</html>
+
+
+
