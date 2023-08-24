@@ -1,10 +1,10 @@
 {
   "name": "twgl-base.js",
-  "version": "5.5.1",
+  "version": "5.5.2",
   "description": "A Tiny WebGL helper library",
   "main": "dist/5.x/twgl.js",
   "types": "dist/5.x/twgl-full.d.ts",
-  "module": "dist/5.x/twgl-full.module.js",
+  "module": "dist/5.x/twgl.module.js",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -24,7 +24,9 @@
   "homepage": "https://github.com/greggman/twgl.js",
   "files": [
     "dist/5.x/twgl.js",
-    "dist/5.x/twgl.js.map"
+    "dist/5.x/twgl.module.js",
+    "dist/5.x/twgl.js.map",
+    "dist/5.x/twgl.d.js"
   ],
   "devDependencies": {}
 }
