@@ -392,7 +392,7 @@ module.exports = function(grunt) {
       `dist/${verDir}/twgl.js`,
       `dist/${verDir}/twgl.module.js`,
       `dist/${verDir}/twgl.js.map`,
-      `dist/${verDir}/twgl.d.js`,
+      `dist/${verDir}/twgl.d.ts`,
     ];
     fs.writeFileSync('npm/base/package.json', JSON.stringify(p, null, 2), {encoding: 'utf8'});
   });
