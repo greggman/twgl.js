@@ -243,9 +243,13 @@ module.exports = function(grunt) {
         indent: '  ',
         banner: () => `/* ${getLicense(pkg)} */`,
       },
-      files: {
+      full: {
         src: 'src/twgl-full.js',
         dest: `dist/${verDir}/twgl-full.module.js`,
+      },
+      base: {
+        src: 'src/twgl.js',
+        dest: `dist/${verDir}/twgl.module.js`,
       },
     },
     eslint: {
@@ -279,6 +283,8 @@ module.exports = function(grunt) {
         cwd: `dist/${verDir}/`,
         src: [
           'twgl.js',
+          'twgl.module.js',
+          'twgl.d.ts',
           'twgl.js.map',
         ],
         dest: `npm/base/dist/${verDir}/`,
@@ -381,9 +387,12 @@ module.exports = function(grunt) {
     p.scripts = {};
     p.devDependencies = {};
     p.main = `dist/${verDir}/twgl.js`;
+    p.module = `dist/${verDir}/twgl.module.js`;
     p.files = [
       `dist/${verDir}/twgl.js`,
+      `dist/${verDir}/twgl.module.js`,
       `dist/${verDir}/twgl.js.map`,
+      `dist/${verDir}/twgl.d.js`,
     ];
     fs.writeFileSync('npm/base/package.json', JSON.stringify(p, null, 2), {encoding: 'utf8'});
   });
