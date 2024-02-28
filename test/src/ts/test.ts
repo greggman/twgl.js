@@ -24,6 +24,17 @@ window.addEventListener("onload", function() {
     const canvas = <HTMLCanvasElement> document.getElementById("myCanvas");
     const gl = <WebGLRenderingContext> canvas.getContext("webgl");
     twgl.setDefaults({attribPrefix: "a_"});
+
+    // just testing that these compile in typescript
+    twgl.createProgramInfo(gl, ['vs', 'fs'], ['position', 'normals']);
+    twgl.createProgramInfo(gl, ['vs', 'fs'], ['position', 'normals'], [0, 1]);
+    twgl.createProgramInfo(gl, ['vs', 'fs'], ['position', 'normals'], [0, 1], (msg: string) => {});
+    twgl.createProgramInfo(gl, ['vs', 'fs'], {
+      errorCallback: (msg: string) => {},
+      attribLocations: ['position', 'normals'],
+      transformFeedbackVaryings: ['colors'],
+    });
+
     const programInfo: twgl.ProgramInfo = twgl.createProgramInfo(gl, [
         "vs", "fs" // Placeholders
     ]);
