@@ -117,7 +117,7 @@ module.exports = function(grunt) {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
+        options: {
           presets: ['@babel/preset-env'],
           plugins: [
             ['@babel/plugin-transform-modules-commonjs', {loose: true}],
@@ -318,7 +318,7 @@ module.exports = function(grunt) {
   grunt.registerTask('makeindex', function() {
     const {marked} = require('marked');
     const fs       = require('fs');
-    const html = marked(fs.readFileSync('README.md', {encoding: 'utf8'}));
+    const html = marked.parse(fs.readFileSync('README.md', {encoding: 'utf8'}));
     const template = fs.readFileSync('build/templates/index.template', {encoding: 'utf8'});
     let content = replaceParams(template, {
       content: html,
