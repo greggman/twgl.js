@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- this file is auto-generated from README.md. Do not edited directly -->
 <!--
-@license twgl.js 5.5.3 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+@license twgl.js 5.5.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details
 -->
@@ -43,13 +43,13 @@ see: http://github.com/greggman/twgl.js for details
     </ul>
   </div>
   <div id="content">
-    <h1 id="twgl-a-tiny-webgl-helper-libraryrhymes-with-wiggle">TWGL: A Tiny WebGL helper Library<div id="pronounce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1>
+    <h1>TWGL: A Tiny WebGL helper Library<div id="pronounce" style="font-size: xx-small;">[rhymes with wiggle]</div></h1>
 <p><a href="https://github.com/greggman/twgl.js/actions/workflows/test.yml"><img src="https://github.com/greggman/twgl.js/actions/workflows/test.yml/badge.svg" alt="Build Status"></a></p>
 <p>This library&#39;s sole purpose is to make using the WebGL API less verbose.</p>
-<h2 id="tldr">TL;DR</h2>
+<h2>TL;DR</h2>
 <p>If you want to get stuff done use <a href="http://threejs.org">three.js</a>. If you want
 to do stuff low-level with WebGL consider using <a href="http://github.com/greggman/twgl.js/">TWGL</a>.</p>
-<h2 id="the-tiniest-example">The tiniest example</h2>
+<h2>The tiniest example</h2>
 <p>Not including the shaders (which is a simple quad shader) here&#39;s the entire code</p>
 <pre><code class="language-html">&lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
 &lt;script src=&quot;../dist/5.x/twgl-full.min.js&quot;&gt;&lt;/script&gt;
@@ -82,7 +82,7 @@ to do stuff low-level with WebGL consider using <a href="http://github.com/gregg
 &lt;/script&gt;
 </code></pre>
 <p><a href="/examples/tiny.html">And here it is live</a>.</p>
-<h2 id="why-what-how">Why? What? How?</h2>
+<h2>Why? What? How?</h2>
 <p>WebGL is a very verbose API. Setting up shaders, buffers, attributes and uniforms
 takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls into WebGL.</p>
 <p>At its core there&#39;s really only a few main functions</p>
@@ -96,7 +96,7 @@ takes a lot of code. A simple lit cube in WebGL might easily take over 60 calls 
 </ul>
 <p>There&#39;s a few extra helpers and lower-level functions if you need them but those 6 functions are the core of TWGL.</p>
 <p>Compare the TWGL vs WebGL code for a point lit cube.</p>
-<h3 id="compiling-a-shader-and-looking-up-locations">Compiling a Shader and looking up locations</h3>
+<h3>Compiling a Shader and looking up locations</h3>
 <p>TWGL</p>
 <pre><code class="language-javascript">const programInfo = twgl.createProgramInfo(gl, [&quot;vs&quot;, &quot;fs&quot;]);
 </code></pre>
@@ -121,7 +121,7 @@ const positionLoc = gl.getAttribLocation(program, &quot;a_position&quot;);
 const normalLoc = gl.getAttribLocation(program, &quot;a_normal&quot;);
 const texcoordLoc = gl.getAttribLocation(program, &quot;a_texcoord&quot;);
 </code></pre>
-<h3 id="creating-buffers-for-a-cube">Creating Buffers for a Cube</h3>
+<h3>Creating Buffers for a Cube</h3>
 <p>TWGL</p>
 <pre><code class="language-javascript">const arrays = {
   position: [1,1,-1,1,1,1,1,-1,1,1,-1,-1,-1,1,1,-1,1,-1,-1,-1,-1,-1,-1,1,-1,1,1,1,1,1,1,1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,1,-1,1,-1,1,1,-1,1,-1,-1,-1,-1,-1],
@@ -150,7 +150,7 @@ const indicesBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 </code></pre>
-<h3 id="setting-attributes-and-indices-for-a-cube">Setting Attributes and Indices for a Cube</h3>
+<h3>Setting Attributes and Indices for a Cube</h3>
 <p>TWGL</p>
 <pre><code class="language-javascript">twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
 </code></pre>
@@ -166,7 +166,7 @@ gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(texcoordLoc);
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 </code></pre>
-<h3 id="setting-uniforms-for-a-lit-cube">Setting Uniforms for a Lit Cube</h3>
+<h3>Setting Uniforms for a Lit Cube</h3>
 <p>TWGL</p>
 <pre><code class="language-javascript">// At Init time
 const uniforms = {
@@ -210,7 +210,7 @@ gl.uniformMatrix4fv(u_worldLoc, false, world);
 gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
 gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(viewProjection, world));
 </code></pre>
-<h3 id="loading--setting-up-textures">Loading / Setting up textures</h3>
+<h3>Loading / Setting up textures</h3>
 <p>TWGL</p>
 <pre><code class="language-javascript">const textures = twgl.createTextures(gl, {
   // a power of 2 image
@@ -342,7 +342,7 @@ gl.generateMipmaps(gl.TEXTURE_2D);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 </code></pre>
-<h3 id="creating-framebuffers-and-attachments">Creating Framebuffers and attachments</h3>
+<h3>Creating Framebuffers and attachments</h3>
 <p>TWGL</p>
 <pre><code class="language-javascript">const attachments = [
   { format: RGBA, type: UNSIGNED_BYTE, min: LINEAR, wrap: CLAMP_TO_EDGE },
@@ -365,7 +365,7 @@ gl.bindRenderbuffer(gl.RENDERBUFFER, rb);
 gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, gl.drawingBufferWidth, gl.drawingBufferHeight);
 gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb);
 </code></pre>
-<h3 id="setting-uniform-and-uniformblock-structures-and-arrays">Setting uniform and uniformblock structures and arrays</h3>
+<h3>Setting uniform and uniformblock structures and arrays</h3>
 <p>Given an array of GLSL structures like this</p>
 <pre><code class="language-glsl">struct Light {
   float intensity;
@@ -407,9 +407,9 @@ twgl.setUniforms(progInfo, {
   &#39;lights[1]&#39;: { intensity: 5.0, shininess: 100, color: [1, 0, 0, 1] },
 });
 </code></pre>
-<h3 id="compare">Compare</h3>
+<h3>Compare</h3>
 <p><a href="/examples/twgl-cube.html">TWGL example</a> vs <a href="/examples/webgl-cube.html">WebGL example</a></p>
-<h2 id="examples">Examples</h2>
+<h2>Examples</h2>
 <ul>
 <li><a href="/examples/tiny.html">tiny</a></li>
 <li><a href="/examples/twgl-cube.html">twgl cube</a></li>
@@ -428,7 +428,7 @@ twgl.setUniforms(progInfo, {
 <li><a href="/examples/vertex-array-objects.html">vertex array objects</a></li>
 <li><a href="/examples/instancing.html">instancing</a></li>
 </ul>
-<h3 id="webgl-2-examples">WebGL 2 Examples</h3>
+<h3>WebGL 2 Examples</h3>
 <ul>
 <li><a href="/examples/uniform-buffer-objects.html">uniform buffer objects</a></li>
 <li><a href="/examples/3d-textures-tone-mapping.html">3d textures tone mapping</a></li>
@@ -441,23 +441,23 @@ twgl.setUniforms(progInfo, {
 <li><a href="/examples/transform-feedback-particles.html">transform feedback particles</a></li>
 <li><a href="/examples/transform-feedback-particles-va.html">transform feedback particles vertex arrays</a></li>
 </ul>
-<h3 id="offscreencanvas-example">OffscreenCanvas Example</h3>
+<h3>OffscreenCanvas Example</h3>
 <ul>
 <li><a href="/examples/offscreencanvas.html">OffscreenCanvas</a></li>
 </ul>
-<h2 id="es6-module-support">ES6 module support</h2>
+<h2>ES6 module support</h2>
 <ul>
 <li><a href="/examples/modules.html">modules</a></li>
 </ul>
-<h2 id="amd-support">AMD support</h2>
+<h2>AMD support</h2>
 <ul>
 <li><a href="/examples/amd-compiled.html">amd</a></li>
 </ul>
-<h2 id="commonjs--browserify-support">CommonJS / Browserify support</h2>
+<h2>CommonJS / Browserify support</h2>
 <ul>
 <li><a href="/examples/browserify.html">browserify</a></li>
 </ul>
-<h2 id="other-features">Other Features</h2>
+<h2>Other Features</h2>
 <ul>
 <li><p>Includes some optional 3d math functions (full version)</p>
 <p>You are welcome to use any math library as long as it stores matrices as flat Float32Array
@@ -467,7 +467,7 @@ or JavaScript arrays.</p>
 <p>planes, cubes, spheres, ... Just to help get started</p>
 </li>
 </ul>
-<h2 id="usage">Usage</h2>
+<h2>Usage</h2>
 <p>See the examples. Otherwise there&#39;s a few different versions</p>
 <ul>
 <li><code>twgl-full.module.js</code> the es6 module version</li>
@@ -476,7 +476,7 @@ or JavaScript arrays.</p>
 <li><code>twgl.min.js</code> the minimum version (no 3d math, no primitives)</li>
 <li><code>twgl.js</code> the concatenated minimum version (no 3d math, no primitives)</li>
 </ul>
-<h2 id="download">Download</h2>
+<h2>Download</h2>
 <ul>
 <li><p>from github</p>
 <p><a href="http://github.com/greggman/twgl.js">http://github.com/greggman/twgl.js</a></p>
@@ -497,7 +497,7 @@ or JavaScript arrays.</p>
 </code></pre>
 </li>
 </ul>
-<h2 id="rationale-and-other-chit-chat">Rationale and other chit-chat</h2>
+<h2>Rationale and other chit-chat</h2>
 <p>TWGL&#39;s is an attempt to make WebGL simpler by providing a few tiny helper functions
 that make it much less verbose and remove the tedium. TWGL is <strong>NOT</strong> trying to help
 with the complexity of managing shaders and writing GLSL. Nor is it a 3D library like
@@ -532,9 +532,9 @@ twgl.setAttributes(attribSetters, attribs);
 </code></pre>
 <p>The point of the example above is TWGL is a <strong>thin</strong> wrapper. All it&#39;s doing is trying
 to make common WebGL operations easier and less verbose. Feel free to mix it with raw WebGL.</p>
-<h2 id="api-docs">API Docs</h2>
+<h2>API Docs</h2>
 <p><a href="/docs/">API Docs are here</a>.</p>
-<h2 id="want-to-learn-webgl">Want to learn WebGL?</h2>
+<h2>Want to learn WebGL?</h2>
 <p>Try <a href="http://webglfundamentals.org">webglfundamentals.org</a></p>
 
   </div>

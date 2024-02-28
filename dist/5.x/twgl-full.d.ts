@@ -1191,13 +1191,13 @@ export function bindFramebufferInfo(gl: WebGLRenderingContext, framebufferInfo?:
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
  * @memberOf module:twgl/programs
  */
-export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): ProgramInfo;
+export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): ProgramInfo;
 /**
  * Creates a `UniformBlockInfo` for the specified block
  *
@@ -2106,13 +2106,13 @@ export type ProgramCallback = (err?: string, result?: WebGLProgram | ProgramInfo
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error of a callback was provided.
  * @memberOf module:twgl/programs
  */
-export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
+export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 /**
  * Same as createProgram but returns a promise
  *
@@ -2127,13 +2127,13 @@ export function createProgram(gl: WebGLRenderingContext, shaders: WebGLShader[] 
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {Promise<WebGLProgram>} The created program
  * @memberOf module:twgl/programs
  */
-export function createProgramAsync(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<WebGLProgram>;
+export function createProgramAsync(gl: WebGLRenderingContext, shaders: WebGLShader[] | string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<WebGLProgram>;
 /**
  * Same as createProgramInfo but returns a promise
  * @function
@@ -2143,13 +2143,13 @@ export function createProgramAsync(gl: WebGLRenderingContext, shaders: WebGLShad
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {Promise<ProgramInfo>} The created ProgramInfo
  * @memberOf module:twgl/programs
  */
-export function createProgramInfoAsync(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<ProgramInfo>;
+export function createProgramInfoAsync(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): Promise<ProgramInfo>;
 /**
  * Creates a program from 2 script tags.
  *
@@ -2166,13 +2166,13 @@ export function createProgramInfoAsync(gl: WebGLRenderingContext, shaderSources:
  *        tags for the shaders. The first is assumed to be the
  *        vertex shader, the second the fragment shader.
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error or a callback was provided.
  * @memberOf module:twgl/programs
  */
-export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
+export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScriptIds: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 /**
  * Creates a program from 2 sources.
  *
@@ -2189,13 +2189,13 @@ export function createProgramFromScripts(gl: WebGLRenderingContext, shaderScript
  *        shaders. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error or a callback was provided.
  * @memberOf module:twgl/programs
  */
-export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
+export function createProgramFromSources(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): WebGLProgram;
 /**
  * Creates setter functions for all uniforms of a shader
  * program.
@@ -2651,13 +2651,13 @@ export function createProgramInfoFromProgram(gl: WebGLRenderingContext, program:
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {ProgramOptions|string[]|ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
  * @memberOf module:twgl/programs
  */
-export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_errorCallback?: ErrorCallback): ProgramInfo;
+export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: string[], opt_attribs?: ProgramOptions | string[] | ErrorCallback, opt_locations?: number[] | ErrorCallback, opt_errorCallback?: ErrorCallback): ProgramInfo;
 /**
  * Creates multiple programs
  *

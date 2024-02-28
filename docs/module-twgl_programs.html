@@ -556,7 +556,7 @@ program. You can pass this to <a href="module-twgl.html#.setBuffersAndAttributes
 
     
 
-    <h4 class="name" id=".createProgram"><span class="type-signature">(static) </span>createProgram<span class="signature">(gl, shaders, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
+    <h4 class="name" id=".createProgram"><span class="type-signature">(static) </span>createProgram<span class="signature">(gl, shaders, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
 
     
 
@@ -759,13 +759,16 @@ twgl.createProgram(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);</code
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
@@ -879,7 +882,7 @@ on error. If you want something else pass an callback. It's passed an error mess
 
     
 
-    <h4 class="name" id=".createProgramAsync"><span class="type-signature">(static) </span>createProgramAsync<span class="signature">(gl, shaders, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;WebGLProgram>}</span></h4>
+    <h4 class="name" id=".createProgramAsync"><span class="type-signature">(static) </span>createProgramAsync<span class="signature">(gl, shaders, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;WebGLProgram>}</span></h4>
 
     
 
@@ -1081,13 +1084,16 @@ twgl.createProgramAsync(gl, [vs, fs], opt_attribs, opt_locations, opt_errFunc);<
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
@@ -1201,7 +1207,7 @@ on error. If you want something else pass an callback. It's passed an error mess
 
     
 
-    <h4 class="name" id=".createProgramFromScripts"><span class="type-signature">(static) </span>createProgramFromScripts<span class="signature">(gl, shaderScriptIds, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
+    <h4 class="name" id=".createProgramFromScripts"><span class="type-signature">(static) </span>createProgramFromScripts<span class="signature">(gl, shaderScriptIds, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
 
     
 
@@ -1403,13 +1409,16 @@ vertex shader, the second the fragment shader.</p>
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
@@ -1523,7 +1532,7 @@ on error. If you want something else pass an callback. It's passed an error mess
 
     
 
-    <h4 class="name" id=".createProgramFromSources"><span class="type-signature">(static) </span>createProgramFromSources<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
+    <h4 class="name" id=".createProgramFromSources"><span class="type-signature">(static) </span>createProgramFromSources<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {WebGLProgram}</span></h4>
 
     
 
@@ -1725,13 +1734,16 @@ the second the fragment shader.</p>
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
@@ -1845,7 +1857,7 @@ on error. If you want something else pass an callback. It's passed an error mess
 
     
 
-    <h4 class="name" id=".createProgramInfo"><span class="type-signature">(static) </span>createProgramInfo<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
+    <h4 class="name" id=".createProgramInfo"><span class="type-signature">(static) </span>createProgramInfo<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
 
     
 
@@ -2054,13 +2066,16 @@ the second the fragment shader.</p>
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
@@ -2174,7 +2189,7 @@ on error. If you want something else pass an callback. It's passed an error mess
 
     
 
-    <h4 class="name" id=".createProgramInfoAsync"><span class="type-signature">(static) </span>createProgramInfoAsync<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>>}</span></h4>
+    <h4 class="name" id=".createProgramInfoAsync"><span class="type-signature">(static) </span>createProgramInfoAsync<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>>}</span></h4>
 
     
 
@@ -2371,13 +2386,16 @@ the second the fragment shader.</p>
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             

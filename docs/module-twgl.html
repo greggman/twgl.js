@@ -1582,7 +1582,7 @@ const fbi = twgl.createFramebufferInfo(gl, attachments, width, height);
 
     
 
-    <h4 class="name" id=".createProgramInfo"><span class="type-signature">(static) </span>createProgramInfo<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
+    <h4 class="name" id=".createProgramInfo"><span class="type-signature">(static) </span>createProgramInfo<span class="signature">(gl, shaderSources, opt_attribs<span class="signature-attributes">opt</span>, opt_locations<span class="signature-attributes">opt</span>, opt_errorCallback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; (nullable) {<a href="module-twgl.html#.ProgramInfo">module:twgl.ProgramInfo</a>}</span></h4>
 
     
 
@@ -1791,13 +1791,16 @@ the second the fragment shader.</p>
 
         <tr>
             
-                <td class="name"><code>opt_locations|module:twgl.ErrorCallback</code></td>
+                <td class="name"><code>opt_locations</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><code>Array.&lt;number></code></span>
+|
+
+<span class="param-type"><code><a href="module-twgl.html#.ErrorCallback">module:twgl.ErrorCallback</a></code></span>
 
 
             
