@@ -1,5 +1,9 @@
 # Change List
 
+*   5.6.0
+
+    Support offsets and shared buffers in uniform block infos.
+
 *   5.5.0
 
     add `compareMode` and `compareFunc` to texture options
