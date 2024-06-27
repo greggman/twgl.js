@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 5.5.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 5.6.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -6064,6 +6064,7 @@ function createUniformBlockUniformSetter(view, isArray, rows, cols) {
  * @property {ArrayBuffer} array The array buffer that contains the uniform values
  * @property {Float32Array} asFloat A float view on the array buffer. This is useful
  *    inspecting the contents of the buffer in the debugger.
+ * @property {Uint8Array} asUint8t A uint8 view on the array buffer.
  * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
  * @property {number} [offset] offset into buffer
  * @property {Object<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
@@ -6083,6 +6084,15 @@ function createUniformBlockUniformSetter(view, isArray, rows, cols) {
  */
 
 /**
+ * Options to allow createUniformBlockInfo to use an existing buffer and arrayBuffer at an offset
+ * @typedef {Object} UniformBlockInfoOptions
+ * @property {ArrayBuffer} [array] an existing array buffer to use for values
+ * @property {number} [offset] the offset in bytes to use in the array buffer (default = 0)
+ * @property {WebGLBuffer} [buffer] the buffer to use for this uniform block info
+ * @property {number} [bufferOffset] the offset in bytes in the buffer to use (default = use offset above)
+ */
+
+/**
  * Creates a `UniformBlockInfo` for the specified block
  *
  * Note: **If the blockName matches no existing blocks a warning is printed to the console and a dummy
@@ -6096,10 +6106,13 @@ function createUniformBlockUniformSetter(view, isArray, rows, cols) {
  * @param {module:twgl.UniformBlockSpec} uniformBlockSpec. A UniformBlockSpec as returned
  *     from {@link module:twgl.createUniformBlockSpecFromProgram}.
  * @param {string} blockName The name of the block.
+ * @param {module:twgl.UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
 function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
+  var _options$offset, _options$array, _options$buffer, _options$bufferOffset;
+  var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
   var blockSpecs = uniformBlockSpec.blockSpecs;
   var uniformData = uniformBlockSpec.uniformData;
   var blockSpec = blockSpecs[blockName];
@@ -6110,10 +6123,14 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
       uniforms: {}
     };
   }
-  var array = new ArrayBuffer(blockSpec.size);
-  var buffer = gl.createBuffer();
+  var offset = (_options$offset = options.offset) !== null && _options$offset !== void 0 ? _options$offset : 0;
+  var array = (_options$array = options.array) !== null && _options$array !== void 0 ? _options$array : new ArrayBuffer(blockSpec.size);
+  var buffer = (_options$buffer = options.buffer) !== null && _options$buffer !== void 0 ? _options$buffer : gl.createBuffer();
   var uniformBufferIndex = blockSpec.index;
   gl.bindBuffer(UNIFORM_BUFFER, buffer);
+  if (!options.buffer) {
+    gl.bufferData(UNIFORM_BUFFER, array.byteLength, DYNAMIC_DRAW);
+  }
   gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
   var prefix = blockName + ".";
   if (arraySuffixRE.test(prefix)) {
@@ -6135,7 +6152,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     var typeInfo = typeMap[data.type];
     var Type = typeInfo.Type;
     var byteLength = isArray ? pad(typeInfo.size, 16) * data.size : typeInfo.size * data.size;
-    var uniformView = new Type(array, data.offset, byteLength / Type.BYTES_PER_ELEMENT);
+    var uniformView = new Type(array, offset + data.offset, byteLength / Type.BYTES_PER_ELEMENT);
     uniforms[name] = uniformView;
     // Note: I'm not sure what to do here. The original
     // idea was to create TypedArray views into each part
@@ -6171,9 +6188,13 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     array: array,
     asFloat: new Float32Array(array),
     // for debugging
+    asUint8: new Uint8Array(array),
+    // needed for gl.bufferSubData because it doesn't take an array buffer
     buffer: buffer,
     uniforms: uniforms,
-    setters: setters
+    setters: setters,
+    offset: (_options$bufferOffset = options.bufferOffset) !== null && _options$bufferOffset !== void 0 ? _options$bufferOffset : offset,
+    size: blockSpec.size
   };
 }
 
@@ -6190,11 +6211,13 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
  * @param {module:twgl.ProgramInfo} programInfo a `ProgramInfo`
  *     as returned from {@link module:twgl.createProgramInfo}
  * @param {string} blockName The name of the block.
+ * @param {module:twgl.UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
 function createUniformBlockInfo(gl, programInfo, blockName) {
-  return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
+  var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+  return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName, options);
 }
 
 /**
@@ -6219,8 +6242,9 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
   var uniformBlockSpec = programInfo.uniformBlockSpec || programInfo;
   var blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
   if (blockSpec) {
+    var _uniformBlockInfo$siz;
     var bufferBindIndex = blockSpec.index;
-    gl.bindBufferRange(UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
+    gl.bindBufferRange(UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, (_uniformBlockInfo$siz = uniformBlockInfo.size) !== null && _uniformBlockInfo$siz !== void 0 ? _uniformBlockInfo$siz : uniformBlockInfo.array.byteLength);
     return true;
   }
   return false;
@@ -6243,7 +6267,7 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
  */
 function setUniformBlock(gl, programInfo, uniformBlockInfo) {
   if (bindUniformBlock(gl, programInfo, uniformBlockInfo)) {
-    gl.bufferData(UNIFORM_BUFFER, uniformBlockInfo.array, DYNAMIC_DRAW);
+    gl.bufferSubData(UNIFORM_BUFFER, 0, uniformBlockInfo.asUint8, uniformBlockInfo.offset || 0, uniformBlockInfo.size || 0);
   }
 }
 
@@ -6685,6 +6709,8 @@ function setBuffersAndAttributes(gl, programInfo, buffers) {
 /**
  * @typedef {Object} ProgramInfo
  * @property {WebGLProgram} program A shader program
+ * @property {Object<string, WebGLUniformLocation>} uniformLocations The uniform locations of each uniform
+ * @property {Object<string, number>} attribLocations The locations of each attribute
  * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
  * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
  * @property {module:twgl.UniformBlockSpec} [uniformBlockSpec] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
@@ -6715,7 +6741,19 @@ function createProgramInfoFromProgram(gl, program) {
   var programInfo = {
     program: program,
     uniformSetters: uniformSetters,
-    attribSetters: attribSetters
+    attribSetters: attribSetters,
+    uniformLocations: Object.fromEntries(Object.entries(uniformSetters).map(function (_ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+        k = _ref4[0],
+        v = _ref4[1];
+      return [k, v.location];
+    })),
+    attribLocations: Object.fromEntries(Object.entries(attribSetters).map(function (_ref5) {
+      var _ref6 = _slicedToArray(_ref5, 2),
+        k = _ref6[0],
+        v = _ref6[1];
+      return [k, v.location];
+    }))
   };
   if (utils.isWebGL2(gl)) {
     programInfo.uniformBlockSpec = createUniformBlockSpecFromProgram(gl, program);
@@ -6858,10 +6896,10 @@ function createPrograms(gl, programSpecs) {
   var noDeleteShadersSet = new Set();
 
   // compile and link everything
-  var programs = Object.fromEntries(Object.entries(programSpecs).map(function (_ref3) {
-    var _ref4 = _slicedToArray(_ref3, 2),
-      name = _ref4[0],
-      spec = _ref4[1];
+  var programs = Object.fromEntries(Object.entries(programSpecs).map(function (_ref7) {
+    var _ref8 = _slicedToArray(_ref7, 2),
+      name = _ref8[0],
+      spec = _ref8[1];
     var options = _objectSpread({}, programOptions);
     var shaders = Array.isArray(spec) ? spec : spec.shaders;
     if (!Array.isArray(spec)) {
@@ -6921,10 +6959,10 @@ function createPrograms(gl, programSpecs) {
 function createProgramInfos(gl, programSpecs, programOptions) {
   programOptions = getProgramOptions(programOptions);
   function createProgramInfosForPrograms(gl, programs) {
-    return Object.fromEntries(Object.entries(programs).map(function (_ref5) {
-      var _ref6 = _slicedToArray(_ref5, 2),
-        name = _ref6[0],
-        program = _ref6[1];
+    return Object.fromEntries(Object.entries(programs).map(function (_ref9) {
+      var _ref10 = _slicedToArray(_ref9, 2),
+        name = _ref10[0],
+        program = _ref10[1];
       return [name, createProgramInfoFromProgram(gl, program)];
     }));
   }

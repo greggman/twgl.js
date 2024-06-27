@@ -591,6 +591,7 @@ export type UniformBlockSpec = {
  * @property {ArrayBuffer} array The array buffer that contains the uniform values
  * @property {Float32Array} asFloat A float view on the array buffer. This is useful
  *    inspecting the contents of the buffer in the debugger.
+ * @property {Uint8Array} asUint8t A uint8 view on the array buffer.
  * @property {WebGLBuffer} buffer A WebGL buffer that will hold a copy of the uniform values for rendering.
  * @property {number} [offset] offset into buffer
  * @property {Object<string, ArrayBufferView>} uniforms A uniform name to ArrayBufferView map.
@@ -612,6 +613,7 @@ export type UniformBlockInfo = {
     name: string;
     array: ArrayBuffer;
     asFloat: Float32Array;
+    asUint8t: Uint8Array;
     buffer: WebGLBuffer;
     offset?: number;
     uniforms: {
@@ -624,6 +626,8 @@ export type UniformBlockInfo = {
 /**
  * @typedef {Object} ProgramInfo
  * @property {WebGLProgram} program A shader program
+ * @property {Object<string, WebGLUniformLocation>} uniformLocations The uniform locations of each uniform
+ * @property {Object<string, number>} attribLocations The locations of each attribute
  * @property {Object<string, function>} uniformSetters object of setters as returned from createUniformSetters,
  * @property {Object<string, function>} attribSetters object of setters as returned from createAttribSetters,
  * @property {UniformBlockSpec} [uniformBlockSpec] a uniform block spec for making UniformBlockInfos with createUniformBlockInfo etc..
@@ -632,6 +636,12 @@ export type UniformBlockInfo = {
  */
 export type ProgramInfo = {
     program: WebGLProgram;
+    uniformLocations: {
+        [key: string]: WebGLUniformLocation;
+    };
+    attribLocations: {
+        [key: string]: number;
+    };
     uniformSetters: {
         [key: string]: (...params: any[]) => any;
     };
@@ -1211,10 +1221,11 @@ export function createProgramInfo(gl: WebGLRenderingContext, shaderSources: stri
  * @param {ProgramInfo} programInfo a `ProgramInfo`
  *     as returned from {@link createProgramInfo}
  * @param {string} blockName The name of the block.
+ * @param {UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
-export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
+export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string, options?: UniformBlockInfoOptions): UniformBlockInfo;
 /**
  * Binds a uniform block to the matching uniform block point.
  * Matches by blocks by name so blocks must have the same name not just the same
@@ -2223,6 +2234,20 @@ export function createUniformSetters(gl: WebGLRenderingContext, program: WebGLPr
  */
 export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram): UniformBlockSpec;
 /**
+ * Options to allow createUniformBlockInfo to use an existing buffer and arrayBuffer at an offset
+ * @typedef {Object} UniformBlockInfoOptions
+ * @property {ArrayBuffer} [array] an existing array buffer to use for values
+ * @property {number} [offset] the offset in bytes to use in the array buffer (default = 0)
+ * @property {WebGLBuffer} [buffer] the buffer to use for this uniform block info
+ * @property {number} [bufferOffset] the offset in bytes in the buffer to use (default = use offset above)
+ */
+export type UniformBlockInfoOptions = {
+    array?: ArrayBuffer;
+    offset?: number;
+    buffer?: WebGLBuffer;
+    bufferOffset?: number;
+};
+/**
  * Creates a `UniformBlockInfo` for the specified block
  *
  * Note: **If the blockName matches no existing blocks a warning is printed to the console and a dummy
@@ -2236,10 +2261,11 @@ export function createUniformBlockSpecFromProgram(gl: WebGL2RenderingContext, pr
  * @param {UniformBlockSpec} uniformBlockSpec. A UniformBlockSpec as returned
  *     from {@link createUniformBlockSpecFromProgram}.
  * @param {string} blockName The name of the block.
+ * @param {UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
-export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram, blockName: string): UniformBlockInfo;
+export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, program: WebGLProgram, blockName: string, options?: UniformBlockInfoOptions): UniformBlockInfo;
 /**
  * Creates a `UniformBlockInfo` for the specified block
  *
@@ -2253,10 +2279,11 @@ export function createUniformBlockInfoFromProgram(gl: WebGL2RenderingContext, pr
  * @param {ProgramInfo} programInfo a `ProgramInfo`
  *     as returned from {@link createProgramInfo}
  * @param {string} blockName The name of the block.
+ * @param {UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
-export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string): UniformBlockInfo;
+export function createUniformBlockInfo(gl: WebGL2RenderingContext, programInfo: ProgramInfo, blockName: string, options?: UniformBlockInfoOptions): UniformBlockInfo;
 /**
  * Binds a uniform block to the matching uniform block point.
  * Matches by blocks by name so blocks must have the same name not just the same

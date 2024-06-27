@@ -2697,7 +2697,7 @@ to use.</p>
 
     
 
-    <h4 class="name" id=".createUniformBlockInfo"><span class="type-signature">(static) </span>createUniformBlockInfo<span class="signature">(gl, programInfo, blockName)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.UniformBlockInfo">module:twgl.UniformBlockInfo</a>}</span></h4>
+    <h4 class="name" id=".createUniformBlockInfo"><span class="type-signature">(static) </span>createUniformBlockInfo<span class="signature">(gl, programInfo, blockName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.UniformBlockInfo">module:twgl.UniformBlockInfo</a>}</span></h4>
 
     
 
@@ -2772,6 +2772,8 @@ If this function did not create dummy blocks your code would crash when debuggin
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -2796,6 +2798,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -2822,6 +2832,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -2850,11 +2868,55 @@ as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">
                 <p>The name of the block.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>module:twgl.UniformBlockInfoOptions</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Optional options for using existing an existing buffer and arrayBuffer</p>
                 
             </td>
         </tr>
@@ -2910,7 +2972,7 @@ as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl
 
     
 
-    <h4 class="name" id=".createUniformBlockInfoFromProgram"><span class="type-signature">(static) </span>createUniformBlockInfoFromProgram<span class="signature">(gl, program, blockName)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.UniformBlockInfo">module:twgl.UniformBlockInfo</a>}</span></h4>
+    <h4 class="name" id=".createUniformBlockInfoFromProgram"><span class="type-signature">(static) </span>createUniformBlockInfoFromProgram<span class="signature">(gl, program, blockName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.UniformBlockInfo">module:twgl.UniformBlockInfo</a>}</span></h4>
 
     
 
@@ -2985,6 +3047,8 @@ If this function did not create dummy blocks your code would crash when debuggin
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -3009,6 +3073,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -3036,6 +3108,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -3061,6 +3141,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -3089,11 +3177,55 @@ from <code>module:twgl.createUniformBlockSpecFromProgram</code>.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">
                 <p>The name of the block.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>module:twgl.UniformBlockInfoOptions</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Optional options for using existing an existing buffer and arrayBuffer</p>
                 
             </td>
         </tr>
@@ -5809,6 +5941,238 @@ afterwards check if they succeeded. In that way, giving all your shaders</p>
 
 
 </div>
+            
+                
+<div class="section-members">
+<h4 class="name" id="~UniformBlockInfoOptions">UniformBlockInfoOptions</h4>
+
+
+
+
+<div class="description">
+    <p>Options to allow createUniformBlockInfo to use an existing buffer and arrayBuffer at an offset</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>ArrayBuffer</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>an existing array buffer to use for values</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the offset in bytes to use in the array buffer (default = 0)</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>WebGLBuffer</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the buffer to use for this uniform block info</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bufferOffset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the offset in bytes in the buffer to use (default = use offset above)</p></td>
+        </tr>
+
+        
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Object</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
             
     
 

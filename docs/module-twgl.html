@@ -2868,7 +2868,7 @@ UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS</p>
 
     
 
-    <h4 class="name" id=".createUniformBlockInfo"><span class="type-signature">(static) </span>createUniformBlockInfo<span class="signature">(gl, programInfo, blockName)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.UniformBlockInfo">module:twgl.UniformBlockInfo</a>}</span></h4>
+    <h4 class="name" id=".createUniformBlockInfo"><span class="type-signature">(static) </span>createUniformBlockInfo<span class="signature">(gl, programInfo, blockName, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-twgl.html#.UniformBlockInfo">module:twgl.UniformBlockInfo</a>}</span></h4>
 
     
 
@@ -2943,6 +2943,8 @@ If this function did not create dummy blocks your code would crash when debuggin
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -2967,6 +2969,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -2993,6 +3003,14 @@ If this function did not create dummy blocks your code would crash when debuggin
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -3021,11 +3039,55 @@ as returned from <a href="module-twgl.html#.createProgramInfo"><code>module:twgl
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">
                 <p>The name of the block.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>module:twgl.UniformBlockInfoOptions</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Optional options for using existing an existing buffer and arrayBuffer</p>
                 
             </td>
         </tr>
@@ -10535,6 +10597,68 @@ you can pass an array of names.</p></td>
 
         <tr>
             
+                <td class="name"><code>uniformLocations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object.&lt;string, WebGLUniformLocation></code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The uniform locations of each uniform</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>attribLocations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object.&lt;string, number></code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The locations of each attribute</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
                 <td class="name"><code>uniformSetters</code></td>
             
 
@@ -13322,6 +13446,37 @@ and a corresponding WebGLBuffer to hold those values on the GPU</p>
 
             <td class="description last"><p>A float view on the array buffer. This is useful<br>
 inspecting the contents of the buffer in the debugger.</p></td>
+        </tr>
+
+        
+
+    
+
+        <tr>
+            
+                <td class="name"><code>asUint8t</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Uint8Array</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A uint8 view on the array buffer.</p></td>
         </tr>
 
         
