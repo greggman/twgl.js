@@ -22,3 +22,9 @@ jobs:
         run: |
           npm ci
           npm run check-ci
+
+      - name: Upload Artifact ⬆️
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./screenshots/*.png
+          overwrite: true
