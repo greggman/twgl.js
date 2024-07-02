@@ -41,7 +41,7 @@ function makePromiseInfo() {
 async function test(port) {
   const browser = await puppeteer.launch({
     args: [
-      '--ignore-gpu-blocklist',
+      '--use-angle=metal',
     ],
   });
   const page = await browser.newPage();
