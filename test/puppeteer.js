@@ -17,6 +17,7 @@ function getExamples(port) {
       .map(f => ({
         url: `http://localhost:${port}/examples/${f}`,
         js: exampleInjectJS,
+        screenshot: true,
       }));
 }
 
@@ -65,7 +66,7 @@ async function test(port) {
     ...getExamples(port),
   ];
 
-  for (const {url, js} of testPages) {
+  for (const {url, js, screenshot} of testPages) {
     waitingPromiseInfo = makePromiseInfo();
     console.log(`===== [ ${url} ] =====`);
     if (js) {
@@ -81,6 +82,13 @@ async function test(port) {
       });
     }
     await waitingPromiseInfo.promise;
+    if (screenshot) {
+      const dir = 'screenshots';
+      fs.mkdirSync(dir, { recursive: true });
+      const name = /\/([a-z0-9_-]+).html/.exec(url);
+      const path = `${dir}/${name}.png`;
+      await page.screenshot({path});
+    }
   }
 
   await browser.close();
