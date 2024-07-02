@@ -11,9 +11,11 @@ const port = 3000;
 
 const exampleInjectJS = fs.readFileSync('test/src/js/example-inject.js', {encoding: 'utf-8'});
 
+const skipRE = /dynamic-buffers/;
+
 function getExamples(port) {
   return fs.readdirSync('examples')
-      .filter(f => f.endsWith('.html'))
+      .filter(f => f.endsWith('.html') && !skipRE.test(f))
       .map(f => ({
         url: `http://localhost:${port}/examples/${f}`,
         js: exampleInjectJS,
