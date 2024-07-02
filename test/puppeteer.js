@@ -39,7 +39,11 @@ function makePromiseInfo() {
 }
 
 async function test(port) {
-  const browser = await puppeteer.launch({});
+  const browser = await puppeteer.launch({
+    args: [
+      '--ignore-gpu-blocklist',
+    ],
+  });
   const page = await browser.newPage();
 
   page.on('console', async e => {
