@@ -85,7 +85,7 @@ async function test(port) {
     if (screenshot) {
       const dir = 'screenshots';
       fs.mkdirSync(dir, { recursive: true });
-      const name = /\/([a-z0-9_-]+).html/.exec(url);
+      const name = /\/([a-z0-9_-]+).html/.exec(url)[1];
       const path = `${dir}/${name}.png`;
       await page.screenshot({path});
     }
