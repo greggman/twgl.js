@@ -77,7 +77,7 @@ async function test(port) {
       ? await page.evaluateOnNewDocument(js)
       : undefined;
     await page.goto(url);
-    await page.waitForNetworkIdle();
+    await page.waitForNetworkIdle({timeout: 5000});
     if (js) {
       await page.evaluate(() => {
         setTimeout(() => {
