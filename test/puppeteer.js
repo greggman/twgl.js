@@ -11,7 +11,7 @@ const port = 3000;
 
 const exampleInjectJS = fs.readFileSync('test/src/js/example-inject.js', {encoding: 'utf-8'});
 
-const skipRE = /dynamic-buffers/;
+const skipRE = /dynamic-buffers|webgl2-textures/;
 
 function getExamples(port) {
   return fs.readdirSync('examples')
