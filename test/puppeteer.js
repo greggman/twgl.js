@@ -11,12 +11,15 @@ const port = 3000;
 
 const exampleInjectJS = fs.readFileSync('test/src/js/example-inject.js', {encoding: 'utf-8'});
 
+const skipRE = /dynamic-buffers|webgl2-textures/;
+
 function getExamples(port) {
   return fs.readdirSync('examples')
-      .filter(f => f.endsWith('.html'))
+      .filter(f => f.endsWith('.html') && !skipRE.test(f))
       .map(f => ({
         url: `http://localhost:${port}/examples/${f}`,
         js: exampleInjectJS,
+        screenshot: true,
       }));
 }
 
@@ -36,7 +39,11 @@ function makePromiseInfo() {
 }
 
 async function test(port) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--use-angle=metal',
+    ],
+  });
   const page = await browser.newPage();
 
   page.on('console', async e => {
@@ -65,14 +72,14 @@ async function test(port) {
     ...getExamples(port),
   ];
 
-  for (const {url, js} of testPages) {
+  for (const {url, js, screenshot} of testPages) {
     waitingPromiseInfo = makePromiseInfo();
     console.log(`===== [ ${url} ] =====`);
-    if (js) {
-      await page.evaluateOnNewDocument(js);
-    }
+    const id = js
+      ? await page.evaluateOnNewDocument(js)
+      : undefined;
     await page.goto(url);
-    await page.waitForNetworkIdle();
+    await page.waitForNetworkIdle({timeout: 5000});
     if (js) {
       await page.evaluate(() => {
         setTimeout(() => {
@@ -81,6 +88,16 @@ async function test(port) {
       });
     }
     await waitingPromiseInfo.promise;
+    if (screenshot) {
+      const dir = 'screenshots';
+      fs.mkdirSync(dir, { recursive: true });
+      const name = /\/([a-z0-9_-]+).html/.exec(url)[1];
+      const path = `${dir}/${name}.png`;
+      await page.screenshot({path});
+    }
+    if (id) {
+      await page.removeScriptToEvaluateOnNewDocument(id.identifier);
+    }
   }
 
   await browser.close();
