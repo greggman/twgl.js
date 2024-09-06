@@ -8057,15 +8057,10 @@ function setDefaults(newDefaults) {
  * @private
  */
 function setPackState(gl, options) {
-  if (options.colorspaceConversion !== undefined) {
-    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
-  }
-  if (options.premultiplyAlpha !== undefined) {
-    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
-  }
-  if (options.flipY !== undefined) {
-    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY);
-  }
+  var _options$colorspaceCo, _options$premultiplyA, _options$flipY;
+  gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, (_options$colorspaceCo = options.colorspaceConversion) !== null && _options$colorspaceCo !== void 0 ? _options$colorspaceCo : 0);
+  gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, (_options$premultiplyA = options.premultiplyAlpha) !== null && _options$premultiplyA !== void 0 ? _options$premultiplyA : 0);
+  gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, (_options$flipY = options.flipY) !== null && _options$flipY !== void 0 ? _options$flipY : 0);
 }
 
 /**

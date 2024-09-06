@@ -5600,15 +5600,9 @@ function setDefaults$1(newDefaults) {
  * @private
  */
 function setPackState(gl, options) {
-  if (options.colorspaceConversion !== undefined) {
-    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
-  }
-  if (options.premultiplyAlpha !== undefined) {
-    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
-  }
-  if (options.flipY !== undefined) {
-    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY);
-  }
+  gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion ?? 0);
+  gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha ?? 0);
+  gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY ?? 0);
 }
 
 /**
