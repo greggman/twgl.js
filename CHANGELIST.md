@@ -1,5 +1,49 @@
 # Change List
 
+*   6.0.0
+
+    Internal change. `gl.pixelStorei` state for `UNPACK_COLORSPACE_CONVERSION_WEBGL`
+    `UNPACK_PREMULTIPLY_ALPHA_WEBGL` and `UNPACK_FLIP_Y_WEBGL`
+    is now saved and restored as the previous behavior had a race condition.
+
+    Before v6.0.0
+
+    ```js
+    t1 = twgl.createTexture(gl, {src: 'https://p.com/slow.jpg'});  // may or may not be flipped!!!!
+    t2 = twgl.createTexture(gl, {src: 'https://p.com/fast.jpg', flipY: true });  // flipped
+    ```
+
+    In the example above, whether or not `t1` is flipped was unknown
+    since if `t2` loads first, it would be flipped. If `t1` loads first
+    it would not be flipped.
+
+    The fix is to save and restore the `pixelStorei` state for each texture.
+    
+    Unfortunately, this is a breaking change.
+
+    Before v6.0.0
+
+    ```js
+    twgl.createTexture(gl, {src: someImageElem1, flipY: true });  // flipped
+    twgl.createTexture(gl, {src: someImageElem2 });               // also flipped
+    ```
+
+    From v6.0.0 on
+
+    ```js
+    twgl.createTexture(gl, {src: someImage, flipY: true });  // flipped
+    twgl.createTexture(gl, {src: someImage });               // NOT flipped
+    ```
+
+    Note: in all versions the behavior was and still is, that if you set
+    the `pixelStorei` parameters outside they applied.
+
+    ```js
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
+    twgl.createTexture(gl, {src: someImage });  // flipped
+    twgl.createTexture(gl, {src: someImage });  // flipped
+    ```
+
 *   5.6.0
 
     Support offsets and shared buffers in uniform block infos.
