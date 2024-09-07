@@ -2,9 +2,9 @@
   "name": "twgl.js",
   "version": "6.0.0",
   "description": "A Tiny WebGL helper library",
-  "main": "dist/5.x/twgl-full.js",
-  "types": "dist/5.x/twgl-full.d.ts",
-  "module": "dist/5.x/twgl-full.module.js",
+  "main": "dist/6.x/twgl-full.js",
+  "types": "dist/6.x/twgl-full.d.ts",
+  "module": "dist/6.x/twgl-full.module.js",
   "scripts": {
     "check-ci": "npm run lint && npm run build && npm test",
     "test": "npm run testts && npm run testbrowser",
@@ -38,11 +38,11 @@
   },
   "homepage": "https://github.com/greggman/twgl.js",
   "files": [
-    "dist/5.x/twgl-full.js",
-    "dist/5.x/twgl.js",
-    "dist/5.x/twgl-full.d.ts",
-    "dist/5.x/twgl.d.ts",
-    "dist/5.x/twgl-full.module.js"
+    "dist/6.x/twgl-full.js",
+    "dist/6.x/twgl.js",
+    "dist/6.x/twgl-full.d.ts",
+    "dist/6.x/twgl.d.ts",
+    "dist/6.x/twgl-full.module.js"
   ],
   "devDependencies": {
     "@babel/core": "^7.24.0",

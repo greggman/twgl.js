@@ -1,4 +1,4 @@
-import * as twgl from '../../dist/5.x/twgl-full.module.js';
+import * as twgl from '../../dist/6.x/twgl-full.module.js';
 
 const m4 = twgl.m4;
 const primitives = twgl.primitives;

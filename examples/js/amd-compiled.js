@@ -3,7 +3,7 @@
 /* global require */
 
 require([
-    '../../dist/5.x/twgl-full.min',
+    '../../dist/6.x/twgl-full.min',
     '../../3rdparty/chroma.min',
   ], function(
     twgl,

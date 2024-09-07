@@ -54,7 +54,7 @@
       const lint = query.lint !== 'false';
       const throwOnError = !query.warn;
 
-      const src = query.src ? '../src/twgl-full.js' : '../dist/5.x/twgl-full.module.js';
+      const src = query.src ? '../src/twgl-full.js' : '../dist/6.x/twgl-full.module.js';
 
       try {
         window.twgl = await import(src);

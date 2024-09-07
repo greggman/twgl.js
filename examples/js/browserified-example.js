@@ -10606,7 +10606,7 @@ function createVAOFromBufferInfo(gl, programInfo, bufferInfo) {
 /* global require */
 
 // this would be require('twgl') in a real example
-const twgl = require('../../dist/5.x/twgl-full');  /* eslint-disable-line */
+const twgl = require('../../dist/6.x/twgl-full');  /* eslint-disable-line */
 const chroma = require('../../3rdparty/chroma.min'); /* eslint-disable-line */
 const m4 = twgl.m4;
 const primitives = twgl.primitives;
@@ -10713,4 +10713,4 @@ requestAnimationFrame(render);
 
 
 
-},{"../../3rdparty/chroma.min":1,"../../dist/5.x/twgl-full":2}]},{},[3]);
+},{"../../3rdparty/chroma.min":1,"../../dist/6.x/twgl-full":2}]},{},[3]);

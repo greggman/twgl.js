@@ -1,6 +1,6 @@
 'use strict';
 
-import * as twgl from '../../dist/5.x/twgl-full.module.js';
+import * as twgl from '../../dist/6.x/twgl-full.module.js';
 
 const onePointVS = `
 uniform mat4 u_worldViewProjection;
