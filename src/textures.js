@@ -610,20 +610,41 @@ function setDefaults(newDefaults) {
  */
 
 /**
- * Sets any packing state that will be set based on the options.
+ * Saves the current packing state, sets the packing state as specified
+ * then calls a function, after which the packing state will be restored.
  * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {function():void} [fn] A function to call, after which the packing state will be restored.
  * @private
  */
-function setPackState(gl, options) {
+function scopedSetPackState(gl, options, fn) {
+  let colorspaceConversion;
+  let premultiplyAlpha;
+  let flipY;
+
   if (options.colorspaceConversion !== undefined) {
+    colorspaceConversion = gl.getParameter(UNPACK_COLORSPACE_CONVERSION_WEBGL);
     gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, options.colorspaceConversion);
   }
   if (options.premultiplyAlpha !== undefined) {
+    premultiplyAlpha = gl.getParameter(UNPACK_PREMULTIPLY_ALPHA_WEBGL);
     gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, options.premultiplyAlpha);
   }
   if (options.flipY !== undefined) {
+    flipY = gl.getParameter(UNPACK_FLIP_Y_WEBGL);
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, options.flipY);
+  }
+
+  fn();
+
+  if (colorspaceConversion !== undefined) {
+    gl.pixelStorei(UNPACK_COLORSPACE_CONVERSION_WEBGL, colorspaceConversion);
+  }
+  if (premultiplyAlpha !== undefined) {
+    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultiplyAlpha);
+  }
+  if (flipY !== undefined) {
+    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, flipY);
   }
 }
 
@@ -913,7 +934,6 @@ function setTextureFromElement(gl, tex, element, options) {
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || formatType.type;
-  setPackState(gl, options);
   gl.bindTexture(target, tex);
   if (target === TEXTURE_CUBE_MAP) {
     // guess the parts
@@ -946,15 +966,17 @@ function setTextureFromElement(gl, tex, element, options) {
       ctx.canvas.height = size;
       width = size;
       height = size;
-      getCubeFacesWithNdx(gl, options).forEach(function(f) {
-        const xOffset = slices[f.ndx * 2 + 0] * size;
-        const yOffset = slices[f.ndx * 2 + 1] * size;
-        ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
-        gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
+      scopedSetPackState(gl, options, () => {
+        getCubeFacesWithNdx(gl, options).forEach(function(f) {
+          const xOffset = slices[f.ndx * 2 + 0] * size;
+          const yOffset = slices[f.ndx * 2 + 1] * size;
+          ctx.drawImage(element, xOffset, yOffset, size, size, 0, 0, size, size);
+          gl.texImage2D(f.face, level, internalFormat, format, type, ctx.canvas);
+        });
+        // Free up the canvas memory
+        ctx.canvas.width = 1;
+        ctx.canvas.height = 1;
       });
-      // Free up the canvas memory
-      ctx.canvas.width = 1;
-      ctx.canvas.height = 1;
     } else if (typeof createImageBitmap !== 'undefined') {
       // NOTE: It seems like we should prefer ImageBitmap because unlike canvas it's
       // note lossy? (alpha is not premultiplied? although I'm not sure what
@@ -974,39 +996,44 @@ function setTextureFromElement(gl, tex, element, options) {
           colorSpaceConversion: 'none',
         })
         .then(function(imageBitmap) {
-          setPackState(gl, options);
-          gl.bindTexture(target, tex);
-          gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
-          if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-            setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
-          }
+          scopedSetPackState(gl, options, () => {
+            gl.bindTexture(target, tex);
+            gl.texImage2D(f.face, level, internalFormat, format, type, imageBitmap);
+            if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+              setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
+            }
+          });
         });
       });
     }
   } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
-    const smallest = Math.min(element.width, element.height);
-    const largest = Math.max(element.width, element.height);
-    const depth = largest / smallest;
-    if (depth % 1 !== 0) {
-      throw "can not compute 3D dimensions of element";
-    }
-    const xMult = element.width  === largest ? 1 : 0;
-    const yMult = element.height === largest ? 1 : 0;
-    gl.pixelStorei(UNPACK_ALIGNMENT, 1);
-    gl.pixelStorei(UNPACK_ROW_LENGTH, element.width);
-    gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
-    gl.pixelStorei(UNPACK_SKIP_IMAGES, 0);
-    gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
-    for (let d = 0; d < depth; ++d) {
-      const srcX = d * smallest * xMult;
-      const srcY = d * smallest * yMult;
-      gl.pixelStorei(UNPACK_SKIP_PIXELS, srcX);
-      gl.pixelStorei(UNPACK_SKIP_ROWS, srcY);
-      gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
-    }
-    setSkipStateToDefault(gl);
+    scopedSetPackState(gl, options, () => {
+      const smallest = Math.min(element.width, element.height);
+      const largest = Math.max(element.width, element.height);
+      const depth = largest / smallest;
+      if (depth % 1 !== 0) {
+        throw "can not compute 3D dimensions of element";
+      }
+      const xMult = element.width  === largest ? 1 : 0;
+      const yMult = element.height === largest ? 1 : 0;
+      gl.pixelStorei(UNPACK_ALIGNMENT, 1);
+      gl.pixelStorei(UNPACK_ROW_LENGTH, element.width);
+      gl.pixelStorei(UNPACK_IMAGE_HEIGHT, 0);
+      gl.pixelStorei(UNPACK_SKIP_IMAGES, 0);
+      gl.texImage3D(target, level, internalFormat, smallest, smallest, smallest, 0, format, type, null);
+      for (let d = 0; d < depth; ++d) {
+        const srcX = d * smallest * xMult;
+        const srcY = d * smallest * yMult;
+        gl.pixelStorei(UNPACK_SKIP_PIXELS, srcX);
+        gl.pixelStorei(UNPACK_SKIP_ROWS, srcY);
+        gl.texSubImage3D(target, level, 0, 0, d, smallest, smallest, 1, format, type, element);
+      }
+      setSkipStateToDefault(gl);
+    });
   } else {
-    gl.texImage2D(target, level, internalFormat, format, type, element);
+    scopedSetPackState(gl, options, () => {
+      gl.texImage2D(target, level, internalFormat, format, type, element);
+    });
   }
   if (shouldAutomaticallySetTextureFilteringForSize(options)) {
     setTextureFilteringForSize(gl, tex, options, width, height, internalFormat);
@@ -1310,24 +1337,25 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
         if (img.width !== img.height) {
           errors.push("cubemap face img is not a square: " + img.src);
         } else {
-          setPackState(gl, options);
-          gl.bindTexture(target, tex);
+          scopedSetPackState(gl, options, () => {
+            gl.bindTexture(target, tex);
 
-          // So assuming this is the first image we now have one face that's img sized
-          // and 5 faces that are 1x1 pixel so size the other faces
-          if (numToLoad === 5) {
-            // use the default order
-            getCubeFaceOrder(gl).forEach(function(otherTarget) {
-              // Should we re-use the same face or a color?
-              gl.texImage2D(otherTarget, level, internalFormat, format, type, img);
-            });
-          } else {
-            gl.texImage2D(faceTarget, level, internalFormat, format, type, img);
-          }
+            // So assuming this is the first image we now have one face that's img sized
+            // and 5 faces that are 1x1 pixel so size the other faces
+            if (numToLoad === 5) {
+              // use the default order
+              getCubeFaceOrder(gl).forEach(function(otherTarget) {
+                // Should we re-use the same face or a color?
+                gl.texImage2D(otherTarget, level, internalFormat, format, type, img);
+              });
+            } else {
+              gl.texImage2D(faceTarget, level, internalFormat, format, type, img);
+            }
 
-          if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-            gl.generateMipmap(target);
-          }
+            if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+              gl.generateMipmap(target);
+            }
+          });
         }
       }
 
@@ -1391,43 +1419,44 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
       if (err) {
         errors.push(err);
       } else {
-        setPackState(gl, options);
-        gl.bindTexture(target, tex);
+        scopedSetPackState(gl, options, () => {
+          gl.bindTexture(target, tex);
 
-        if (firstImage) {
-          firstImage = false;
-          width = options.width || img.width;
-          height = options.height || img.height;
-          gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
+          if (firstImage) {
+            firstImage = false;
+            width = options.width || img.width;
+            height = options.height || img.height;
+            gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, null);
 
-          // put it in every slice otherwise some slices will be 0,0,0,0
-          for (let s = 0; s < depth; ++s) {
-            gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
+            // put it in every slice otherwise some slices will be 0,0,0,0
+            for (let s = 0; s < depth; ++s) {
+              gl.texSubImage3D(target, level, 0, 0, s, width, height, 1, format, type, img);
+            }
+          } else {
+            let src = img;
+            let ctx;
+            if (img.width !== width || img.height !== height) {
+              // Size the image to fix
+              ctx = getShared2DContext();
+              src = ctx.canvas;
+              ctx.canvas.width = width;
+              ctx.canvas.height = height;
+              ctx.drawImage(img, 0, 0, width, height);
+            }
+
+            gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
+
+            // free the canvas memory
+            if (ctx && src === ctx.canvas) {
+              ctx.canvas.width = 0;
+              ctx.canvas.height = 0;
+            }
           }
-        } else {
-          let src = img;
-          let ctx;
-          if (img.width !== width || img.height !== height) {
-            // Size the image to fix
-            ctx = getShared2DContext();
-            src = ctx.canvas;
-            ctx.canvas.width = width;
-            ctx.canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
+
+          if (shouldAutomaticallySetTextureFilteringForSize(options)) {
+            gl.generateMipmap(target);
           }
-
-          gl.texSubImage3D(target, level, 0, 0, slice, width, height, 1, format, type, src);
-
-          // free the canvas memory
-          if (ctx && src === ctx.canvas) {
-            ctx.canvas.width = 0;
-            ctx.canvas.height = 0;
-          }
-        }
-
-        if (shouldAutomaticallySetTextureFilteringForSize(options)) {
-          gl.generateMipmap(target);
-        }
+        });
       }
 
       if (numToLoad === 0) {
@@ -1505,21 +1534,22 @@ function setTextureFromArray(gl, tex, src, options) {
   }
   setSkipStateToDefault(gl);
   gl.pixelStorei(UNPACK_ALIGNMENT, options.unpackAlignment || 1);
-  setPackState(gl, options);
-  if (target === TEXTURE_CUBE_MAP) {
-    const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
-    const faceSize = numElements / 6 * elementsPerElement;
+  scopedSetPackState(gl, options, () => {
+    if (target === TEXTURE_CUBE_MAP) {
+      const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
+      const faceSize = numElements / 6 * elementsPerElement;
 
-    getCubeFacesWithNdx(gl, options).forEach(f => {
-      const offset = faceSize * f.ndx;
-      const data = src.subarray(offset, offset + faceSize);
-      gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
-    });
-  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
-    gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
-  } else {
-    gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
-  }
+      getCubeFacesWithNdx(gl, options).forEach(f => {
+        const offset = faceSize * f.ndx;
+        const data = src.subarray(offset, offset + faceSize);
+        gl.texImage2D(f.face, level, internalFormat, width, height, 0, format, type, data);
+      });
+    } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
+      gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
+    } else {
+      gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
+    }
+  });
   return {
     width: width,
     height: height,
@@ -1544,16 +1574,17 @@ function setEmptyTexture(gl, tex, options) {
   const formatType = getFormatAndTypeForInternalFormat(internalFormat);
   const format = options.format || formatType.format;
   const type = options.type || formatType.type;
-  setPackState(gl, options);
-  if (target === TEXTURE_CUBE_MAP) {
-    for (let ii = 0; ii < 6; ++ii) {
-      gl.texImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
+  scopedSetPackState(gl, options, () => {
+    if (target === TEXTURE_CUBE_MAP) {
+      for (let ii = 0; ii < 6; ++ii) {
+        gl.texImage2D(TEXTURE_CUBE_MAP_POSITIVE_X + ii, level, internalFormat, options.width, options.height, 0, format, type, null);
+      }
+    } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
+      gl.texImage3D(target, level, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
+    } else {
+      gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
     }
-  } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
-    gl.texImage3D(target, level, internalFormat, options.width, options.height, options.depth, 0, format, type, null);
-  } else {
-    gl.texImage2D(target, level, internalFormat, options.width, options.height, 0, format, type, null);
-  }
+  });
 }
 
 /**
