@@ -1,5 +1,9 @@
 # Change List
 
+*   6.1.0
+
+    Added `createTextureAsync` and `createTexturesAsync`
+
 *   6.0.0
 
     Internal change. `gl.pixelStorei` state for `UNPACK_COLORSPACE_CONVERSION_WEBGL`
