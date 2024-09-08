@@ -18,9 +18,20 @@ function assertPixelFromTexture(gl, texture, expected) {
   assertEqual(actual, expected);
 }
 
+function createRedGreenURL() {
+  const ctx = document.createElement('canvas').getContext('2d');
+  ctx.canvas.width = 1;
+  ctx.canvas.height = 2;
+  ctx.fillStyle = '#F00';
+  ctx.fillRect(0, 0, 1, 1);
+  ctx.fillStyle = '#0F0';
+  ctx.fillRect(0, 1, 1, 1);
+  return ctx.canvas.toDataURL();
+}
+
 describe('texture tests', () => {
 
-  itWebGL(`test y flips correctly`, () => {
+  itWebGL(`test y flips correctly`, async() => {
     const {gl} = createContext();
     const red = [255, 0, 0, 255];
     const green = [0, 255, 0, 255];
@@ -34,6 +45,12 @@ describe('texture tests', () => {
     assertPixelFromTexture(gl, t1gr, green);
     assertPixelFromTexture(gl, t2rg, red);
     assertPixelFromTexture(gl, t3gr, green);
+
+    // Test that the state is saved when async.
+    const p = twgl.createTextureAsync(gl, createRedGreenURL());
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    const { texture: t4gr } = await p;
+    assertPixelFromTexture(gl, t4gr, green);
 
     assertNoWebGLError(gl);
   });
