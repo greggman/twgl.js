@@ -1,5 +1,6 @@
 /* global mocha */
 
+import './tests/gpu-info.js';
 import './tests/attribute-buffer-tests.js';
 import './tests/framebuffer-tests.js';
 import './tests/helper-tests.js';
