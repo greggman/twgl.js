@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 6.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 6.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4070,6 +4070,7 @@ exports.createSamplers = createSamplers;
 exports.createTexture = createTexture;
 exports.createTextureAsync = createTextureAsync;
 exports.createTextures = createTextures;
+exports.createTexturesAsync = createTexturesAsync;
 exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
 exports.getFormatAndTypeForInternalFormat = getFormatAndTypeForInternalFormat;
 exports.getNumComponentsForFormat = getNumComponentsForFormat;
@@ -6122,6 +6123,31 @@ function createTexture(gl, options, callback) {
   setTextureParameters(gl, tex, options);
   return tex;
 }
+
+/**
+ * Value returned by createTextureAsync
+ *
+ * @typedef {Object} CreateTextureInfo
+ * @param {WebGLTexture} texture the texture.
+ * @param {module:twgl.TextureSrc} source image(s) used to as the src for the texture
+ * @memberOf module:twgl
+ */
+
+/**
+ * Creates a texture based on the options passed in.
+ *
+ * see {@link module:twgl/textures.createTexture}.
+ * The only difference is this function returns a promise
+ * where as the other returns a texture and takes a callback.
+ *
+ * Note: this is here for completeness. It is probably better to use
+ * the non-async version as it returns a usable texture immediately
+ * where as this one you have to wait for it to load.
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+ * @return {Promise<CreateTextureInfo>} The created texture and source.
+ */
 function createTextureAsync(gl, options) {
   return new Promise(function (resolve, reject) {
     createTexture(gl, options, function (err, texture, source) {
@@ -6307,6 +6333,45 @@ function createTextures(gl, textureOptions, callback) {
   // images your code would break.
   callCallbackIfReady();
   return textures;
+}
+
+/**
+ * Value returned by createTextureAsync
+ *
+ * @typedef {Object} CreateTexturesInfo
+ * @param {Object.<string, WebGLTexture>} textures the created textures by name. Same as returned by {@link module:twgl.createTextures}.
+ * @param {Object.<string, module:twgl.TextureSrc>} sources the image(s) used for the texture by name.
+ * @memberOf module:twgl
+ */
+
+/**
+ * Creates textures based on the options passed in.
+ *
+ * see {@link module:twgl/textures.createTextures}.
+ * The only difference is this function returns a promise
+ * where as the other returns a texture and takes a callback.
+ *
+ * Note: this is here for completeness. It is probably better to use
+ * the non-async version as it returns usable textures immediately
+ * where as this one you have to wait for them to load.
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+ * @return {Promise<CreateTexturesInfo>} The created textures and sources.
+ */
+function createTexturesAsync(gl, options) {
+  return new Promise(function (resolve, reject) {
+    createTexture(gl, options, function (err, textures, sources) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({
+          textures: textures,
+          sources: sources
+        });
+      }
+    });
+  });
 }
 
 /***/ }),

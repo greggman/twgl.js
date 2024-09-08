@@ -841,6 +841,24 @@ export type CubemapReadyCallback = (err: any, tex: WebGLTexture, imgs: HTMLImage
  */
 export type ThreeDReadyCallback = (err: any, tex: WebGLTexture, imgs: HTMLImageElement[]) => void;
 /**
+ * Value returned by createTextureAsync
+ *
+ * @typedef {Object} CreateTextureInfo
+ * @param {WebGLTexture} texture the texture.
+ * @param {TextureSrc} source image(s) used to as the src for the texture
+ * @memberOf module:twgl
+ */
+export type CreateTextureInfo = any;
+/**
+ * Value returned by createTextureAsync
+ *
+ * @typedef {Object} CreateTexturesInfo
+ * @param {Object.<string, WebGLTexture>} textures the created textures by name. Same as returned by {@link createTextures}.
+ * @param {Object.<string, TextureSrc>} sources the image(s) used for the texture by name.
+ * @memberOf module:twgl
+ */
+export type CreateTexturesInfo = any;
+/**
  * Check if context is WebGL 2.0
  * @param {WebGLRenderingContext} gl A WebGLRenderingContext
  * @return {bool} true if it's WebGL 2.0
@@ -3029,6 +3047,22 @@ export function setEmptyTexture(gl: WebGLRenderingContext, tex: WebGLTexture, op
  */
 export function createTexture(gl: WebGLRenderingContext, options?: TextureOptions, callback?: TextureReadyCallback): WebGLTexture;
 /**
+ * Creates a texture based on the options passed in.
+ *
+ * see {@link createTexture}.
+ * The only difference is this function returns a promise
+ * where as the other returns a texture and takes a callback.
+ *
+ * Note: this is here for completeness. It is probably better to use
+ * the non-async version as it returns a usable texture immediately
+ * where as this one you have to wait for it to load.
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+ * @return {Promise<CreateTextureInfo>} The created texture and source.
+ */
+export function createTextureAsync(gl: WebGLRenderingContext, options?: TextureOptions): Promise<CreateTextureInfo>;
+/**
  * Resizes a texture based on the options passed in.
  *
  * Note: This is not a generic resize anything function.
@@ -3126,6 +3160,24 @@ export function createTextures(gl: WebGLRenderingContext, options: {
 }, callback?: TexturesReadyCallback): {
     [key: string]: WebGLTexture;
 };
+/**
+ * Creates textures based on the options passed in.
+ *
+ * see {@link createTextures}.
+ * The only difference is this function returns a promise
+ * where as the other returns a texture and takes a callback.
+ *
+ * Note: this is here for completeness. It is probably better to use
+ * the non-async version as it returns usable textures immediately
+ * where as this one you have to wait for them to load.
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string,TextureOptions>} options A object of TextureOptions one per texture.
+ * @return {Promise<CreateTexturesInfo>} The created textures and sources.
+ */
+export function createTexturesAsync(gl: WebGLRenderingContext, options: {
+    [key: string]: TextureOptions;
+}): Promise<CreateTexturesInfo>;
 
 
 /**

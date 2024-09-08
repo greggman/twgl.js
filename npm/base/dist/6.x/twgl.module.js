@@ -1,4 +1,4 @@
-/* @license twgl.js 6.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 6.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -2778,6 +2778,30 @@ function createTexture(gl, options, callback) {
   return tex;
 }
 
+/**
+ * Value returned by createTextureAsync
+ *
+ * @typedef {Object} CreateTextureInfo
+ * @param {WebGLTexture} texture the texture.
+ * @param {module:twgl.TextureSrc} source image(s) used to as the src for the texture
+ * @memberOf module:twgl
+ */
+
+/**
+ * Creates a texture based on the options passed in.
+ *
+ * see {@link module:twgl/textures.createTexture}.
+ * The only difference is this function returns a promise
+ * where as the other returns a texture and takes a callback.
+ *
+ * Note: this is here for completeness. It is probably better to use
+ * the non-async version as it returns a usable texture immediately
+ * where as this one you have to wait for it to load.
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
+ * @return {Promise<CreateTextureInfo>} The created texture and source.
+ */
 function createTextureAsync(gl, options) {
   return new Promise((resolve, reject) => {
     createTexture(gl, options, (err, texture, source) => {
@@ -2966,6 +2990,42 @@ function createTextures(gl, textureOptions, callback) {
   return textures;
 }
 
+/**
+ * Value returned by createTextureAsync
+ *
+ * @typedef {Object} CreateTexturesInfo
+ * @param {Object.<string, WebGLTexture>} textures the created textures by name. Same as returned by {@link module:twgl.createTextures}.
+ * @param {Object.<string, module:twgl.TextureSrc>} sources the image(s) used for the texture by name.
+ * @memberOf module:twgl
+ */
+
+/**
+ * Creates textures based on the options passed in.
+ *
+ * see {@link module:twgl/textures.createTextures}.
+ * The only difference is this function returns a promise
+ * where as the other returns a texture and takes a callback.
+ *
+ * Note: this is here for completeness. It is probably better to use
+ * the non-async version as it returns usable textures immediately
+ * where as this one you have to wait for them to load.
+ *
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {Object.<string,module:twgl.TextureOptions>} options A object of TextureOptions one per texture.
+ * @return {Promise<CreateTexturesInfo>} The created textures and sources.
+ */
+function createTexturesAsync(gl, options) {
+  return new Promise((resolve, reject) => {
+    createTexture(gl, options, (err, textures, sources) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ textures, sources });
+      }
+    });
+  });
+}
+
 var textures = /*#__PURE__*/Object.freeze({
   __proto__: null,
   setTextureDefaults_: setDefaults$1,
@@ -2982,6 +3042,7 @@ var textures = /*#__PURE__*/Object.freeze({
   setTextureParameters: setTextureParameters,
   setDefaultTextureColor: setDefaultTextureColor,
   createTextures: createTextures,
+  createTexturesAsync: createTexturesAsync,
   resizeTexture: resizeTexture,
   canGenerateMipmap: canGenerateMipmap,
   canFilter: canFilter,
@@ -6292,4 +6353,4 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
   return false;
 }
 
-export { addExtensionsToContext, attributes, bindFramebufferInfo, bindTransformFeedbackInfo, bindUniformBlock, canFilter, canGenerateMipmap, createAttribsFromArrays, createAttributeSetters, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, createBuffersFromArrays, createFramebufferInfo, createProgram, createProgramAsync, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoAsync, createProgramInfoFromProgram, createProgramInfos, createProgramInfosAsync, createPrograms, createProgramsAsync, createSampler, createSamplers, createTexture, createTextureAsync, createTextures, createTransformFeedback, createTransformFeedbackInfo, createUniformBlockInfo, createUniformBlockInfoFromProgram, createUniformBlockSpecFromProgram, createUniformSetters, createVAOAndSetAttributes, createVAOFromBufferInfo, createVertexArrayInfo, draw, drawBufferInfo, drawObjectList, framebuffers, getArray as getArray_, getBytesPerElementForInternalFormat, getContext, getFormatAndTypeForInternalFormat, getGLTypeForTypedArray, getGLTypeForTypedArrayType, getNumComponentsForFormat, getNumComponents as getNumComponents_, getTypedArrayTypeForGLType, getWebGLContext, glEnumToString, isArrayBuffer$1 as isArrayBuffer, isWebGL1, isWebGL2, loadTextureFromUrl, programs, resizeCanvasToDisplaySize, resizeFramebufferInfo, resizeTexture, setAttribInfoBufferFromArray, setDefaults$2 as setAttributeDefaults_, setAttributePrefix, setAttributes, setBlockUniforms, setBuffersAndAttributes, setDefaultTextureColor, setDefaults, setEmptyTexture, setSamplerParameters, setDefaults$1 as setTextureDefaults_, setTextureFilteringForSize, setTextureFromArray, setTextureFromElement, setTextureParameters, setUniformBlock, setUniforms, setUniformsAndBindTextures, textures, typedarrays, utils, vertexArrays };
+export { addExtensionsToContext, attributes, bindFramebufferInfo, bindTransformFeedbackInfo, bindUniformBlock, canFilter, canGenerateMipmap, createAttribsFromArrays, createAttributeSetters, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, createBuffersFromArrays, createFramebufferInfo, createProgram, createProgramAsync, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoAsync, createProgramInfoFromProgram, createProgramInfos, createProgramInfosAsync, createPrograms, createProgramsAsync, createSampler, createSamplers, createTexture, createTextureAsync, createTextures, createTexturesAsync, createTransformFeedback, createTransformFeedbackInfo, createUniformBlockInfo, createUniformBlockInfoFromProgram, createUniformBlockSpecFromProgram, createUniformSetters, createVAOAndSetAttributes, createVAOFromBufferInfo, createVertexArrayInfo, draw, drawBufferInfo, drawObjectList, framebuffers, getArray as getArray_, getBytesPerElementForInternalFormat, getContext, getFormatAndTypeForInternalFormat, getGLTypeForTypedArray, getGLTypeForTypedArrayType, getNumComponentsForFormat, getNumComponents as getNumComponents_, getTypedArrayTypeForGLType, getWebGLContext, glEnumToString, isArrayBuffer$1 as isArrayBuffer, isWebGL1, isWebGL2, loadTextureFromUrl, programs, resizeCanvasToDisplaySize, resizeFramebufferInfo, resizeTexture, setAttribInfoBufferFromArray, setDefaults$2 as setAttributeDefaults_, setAttributePrefix, setAttributes, setBlockUniforms, setBuffersAndAttributes, setDefaultTextureColor, setDefaults, setEmptyTexture, setSamplerParameters, setDefaults$1 as setTextureDefaults_, setTextureFilteringForSize, setTextureFromArray, setTextureFromElement, setTextureParameters, setUniformBlock, setUniforms, setUniformsAndBindTextures, textures, typedarrays, utils, vertexArrays };
