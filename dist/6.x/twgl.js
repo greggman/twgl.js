@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 6.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 6.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -4062,13 +4062,13 @@ var createProgramInfosAsync = exports.createProgramInfosAsync = wrapCallbackFnTo
 
 
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 exports.__esModule = true;
 exports.canFilter = canFilter;
 exports.canGenerateMipmap = canGenerateMipmap;
 exports.createSampler = createSampler;
 exports.createSamplers = createSamplers;
 exports.createTexture = createTexture;
+exports.createTextureAsync = createTextureAsync;
 exports.createTextures = createTextures;
 exports.getBytesPerElementForInternalFormat = getBytesPerElementForInternalFormat;
 exports.getFormatAndTypeForInternalFormat = getFormatAndTypeForInternalFormat;
@@ -4088,7 +4088,12 @@ var typedArrays = _interopRequireWildcard(__webpack_require__(/*! ./typedarrays.
 var helper = _interopRequireWildcard(__webpack_require__(/*! ./helper.js */ "./src/helper.js"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
-/*
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); } /*
  * Copyright 2019 Gregg Tavares
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -4109,7 +4114,6 @@ function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; 
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
 /**
  * Low level texture related functions
  *
@@ -5078,8 +5082,8 @@ function setDefaults(newDefaults) {
 /**
  * Saves the current packing state, sets the packing state as specified
  * then calls a function, after which the packing state will be restored.
- * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {function():void} [fn] A function to call, after which the packing state will be restored.
  * @private
  */
@@ -5109,6 +5113,29 @@ function scopedSetPackState(gl, options, fn) {
   if (flipY !== undefined) {
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, flipY);
   }
+}
+
+/**
+ * returns the property if set or the corresponding state if undefined
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} options
+ * @param {string} property the name of the property to copy
+ * @param {number} pname
+ * @return {module:twgl.TextureOptions}
+ */
+function getPackStateOption(gl, options, property, pname) {
+  var v = options[property];
+  return _defineProperty({}, property, v === undefined ? gl.getParameter(pname) : v);
+}
+
+/**
+ * Copy the options object and apply pack state
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} options
+ * @return {module:twgl.TextureOptions}
+ */
+function copyOptionsAndApplyPackState(gl, options) {
+  return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, options), getPackStateOption(gl, options, 'flipY', UNPACK_FLIP_Y_WEBGL)), getPackStateOption(gl, options, 'premultiplyAlpha', UNPACK_PREMULTIPLY_ALPHA_WEBGL)), getPackStateOption(gl, options, 'colorspaceConversion', UNPACK_COLORSPACE_CONVERSION_WEBGL));
 }
 
 /**
@@ -5724,7 +5751,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   options = options || defaults.textureOptions;
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = Object.assign({}, options);
+  options = copyOptionsAndApplyPackState(gl, options);
   var img = loadAndUseImage(options.src, options.crossOrigin, function (err, img) {
     if (err) {
       callback(err, tex, img);
@@ -5764,7 +5791,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = Object.assign({}, options);
+  options = copyOptionsAndApplyPackState(gl, options);
   var numToLoad = 6;
   var errors = [];
   var faces = getCubeFaceOrder(gl, options);
@@ -5842,7 +5869,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = Object.assign({}, options);
+  options = copyOptionsAndApplyPackState(gl, options);
   var numToLoad = urls.length;
   var errors = [];
   var imgs; // eslint-disable-line
@@ -6024,6 +6051,25 @@ function setEmptyTexture(gl, tex, options) {
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
  *
+ * UNPACK_FLIP_Y_WEBGL, UNPACK_PREMULTIPLY_ALPHA_WEBGL, UNPACK_COLORSPACE_CONVERSION_WEBGL
+ * are left as is though you can pass in options for flipY, premultiplyAlpha, and colorspaceConversion
+ * to override them.
+ *
+ * As for the behavior of these settings
+ *
+ * ```js
+ * gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+ * t1 = twgl.createTexture({src: someImage }); // flipped
+ * t2 = twgl.createTexture({src: someImage, flipY: true }); // flipped
+ * t3 = twgl.createTexture({src: someImage, flipY: false }); // not flipped
+ * t4 = twgl.createTexture({src: someImage }); // flipped
+ * ```
+ *
+ * * t1 is flipped because UNPACK_FLIP_Y_WEBGL is true
+ * * t2 is flipped because it was requested
+ * * t3 is not flipped because it was requested
+ * * t4 is flipped because UNPACK_FLIP_Y_WEBGL has been restored to true
+ *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
@@ -6075,6 +6121,20 @@ function createTexture(gl, options, callback) {
   }
   setTextureParameters(gl, tex, options);
   return tex;
+}
+function createTextureAsync(gl, options) {
+  return new Promise(function (resolve, reject) {
+    createTexture(gl, options, function (err, texture, source) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({
+          texture: texture,
+          source: source
+        });
+      }
+    });
+  });
 }
 
 /**

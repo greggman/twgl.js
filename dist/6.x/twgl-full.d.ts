@@ -1569,6 +1569,25 @@ export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
  *
+ * UNPACK_FLIP_Y_WEBGL, UNPACK_PREMULTIPLY_ALPHA_WEBGL, UNPACK_COLORSPACE_CONVERSION_WEBGL
+ * are left as is though you can pass in options for flipY, premultiplyAlpha, and colorspaceConversion
+ * to override them.
+ *
+ * As for the behavior of these settings
+ *
+ * ```js
+ * gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+ * t1 = twgl.createTexture({src: someImage }); // flipped
+ * t2 = twgl.createTexture({src: someImage, flipY: true }); // flipped
+ * t3 = twgl.createTexture({src: someImage, flipY: false }); // not flipped
+ * t4 = twgl.createTexture({src: someImage }); // flipped
+ * ```
+ *
+ * * t1 is flipped because UNPACK_FLIP_Y_WEBGL is true
+ * * t2 is flipped because it was requested
+ * * t3 is not flipped because it was requested
+ * * t4 is flipped because UNPACK_FLIP_Y_WEBGL has been restored to true
+ *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  * @param {TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
@@ -2883,6 +2902,22 @@ export function getNumComponentsForFormat(format: number): number;
  */
 export function setDefaultTextureColor(color: number[]): void;
 /**
+ * returns the property if set or the corresponding state if undefined
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {TextureOptions} options
+ * @param {string} property the name of the property to copy
+ * @param {number} pname
+ * @return {TextureOptions}
+ */
+export function getPackStateOption(gl: WebGLRenderingContext, options: TextureOptions, property: string, pname: number): TextureOptions;
+/**
+ * Copy the options object and apply pack state
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {TextureOptions} options
+ * @return {TextureOptions}
+ */
+export function copyOptionsAndApplyPackState(gl: WebGLRenderingContext, options: TextureOptions): TextureOptions;
+/**
  * Sets the texture parameters of a texture.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {WebGLTexture} tex the WebGLTexture to set parameters for
@@ -2966,6 +3001,25 @@ export function setEmptyTexture(gl: WebGLRenderingContext, tex: WebGLTexture, op
  *
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
+ *
+ * UNPACK_FLIP_Y_WEBGL, UNPACK_PREMULTIPLY_ALPHA_WEBGL, UNPACK_COLORSPACE_CONVERSION_WEBGL
+ * are left as is though you can pass in options for flipY, premultiplyAlpha, and colorspaceConversion
+ * to override them.
+ *
+ * As for the behavior of these settings
+ *
+ * ```js
+ * gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+ * t1 = twgl.createTexture({src: someImage }); // flipped
+ * t2 = twgl.createTexture({src: someImage, flipY: true }); // flipped
+ * t3 = twgl.createTexture({src: someImage, flipY: false }); // not flipped
+ * t4 = twgl.createTexture({src: someImage }); // flipped
+ * ```
+ *
+ * * t1 is flipped because UNPACK_FLIP_Y_WEBGL is true
+ * * t2 is flipped because it was requested
+ * * t3 is not flipped because it was requested
+ * * t4 is flipped because UNPACK_FLIP_Y_WEBGL has been restored to true
  *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {TextureOptions} [options] A TextureOptions object with whatever parameters you want set.

@@ -1,4 +1,4 @@
-/* @license twgl.js 6.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 6.0.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -5596,8 +5596,8 @@ function setDefaults$1(newDefaults) {
 /**
  * Saves the current packing state, sets the packing state as specified
  * then calls a function, after which the packing state will be restored.
- * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} options A TextureOptions object with whatever parameters you want set.
  * @param {function():void} [fn] A function to call, after which the packing state will be restored.
  * @private
  */
@@ -5630,6 +5630,36 @@ function scopedSetPackState(gl, options, fn) {
   if (flipY !== undefined) {
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, flipY);
   }
+}
+
+/**
+ * returns the property if set or the corresponding state if undefined
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} options
+ * @param {string} property the name of the property to copy
+ * @param {number} pname
+ * @return {module:twgl.TextureOptions}
+ */
+function getPackStateOption(gl, options, property, pname) {
+  const v = options[property];
+  return {
+    [property]: v === undefined ? gl.getParameter(pname) : v,
+  };
+}
+
+/**
+ * Copy the options object and apply pack state
+ * @param {WebGLRenderingContext} gl the WebGLRenderingContext
+ * @param {module:twgl.TextureOptions} options
+ * @return {module:twgl.TextureOptions}
+ */
+function copyOptionsAndApplyPackState(gl, options) {
+  return {
+    ...options,
+    ...getPackStateOption(gl, options, 'flipY', UNPACK_FLIP_Y_WEBGL),
+    ...getPackStateOption(gl, options, 'premultiplyAlpha', UNPACK_PREMULTIPLY_ALPHA_WEBGL),
+    ...getPackStateOption(gl, options, 'colorspaceConversion', UNPACK_COLORSPACE_CONVERSION_WEBGL),
+  };
 }
 
 /**
@@ -6266,7 +6296,7 @@ function loadTextureFromUrl(gl, tex, options, callback) {
   options = options || defaults$1.textureOptions;
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = Object.assign({}, options);
+  options = copyOptionsAndApplyPackState(gl, options);
   const img = loadAndUseImage(options.src, options.crossOrigin, function(err, img) {
     if (err) {
       callback(err, tex, img);
@@ -6306,7 +6336,7 @@ function loadCubemapFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = Object.assign({}, options);
+  options = copyOptionsAndApplyPackState(gl, options);
   let numToLoad = 6;
   const errors = [];
   const faces = getCubeFaceOrder(gl, options);
@@ -6387,7 +6417,7 @@ function loadSlicesFromUrls(gl, tex, options, callback) {
   }
   setTextureTo1PixelColor(gl, tex, options);
   // Because it's async we need to copy the options.
-  options = Object.assign({}, options);
+  options = copyOptionsAndApplyPackState(gl, options);
   let numToLoad = urls.length;
   const errors = [];
   let imgs;  // eslint-disable-line
@@ -6577,6 +6607,25 @@ function setEmptyTexture(gl, tex, options) {
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
  *
+ * UNPACK_FLIP_Y_WEBGL, UNPACK_PREMULTIPLY_ALPHA_WEBGL, UNPACK_COLORSPACE_CONVERSION_WEBGL
+ * are left as is though you can pass in options for flipY, premultiplyAlpha, and colorspaceConversion
+ * to override them.
+ *
+ * As for the behavior of these settings
+ *
+ * ```js
+ * gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+ * t1 = twgl.createTexture({src: someImage }); // flipped
+ * t2 = twgl.createTexture({src: someImage, flipY: true }); // flipped
+ * t3 = twgl.createTexture({src: someImage, flipY: false }); // not flipped
+ * t4 = twgl.createTexture({src: someImage }); // flipped
+ * ```
+ *
+ * * t1 is flipped because UNPACK_FLIP_Y_WEBGL is true
+ * * t2 is flipped because it was requested
+ * * t3 is not flipped because it was requested
+ * * t4 is flipped because UNPACK_FLIP_Y_WEBGL has been restored to true
+ *
  * @param {WebGLRenderingContext} gl the WebGLRenderingContext
  * @param {module:twgl.TextureOptions} [options] A TextureOptions object with whatever parameters you want set.
  * @param {module:twgl.TextureReadyCallback} [callback] A callback called when an image has been downloaded and uploaded to the texture.
@@ -6633,6 +6682,18 @@ function createTexture(gl, options, callback) {
   }
   setTextureParameters(gl, tex, options);
   return tex;
+}
+
+function createTextureAsync(gl, options) {
+  return new Promise((resolve, reject) => {
+    createTexture(gl, options, (err, texture, source) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ texture, source });
+      }
+    });
+  });
 }
 
 /**
@@ -6818,6 +6879,7 @@ var textures = /*#__PURE__*/Object.freeze({
   createSamplers: createSamplers,
   setSamplerParameters: setSamplerParameters,
   createTexture: createTexture,
+  createTextureAsync: createTextureAsync,
   setEmptyTexture: setEmptyTexture,
   setTextureFromArray: setTextureFromArray,
   loadTextureFromUrl: loadTextureFromUrl,
@@ -10136,4 +10198,4 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
   return false;
 }
 
-export { addExtensionsToContext, attributes, bindFramebufferInfo, bindTransformFeedbackInfo, bindUniformBlock, canFilter, canGenerateMipmap, createAttribsFromArrays, createAttributeSetters, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, createBuffersFromArrays, createFramebufferInfo, createProgram, createProgramAsync, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoAsync, createProgramInfoFromProgram, createProgramInfos, createProgramInfosAsync, createPrograms, createProgramsAsync, createSampler, createSamplers, createTexture, createTextures, createTransformFeedback, createTransformFeedbackInfo, createUniformBlockInfo, createUniformBlockInfoFromProgram, createUniformBlockSpecFromProgram, createUniformSetters, createVAOAndSetAttributes, createVAOFromBufferInfo, createVertexArrayInfo, draw, drawBufferInfo, drawObjectList, framebuffers, getArray$1 as getArray_, getBytesPerElementForInternalFormat, getContext, getFormatAndTypeForInternalFormat, getGLTypeForTypedArray, getGLTypeForTypedArrayType, getNumComponentsForFormat, getNumComponents$1 as getNumComponents_, getTypedArrayTypeForGLType, getWebGLContext, glEnumToString, isArrayBuffer$1 as isArrayBuffer, isWebGL1, isWebGL2, loadTextureFromUrl, m4, primitives, programs, resizeCanvasToDisplaySize, resizeFramebufferInfo, resizeTexture, setAttribInfoBufferFromArray, setDefaults$2 as setAttributeDefaults_, setAttributePrefix, setAttributes, setBlockUniforms, setBuffersAndAttributes, setDefaultTextureColor, setDefaults, setEmptyTexture, setSamplerParameters, setDefaults$1 as setTextureDefaults_, setTextureFilteringForSize, setTextureFromArray, setTextureFromElement, setTextureParameters, setUniformBlock, setUniforms, setUniformsAndBindTextures, textures, typedarrays, utils, v3, vertexArrays };
+export { addExtensionsToContext, attributes, bindFramebufferInfo, bindTransformFeedbackInfo, bindUniformBlock, canFilter, canGenerateMipmap, createAttribsFromArrays, createAttributeSetters, createBufferFromArray, createBufferFromTypedArray, createBufferInfoFromArrays, createBuffersFromArrays, createFramebufferInfo, createProgram, createProgramAsync, createProgramFromScripts, createProgramFromSources, createProgramInfo, createProgramInfoAsync, createProgramInfoFromProgram, createProgramInfos, createProgramInfosAsync, createPrograms, createProgramsAsync, createSampler, createSamplers, createTexture, createTextureAsync, createTextures, createTransformFeedback, createTransformFeedbackInfo, createUniformBlockInfo, createUniformBlockInfoFromProgram, createUniformBlockSpecFromProgram, createUniformSetters, createVAOAndSetAttributes, createVAOFromBufferInfo, createVertexArrayInfo, draw, drawBufferInfo, drawObjectList, framebuffers, getArray$1 as getArray_, getBytesPerElementForInternalFormat, getContext, getFormatAndTypeForInternalFormat, getGLTypeForTypedArray, getGLTypeForTypedArrayType, getNumComponentsForFormat, getNumComponents$1 as getNumComponents_, getTypedArrayTypeForGLType, getWebGLContext, glEnumToString, isArrayBuffer$1 as isArrayBuffer, isWebGL1, isWebGL2, loadTextureFromUrl, m4, primitives, programs, resizeCanvasToDisplaySize, resizeFramebufferInfo, resizeTexture, setAttribInfoBufferFromArray, setDefaults$2 as setAttributeDefaults_, setAttributePrefix, setAttributes, setBlockUniforms, setBuffersAndAttributes, setDefaultTextureColor, setDefaults, setEmptyTexture, setSamplerParameters, setDefaults$1 as setTextureDefaults_, setTextureFilteringForSize, setTextureFromArray, setTextureFromElement, setTextureParameters, setUniformBlock, setUniforms, setUniformsAndBindTextures, textures, typedarrays, utils, v3, vertexArrays };
