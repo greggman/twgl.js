@@ -47,7 +47,7 @@ describe('texture tests', () => {
     assertPixelFromTexture(gl, t3gr, green);
 
     // Test that the state is saved when async.
-    const p = twgl.createTextureAsync(gl, createRedGreenURL());
+    const p = twgl.createTextureAsync(gl, { src: createRedGreenURL() });
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     const { texture: t4gr } = await p;
     assertPixelFromTexture(gl, t4gr, green);

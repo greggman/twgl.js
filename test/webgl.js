@@ -84,7 +84,9 @@ function makeItWrapperThatChecksContextAndExtensions(contextType) {
     if (skippedMsg) {
       it(`${skippedMsg}: '${msg}' skipped`, () => true);
     } else {
-      it(msg, fn);
+      it(msg, async() => {
+        await fn();
+      });
     }
   };
 }
