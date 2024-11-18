@@ -224,6 +224,7 @@ nav {
   height: 100%;
   padding: 10px;
   border-right: 1px solid #eee;
+  background-color: white;
   /* box-shadow: 0 0 3px rgba(0,0,0,0.1); */
 }
 
@@ -737,6 +738,7 @@ dl.param-type {
 
   nav {
     border-right-color: #666;
+    background-color: #333;
   }
 
   .nav-heading a {
