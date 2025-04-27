@@ -12,6 +12,7 @@ import {
   createContext2,
   checkColor,
   itWebGL,
+  fnWithCallbackToPromise,
 } from '../webgl.js';
 
 class MsgCapturer {
@@ -105,9 +106,9 @@ describe('program tests', () => {
       assertTruthy(msgCapturer.hasMsgs());
     });
 
-    itWebGL('works async with callback', function(done) {
+    itWebGL('works async with callback', async function() {
       const {gl} = createContext();
-      const programInfo = twgl.createProgramInfo(gl, [
+      const programInfo = await fnWithCallbackToPromise(twgl.createProgramInfo)(gl, [
         `void main() {gl_Position = vec4(0); }`,
         `precision mediump float;
          uniform vec4 u_foo;
@@ -122,16 +123,16 @@ describe('program tests', () => {
           assertTruthy(gl.getProgramParameter(programInfo.program, gl.LINK_STATUS));
           gl.useProgram(programInfo.program);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
-          done();
+          assertNoWebGLError(gl);
         },
       });
       assertFalsy(programInfo);
     });
 
-    itWebGL('works async with callback with bad shader', function(done) {
+    itWebGL('works async with callback with bad shader', async function() {
       const {gl} = createContext();
       const msgs = [];
-      const programInfo = twgl.createProgramInfo(gl, [
+      const programInfo = await fnWithCallbackToPromise(twgl.createProgramInfo)(gl, [
         `void main() {gl_Position = vec4(0); }`,
         `precision mediump float;
          uniform vec4 u_foo;
@@ -146,16 +147,15 @@ describe('program tests', () => {
           assertTruthy(err);
           assertFalsy(programInfo);
           assertTruthy(msgs.length > 0);
-          done();
         },
       });
       assertFalsy(programInfo);
     });
 
-    itWebGL('works async with callback missing shader', function(done) {
+    itWebGL('works async with callback missing shader', async function() {
       const {gl} = createContext();
       const msgs = [];
-      const programInfo = twgl.createProgramInfo(gl, [
+      const programInfo = await fnWithCallbackToPromise(twgl.createProgramInfo)(gl, [
         `void main() {gl_Position = vec4(0); }`,
       ], {
         errorCallback(msg) {
@@ -165,7 +165,6 @@ describe('program tests', () => {
           assertTruthy(err);
           assertFalsy(programInfo);
           assertTruthy(msgs.length > 0);
-          done();
         },
       });
       assertFalsy(programInfo);
@@ -364,9 +363,28 @@ describe('program tests', () => {
       assertFalsy(msgCapturer.hasMsgs());
     });
 
-    itWebGL('compiles program async with callback', function(done) {
+    itWebGL('does not delete existing shaders', () => {
       const {gl} = createContext();
-      const program = twgl.createProgram(gl, [
+      const msgCapturer = new MsgCapturer();
+      const vs = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vs, `void main() { gl_Position = vec4(0); }`);
+      gl.compileShader(vs);
+      const fsBad = `precision mediump float; void main() { gl_FragColorS = vec4(0); }`;
+      const programBad = twgl.createProgram(gl, [vs, fsBad], {
+        errorCallback: () => {},
+      });
+      assertFalsy(programBad);
+      const fsGood = `precision mediump float; void main() { gl_FragColor = vec4(0); }`;
+      const programGood = twgl.createProgram(gl, [vs, fsGood], {
+        errorCallback: msgCapturer.cb,
+      });
+      assertTruthy(programGood instanceof WebGLProgram);
+      assertFalsy(msgCapturer.hasMsgs());
+    });
+
+    itWebGL('compiles program async with callback', async function() {
+      const {gl} = createContext();
+      const program = await fnWithCallbackToPromise(twgl.createProgram)(gl, [
         `void main() { gl_Position = vec4(0); }`,
         `precision mediump float; void main() { gl_FragColor = vec4(0); }`,
       ], {
@@ -377,16 +395,15 @@ describe('program tests', () => {
           gl.useProgram(program);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
           assertEqual(gl.getError(), gl.NONE);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback
     });
 
-    itWebGL('compiles program async with callback with error', function(done) {
+    itWebGL('compiles program async with callback with error', async function() {
       const {gl} = createContext();
       const msgs = [];
-      const program = twgl.createProgram(gl, [
+      const program = await fnWithCallbackToPromise(twgl.createProgram)(gl, [
         `void main() { gl_Position = vec4(0); }`,
         `precision mediump float; void main() { gl_Frag Color = vec4(0); }`,
       ], {
@@ -397,7 +414,6 @@ describe('program tests', () => {
           assertTruthy(err);
           assertFalsy(program);
           assertTruthy(msgs.length > 0);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback
@@ -1017,9 +1033,9 @@ describe('program tests', () => {
       assertTruthy(msgCapturer.hasMsgs());
     });
 
-    itWebGL('compiles program async with callback', function(done) {
+    itWebGL('compiles program async with callback', async function() {
       const {gl} = createContext();
-      const program = twgl.createProgramFromScripts(gl, addShaderScripts([
+      const program = await fnWithCallbackToPromise(twgl.createProgramFromScripts)(gl, addShaderScripts([
         `void main() { gl_Position = vec4(0); }`,
         `precision mediump float; void main() { gl_FragColor = vec4(0); }`,
       ]), {
@@ -1030,16 +1046,15 @@ describe('program tests', () => {
           gl.useProgram(program);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
           assertEqual(gl.getError(), gl.NONE);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback
     });
 
-    itWebGL('compiles program async with callback with error', function(done) {
+    itWebGL('compiles program async with callback with error', async function() {
       const {gl} = createContext();
       const msgs = [];
-      const program = twgl.createProgramFromScripts(gl, addShaderScripts([
+      const program = await fnWithCallbackToPromise(twgl.createProgramFromScripts)(gl, addShaderScripts([
         `void main() { gl_Position = vec4(0); }`,
         `precision mediump float; void main() { gl_Frag Color = vec4(0); }`,
       ]), {
@@ -1050,16 +1065,15 @@ describe('program tests', () => {
           assertTruthy(err);
           assertFalsy(program);
           assertTruthy(msgs.length > 0);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback
     });
 
-    itWebGL('compiles program async with callback with bad ids', function(done) {
+    itWebGL('compiles program async with callback with bad ids', async function() {
       const {gl} = createContext();
       const msgs = [];
-      const program = twgl.createProgramFromScripts(gl, addShaderScripts([
+      const program = await fnWithCallbackToPromise(twgl.createProgramFromScripts)(gl, addShaderScripts([
         `idThatDoesNotExist`,
       ]), {
         errorCallback(msg) {
@@ -1069,7 +1083,6 @@ describe('program tests', () => {
           assertTruthy(err);
           assertFalsy(program);
           assertTruthy(msgs.length > 0);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback
@@ -1117,9 +1130,9 @@ describe('program tests', () => {
       assertTruthy(msgCapturer.hasMsgs());
     });
 
-    itWebGL('compiles program async with callback', function(done) {
+    itWebGL('compiles program async with callback', async function() {
       const {gl} = createContext();
-      const program = twgl.createProgramFromSources(gl, [
+      const program = await fnWithCallbackToPromise(twgl.createProgramFromSources)(gl, [
         `void main() { gl_Position = vec4(0); }`,
         `precision mediump float; void main() { gl_FragColor = vec4(0); }`,
       ], {
@@ -1130,16 +1143,15 @@ describe('program tests', () => {
           gl.useProgram(program);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
           assertEqual(gl.getError(), gl.NONE);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback
     });
 
-    itWebGL('compiles program async with callback with error', function(done) {
+    itWebGL('compiles program async with callback with error', async function() {
       const {gl} = createContext();
       const msgs = [];
-      const program = twgl.createProgramFromSources(gl, [
+      const program = await fnWithCallbackToPromise(twgl.createProgramFromSources)(gl, [
         `void main() { gl_Position = vec4(0); }`,
         `precision mediump float; void main() { gl_Frag Color = vec4(0); }`,
       ], {
@@ -1150,7 +1162,6 @@ describe('program tests', () => {
           assertTruthy(err);
           assertFalsy(program);
           assertTruthy(msgs.length > 0);
-          done();
         },
       });
       assertFalsy(program);  // nothing is returned if callback

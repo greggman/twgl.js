@@ -698,7 +698,7 @@ function getShaderTypeFromScriptType(gl, scriptType) {
 function deleteProgramAndShaders(gl, program, notThese) {
   const shaders = gl.getAttachedShaders(program);
   for (const shader of shaders) {
-    if (notThese.has(shader)) {
+    if (!notThese.has(shader)) {
       gl.deleteShader(shader);
     }
   }

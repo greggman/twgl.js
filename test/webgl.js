@@ -10,6 +10,30 @@ export function assertNoWebGLError(gl, msg = '') {
   assertWebGLError(gl, gl.NO_ERROR, msg);
 }
 
+export function fnWithCallbackToPromise(fn) {
+  return async function(...args) {
+    const callbackPromises = args
+      .filter(arg => typeof arg === 'object' && 'callback' in arg)
+      .map(arg => {
+        const callback = arg.callback;
+        const p = Promise.withResolvers();
+        const newCallback = (...args) => {
+          try {
+            callback(...args);
+            p.resolve();
+          } catch (e) {
+            p.reject(e);
+          }
+        };
+        arg.callback = newCallback;
+        return p.promise;
+      });
+    const result = fn(...args);
+    await Promise.all(callbackPromises);
+    return result;
+  };
+}
+
 export function createContext() {
   const gl = document.createElement('canvas').getContext('webgl');
   return { gl };
