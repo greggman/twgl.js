@@ -1,4 +1,4 @@
-/* @license twgl.js 6.1.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 6.1.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -2698,6 +2698,8 @@ function setEmptyTexture(gl, tex, options) {
 /**
  * Creates a texture based on the options passed in.
  *
+ * See {@link module:twgl.TextureOptions}
+ *
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
  *
@@ -3745,7 +3747,7 @@ function getShaderTypeFromScriptType(gl, scriptType) {
 function deleteProgramAndShaders(gl, program, notThese) {
   const shaders = gl.getAttachedShaders(program);
   for (const shader of shaders) {
-    if (notThese.has(shader)) {
+    if (!notThese.has(shader)) {
       gl.deleteShader(shader);
     }
   }
@@ -3774,8 +3776,8 @@ function createProgramNoCheck(gl, shaders, programOptions) {
       shader = gl.createShader(type);
       gl.shaderSource(shader, prepShaderSource(src).shaderSource);
       gl.compileShader(shader);
-      gl.attachShader(program, shader);
     }
+    gl.attachShader(program, shader);
   }
 
   Object.entries(attribLocations).forEach(([attrib, loc]) => gl.bindAttribLocation(program, loc, attrib));

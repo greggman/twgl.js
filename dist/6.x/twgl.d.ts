@@ -1584,6 +1584,8 @@ export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture
 /**
  * Creates a texture based on the options passed in.
  *
+ * See {@link TextureOptions}
+ *
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
  *
@@ -3016,6 +3018,8 @@ export function setTextureFromArray(gl: WebGLRenderingContext, tex: WebGLTexture
 export function setEmptyTexture(gl: WebGLRenderingContext, tex: WebGLTexture, options: TextureOptions): void;
 /**
  * Creates a texture based on the options passed in.
+ *
+ * See {@link TextureOptions}
  *
  * Note: may reset UNPACK_ALIGNMENT, UNPACK_ROW_LENGTH, UNPACK_IMAGE_HEIGHT, UNPACK_SKIP_IMAGES
  * UNPACK_SKIP_PIXELS, and UNPACK_SKIP_ROWS
