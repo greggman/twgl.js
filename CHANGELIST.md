@@ -1,5 +1,9 @@
 # Change List
 
+*   6.1.1
+
+    Fix bug in `createProgram` if you pass it an existing shader
+
 *   6.1.0
 
     Added `createTextureAsync` and `createTexturesAsync`
