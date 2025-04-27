@@ -727,8 +727,8 @@ function createProgramNoCheck(gl, shaders, programOptions) {
       shader = gl.createShader(type);
       gl.shaderSource(shader, prepShaderSource(src).shaderSource);
       gl.compileShader(shader);
-      gl.attachShader(program, shader);
     }
+    gl.attachShader(program, shader);
   }
 
   Object.entries(attribLocations).forEach(([attrib, loc]) => gl.bindAttribLocation(program, loc, attrib));

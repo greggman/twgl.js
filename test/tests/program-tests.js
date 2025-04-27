@@ -348,6 +348,22 @@ describe('program tests', () => {
       assertTruthy(msgCapturer.hasMsgs());
     });
 
+    itWebGL('succeeds with good existing shaders', () => {
+      const {gl} = createContext();
+      const msgCapturer = new MsgCapturer();
+      const vs = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vs, `void main() { gl_Position = vec4(0); }`);
+      gl.compileShader(vs);
+      const fs = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fs, `precision mediump float; void main() { gl_FragColor = vec4(0); }`);
+      gl.compileShader(fs);
+      const program = twgl.createProgram(gl, [vs, fs], {
+        errorCallback: msgCapturer.cb,
+      });
+      assertTruthy(program instanceof WebGLProgram);
+      assertFalsy(msgCapturer.hasMsgs());
+    });
+
     itWebGL('compiles program async with callback', function(done) {
       const {gl} = createContext();
       const program = twgl.createProgram(gl, [
