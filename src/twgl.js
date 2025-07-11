@@ -217,6 +217,7 @@ const supportedExtensions = [
   'WEBGL_color_buffer_float',
   'WEBGL_compressed_texture_atc',
   'WEBGL_compressed_texture_etc1',
+  'WEBGL_compressed_texture_etc',
   'WEBGL_compressed_texture_pvrtc',
   'WEBGL_compressed_texture_s3tc',
   'WEBGL_compressed_texture_s3tc_srgb',
