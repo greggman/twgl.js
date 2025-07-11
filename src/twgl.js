@@ -204,6 +204,8 @@ const supportedExtensions = [
   'EXT_frag_depth',
   'EXT_sRGB',
   'EXT_shader_texture_lod',
+  'EXT_texture_compression_bptc',
+  'EXT_texture_compression_rgtc',
   'EXT_texture_filter_anisotropic',
   'OES_element_index_uint',
   'OES_standard_derivatives',
