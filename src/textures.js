@@ -1714,7 +1714,7 @@ function setTextureFromArray(gl, tex, src, options) {
     } else if (target === TEXTURE_3D || target === TEXTURE_2D_ARRAY) {
       gl.texImage3D(target, level, internalFormat, width, height, depth, 0, format, type, src);
     } else {
-      if( compressed ){
+      if ( compressed ){
         gl.compressedTexImage2D(target, level, internalFormat, width, height, 0, src);
       } else {
         gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, src);
