@@ -95,6 +95,66 @@ describe('texture tests', () => {
     assertNoWebGLError(gl);
   });
 
+  itWebGL2(`test uploads cubemap from array`, async() => {
+    const {gl} = createContext2();
+    setCanvasAndViewportSizeTo1x1(gl);
+
+    const r = [255,   0,   0, 255];
+    const y = [255, 255,   0, 255];
+    const g = [  0, 255,   0, 255];
+    const c = [  0, 255, 255, 255];
+    const b = [  0,   0, 255, 255];
+    const m = [255,   0, 255, 255];
+
+    const cubeMapData = new Uint8Array([
+      r, r, r, r, r, r, r, r, y,
+      y, y, y, y, y, y, y, y, y,
+      g, g, g, g, g, g, g, g, g,
+      c, c, c, c, c, c, c, c, c,
+      b, b, b, b, b, b, b, b, b,
+      m, m, m, m, m, m, m, m, m,
+    ].flat());
+
+    const texture = twgl.createTexture(gl, { target: gl.TEXTURE_CUBE_MAP, src: cubeMapData });
+    assertNoWebGLError(gl);
+
+    const vs = `#version 300 es
+      void main() {
+        gl_Position = vec4(0, 0, 0, 1);
+        gl_PointSize = 1.0;
+      }
+    `;
+
+    const fs = `#version 300 es
+      precision highp float;
+      uniform samplerCube u_texture;
+      uniform vec3 u_dir;
+      out vec4 fragColor;
+      void main() {
+        fragColor = texture(u_texture, u_dir);
+      }
+    `;
+    const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
+    gl.useProgram(prgInfo.program);
+    const tests = [
+      { u_dir: [ 1,  0,  0], expected: r },
+      { u_dir: [-1,  0,  0], expected: y },
+      { u_dir: [ 0,  1,  0], expected: g },
+      { u_dir: [ 0, -1,  0], expected: c },
+      { u_dir: [ 0,  0,  1], expected: b },
+      { u_dir: [ 0,  0, -1], expected: m },
+    ];
+    for (const {u_dir, expected} of tests) {
+      twgl.setUniforms(prgInfo, { u_dir });
+      gl.drawArrays(gl.POINTS, 0, 1);
+      checkColor(gl, expected);
+    }
+
+    assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
+  });
+
   itWebGL2(`test compressed texture format EXT_texture_compression_bptc`, ['EXT_texture_compression_bptc'], async() => {
     const {gl} = createContext2();
     twgl.addExtensionsToContext(gl);
@@ -131,7 +191,6 @@ describe('texture tests', () => {
     const width = 4;
     const height = 4;
 
-    // eslint-disable-next-line no-unused-vars
     const texture = twgl.createTexture(gl, { src: red_4x4, width, height, internalFormat });
     assertNoWebGLError(gl);
 
@@ -141,6 +200,99 @@ describe('texture tests', () => {
     checkColor(gl, red);
 
     assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
+  });
+
+  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc`, ['WEBGL_compressed_texture_s3tc'], async() => {
+    const {gl} = createContext2();
+    twgl.addExtensionsToContext(gl);
+    setCanvasAndViewportSizeTo1x1(gl);
+
+    const red = [255, 0, 0, 255];
+    const internalFormat = gl.COMPRESSED_RGB_S3TC_DXT1_EXT;
+    const red_4x4 = new Uint16Array([
+      0b11111_000000_00000,
+      0b11111_000000_00000,
+      0, 0,
+    ]);
+    const width = 4;
+    const height = 4;
+
+    const texture = twgl.createTexture(gl, { src: red_4x4, width, height, internalFormat });
+    assertNoWebGLError(gl);
+
+    const prg = create1PixelTextureRenderingProgram(gl);
+    gl.useProgram(prg);
+    gl.drawArrays(gl.POINTS, 0, 1);
+    checkColor(gl, red);
+
+    assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
+  });
+
+  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc cubemap`, ['WEBGL_compressed_texture_s3tc'], async() => {
+    const {gl} = createContext2();
+    twgl.addExtensionsToContext(gl);
+    setCanvasAndViewportSizeTo1x1(gl);
+
+    const internalFormat = gl.COMPRESSED_RGB_S3TC_DXT1_EXT;
+    const red565 = 0b11111_000000_00000;
+    const yellow565 = 0b11111_111111_00000;
+    const green565 = 0b0000_111111_00000;
+    const cyan565 = 0b0000_111111_11111;
+    const blue565 = 0b00000_000000_11111;
+    const magenta565 = 0b11111_000000_11111;
+    const cubeMapData = new Uint16Array([
+       ...[red565, red565, 0, 0],
+       ...[yellow565, yellow565, 0, 0],
+       ...[green565, green565, 0, 0],
+       ...[cyan565, cyan565, 0, 0],
+       ...[blue565, blue565, 0, 0],
+       ...[magenta565, magenta565, 0, 0],
+    ]);
+    const width = 4;
+    const height = 4;
+
+    const texture = twgl.createTexture(gl, { target: gl.TEXTURE_CUBE_MAP, src: cubeMapData, width, height, internalFormat });
+    assertNoWebGLError(gl);
+
+    const vs = `#version 300 es
+      void main() {
+        gl_Position = vec4(0, 0, 0, 1);
+        gl_PointSize = 1.0;
+      }
+    `;
+
+    const fs = `#version 300 es
+      precision highp float;
+      uniform samplerCube u_texture;
+      uniform vec3 u_dir;
+      out vec4 fragColor;
+      void main() {
+        fragColor = texture(u_texture, u_dir);
+      }
+    `;
+    const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
+    gl.useProgram(prgInfo.program);
+    const tests = [
+      { u_dir: [ 1,  0,  0], expected: [255,   0,   0, 255] },
+      { u_dir: [-1,  0,  0], expected: [255, 255,   0, 255] },
+      { u_dir: [ 0,  1,  0], expected: [  0, 255,   0, 255] },
+      { u_dir: [ 0, -1,  0], expected: [  0, 255, 255, 255] },
+      { u_dir: [ 0,  0,  1], expected: [  0,   0, 255, 255] },
+      { u_dir: [ 0,  0, -1], expected: [255,   0, 255, 255] },
+    ];
+    for (const {u_dir, expected} of tests) {
+      twgl.setUniforms(prgInfo, { u_dir });
+      gl.drawArrays(gl.POINTS, 0, 1);
+      checkColor(gl, expected);
+    }
+
+    assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
   });
 
 });
