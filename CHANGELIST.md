@@ -1,5 +1,9 @@
 # Change List
 
+*   6.2.0
+
+    Support compressed textures
+
 *   6.1.1
 
     Fix bug in `createProgram` if you pass it an existing shader
