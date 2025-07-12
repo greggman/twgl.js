@@ -11,7 +11,8 @@ import {
   createContext2,
   itWebGL,
   itWebGL2,
-  checkColor
+  checkColor,
+  setCanvasAndViewportSizeTo1x1
 } from '../webgl.js';
 
 function assertPixelFromTexture(gl, texture, expected) {
@@ -30,6 +31,25 @@ function createRedGreenURL() {
   ctx.fillStyle = '#0F0';
   ctx.fillRect(0, 1, 1, 1);
   return ctx.canvas.toDataURL();
+}
+
+function create1PixelTextureRenderingProgram(gl) {
+  const vs = `#version 300 es
+    void main() {
+      gl_Position = vec4(0, 0, 0, 1);
+      gl_PointSize = 1.0;
+    }
+  `;
+
+  const fs = `#version 300 es
+    precision highp float;
+    uniform sampler2D u_texture;
+    out vec4 fragColor;
+    void main() {
+      fragColor = texture(u_texture, vec2(0.5));
+    }
+ `;
+  return twgl.createProgram(gl, [vs, fs]);
 }
 
 describe('texture tests', () => {
@@ -75,60 +95,49 @@ describe('texture tests', () => {
     assertNoWebGLError(gl);
   });
 
-  itWebGL2(`test compressed texture format`, async() => {
+  itWebGL2(`test compressed texture format EXT_texture_compression_bptc`, ['EXT_texture_compression_bptc'], async() => {
     const {gl} = createContext2();
-    const vs = `#version 300 es
-                in vec2 position;
-                in vec2 texcoord;
-                out vec2 v_texcoord;
-                void main() {
-                gl_Position = vec4(position, 0, 1);
-                v_texcoord = texcoord;
-                }`;
-
-    const fs = `#version 300 es
-                  precision mediump float;
-                  in vec2 v_texcoord;
-                  uniform sampler2D u_texture;
-                  out vec4 fragColor;
-                  void main() {
-                      fragColor = texture(u_texture, v_texcoord);
-                  }
-              `;
-    const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
-
-    const arrays = {
-        position: [1, 1, 0.0, 1, -1, 0.0, -1, -1, 0.0, -1, 1, 0.0],
-        texcoord: [1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0],
-        indices: [0, 1, 3, 1, 2, 3],
-    };
-
-    const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
     twgl.addExtensionsToContext(gl);
+    setCanvasAndViewportSizeTo1x1(gl);
+
     const green = [2, 255, 2, 255];
-    // KTX2:BASIS_FORMAT.cTFBC7
+    const internalFormat = gl.COMPRESSED_RGBA_BPTC_UNORM;
     const green_4x4 = new Uint8Array([32, 128, 193, 255, 15, 24, 252, 255, 175, 170, 170, 170, 0, 0, 0, 0]);
     const width = 4;
     const height = 4;
-    let internalFormat = 0x8E8C; //COMPRESSED_RGBA_BPTC_UNORM
-    gl.canvas.width = width;
-    gl.canvas.height = height;
-    let texture = twgl.createTexture(gl, { src: green_4x4, width, height, internalFormat, compressed: true });
-    gl.useProgram(programInfo.program);
-    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-    twgl.setUniforms(programInfo, { u_texture: texture });
-    twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES);
+
+    // eslint-disable-next-line no-unused-vars
+    const texture = twgl.createTexture(gl, { src: green_4x4, width, height, internalFormat });
+    assertNoWebGLError(gl);
+
+    const prg = create1PixelTextureRenderingProgram(gl);
+    gl.useProgram(prg);
+    gl.drawArrays(gl.POINTS, 0, 1);
     checkColor(gl, green);
+  });
+
+  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc`, ['WEBGL_compressed_texture_s3tc'], async() => {
+    const {gl} = createContext2();
+    twgl.addExtensionsToContext(gl);
+    setCanvasAndViewportSizeTo1x1(gl);
 
     const red = [255, 0, 0, 255];
-    // DDS:COMPRESSED_RGB_S3TC_DXT1_EXT
-    const red_4x4 = new Uint8Array([0, 248, 0, 248, 0, 0, 0, 0, 0, 248, 0, 248, 0, 0, 0, 0, 0, 248, 0, 248, 0, 0, 0, 0]);
-    internalFormat = 0x83F0; //COMPRESSED_RGB_S3TC_DXT1_EXT
-    texture = twgl.createTexture(gl, { src: red_4x4, width, height, internalFormat, compressed: true, level:3 });
-    gl.useProgram(programInfo.program);
-    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-    twgl.setUniforms(programInfo, { u_texture: texture });
-    twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES);
+    const internalFormat = gl.COMPRESSED_RGB_S3TC_DXT1_EXT;
+    const red_4x4 = new Uint16Array([
+      0b11111_000000_00000,
+      0b11111_000000_00000,
+      0, 0,
+    ]);
+    const width = 4;
+    const height = 4;
+
+    // eslint-disable-next-line no-unused-vars
+    const texture = twgl.createTexture(gl, { src: red_4x4, width, height, internalFormat });
+    assertNoWebGLError(gl);
+
+    const prg = create1PixelTextureRenderingProgram(gl);
+    gl.useProgram(prg);
+    gl.drawArrays(gl.POINTS, 0, 1);
     checkColor(gl, red);
 
     assertNoWebGLError(gl);

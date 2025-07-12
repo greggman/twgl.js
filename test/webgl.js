@@ -34,6 +34,12 @@ export function fnWithCallbackToPromise(fn) {
   };
 }
 
+export function setCanvasAndViewportSizeTo1x1(gl) {
+  gl.canvas.width = 1;
+  gl.canvas.height = 1;
+  gl.viewport(0, 0, 1, 1);
+}
+
 export function createContext() {
   const gl = document.createElement('canvas').getContext('webgl');
   return { gl };

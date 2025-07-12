@@ -11,7 +11,7 @@ module.exports = {
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2020,
+    "ecmaVersion": 2023,
   },
   "plugins": [
     "eslint-plugin-html",
