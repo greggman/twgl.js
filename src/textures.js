@@ -307,12 +307,21 @@ const formatInfo = {};
 }
 
 /**
+ * @typedef {Object} BlockInfo
+ * @property {number} bytes number of bytes in the block
+ * @property {number} width width of the block
+ * @property {number} height height of the block
+ * @private
+ */
+
+/**
  * @typedef {Object} TextureFormatDetails
  * @property {number} textureFormat format to pass texImage2D and similar functions.
  * @property {boolean} colorRenderable true if you can render to this format of texture.
  * @property {boolean} textureFilterable true if you can filter the texture, false if you can ony use `NEAREST`.
  * @property {number[]} type Array of possible types you can pass to texImage2D and similar function
- * @property {Object.<number,number>} bytesPerElementMap A map of types to bytes per element
+ * @property {Object.<number,number>} [bytesPerElementMap] A map of types to bytes per element
+ * @property {BlockInfo} [block] block size, only for compressed textures
  * @private
  */
 
@@ -386,86 +395,6 @@ function getTextureInternalFormatInfo(internalFormat) {
     t[DEPTH24_STENCIL8]   = { textureFormat: DEPTH_STENCIL,   colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [UNSIGNED_INT_24_8], };
     t[DEPTH32F_STENCIL8]  = { textureFormat: DEPTH_STENCIL,   colorRenderable: true,  textureFilterable: false, bytesPerElement: [4],        type: [FLOAT_32_UNSIGNED_INT_24_8_REV], };
 
-    const getCompressedTextureFormats = () => {
-      const t = {};
-
-      // compressed texture formats
-      // s3tc:https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_s3tc.txt
-      t[COMPRESSED_RGB_S3TC_DXT1_EXT]  = { textureFormat: COMPRESSED_RGB_S3TC_DXT1_EXT,  colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_S3TC_DXT1_EXT] = { textureFormat: COMPRESSED_RGBA_S3TC_DXT1_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_S3TC_DXT3_EXT] = { textureFormat: COMPRESSED_RGBA_S3TC_DXT3_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_S3TC_DXT5_EXT] = { textureFormat: COMPRESSED_RGBA_S3TC_DXT5_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_s3tc_srgb.txt
-      t[COMPRESSED_SRGB_S3TC_DXT1_EXT]       = { textureFormat: COMPRESSED_SRGB_S3TC_DXT1_EXT,       colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT] = { textureFormat: COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT] = { textureFormat: COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT] = { textureFormat: COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [8], type: [UNSIGNED_BYTE], };
-      // https://registry.khronos.org/OpenGL/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt
-      t[COMPRESSED_RGB_ETC1_WEBGL]                 = { textureFormat: COMPRESSED_RGB_ETC1_WEBGL,                colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_R11_EAC]                        = { textureFormat: COMPRESSED_R11_EAC,                       colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SIGNED_R11_EAC]                 = { textureFormat: COMPRESSED_SIGNED_R11_EAC,                colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [BYTE], };
-      t[COMPRESSED_RG11_EAC]                       = { textureFormat: COMPRESSED_RG11_EAC,                      colorRenderable: true, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SIGNED_RG11_EAC]                = { textureFormat: COMPRESSED_SIGNED_RG11_EAC,               colorRenderable: true, textureFilterable: false, bytesPerElement: [16], type: [SHORT], };
-      t[COMPRESSED_RGB8_ETC2]                      = { textureFormat: COMPRESSED_RGB8_ETC2,                     colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ETC2]                     = { textureFormat: COMPRESSED_SRGB8_ETC2,                    colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2]  = { textureFormat: COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2, colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2] = { textureFormat: COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2, colorRenderable: true, textureFilterable: false, bytesPerElement: [8],  type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA8_ETC2_EAC]                 = { textureFormat: COMPRESSED_RGBA8_ETC2_EAC,                colorRenderable: true, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ETC2_EAC]          = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ETC2_EAC,         colorRenderable: true, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      // https://registry.khronos.org/OpenGL/extensions/IMG/IMG_texture_compression_pvrtc.txt
-      t[COMPRESSED_RGB_PVRTC_4BPPV1_IMG]  = { textureFormat: COMPRESSED_RGB_PVRTC_4BPPV1_IMG,  colorRenderable: false, textureFilterable: false, bytesPerElement: [4], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGB_PVRTC_2BPPV1_IMG]  = { textureFormat: COMPRESSED_RGB_PVRTC_2BPPV1_IMG,  colorRenderable: false, textureFilterable: false, bytesPerElement: [2], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_PVRTC_4BPPV1_IMG] = { textureFormat: COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, colorRenderable: false, textureFilterable: false, bytesPerElement: [4], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_PVRTC_2BPPV1_IMG] = { textureFormat: COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, colorRenderable: false, textureFilterable: false, bytesPerElement: [2], type: [UNSIGNED_BYTE], };
-      // https://registry.khronos.org/OpenGL/extensions/KHR/KHR_texture_compression_astc_hdr.txt
-      t[COMPRESSED_RGBA_ASTC_4x4_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_4x4_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_5x4_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_5x4_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_5x5_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_5x5_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_6x5_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_6x5_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_6x6_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_6x6_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_8x5_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_8x5_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_8x6_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_8x6_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_8x8_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_8x8_KHR,           colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_10x5_KHR]          = { textureFormat: COMPRESSED_RGBA_ASTC_10x5_KHR,          colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_10x6_KHR]          = { textureFormat: COMPRESSED_RGBA_ASTC_10x6_KHR,          colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_10x8_KHR]          = { textureFormat: COMPRESSED_RGBA_ASTC_10x8_KHR,          colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_10x10_KHR]         = { textureFormat: COMPRESSED_RGBA_ASTC_10x10_KHR,         colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_12x10_KHR]         = { textureFormat: COMPRESSED_RGBA_ASTC_12x10_KHR,         colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGBA_ASTC_12x12_KHR]         = { textureFormat: COMPRESSED_RGBA_ASTC_12x12_KHR,         colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR]  = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR,  colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR]  = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR,  colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR]  = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR,  colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR] = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR, colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR] = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR, colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR] = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR, colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_bptc.txt
-      t[COMPRESSED_RGBA_BPTC_UNORM_EXT]         = { textureFormat: COMPRESSED_RGBA_BPTC_UNORM_EXT,         colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT]   = { textureFormat: COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT,   colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT]   = { textureFormat: COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT,   colorRenderable: false, textureFilterable: false, bytesPerElement: [4],  type: [FLOAT], };
-      t[COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT] = { textureFormat: COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [4],  type: [FLOAT], };
-      // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_rgtc.txt
-      t[COMPRESSED_RED_RGTC1_EXT]              = { textureFormat: COMPRESSED_RED_RGTC1_EXT,              colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SIGNED_RED_RGTC1_EXT]       = { textureFormat: COMPRESSED_SIGNED_RED_RGTC1_EXT,       colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_RED_GREEN_RGTC2_EXT]        = { textureFormat: COMPRESSED_RED_GREEN_RGTC2_EXT,        colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-      t[COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT] = { textureFormat: COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT, colorRenderable: false, textureFilterable: false, bytesPerElement: [16], type: [UNSIGNED_BYTE], };
-
-      for (const value of Object.values(t)) {
-        value.compressed = true;
-      }
-
-      return t;
-    };
-
-    Object.assign(t, getCompressedTextureFormats());
-
     Object.keys(t).forEach(function(internalFormat) {
       const info = t[internalFormat];
       info.bytesPerElementMap = {};
@@ -474,6 +403,78 @@ function getTextureInternalFormatInfo(internalFormat) {
         info.bytesPerElementMap[type] = bytesPerElement;
       });
     });
+
+    const block8_4_4 = { bytes:  8, width: 4, height: 4 };
+    const block16_4_4 = { bytes: 16, width: 4, height: 4 };
+
+    // compressed texture formats
+    // s3tc:https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_s3tc.txt
+    t[COMPRESSED_RGB_S3TC_DXT1_EXT]  = { textureFormat: COMPRESSED_RGB_S3TC_DXT1_EXT,  colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_RGBA_S3TC_DXT1_EXT] = { textureFormat: COMPRESSED_RGBA_S3TC_DXT1_EXT, colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_RGBA_S3TC_DXT3_EXT] = { textureFormat: COMPRESSED_RGBA_S3TC_DXT3_EXT, colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_RGBA_S3TC_DXT5_EXT] = { textureFormat: COMPRESSED_RGBA_S3TC_DXT5_EXT, colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_s3tc_srgb.txt
+    t[COMPRESSED_SRGB_S3TC_DXT1_EXT]       = { textureFormat: COMPRESSED_SRGB_S3TC_DXT1_EXT,       colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT] = { textureFormat: COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT, colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT] = { textureFormat: COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT, colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT] = { textureFormat: COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT, colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    // https://registry.khronos.org/OpenGL/extensions/OES/OES_compressed_ETC1_RGB8_texture.txt
+    t[COMPRESSED_RGB_ETC1_WEBGL]                 = { textureFormat: COMPRESSED_RGB_ETC1_WEBGL,                 colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_R11_EAC]                        = { textureFormat: COMPRESSED_R11_EAC,                        colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SIGNED_R11_EAC]                 = { textureFormat: COMPRESSED_SIGNED_R11_EAC,                 colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_RG11_EAC]                       = { textureFormat: COMPRESSED_RG11_EAC,                       colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_SIGNED_RG11_EAC]                = { textureFormat: COMPRESSED_SIGNED_RG11_EAC,                colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_RGB8_ETC2]                      = { textureFormat: COMPRESSED_RGB8_ETC2,                      colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SRGB8_ETC2]                     = { textureFormat: COMPRESSED_SRGB8_ETC2,                     colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2]  = { textureFormat: COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2,  colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2] = { textureFormat: COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2, colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_RGBA8_ETC2_EAC]                 = { textureFormat: COMPRESSED_RGBA8_ETC2_EAC,                 colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_SRGB8_ALPHA8_ETC2_EAC]          = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ETC2_EAC,          colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    // https://registry.khronos.org/OpenGL/extensions/IMG/IMG_texture_compression_pvrtc.txt
+    t[COMPRESSED_RGB_PVRTC_4BPPV1_IMG]  = { textureFormat: COMPRESSED_RGB_PVRTC_4BPPV1_IMG,  colorRenderable: false, textureFilterable: true, block: { bytes: 32, width:  8, height:  8, } };
+    t[COMPRESSED_RGB_PVRTC_2BPPV1_IMG]  = { textureFormat: COMPRESSED_RGB_PVRTC_2BPPV1_IMG,  colorRenderable: false, textureFilterable: true, block: { bytes: 32, width: 16, height:  8, } };
+    t[COMPRESSED_RGBA_PVRTC_4BPPV1_IMG] = { textureFormat: COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, colorRenderable: false, textureFilterable: true, block: { bytes: 32, width:  8, height:  8, } };
+    t[COMPRESSED_RGBA_PVRTC_2BPPV1_IMG] = { textureFormat: COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, colorRenderable: false, textureFilterable: true, block: { bytes: 32, width: 16, height:  8, } };
+    // https://registry.khronos.org/OpenGL/extensions/KHR/KHR_texture_compression_astc_hdr.txt
+    t[COMPRESSED_RGBA_ASTC_4x4_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_4x4_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  4, height:  4, } };
+    t[COMPRESSED_RGBA_ASTC_5x4_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_5x4_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  5, height:  4, } };
+    t[COMPRESSED_RGBA_ASTC_5x5_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_5x5_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  5, height:  5, } };
+    t[COMPRESSED_RGBA_ASTC_6x5_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_6x5_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  6, height:  5, } };
+    t[COMPRESSED_RGBA_ASTC_6x6_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_6x6_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  6, height:  6, } };
+    t[COMPRESSED_RGBA_ASTC_8x5_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_8x5_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  8, height:  5, } };
+    t[COMPRESSED_RGBA_ASTC_8x6_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_8x6_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  8, height:  6, } };
+    t[COMPRESSED_RGBA_ASTC_8x8_KHR]           = { textureFormat: COMPRESSED_RGBA_ASTC_8x8_KHR,           colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  8, height:  8, } };
+    t[COMPRESSED_RGBA_ASTC_10x5_KHR]          = { textureFormat: COMPRESSED_RGBA_ASTC_10x5_KHR,          colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height:  5, } };
+    t[COMPRESSED_RGBA_ASTC_10x6_KHR]          = { textureFormat: COMPRESSED_RGBA_ASTC_10x6_KHR,          colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height:  6, } };
+    t[COMPRESSED_RGBA_ASTC_10x8_KHR]          = { textureFormat: COMPRESSED_RGBA_ASTC_10x8_KHR,          colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height:  8, } };
+    t[COMPRESSED_RGBA_ASTC_10x10_KHR]         = { textureFormat: COMPRESSED_RGBA_ASTC_10x10_KHR,         colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height: 10, } };
+    t[COMPRESSED_RGBA_ASTC_12x10_KHR]         = { textureFormat: COMPRESSED_RGBA_ASTC_12x10_KHR,         colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 12, height: 10, } };
+    t[COMPRESSED_RGBA_ASTC_12x12_KHR]         = { textureFormat: COMPRESSED_RGBA_ASTC_12x12_KHR,         colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 12, height: 12, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  4, height:  4, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  5, height:  4, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  5, height:  5, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  6, height:  5, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  6, height:  6, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  8, height:  5, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  8, height:  6, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR]   = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR,   colorRenderable: false, textureFilterable: true, block: { bytes: 16, width:  8, height:  8, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR]  = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR,  colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height:  5, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR]  = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR,  colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height:  6, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR]  = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR,  colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height:  8, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR] = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR, colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 10, height: 10, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR] = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR, colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 12, height: 10, } };
+    t[COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR] = { textureFormat: COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR, colorRenderable: false, textureFilterable: true, block: { bytes: 16, width: 12, height: 12, } };
+    // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_bptc.txt
+    t[COMPRESSED_RGBA_BPTC_UNORM_EXT]         = { textureFormat: COMPRESSED_RGBA_BPTC_UNORM_EXT,         colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT]   = { textureFormat: COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT,   colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT]   = { textureFormat: COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT,   colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    t[COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT] = { textureFormat: COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT, colorRenderable: false, textureFilterable: true, block: block16_4_4 };
+    // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_compression_rgtc.txt
+    t[COMPRESSED_RED_RGTC1_EXT]              = { textureFormat: COMPRESSED_RED_RGTC1_EXT,              colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SIGNED_RED_RGTC1_EXT]       = { textureFormat: COMPRESSED_SIGNED_RED_RGTC1_EXT,       colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_RED_GREEN_RGTC2_EXT]        = { textureFormat: COMPRESSED_RED_GREEN_RGTC2_EXT,        colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+    t[COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT] = { textureFormat: COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT, colorRenderable: false, textureFilterable: true, block: block8_4_4 };
+
     s_textureInternalFormatInfo = t;
   }
   return s_textureInternalFormatInfo[internalFormat];
@@ -522,20 +523,21 @@ function getFormatAndTypeForInternalFormat(internalFormat) {
   }
   return {
     format: info.textureFormat,
-    type: info.type[0],
+    type: info.type?.[0] ?? UNSIGNED_BYTE,
   };
 }
 
 /**
  * @param {number} internalFormat The internal format
  * @returns if the internalFormat is a compressed format
+ * @private
  */
 function isCompressedInternalFormat(internalFormat) {
   const info = getTextureInternalFormatInfo(internalFormat);
   if (!info) {
     throw "unknown internal format";
   }
-  return !!info.compressed;
+  return !!info.block;
 }
 
 /**
@@ -1686,16 +1688,14 @@ function setTextureFromArray(gl, tex, src, options) {
     src = new Uint8Array(src.buffer);
   }
 
-  const { bytesPerElement, numElements, width, height, depth } = getTextureDataInfo(target, src, options, internalFormat, format, type);
+  const { width, height, depth } = getTextureSize(target, src, options, internalFormat, format, type);
   const compressed = isCompressedInternalFormat(internalFormat);
 
   setSkipStateToDefault(gl);
   gl.pixelStorei(UNPACK_ALIGNMENT, options.unpackAlignment || 1);
   scopedSetPackState(gl, options, () => {
     if (target === TEXTURE_CUBE_MAP) {
-      const elementsPerElement = bytesPerElement / src.BYTES_PER_ELEMENT;
-      const faceSize = numElements / 6 * elementsPerElement;
-
+      const faceSize = src.length / 6;
       getCubeFacesWithNdx(gl, options).forEach(f => {
         const offset = faceSize * f.ndx;
         const data = src.subarray(offset, offset + faceSize);
@@ -1723,12 +1723,10 @@ function setTextureFromArray(gl, tex, src, options) {
   };
 }
 
-function getTextureDataInfo(target, src, options, internalFormat, format, type) {
+function getTextureSize(target, src, options, internalFormat, format, type) {
   let width = options.width;
   let height = options.height;
   let depth = options.depth;
-  let bytesPerElement = 0;
-  let numElements = 0;
 
   const compressed = isCompressedInternalFormat(internalFormat);
 
@@ -1737,8 +1735,8 @@ function getTextureDataInfo(target, src, options, internalFormat, format, type) 
       throw "compressed texture needs to set width and height!";
     }
   } else {
-    bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
-    numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
+    const bytesPerElement = getBytesPerElementForInternalFormat(internalFormat, type);
+    const numElements = src.byteLength / bytesPerElement;  // TODO: check UNPACK_ALIGNMENT?
     if (numElements % 1) {
       throw "length wrong size for format: " + utils.glEnumToString(gl, format);
     }
@@ -1776,8 +1774,6 @@ function getTextureDataInfo(target, src, options, internalFormat, format, type) 
   }
 
   return {
-    bytesPerElement,
-    numElements,
     width,
     height,
     depth,
