@@ -52,6 +52,32 @@ function create1PixelTextureRenderingProgram(gl) {
   return twgl.createProgram(gl, [vs, fs]);
 }
 
+function create1PixelLodSelectingRenderingProgram(gl) {
+  const vs = `#version 300 es
+    void main() {
+      gl_Position = vec4(0, 0, 0, 1);
+      gl_PointSize = 1.0;
+    }
+  `;
+
+  const fs = `#version 300 es
+    precision highp float;
+    uniform sampler2D u_texture;
+    uniform float u_lod;
+    out vec4 fragColor;
+    void main() {
+      fragColor = textureLod(u_texture, vec2(0.5), u_lod);
+    }
+  `;
+  const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
+  return (gl, lod) => {
+    gl.useProgram(prgInfo.program);
+    twgl.setUniforms(prgInfo, { u_lod: lod });
+    gl.drawArrays(gl.POINTS, 0, 1);
+    return prgInfo;
+  };
+}
+
 describe('texture tests', () => {
 
   itWebGL(`test y flips correctly`, async() => {
@@ -95,60 +121,44 @@ describe('texture tests', () => {
     assertNoWebGLError(gl);
   });
 
-  itWebGL2(`test uploads cubemap from array`, async() => {
+  itWebGL2('test uploads multiple mip levels', () => {
     const {gl} = createContext2();
     setCanvasAndViewportSizeTo1x1(gl);
 
     const r = [255,   0,   0, 255];
     const y = [255, 255,   0, 255];
     const g = [  0, 255,   0, 255];
-    const c = [  0, 255, 255, 255];
     const b = [  0,   0, 255, 255];
-    const m = [255,   0, 255, 255];
 
-    const cubeMapData = new Uint8Array([
-      r, r, r, r, r, r, r, r, y,
-      y, y, y, y, y, y, y, y, y,
-      g, g, g, g, g, g, g, g, g,
-      c, c, c, c, c, c, c, c, c,
-      b, b, b, b, b, b, b, b, b,
-      m, m, m, m, m, m, m, m, m,
+    const data = new Uint8Array([
+      y, y, y, y, y, y, y, y, y, y,
+      y, y, y, y, y, y, y, y, y, y,
+      y, y, y, y, y, y, y, y, y, y,
+      y, y, y, y, y, y, y, y, y, y,
+      y, y, y, y, y, y, y, y, y, y,
+      y, y, y, y, y, y, y, y, y, y,
+      y, y, y, y, y, y, y, y, y, y,
+      r, r, r, r, r,
+      r, r, r, r, r,
+      r, r, r, r, r,
+      g, g,
+      b,
     ].flat());
 
-    const texture = twgl.createTexture(gl, { target: gl.TEXTURE_CUBE_MAP, src: cubeMapData });
+    const texture = twgl.createTexture(gl, { width: 10, height: 7, src: data });
     assertNoWebGLError(gl);
 
-    const vs = `#version 300 es
-      void main() {
-        gl_Position = vec4(0, 0, 0, 1);
-        gl_PointSize = 1.0;
-      }
-    `;
-
-    const fs = `#version 300 es
-      precision highp float;
-      uniform samplerCube u_texture;
-      uniform vec3 u_dir;
-      out vec4 fragColor;
-      void main() {
-        fragColor = texture(u_texture, u_dir);
-      }
-    `;
-    const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
-    gl.useProgram(prgInfo.program);
+    const drawFn = create1PixelLodSelectingRenderingProgram(gl);
     const tests = [
-      { u_dir: [ 1,  0,  0], expected: r },
-      { u_dir: [-1,  0,  0], expected: y },
-      { u_dir: [ 0,  1,  0], expected: g },
-      { u_dir: [ 0, -1,  0], expected: c },
-      { u_dir: [ 0,  0,  1], expected: b },
-      { u_dir: [ 0,  0, -1], expected: m },
+      { lod: 0, expected: y },
+      { lod: 1, expected: r },
+      { lod: 2, expected: g },
+      { lod: 3, expected: b },
     ];
-    for (const {u_dir, expected} of tests) {
-      twgl.setUniforms(prgInfo, { u_dir });
-      gl.drawArrays(gl.POINTS, 0, 1);
-      checkColor(gl, expected);
-    }
+    tests.forEach(({lod, expected}, i) => {
+      drawFn(gl, lod);
+      checkColor(gl, expected, `mipLevel: ${i}`);
+    });
 
     assertNoWebGLError(gl);
 
@@ -174,6 +184,8 @@ describe('texture tests', () => {
     gl.useProgram(prg);
     gl.drawArrays(gl.POINTS, 0, 1);
     checkColor(gl, green);
+
+    gl.deleteTexture(texture);
   });
 
   itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc`, ['WEBGL_compressed_texture_s3tc'], async() => {
@@ -204,28 +216,61 @@ describe('texture tests', () => {
     gl.deleteTexture(texture);
   });
 
-  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc`, ['WEBGL_compressed_texture_s3tc'], async() => {
+  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc with mips`, ['WEBGL_compressed_texture_s3tc'], async() => {
     const {gl} = createContext2();
     twgl.addExtensionsToContext(gl);
     setCanvasAndViewportSizeTo1x1(gl);
 
-    const red = [255, 0, 0, 255];
     const internalFormat = gl.COMPRESSED_RGB_S3TC_DXT1_EXT;
-    const red_4x4 = new Uint16Array([
+    const red_4x4 = [
       0b11111_000000_00000,
       0b11111_000000_00000,
       0, 0,
+    ];
+    const yellow_4x4 = [
+      0b11111_111111_00000,
+      0b11111_111111_00000,
+      0, 0,
+    ];
+    const green_4x4 = [
+      0b00000_111111_00000,
+      0b00000_111111_00000,
+      0, 0,
+    ];
+    const blue_4x4 = [
+      0b00000_000000_11111,
+      0b00000_000000_11111,
+      0, 0,
+    ];
+    const data = new Uint16Array([
+      ...red_4x4, ...red_4x4, ...red_4x4, // 12x8
+      ...red_4x4, ...red_4x4, ...red_4x4,
+      ...green_4x4, ...green_4x4, // 6x4
+      ...blue_4x4, // 3x2
+      ...yellow_4x4, // 1x1
     ]);
-    const width = 4;
-    const height = 4;
 
-    const texture = twgl.createTexture(gl, { src: red_4x4, width, height, internalFormat });
+    const width = 12;
+    const height = 8;
+
+    const r = [255,   0,   0, 255];
+    const y = [255, 255,   0, 255];
+    const g = [  0, 255,   0, 255];
+    const b = [  0,   0, 255, 255];
+
+    const texture = twgl.createTexture(gl, { src: data, width, height, internalFormat });
     assertNoWebGLError(gl);
-
-    const prg = create1PixelTextureRenderingProgram(gl);
-    gl.useProgram(prg);
-    gl.drawArrays(gl.POINTS, 0, 1);
-    checkColor(gl, red);
+    const drawFn = create1PixelLodSelectingRenderingProgram(gl);
+    const tests = [
+      { lod: 0, expected: r },
+      { lod: 1, expected: g },
+      { lod: 2, expected: b },
+      { lod: 3, expected: y },
+    ];
+    tests.forEach(({lod, expected}, i) => {
+      drawFn(gl, lod);
+      checkColor(gl, expected, `mipLevel: ${i}`);
+    });
 
     assertNoWebGLError(gl);
 
