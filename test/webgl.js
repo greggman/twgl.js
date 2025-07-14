@@ -74,10 +74,10 @@ export function resetContexts(context) {
   }
 }
 
-export function checkColor(gl, color) {
+export function checkColor(gl, color, msg) {
   const p = new Uint8Array(4);
   gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, p);
-  assertArrayEqual(p, color);
+  assertArrayEqual(p, color, msg);
 }
 
 export function escapeRE(str) {
