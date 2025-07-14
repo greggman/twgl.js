@@ -204,22 +204,26 @@ describe('texture tests', () => {
     gl.deleteTexture(texture);
   });
 
-  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc`, ['WEBGL_compressed_texture_s3tc'], async() => {
+  itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc with mipmap levels`, ['WEBGL_compressed_texture_s3tc'], async() => {
     const {gl} = createContext2();
     twgl.addExtensionsToContext(gl);
     setCanvasAndViewportSizeTo1x1(gl);
 
     const red = [255, 0, 0, 255];
     const internalFormat = gl.COMPRESSED_RGB_S3TC_DXT1_EXT;
-    const red_4x4 = new Uint16Array([
-      0b11111_000000_00000,
-      0b11111_000000_00000,
-      0, 0,
+    const red_4x4_mipmap_level_3 = new Uint8Array([
+      0, 248, 0, 248,
+      0, 0, 0, 0, 0,
+      248, 0, 248, 0,
+      0, 0, 0, 0,
+      248, 0, 248,
+      0, 0, 0, 0,
     ]);
     const width = 4;
     const height = 4;
+    const level = 3;
 
-    const texture = twgl.createTexture(gl, { src: red_4x4, width, height, internalFormat });
+    const texture = twgl.createTexture(gl, { src: red_4x4_mipmap_level_3, width, height, internalFormat, level });
     assertNoWebGLError(gl);
 
     const prg = create1PixelTextureRenderingProgram(gl);
@@ -231,6 +235,7 @@ describe('texture tests', () => {
 
     gl.deleteTexture(texture);
   });
+
 
   itWebGL2(`test compressed texture format WEBGL_compressed_texture_s3tc cubemap`, ['WEBGL_compressed_texture_s3tc'], async() => {
     const {gl} = createContext2();
