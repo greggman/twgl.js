@@ -11722,7 +11722,7 @@ are appropriate for its needs. This lets you pass the same options to all functi
 
             
 
-            <td class="description last"><p>the depth of a texture. Only used if src is an array or type array or null and target is <code>TEXTURE_3D</code> .</p></td>
+            <td class="description last"><p>the depth of a texture. Only used if src is an array or typed array or null and target is <code>TEXTURE_3D</code> .</p></td>
         </tr>
 
         
@@ -12563,8 +12563,11 @@ The pieces will be uploaded in <code>cubeFaceOrder</code></p>
 and will be scaled to the specified width and height OR to the size of the first image that loads.</p>
 <p>If <code>TexImageSource</code> then it wil be used immediately to create the contents of the texture. Examples <code>HTMLImageElement</code>,<br>
 <code>HTMLCanvasElement</code>, <code>HTMLVideoElement</code>.</p>
-<p>If <code>number[]</code> or <code>ArrayBufferView</code> it's assumed to be data for a texture. If <code>width</code> or <code>height</code> is<br>
-not specified it is guessed as follows. First the number of elements is computed by <code>src.length / numComponents</code><br>
+<p>If <code>number[]</code> or <code>ArrayBufferView</code> it's assumed to be data for a texture.</p>
+<ul>
+<li>
+<p>If <code>width</code> or <code>height</code> is not specified it is guessed as follows.</p>
+<p>First the number of elements is computed by <code>src.length / numComponents</code><br>
 where <code>numComponents</code> is derived from <code>format</code>. If <code>target</code> is <code>gl.TEXTURE_CUBE_MAP</code> then <code>numElements</code> is divided<br>
 by 6. Then</p>
 <ul>
@@ -12574,6 +12577,14 @@ are set to <code>sqrt(numElements)</code>. Otherwise <code>width = numElements</
 </li>
 <li>
 <p>If only one of <code>width</code> or <code>height</code> is specified then the other equals <code>numElements / specifiedDimension</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If both <code>width</code> and <code>height</code> is specified, then, the size of mip levels from <code>level</code> will be computed<br>
+and data for consecutive mip levels will be uploaded until the data runs out.</p>
+<p>In other words: <code>{ format: g.RGBA, width: 4, height: 4, src: Uint8Array((4 * 4 + 2 * 2 + 1) * 4) }</code><br>
+uploads 3 mip levels (4x4, 2x2, 1x1) because src is more than the data for the first mip level.</p>
 </li>
 </ul>
 <p>If <code>number[]</code> will be converted to <code>type</code>.</p>

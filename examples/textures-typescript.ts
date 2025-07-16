@@ -1,4 +1,4 @@
-import * as twgl from '../dist/6.x/twgl-full.js';
+import * as twgl from '../dist/7.x/twgl-full.js';
 import * as chroma from '../3rdparty/chroma.min.js';
 
 const onePointVS = `
