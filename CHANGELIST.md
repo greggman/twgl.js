@@ -1,5 +1,51 @@
 # Change List
 
+*   7.0.0
+
+    Support for uploading mipmaps in 1 call.
+
+    As it was you could upload individual mips by calling `setTextureFromElement` or `setTextureFromArray`
+    but not really from `createTexture`, `createTextures`. Those 2 functions would call `gl.generateMipmap`
+    for you though if it was possible and you didn't specifically opt out.
+
+    Now, `createTexture`, `createTextures`, and `setTextureFromArray`, if passed an array or typedarray as `src`,
+    will attempt to fill mip levels based on how much data you pass in.
+
+    So for example, an RGBA8 10x7 texture takes
+
+    * (10x7)x4 - 280bytes for mip level 0
+    * (5x3)x4 - 60bytes for mip level 1
+    * (2x1)x4 - 8bytes for mip level 2
+    * (1x1)x4 - 4bytes for mip level 3
+
+    So:
+    
+    * If you pass in 280+60+8+4 or 352 bytes then all 4 mips will be filled out.
+    * If you pass 348 bytes then the first 3 levels will be filled out.
+    * If you pass 72 bytes and pass `level: 1` then the last 3 mips will be filled out.
+
+      (note: you would likely only do this with `setTextureFromArray`)
+ 
+    For this to work, you must pass in a `width` and `height` because otherwise, twgl guesses the size of the texture based
+    on the size of the data.
+
+    Note that this also works for compressed textures. You must pass blocks worth of data.
+    Following the same pattern if you were using a texture format that has 4x4 blocks and each
+    block is 8 bytes then, if you had a 12x8 texture
+
+    * (12x8) is 3x2 blocks * 8 bytes per block = 48 bytes
+    * (6x4) is 2x1 blocks * 8 bytes per block = 16 bytes
+    * (3x2) is 1 block * 8 bytes per block = 8 bytes
+    * (1x1) is 1 block * 8 bytes per block = 8 bytes
+
+    So if you pass in (48+16+8+8) or 80 bytes then twgl will upload to all 4 mip levels.
+
+    Note though that this is a breaking change! This is because before this change, if you
+    called `createTexture` and passed in `width: 4, height: 4, src: someUint8ArrayOf100Bytes`
+    twgl would just use the first 64 bytes. Now though it would error out trying to use the first
+    64 bytes for mip level 0, then the next 16 bytes for mip level 1, then the next 4 bytes mip
+    level 1. Which is different than what it used to do.
+
 *   6.2.0
 
     Support compressed textures
