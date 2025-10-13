@@ -14,10 +14,22 @@
 
   <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
   <title>GPGPU Particles.</title>
+  <style>
+    html, body {
+      margin: 0;
+      font-family: monospace;
+      height: 100%;
+    }
+    canvas {
+      width: 100%; 
+      height: 100%;
+      display: block;
+    }
+  </style>
 </head>
-<body style="margin:0; font-family: monospace;">
+<body>
 
-<canvas id="canvasgl" style="height: 100vh; width: 100vw; display: block;"></canvas>
+<canvas id="canvasgl"></canvas>
 <div id="b" style="position: absolute; top: 10px; width: 100%; text-align: center; z-index: 2;"><a href="http://twgljs.org">twgl.js</a> - GPGPU Particles.</div>
 
 <script src="../dist/7.x/twgl.min.js"></script>

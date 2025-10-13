@@ -14,10 +14,21 @@
 
   <link href="/resources/images/twgljs-icon.png" rel="shortcut icon" type="image/png">
   <title>twgl.js - 2d-rotation</title>
+  <style>
+    html, body {
+      margin: 0;
+      font-family: monospace;
+      height: 100%;
+    }
+    canvas {
+      width: 100%; 
+      height: 100%;
+      display: block;
+    }
+  </style>
 </head>
-<body style="margin:0; overflow: hidden; font-family: monospace;">
-
-<canvas id="canvasgl" style="height: 100vh; width: 100vw;"></canvas>
+<body>
+<canvas id="canvasgl"></canvas>
 <div id="b" style="position: absolute; top: 10px; width: 100%; text-align: center; z-index: 2;"><a href="http://twgljs.org">twgl.js</a> - 2d-rotation</div>
 <script type="module">
   import * as twgl from '../dist/7.x/twgl-full.module.js';
