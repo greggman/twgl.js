@@ -446,6 +446,7 @@ twgl.setUniforms(progInfo, {
 *   [zoom-around](http://twgljs.org/examples/zoom-around.html)
 *   [text](http://twgljs.org/examples/text.html)
 *   [kaleidoscope](http://twgljs.org/examples/kaleidoscope.html)
+*   [stencil](http://twgljs.org/examples/stencil.html)
 *   [tunnel](http://twgljs.org/examples/tunnel.html)
 *   [GPGPU particles](http://twgljs.org/examples/gpgpu-particles.html)
 *   [item list](http://twgljs.org/examples/itemlist.html)
