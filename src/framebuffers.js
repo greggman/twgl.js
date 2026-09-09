@@ -128,6 +128,8 @@ renderbufferFormats[RGB5_A1] = true;
 renderbufferFormats[RGB565] = true;
 renderbufferFormats[DEPTH_STENCIL] = true;
 renderbufferFormats[DEPTH_COMPONENT16] = true;
+renderbufferFormats[DEPTH_COMPONENT24] = true;
+renderbufferFormats[DEPTH_COMPONENT32F] = true;
 renderbufferFormats[STENCIL_INDEX] = true;
 renderbufferFormats[STENCIL_INDEX8] = true;
 
