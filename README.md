@@ -38,7 +38,7 @@ Not including the shaders (which is a simple quad shader) here's the entire code
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
-    twgl.drawBufferInfo(gl, bufferInfo);
+    twgl.drawBufferInfo(gl, gl.TRIANGLES, bufferInfo);
 
     requestAnimationFrame(render);
   }
