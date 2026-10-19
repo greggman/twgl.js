@@ -467,7 +467,7 @@ module.exports = function(grunt) {
     const extraContent = extraModules.map((code) => {
       // Fix "declare module twgl/whatever" statements
       return code.replace(/^declare module twgl(\/(\w+))? \{/m,
-        'declare module $2 {'
+        'declare namespace $2 {'
       );
     }).join('\n');
     // Write twgl-full declarations to destination file
