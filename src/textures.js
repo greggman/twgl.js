@@ -1751,7 +1751,7 @@ function setTextureFromArray(gl, tex, src, options) {
     while (mipLevelByteOffset < src.byteLength) {
       const mipWidth = Math.max(1, width >> mipLevelOffset);
       const mipHeight = Math.max(1, height >> mipLevelOffset);
-      const mipDepth = target === TEXTURE_2D ? Math.max(1, depth >> mipLevelOffset) : depth;
+      const mipDepth = target === TEXTURE_3D ? Math.max(1, depth >> mipLevelOffset) : (depth || 1);
       const blocksAcross = Math.ceil(mipWidth / blockWidth);
       const blocksDown = Math.ceil(mipHeight / blockHeight);
       const numFaces = target === TEXTURE_CUBE_MAP ? 6 : 1;
@@ -1831,7 +1831,7 @@ function getTextureSize(target, src, options, internalFormat, format, type) {
         dimensions = guessDimensions(gl, target, width, depth, numElements / height);
         width = dimensions.width;
         depth = dimensions.height;
-      } else {
+      } else if (!width || !height) {
         dimensions = guessDimensions(gl, target, width, height, numElements / depth);
         width = dimensions.width;
         height = dimensions.height;
