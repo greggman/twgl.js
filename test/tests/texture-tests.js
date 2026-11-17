@@ -78,6 +78,32 @@ function create1PixelLodSelectingRenderingProgram(gl) {
   };
 }
 
+function create1PixelLodSelecting3DRenderingProgram(gl, samplerType) {
+  const vs = `#version 300 es
+    void main() {
+      gl_Position = vec4(0, 0, 0, 1);
+      gl_PointSize = 1.0;
+    }
+  `;
+
+  const fs = `#version 300 es
+    precision highp float;
+    precision highp ${samplerType};
+    uniform ${samplerType} u_texture;
+    uniform float u_lod;
+    out vec4 fragColor;
+    void main() {
+      fragColor = textureLod(u_texture, vec3(0.5, 0.5, 0), u_lod);
+    }
+  `;
+  const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
+  return (gl, lod) => {
+    gl.useProgram(prgInfo.program);
+    twgl.setUniforms(prgInfo, { u_lod: lod });
+    gl.drawArrays(gl.POINTS, 0, 1);
+  };
+}
+
 describe('texture tests', () => {
 
   itWebGL(`test y flips correctly`, async() => {
@@ -334,6 +360,128 @@ describe('texture tests', () => {
       gl.drawArrays(gl.POINTS, 0, 1);
       checkColor(gl, expected);
     }
+
+    assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
+  });
+
+  itWebGL2(`test uncompressed cubemap from typed array`, () => {
+    const {gl} = createContext2();
+    setCanvasAndViewportSizeTo1x1(gl);
+
+    const r = [255,   0,   0, 255];
+    const y = [255, 255,   0, 255];
+    const g = [  0, 255,   0, 255];
+    const c = [  0, 255, 255, 255];
+    const b = [  0,   0, 255, 255];
+    const m = [255,   0, 255, 255];
+    const cubeMapData = new Uint8Array([r, y, g, c, b, m].flat());
+
+    const texture = twgl.createTexture(gl, { target: gl.TEXTURE_CUBE_MAP, src: cubeMapData, minMag: gl.NEAREST });
+    assertNoWebGLError(gl);
+
+    const vs = `#version 300 es
+      void main() {
+        gl_Position = vec4(0, 0, 0, 1);
+        gl_PointSize = 1.0;
+      }
+    `;
+
+    const fs = `#version 300 es
+      precision highp float;
+      uniform samplerCube u_texture;
+      uniform vec3 u_dir;
+      out vec4 fragColor;
+      void main() {
+        fragColor = texture(u_texture, u_dir);
+      }
+    `;
+    const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
+    gl.useProgram(prgInfo.program);
+    const tests = [
+      { u_dir: [ 1,  0,  0], expected: r },
+      { u_dir: [-1,  0,  0], expected: y },
+      { u_dir: [ 0,  1,  0], expected: g },
+      { u_dir: [ 0, -1,  0], expected: c },
+      { u_dir: [ 0,  0,  1], expected: b },
+      { u_dir: [ 0,  0, -1], expected: m },
+    ];
+    for (const {u_dir, expected} of tests) {
+      twgl.setUniforms(prgInfo, { u_dir });
+      gl.drawArrays(gl.POINTS, 0, 1);
+      checkColor(gl, expected);
+    }
+
+    assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
+  });
+
+  itWebGL2('test uploads multiple mip levels for TEXTURE_3D', () => {
+    const {gl} = createContext2();
+    setCanvasAndViewportSizeTo1x1(gl);
+
+    const r = [255,   0,   0, 255];
+    const g = [  0, 255,   0, 255];
+    const b = [  0,   0, 255, 255];
+
+    const data = new Uint8Array([
+      ...new Array(4 * 4 * 4).fill(r),  // 4x4x4
+      ...new Array(2 * 2 * 2).fill(g),  // 2x2x2
+      b,                                // 1x1x1
+    ].flat());
+
+    const texture = twgl.createTexture(gl, { target: gl.TEXTURE_3D, width: 4, height: 4, depth: 4, src: data });
+    assertNoWebGLError(gl);
+
+    const drawFn = create1PixelLodSelecting3DRenderingProgram(gl, 'sampler3D');
+    const tests = [
+      { lod: 0, expected: r },
+      { lod: 1, expected: g },
+      { lod: 2, expected: b },
+    ];
+    tests.forEach(({lod, expected}, i) => {
+      drawFn(gl, lod);
+      checkColor(gl, expected, `mipLevel: ${i}`);
+    });
+
+    assertNoWebGLError(gl);
+
+    gl.deleteTexture(texture);
+  });
+
+  itWebGL2('test uploads multiple mip levels for TEXTURE_2D_ARRAY', () => {
+    const {gl} = createContext2();
+    setCanvasAndViewportSizeTo1x1(gl);
+
+    const r = [255,   0,   0, 255];
+    const y = [255, 255,   0, 255];
+    const g = [  0, 255,   0, 255];
+    const b = [  0,   0, 255, 255];
+
+    const data = new Uint8Array([
+      ...new Array(4 * 4).fill(r),  // 4x4 layer 0
+      ...new Array(4 * 4).fill(y),  // 4x4 layer 1
+      ...new Array(2 * 2).fill(g),  // 2x2 layer 0
+      ...new Array(2 * 2).fill(y),  // 2x2 layer 1
+      b,                            // 1x1 layer 0
+      y,                            // 1x1 layer 1
+    ].flat());
+
+    const texture = twgl.createTexture(gl, { target: gl.TEXTURE_2D_ARRAY, width: 4, height: 4, depth: 2, src: data });
+    assertNoWebGLError(gl);
+
+    const drawFn = create1PixelLodSelecting3DRenderingProgram(gl, 'sampler2DArray');
+    const tests = [
+      { lod: 0, expected: r },
+      { lod: 1, expected: g },
+      { lod: 2, expected: b },
+    ];
+    tests.forEach(({lod, expected}, i) => {
+      drawFn(gl, lod);
+      checkColor(gl, expected, `mipLevel: ${i}`);
+    });
 
     assertNoWebGLError(gl);
 
