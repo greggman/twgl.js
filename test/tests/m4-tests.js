@@ -335,16 +335,43 @@ function check(Type) {
         0,
         (left + right) / dx,
         (top + bottom) / dy,
-        far / dz,
+        (near + far) / dz,
         -1,
         0,
         0,
-        near * far / dz,
+        2 * near * far / dz,
         0,
       ];
       testM4WithAndWithoutDest(function(dst) {
         return m4.frustum(left, right, bottom, top, near, far, dst);
       }, expected);
+    });
+
+    it('should compute frustum that maps to the clip space unit box', function() {
+      const left = -2;
+      const right = 4;
+      const top = 10;
+      const bottom = 30;
+      const near = 15;
+      const far = 25;
+      const m = m4.frustum(left, right, bottom, top, near, far);
+      shouldBeCloseArray(m4.transformPoint(m, [left, bottom, -near]), [-1, -1, -1]);
+      shouldBeCloseArray(m4.transformPoint(m, [right, top, -near]), [1, 1, -1]);
+      const s = far / near;
+      shouldBeCloseArray(m4.transformPoint(m, [left * s, bottom * s, -far]), [-1, -1, 1]);
+      shouldBeCloseArray(m4.transformPoint(m, [right * s, top * s, -far]), [1, 1, 1]);
+    });
+
+    it('should compute the same frustum as perspective for a symmetric frustum', function() {
+      const fieldOfView = 0.7;
+      const aspect = 1.5;
+      const near = 0.5;
+      const far = 100;
+      const top = near * Math.tan(fieldOfView * 0.5);
+      const right = top * aspect;
+      shouldBeCloseArray(
+          m4.frustum(-right, right, -top, top, near, far),
+          m4.perspective(fieldOfView, aspect, near, far));
     });
 
     it('should make lookAt matrix', function() {
