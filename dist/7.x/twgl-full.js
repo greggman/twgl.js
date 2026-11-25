@@ -1,5 +1,5 @@
 /*!
- * @license twgl.js 7.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+ * @license twgl.js 7.0.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
  * Available via the MIT license.
  * see: http://github.com/greggman/twgl.js for details
  */
@@ -1093,6 +1093,8 @@ renderbufferFormats[RGB5_A1] = true;
 renderbufferFormats[RGB565] = true;
 renderbufferFormats[DEPTH_STENCIL] = true;
 renderbufferFormats[DEPTH_COMPONENT16] = true;
+renderbufferFormats[DEPTH_COMPONENT24] = true;
+renderbufferFormats[DEPTH_COMPONENT32F] = true;
 renderbufferFormats[STENCIL_INDEX] = true;
 renderbufferFormats[STENCIL_INDEX8] = true;
 function isRenderbufferFormat(format) {
@@ -1938,8 +1940,7 @@ function setAxis(a, v, axis, dst) {
  * the distances to the near and far clipping planes.  Note that near and far
  * are not z coordinates, but rather they are distances along the negative
  * z-axis.  The matrix generated sends the viewing frustum to the unit box.
- * We assume a unit box extending from -1 to 1 in the x and y dimensions and
- * from 0 to 1 in the z dimension.
+ * We assume a unit box extending from -1 to 1 in the x, y and z dimensions.
  * @param {number} fieldOfViewYInRadians The camera angle from top to bottom (in radians).
  * @param {number} aspect The aspect ratio width / height.
  * @param {number} zNear The depth (negative z coordinate)
@@ -2017,8 +2018,7 @@ function ortho(left, right, bottom, top, near, far, dst) {
  * distances to the near and far clipping planes. Note that near and far are not
  * z coordinates, but rather they are distances along the negative z-axis. The
  * matrix generated sends the viewing frustum to the unit box. We assume a unit
- * box extending from -1 to 1 in the x and y dimensions and from 0 to 1 in the z
- * dimension.
+ * box extending from -1 to 1 in the x, y and z dimensions.
  * @param {number} left The x coordinate of the left plane of the box.
  * @param {number} right The x coordinate of the right plane of the box.
  * @param {number} bottom The y coordinate of the bottom plane of the box.
@@ -2044,11 +2044,11 @@ function frustum(left, right, bottom, top, near, far, dst) {
   dst[7] = 0;
   dst[8] = (left + right) / dx;
   dst[9] = (top + bottom) / dy;
-  dst[10] = far / dz;
+  dst[10] = (near + far) / dz;
   dst[11] = -1;
   dst[12] = 0;
   dst[13] = 0;
-  dst[14] = near * far / dz;
+  dst[14] = 2 * near * far / dz;
   dst[15] = 0;
   return dst;
 }

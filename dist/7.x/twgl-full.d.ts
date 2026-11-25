@@ -3290,7 +3290,7 @@ export function createVAOFromBufferInfo(gl: WebGLRenderingContext, programInfo: 
     [key: string]: (...params: any[]) => any;
 } | ProgramInfo, bufferInfo: BufferInfo, indices?: WebGLBuffer): WebGLVertexArrayObject | null;
 
-declare module v3 {
+declare namespace v3 {
     /**
      * A JavaScript array with 3 values or a Float32Array with 3 values.
      * When created by the library will create the default type which is `Float32Array`
@@ -3493,7 +3493,7 @@ declare module v3 {
      */
     export function divide(a: v3.Vec3, b: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
 }
-declare module m4 {
+declare namespace m4 {
     /**
      * A JavaScript array with 16 values or a Float32Array with 16 values.
      * When created by the library will create the default type which is `Float32Array`
@@ -3611,8 +3611,7 @@ declare module m4 {
      * the distances to the near and far clipping planes.  Note that near and far
      * are not z coordinates, but rather they are distances along the negative
      * z-axis.  The matrix generated sends the viewing frustum to the unit box.
-     * We assume a unit box extending from -1 to 1 in the x and y dimensions and
-     * from 0 to 1 in the z dimension.
+     * We assume a unit box extending from -1 to 1 in the x, y and z dimensions.
      * @param {number} fieldOfViewYInRadians The camera angle from top to bottom (in radians).
      * @param {number} aspect The aspect ratio width / height.
      * @param {number} zNear The depth (negative z coordinate)
@@ -3648,8 +3647,7 @@ declare module m4 {
      * distances to the near and far clipping planes. Note that near and far are not
      * z coordinates, but rather they are distances along the negative z-axis. The
      * matrix generated sends the viewing frustum to the unit box. We assume a unit
-     * box extending from -1 to 1 in the x and y dimensions and from 0 to 1 in the z
-     * dimension.
+     * box extending from -1 to 1 in the x, y and z dimensions.
      * @param {number} left The x coordinate of the left plane of the box.
      * @param {number} right The x coordinate of the right plane of the box.
      * @param {number} bottom The y coordinate of the bottom plane of the box.
@@ -3838,7 +3836,7 @@ declare module m4 {
      */
     export function transformNormal(m: m4.Mat4, v: v3.Vec3, dst?: v3.Vec3): v3.Vec3;
 }
-declare module primitives {
+declare namespace primitives {
     /**
      * @typedef {(Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array)} TypedArray
      */

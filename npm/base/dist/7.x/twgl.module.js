@@ -1,4 +1,4 @@
-/* @license twgl.js 7.0.0 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 7.0.2 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -5892,6 +5892,8 @@ renderbufferFormats[RGB5_A1] = true;
 renderbufferFormats[RGB565] = true;
 renderbufferFormats[DEPTH_STENCIL] = true;
 renderbufferFormats[DEPTH_COMPONENT16] = true;
+renderbufferFormats[DEPTH_COMPONENT24] = true;
+renderbufferFormats[DEPTH_COMPONENT32F] = true;
 renderbufferFormats[STENCIL_INDEX] = true;
 renderbufferFormats[STENCIL_INDEX8] = true;
 
