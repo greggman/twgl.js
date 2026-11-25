@@ -1228,39 +1228,39 @@ function create3DFVertices() {
     // left column front
     // top rung front
     // middle rung front
-    18, 0, 0, 1,
+    18, 0, 0, -1,
 
     // left column back
     // top rung back
     // middle rung back
-    18, 0, 0, -1,
+    18, 0, 0, 1,
 
     // top
-    6, 0, 1, 0,
+    6, 0, -1, 0,
 
     // top rung front
     6, 1, 0, 0,
 
     // under top rung
-    6, 0, -1, 0,
+    6, 0, 1, 0,
 
     // between top rung and middle
     6, 1, 0, 0,
 
     // top of middle rung
-    6, 0, 1, 0,
+    6, 0, -1, 0,
 
     // front of middle rung
     6, 1, 0, 0,
 
     // bottom of middle rung.
-    6, 0, -1, 0,
+    6, 0, 1, 0,
 
     // front of bottom
     6, 1, 0, 0,
 
     // bottom
-    6, 0, -1, 0,
+    6, 0, 1, 0,
 
     // left side
     6, -1, 0, 0,
